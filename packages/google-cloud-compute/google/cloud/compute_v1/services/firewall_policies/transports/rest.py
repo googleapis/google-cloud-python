@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -213,8 +221,11 @@ class FirewallPoliciesRestInterceptor:
     def pre_add_association(
         self,
         request: compute.AddAssociationFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AddAssociationFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddAssociationFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_association
 
         Override in a subclass to manipulate the request or metadata
@@ -234,8 +245,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_add_rule(
         self,
         request: compute.AddRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AddRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for add_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -255,8 +268,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_clone_rules(
         self,
         request: compute.CloneRulesFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.CloneRulesFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.CloneRulesFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for clone_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -276,8 +291,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -297,8 +314,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -318,8 +337,11 @@ class FirewallPoliciesRestInterceptor:
     def pre_get_association(
         self,
         request: compute.GetAssociationFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetAssociationFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetAssociationFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_association
 
         Override in a subclass to manipulate the request or metadata
@@ -341,8 +363,11 @@ class FirewallPoliciesRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: compute.GetIamPolicyFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetIamPolicyFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetIamPolicyFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -362,8 +387,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_get_rule(
         self,
         request: compute.GetRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -385,8 +412,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -406,8 +435,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListFirewallPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListFirewallPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListFirewallPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -429,9 +460,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_list_associations(
         self,
         request: compute.ListAssociationsFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.ListAssociationsFirewallPolicyRequest, Sequence[Tuple[str, str]]
+        compute.ListAssociationsFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_associations
 
@@ -454,8 +486,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_move(
         self,
         request: compute.MoveFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.MoveFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.MoveFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for move
 
         Override in a subclass to manipulate the request or metadata
@@ -475,8 +509,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -496,8 +532,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_patch_rule(
         self,
         request: compute.PatchRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for patch_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +555,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_remove_association(
         self,
         request: compute.RemoveAssociationFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.RemoveAssociationFirewallPolicyRequest, Sequence[Tuple[str, str]]
+        compute.RemoveAssociationFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for remove_association
 
@@ -540,8 +579,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_remove_rule(
         self,
         request: compute.RemoveRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.RemoveRuleFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.RemoveRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for remove_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -561,8 +602,11 @@ class FirewallPoliciesRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: compute.SetIamPolicyFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetIamPolicyFirewallPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetIamPolicyFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -582,9 +626,10 @@ class FirewallPoliciesRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: compute.TestIamPermissionsFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.TestIamPermissionsFirewallPolicyRequest, Sequence[Tuple[str, str]]
+        compute.TestIamPermissionsFirewallPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for test_iam_permissions
 
@@ -730,7 +775,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the add association method over HTTP.
 
@@ -742,8 +787,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -770,6 +817,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_association(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
                 http_options, request
@@ -783,6 +831,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.AddAssociation",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "AddAssociation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._AddAssociation._get_response(
@@ -805,7 +880,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_association(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.add_association",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "AddAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AddRule(
@@ -843,7 +940,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the add rule method over HTTP.
 
@@ -855,8 +952,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -883,6 +982,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseAddRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BaseAddRule._get_transcoded_request(
@@ -902,6 +1002,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.AddRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "AddRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._AddRule._get_response(
@@ -924,7 +1051,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.add_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "AddRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CloneRules(
@@ -961,7 +1110,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the clone rules method over HTTP.
 
@@ -973,8 +1122,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1001,6 +1152,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_clone_rules(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_transcoded_request(
                 http_options, request
@@ -1010,6 +1162,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.CloneRules",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "CloneRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._CloneRules._get_response(
@@ -1031,7 +1210,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_clone_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.clone_rules",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "CloneRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(
@@ -1068,7 +1269,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -1080,8 +1281,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1108,6 +1311,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BaseDelete._get_transcoded_request(
@@ -1121,6 +1325,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._Delete._get_response(
@@ -1142,7 +1373,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseFirewallPoliciesRestTransport._BaseGet, FirewallPoliciesRestStub):
@@ -1177,7 +1430,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.FirewallPolicy:
             r"""Call the get method over HTTP.
 
@@ -1189,8 +1442,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.FirewallPolicy:
@@ -1202,6 +1457,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BaseGet._get_transcoded_request(
@@ -1215,6 +1471,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._Get._get_response(
@@ -1236,7 +1519,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.FirewallPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.FirewallPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAssociation(
@@ -1273,7 +1578,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.FirewallPolicyAssociation:
             r"""Call the get association method over HTTP.
 
@@ -1285,8 +1590,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.FirewallPolicyAssociation:
@@ -1296,6 +1603,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_association(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
                 http_options, request
@@ -1305,6 +1613,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.GetAssociation",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "GetAssociation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._GetAssociation._get_response(
@@ -1326,7 +1661,31 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.FirewallPolicyAssociation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_association(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.FirewallPolicyAssociation.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.get_association",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "GetAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -1363,7 +1722,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1375,8 +1734,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Policy:
@@ -1409,6 +1770,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1418,6 +1780,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._GetIamPolicy._get_response(
@@ -1439,7 +1828,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRule(
@@ -1476,7 +1887,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.FirewallPolicyRule:
             r"""Call the get rule method over HTTP.
 
@@ -1488,8 +1899,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.FirewallPolicyRule:
@@ -1503,6 +1916,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseGetRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BaseGetRule._get_transcoded_request(
@@ -1516,6 +1930,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.GetRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "GetRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._GetRule._get_response(
@@ -1537,7 +1978,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.FirewallPolicyRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.FirewallPolicyRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.get_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "GetRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -1575,7 +2038,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -1587,8 +2050,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1615,6 +2080,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BaseInsert._get_transcoded_request(
@@ -1634,6 +2100,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._Insert._get_response(
@@ -1656,7 +2149,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseFirewallPoliciesRestTransport._BaseList, FirewallPoliciesRestStub):
@@ -1691,7 +2206,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.FirewallPolicyList:
             r"""Call the list method over HTTP.
 
@@ -1703,8 +2218,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.FirewallPolicyList:
@@ -1714,6 +2231,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BaseList._get_transcoded_request(
@@ -1727,6 +2245,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._List._get_response(
@@ -1748,7 +2293,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.FirewallPolicyList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.FirewallPolicyList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAssociations(
@@ -1786,7 +2353,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.FirewallPoliciesListAssociationsResponse:
             r"""Call the list associations method over HTTP.
 
@@ -1798,8 +2365,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.FirewallPoliciesListAssociationsResponse:
@@ -1809,6 +2378,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_associations(
                 request, metadata
             )
@@ -1820,6 +2390,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.ListAssociations",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "ListAssociations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._ListAssociations._get_response(
@@ -1841,7 +2438,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.FirewallPoliciesListAssociationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_associations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        compute.FirewallPoliciesListAssociationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.list_associations",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "ListAssociations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Move(_BaseFirewallPoliciesRestTransport._BaseMove, FirewallPoliciesRestStub):
@@ -1876,7 +2499,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the move method over HTTP.
 
@@ -1888,8 +2511,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1916,6 +2541,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseMove._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_move(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BaseMove._get_transcoded_request(
@@ -1929,6 +2555,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.Move",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Move",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._Move._get_response(
@@ -1950,7 +2603,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_move(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.move",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Move",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(
@@ -1988,7 +2663,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -2000,8 +2675,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2028,6 +2705,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = (
                 _BaseFirewallPoliciesRestTransport._BasePatch._get_transcoded_request(
@@ -2045,6 +2723,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._Patch._get_response(
@@ -2067,7 +2772,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PatchRule(
@@ -2105,7 +2832,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch rule method over HTTP.
 
@@ -2117,8 +2844,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2145,6 +2874,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BasePatchRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_transcoded_request(
                 http_options, request
@@ -2158,6 +2888,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.PatchRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "PatchRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._PatchRule._get_response(
@@ -2180,7 +2937,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.patch_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "PatchRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveAssociation(
@@ -2218,7 +2997,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the remove association method over HTTP.
 
@@ -2230,8 +3009,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2258,6 +3039,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_association(
                 request, metadata
             )
@@ -2269,6 +3051,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.RemoveAssociation",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "RemoveAssociation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._RemoveAssociation._get_response(
@@ -2290,7 +3099,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_association(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.remove_association",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "RemoveAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveRule(
@@ -2327,7 +3158,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the remove rule method over HTTP.
 
@@ -2339,8 +3170,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2367,6 +3200,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(
                 http_options, request
@@ -2376,6 +3210,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.RemoveRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "RemoveRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._RemoveRule._get_response(
@@ -2397,7 +3258,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.remove_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "RemoveRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -2435,7 +3318,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2447,8 +3330,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Policy:
@@ -2481,6 +3366,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2494,6 +3380,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._SetIamPolicy._get_response(
@@ -2516,7 +3429,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -2555,7 +3490,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TestPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2567,8 +3502,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TestPermissionsResponse:
@@ -2578,6 +3515,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             http_options = (
                 _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2593,6 +3531,33 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             query_params = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.FirewallPoliciesClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FirewallPoliciesRestTransport._TestIamPermissions._get_response(
@@ -2615,7 +3580,29 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             pb_resp = compute.TestPermissionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TestPermissionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.FirewallPoliciesClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.FirewallPolicies",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

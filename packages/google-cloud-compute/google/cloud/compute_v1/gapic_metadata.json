@@ -1089,6 +1089,11 @@
                 "resize"
               ]
             },
+            "ResumeInstances": {
+              "methods": [
+                "resume_instances"
+              ]
+            },
             "SetInstanceTemplate": {
               "methods": [
                 "set_instance_template"
@@ -1097,6 +1102,21 @@
             "SetTargetPools": {
               "methods": [
                 "set_target_pools"
+              ]
+            },
+            "StartInstances": {
+              "methods": [
+                "start_instances"
+              ]
+            },
+            "StopInstances": {
+              "methods": [
+                "stop_instances"
+              ]
+            },
+            "SuspendInstances": {
+              "methods": [
+                "suspend_instances"
               ]
             },
             "UpdatePerInstanceConfigs": {
@@ -2026,6 +2046,25 @@
         }
       }
     },
+    "NetworkProfiles": {
+      "clients": {
+        "rest": {
+          "libraryClient": "NetworkProfilesClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Networks": {
       "clients": {
         "rest": {
@@ -2876,6 +2915,11 @@
                 "resize"
               ]
             },
+            "ResumeInstances": {
+              "methods": [
+                "resume_instances"
+              ]
+            },
             "SetInstanceTemplate": {
               "methods": [
                 "set_instance_template"
@@ -2884,6 +2928,21 @@
             "SetTargetPools": {
               "methods": [
                 "set_target_pools"
+              ]
+            },
+            "StartInstances": {
+              "methods": [
+                "start_instances"
+              ]
+            },
+            "StopInstances": {
+              "methods": [
+                "stop_instances"
+              ]
+            },
+            "SuspendInstances": {
+              "methods": [
+                "suspend_instances"
               ]
             },
             "UpdatePerInstanceConfigs": {
@@ -3260,6 +3319,11 @@
             "RemoveRule": {
               "methods": [
                 "remove_rule"
+              ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
               ]
             }
           }
