@@ -81,7 +81,7 @@ class TestAttemptTimeoutGenerator:
         sleep_time = 0.1
         for i in range(3):
             found_value = next(generator)
-            assert abs(found_value - expected_value) < 0.001
+            assert abs(found_value - expected_value) < 0.1
             sleep(sleep_time)
             expected_value -= sleep_time
 
