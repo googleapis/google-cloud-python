@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -133,8 +141,10 @@ class ConnectionServiceRestInterceptor:
     def pre_create_connection(
         self,
         request: gcbc_connection.CreateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcbc_connection.CreateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcbc_connection.CreateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -156,8 +166,10 @@ class ConnectionServiceRestInterceptor:
     def pre_delete_connection(
         self,
         request: connection.DeleteConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[connection.DeleteConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        connection.DeleteConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -168,8 +180,10 @@ class ConnectionServiceRestInterceptor:
     def pre_get_connection(
         self,
         request: connection.GetConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[connection.GetConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        connection.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -191,8 +205,10 @@ class ConnectionServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -212,8 +228,10 @@ class ConnectionServiceRestInterceptor:
     def pre_list_connections(
         self,
         request: connection.ListConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[connection.ListConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        connection.ListConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -235,8 +253,10 @@ class ConnectionServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -256,8 +276,11 @@ class ConnectionServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -279,8 +302,10 @@ class ConnectionServiceRestInterceptor:
     def pre_update_connection(
         self,
         request: gcbc_connection.UpdateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcbc_connection.UpdateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcbc_connection.UpdateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -422,7 +447,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcbc_connection.Connection:
             r"""Call the create connection method over HTTP.
 
@@ -433,8 +458,10 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcbc_connection.Connection:
@@ -447,6 +474,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseCreateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
             )
@@ -462,6 +490,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseCreateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.CreateConnection",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "CreateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._CreateConnection._get_response(
@@ -484,7 +539,29 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             pb_resp = gcbc_connection.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcbc_connection.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.connection_v1.ConnectionServiceClient.create_connection",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "CreateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConnection(
@@ -522,7 +599,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete connection method over HTTP.
 
@@ -533,13 +610,16 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseDeleteConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_connection(
                 request, metadata
             )
@@ -551,6 +631,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseDeleteConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.DeleteConnection",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "DeleteConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._DeleteConnection._get_response(
@@ -602,7 +709,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> connection.Connection:
             r"""Call the get connection method over HTTP.
 
@@ -613,8 +720,10 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.connection.Connection:
@@ -627,6 +736,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseGetConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
             transcoded_request = _BaseConnectionServiceRestTransport._BaseGetConnection._get_transcoded_request(
                 http_options, request
@@ -636,6 +746,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseGetConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.GetConnection",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "GetConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._GetConnection._get_response(
@@ -657,7 +794,29 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             pb_resp = connection.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = connection.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.connection_v1.ConnectionServiceClient.get_connection",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "GetConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -695,7 +854,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -705,8 +864,10 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -791,6 +952,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseConnectionServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -804,6 +966,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._GetIamPolicy._get_response(
@@ -826,7 +1015,29 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.connection_v1.ConnectionServiceClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConnections(
@@ -864,7 +1075,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> connection.ListConnectionsResponse:
             r"""Call the list connections method over HTTP.
 
@@ -875,8 +1086,10 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.connection.ListConnectionsResponse:
@@ -888,6 +1101,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseListConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
             )
@@ -899,6 +1113,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseListConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.ListConnections",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "ListConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._ListConnections._get_response(
@@ -920,7 +1161,31 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             pb_resp = connection.ListConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = connection.ListConnectionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.connection_v1.ConnectionServiceClient.list_connections",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "ListConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -958,7 +1223,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -968,8 +1233,10 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1054,6 +1321,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseConnectionServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1067,6 +1335,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._SetIamPolicy._get_response(
@@ -1089,7 +1384,29 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.connection_v1.ConnectionServiceClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -1128,7 +1445,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1138,8 +1455,10 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -1149,6 +1468,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1164,6 +1484,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._TestIamPermissions._get_response(
@@ -1186,7 +1533,29 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.connection_v1.ConnectionServiceClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConnection(
@@ -1225,7 +1594,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcbc_connection.Connection:
             r"""Call the update connection method over HTTP.
 
@@ -1236,8 +1605,10 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcbc_connection.Connection:
@@ -1250,6 +1621,7 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             http_options = (
                 _BaseConnectionServiceRestTransport._BaseUpdateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
             )
@@ -1265,6 +1637,33 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             query_params = _BaseConnectionServiceRestTransport._BaseUpdateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.connection_v1.ConnectionServiceClient.UpdateConnection",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "UpdateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConnectionServiceRestTransport._UpdateConnection._get_response(
@@ -1287,7 +1686,29 @@ class ConnectionServiceRestTransport(_BaseConnectionServiceRestTransport):
             pb_resp = gcbc_connection.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcbc_connection.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.connection_v1.ConnectionServiceClient.update_connection",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.connection.v1.ConnectionService",
+                        "rpcName": "UpdateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

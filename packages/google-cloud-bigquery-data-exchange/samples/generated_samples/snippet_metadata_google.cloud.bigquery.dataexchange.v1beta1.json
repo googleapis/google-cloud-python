@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-bigquery-data-exchange",
-    "version": "0.5.15"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -51,7 +51,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange",
@@ -135,7 +135,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange",
@@ -220,7 +220,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.Listing",
@@ -304,7 +304,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.Listing",
@@ -385,7 +385,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_data_exchange"
@@ -462,7 +462,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_data_exchange"
@@ -540,7 +540,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_listing"
@@ -617,7 +617,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_listing"
@@ -695,7 +695,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange",
@@ -775,7 +775,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange",
@@ -852,7 +852,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -928,7 +928,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -1009,7 +1009,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.Listing",
@@ -1089,7 +1089,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.Listing",
@@ -1170,7 +1170,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListDataExchangesAsyncPager",
@@ -1250,7 +1250,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListDataExchangesPager",
@@ -1331,7 +1331,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListListingsAsyncPager",
@@ -1411,7 +1411,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListListingsPager",
@@ -1492,7 +1492,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListOrgDataExchangesAsyncPager",
@@ -1572,7 +1572,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListOrgDataExchangesPager",
@@ -1649,7 +1649,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -1725,7 +1725,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -1806,7 +1806,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.SubscribeListingResponse",
@@ -1886,7 +1886,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.SubscribeListingResponse",
@@ -1963,7 +1963,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -2039,7 +2039,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -2124,7 +2124,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange",
@@ -2208,7 +2208,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange",
@@ -2293,7 +2293,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.Listing",
@@ -2377,7 +2377,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.bigquery_data_exchange_v1beta1.types.Listing",

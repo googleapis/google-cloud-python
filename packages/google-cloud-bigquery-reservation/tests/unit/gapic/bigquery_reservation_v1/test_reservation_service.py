@@ -9978,6 +9978,7 @@ def test_create_reservation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_reservation(request)
 
@@ -10025,6 +10026,7 @@ def test_create_reservation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_reservation(**mock_args)
 
@@ -10167,6 +10169,7 @@ def test_list_reservations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_reservations(request)
 
@@ -10220,6 +10223,7 @@ def test_list_reservations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_reservations(**mock_args)
 
@@ -10414,6 +10418,7 @@ def test_get_reservation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_reservation(request)
 
@@ -10461,6 +10466,7 @@ def test_get_reservation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_reservation(**mock_args)
 
@@ -10593,6 +10599,7 @@ def test_delete_reservation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_reservation(request)
 
@@ -10638,6 +10645,7 @@ def test_delete_reservation_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_reservation(**mock_args)
 
@@ -10740,6 +10748,7 @@ def test_update_reservation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_reservation(**mock_args)
 
@@ -10877,6 +10886,7 @@ def test_failover_reservation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.failover_reservation(request)
 
@@ -11009,6 +11019,7 @@ def test_create_capacity_commitment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_capacity_commitment(request)
 
@@ -11063,6 +11074,7 @@ def test_create_capacity_commitment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_capacity_commitment(**mock_args)
 
@@ -11207,6 +11219,7 @@ def test_list_capacity_commitments_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_capacity_commitments(request)
 
@@ -11260,6 +11273,7 @@ def test_list_capacity_commitments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_capacity_commitments(**mock_args)
 
@@ -11459,6 +11473,7 @@ def test_get_capacity_commitment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_capacity_commitment(request)
 
@@ -11506,6 +11521,7 @@ def test_get_capacity_commitment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_capacity_commitment(**mock_args)
 
@@ -11641,6 +11657,7 @@ def test_delete_capacity_commitment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_capacity_commitment(request)
 
@@ -11686,6 +11703,7 @@ def test_delete_capacity_commitment_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_capacity_commitment(**mock_args)
 
@@ -11789,6 +11807,7 @@ def test_update_capacity_commitment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_capacity_commitment(**mock_args)
 
@@ -11927,6 +11946,7 @@ def test_split_capacity_commitment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.split_capacity_commitment(request)
 
@@ -11975,6 +11995,7 @@ def test_split_capacity_commitment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.split_capacity_commitment(**mock_args)
 
@@ -12075,6 +12096,7 @@ def test_merge_capacity_commitments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.merge_capacity_commitments(**mock_args)
 
@@ -12212,6 +12234,7 @@ def test_create_assignment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_assignment(request)
 
@@ -12260,6 +12283,7 @@ def test_create_assignment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_assignment(**mock_args)
 
@@ -12401,6 +12425,7 @@ def test_list_assignments_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_assignments(request)
 
@@ -12456,6 +12481,7 @@ def test_list_assignments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_assignments(**mock_args)
 
@@ -12651,6 +12677,7 @@ def test_delete_assignment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_assignment(request)
 
@@ -12696,6 +12723,7 @@ def test_delete_assignment_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_assignment(**mock_args)
 
@@ -12839,6 +12867,7 @@ def test_search_assignments_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_assignments(request)
 
@@ -12894,6 +12923,7 @@ def test_search_assignments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_assignments(**mock_args)
 
@@ -13102,6 +13132,7 @@ def test_search_all_assignments_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_all_assignments(request)
 
@@ -13157,6 +13188,7 @@ def test_search_all_assignments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_all_assignments(**mock_args)
 
@@ -13353,6 +13385,7 @@ def test_move_assignment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.move_assignment(request)
 
@@ -13401,6 +13434,7 @@ def test_move_assignment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.move_assignment(**mock_args)
 
@@ -13502,6 +13536,7 @@ def test_update_assignment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_assignment(**mock_args)
 
@@ -13638,6 +13673,7 @@ def test_get_bi_reservation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_bi_reservation(request)
 
@@ -13683,6 +13719,7 @@ def test_get_bi_reservation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_bi_reservation(**mock_args)
 
@@ -13786,6 +13823,7 @@ def test_update_bi_reservation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_bi_reservation(**mock_args)
 
@@ -15153,6 +15191,7 @@ def test_create_reservation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_reservation(request)
 
 
@@ -15277,6 +15316,7 @@ def test_create_reservation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_reservation(request)
 
     # Establish that the response is the type that we expect.
@@ -15325,6 +15365,7 @@ def test_create_reservation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcbr_reservation.Reservation.to_json(
             gcbr_reservation.Reservation()
         )
@@ -15371,6 +15412,7 @@ def test_list_reservations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_reservations(request)
 
 
@@ -15406,6 +15448,7 @@ def test_list_reservations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_reservations(request)
 
     # Establish that the response is the type that we expect.
@@ -15446,6 +15489,7 @@ def test_list_reservations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.ListReservationsResponse.to_json(
             reservation.ListReservationsResponse()
         )
@@ -15492,6 +15536,7 @@ def test_get_reservation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_reservation(request)
 
 
@@ -15535,6 +15580,7 @@ def test_get_reservation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_reservation(request)
 
     # Establish that the response is the type that we expect.
@@ -15583,6 +15629,7 @@ def test_get_reservation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.Reservation.to_json(reservation.Reservation())
         req.return_value.content = return_value
 
@@ -15627,6 +15674,7 @@ def test_delete_reservation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_reservation(request)
 
 
@@ -15657,6 +15705,7 @@ def test_delete_reservation_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_reservation(request)
 
     # Establish that the response is the type that we expect.
@@ -15693,6 +15742,7 @@ def test_delete_reservation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = reservation.DeleteReservationRequest()
         metadata = [
@@ -15737,6 +15787,7 @@ def test_update_reservation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_reservation(request)
 
 
@@ -15865,6 +15916,7 @@ def test_update_reservation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_reservation(request)
 
     # Establish that the response is the type that we expect.
@@ -15913,6 +15965,7 @@ def test_update_reservation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcbr_reservation.Reservation.to_json(
             gcbr_reservation.Reservation()
         )
@@ -15959,6 +16012,7 @@ def test_failover_reservation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.failover_reservation(request)
 
 
@@ -16002,6 +16056,7 @@ def test_failover_reservation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.failover_reservation(request)
 
     # Establish that the response is the type that we expect.
@@ -16050,6 +16105,7 @@ def test_failover_reservation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.Reservation.to_json(reservation.Reservation())
         req.return_value.content = return_value
 
@@ -16094,6 +16150,7 @@ def test_create_capacity_commitment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_capacity_commitment(request)
 
 
@@ -16227,6 +16284,7 @@ def test_create_capacity_commitment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_capacity_commitment(request)
 
     # Establish that the response is the type that we expect.
@@ -16274,6 +16332,7 @@ def test_create_capacity_commitment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.CapacityCommitment.to_json(
             reservation.CapacityCommitment()
         )
@@ -16320,6 +16379,7 @@ def test_list_capacity_commitments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_capacity_commitments(request)
 
 
@@ -16355,6 +16415,7 @@ def test_list_capacity_commitments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_capacity_commitments(request)
 
     # Establish that the response is the type that we expect.
@@ -16395,6 +16456,7 @@ def test_list_capacity_commitments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.ListCapacityCommitmentsResponse.to_json(
             reservation.ListCapacityCommitmentsResponse()
         )
@@ -16443,6 +16505,7 @@ def test_get_capacity_commitment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_capacity_commitment(request)
 
 
@@ -16487,6 +16550,7 @@ def test_get_capacity_commitment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_capacity_commitment(request)
 
     # Establish that the response is the type that we expect.
@@ -16534,6 +16598,7 @@ def test_get_capacity_commitment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.CapacityCommitment.to_json(
             reservation.CapacityCommitment()
         )
@@ -16582,6 +16647,7 @@ def test_delete_capacity_commitment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_capacity_commitment(request)
 
 
@@ -16614,6 +16680,7 @@ def test_delete_capacity_commitment_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_capacity_commitment(request)
 
     # Establish that the response is the type that we expect.
@@ -16650,6 +16717,7 @@ def test_delete_capacity_commitment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = reservation.DeleteCapacityCommitmentRequest()
         metadata = [
@@ -16694,6 +16762,7 @@ def test_update_capacity_commitment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_capacity_commitment(request)
 
 
@@ -16831,6 +16900,7 @@ def test_update_capacity_commitment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_capacity_commitment(request)
 
     # Establish that the response is the type that we expect.
@@ -16878,6 +16948,7 @@ def test_update_capacity_commitment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.CapacityCommitment.to_json(
             reservation.CapacityCommitment()
         )
@@ -16926,6 +16997,7 @@ def test_split_capacity_commitment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.split_capacity_commitment(request)
 
 
@@ -16961,6 +17033,7 @@ def test_split_capacity_commitment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.split_capacity_commitment(request)
 
     # Establish that the response is the type that we expect.
@@ -17000,6 +17073,7 @@ def test_split_capacity_commitment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.SplitCapacityCommitmentResponse.to_json(
             reservation.SplitCapacityCommitmentResponse()
         )
@@ -17046,6 +17120,7 @@ def test_merge_capacity_commitments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.merge_capacity_commitments(request)
 
 
@@ -17088,6 +17163,7 @@ def test_merge_capacity_commitments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.merge_capacity_commitments(request)
 
     # Establish that the response is the type that we expect.
@@ -17135,6 +17211,7 @@ def test_merge_capacity_commitments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.CapacityCommitment.to_json(
             reservation.CapacityCommitment()
         )
@@ -17181,6 +17258,7 @@ def test_create_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_assignment(request)
 
 
@@ -17292,6 +17370,7 @@ def test_create_assignment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -17335,6 +17414,7 @@ def test_create_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.Assignment.to_json(reservation.Assignment())
         req.return_value.content = return_value
 
@@ -17379,6 +17459,7 @@ def test_list_assignments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_assignments(request)
 
 
@@ -17414,6 +17495,7 @@ def test_list_assignments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_assignments(request)
 
     # Establish that the response is the type that we expect.
@@ -17454,6 +17536,7 @@ def test_list_assignments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.ListAssignmentsResponse.to_json(
             reservation.ListAssignmentsResponse()
         )
@@ -17502,6 +17585,7 @@ def test_delete_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_assignment(request)
 
 
@@ -17534,6 +17618,7 @@ def test_delete_assignment_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -17570,6 +17655,7 @@ def test_delete_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = reservation.DeleteAssignmentRequest()
         metadata = [
@@ -17610,6 +17696,7 @@ def test_search_assignments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_assignments(request)
 
 
@@ -17645,6 +17732,7 @@ def test_search_assignments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_assignments(request)
 
     # Establish that the response is the type that we expect.
@@ -17685,6 +17773,7 @@ def test_search_assignments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.SearchAssignmentsResponse.to_json(
             reservation.SearchAssignmentsResponse()
         )
@@ -17731,6 +17820,7 @@ def test_search_all_assignments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_all_assignments(request)
 
 
@@ -17766,6 +17856,7 @@ def test_search_all_assignments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_all_assignments(request)
 
     # Establish that the response is the type that we expect.
@@ -17806,6 +17897,7 @@ def test_search_all_assignments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.SearchAllAssignmentsResponse.to_json(
             reservation.SearchAllAssignmentsResponse()
         )
@@ -17854,6 +17946,7 @@ def test_move_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.move_assignment(request)
 
 
@@ -17894,6 +17987,7 @@ def test_move_assignment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.move_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -17937,6 +18031,7 @@ def test_move_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.Assignment.to_json(reservation.Assignment())
         req.return_value.content = return_value
 
@@ -17985,6 +18080,7 @@ def test_update_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_assignment(request)
 
 
@@ -18100,6 +18196,7 @@ def test_update_assignment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -18143,6 +18240,7 @@ def test_update_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.Assignment.to_json(reservation.Assignment())
         req.return_value.content = return_value
 
@@ -18187,6 +18285,7 @@ def test_get_bi_reservation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_bi_reservation(request)
 
 
@@ -18223,6 +18322,7 @@ def test_get_bi_reservation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_bi_reservation(request)
 
     # Establish that the response is the type that we expect.
@@ -18264,6 +18364,7 @@ def test_get_bi_reservation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.BiReservation.to_json(reservation.BiReservation())
         req.return_value.content = return_value
 
@@ -18310,6 +18411,7 @@ def test_update_bi_reservation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_bi_reservation(request)
 
 
@@ -18427,6 +18529,7 @@ def test_update_bi_reservation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_bi_reservation(request)
 
     # Establish that the response is the type that we expect.
@@ -18468,6 +18571,7 @@ def test_update_bi_reservation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = reservation.BiReservation.to_json(reservation.BiReservation())
         req.return_value.content = return_value
 
