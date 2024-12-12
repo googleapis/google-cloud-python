@@ -6869,6 +6869,7 @@ def test_create_aws_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_aws_cluster(request)
 
@@ -6933,6 +6934,7 @@ def test_create_aws_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_aws_cluster(**mock_args)
 
@@ -7074,6 +7076,7 @@ def test_update_aws_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_aws_cluster(request)
 
@@ -7135,6 +7138,7 @@ def test_update_aws_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_aws_cluster(**mock_args)
 
@@ -7267,6 +7271,7 @@ def test_get_aws_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_aws_cluster(request)
 
@@ -7314,6 +7319,7 @@ def test_get_aws_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_aws_cluster(**mock_args)
 
@@ -7454,6 +7460,7 @@ def test_list_aws_clusters_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_aws_clusters(request)
 
@@ -7507,6 +7514,7 @@ def test_list_aws_clusters_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_aws_clusters(**mock_args)
 
@@ -7715,6 +7723,7 @@ def test_delete_aws_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_aws_cluster(request)
 
@@ -7770,6 +7779,7 @@ def test_delete_aws_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_aws_cluster(**mock_args)
 
@@ -7921,6 +7931,7 @@ def test_generate_aws_cluster_agent_token_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_aws_cluster_agent_token(request)
 
@@ -8057,6 +8068,7 @@ def test_generate_aws_access_token_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_aws_access_token(request)
 
@@ -8196,6 +8208,7 @@ def test_create_aws_node_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_aws_node_pool(request)
 
@@ -8262,6 +8275,7 @@ def test_create_aws_node_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_aws_node_pool(**mock_args)
 
@@ -8403,6 +8417,7 @@ def test_update_aws_node_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_aws_node_pool(request)
 
@@ -8464,6 +8479,7 @@ def test_update_aws_node_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_aws_node_pool(**mock_args)
 
@@ -8603,6 +8619,7 @@ def test_rollback_aws_node_pool_update_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.rollback_aws_node_pool_update(request)
 
@@ -8650,6 +8667,7 @@ def test_rollback_aws_node_pool_update_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.rollback_aws_node_pool_update(**mock_args)
 
@@ -8783,6 +8801,7 @@ def test_get_aws_node_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_aws_node_pool(request)
 
@@ -8830,6 +8849,7 @@ def test_get_aws_node_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_aws_node_pool(**mock_args)
 
@@ -8972,6 +8992,7 @@ def test_list_aws_node_pools_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_aws_node_pools(request)
 
@@ -9027,6 +9048,7 @@ def test_list_aws_node_pools_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_aws_node_pools(**mock_args)
 
@@ -9237,6 +9259,7 @@ def test_delete_aws_node_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_aws_node_pool(request)
 
@@ -9292,6 +9315,7 @@ def test_delete_aws_node_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_aws_node_pool(**mock_args)
 
@@ -9428,6 +9452,7 @@ def test_get_aws_open_id_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_aws_open_id_config(request)
 
@@ -9552,6 +9577,7 @@ def test_get_aws_json_web_keys_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_aws_json_web_keys(request)
 
@@ -9676,6 +9702,7 @@ def test_get_aws_server_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_aws_server_config(request)
 
@@ -9721,6 +9748,7 @@ def test_get_aws_server_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_aws_server_config(**mock_args)
 
@@ -10735,6 +10763,7 @@ def test_create_aws_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_aws_cluster(request)
 
 
@@ -10903,6 +10932,7 @@ def test_create_aws_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_aws_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -10944,6 +10974,7 @@ def test_create_aws_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10992,6 +11023,7 @@ def test_update_aws_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_aws_cluster(request)
 
 
@@ -11164,6 +11196,7 @@ def test_update_aws_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_aws_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -11205,6 +11238,7 @@ def test_update_aws_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11249,6 +11283,7 @@ def test_get_aws_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_aws_cluster(request)
 
 
@@ -11292,6 +11327,7 @@ def test_get_aws_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_aws_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -11340,6 +11376,7 @@ def test_get_aws_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_resources.AwsCluster.to_json(aws_resources.AwsCluster())
         req.return_value.content = return_value
 
@@ -11384,6 +11421,7 @@ def test_list_aws_clusters_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_aws_clusters(request)
 
 
@@ -11419,6 +11457,7 @@ def test_list_aws_clusters_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_aws_clusters(request)
 
     # Establish that the response is the type that we expect.
@@ -11459,6 +11498,7 @@ def test_list_aws_clusters_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_service.ListAwsClustersResponse.to_json(
             aws_service.ListAwsClustersResponse()
         )
@@ -11505,6 +11545,7 @@ def test_delete_aws_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_aws_cluster(request)
 
 
@@ -11535,6 +11576,7 @@ def test_delete_aws_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_aws_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -11576,6 +11618,7 @@ def test_delete_aws_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11622,6 +11665,7 @@ def test_generate_aws_cluster_agent_token_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_aws_cluster_agent_token(request)
 
 
@@ -11661,6 +11705,7 @@ def test_generate_aws_cluster_agent_token_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_aws_cluster_agent_token(request)
 
     # Establish that the response is the type that we expect.
@@ -11703,6 +11748,7 @@ def test_generate_aws_cluster_agent_token_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_service.GenerateAwsClusterAgentTokenResponse.to_json(
             aws_service.GenerateAwsClusterAgentTokenResponse()
         )
@@ -11751,6 +11797,7 @@ def test_generate_aws_access_token_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_aws_access_token(request)
 
 
@@ -11788,6 +11835,7 @@ def test_generate_aws_access_token_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_aws_access_token(request)
 
     # Establish that the response is the type that we expect.
@@ -11828,6 +11876,7 @@ def test_generate_aws_access_token_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_service.GenerateAwsAccessTokenResponse.to_json(
             aws_service.GenerateAwsAccessTokenResponse()
         )
@@ -11874,6 +11923,7 @@ def test_create_aws_node_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_aws_node_pool(request)
 
 
@@ -12030,6 +12080,7 @@ def test_create_aws_node_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_aws_node_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -12071,6 +12122,7 @@ def test_create_aws_node_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12119,6 +12171,7 @@ def test_update_aws_node_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_aws_node_pool(request)
 
 
@@ -12279,6 +12332,7 @@ def test_update_aws_node_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_aws_node_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -12320,6 +12374,7 @@ def test_update_aws_node_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12366,6 +12421,7 @@ def test_rollback_aws_node_pool_update_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.rollback_aws_node_pool_update(request)
 
 
@@ -12398,6 +12454,7 @@ def test_rollback_aws_node_pool_update_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.rollback_aws_node_pool_update(request)
 
     # Establish that the response is the type that we expect.
@@ -12439,6 +12496,7 @@ def test_rollback_aws_node_pool_update_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12485,6 +12543,7 @@ def test_get_aws_node_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_aws_node_pool(request)
 
 
@@ -12528,6 +12587,7 @@ def test_get_aws_node_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_aws_node_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -12574,6 +12634,7 @@ def test_get_aws_node_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_resources.AwsNodePool.to_json(aws_resources.AwsNodePool())
         req.return_value.content = return_value
 
@@ -12618,6 +12679,7 @@ def test_list_aws_node_pools_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_aws_node_pools(request)
 
 
@@ -12653,6 +12715,7 @@ def test_list_aws_node_pools_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_aws_node_pools(request)
 
     # Establish that the response is the type that we expect.
@@ -12693,6 +12756,7 @@ def test_list_aws_node_pools_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_service.ListAwsNodePoolsResponse.to_json(
             aws_service.ListAwsNodePoolsResponse()
         )
@@ -12741,6 +12805,7 @@ def test_delete_aws_node_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_aws_node_pool(request)
 
 
@@ -12773,6 +12838,7 @@ def test_delete_aws_node_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_aws_node_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -12814,6 +12880,7 @@ def test_delete_aws_node_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12860,6 +12927,7 @@ def test_get_aws_open_id_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_aws_open_id_config(request)
 
 
@@ -12905,6 +12973,7 @@ def test_get_aws_open_id_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_aws_open_id_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12953,6 +13022,7 @@ def test_get_aws_open_id_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_resources.AwsOpenIdConfig.to_json(
             aws_resources.AwsOpenIdConfig()
         )
@@ -13001,6 +13071,7 @@ def test_get_aws_json_web_keys_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_aws_json_web_keys(request)
 
 
@@ -13036,6 +13107,7 @@ def test_get_aws_json_web_keys_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_aws_json_web_keys(request)
 
     # Establish that the response is the type that we expect.
@@ -13075,6 +13147,7 @@ def test_get_aws_json_web_keys_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_resources.AwsJsonWebKeys.to_json(
             aws_resources.AwsJsonWebKeys()
         )
@@ -13121,6 +13194,7 @@ def test_get_aws_server_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_aws_server_config(request)
 
 
@@ -13157,6 +13231,7 @@ def test_get_aws_server_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_aws_server_config(request)
 
     # Establish that the response is the type that we expect.
@@ -13198,6 +13273,7 @@ def test_get_aws_server_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = aws_resources.AwsServerConfig.to_json(
             aws_resources.AwsServerConfig()
         )
@@ -13246,6 +13322,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -13276,6 +13353,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -13306,6 +13384,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -13336,6 +13415,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -13366,6 +13446,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -13396,6 +13477,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -13426,6 +13508,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -13456,6 +13539,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

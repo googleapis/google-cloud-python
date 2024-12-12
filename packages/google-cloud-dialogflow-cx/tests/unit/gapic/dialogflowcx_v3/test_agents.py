@@ -4871,6 +4871,7 @@ def test_list_agents_rest_required_fields(request_type=agent.ListAgentsRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_agents(request)
 
@@ -4924,6 +4925,7 @@ def test_list_agents_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_agents(**mock_args)
 
@@ -5113,6 +5115,7 @@ def test_get_agent_rest_required_fields(request_type=agent.GetAgentRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_agent(request)
 
@@ -5158,6 +5161,7 @@ def test_get_agent_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_agent(**mock_args)
 
@@ -5287,6 +5291,7 @@ def test_create_agent_rest_required_fields(request_type=gcdc_agent.CreateAgentRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_agent(request)
 
@@ -5341,6 +5346,7 @@ def test_create_agent_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_agent(**mock_args)
 
@@ -5468,6 +5474,7 @@ def test_update_agent_rest_required_fields(request_type=gcdc_agent.UpdateAgentRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_agent(request)
 
@@ -5516,6 +5523,7 @@ def test_update_agent_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_agent(**mock_args)
 
@@ -5643,6 +5651,7 @@ def test_delete_agent_rest_required_fields(request_type=agent.DeleteAgentRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_agent(request)
 
@@ -5686,6 +5695,7 @@ def test_delete_agent_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_agent(**mock_args)
 
@@ -5816,6 +5826,7 @@ def test_export_agent_rest_required_fields(request_type=agent.ExportAgentRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_agent(request)
 
@@ -5935,6 +5946,7 @@ def test_restore_agent_rest_required_fields(request_type=agent.RestoreAgentReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.restore_agent(request)
 
@@ -6053,6 +6065,7 @@ def test_validate_agent_rest_required_fields(request_type=agent.ValidateAgentReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.validate_agent(request)
 
@@ -6179,6 +6192,7 @@ def test_get_agent_validation_result_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_agent_validation_result(request)
 
@@ -6226,6 +6240,7 @@ def test_get_agent_validation_result_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_agent_validation_result(**mock_args)
 
@@ -6371,6 +6386,7 @@ def test_get_generative_settings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_generative_settings(request)
 
@@ -6433,6 +6449,7 @@ def test_get_generative_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_generative_settings(**mock_args)
 
@@ -6568,6 +6585,7 @@ def test_update_generative_settings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_generative_settings(request)
 
@@ -6620,6 +6638,7 @@ def test_update_generative_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_generative_settings(**mock_args)
 
@@ -7368,6 +7387,7 @@ def test_list_agents_rest_bad_request(request_type=agent.ListAgentsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_agents(request)
 
 
@@ -7403,6 +7423,7 @@ def test_list_agents_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_agents(request)
 
     # Establish that the response is the type that we expect.
@@ -7439,6 +7460,7 @@ def test_list_agents_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = agent.ListAgentsResponse.to_json(agent.ListAgentsResponse())
         req.return_value.content = return_value
 
@@ -7481,6 +7503,7 @@ def test_get_agent_rest_bad_request(request_type=agent.GetAgentRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_agent(request)
 
 
@@ -7528,6 +7551,7 @@ def test_get_agent_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_agent(request)
 
     # Establish that the response is the type that we expect.
@@ -7576,6 +7600,7 @@ def test_get_agent_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = agent.Agent.to_json(agent.Agent())
         req.return_value.content = return_value
 
@@ -7618,6 +7643,7 @@ def test_create_agent_rest_bad_request(request_type=gcdc_agent.CreateAgentReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_agent(request)
 
 
@@ -7790,6 +7816,7 @@ def test_create_agent_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_agent(request)
 
     # Establish that the response is the type that we expect.
@@ -7838,6 +7865,7 @@ def test_create_agent_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcdc_agent.Agent.to_json(gcdc_agent.Agent())
         req.return_value.content = return_value
 
@@ -7882,6 +7910,7 @@ def test_update_agent_rest_bad_request(request_type=gcdc_agent.UpdateAgentReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_agent(request)
 
 
@@ -8056,6 +8085,7 @@ def test_update_agent_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_agent(request)
 
     # Establish that the response is the type that we expect.
@@ -8104,6 +8134,7 @@ def test_update_agent_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcdc_agent.Agent.to_json(gcdc_agent.Agent())
         req.return_value.content = return_value
 
@@ -8146,6 +8177,7 @@ def test_delete_agent_rest_bad_request(request_type=agent.DeleteAgentRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_agent(request)
 
 
@@ -8176,6 +8208,7 @@ def test_delete_agent_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_agent(request)
 
     # Establish that the response is the type that we expect.
@@ -8208,6 +8241,7 @@ def test_delete_agent_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = agent.DeleteAgentRequest()
         metadata = [
@@ -8246,6 +8280,7 @@ def test_export_agent_rest_bad_request(request_type=agent.ExportAgentRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_agent(request)
 
 
@@ -8276,6 +8311,7 @@ def test_export_agent_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_agent(request)
 
     # Establish that the response is the type that we expect.
@@ -8313,6 +8349,7 @@ def test_export_agent_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8355,6 +8392,7 @@ def test_restore_agent_rest_bad_request(request_type=agent.RestoreAgentRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.restore_agent(request)
 
 
@@ -8385,6 +8423,7 @@ def test_restore_agent_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.restore_agent(request)
 
     # Establish that the response is the type that we expect.
@@ -8422,6 +8461,7 @@ def test_restore_agent_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8464,6 +8504,7 @@ def test_validate_agent_rest_bad_request(request_type=agent.ValidateAgentRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.validate_agent(request)
 
 
@@ -8499,6 +8540,7 @@ def test_validate_agent_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.validate_agent(request)
 
     # Establish that the response is the type that we expect.
@@ -8535,6 +8577,7 @@ def test_validate_agent_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = agent.AgentValidationResult.to_json(
             agent.AgentValidationResult()
         )
@@ -8583,6 +8626,7 @@ def test_get_agent_validation_result_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_agent_validation_result(request)
 
 
@@ -8620,6 +8664,7 @@ def test_get_agent_validation_result_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_agent_validation_result(request)
 
     # Establish that the response is the type that we expect.
@@ -8658,6 +8703,7 @@ def test_get_agent_validation_result_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = agent.AgentValidationResult.to_json(
             agent.AgentValidationResult()
         )
@@ -8706,6 +8752,7 @@ def test_get_generative_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_generative_settings(request)
 
 
@@ -8744,6 +8791,7 @@ def test_get_generative_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_generative_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -8783,6 +8831,7 @@ def test_get_generative_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = generative_settings.GenerativeSettings.to_json(
             generative_settings.GenerativeSettings()
         )
@@ -8833,6 +8882,7 @@ def test_update_generative_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_generative_settings(request)
 
 
@@ -8969,6 +9019,7 @@ def test_update_generative_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_generative_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -9008,6 +9059,7 @@ def test_update_generative_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcdc_generative_settings.GenerativeSettings.to_json(
             gcdc_generative_settings.GenerativeSettings()
         )
@@ -9054,6 +9106,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -9084,6 +9137,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -9112,6 +9166,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -9142,6 +9197,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -9172,6 +9228,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -9202,6 +9259,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -9232,6 +9290,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -9262,6 +9321,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -9290,6 +9350,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -9320,6 +9381,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
