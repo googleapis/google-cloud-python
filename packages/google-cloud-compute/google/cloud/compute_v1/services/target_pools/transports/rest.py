@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -165,8 +173,10 @@ class TargetPoolsRestInterceptor:
     def pre_add_health_check(
         self,
         request: compute.AddHealthCheckTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AddHealthCheckTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddHealthCheckTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for add_health_check
 
         Override in a subclass to manipulate the request or metadata
@@ -186,8 +196,10 @@ class TargetPoolsRestInterceptor:
     def pre_add_instance(
         self,
         request: compute.AddInstanceTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AddInstanceTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddInstanceTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for add_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -207,8 +219,11 @@ class TargetPoolsRestInterceptor:
     def pre_aggregated_list(
         self,
         request: compute.AggregatedListTargetPoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AggregatedListTargetPoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AggregatedListTargetPoolsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -230,8 +245,10 @@ class TargetPoolsRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -249,8 +266,10 @@ class TargetPoolsRestInterceptor:
         return response
 
     def pre_get(
-        self, request: compute.GetTargetPoolRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.GetTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.GetTargetPoolRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.GetTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -270,8 +289,10 @@ class TargetPoolsRestInterceptor:
     def pre_get_health(
         self,
         request: compute.GetHealthTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetHealthTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetHealthTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_health
 
         Override in a subclass to manipulate the request or metadata
@@ -293,8 +314,10 @@ class TargetPoolsRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -314,8 +337,8 @@ class TargetPoolsRestInterceptor:
     def pre_list(
         self,
         request: compute.ListTargetPoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListTargetPoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.ListTargetPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -335,8 +358,11 @@ class TargetPoolsRestInterceptor:
     def pre_remove_health_check(
         self,
         request: compute.RemoveHealthCheckTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.RemoveHealthCheckTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.RemoveHealthCheckTargetPoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for remove_health_check
 
         Override in a subclass to manipulate the request or metadata
@@ -358,8 +384,10 @@ class TargetPoolsRestInterceptor:
     def pre_remove_instance(
         self,
         request: compute.RemoveInstanceTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.RemoveInstanceTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.RemoveInstanceTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for remove_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -379,8 +407,10 @@ class TargetPoolsRestInterceptor:
     def pre_set_backup(
         self,
         request: compute.SetBackupTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetBackupTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetBackupTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -400,8 +430,11 @@ class TargetPoolsRestInterceptor:
     def pre_set_security_policy(
         self,
         request: compute.SetSecurityPolicyTargetPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetSecurityPolicyTargetPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetSecurityPolicyTargetPoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_security_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -546,7 +579,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the add health check method over HTTP.
 
@@ -558,8 +591,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -586,6 +621,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_health_check(
                 request, metadata
             )
@@ -601,6 +637,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             query_params = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.AddHealthCheck",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "AddHealthCheck",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._AddHealthCheck._get_response(
@@ -623,7 +686,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_health_check(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.add_health_check",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "AddHealthCheck",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AddInstance(
@@ -661,7 +746,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the add instance method over HTTP.
 
@@ -673,8 +758,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -701,6 +788,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseAddInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_instance(request, metadata)
             transcoded_request = (
                 _BaseTargetPoolsRestTransport._BaseAddInstance._get_transcoded_request(
@@ -720,6 +808,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.AddInstance",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "AddInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._AddInstance._get_response(
@@ -742,7 +857,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.add_instance",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "AddInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AggregatedList(
@@ -779,7 +916,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetPoolAggregatedList:
             r"""Call the aggregated list method over HTTP.
 
@@ -791,8 +928,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetPoolAggregatedList:
@@ -802,6 +941,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseAggregatedList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseTargetPoolsRestTransport._BaseAggregatedList._get_transcoded_request(
                 http_options, request
@@ -811,6 +951,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             query_params = _BaseTargetPoolsRestTransport._BaseAggregatedList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._AggregatedList._get_response(
@@ -832,7 +999,31 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.TargetPoolAggregatedList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetPoolAggregatedList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "AggregatedList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(_BaseTargetPoolsRestTransport._BaseDelete, TargetPoolsRestStub):
@@ -867,7 +1058,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -879,8 +1070,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -905,6 +1098,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             """
 
             http_options = _BaseTargetPoolsRestTransport._BaseDelete._get_http_options()
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseTargetPoolsRestTransport._BaseDelete._get_transcoded_request(
@@ -918,6 +1112,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._Delete._get_response(
@@ -939,7 +1160,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseTargetPoolsRestTransport._BaseGet, TargetPoolsRestStub):
@@ -974,7 +1217,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetPool:
             r"""Call the get method over HTTP.
 
@@ -986,8 +1229,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetPool:
@@ -1003,6 +1248,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             """
 
             http_options = _BaseTargetPoolsRestTransport._BaseGet._get_http_options()
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseTargetPoolsRestTransport._BaseGet._get_transcoded_request(
@@ -1016,6 +1262,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._Get._get_response(
@@ -1037,7 +1310,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.TargetPool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetPool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHealth(_BaseTargetPoolsRestTransport._BaseGetHealth, TargetPoolsRestStub):
@@ -1073,7 +1368,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetPoolInstanceHealth:
             r"""Call the get health method over HTTP.
 
@@ -1085,8 +1380,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetPoolInstanceHealth:
@@ -1096,6 +1393,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseGetHealth._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_health(request, metadata)
             transcoded_request = (
                 _BaseTargetPoolsRestTransport._BaseGetHealth._get_transcoded_request(
@@ -1113,6 +1411,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.GetHealth",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "GetHealth",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._GetHealth._get_response(
@@ -1135,7 +1460,31 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.TargetPoolInstanceHealth.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_health(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetPoolInstanceHealth.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.get_health",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "GetHealth",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(_BaseTargetPoolsRestTransport._BaseInsert, TargetPoolsRestStub):
@@ -1171,7 +1520,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -1183,8 +1532,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1209,6 +1560,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             """
 
             http_options = _BaseTargetPoolsRestTransport._BaseInsert._get_http_options()
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseTargetPoolsRestTransport._BaseInsert._get_transcoded_request(
@@ -1226,6 +1578,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._Insert._get_response(
@@ -1248,7 +1627,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseTargetPoolsRestTransport._BaseList, TargetPoolsRestStub):
@@ -1283,7 +1684,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetPoolList:
             r"""Call the list method over HTTP.
 
@@ -1295,8 +1696,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetPoolList:
@@ -1306,6 +1709,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             """
 
             http_options = _BaseTargetPoolsRestTransport._BaseList._get_http_options()
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseTargetPoolsRestTransport._BaseList._get_transcoded_request(
@@ -1319,6 +1723,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._List._get_response(
@@ -1340,7 +1771,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.TargetPoolList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetPoolList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveHealthCheck(
@@ -1378,7 +1831,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the remove health check method over HTTP.
 
@@ -1390,8 +1843,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1418,6 +1873,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_health_check(
                 request, metadata
             )
@@ -1433,6 +1889,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             query_params = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.RemoveHealthCheck",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "RemoveHealthCheck",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._RemoveHealthCheck._get_response(
@@ -1455,7 +1938,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_health_check(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.remove_health_check",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "RemoveHealthCheck",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveInstance(
@@ -1493,7 +1998,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the remove instance method over HTTP.
 
@@ -1505,8 +2010,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1533,6 +2040,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_instance(request, metadata)
             transcoded_request = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_transcoded_request(
                 http_options, request
@@ -1546,6 +2054,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             query_params = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.RemoveInstance",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "RemoveInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._RemoveInstance._get_response(
@@ -1568,7 +2103,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.remove_instance",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "RemoveInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetBackup(_BaseTargetPoolsRestTransport._BaseSetBackup, TargetPoolsRestStub):
@@ -1604,7 +2161,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set backup method over HTTP.
 
@@ -1616,8 +2173,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1644,6 +2203,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseSetBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_backup(request, metadata)
             transcoded_request = (
                 _BaseTargetPoolsRestTransport._BaseSetBackup._get_transcoded_request(
@@ -1661,6 +2221,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.SetBackup",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "SetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._SetBackup._get_response(
@@ -1683,7 +2270,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.set_backup",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "SetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetSecurityPolicy(
@@ -1721,7 +2330,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set security policy method over HTTP.
 
@@ -1733,8 +2342,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1761,6 +2372,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = (
                 _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_security_policy(
                 request, metadata
             )
@@ -1776,6 +2388,33 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             query_params = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.TargetPoolsClient.SetSecurityPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "SetSecurityPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TargetPoolsRestTransport._SetSecurityPolicy._get_response(
@@ -1798,7 +2437,29 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_security_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.TargetPoolsClient.set_security_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.TargetPools",
+                        "rpcName": "SetSecurityPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -109,8 +117,11 @@ class RegionTargetHttpProxiesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteRegionTargetHttpProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteRegionTargetHttpProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteRegionTargetHttpProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -130,8 +141,10 @@ class RegionTargetHttpProxiesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetRegionTargetHttpProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetRegionTargetHttpProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetRegionTargetHttpProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -151,8 +164,11 @@ class RegionTargetHttpProxiesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertRegionTargetHttpProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertRegionTargetHttpProxyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertRegionTargetHttpProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -172,8 +188,11 @@ class RegionTargetHttpProxiesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListRegionTargetHttpProxiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListRegionTargetHttpProxiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListRegionTargetHttpProxiesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -195,9 +214,10 @@ class RegionTargetHttpProxiesRestInterceptor:
     def pre_set_url_map(
         self,
         request: compute.SetUrlMapRegionTargetHttpProxyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.SetUrlMapRegionTargetHttpProxyRequest, Sequence[Tuple[str, str]]
+        compute.SetUrlMapRegionTargetHttpProxyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_url_map
 
@@ -341,7 +361,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -353,8 +373,10 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -381,6 +403,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             http_options = (
                 _BaseRegionTargetHttpProxiesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseRegionTargetHttpProxiesRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -390,6 +413,33 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             query_params = _BaseRegionTargetHttpProxiesRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionTargetHttpProxiesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionTargetHttpProxiesRestTransport._Delete._get_response(
@@ -411,7 +461,29 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionTargetHttpProxiesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -449,7 +521,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetHttpProxy:
             r"""Call the get method over HTTP.
 
@@ -461,8 +533,10 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetHttpProxy:
@@ -488,6 +562,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             http_options = (
                 _BaseRegionTargetHttpProxiesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseRegionTargetHttpProxiesRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -497,6 +572,33 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             query_params = _BaseRegionTargetHttpProxiesRestTransport._BaseGet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionTargetHttpProxiesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionTargetHttpProxiesRestTransport._Get._get_response(
@@ -518,7 +620,29 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             pb_resp = compute.TargetHttpProxy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetHttpProxy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionTargetHttpProxiesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -557,7 +681,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -569,8 +693,10 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -597,6 +723,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             http_options = (
                 _BaseRegionTargetHttpProxiesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseRegionTargetHttpProxiesRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -610,6 +737,33 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             query_params = _BaseRegionTargetHttpProxiesRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionTargetHttpProxiesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionTargetHttpProxiesRestTransport._Insert._get_response(
@@ -632,7 +786,29 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionTargetHttpProxiesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -670,7 +846,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TargetHttpProxyList:
             r"""Call the list method over HTTP.
 
@@ -682,8 +858,10 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TargetHttpProxyList:
@@ -693,6 +871,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             http_options = (
                 _BaseRegionTargetHttpProxiesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseRegionTargetHttpProxiesRestTransport._BaseList._get_transcoded_request(
                 http_options, request
@@ -702,6 +881,33 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             query_params = _BaseRegionTargetHttpProxiesRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionTargetHttpProxiesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionTargetHttpProxiesRestTransport._List._get_response(
@@ -723,7 +929,29 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             pb_resp = compute.TargetHttpProxyList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TargetHttpProxyList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionTargetHttpProxiesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetUrlMap(
@@ -762,7 +990,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set url map method over HTTP.
 
@@ -774,8 +1002,10 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -802,6 +1032,7 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             http_options = (
                 _BaseRegionTargetHttpProxiesRestTransport._BaseSetUrlMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_url_map(request, metadata)
             transcoded_request = _BaseRegionTargetHttpProxiesRestTransport._BaseSetUrlMap._get_transcoded_request(
                 http_options, request
@@ -815,6 +1046,33 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             query_params = _BaseRegionTargetHttpProxiesRestTransport._BaseSetUrlMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionTargetHttpProxiesClient.SetUrlMap",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "SetUrlMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionTargetHttpProxiesRestTransport._SetUrlMap._get_response(
@@ -837,7 +1095,29 @@ class RegionTargetHttpProxiesRestTransport(_BaseRegionTargetHttpProxiesRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_url_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionTargetHttpProxiesClient.set_url_map",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionTargetHttpProxies",
+                        "rpcName": "SetUrlMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
