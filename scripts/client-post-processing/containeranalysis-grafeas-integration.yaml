@@ -60,10 +60,16 @@ replacements:
   - paths: [
       packages/google-cloud-containeranalysis/google/cloud/devtools/containeranalysis_v1/services/container_analysis/client.py,
     ]
-    before: api_audience,\n            \)\n\n    def set_iam_policy\(\n
+    before: |
+      \,\n                        "credentialsType": None,
+      \                    \},
+      \                \)
+      \
+      \    def set_iam_policy\(
     after: |
-      api_audience,
-                  )\n
+      ,\n                        "credentialsType": None,
+                          },
+                      )\n
           def get_grafeas_client(self) -> grafeas_v1.GrafeasClient:
               grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
                   credentials=self.transport._credentials,
@@ -80,10 +86,16 @@ replacements:
   - paths: [
       packages/google-cloud-containeranalysis/google/cloud/devtools/containeranalysis_v1/services/container_analysis/async_client.py,
     ]
-    before: client_info,\n        \)\n\n    async def set_iam_policy\(\n
+    before: |
+      \,\n                    "credentialsType": None,
+      \                \},
+      \            \)
+      \
+      \    async def set_iam_policy\(
     after: |
-      client_info,
-              )\n
+      ,\n                    "credentialsType": None,
+                      },
+                  )\n
           def get_grafeas_client(self) -> grafeas_v1.GrafeasClient:
               grafeas_transport = grafeas_v1.services.grafeas.transports.GrafeasGrpcTransport(
                   credentials=self.transport._credentials,
