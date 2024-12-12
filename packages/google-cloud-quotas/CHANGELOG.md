@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.13...google-cloud-quotas-v0.1.14) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([8e6b0cc](https://github.com/googleapis/google-cloud-python/commit/8e6b0cca8709ae8c7f0c722c5ebf0707358d3359))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([8e6b0cc](https://github.com/googleapis/google-cloud-python/commit/8e6b0cca8709ae8c7f0c722c5ebf0707358d3359))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.12...google-cloud-quotas-v0.1.13) (2024-11-14)
 
 

@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [0.10.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.13...google-cloud-run-v0.10.14) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
 ## [0.10.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.12...google-cloud-run-v0.10.13) (2024-11-21)
 
 

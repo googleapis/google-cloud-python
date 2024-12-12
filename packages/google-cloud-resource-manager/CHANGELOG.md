@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.13.1...google-cloud-resource-manager-v1.14.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([8e6b0cc](https://github.com/googleapis/google-cloud-python/commit/8e6b0cca8709ae8c7f0c722c5ebf0707358d3359))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([8e6b0cc](https://github.com/googleapis/google-cloud-python/commit/8e6b0cca8709ae8c7f0c722c5ebf0707358d3359))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.13.0...google-cloud-resource-manager-v1.13.1) (2024-11-11)
 
 
