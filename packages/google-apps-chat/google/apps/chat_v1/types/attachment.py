@@ -44,7 +44,7 @@ class Attachment(proto.Message):
 
     Attributes:
         name (str):
-            Resource name of the attachment, in the form
+            Optional. Resource name of the attachment, in the form
             ``spaces/{space}/messages/{message}/attachments/{attachment}``.
         content_name (str):
             Output only. The original file name for the
@@ -53,9 +53,10 @@ class Attachment(proto.Message):
             Output only. The content type (MIME type) of
             the file.
         attachment_data_ref (google.apps.chat_v1.types.AttachmentDataRef):
-            A reference to the attachment data. This
-            field is used with the media API to download the
-            attachment data.
+            Optional. A reference to the attachment data.
+            This field is used to create or update messages
+            with attachments, or with the media API to
+            download the attachment data.
 
             This field is a member of `oneof`_ ``data_ref``.
         drive_data_ref (google.apps.chat_v1.types.DriveDataRef):
@@ -152,14 +153,14 @@ class AttachmentDataRef(proto.Message):
 
     Attributes:
         resource_name (str):
-            The resource name of the attachment data.
-            This field is used with the media API to
+            Optional. The resource name of the attachment
+            data. This field is used with the media API to
             download the attachment data.
         attachment_upload_token (str):
-            Opaque token containing a reference to an
-            uploaded attachment. Treated by clients as an
-            opaque string and used to create or update Chat
-            messages with attachments.
+            Optional. Opaque token containing a reference
+            to an uploaded attachment. Treated by clients as
+            an opaque string and used to create or update
+            Chat messages with attachments.
     """
 
     resource_name: str = proto.Field(
