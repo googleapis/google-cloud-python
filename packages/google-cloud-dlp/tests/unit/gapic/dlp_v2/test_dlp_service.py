@@ -22051,6 +22051,7 @@ def test_reidentify_content_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.reidentify_content(request)
 
@@ -22132,6 +22133,7 @@ def test_list_info_types_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_info_types(**mock_args)
 
@@ -22267,6 +22269,7 @@ def test_create_inspect_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_inspect_template(request)
 
@@ -22321,6 +22324,7 @@ def test_create_inspect_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_inspect_template(**mock_args)
 
@@ -22459,6 +22463,7 @@ def test_update_inspect_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_inspect_template(request)
 
@@ -22508,6 +22513,7 @@ def test_update_inspect_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_inspect_template(**mock_args)
 
@@ -22645,6 +22651,7 @@ def test_get_inspect_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_inspect_template(request)
 
@@ -22692,6 +22699,7 @@ def test_get_inspect_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_inspect_template(**mock_args)
 
@@ -22837,6 +22845,7 @@ def test_list_inspect_templates_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_inspect_templates(request)
 
@@ -22892,6 +22901,7 @@ def test_list_inspect_templates_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_inspect_templates(**mock_args)
 
@@ -23086,6 +23096,7 @@ def test_delete_inspect_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_inspect_template(request)
 
@@ -23131,6 +23142,7 @@ def test_delete_inspect_template_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_inspect_template(**mock_args)
 
@@ -23268,6 +23280,7 @@ def test_create_deidentify_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_deidentify_template(request)
 
@@ -23322,6 +23335,7 @@ def test_create_deidentify_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_deidentify_template(**mock_args)
 
@@ -23460,6 +23474,7 @@ def test_update_deidentify_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_deidentify_template(request)
 
@@ -23507,6 +23522,7 @@ def test_update_deidentify_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_deidentify_template(**mock_args)
 
@@ -23645,6 +23661,7 @@ def test_get_deidentify_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_deidentify_template(request)
 
@@ -23690,6 +23707,7 @@ def test_get_deidentify_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_deidentify_template(**mock_args)
 
@@ -23835,6 +23853,7 @@ def test_list_deidentify_templates_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_deidentify_templates(request)
 
@@ -23890,6 +23909,7 @@ def test_list_deidentify_templates_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_deidentify_templates(**mock_args)
 
@@ -24086,6 +24106,7 @@ def test_delete_deidentify_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_deidentify_template(request)
 
@@ -24129,6 +24150,7 @@ def test_delete_deidentify_template_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_deidentify_template(**mock_args)
 
@@ -24265,6 +24287,7 @@ def test_create_job_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_job_trigger(request)
 
@@ -24319,6 +24342,7 @@ def test_create_job_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_job_trigger(**mock_args)
 
@@ -24454,6 +24478,7 @@ def test_update_job_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_job_trigger(request)
 
@@ -24501,6 +24526,7 @@ def test_update_job_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_job_trigger(**mock_args)
 
@@ -24638,6 +24664,7 @@ def test_hybrid_inspect_job_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.hybrid_inspect_job_trigger(request)
 
@@ -24685,6 +24712,7 @@ def test_hybrid_inspect_job_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.hybrid_inspect_job_trigger(**mock_args)
 
@@ -24814,6 +24842,7 @@ def test_get_job_trigger_rest_required_fields(request_type=dlp.GetJobTriggerRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_job_trigger(request)
 
@@ -24859,6 +24888,7 @@ def test_get_job_trigger_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_job_trigger(**mock_args)
 
@@ -25001,6 +25031,7 @@ def test_list_job_triggers_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_job_triggers(request)
 
@@ -25058,6 +25089,7 @@ def test_list_job_triggers_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_job_triggers(**mock_args)
 
@@ -25249,6 +25281,7 @@ def test_delete_job_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_job_trigger(request)
 
@@ -25292,6 +25325,7 @@ def test_delete_job_trigger_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_job_trigger(**mock_args)
 
@@ -25426,6 +25460,7 @@ def test_activate_job_trigger_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.activate_job_trigger(request)
 
@@ -25551,6 +25586,7 @@ def test_create_discovery_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_discovery_config(request)
 
@@ -25605,6 +25641,7 @@ def test_create_discovery_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_discovery_config(**mock_args)
 
@@ -25743,6 +25780,7 @@ def test_update_discovery_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_discovery_config(request)
 
@@ -25800,6 +25838,7 @@ def test_update_discovery_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_discovery_config(**mock_args)
 
@@ -25937,6 +25976,7 @@ def test_get_discovery_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_discovery_config(request)
 
@@ -25984,6 +26024,7 @@ def test_get_discovery_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_discovery_config(**mock_args)
 
@@ -26128,6 +26169,7 @@ def test_list_discovery_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_discovery_configs(request)
 
@@ -26182,6 +26224,7 @@ def test_list_discovery_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_discovery_configs(**mock_args)
 
@@ -26376,6 +26419,7 @@ def test_delete_discovery_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_discovery_config(request)
 
@@ -26421,6 +26465,7 @@ def test_delete_discovery_config_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_discovery_config(**mock_args)
 
@@ -26551,6 +26596,7 @@ def test_create_dlp_job_rest_required_fields(request_type=dlp.CreateDlpJobReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_dlp_job(request)
 
@@ -26596,6 +26642,7 @@ def test_create_dlp_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_dlp_job(**mock_args)
 
@@ -26748,6 +26795,7 @@ def test_list_dlp_jobs_rest_required_fields(request_type=dlp.ListDlpJobsRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_dlp_jobs(request)
 
@@ -26805,6 +26853,7 @@ def test_list_dlp_jobs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_dlp_jobs(**mock_args)
 
@@ -26993,6 +27042,7 @@ def test_get_dlp_job_rest_required_fields(request_type=dlp.GetDlpJobRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_dlp_job(request)
 
@@ -27038,6 +27088,7 @@ def test_get_dlp_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_dlp_job(**mock_args)
 
@@ -27162,6 +27213,7 @@ def test_delete_dlp_job_rest_required_fields(request_type=dlp.DeleteDlpJobReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_dlp_job(request)
 
@@ -27205,6 +27257,7 @@ def test_delete_dlp_job_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_dlp_job(**mock_args)
 
@@ -27330,6 +27383,7 @@ def test_cancel_dlp_job_rest_required_fields(request_type=dlp.CancelDlpJobReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.cancel_dlp_job(request)
 
@@ -27455,6 +27509,7 @@ def test_create_stored_info_type_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_stored_info_type(request)
 
@@ -27509,6 +27564,7 @@ def test_create_stored_info_type_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_stored_info_type(**mock_args)
 
@@ -27646,6 +27702,7 @@ def test_update_stored_info_type_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_stored_info_type(request)
 
@@ -27693,6 +27750,7 @@ def test_update_stored_info_type_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_stored_info_type(**mock_args)
 
@@ -27829,6 +27887,7 @@ def test_get_stored_info_type_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_stored_info_type(request)
 
@@ -27874,6 +27933,7 @@ def test_get_stored_info_type_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_stored_info_type(**mock_args)
 
@@ -28018,6 +28078,7 @@ def test_list_stored_info_types_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_stored_info_types(request)
 
@@ -28073,6 +28134,7 @@ def test_list_stored_info_types_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_stored_info_types(**mock_args)
 
@@ -28266,6 +28328,7 @@ def test_delete_stored_info_type_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_stored_info_type(request)
 
@@ -28309,6 +28372,7 @@ def test_delete_stored_info_type_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_stored_info_type(**mock_args)
 
@@ -28453,6 +28517,7 @@ def test_list_project_data_profiles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_project_data_profiles(request)
 
@@ -28508,6 +28573,7 @@ def test_list_project_data_profiles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_project_data_profiles(**mock_args)
 
@@ -28716,6 +28782,7 @@ def test_list_table_data_profiles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_table_data_profiles(request)
 
@@ -28771,6 +28838,7 @@ def test_list_table_data_profiles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_table_data_profiles(**mock_args)
 
@@ -28977,6 +29045,7 @@ def test_list_column_data_profiles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_column_data_profiles(request)
 
@@ -29032,6 +29101,7 @@ def test_list_column_data_profiles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_column_data_profiles(**mock_args)
 
@@ -29231,6 +29301,7 @@ def test_get_project_data_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_project_data_profile(request)
 
@@ -29278,6 +29349,7 @@ def test_get_project_data_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_project_data_profile(**mock_args)
 
@@ -29423,6 +29495,7 @@ def test_list_file_store_data_profiles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_file_store_data_profiles(request)
 
@@ -29480,6 +29553,7 @@ def test_list_file_store_data_profiles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_file_store_data_profiles(**mock_args)
 
@@ -29679,6 +29753,7 @@ def test_get_file_store_data_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_file_store_data_profile(request)
 
@@ -29726,6 +29801,7 @@ def test_get_file_store_data_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_file_store_data_profile(**mock_args)
 
@@ -29859,6 +29935,7 @@ def test_delete_file_store_data_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_file_store_data_profile(request)
 
@@ -29906,6 +29983,7 @@ def test_delete_file_store_data_profile_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_file_store_data_profile(**mock_args)
 
@@ -30042,6 +30120,7 @@ def test_get_table_data_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_table_data_profile(request)
 
@@ -30089,6 +30168,7 @@ def test_get_table_data_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_table_data_profile(**mock_args)
 
@@ -30225,6 +30305,7 @@ def test_get_column_data_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_column_data_profile(request)
 
@@ -30272,6 +30353,7 @@ def test_get_column_data_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_column_data_profile(**mock_args)
 
@@ -30405,6 +30487,7 @@ def test_delete_table_data_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_table_data_profile(request)
 
@@ -30450,6 +30533,7 @@ def test_delete_table_data_profile_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_table_data_profile(**mock_args)
 
@@ -30587,6 +30671,7 @@ def test_hybrid_inspect_dlp_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.hybrid_inspect_dlp_job(request)
 
@@ -30632,6 +30717,7 @@ def test_hybrid_inspect_dlp_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.hybrid_inspect_dlp_job(**mock_args)
 
@@ -30759,6 +30845,7 @@ def test_finish_dlp_job_rest_required_fields(request_type=dlp.FinishDlpJobReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.finish_dlp_job(request)
 
@@ -30881,6 +30968,7 @@ def test_create_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_connection(request)
 
@@ -30935,6 +31023,7 @@ def test_create_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_connection(**mock_args)
 
@@ -31065,6 +31154,7 @@ def test_get_connection_rest_required_fields(request_type=dlp.GetConnectionReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_connection(request)
 
@@ -31112,6 +31202,7 @@ def test_get_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_connection(**mock_args)
 
@@ -31251,6 +31342,7 @@ def test_list_connections_rest_required_fields(request_type=dlp.ListConnectionsR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_connections(request)
 
@@ -31305,6 +31397,7 @@ def test_list_connections_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_connections(**mock_args)
 
@@ -31509,6 +31602,7 @@ def test_search_connections_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_connections(request)
 
@@ -31563,6 +31657,7 @@ def test_search_connections_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_connections(**mock_args)
 
@@ -31754,6 +31849,7 @@ def test_delete_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_connection(request)
 
@@ -31799,6 +31895,7 @@ def test_delete_connection_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_connection(**mock_args)
 
@@ -31933,6 +32030,7 @@ def test_update_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_connection(request)
 
@@ -31988,6 +32086,7 @@ def test_update_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_connection(**mock_args)
 
@@ -35001,6 +35100,7 @@ def test_inspect_content_rest_bad_request(request_type=dlp.InspectContentRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.inspect_content(request)
 
 
@@ -35034,6 +35134,7 @@ def test_inspect_content_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.inspect_content(request)
 
     # Establish that the response is the type that we expect.
@@ -35071,6 +35172,7 @@ def test_inspect_content_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.InspectContentResponse.to_json(dlp.InspectContentResponse())
         req.return_value.content = return_value
 
@@ -35113,6 +35215,7 @@ def test_redact_image_rest_bad_request(request_type=dlp.RedactImageRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.redact_image(request)
 
 
@@ -35149,6 +35252,7 @@ def test_redact_image_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.redact_image(request)
 
     # Establish that the response is the type that we expect.
@@ -35188,6 +35292,7 @@ def test_redact_image_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.RedactImageResponse.to_json(dlp.RedactImageResponse())
         req.return_value.content = return_value
 
@@ -35230,6 +35335,7 @@ def test_deidentify_content_rest_bad_request(request_type=dlp.DeidentifyContentR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.deidentify_content(request)
 
 
@@ -35263,6 +35369,7 @@ def test_deidentify_content_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.deidentify_content(request)
 
     # Establish that the response is the type that we expect.
@@ -35300,6 +35407,7 @@ def test_deidentify_content_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DeidentifyContentResponse.to_json(
             dlp.DeidentifyContentResponse()
         )
@@ -35344,6 +35452,7 @@ def test_reidentify_content_rest_bad_request(request_type=dlp.ReidentifyContentR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.reidentify_content(request)
 
 
@@ -35377,6 +35486,7 @@ def test_reidentify_content_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.reidentify_content(request)
 
     # Establish that the response is the type that we expect.
@@ -35414,6 +35524,7 @@ def test_reidentify_content_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ReidentifyContentResponse.to_json(
             dlp.ReidentifyContentResponse()
         )
@@ -35458,6 +35569,7 @@ def test_list_info_types_rest_bad_request(request_type=dlp.ListInfoTypesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_info_types(request)
 
 
@@ -35491,6 +35603,7 @@ def test_list_info_types_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_info_types(request)
 
     # Establish that the response is the type that we expect.
@@ -35528,6 +35641,7 @@ def test_list_info_types_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListInfoTypesResponse.to_json(dlp.ListInfoTypesResponse())
         req.return_value.content = return_value
 
@@ -35572,6 +35686,7 @@ def test_create_inspect_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_inspect_template(request)
 
 
@@ -35609,6 +35724,7 @@ def test_create_inspect_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_inspect_template(request)
 
     # Establish that the response is the type that we expect.
@@ -35651,6 +35767,7 @@ def test_create_inspect_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
         req.return_value.content = return_value
 
@@ -35697,6 +35814,7 @@ def test_update_inspect_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_inspect_template(request)
 
 
@@ -35736,6 +35854,7 @@ def test_update_inspect_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_inspect_template(request)
 
     # Establish that the response is the type that we expect.
@@ -35778,6 +35897,7 @@ def test_update_inspect_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
         req.return_value.content = return_value
 
@@ -35824,6 +35944,7 @@ def test_get_inspect_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_inspect_template(request)
 
 
@@ -35863,6 +35984,7 @@ def test_get_inspect_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_inspect_template(request)
 
     # Establish that the response is the type that we expect.
@@ -35903,6 +36025,7 @@ def test_get_inspect_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.InspectTemplate.to_json(dlp.InspectTemplate())
         req.return_value.content = return_value
 
@@ -35947,6 +36070,7 @@ def test_list_inspect_templates_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_inspect_templates(request)
 
 
@@ -35982,6 +36106,7 @@ def test_list_inspect_templates_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_inspect_templates(request)
 
     # Establish that the response is the type that we expect.
@@ -36022,6 +36147,7 @@ def test_list_inspect_templates_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListInspectTemplatesResponse.to_json(
             dlp.ListInspectTemplatesResponse()
         )
@@ -36070,6 +36196,7 @@ def test_delete_inspect_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_inspect_template(request)
 
 
@@ -36102,6 +36229,7 @@ def test_delete_inspect_template_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_inspect_template(request)
 
     # Establish that the response is the type that we expect.
@@ -36138,6 +36266,7 @@ def test_delete_inspect_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteInspectTemplateRequest()
         metadata = [
@@ -36178,6 +36307,7 @@ def test_create_deidentify_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_deidentify_template(request)
 
 
@@ -36215,6 +36345,7 @@ def test_create_deidentify_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_deidentify_template(request)
 
     # Establish that the response is the type that we expect.
@@ -36257,6 +36388,7 @@ def test_create_deidentify_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DeidentifyTemplate.to_json(dlp.DeidentifyTemplate())
         req.return_value.content = return_value
 
@@ -36301,6 +36433,7 @@ def test_update_deidentify_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_deidentify_template(request)
 
 
@@ -36338,6 +36471,7 @@ def test_update_deidentify_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_deidentify_template(request)
 
     # Establish that the response is the type that we expect.
@@ -36380,6 +36514,7 @@ def test_update_deidentify_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DeidentifyTemplate.to_json(dlp.DeidentifyTemplate())
         req.return_value.content = return_value
 
@@ -36424,6 +36559,7 @@ def test_get_deidentify_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_deidentify_template(request)
 
 
@@ -36461,6 +36597,7 @@ def test_get_deidentify_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_deidentify_template(request)
 
     # Establish that the response is the type that we expect.
@@ -36503,6 +36640,7 @@ def test_get_deidentify_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DeidentifyTemplate.to_json(dlp.DeidentifyTemplate())
         req.return_value.content = return_value
 
@@ -36547,6 +36685,7 @@ def test_list_deidentify_templates_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_deidentify_templates(request)
 
 
@@ -36582,6 +36721,7 @@ def test_list_deidentify_templates_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_deidentify_templates(request)
 
     # Establish that the response is the type that we expect.
@@ -36622,6 +36762,7 @@ def test_list_deidentify_templates_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListDeidentifyTemplatesResponse.to_json(
             dlp.ListDeidentifyTemplatesResponse()
         )
@@ -36668,6 +36809,7 @@ def test_delete_deidentify_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_deidentify_template(request)
 
 
@@ -36698,6 +36840,7 @@ def test_delete_deidentify_template_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_deidentify_template(request)
 
     # Establish that the response is the type that we expect.
@@ -36734,6 +36877,7 @@ def test_delete_deidentify_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteDeidentifyTemplateRequest()
         metadata = [
@@ -36772,6 +36916,7 @@ def test_create_job_trigger_rest_bad_request(request_type=dlp.CreateJobTriggerRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_job_trigger(request)
 
 
@@ -36810,6 +36955,7 @@ def test_create_job_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_job_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -36851,6 +36997,7 @@ def test_create_job_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.JobTrigger.to_json(dlp.JobTrigger())
         req.return_value.content = return_value
 
@@ -36893,6 +37040,7 @@ def test_update_job_trigger_rest_bad_request(request_type=dlp.UpdateJobTriggerRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_job_trigger(request)
 
 
@@ -36931,6 +37079,7 @@ def test_update_job_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_job_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -36972,6 +37121,7 @@ def test_update_job_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.JobTrigger.to_json(dlp.JobTrigger())
         req.return_value.content = return_value
 
@@ -37016,6 +37166,7 @@ def test_hybrid_inspect_job_trigger_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.hybrid_inspect_job_trigger(request)
 
 
@@ -37049,6 +37200,7 @@ def test_hybrid_inspect_job_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.hybrid_inspect_job_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -37088,6 +37240,7 @@ def test_hybrid_inspect_job_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.HybridInspectResponse.to_json(dlp.HybridInspectResponse())
         req.return_value.content = return_value
 
@@ -37130,6 +37283,7 @@ def test_get_job_trigger_rest_bad_request(request_type=dlp.GetJobTriggerRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_job_trigger(request)
 
 
@@ -37168,6 +37322,7 @@ def test_get_job_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_job_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -37209,6 +37364,7 @@ def test_get_job_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.JobTrigger.to_json(dlp.JobTrigger())
         req.return_value.content = return_value
 
@@ -37251,6 +37407,7 @@ def test_list_job_triggers_rest_bad_request(request_type=dlp.ListJobTriggersRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_job_triggers(request)
 
 
@@ -37286,6 +37443,7 @@ def test_list_job_triggers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_job_triggers(request)
 
     # Establish that the response is the type that we expect.
@@ -37324,6 +37482,7 @@ def test_list_job_triggers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListJobTriggersResponse.to_json(
             dlp.ListJobTriggersResponse()
         )
@@ -37368,6 +37527,7 @@ def test_delete_job_trigger_rest_bad_request(request_type=dlp.DeleteJobTriggerRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_job_trigger(request)
 
 
@@ -37398,6 +37558,7 @@ def test_delete_job_trigger_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_job_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -37432,6 +37593,7 @@ def test_delete_job_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteJobTriggerRequest()
         metadata = [
@@ -37472,6 +37634,7 @@ def test_activate_job_trigger_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.activate_job_trigger(request)
 
 
@@ -37510,6 +37673,7 @@ def test_activate_job_trigger_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.activate_job_trigger(request)
 
     # Establish that the response is the type that we expect.
@@ -37551,6 +37715,7 @@ def test_activate_job_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DlpJob.to_json(dlp.DlpJob())
         req.return_value.content = return_value
 
@@ -37595,6 +37760,7 @@ def test_create_discovery_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_discovery_config(request)
 
 
@@ -37633,6 +37799,7 @@ def test_create_discovery_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_discovery_config(request)
 
     # Establish that the response is the type that we expect.
@@ -37676,6 +37843,7 @@ def test_create_discovery_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
         req.return_value.content = return_value
 
@@ -37722,6 +37890,7 @@ def test_update_discovery_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_discovery_config(request)
 
 
@@ -37762,6 +37931,7 @@ def test_update_discovery_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_discovery_config(request)
 
     # Establish that the response is the type that we expect.
@@ -37805,6 +37975,7 @@ def test_update_discovery_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
         req.return_value.content = return_value
 
@@ -37851,6 +38022,7 @@ def test_get_discovery_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_discovery_config(request)
 
 
@@ -37891,6 +38063,7 @@ def test_get_discovery_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_discovery_config(request)
 
     # Establish that the response is the type that we expect.
@@ -37932,6 +38105,7 @@ def test_get_discovery_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DiscoveryConfig.to_json(dlp.DiscoveryConfig())
         req.return_value.content = return_value
 
@@ -37976,6 +38150,7 @@ def test_list_discovery_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_discovery_configs(request)
 
 
@@ -38011,6 +38186,7 @@ def test_list_discovery_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_discovery_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -38051,6 +38227,7 @@ def test_list_discovery_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListDiscoveryConfigsResponse.to_json(
             dlp.ListDiscoveryConfigsResponse()
         )
@@ -38099,6 +38276,7 @@ def test_delete_discovery_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_discovery_config(request)
 
 
@@ -38131,6 +38309,7 @@ def test_delete_discovery_config_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_discovery_config(request)
 
     # Establish that the response is the type that we expect.
@@ -38167,6 +38346,7 @@ def test_delete_discovery_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteDiscoveryConfigRequest()
         metadata = [
@@ -38205,6 +38385,7 @@ def test_create_dlp_job_rest_bad_request(request_type=dlp.CreateDlpJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_dlp_job(request)
 
 
@@ -38243,6 +38424,7 @@ def test_create_dlp_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_dlp_job(request)
 
     # Establish that the response is the type that we expect.
@@ -38284,6 +38466,7 @@ def test_create_dlp_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DlpJob.to_json(dlp.DlpJob())
         req.return_value.content = return_value
 
@@ -38326,6 +38509,7 @@ def test_list_dlp_jobs_rest_bad_request(request_type=dlp.ListDlpJobsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_dlp_jobs(request)
 
 
@@ -38361,6 +38545,7 @@ def test_list_dlp_jobs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_dlp_jobs(request)
 
     # Establish that the response is the type that we expect.
@@ -38399,6 +38584,7 @@ def test_list_dlp_jobs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListDlpJobsResponse.to_json(dlp.ListDlpJobsResponse())
         req.return_value.content = return_value
 
@@ -38441,6 +38627,7 @@ def test_get_dlp_job_rest_bad_request(request_type=dlp.GetDlpJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_dlp_job(request)
 
 
@@ -38479,6 +38666,7 @@ def test_get_dlp_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_dlp_job(request)
 
     # Establish that the response is the type that we expect.
@@ -38520,6 +38708,7 @@ def test_get_dlp_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.DlpJob.to_json(dlp.DlpJob())
         req.return_value.content = return_value
 
@@ -38562,6 +38751,7 @@ def test_delete_dlp_job_rest_bad_request(request_type=dlp.DeleteDlpJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_dlp_job(request)
 
 
@@ -38592,6 +38782,7 @@ def test_delete_dlp_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_dlp_job(request)
 
     # Establish that the response is the type that we expect.
@@ -38626,6 +38817,7 @@ def test_delete_dlp_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteDlpJobRequest()
         metadata = [
@@ -38664,6 +38856,7 @@ def test_cancel_dlp_job_rest_bad_request(request_type=dlp.CancelDlpJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_dlp_job(request)
 
 
@@ -38694,6 +38887,7 @@ def test_cancel_dlp_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.cancel_dlp_job(request)
 
     # Establish that the response is the type that we expect.
@@ -38728,6 +38922,7 @@ def test_cancel_dlp_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.CancelDlpJobRequest()
         metadata = [
@@ -38768,6 +38963,7 @@ def test_create_stored_info_type_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_stored_info_type(request)
 
 
@@ -38803,6 +38999,7 @@ def test_create_stored_info_type_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_stored_info_type(request)
 
     # Establish that the response is the type that we expect.
@@ -38843,6 +39040,7 @@ def test_create_stored_info_type_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
         req.return_value.content = return_value
 
@@ -38887,6 +39085,7 @@ def test_update_stored_info_type_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_stored_info_type(request)
 
 
@@ -38922,6 +39121,7 @@ def test_update_stored_info_type_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_stored_info_type(request)
 
     # Establish that the response is the type that we expect.
@@ -38962,6 +39162,7 @@ def test_update_stored_info_type_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
         req.return_value.content = return_value
 
@@ -39006,6 +39207,7 @@ def test_get_stored_info_type_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_stored_info_type(request)
 
 
@@ -39041,6 +39243,7 @@ def test_get_stored_info_type_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_stored_info_type(request)
 
     # Establish that the response is the type that we expect.
@@ -39079,6 +39282,7 @@ def test_get_stored_info_type_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.StoredInfoType.to_json(dlp.StoredInfoType())
         req.return_value.content = return_value
 
@@ -39123,6 +39327,7 @@ def test_list_stored_info_types_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_stored_info_types(request)
 
 
@@ -39158,6 +39363,7 @@ def test_list_stored_info_types_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_stored_info_types(request)
 
     # Establish that the response is the type that we expect.
@@ -39196,6 +39402,7 @@ def test_list_stored_info_types_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListStoredInfoTypesResponse.to_json(
             dlp.ListStoredInfoTypesResponse()
         )
@@ -39242,6 +39449,7 @@ def test_delete_stored_info_type_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_stored_info_type(request)
 
 
@@ -39272,6 +39480,7 @@ def test_delete_stored_info_type_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_stored_info_type(request)
 
     # Establish that the response is the type that we expect.
@@ -39308,6 +39517,7 @@ def test_delete_stored_info_type_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteStoredInfoTypeRequest()
         metadata = [
@@ -39348,6 +39558,7 @@ def test_list_project_data_profiles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_project_data_profiles(request)
 
 
@@ -39383,6 +39594,7 @@ def test_list_project_data_profiles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_project_data_profiles(request)
 
     # Establish that the response is the type that we expect.
@@ -39423,6 +39635,7 @@ def test_list_project_data_profiles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListProjectDataProfilesResponse.to_json(
             dlp.ListProjectDataProfilesResponse()
         )
@@ -39469,6 +39682,7 @@ def test_list_table_data_profiles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_table_data_profiles(request)
 
 
@@ -39504,6 +39718,7 @@ def test_list_table_data_profiles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_table_data_profiles(request)
 
     # Establish that the response is the type that we expect.
@@ -39544,6 +39759,7 @@ def test_list_table_data_profiles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListTableDataProfilesResponse.to_json(
             dlp.ListTableDataProfilesResponse()
         )
@@ -39590,6 +39806,7 @@ def test_list_column_data_profiles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_column_data_profiles(request)
 
 
@@ -39625,6 +39842,7 @@ def test_list_column_data_profiles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_column_data_profiles(request)
 
     # Establish that the response is the type that we expect.
@@ -39665,6 +39883,7 @@ def test_list_column_data_profiles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListColumnDataProfilesResponse.to_json(
             dlp.ListColumnDataProfilesResponse()
         )
@@ -39713,6 +39932,7 @@ def test_get_project_data_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_project_data_profile(request)
 
 
@@ -39753,6 +39973,7 @@ def test_get_project_data_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_project_data_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -39796,6 +40017,7 @@ def test_get_project_data_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ProjectDataProfile.to_json(dlp.ProjectDataProfile())
         req.return_value.content = return_value
 
@@ -39840,6 +40062,7 @@ def test_list_file_store_data_profiles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_file_store_data_profiles(request)
 
 
@@ -39875,6 +40098,7 @@ def test_list_file_store_data_profiles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_file_store_data_profiles(request)
 
     # Establish that the response is the type that we expect.
@@ -39915,6 +40139,7 @@ def test_list_file_store_data_profiles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListFileStoreDataProfilesResponse.to_json(
             dlp.ListFileStoreDataProfilesResponse()
         )
@@ -39963,6 +40188,7 @@ def test_get_file_store_data_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_file_store_data_profile(request)
 
 
@@ -40010,6 +40236,7 @@ def test_get_file_store_data_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_file_store_data_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -40063,6 +40290,7 @@ def test_get_file_store_data_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.FileStoreDataProfile.to_json(dlp.FileStoreDataProfile())
         req.return_value.content = return_value
 
@@ -40109,6 +40337,7 @@ def test_delete_file_store_data_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_file_store_data_profile(request)
 
 
@@ -40141,6 +40370,7 @@ def test_delete_file_store_data_profile_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_file_store_data_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -40177,6 +40407,7 @@ def test_delete_file_store_data_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteFileStoreDataProfileRequest()
         metadata = [
@@ -40219,6 +40450,7 @@ def test_get_table_data_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_table_data_profile(request)
 
 
@@ -40269,6 +40501,7 @@ def test_get_table_data_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_table_data_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -40323,6 +40556,7 @@ def test_get_table_data_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.TableDataProfile.to_json(dlp.TableDataProfile())
         req.return_value.content = return_value
 
@@ -40369,6 +40603,7 @@ def test_get_column_data_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_column_data_profile(request)
 
 
@@ -40419,6 +40654,7 @@ def test_get_column_data_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_column_data_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -40481,6 +40717,7 @@ def test_get_column_data_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ColumnDataProfile.to_json(dlp.ColumnDataProfile())
         req.return_value.content = return_value
 
@@ -40527,6 +40764,7 @@ def test_delete_table_data_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_table_data_profile(request)
 
 
@@ -40559,6 +40797,7 @@ def test_delete_table_data_profile_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_table_data_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -40595,6 +40834,7 @@ def test_delete_table_data_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteTableDataProfileRequest()
         metadata = [
@@ -40635,6 +40875,7 @@ def test_hybrid_inspect_dlp_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.hybrid_inspect_dlp_job(request)
 
 
@@ -40668,6 +40909,7 @@ def test_hybrid_inspect_dlp_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.hybrid_inspect_dlp_job(request)
 
     # Establish that the response is the type that we expect.
@@ -40705,6 +40947,7 @@ def test_hybrid_inspect_dlp_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.HybridInspectResponse.to_json(dlp.HybridInspectResponse())
         req.return_value.content = return_value
 
@@ -40747,6 +40990,7 @@ def test_finish_dlp_job_rest_bad_request(request_type=dlp.FinishDlpJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.finish_dlp_job(request)
 
 
@@ -40777,6 +41021,7 @@ def test_finish_dlp_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.finish_dlp_job(request)
 
     # Establish that the response is the type that we expect.
@@ -40811,6 +41056,7 @@ def test_finish_dlp_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.FinishDlpJobRequest()
         metadata = [
@@ -40849,6 +41095,7 @@ def test_create_connection_rest_bad_request(request_type=dlp.CreateConnectionReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_connection(request)
 
 
@@ -40885,6 +41132,7 @@ def test_create_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -40924,6 +41172,7 @@ def test_create_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.Connection.to_json(dlp.Connection())
         req.return_value.content = return_value
 
@@ -40966,6 +41215,7 @@ def test_get_connection_rest_bad_request(request_type=dlp.GetConnectionRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_connection(request)
 
 
@@ -41002,6 +41252,7 @@ def test_get_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -41041,6 +41292,7 @@ def test_get_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.Connection.to_json(dlp.Connection())
         req.return_value.content = return_value
 
@@ -41083,6 +41335,7 @@ def test_list_connections_rest_bad_request(request_type=dlp.ListConnectionsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_connections(request)
 
 
@@ -41118,6 +41371,7 @@ def test_list_connections_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_connections(request)
 
     # Establish that the response is the type that we expect.
@@ -41156,6 +41410,7 @@ def test_list_connections_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.ListConnectionsResponse.to_json(
             dlp.ListConnectionsResponse()
         )
@@ -41200,6 +41455,7 @@ def test_search_connections_rest_bad_request(request_type=dlp.SearchConnectionsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_connections(request)
 
 
@@ -41235,6 +41491,7 @@ def test_search_connections_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_connections(request)
 
     # Establish that the response is the type that we expect.
@@ -41273,6 +41530,7 @@ def test_search_connections_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.SearchConnectionsResponse.to_json(
             dlp.SearchConnectionsResponse()
         )
@@ -41317,6 +41575,7 @@ def test_delete_connection_rest_bad_request(request_type=dlp.DeleteConnectionReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_connection(request)
 
 
@@ -41347,6 +41606,7 @@ def test_delete_connection_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -41381,6 +41641,7 @@ def test_delete_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dlp.DeleteConnectionRequest()
         metadata = [
@@ -41419,6 +41680,7 @@ def test_update_connection_rest_bad_request(request_type=dlp.UpdateConnectionReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_connection(request)
 
 
@@ -41455,6 +41717,7 @@ def test_update_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -41494,6 +41757,7 @@ def test_update_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dlp.Connection.to_json(dlp.Connection())
         req.return_value.content = return_value
 

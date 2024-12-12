@@ -3156,6 +3156,7 @@ def test_analyze_sentiment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_sentiment(request)
 
@@ -3204,6 +3205,7 @@ def test_analyze_sentiment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_sentiment(**mock_args)
 
@@ -3334,6 +3336,7 @@ def test_analyze_entities_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_entities(request)
 
@@ -3382,6 +3385,7 @@ def test_analyze_entities_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_entities(**mock_args)
 
@@ -3517,6 +3521,7 @@ def test_analyze_entity_sentiment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_entity_sentiment(request)
 
@@ -3565,6 +3570,7 @@ def test_analyze_entity_sentiment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_entity_sentiment(**mock_args)
 
@@ -3694,6 +3700,7 @@ def test_analyze_syntax_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_syntax(request)
 
@@ -3742,6 +3749,7 @@ def test_analyze_syntax_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_syntax(**mock_args)
 
@@ -3870,6 +3878,7 @@ def test_classify_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.classify_text(request)
 
@@ -3917,6 +3926,7 @@ def test_classify_text_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.classify_text(**mock_args)
 
@@ -4044,6 +4054,7 @@ def test_moderate_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.moderate_text(request)
 
@@ -4091,6 +4102,7 @@ def test_moderate_text_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.moderate_text(**mock_args)
 
@@ -4218,6 +4230,7 @@ def test_annotate_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.annotate_text(request)
 
@@ -4275,6 +4288,7 @@ def test_annotate_text_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.annotate_text(**mock_args)
 
@@ -4794,6 +4808,7 @@ def test_analyze_sentiment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_sentiment(request)
 
 
@@ -4829,6 +4844,7 @@ def test_analyze_sentiment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_sentiment(request)
 
     # Establish that the response is the type that we expect.
@@ -4869,6 +4885,7 @@ def test_analyze_sentiment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = language_service.AnalyzeSentimentResponse.to_json(
             language_service.AnalyzeSentimentResponse()
         )
@@ -4915,6 +4932,7 @@ def test_analyze_entities_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_entities(request)
 
 
@@ -4950,6 +4968,7 @@ def test_analyze_entities_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_entities(request)
 
     # Establish that the response is the type that we expect.
@@ -4990,6 +5009,7 @@ def test_analyze_entities_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = language_service.AnalyzeEntitiesResponse.to_json(
             language_service.AnalyzeEntitiesResponse()
         )
@@ -5036,6 +5056,7 @@ def test_analyze_entity_sentiment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_entity_sentiment(request)
 
 
@@ -5071,6 +5092,7 @@ def test_analyze_entity_sentiment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_entity_sentiment(request)
 
     # Establish that the response is the type that we expect.
@@ -5111,6 +5133,7 @@ def test_analyze_entity_sentiment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = language_service.AnalyzeEntitySentimentResponse.to_json(
             language_service.AnalyzeEntitySentimentResponse()
         )
@@ -5157,6 +5180,7 @@ def test_analyze_syntax_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_syntax(request)
 
 
@@ -5192,6 +5216,7 @@ def test_analyze_syntax_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_syntax(request)
 
     # Establish that the response is the type that we expect.
@@ -5232,6 +5257,7 @@ def test_analyze_syntax_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = language_service.AnalyzeSyntaxResponse.to_json(
             language_service.AnalyzeSyntaxResponse()
         )
@@ -5278,6 +5304,7 @@ def test_classify_text_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.classify_text(request)
 
 
@@ -5311,6 +5338,7 @@ def test_classify_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.classify_text(request)
 
     # Establish that the response is the type that we expect.
@@ -5350,6 +5378,7 @@ def test_classify_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = language_service.ClassifyTextResponse.to_json(
             language_service.ClassifyTextResponse()
         )
@@ -5396,6 +5425,7 @@ def test_moderate_text_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.moderate_text(request)
 
 
@@ -5429,6 +5459,7 @@ def test_moderate_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.moderate_text(request)
 
     # Establish that the response is the type that we expect.
@@ -5468,6 +5499,7 @@ def test_moderate_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = language_service.ModerateTextResponse.to_json(
             language_service.ModerateTextResponse()
         )
@@ -5514,6 +5546,7 @@ def test_annotate_text_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.annotate_text(request)
 
 
@@ -5549,6 +5582,7 @@ def test_annotate_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.annotate_text(request)
 
     # Establish that the response is the type that we expect.
@@ -5589,6 +5623,7 @@ def test_annotate_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = language_service.AnnotateTextResponse.to_json(
             language_service.AnnotateTextResponse()
         )

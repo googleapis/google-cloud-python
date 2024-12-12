@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -183,8 +191,10 @@ class DataTransferServiceRestInterceptor:
     def pre_check_valid_creds(
         self,
         request: datatransfer.CheckValidCredsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.CheckValidCredsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.CheckValidCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for check_valid_creds
 
         Override in a subclass to manipulate the request or metadata
@@ -206,8 +216,11 @@ class DataTransferServiceRestInterceptor:
     def pre_create_transfer_config(
         self,
         request: datatransfer.CreateTransferConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.CreateTransferConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.CreateTransferConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -229,8 +242,11 @@ class DataTransferServiceRestInterceptor:
     def pre_delete_transfer_config(
         self,
         request: datatransfer.DeleteTransferConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.DeleteTransferConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.DeleteTransferConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -241,8 +257,10 @@ class DataTransferServiceRestInterceptor:
     def pre_delete_transfer_run(
         self,
         request: datatransfer.DeleteTransferRunRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.DeleteTransferRunRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.DeleteTransferRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_transfer_run
 
         Override in a subclass to manipulate the request or metadata
@@ -253,8 +271,10 @@ class DataTransferServiceRestInterceptor:
     def pre_enroll_data_sources(
         self,
         request: datatransfer.EnrollDataSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.EnrollDataSourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.EnrollDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for enroll_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +285,10 @@ class DataTransferServiceRestInterceptor:
     def pre_get_data_source(
         self,
         request: datatransfer.GetDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.GetDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +310,10 @@ class DataTransferServiceRestInterceptor:
     def pre_get_transfer_config(
         self,
         request: datatransfer.GetTransferConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.GetTransferConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.GetTransferConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -311,8 +335,10 @@ class DataTransferServiceRestInterceptor:
     def pre_get_transfer_run(
         self,
         request: datatransfer.GetTransferRunRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.GetTransferRunRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.GetTransferRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_transfer_run
 
         Override in a subclass to manipulate the request or metadata
@@ -334,8 +360,10 @@ class DataTransferServiceRestInterceptor:
     def pre_list_data_sources(
         self,
         request: datatransfer.ListDataSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.ListDataSourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -357,8 +385,10 @@ class DataTransferServiceRestInterceptor:
     def pre_list_transfer_configs(
         self,
         request: datatransfer.ListTransferConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.ListTransferConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListTransferConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_transfer_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -380,8 +410,10 @@ class DataTransferServiceRestInterceptor:
     def pre_list_transfer_logs(
         self,
         request: datatransfer.ListTransferLogsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.ListTransferLogsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListTransferLogsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_transfer_logs
 
         Override in a subclass to manipulate the request or metadata
@@ -403,8 +435,10 @@ class DataTransferServiceRestInterceptor:
     def pre_list_transfer_runs(
         self,
         request: datatransfer.ListTransferRunsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.ListTransferRunsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ListTransferRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_transfer_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -426,8 +460,11 @@ class DataTransferServiceRestInterceptor:
     def pre_schedule_transfer_runs(
         self,
         request: datatransfer.ScheduleTransferRunsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.ScheduleTransferRunsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.ScheduleTransferRunsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for schedule_transfer_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -449,8 +486,11 @@ class DataTransferServiceRestInterceptor:
     def pre_start_manual_transfer_runs(
         self,
         request: datatransfer.StartManualTransferRunsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.StartManualTransferRunsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.StartManualTransferRunsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for start_manual_transfer_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -472,8 +512,10 @@ class DataTransferServiceRestInterceptor:
     def pre_unenroll_data_sources(
         self,
         request: datatransfer.UnenrollDataSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.UnenrollDataSourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.UnenrollDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for unenroll_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -484,8 +526,11 @@ class DataTransferServiceRestInterceptor:
     def pre_update_transfer_config(
         self,
         request: datatransfer.UpdateTransferConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datatransfer.UpdateTransferConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datatransfer.UpdateTransferConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -507,8 +552,10 @@ class DataTransferServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -530,8 +577,10 @@ class DataTransferServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -674,7 +723,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.CheckValidCredsResponse:
             r"""Call the check valid creds method over HTTP.
 
@@ -694,8 +743,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datatransfer.CheckValidCredsResponse:
@@ -707,6 +758,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_check_valid_creds(
                 request, metadata
             )
@@ -722,6 +774,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.CheckValidCreds",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "CheckValidCreds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._CheckValidCreds._get_response(
@@ -744,7 +823,31 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.CheckValidCredsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_check_valid_creds(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datatransfer.CheckValidCredsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.check_valid_creds",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "CheckValidCreds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTransferConfig(
@@ -783,7 +886,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer.TransferConfig:
             r"""Call the create transfer config method over HTTP.
 
@@ -806,8 +909,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer.TransferConfig:
@@ -824,6 +929,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_transfer_config(
                 request, metadata
             )
@@ -839,6 +945,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.CreateTransferConfig",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "CreateTransferConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -863,7 +996,29 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = transfer.TransferConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_transfer_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer.TransferConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.create_transfer_config",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "CreateTransferConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTransferConfig(
@@ -901,7 +1056,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete transfer config method over HTTP.
 
@@ -914,13 +1069,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_transfer_config(
                 request, metadata
             )
@@ -932,6 +1090,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.DeleteTransferConfig",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "DeleteTransferConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -985,7 +1170,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete transfer run method over HTTP.
 
@@ -996,13 +1181,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_transfer_run(
                 request, metadata
             )
@@ -1014,6 +1202,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.DeleteTransferRun",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "DeleteTransferRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1068,7 +1283,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the enroll data sources method over HTTP.
 
@@ -1079,13 +1294,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_enroll_data_sources(
                 request, metadata
             )
@@ -1101,6 +1319,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.EnrollDataSources",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "EnrollDataSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1155,7 +1400,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.DataSource:
             r"""Call the get data source method over HTTP.
 
@@ -1165,8 +1410,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datatransfer.DataSource:
@@ -1178,6 +1425,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
             transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_transcoded_request(
                 http_options, request
@@ -1187,6 +1435,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.GetDataSource",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._GetDataSource._get_response(
@@ -1208,7 +1483,29 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.DataSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datatransfer.DataSource.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.get_data_source",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetDataSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTransferConfig(
@@ -1246,7 +1543,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer.TransferConfig:
             r"""Call the get transfer config method over HTTP.
 
@@ -1257,8 +1554,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer.TransferConfig:
@@ -1275,6 +1574,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_transfer_config(
                 request, metadata
             )
@@ -1286,6 +1586,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.GetTransferConfig",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetTransferConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1309,7 +1636,29 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = transfer.TransferConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_transfer_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer.TransferConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.get_transfer_config",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetTransferConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTransferRun(
@@ -1347,7 +1696,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer.TransferRun:
             r"""Call the get transfer run method over HTTP.
 
@@ -1358,8 +1707,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer.TransferRun:
@@ -1369,6 +1720,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_transfer_run(
                 request, metadata
             )
@@ -1380,6 +1732,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.GetTransferRun",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetTransferRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._GetTransferRun._get_response(
@@ -1401,7 +1780,29 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = transfer.TransferRun.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_transfer_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer.TransferRun.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.get_transfer_run",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetTransferRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDataSources(
@@ -1439,7 +1840,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.ListDataSourcesResponse:
             r"""Call the list data sources method over HTTP.
 
@@ -1451,8 +1852,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datatransfer.ListDataSourcesResponse:
@@ -1464,6 +1867,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseListDataSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_data_sources(
                 request, metadata
             )
@@ -1475,6 +1879,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseListDataSources._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.ListDataSources",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListDataSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._ListDataSources._get_response(
@@ -1496,7 +1927,31 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.ListDataSourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_data_sources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datatransfer.ListDataSourcesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.list_data_sources",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListDataSources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTransferConfigs(
@@ -1534,7 +1989,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.ListTransferConfigsResponse:
             r"""Call the list transfer configs method over HTTP.
 
@@ -1545,8 +2000,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datatransfer.ListTransferConfigsResponse:
@@ -1558,6 +2015,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_transfer_configs(
                 request, metadata
             )
@@ -1569,6 +2027,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.ListTransferConfigs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListTransferConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1592,7 +2077,31 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.ListTransferConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_transfer_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datatransfer.ListTransferConfigsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.list_transfer_configs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListTransferConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTransferLogs(
@@ -1630,7 +2139,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.ListTransferLogsResponse:
             r"""Call the list transfer logs method over HTTP.
 
@@ -1642,8 +2151,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datatransfer.ListTransferLogsResponse:
@@ -1655,6 +2166,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_transfer_logs(
                 request, metadata
             )
@@ -1666,6 +2178,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.ListTransferLogs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListTransferLogs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._ListTransferLogs._get_response(
@@ -1687,7 +2226,31 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.ListTransferLogsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_transfer_logs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datatransfer.ListTransferLogsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.list_transfer_logs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListTransferLogs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTransferRuns(
@@ -1725,7 +2288,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.ListTransferRunsResponse:
             r"""Call the list transfer runs method over HTTP.
 
@@ -1735,8 +2298,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datatransfer.ListTransferRunsResponse:
@@ -1748,6 +2313,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_transfer_runs(
                 request, metadata
             )
@@ -1759,6 +2325,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.ListTransferRuns",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListTransferRuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._ListTransferRuns._get_response(
@@ -1780,7 +2373,31 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.ListTransferRunsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_transfer_runs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datatransfer.ListTransferRunsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.list_transfer_runs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListTransferRuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ScheduleTransferRuns(
@@ -1819,7 +2436,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.ScheduleTransferRunsResponse:
             r"""Call the schedule transfer runs method over HTTP.
 
@@ -1830,8 +2447,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datatransfer.ScheduleTransferRunsResponse:
@@ -1843,6 +2462,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_schedule_transfer_runs(
                 request, metadata
             )
@@ -1858,6 +2478,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.ScheduleTransferRuns",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ScheduleTransferRuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1882,7 +2529,31 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.ScheduleTransferRunsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_schedule_transfer_runs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        datatransfer.ScheduleTransferRunsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.schedule_transfer_runs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ScheduleTransferRuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StartManualTransferRuns(
@@ -1921,7 +2592,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datatransfer.StartManualTransferRunsResponse:
             r"""Call the start manual transfer
             runs method over HTTP.
@@ -1933,8 +2604,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.datatransfer.StartManualTransferRunsResponse:
@@ -1946,6 +2619,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_start_manual_transfer_runs(
                 request, metadata
             )
@@ -1961,6 +2635,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.StartManualTransferRuns",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "StartManualTransferRuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1985,7 +2686,31 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = datatransfer.StartManualTransferRunsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_start_manual_transfer_runs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        datatransfer.StartManualTransferRunsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.start_manual_transfer_runs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "StartManualTransferRuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UnenrollDataSources(
@@ -2024,7 +2749,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the unenroll data sources method over HTTP.
 
@@ -2035,13 +2760,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_unenroll_data_sources(
                 request, metadata
             )
@@ -2057,6 +2785,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.UnenrollDataSources",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "UnenrollDataSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2112,7 +2867,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer.TransferConfig:
             r"""Call the update transfer config method over HTTP.
 
@@ -2130,8 +2885,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer.TransferConfig:
@@ -2148,6 +2905,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_transfer_config(
                 request, metadata
             )
@@ -2163,6 +2921,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.UpdateTransferConfig",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "UpdateTransferConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2187,7 +2972,29 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             pb_resp = transfer.TransferConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_transfer_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer.TransferConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.update_transfer_config",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "UpdateTransferConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2374,7 +3181,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2384,8 +3191,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2394,6 +3203,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -2403,6 +3213,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._GetLocation._get_response(
@@ -2423,6 +3260,27 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2464,7 +3322,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2474,8 +3332,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2484,6 +3344,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             http_options = (
                 _BaseDataTransferServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDataTransferServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -2493,6 +3354,33 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             query_params = _BaseDataTransferServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datatransfer_v1.DataTransferServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataTransferServiceRestTransport._ListLocations._get_response(
@@ -2513,6 +3401,27 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datatransfer_v1.DataTransferServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

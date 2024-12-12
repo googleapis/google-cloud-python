@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -91,8 +99,10 @@ class PublisherRestInterceptor:
     """
 
     def pre_publish(
-        self, request: publisher.PublishRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[publisher.PublishRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: publisher.PublishRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[publisher.PublishRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for publish
 
         Override in a subclass to manipulate the request or metadata
@@ -114,9 +124,10 @@ class PublisherRestInterceptor:
     def pre_publish_channel_connection_events(
         self,
         request: publisher.PublishChannelConnectionEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        publisher.PublishChannelConnectionEventsRequest, Sequence[Tuple[str, str]]
+        publisher.PublishChannelConnectionEventsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for publish_channel_connection_events
 
@@ -139,8 +150,8 @@ class PublisherRestInterceptor:
     def pre_publish_events(
         self,
         request: publisher.PublishEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[publisher.PublishEventsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[publisher.PublishEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for publish_events
 
         Override in a subclass to manipulate the request or metadata
@@ -306,7 +317,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> publisher.PublishResponse:
             r"""Call the publish method over HTTP.
 
@@ -317,8 +328,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.publisher.PublishResponse:
@@ -328,6 +341,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             """
 
             http_options = _BasePublisherRestTransport._BasePublish._get_http_options()
+
             request, metadata = self._interceptor.pre_publish(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BasePublish._get_transcoded_request(
@@ -345,6 +359,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.eventarc.publishing_v1.PublisherClient.Publish",
+                    extra={
+                        "serviceName": "google.cloud.eventarc.publishing.v1.Publisher",
+                        "rpcName": "Publish",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._Publish._get_response(
@@ -367,7 +408,29 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = publisher.PublishResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_publish(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = publisher.PublishResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc.publishing_v1.PublisherClient.publish",
+                    extra={
+                        "serviceName": "google.cloud.eventarc.publishing.v1.Publisher",
+                        "rpcName": "Publish",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PublishChannelConnectionEvents(
@@ -406,7 +469,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> publisher.PublishChannelConnectionEventsResponse:
             r"""Call the publish channel
             connection events method over HTTP.
@@ -418,8 +481,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.publisher.PublishChannelConnectionEventsResponse:
@@ -431,6 +496,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_publish_channel_connection_events(
                 request, metadata
             )
@@ -446,6 +512,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             query_params = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.eventarc.publishing_v1.PublisherClient.PublishChannelConnectionEvents",
+                    extra={
+                        "serviceName": "google.cloud.eventarc.publishing.v1.Publisher",
+                        "rpcName": "PublishChannelConnectionEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -470,7 +563,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = publisher.PublishChannelConnectionEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_publish_channel_connection_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        publisher.PublishChannelConnectionEventsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc.publishing_v1.PublisherClient.publish_channel_connection_events",
+                    extra={
+                        "serviceName": "google.cloud.eventarc.publishing.v1.Publisher",
+                        "rpcName": "PublishChannelConnectionEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PublishEvents(
@@ -508,7 +627,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> publisher.PublishEventsResponse:
             r"""Call the publish events method over HTTP.
 
@@ -519,8 +638,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.publisher.PublishEventsResponse:
@@ -532,6 +653,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = (
                 _BasePublisherRestTransport._BasePublishEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_publish_events(request, metadata)
             transcoded_request = (
                 _BasePublisherRestTransport._BasePublishEvents._get_transcoded_request(
@@ -551,6 +673,33 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.eventarc.publishing_v1.PublisherClient.PublishEvents",
+                    extra={
+                        "serviceName": "google.cloud.eventarc.publishing.v1.Publisher",
+                        "rpcName": "PublishEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PublisherRestTransport._PublishEvents._get_response(
@@ -573,7 +722,29 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             pb_resp = publisher.PublishEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_publish_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = publisher.PublishEventsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.eventarc.publishing_v1.PublisherClient.publish_events",
+                    extra={
+                        "serviceName": "google.cloud.eventarc.publishing.v1.Publisher",
+                        "rpcName": "PublishEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

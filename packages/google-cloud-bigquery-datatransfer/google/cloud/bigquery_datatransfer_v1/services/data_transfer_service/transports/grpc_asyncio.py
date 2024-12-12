@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,13 +27,92 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
 
 from .base import DEFAULT_CLIENT_INFO, DataTransferServiceTransport
 from .grpc import DataTransferServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.bigquery.datatransfer.v1.DataTransferService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
@@ -229,10 +311,13 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -267,7 +352,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_data_source" not in self._stubs:
-            self._stubs["get_data_source"] = self.grpc_channel.unary_unary(
+            self._stubs["get_data_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetDataSource",
                 request_serializer=datatransfer.GetDataSourceRequest.serialize,
                 response_deserializer=datatransfer.DataSource.deserialize,
@@ -297,7 +382,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_data_sources" not in self._stubs:
-            self._stubs["list_data_sources"] = self.grpc_channel.unary_unary(
+            self._stubs["list_data_sources"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListDataSources",
                 request_serializer=datatransfer.ListDataSourcesRequest.serialize,
                 response_deserializer=datatransfer.ListDataSourcesResponse.deserialize,
@@ -325,7 +410,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_transfer_config" not in self._stubs:
-            self._stubs["create_transfer_config"] = self.grpc_channel.unary_unary(
+            self._stubs["create_transfer_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CreateTransferConfig",
                 request_serializer=datatransfer.CreateTransferConfigRequest.serialize,
                 response_deserializer=transfer.TransferConfig.deserialize,
@@ -354,7 +439,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_transfer_config" not in self._stubs:
-            self._stubs["update_transfer_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_transfer_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/UpdateTransferConfig",
                 request_serializer=datatransfer.UpdateTransferConfigRequest.serialize,
                 response_deserializer=transfer.TransferConfig.deserialize,
@@ -383,7 +468,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_transfer_config" not in self._stubs:
-            self._stubs["delete_transfer_config"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_transfer_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferConfig",
                 request_serializer=datatransfer.DeleteTransferConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -411,7 +496,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_transfer_config" not in self._stubs:
-            self._stubs["get_transfer_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_transfer_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferConfig",
                 request_serializer=datatransfer.GetTransferConfigRequest.serialize,
                 response_deserializer=transfer.TransferConfig.deserialize,
@@ -441,7 +526,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_transfer_configs" not in self._stubs:
-            self._stubs["list_transfer_configs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_transfer_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferConfigs",
                 request_serializer=datatransfer.ListTransferConfigsRequest.serialize,
                 response_deserializer=datatransfer.ListTransferConfigsResponse.deserialize,
@@ -474,7 +559,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "schedule_transfer_runs" not in self._stubs:
-            self._stubs["schedule_transfer_runs"] = self.grpc_channel.unary_unary(
+            self._stubs["schedule_transfer_runs"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ScheduleTransferRuns",
                 request_serializer=datatransfer.ScheduleTransferRunsRequest.serialize,
                 response_deserializer=datatransfer.ScheduleTransferRunsResponse.deserialize,
@@ -506,7 +591,9 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_manual_transfer_runs" not in self._stubs:
-            self._stubs["start_manual_transfer_runs"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "start_manual_transfer_runs"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/StartManualTransferRuns",
                 request_serializer=datatransfer.StartManualTransferRunsRequest.serialize,
                 response_deserializer=datatransfer.StartManualTransferRunsResponse.deserialize,
@@ -535,7 +622,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_transfer_run" not in self._stubs:
-            self._stubs["get_transfer_run"] = self.grpc_channel.unary_unary(
+            self._stubs["get_transfer_run"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/GetTransferRun",
                 request_serializer=datatransfer.GetTransferRunRequest.serialize,
                 response_deserializer=transfer.TransferRun.deserialize,
@@ -561,7 +648,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_transfer_run" not in self._stubs:
-            self._stubs["delete_transfer_run"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_transfer_run"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferRun",
                 request_serializer=datatransfer.DeleteTransferRunRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -591,7 +678,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_transfer_runs" not in self._stubs:
-            self._stubs["list_transfer_runs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_transfer_runs"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferRuns",
                 request_serializer=datatransfer.ListTransferRunsRequest.serialize,
                 response_deserializer=datatransfer.ListTransferRunsResponse.deserialize,
@@ -620,7 +707,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_transfer_logs" not in self._stubs:
-            self._stubs["list_transfer_logs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_transfer_logs"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/ListTransferLogs",
                 request_serializer=datatransfer.ListTransferLogsRequest.serialize,
                 response_deserializer=datatransfer.ListTransferLogsResponse.deserialize,
@@ -650,7 +737,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "check_valid_creds" not in self._stubs:
-            self._stubs["check_valid_creds"] = self.grpc_channel.unary_unary(
+            self._stubs["check_valid_creds"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CheckValidCreds",
                 request_serializer=datatransfer.CheckValidCredsRequest.serialize,
                 response_deserializer=datatransfer.CheckValidCredsResponse.deserialize,
@@ -684,7 +771,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enroll_data_sources" not in self._stubs:
-            self._stubs["enroll_data_sources"] = self.grpc_channel.unary_unary(
+            self._stubs["enroll_data_sources"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/EnrollDataSources",
                 request_serializer=datatransfer.EnrollDataSourcesRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -718,7 +805,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "unenroll_data_sources" not in self._stubs:
-            self._stubs["unenroll_data_sources"] = self.grpc_channel.unary_unary(
+            self._stubs["unenroll_data_sources"] = self._logged_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/UnenrollDataSources",
                 request_serializer=datatransfer.UnenrollDataSourcesRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -926,7 +1013,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -944,7 +1031,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -961,7 +1048,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
