@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -205,8 +213,11 @@ class RegionDisksRestInterceptor:
     def pre_add_resource_policies(
         self,
         request: compute.AddResourcePoliciesRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AddResourcePoliciesRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddResourcePoliciesRegionDiskRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_resource_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -228,8 +239,10 @@ class RegionDisksRestInterceptor:
     def pre_bulk_insert(
         self,
         request: compute.BulkInsertRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.BulkInsertRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.BulkInsertRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for bulk_insert
 
         Override in a subclass to manipulate the request or metadata
@@ -249,8 +262,10 @@ class RegionDisksRestInterceptor:
     def pre_create_snapshot(
         self,
         request: compute.CreateSnapshotRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.CreateSnapshotRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.CreateSnapshotRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -270,8 +285,10 @@ class RegionDisksRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -289,8 +306,10 @@ class RegionDisksRestInterceptor:
         return response
 
     def pre_get(
-        self, request: compute.GetRegionDiskRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[compute.GetRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: compute.GetRegionDiskRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.GetRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -310,8 +329,10 @@ class RegionDisksRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: compute.GetIamPolicyRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetIamPolicyRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetIamPolicyRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -331,8 +352,10 @@ class RegionDisksRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -352,8 +375,8 @@ class RegionDisksRestInterceptor:
     def pre_list(
         self,
         request: compute.ListRegionDisksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListRegionDisksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.ListRegionDisksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -373,9 +396,10 @@ class RegionDisksRestInterceptor:
     def pre_remove_resource_policies(
         self,
         request: compute.RemoveResourcePoliciesRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.RemoveResourcePoliciesRegionDiskRequest, Sequence[Tuple[str, str]]
+        compute.RemoveResourcePoliciesRegionDiskRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for remove_resource_policies
 
@@ -398,8 +422,10 @@ class RegionDisksRestInterceptor:
     def pre_resize(
         self,
         request: compute.ResizeRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ResizeRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ResizeRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for resize
 
         Override in a subclass to manipulate the request or metadata
@@ -419,8 +445,10 @@ class RegionDisksRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: compute.SetIamPolicyRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetIamPolicyRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetIamPolicyRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -440,8 +468,10 @@ class RegionDisksRestInterceptor:
     def pre_set_labels(
         self,
         request: compute.SetLabelsRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetLabelsRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetLabelsRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -461,9 +491,10 @@ class RegionDisksRestInterceptor:
     def pre_start_async_replication(
         self,
         request: compute.StartAsyncReplicationRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.StartAsyncReplicationRegionDiskRequest, Sequence[Tuple[str, str]]
+        compute.StartAsyncReplicationRegionDiskRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for start_async_replication
 
@@ -486,9 +517,10 @@ class RegionDisksRestInterceptor:
     def pre_stop_async_replication(
         self,
         request: compute.StopAsyncReplicationRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.StopAsyncReplicationRegionDiskRequest, Sequence[Tuple[str, str]]
+        compute.StopAsyncReplicationRegionDiskRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for stop_async_replication
 
@@ -511,9 +543,10 @@ class RegionDisksRestInterceptor:
     def pre_stop_group_async_replication(
         self,
         request: compute.StopGroupAsyncReplicationRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.StopGroupAsyncReplicationRegionDiskRequest, Sequence[Tuple[str, str]]
+        compute.StopGroupAsyncReplicationRegionDiskRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for stop_group_async_replication
 
@@ -536,8 +569,11 @@ class RegionDisksRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: compute.TestIamPermissionsRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.TestIamPermissionsRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.TestIamPermissionsRegionDiskRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -559,8 +595,10 @@ class RegionDisksRestInterceptor:
     def pre_update(
         self,
         request: compute.UpdateRegionDiskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.UpdateRegionDiskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.UpdateRegionDiskRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -703,7 +741,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the add resource policies method over HTTP.
 
@@ -715,8 +753,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -743,6 +783,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_resource_policies(
                 request, metadata
             )
@@ -758,6 +799,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             query_params = _BaseRegionDisksRestTransport._BaseAddResourcePolicies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.AddResourcePolicies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "AddResourcePolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._AddResourcePolicies._get_response(
@@ -780,7 +848,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_resource_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.add_resource_policies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "AddResourcePolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BulkInsert(
@@ -818,7 +908,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the bulk insert method over HTTP.
 
@@ -830,8 +920,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -858,6 +950,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseBulkInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_bulk_insert(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseBulkInsert._get_transcoded_request(
@@ -875,6 +968,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.BulkInsert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "BulkInsert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._BulkInsert._get_response(
@@ -897,7 +1017,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_bulk_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.bulk_insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "BulkInsert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSnapshot(
@@ -935,7 +1077,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the create snapshot method over HTTP.
 
@@ -947,8 +1089,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -975,6 +1119,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
             transcoded_request = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_transcoded_request(
                 http_options, request
@@ -988,6 +1133,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             query_params = _BaseRegionDisksRestTransport._BaseCreateSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.CreateSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "CreateSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._CreateSnapshot._get_response(
@@ -1010,7 +1182,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.create_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "CreateSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(_BaseRegionDisksRestTransport._BaseDelete, RegionDisksRestStub):
@@ -1045,7 +1239,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -1057,8 +1251,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1083,6 +1279,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             """
 
             http_options = _BaseRegionDisksRestTransport._BaseDelete._get_http_options()
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseDelete._get_transcoded_request(
@@ -1096,6 +1293,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._Delete._get_response(
@@ -1117,7 +1341,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseRegionDisksRestTransport._BaseGet, RegionDisksRestStub):
@@ -1152,7 +1398,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Disk:
             r"""Call the get method over HTTP.
 
@@ -1164,8 +1410,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Disk:
@@ -1185,6 +1433,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             """
 
             http_options = _BaseRegionDisksRestTransport._BaseGet._get_http_options()
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseGet._get_transcoded_request(
@@ -1198,6 +1447,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._Get._get_response(
@@ -1219,7 +1495,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Disk.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Disk.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -1256,7 +1554,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1268,8 +1566,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Policy:
@@ -1302,6 +1602,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -1315,6 +1616,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._GetIamPolicy._get_response(
@@ -1336,7 +1664,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(_BaseRegionDisksRestTransport._BaseInsert, RegionDisksRestStub):
@@ -1372,7 +1722,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -1384,8 +1734,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1410,6 +1762,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             """
 
             http_options = _BaseRegionDisksRestTransport._BaseInsert._get_http_options()
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseInsert._get_transcoded_request(
@@ -1427,6 +1780,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._Insert._get_response(
@@ -1449,7 +1829,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseRegionDisksRestTransport._BaseList, RegionDisksRestStub):
@@ -1484,7 +1886,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.DiskList:
             r"""Call the list method over HTTP.
 
@@ -1496,8 +1898,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.DiskList:
@@ -1505,6 +1909,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             """
 
             http_options = _BaseRegionDisksRestTransport._BaseList._get_http_options()
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseList._get_transcoded_request(
@@ -1518,6 +1923,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._List._get_response(
@@ -1539,7 +1971,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.DiskList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.DiskList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveResourcePolicies(
@@ -1577,7 +2031,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the remove resource policies method over HTTP.
 
@@ -1589,8 +2043,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1617,6 +2073,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_resource_policies(
                 request, metadata
             )
@@ -1632,6 +2089,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             query_params = _BaseRegionDisksRestTransport._BaseRemoveResourcePolicies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.RemoveResourcePolicies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "RemoveResourcePolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._RemoveResourcePolicies._get_response(
@@ -1654,7 +2138,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_resource_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.remove_resource_policies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "RemoveResourcePolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Resize(_BaseRegionDisksRestTransport._BaseResize, RegionDisksRestStub):
@@ -1690,7 +2196,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the resize method over HTTP.
 
@@ -1702,8 +2208,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1728,6 +2236,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             """
 
             http_options = _BaseRegionDisksRestTransport._BaseResize._get_http_options()
+
             request, metadata = self._interceptor.pre_resize(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseResize._get_transcoded_request(
@@ -1745,6 +2254,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.Resize",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Resize",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._Resize._get_response(
@@ -1767,7 +2303,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resize(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.resize",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Resize",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -1805,7 +2363,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1817,8 +2375,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Policy:
@@ -1851,6 +2411,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1870,6 +2431,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._SetIamPolicy._get_response(
@@ -1892,7 +2480,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLabels(_BaseRegionDisksRestTransport._BaseSetLabels, RegionDisksRestStub):
@@ -1928,7 +2538,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set labels method over HTTP.
 
@@ -1940,8 +2550,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1968,6 +2580,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseSetLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseSetLabels._get_transcoded_request(
@@ -1985,6 +2598,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.SetLabels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "SetLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._SetLabels._get_response(
@@ -2007,7 +2647,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.set_labels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "SetLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StartAsyncReplication(
@@ -2045,7 +2707,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the start async replication method over HTTP.
 
@@ -2057,8 +2719,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2085,6 +2749,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_start_async_replication(
                 request, metadata
             )
@@ -2100,6 +2765,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             query_params = _BaseRegionDisksRestTransport._BaseStartAsyncReplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.StartAsyncReplication",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "StartAsyncReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._StartAsyncReplication._get_response(
@@ -2122,7 +2814,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_start_async_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.start_async_replication",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "StartAsyncReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopAsyncReplication(
@@ -2159,7 +2873,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the stop async replication method over HTTP.
 
@@ -2171,8 +2885,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2199,6 +2915,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_async_replication(
                 request, metadata
             )
@@ -2210,6 +2927,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             query_params = _BaseRegionDisksRestTransport._BaseStopAsyncReplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.StopAsyncReplication",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "StopAsyncReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._StopAsyncReplication._get_response(
@@ -2231,7 +2975,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_async_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.stop_async_replication",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "StopAsyncReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopGroupAsyncReplication(
@@ -2270,7 +3036,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the stop group async
             replication method over HTTP.
@@ -2283,8 +3049,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.compute.Operation:
@@ -2311,6 +3079,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_group_async_replication(
                 request, metadata
             )
@@ -2326,6 +3095,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             query_params = _BaseRegionDisksRestTransport._BaseStopGroupAsyncReplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.StopGroupAsyncReplication",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "StopGroupAsyncReplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2350,7 +3146,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_group_async_replication(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.stop_group_async_replication",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "StopGroupAsyncReplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -2388,7 +3206,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.TestPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2400,8 +3218,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.TestPermissionsResponse:
@@ -2411,6 +3231,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             http_options = (
                 _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2426,6 +3247,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             query_params = _BaseRegionDisksRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._TestIamPermissions._get_response(
@@ -2448,7 +3296,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.TestPermissionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.TestPermissionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Update(_BaseRegionDisksRestTransport._BaseUpdate, RegionDisksRestStub):
@@ -2484,7 +3354,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the update method over HTTP.
 
@@ -2496,8 +3366,10 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -2522,6 +3394,7 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             """
 
             http_options = _BaseRegionDisksRestTransport._BaseUpdate._get_http_options()
+
             request, metadata = self._interceptor.pre_update(request, metadata)
             transcoded_request = (
                 _BaseRegionDisksRestTransport._BaseUpdate._get_transcoded_request(
@@ -2539,6 +3412,33 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionDisksClient.Update",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Update",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionDisksRestTransport._Update._get_response(
@@ -2561,7 +3461,29 @@ class RegionDisksRestTransport(_BaseRegionDisksRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionDisksClient.update",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionDisks",
+                        "rpcName": "Update",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

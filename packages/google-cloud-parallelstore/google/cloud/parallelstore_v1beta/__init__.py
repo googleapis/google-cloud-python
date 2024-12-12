@@ -22,6 +22,7 @@ from .services.parallelstore import ParallelstoreAsyncClient, ParallelstoreClien
 from .types.parallelstore import (
     CreateInstanceRequest,
     DeleteInstanceRequest,
+    DeploymentType,
     DestinationGcsBucket,
     DestinationParallelstore,
     DirectoryStripeLevel,
@@ -49,6 +50,7 @@ __all__ = (
     "ParallelstoreAsyncClient",
     "CreateInstanceRequest",
     "DeleteInstanceRequest",
+    "DeploymentType",
     "DestinationGcsBucket",
     "DestinationParallelstore",
     "DirectoryStripeLevel",

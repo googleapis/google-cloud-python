@@ -1156,7 +1156,7 @@ class SuggestionFeature(proto.Message):
 
 class SetSuggestionFeatureConfigRequest(proto.Message):
     r"""The request message for
-    [ConversationProfiles.SetSuggestionFeature][].
+    [ConversationProfiles.SetSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.SetSuggestionFeatureConfig].
 
     Attributes:
         conversation_profile (str):
@@ -1191,7 +1191,8 @@ class SetSuggestionFeatureConfigRequest(proto.Message):
 
 
 class ClearSuggestionFeatureConfigRequest(proto.Message):
-    r"""The request message for [ConversationProfiles.ClearFeature][].
+    r"""The request message for
+    [ConversationProfiles.ClearSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.ClearSuggestionFeatureConfig].
 
     Attributes:
         conversation_profile (str):
@@ -1223,7 +1224,8 @@ class ClearSuggestionFeatureConfigRequest(proto.Message):
 
 
 class SetSuggestionFeatureConfigOperationMetadata(proto.Message):
-    r"""Metadata for a [ConversationProfile.SetSuggestionFeatureConfig][]
+    r"""Metadata for a
+    [ConversationProfiles.SetSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.SetSuggestionFeatureConfig]
     operation.
 
     Attributes:
@@ -1264,7 +1266,8 @@ class SetSuggestionFeatureConfigOperationMetadata(proto.Message):
 
 
 class ClearSuggestionFeatureConfigOperationMetadata(proto.Message):
-    r"""Metadata for a [ConversationProfile.ClearSuggestionFeatureConfig][]
+    r"""Metadata for a
+    [ConversationProfiles.ClearSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.ClearSuggestionFeatureConfig]
     operation.
 
     Attributes:

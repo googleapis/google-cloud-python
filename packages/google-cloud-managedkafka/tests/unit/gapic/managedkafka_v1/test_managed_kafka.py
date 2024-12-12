@@ -1601,6 +1601,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
         call.return_value = resources.Cluster(
             name="name_value",
             state=resources.Cluster.State.CREATING,
+            satisfies_pzi=True,
+            satisfies_pzs=True,
         )
         response = client.get_cluster(request)
 
@@ -1614,6 +1616,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Cluster)
     assert response.name == "name_value"
     assert response.state == resources.Cluster.State.CREATING
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 def test_get_cluster_non_empty_request_with_auto_populated_field():
@@ -1741,6 +1745,8 @@ async def test_get_cluster_async(
             resources.Cluster(
                 name="name_value",
                 state=resources.Cluster.State.CREATING,
+                satisfies_pzi=True,
+                satisfies_pzs=True,
             )
         )
         response = await client.get_cluster(request)
@@ -1755,6 +1761,8 @@ async def test_get_cluster_async(
     assert isinstance(response, resources.Cluster)
     assert response.name == "name_value"
     assert response.state == resources.Cluster.State.CREATING
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -6497,6 +6505,7 @@ def test_list_clusters_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_clusters(request)
 
@@ -6552,6 +6561,7 @@ def test_list_clusters_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_clusters(**mock_args)
 
@@ -6743,6 +6753,7 @@ def test_get_cluster_rest_required_fields(request_type=managed_kafka.GetClusterR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_cluster(request)
 
@@ -6788,6 +6799,7 @@ def test_get_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_cluster(**mock_args)
 
@@ -6934,6 +6946,7 @@ def test_create_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_cluster(request)
 
@@ -7005,6 +7018,7 @@ def test_create_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_cluster(**mock_args)
 
@@ -7147,6 +7161,7 @@ def test_update_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_cluster(request)
 
@@ -7212,6 +7227,7 @@ def test_update_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_cluster(**mock_args)
 
@@ -7353,6 +7369,7 @@ def test_delete_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_cluster(request)
 
@@ -7396,6 +7413,7 @@ def test_delete_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_cluster(**mock_args)
 
@@ -7531,6 +7549,7 @@ def test_list_topics_rest_required_fields(request_type=managed_kafka.ListTopicsR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_topics(request)
 
@@ -7586,6 +7605,7 @@ def test_list_topics_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_topics(**mock_args)
 
@@ -7778,6 +7798,7 @@ def test_get_topic_rest_required_fields(request_type=managed_kafka.GetTopicReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_topic(request)
 
@@ -7825,6 +7846,7 @@ def test_get_topic_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_topic(**mock_args)
 
@@ -7966,6 +7988,7 @@ def test_create_topic_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_topic(request)
 
@@ -8030,6 +8053,7 @@ def test_create_topic_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_topic(**mock_args)
 
@@ -8161,6 +8185,7 @@ def test_update_topic_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_topic(request)
 
@@ -8219,6 +8244,7 @@ def test_update_topic_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_topic(**mock_args)
 
@@ -8348,6 +8374,7 @@ def test_delete_topic_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_topic(request)
 
@@ -8393,6 +8420,7 @@ def test_delete_topic_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_topic(**mock_args)
 
@@ -8535,6 +8563,7 @@ def test_list_consumer_groups_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_consumer_groups(request)
 
@@ -8590,6 +8619,7 @@ def test_list_consumer_groups_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_consumer_groups(**mock_args)
 
@@ -8790,6 +8820,7 @@ def test_get_consumer_group_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_consumer_group(request)
 
@@ -8837,6 +8868,7 @@ def test_get_consumer_group_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_consumer_group(**mock_args)
 
@@ -8971,6 +9003,7 @@ def test_update_consumer_group_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_consumer_group(request)
 
@@ -9029,6 +9062,7 @@ def test_update_consumer_group_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_consumer_group(**mock_args)
 
@@ -9163,6 +9197,7 @@ def test_delete_consumer_group_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_consumer_group(request)
 
@@ -9208,6 +9243,7 @@ def test_delete_consumer_group_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_consumer_group(**mock_args)
 
@@ -9703,6 +9739,8 @@ async def test_get_cluster_empty_call_grpc_asyncio():
             resources.Cluster(
                 name="name_value",
                 state=resources.Cluster.State.CREATING,
+                satisfies_pzi=True,
+                satisfies_pzs=True,
             )
         )
         await client.get_cluster(request=None)
@@ -10065,6 +10103,7 @@ def test_list_clusters_rest_bad_request(request_type=managed_kafka.ListClustersR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_clusters(request)
 
 
@@ -10101,6 +10140,7 @@ def test_list_clusters_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_clusters(request)
 
     # Establish that the response is the type that we expect.
@@ -10142,6 +10182,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = managed_kafka.ListClustersResponse.to_json(
             managed_kafka.ListClustersResponse()
         )
@@ -10186,6 +10227,7 @@ def test_get_cluster_rest_bad_request(request_type=managed_kafka.GetClusterReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_cluster(request)
 
 
@@ -10211,6 +10253,8 @@ def test_get_cluster_rest_call_success(request_type):
         return_value = resources.Cluster(
             name="name_value",
             state=resources.Cluster.State.CREATING,
+            satisfies_pzi=True,
+            satisfies_pzs=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -10222,12 +10266,15 @@ def test_get_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_cluster(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.Cluster)
     assert response.name == "name_value"
     assert response.state == resources.Cluster.State.CREATING
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10263,6 +10310,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Cluster.to_json(resources.Cluster())
         req.return_value.content = return_value
 
@@ -10307,6 +10355,7 @@ def test_create_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_cluster(request)
 
 
@@ -10336,6 +10385,8 @@ def test_create_cluster_rest_call_success(request_type):
         "capacity_config": {"vcpu_count": 1094, "memory_bytes": 1311},
         "rebalance_config": {"mode": 1},
         "state": 1,
+        "satisfies_pzi": True,
+        "satisfies_pzs": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10417,6 +10468,7 @@ def test_create_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -10458,6 +10510,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10504,6 +10557,7 @@ def test_update_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_cluster(request)
 
 
@@ -10535,6 +10589,8 @@ def test_update_cluster_rest_call_success(request_type):
         "capacity_config": {"vcpu_count": 1094, "memory_bytes": 1311},
         "rebalance_config": {"mode": 1},
         "state": 1,
+        "satisfies_pzi": True,
+        "satisfies_pzs": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10616,6 +10672,7 @@ def test_update_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -10657,6 +10714,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10701,6 +10759,7 @@ def test_delete_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_cluster(request)
 
 
@@ -10731,6 +10790,7 @@ def test_delete_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -10772,6 +10832,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10814,6 +10875,7 @@ def test_list_topics_rest_bad_request(request_type=managed_kafka.ListTopicsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_topics(request)
 
 
@@ -10849,6 +10911,7 @@ def test_list_topics_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_topics(request)
 
     # Establish that the response is the type that we expect.
@@ -10889,6 +10952,7 @@ def test_list_topics_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = managed_kafka.ListTopicsResponse.to_json(
             managed_kafka.ListTopicsResponse()
         )
@@ -10935,6 +10999,7 @@ def test_get_topic_rest_bad_request(request_type=managed_kafka.GetTopicRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_topic(request)
 
 
@@ -10974,6 +11039,7 @@ def test_get_topic_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -11014,6 +11080,7 @@ def test_get_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Topic.to_json(resources.Topic())
         req.return_value.content = return_value
 
@@ -11056,6 +11123,7 @@ def test_create_topic_rest_bad_request(request_type=managed_kafka.CreateTopicReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_topic(request)
 
 
@@ -11166,6 +11234,7 @@ def test_create_topic_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -11208,6 +11277,7 @@ def test_create_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Topic.to_json(resources.Topic())
         req.return_value.content = return_value
 
@@ -11254,6 +11324,7 @@ def test_update_topic_rest_bad_request(request_type=managed_kafka.UpdateTopicReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_topic(request)
 
 
@@ -11368,6 +11439,7 @@ def test_update_topic_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -11410,6 +11482,7 @@ def test_update_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Topic.to_json(resources.Topic())
         req.return_value.content = return_value
 
@@ -11454,6 +11527,7 @@ def test_delete_topic_rest_bad_request(request_type=managed_kafka.DeleteTopicReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_topic(request)
 
 
@@ -11486,6 +11560,7 @@ def test_delete_topic_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_topic(request)
 
     # Establish that the response is the type that we expect.
@@ -11522,6 +11597,7 @@ def test_delete_topic_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = managed_kafka.DeleteTopicRequest()
         metadata = [
@@ -11562,6 +11638,7 @@ def test_list_consumer_groups_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_consumer_groups(request)
 
 
@@ -11597,6 +11674,7 @@ def test_list_consumer_groups_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_consumer_groups(request)
 
     # Establish that the response is the type that we expect.
@@ -11637,6 +11715,7 @@ def test_list_consumer_groups_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = managed_kafka.ListConsumerGroupsResponse.to_json(
             managed_kafka.ListConsumerGroupsResponse()
         )
@@ -11685,6 +11764,7 @@ def test_get_consumer_group_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_consumer_group(request)
 
 
@@ -11722,6 +11802,7 @@ def test_get_consumer_group_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_consumer_group(request)
 
     # Establish that the response is the type that we expect.
@@ -11762,6 +11843,7 @@ def test_get_consumer_group_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.ConsumerGroup.to_json(resources.ConsumerGroup())
         req.return_value.content = return_value
 
@@ -11810,6 +11892,7 @@ def test_update_consumer_group_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_consumer_group(request)
 
 
@@ -11920,6 +12003,7 @@ def test_update_consumer_group_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_consumer_group(request)
 
     # Establish that the response is the type that we expect.
@@ -11960,6 +12044,7 @@ def test_update_consumer_group_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.ConsumerGroup.to_json(resources.ConsumerGroup())
         req.return_value.content = return_value
 
@@ -12006,6 +12091,7 @@ def test_delete_consumer_group_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_consumer_group(request)
 
 
@@ -12038,6 +12124,7 @@ def test_delete_consumer_group_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_consumer_group(request)
 
     # Establish that the response is the type that we expect.
@@ -12074,6 +12161,7 @@ def test_delete_consumer_group_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = managed_kafka.DeleteConsumerGroupRequest()
         metadata = [
@@ -12114,6 +12202,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -12144,6 +12233,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -12172,6 +12262,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -12202,6 +12293,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -12232,6 +12324,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -12262,6 +12355,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -12292,6 +12386,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -12322,6 +12417,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -12352,6 +12448,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -12382,6 +12479,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -12412,6 +12510,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -12442,6 +12541,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

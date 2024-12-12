@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,9 +101,10 @@ class StoragePoolTypesRestInterceptor:
     def pre_aggregated_list(
         self,
         request: compute.AggregatedListStoragePoolTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.AggregatedListStoragePoolTypesRequest, Sequence[Tuple[str, str]]
+        compute.AggregatedListStoragePoolTypesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for aggregated_list
 
@@ -118,8 +127,10 @@ class StoragePoolTypesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetStoragePoolTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetStoragePoolTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetStoragePoolTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +150,10 @@ class StoragePoolTypesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListStoragePoolTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListStoragePoolTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListStoragePoolTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -284,7 +297,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.StoragePoolTypeAggregatedList:
             r"""Call the aggregated list method over HTTP.
 
@@ -296,8 +309,10 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.StoragePoolTypeAggregatedList:
@@ -307,6 +322,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             http_options = (
                 _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_transcoded_request(
                 http_options, request
@@ -316,6 +332,33 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             query_params = _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.StoragePoolTypesClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.StoragePoolTypes",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StoragePoolTypesRestTransport._AggregatedList._get_response(
@@ -337,7 +380,31 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             pb_resp = compute.StoragePoolTypeAggregatedList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.StoragePoolTypeAggregatedList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.StoragePoolTypesClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.StoragePoolTypes",
+                        "rpcName": "AggregatedList",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseStoragePoolTypesRestTransport._BaseGet, StoragePoolTypesRestStub):
@@ -372,7 +439,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.StoragePoolType:
             r"""Call the get method over HTTP.
 
@@ -384,8 +451,10 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.StoragePoolType:
@@ -395,6 +464,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             http_options = (
                 _BaseStoragePoolTypesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseStoragePoolTypesRestTransport._BaseGet._get_transcoded_request(
@@ -408,6 +478,33 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.StoragePoolTypesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.StoragePoolTypes",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StoragePoolTypesRestTransport._Get._get_response(
@@ -429,7 +526,29 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             pb_resp = compute.StoragePoolType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.StoragePoolType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.StoragePoolTypesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.StoragePoolTypes",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseStoragePoolTypesRestTransport._BaseList, StoragePoolTypesRestStub):
@@ -464,7 +583,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.StoragePoolTypeList:
             r"""Call the list method over HTTP.
 
@@ -476,8 +595,10 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.StoragePoolTypeList:
@@ -489,6 +610,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             http_options = (
                 _BaseStoragePoolTypesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseStoragePoolTypesRestTransport._BaseList._get_transcoded_request(
@@ -502,6 +624,33 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.StoragePoolTypesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.StoragePoolTypes",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StoragePoolTypesRestTransport._List._get_response(
@@ -523,7 +672,29 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             pb_resp = compute.StoragePoolTypeList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.StoragePoolTypeList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.StoragePoolTypesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.StoragePoolTypes",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

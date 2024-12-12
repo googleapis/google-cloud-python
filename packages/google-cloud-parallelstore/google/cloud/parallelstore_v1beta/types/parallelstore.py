@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "TransferType",
         "FileStripeLevel",
         "DirectoryStripeLevel",
+        "DeploymentType",
         "Instance",
         "ListInstancesRequest",
         "ListInstancesResponse",
@@ -107,6 +108,23 @@ class DirectoryStripeLevel(proto.Enum):
     DIRECTORY_STRIPE_LEVEL_MAX = 3
 
 
+class DeploymentType(proto.Enum):
+    r"""Represents the deployment type for the instance.
+
+    Values:
+        DEPLOYMENT_TYPE_UNSPECIFIED (0):
+            Default Deployment Type
+            It is equivalent to SCRATCH
+        SCRATCH (1):
+            Scratch
+        PERSISTENT (2):
+            Persistent
+    """
+    DEPLOYMENT_TYPE_UNSPECIFIED = 0
+    SCRATCH = 1
+    PERSISTENT = 2
+
+
 class Instance(proto.Message):
     r"""A Parallelstore instance.
 
@@ -178,6 +196,12 @@ class Instance(proto.Message):
                directories.
             -  ``DIRECTORY_STRIPE_LEVEL_MAX``: recommended for
                directories with a large number of files.
+        deployment_type (google.cloud.parallelstore_v1beta.types.DeploymentType):
+            Optional. The deployment type of the instance. Allowed
+            values are:
+
+            -  ``SCRATCH``: the instance is a scratch instance.
+            -  ``PERSISTENT``: the instance is a persistent instance.
     """
 
     class State(proto.Enum):
@@ -265,6 +289,11 @@ class Instance(proto.Message):
         proto.ENUM,
         number=16,
         enum="DirectoryStripeLevel",
+    )
+    deployment_type: "DeploymentType" = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum="DeploymentType",
     )
 
 

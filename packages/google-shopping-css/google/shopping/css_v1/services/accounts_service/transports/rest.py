@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -91,8 +99,10 @@ class AccountsServiceRestInterceptor:
     """
 
     def pre_get_account(
-        self, request: accounts.GetAccountRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[accounts.GetAccountRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: accounts.GetAccountRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[accounts.GetAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_account
 
         Override in a subclass to manipulate the request or metadata
@@ -112,8 +122,10 @@ class AccountsServiceRestInterceptor:
     def pre_list_child_accounts(
         self,
         request: accounts.ListChildAccountsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accounts.ListChildAccountsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accounts.ListChildAccountsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_child_accounts
 
         Override in a subclass to manipulate the request or metadata
@@ -135,8 +147,10 @@ class AccountsServiceRestInterceptor:
     def pre_update_labels(
         self,
         request: accounts.UpdateAccountLabelsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accounts.UpdateAccountLabelsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accounts.UpdateAccountLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -274,7 +288,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accounts.Account:
             r"""Call the get account method over HTTP.
 
@@ -284,8 +298,10 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accounts.Account:
@@ -295,6 +311,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             http_options = (
                 _BaseAccountsServiceRestTransport._BaseGetAccount._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_account(request, metadata)
             transcoded_request = _BaseAccountsServiceRestTransport._BaseGetAccount._get_transcoded_request(
                 http_options, request
@@ -304,6 +321,33 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             query_params = _BaseAccountsServiceRestTransport._BaseGetAccount._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.AccountsServiceClient.GetAccount",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountsService",
+                        "rpcName": "GetAccount",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AccountsServiceRestTransport._GetAccount._get_response(
@@ -325,7 +369,29 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             pb_resp = accounts.Account.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_account(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accounts.Account.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.AccountsServiceClient.get_account",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountsService",
+                        "rpcName": "GetAccount",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListChildAccounts(
@@ -363,7 +429,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accounts.ListChildAccountsResponse:
             r"""Call the list child accounts method over HTTP.
 
@@ -374,8 +440,10 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accounts.ListChildAccountsResponse:
@@ -385,6 +453,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             http_options = (
                 _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_child_accounts(
                 request, metadata
             )
@@ -396,6 +465,33 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             query_params = _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.AccountsServiceClient.ListChildAccounts",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountsService",
+                        "rpcName": "ListChildAccounts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AccountsServiceRestTransport._ListChildAccounts._get_response(
@@ -417,7 +513,31 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             pb_resp = accounts.ListChildAccountsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_child_accounts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accounts.ListChildAccountsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.AccountsServiceClient.list_child_accounts",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountsService",
+                        "rpcName": "ListChildAccounts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateLabels(
@@ -455,7 +575,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accounts.Account:
             r"""Call the update labels method over HTTP.
 
@@ -465,8 +585,10 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accounts.Account:
@@ -476,6 +598,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             http_options = (
                 _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_labels(request, metadata)
             transcoded_request = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_transcoded_request(
                 http_options, request
@@ -489,6 +612,33 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             query_params = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.AccountsServiceClient.UpdateLabels",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountsService",
+                        "rpcName": "UpdateLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AccountsServiceRestTransport._UpdateLabels._get_response(
@@ -511,7 +661,29 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             pb_resp = accounts.Account.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accounts.Account.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.AccountsServiceClient.update_labels",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountsService",
+                        "rpcName": "UpdateLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

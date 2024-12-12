@@ -5261,6 +5261,7 @@ def test_create_participant_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_participant(request)
 
@@ -5315,6 +5316,7 @@ def test_create_participant_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_participant(**mock_args)
 
@@ -5447,6 +5449,7 @@ def test_get_participant_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_participant(request)
 
@@ -5494,6 +5497,7 @@ def test_get_participant_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_participant(**mock_args)
 
@@ -5634,6 +5638,7 @@ def test_list_participants_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_participants(request)
 
@@ -5687,6 +5692,7 @@ def test_list_participants_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_participants(**mock_args)
 
@@ -5883,6 +5889,7 @@ def test_update_participant_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_participant(request)
 
@@ -5941,6 +5948,7 @@ def test_update_participant_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_participant(**mock_args)
 
@@ -6074,6 +6082,7 @@ def test_analyze_content_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_content(request)
 
@@ -6121,6 +6130,7 @@ def test_analyze_content_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_content(**mock_args)
 
@@ -6273,6 +6283,7 @@ def test_suggest_articles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.suggest_articles(request)
 
@@ -6320,6 +6331,7 @@ def test_suggest_articles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.suggest_articles(**mock_args)
 
@@ -6456,6 +6468,7 @@ def test_suggest_faq_answers_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.suggest_faq_answers(request)
 
@@ -6503,6 +6516,7 @@ def test_suggest_faq_answers_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.suggest_faq_answers(**mock_args)
 
@@ -6640,6 +6654,7 @@ def test_suggest_smart_replies_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.suggest_smart_replies(request)
 
@@ -6687,6 +6702,7 @@ def test_suggest_smart_replies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.suggest_smart_replies(**mock_args)
 
@@ -6824,6 +6840,7 @@ def test_suggest_knowledge_assist_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.suggest_knowledge_assist(request)
 
@@ -7712,6 +7729,7 @@ def test_create_participant_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_participant(request)
 
 
@@ -7822,6 +7840,7 @@ def test_create_participant_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_participant(request)
 
     # Establish that the response is the type that we expect.
@@ -7864,6 +7883,7 @@ def test_create_participant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcd_participant.Participant.to_json(
             gcd_participant.Participant()
         )
@@ -7912,6 +7932,7 @@ def test_get_participant_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_participant(request)
 
 
@@ -7951,6 +7972,7 @@ def test_get_participant_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_participant(request)
 
     # Establish that the response is the type that we expect.
@@ -7993,6 +8015,7 @@ def test_get_participant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.Participant.to_json(participant.Participant())
         req.return_value.content = return_value
 
@@ -8037,6 +8060,7 @@ def test_list_participants_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_participants(request)
 
 
@@ -8072,6 +8096,7 @@ def test_list_participants_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_participants(request)
 
     # Establish that the response is the type that we expect.
@@ -8112,6 +8137,7 @@ def test_list_participants_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.ListParticipantsResponse.to_json(
             participant.ListParticipantsResponse()
         )
@@ -8162,6 +8188,7 @@ def test_update_participant_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_participant(request)
 
 
@@ -8276,6 +8303,7 @@ def test_update_participant_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_participant(request)
 
     # Establish that the response is the type that we expect.
@@ -8318,6 +8346,7 @@ def test_update_participant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcd_participant.Participant.to_json(
             gcd_participant.Participant()
         )
@@ -8366,6 +8395,7 @@ def test_analyze_content_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_content(request)
 
 
@@ -8403,6 +8433,7 @@ def test_analyze_content_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_content(request)
 
     # Establish that the response is the type that we expect.
@@ -8443,6 +8474,7 @@ def test_analyze_content_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcd_participant.AnalyzeContentResponse.to_json(
             gcd_participant.AnalyzeContentResponse()
         )
@@ -8503,6 +8535,7 @@ def test_suggest_articles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.suggest_articles(request)
 
 
@@ -8541,6 +8574,7 @@ def test_suggest_articles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.suggest_articles(request)
 
     # Establish that the response is the type that we expect.
@@ -8582,6 +8616,7 @@ def test_suggest_articles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.SuggestArticlesResponse.to_json(
             participant.SuggestArticlesResponse()
         )
@@ -8630,6 +8665,7 @@ def test_suggest_faq_answers_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.suggest_faq_answers(request)
 
 
@@ -8668,6 +8704,7 @@ def test_suggest_faq_answers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.suggest_faq_answers(request)
 
     # Establish that the response is the type that we expect.
@@ -8709,6 +8746,7 @@ def test_suggest_faq_answers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.SuggestFaqAnswersResponse.to_json(
             participant.SuggestFaqAnswersResponse()
         )
@@ -8757,6 +8795,7 @@ def test_suggest_smart_replies_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.suggest_smart_replies(request)
 
 
@@ -8795,6 +8834,7 @@ def test_suggest_smart_replies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.suggest_smart_replies(request)
 
     # Establish that the response is the type that we expect.
@@ -8836,6 +8876,7 @@ def test_suggest_smart_replies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.SuggestSmartRepliesResponse.to_json(
             participant.SuggestSmartRepliesResponse()
         )
@@ -8884,6 +8925,7 @@ def test_suggest_knowledge_assist_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.suggest_knowledge_assist(request)
 
 
@@ -8922,6 +8964,7 @@ def test_suggest_knowledge_assist_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.suggest_knowledge_assist(request)
 
     # Establish that the response is the type that we expect.
@@ -8963,6 +9006,7 @@ def test_suggest_knowledge_assist_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.SuggestKnowledgeAssistResponse.to_json(
             participant.SuggestKnowledgeAssistResponse()
         )
@@ -9011,6 +9055,7 @@ def test_list_suggestions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_suggestions(request)
 
 
@@ -9048,6 +9093,7 @@ def test_list_suggestions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_suggestions(request)
 
     # Establish that the response is the type that we expect.
@@ -9088,6 +9134,7 @@ def test_list_suggestions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.ListSuggestionsResponse.to_json(
             participant.ListSuggestionsResponse()
         )
@@ -9136,6 +9183,7 @@ def test_compile_suggestion_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.compile_suggestion(request)
 
 
@@ -9174,6 +9222,7 @@ def test_compile_suggestion_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.compile_suggestion(request)
 
     # Establish that the response is the type that we expect.
@@ -9215,6 +9264,7 @@ def test_compile_suggestion_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = participant.CompileSuggestionResponse.to_json(
             participant.CompileSuggestionResponse()
         )
@@ -9261,6 +9311,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -9291,6 +9342,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -9319,6 +9371,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -9349,6 +9402,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -9379,6 +9433,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -9409,6 +9464,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -9439,6 +9495,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -9469,6 +9526,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -9497,6 +9555,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -9527,6 +9586,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
