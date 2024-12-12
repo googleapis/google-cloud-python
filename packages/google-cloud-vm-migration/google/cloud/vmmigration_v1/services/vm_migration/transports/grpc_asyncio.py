@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -26,13 +29,92 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.vmmigration_v1.types import vmmigration
 
 from .base import DEFAULT_CLIENT_INFO, VmMigrationTransport
 from .grpc import VmMigrationGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.vmmigration.v1.VmMigration",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.vmmigration.v1.VmMigration",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
@@ -231,10 +313,13 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -257,7 +342,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -284,7 +369,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_sources" not in self._stubs:
-            self._stubs["list_sources"] = self.grpc_channel.unary_unary(
+            self._stubs["list_sources"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListSources",
                 request_serializer=vmmigration.ListSourcesRequest.serialize,
                 response_deserializer=vmmigration.ListSourcesResponse.deserialize,
@@ -310,7 +395,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_source" not in self._stubs:
-            self._stubs["get_source"] = self.grpc_channel.unary_unary(
+            self._stubs["get_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetSource",
                 request_serializer=vmmigration.GetSourceRequest.serialize,
                 response_deserializer=vmmigration.Source.deserialize,
@@ -338,7 +423,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_source" not in self._stubs:
-            self._stubs["create_source"] = self.grpc_channel.unary_unary(
+            self._stubs["create_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateSource",
                 request_serializer=vmmigration.CreateSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -366,7 +451,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_source" not in self._stubs:
-            self._stubs["update_source"] = self.grpc_channel.unary_unary(
+            self._stubs["update_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateSource",
                 request_serializer=vmmigration.UpdateSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -394,7 +479,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_source" not in self._stubs:
-            self._stubs["delete_source"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteSource",
                 request_serializer=vmmigration.DeleteSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -429,7 +514,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_inventory" not in self._stubs:
-            self._stubs["fetch_inventory"] = self.grpc_channel.unary_unary(
+            self._stubs["fetch_inventory"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/FetchInventory",
                 request_serializer=vmmigration.FetchInventoryRequest.serialize,
                 response_deserializer=vmmigration.FetchInventoryResponse.deserialize,
@@ -458,7 +543,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_utilization_reports" not in self._stubs:
-            self._stubs["list_utilization_reports"] = self.grpc_channel.unary_unary(
+            self._stubs["list_utilization_reports"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListUtilizationReports",
                 request_serializer=vmmigration.ListUtilizationReportsRequest.serialize,
                 response_deserializer=vmmigration.ListUtilizationReportsResponse.deserialize,
@@ -487,7 +572,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_utilization_report" not in self._stubs:
-            self._stubs["get_utilization_report"] = self.grpc_channel.unary_unary(
+            self._stubs["get_utilization_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetUtilizationReport",
                 request_serializer=vmmigration.GetUtilizationReportRequest.serialize,
                 response_deserializer=vmmigration.UtilizationReport.deserialize,
@@ -516,7 +601,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_utilization_report" not in self._stubs:
-            self._stubs["create_utilization_report"] = self.grpc_channel.unary_unary(
+            self._stubs["create_utilization_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateUtilizationReport",
                 request_serializer=vmmigration.CreateUtilizationReportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -545,7 +630,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_utilization_report" not in self._stubs:
-            self._stubs["delete_utilization_report"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_utilization_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteUtilizationReport",
                 request_serializer=vmmigration.DeleteUtilizationReportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -574,7 +659,9 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_datacenter_connectors" not in self._stubs:
-            self._stubs["list_datacenter_connectors"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_datacenter_connectors"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListDatacenterConnectors",
                 request_serializer=vmmigration.ListDatacenterConnectorsRequest.serialize,
                 response_deserializer=vmmigration.ListDatacenterConnectorsResponse.deserialize,
@@ -603,7 +690,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_datacenter_connector" not in self._stubs:
-            self._stubs["get_datacenter_connector"] = self.grpc_channel.unary_unary(
+            self._stubs["get_datacenter_connector"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetDatacenterConnector",
                 request_serializer=vmmigration.GetDatacenterConnectorRequest.serialize,
                 response_deserializer=vmmigration.DatacenterConnector.deserialize,
@@ -632,7 +719,9 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_datacenter_connector" not in self._stubs:
-            self._stubs["create_datacenter_connector"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_datacenter_connector"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateDatacenterConnector",
                 request_serializer=vmmigration.CreateDatacenterConnectorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -661,7 +750,9 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_datacenter_connector" not in self._stubs:
-            self._stubs["delete_datacenter_connector"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_datacenter_connector"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector",
                 request_serializer=vmmigration.DeleteDatacenterConnectorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -690,7 +781,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "upgrade_appliance" not in self._stubs:
-            self._stubs["upgrade_appliance"] = self.grpc_channel.unary_unary(
+            self._stubs["upgrade_appliance"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/UpgradeAppliance",
                 request_serializer=vmmigration.UpgradeApplianceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -718,7 +809,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_migrating_vm" not in self._stubs:
-            self._stubs["create_migrating_vm"] = self.grpc_channel.unary_unary(
+            self._stubs["create_migrating_vm"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateMigratingVm",
                 request_serializer=vmmigration.CreateMigratingVmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -747,7 +838,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_migrating_vms" not in self._stubs:
-            self._stubs["list_migrating_vms"] = self.grpc_channel.unary_unary(
+            self._stubs["list_migrating_vms"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListMigratingVms",
                 request_serializer=vmmigration.ListMigratingVmsRequest.serialize,
                 response_deserializer=vmmigration.ListMigratingVmsResponse.deserialize,
@@ -775,7 +866,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_migrating_vm" not in self._stubs:
-            self._stubs["get_migrating_vm"] = self.grpc_channel.unary_unary(
+            self._stubs["get_migrating_vm"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetMigratingVm",
                 request_serializer=vmmigration.GetMigratingVmRequest.serialize,
                 response_deserializer=vmmigration.MigratingVm.deserialize,
@@ -803,7 +894,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_migrating_vm" not in self._stubs:
-            self._stubs["update_migrating_vm"] = self.grpc_channel.unary_unary(
+            self._stubs["update_migrating_vm"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateMigratingVm",
                 request_serializer=vmmigration.UpdateMigratingVmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -831,7 +922,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_migrating_vm" not in self._stubs:
-            self._stubs["delete_migrating_vm"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_migrating_vm"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteMigratingVm",
                 request_serializer=vmmigration.DeleteMigratingVmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -861,7 +952,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_migration" not in self._stubs:
-            self._stubs["start_migration"] = self.grpc_channel.unary_unary(
+            self._stubs["start_migration"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/StartMigration",
                 request_serializer=vmmigration.StartMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -894,7 +985,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "resume_migration" not in self._stubs:
-            self._stubs["resume_migration"] = self.grpc_channel.unary_unary(
+            self._stubs["resume_migration"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ResumeMigration",
                 request_serializer=vmmigration.ResumeMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -925,7 +1016,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "pause_migration" not in self._stubs:
-            self._stubs["pause_migration"] = self.grpc_channel.unary_unary(
+            self._stubs["pause_migration"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/PauseMigration",
                 request_serializer=vmmigration.PauseMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -955,7 +1046,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "finalize_migration" not in self._stubs:
-            self._stubs["finalize_migration"] = self.grpc_channel.unary_unary(
+            self._stubs["finalize_migration"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/FinalizeMigration",
                 request_serializer=vmmigration.FinalizeMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -983,7 +1074,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_clone_job" not in self._stubs:
-            self._stubs["create_clone_job"] = self.grpc_channel.unary_unary(
+            self._stubs["create_clone_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateCloneJob",
                 request_serializer=vmmigration.CreateCloneJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1011,7 +1102,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_clone_job" not in self._stubs:
-            self._stubs["cancel_clone_job"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_clone_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CancelCloneJob",
                 request_serializer=vmmigration.CancelCloneJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1039,7 +1130,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_clone_jobs" not in self._stubs:
-            self._stubs["list_clone_jobs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_clone_jobs"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListCloneJobs",
                 request_serializer=vmmigration.ListCloneJobsRequest.serialize,
                 response_deserializer=vmmigration.ListCloneJobsResponse.deserialize,
@@ -1065,7 +1156,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_clone_job" not in self._stubs:
-            self._stubs["get_clone_job"] = self.grpc_channel.unary_unary(
+            self._stubs["get_clone_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetCloneJob",
                 request_serializer=vmmigration.GetCloneJobRequest.serialize,
                 response_deserializer=vmmigration.CloneJob.deserialize,
@@ -1095,7 +1186,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cutover_job" not in self._stubs:
-            self._stubs["create_cutover_job"] = self.grpc_channel.unary_unary(
+            self._stubs["create_cutover_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateCutoverJob",
                 request_serializer=vmmigration.CreateCutoverJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1123,7 +1214,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_cutover_job" not in self._stubs:
-            self._stubs["cancel_cutover_job"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_cutover_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CancelCutoverJob",
                 request_serializer=vmmigration.CancelCutoverJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1152,7 +1243,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_cutover_jobs" not in self._stubs:
-            self._stubs["list_cutover_jobs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_cutover_jobs"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListCutoverJobs",
                 request_serializer=vmmigration.ListCutoverJobsRequest.serialize,
                 response_deserializer=vmmigration.ListCutoverJobsResponse.deserialize,
@@ -1180,7 +1271,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cutover_job" not in self._stubs:
-            self._stubs["get_cutover_job"] = self.grpc_channel.unary_unary(
+            self._stubs["get_cutover_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetCutoverJob",
                 request_serializer=vmmigration.GetCutoverJobRequest.serialize,
                 response_deserializer=vmmigration.CutoverJob.deserialize,
@@ -1208,7 +1299,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_groups" not in self._stubs:
-            self._stubs["list_groups"] = self.grpc_channel.unary_unary(
+            self._stubs["list_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListGroups",
                 request_serializer=vmmigration.ListGroupsRequest.serialize,
                 response_deserializer=vmmigration.ListGroupsResponse.deserialize,
@@ -1234,7 +1325,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_group" not in self._stubs:
-            self._stubs["get_group"] = self.grpc_channel.unary_unary(
+            self._stubs["get_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetGroup",
                 request_serializer=vmmigration.GetGroupRequest.serialize,
                 response_deserializer=vmmigration.Group.deserialize,
@@ -1262,7 +1353,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_group" not in self._stubs:
-            self._stubs["create_group"] = self.grpc_channel.unary_unary(
+            self._stubs["create_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateGroup",
                 request_serializer=vmmigration.CreateGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1290,7 +1381,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_group" not in self._stubs:
-            self._stubs["update_group"] = self.grpc_channel.unary_unary(
+            self._stubs["update_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateGroup",
                 request_serializer=vmmigration.UpdateGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1318,7 +1409,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_group" not in self._stubs:
-            self._stubs["delete_group"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteGroup",
                 request_serializer=vmmigration.DeleteGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1346,7 +1437,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "add_group_migration" not in self._stubs:
-            self._stubs["add_group_migration"] = self.grpc_channel.unary_unary(
+            self._stubs["add_group_migration"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/AddGroupMigration",
                 request_serializer=vmmigration.AddGroupMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1374,7 +1465,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_group_migration" not in self._stubs:
-            self._stubs["remove_group_migration"] = self.grpc_channel.unary_unary(
+            self._stubs["remove_group_migration"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/RemoveGroupMigration",
                 request_serializer=vmmigration.RemoveGroupMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1406,7 +1497,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_target_projects" not in self._stubs:
-            self._stubs["list_target_projects"] = self.grpc_channel.unary_unary(
+            self._stubs["list_target_projects"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListTargetProjects",
                 request_serializer=vmmigration.ListTargetProjectsRequest.serialize,
                 response_deserializer=vmmigration.ListTargetProjectsResponse.deserialize,
@@ -1437,7 +1528,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_target_project" not in self._stubs:
-            self._stubs["get_target_project"] = self.grpc_channel.unary_unary(
+            self._stubs["get_target_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetTargetProject",
                 request_serializer=vmmigration.GetTargetProjectRequest.serialize,
                 response_deserializer=vmmigration.TargetProject.deserialize,
@@ -1468,7 +1559,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_target_project" not in self._stubs:
-            self._stubs["create_target_project"] = self.grpc_channel.unary_unary(
+            self._stubs["create_target_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/CreateTargetProject",
                 request_serializer=vmmigration.CreateTargetProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1499,7 +1590,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_target_project" not in self._stubs:
-            self._stubs["update_target_project"] = self.grpc_channel.unary_unary(
+            self._stubs["update_target_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/UpdateTargetProject",
                 request_serializer=vmmigration.UpdateTargetProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1530,7 +1621,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_target_project" not in self._stubs:
-            self._stubs["delete_target_project"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_target_project"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteTargetProject",
                 request_serializer=vmmigration.DeleteTargetProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1559,7 +1650,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_replication_cycles" not in self._stubs:
-            self._stubs["list_replication_cycles"] = self.grpc_channel.unary_unary(
+            self._stubs["list_replication_cycles"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/ListReplicationCycles",
                 request_serializer=vmmigration.ListReplicationCyclesRequest.serialize,
                 response_deserializer=vmmigration.ListReplicationCyclesResponse.deserialize,
@@ -1588,7 +1679,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_replication_cycle" not in self._stubs:
-            self._stubs["get_replication_cycle"] = self.grpc_channel.unary_unary(
+            self._stubs["get_replication_cycle"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmmigration.v1.VmMigration/GetReplicationCycle",
                 request_serializer=vmmigration.GetReplicationCycleRequest.serialize,
                 response_deserializer=vmmigration.ReplicationCycle.deserialize,
@@ -1866,7 +1957,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -1882,7 +1973,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1899,7 +1990,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1916,7 +2007,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1935,7 +2026,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1954,7 +2045,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1971,7 +2062,7 @@ class VmMigrationGrpcAsyncIOTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

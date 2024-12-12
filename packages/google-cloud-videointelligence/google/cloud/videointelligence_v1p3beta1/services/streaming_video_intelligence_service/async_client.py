@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     AsyncIterable,
@@ -57,6 +58,15 @@ from .transports.base import (
 from .transports.grpc_asyncio import (
     StreamingVideoIntelligenceServiceGrpcAsyncIOTransport,
 )
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class StreamingVideoIntelligenceServiceAsyncClient:
@@ -275,6 +285,28 @@ class StreamingVideoIntelligenceServiceAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.videointelligence_v1p3beta1.StreamingVideoIntelligenceServiceAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService",
+                    "credentialsType": None,
+                },
+            )
+
     def streaming_annotate_video(
         self,
         requests: Optional[
@@ -283,7 +315,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[video_intelligence.StreamingAnnotateVideoResponse]]:
         r"""Performs video annotation with bidirectional
         streaming: emitting results while sending video/audio
@@ -337,8 +369,10 @@ class StreamingVideoIntelligenceServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             AsyncIterable[google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse]:

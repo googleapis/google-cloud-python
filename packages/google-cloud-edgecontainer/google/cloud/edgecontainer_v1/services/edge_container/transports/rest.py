@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -229,8 +237,10 @@ class EdgeContainerRestInterceptor:
     """
 
     def pre_create_cluster(
-        self, request: service.CreateClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -252,8 +262,8 @@ class EdgeContainerRestInterceptor:
     def pre_create_node_pool(
         self,
         request: service.CreateNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -275,8 +285,10 @@ class EdgeContainerRestInterceptor:
     def pre_create_vpn_connection(
         self,
         request: service.CreateVpnConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateVpnConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateVpnConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_vpn_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -296,8 +308,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_delete_cluster(
-        self, request: service.DeleteClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -319,8 +333,8 @@ class EdgeContainerRestInterceptor:
     def pre_delete_node_pool(
         self,
         request: service.DeleteNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -342,8 +356,10 @@ class EdgeContainerRestInterceptor:
     def pre_delete_vpn_connection(
         self,
         request: service.DeleteVpnConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteVpnConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DeleteVpnConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_vpn_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -365,8 +381,10 @@ class EdgeContainerRestInterceptor:
     def pre_generate_access_token(
         self,
         request: service.GenerateAccessTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GenerateAccessTokenRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GenerateAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for generate_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -388,8 +406,11 @@ class EdgeContainerRestInterceptor:
     def pre_generate_offline_credential(
         self,
         request: service.GenerateOfflineCredentialRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GenerateOfflineCredentialRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GenerateOfflineCredentialRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for generate_offline_credential
 
         Override in a subclass to manipulate the request or metadata
@@ -409,8 +430,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_get_cluster(
-        self, request: service.GetClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -428,8 +451,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_get_machine(
-        self, request: service.GetMachineRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetMachineRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetMachineRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetMachineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_machine
 
         Override in a subclass to manipulate the request or metadata
@@ -447,8 +472,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_get_node_pool(
-        self, request: service.GetNodePoolRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetNodePoolRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetNodePoolRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -468,8 +495,8 @@ class EdgeContainerRestInterceptor:
     def pre_get_server_config(
         self,
         request: service.GetServerConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetServerConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -491,8 +518,10 @@ class EdgeContainerRestInterceptor:
     def pre_get_vpn_connection(
         self,
         request: service.GetVpnConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetVpnConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetVpnConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_vpn_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -512,8 +541,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_list_clusters(
-        self, request: service.ListClustersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListClustersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListClustersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -533,8 +564,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_list_machines(
-        self, request: service.ListMachinesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListMachinesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListMachinesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListMachinesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_machines
 
         Override in a subclass to manipulate the request or metadata
@@ -554,8 +587,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_list_node_pools(
-        self, request: service.ListNodePoolsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListNodePoolsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListNodePoolsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListNodePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_node_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -577,8 +612,10 @@ class EdgeContainerRestInterceptor:
     def pre_list_vpn_connections(
         self,
         request: service.ListVpnConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListVpnConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListVpnConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_vpn_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -598,8 +635,10 @@ class EdgeContainerRestInterceptor:
         return response
 
     def pre_update_cluster(
-        self, request: service.UpdateClusterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateClusterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -621,8 +660,8 @@ class EdgeContainerRestInterceptor:
     def pre_update_node_pool(
         self,
         request: service.UpdateNodePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateNodePoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateNodePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_node_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -644,8 +683,8 @@ class EdgeContainerRestInterceptor:
     def pre_upgrade_cluster(
         self,
         request: service.UpgradeClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpgradeClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpgradeClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upgrade_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -667,8 +706,10 @@ class EdgeContainerRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -690,8 +731,10 @@ class EdgeContainerRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -713,8 +756,10 @@ class EdgeContainerRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -734,8 +779,10 @@ class EdgeContainerRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -755,8 +802,10 @@ class EdgeContainerRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -778,8 +827,10 @@ class EdgeContainerRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -975,7 +1026,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create cluster method over HTTP.
 
@@ -985,8 +1036,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -999,6 +1052,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseCreateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseCreateCluster._get_transcoded_request(
                 http_options, request
@@ -1012,6 +1066,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseCreateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.CreateCluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "CreateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._CreateCluster._get_response(
@@ -1032,7 +1113,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.create_cluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "CreateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNodePool(
@@ -1070,7 +1173,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create node pool method over HTTP.
 
@@ -1080,8 +1183,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1094,6 +1199,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseCreateNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_node_pool(
                 request, metadata
             )
@@ -1109,6 +1215,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseCreateNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.CreateNodePool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "CreateNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._CreateNodePool._get_response(
@@ -1129,7 +1262,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.create_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "CreateNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateVpnConnection(
@@ -1167,7 +1322,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create vpn connection method over HTTP.
 
@@ -1177,8 +1332,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1191,6 +1348,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseCreateVpnConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_vpn_connection(
                 request, metadata
             )
@@ -1206,6 +1364,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseCreateVpnConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.CreateVpnConnection",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "CreateVpnConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._CreateVpnConnection._get_response(
@@ -1226,7 +1411,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_vpn_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.create_vpn_connection",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "CreateVpnConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCluster(
@@ -1263,7 +1470,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete cluster method over HTTP.
 
@@ -1273,8 +1480,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1287,6 +1496,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseDeleteCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseDeleteCluster._get_transcoded_request(
                 http_options, request
@@ -1296,6 +1506,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseDeleteCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.DeleteCluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "DeleteCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._DeleteCluster._get_response(
@@ -1315,7 +1552,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.delete_cluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "DeleteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNodePool(
@@ -1352,7 +1611,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete node pool method over HTTP.
 
@@ -1362,8 +1621,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1376,6 +1637,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseDeleteNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_node_pool(
                 request, metadata
             )
@@ -1387,6 +1649,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseDeleteNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.DeleteNodePool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "DeleteNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._DeleteNodePool._get_response(
@@ -1406,7 +1695,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.delete_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "DeleteNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteVpnConnection(
@@ -1443,7 +1754,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete vpn connection method over HTTP.
 
@@ -1453,8 +1764,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1467,6 +1780,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseDeleteVpnConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_vpn_connection(
                 request, metadata
             )
@@ -1478,6 +1792,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseDeleteVpnConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.DeleteVpnConnection",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "DeleteVpnConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._DeleteVpnConnection._get_response(
@@ -1497,7 +1838,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_vpn_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.delete_vpn_connection",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "DeleteVpnConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAccessToken(
@@ -1534,7 +1897,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.GenerateAccessTokenResponse:
             r"""Call the generate access token method over HTTP.
 
@@ -1545,8 +1908,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.GenerateAccessTokenResponse:
@@ -1556,6 +1921,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGenerateAccessToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_access_token(
                 request, metadata
             )
@@ -1567,6 +1933,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseGenerateAccessToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GenerateAccessToken",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GenerateAccessToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GenerateAccessToken._get_response(
@@ -1588,7 +1981,31 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = service.GenerateAccessTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_access_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.GenerateAccessTokenResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.generate_access_token",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GenerateAccessToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateOfflineCredential(
@@ -1626,7 +2043,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.GenerateOfflineCredentialResponse:
             r"""Call the generate offline
             credential method over HTTP.
@@ -1638,8 +2055,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.GenerateOfflineCredentialResponse:
@@ -1649,6 +2068,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGenerateOfflineCredential._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_offline_credential(
                 request, metadata
             )
@@ -1660,6 +2080,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseGenerateOfflineCredential._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GenerateOfflineCredential",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GenerateOfflineCredential",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1683,7 +2130,31 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = service.GenerateOfflineCredentialResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_offline_credential(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service.GenerateOfflineCredentialResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.generate_offline_credential",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GenerateOfflineCredential",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCluster(
@@ -1720,7 +2191,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Cluster:
             r"""Call the get cluster method over HTTP.
 
@@ -1730,8 +2201,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Cluster:
@@ -1743,6 +2216,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGetCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
             transcoded_request = (
                 _BaseEdgeContainerRestTransport._BaseGetCluster._get_transcoded_request(
@@ -1756,6 +2230,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GetCluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GetCluster._get_response(
@@ -1777,7 +2278,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = resources.Cluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Cluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.get_cluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMachine(
@@ -1814,7 +2337,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Machine:
             r"""Call the get machine method over HTTP.
 
@@ -1824,8 +2347,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Machine:
@@ -1838,6 +2363,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGetMachine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_machine(request, metadata)
             transcoded_request = (
                 _BaseEdgeContainerRestTransport._BaseGetMachine._get_transcoded_request(
@@ -1851,6 +2377,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GetMachine",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetMachine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GetMachine._get_response(
@@ -1872,7 +2425,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = resources.Machine.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_machine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Machine.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.get_machine",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetMachine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNodePool(
@@ -1909,7 +2484,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.NodePool:
             r"""Call the get node pool method over HTTP.
 
@@ -1919,8 +2494,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.NodePool:
@@ -1933,6 +2510,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGetNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_node_pool(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseGetNodePool._get_transcoded_request(
                 http_options, request
@@ -1944,6 +2522,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GetNodePool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GetNodePool._get_response(
@@ -1965,7 +2570,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = resources.NodePool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.NodePool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.get_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetServerConfig(
@@ -2002,7 +2629,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ServerConfig:
             r"""Call the get server config method over HTTP.
 
@@ -2012,8 +2639,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ServerConfig:
@@ -2025,6 +2654,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGetServerConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_server_config(
                 request, metadata
             )
@@ -2036,6 +2666,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseGetServerConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GetServerConfig",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetServerConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GetServerConfig._get_response(
@@ -2057,7 +2714,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = resources.ServerConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_server_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ServerConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.get_server_config",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetServerConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVpnConnection(
@@ -2094,7 +2773,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.VpnConnection:
             r"""Call the get vpn connection method over HTTP.
 
@@ -2104,8 +2783,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.VpnConnection:
@@ -2115,6 +2796,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGetVpnConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_vpn_connection(
                 request, metadata
             )
@@ -2126,6 +2808,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseGetVpnConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GetVpnConnection",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetVpnConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GetVpnConnection._get_response(
@@ -2147,7 +2856,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = resources.VpnConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_vpn_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.VpnConnection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.get_vpn_connection",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetVpnConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClusters(
@@ -2184,7 +2915,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListClustersResponse:
             r"""Call the list clusters method over HTTP.
 
@@ -2194,8 +2925,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListClustersResponse:
@@ -2205,6 +2938,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseListClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseListClusters._get_transcoded_request(
                 http_options, request
@@ -2214,6 +2948,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseListClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.ListClusters",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._ListClusters._get_response(
@@ -2235,7 +2996,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = service.ListClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListClustersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.list_clusters",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMachines(
@@ -2272,7 +3055,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListMachinesResponse:
             r"""Call the list machines method over HTTP.
 
@@ -2282,8 +3065,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListMachinesResponse:
@@ -2293,6 +3078,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseListMachines._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_machines(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseListMachines._get_transcoded_request(
                 http_options, request
@@ -2302,6 +3088,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseListMachines._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.ListMachines",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListMachines",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._ListMachines._get_response(
@@ -2323,7 +3136,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = service.ListMachinesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_machines(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListMachinesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.list_machines",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListMachines",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNodePools(
@@ -2360,7 +3195,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListNodePoolsResponse:
             r"""Call the list node pools method over HTTP.
 
@@ -2370,8 +3205,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListNodePoolsResponse:
@@ -2381,6 +3218,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseListNodePools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_node_pools(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseListNodePools._get_transcoded_request(
                 http_options, request
@@ -2390,6 +3228,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseListNodePools._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.ListNodePools",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListNodePools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._ListNodePools._get_response(
@@ -2411,7 +3276,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = service.ListNodePoolsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_node_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListNodePoolsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.list_node_pools",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListNodePools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVpnConnections(
@@ -2448,7 +3335,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListVpnConnectionsResponse:
             r"""Call the list vpn connections method over HTTP.
 
@@ -2458,8 +3345,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListVpnConnectionsResponse:
@@ -2471,6 +3360,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseListVpnConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_vpn_connections(
                 request, metadata
             )
@@ -2482,6 +3372,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseListVpnConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.ListVpnConnections",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListVpnConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._ListVpnConnections._get_response(
@@ -2503,7 +3420,31 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             pb_resp = service.ListVpnConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_vpn_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListVpnConnectionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.list_vpn_connections",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListVpnConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCluster(
@@ -2541,7 +3482,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update cluster method over HTTP.
 
@@ -2551,8 +3492,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2565,6 +3508,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseUpdateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseUpdateCluster._get_transcoded_request(
                 http_options, request
@@ -2578,6 +3522,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseUpdateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.UpdateCluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "UpdateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._UpdateCluster._get_response(
@@ -2598,7 +3569,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.update_cluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "UpdateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNodePool(
@@ -2636,7 +3629,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update node pool method over HTTP.
 
@@ -2646,8 +3639,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2660,6 +3655,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseUpdateNodePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_node_pool(
                 request, metadata
             )
@@ -2675,6 +3671,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseUpdateNodePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.UpdateNodePool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "UpdateNodePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._UpdateNodePool._get_response(
@@ -2695,7 +3718,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_node_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.update_node_pool",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "UpdateNodePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpgradeCluster(
@@ -2733,7 +3778,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the upgrade cluster method over HTTP.
 
@@ -2743,8 +3788,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2757,6 +3804,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseUpgradeCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_upgrade_cluster(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseUpgradeCluster._get_transcoded_request(
                 http_options, request
@@ -2770,6 +3818,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseUpgradeCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.UpgradeCluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "UpgradeCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._UpgradeCluster._get_response(
@@ -2790,7 +3865,29 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_upgrade_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerClient.upgrade_cluster",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "UpgradeCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2994,7 +4091,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3004,8 +4101,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3014,6 +4113,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -3025,6 +4125,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GetLocation._get_response(
@@ -3045,6 +4172,27 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3085,7 +4233,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3095,8 +4243,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3105,6 +4255,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3114,6 +4265,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._ListLocations._get_response(
@@ -3134,6 +4312,27 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3175,7 +4374,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3185,13 +4384,16 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3207,6 +4409,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._CancelOperation._get_response(
@@ -3264,7 +4493,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3274,13 +4503,16 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3292,6 +4524,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._DeleteOperation._get_response(
@@ -3348,7 +4607,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3358,8 +4617,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3368,6 +4629,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3377,6 +4639,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._GetOperation._get_response(
@@ -3397,6 +4686,27 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3437,7 +4747,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3447,8 +4757,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3457,6 +4769,7 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             http_options = (
                 _BaseEdgeContainerRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseEdgeContainerRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3466,6 +4779,33 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             query_params = _BaseEdgeContainerRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgecontainer_v1.EdgeContainerClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeContainerRestTransport._ListOperations._get_response(
@@ -3486,6 +4826,27 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgecontainer_v1.EdgeContainerAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.edgecontainer.v1.EdgeContainer",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

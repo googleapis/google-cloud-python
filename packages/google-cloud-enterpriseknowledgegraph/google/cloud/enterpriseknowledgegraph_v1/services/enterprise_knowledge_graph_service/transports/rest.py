@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -135,8 +143,11 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     def pre_cancel_entity_reconciliation_job(
         self,
         request: service.CancelEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CancelEntityReconciliationJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CancelEntityReconciliationJobRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for cancel_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -147,8 +158,11 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     def pre_create_entity_reconciliation_job(
         self,
         request: service.CreateEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateEntityReconciliationJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateEntityReconciliationJobRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -170,8 +184,11 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     def pre_delete_entity_reconciliation_job(
         self,
         request: service.DeleteEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteEntityReconciliationJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DeleteEntityReconciliationJobRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -182,8 +199,11 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     def pre_get_entity_reconciliation_job(
         self,
         request: service.GetEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetEntityReconciliationJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetEntityReconciliationJobRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -205,8 +225,11 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     def pre_list_entity_reconciliation_jobs(
         self,
         request: service.ListEntityReconciliationJobsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListEntityReconciliationJobsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListEntityReconciliationJobsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_entity_reconciliation_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -226,8 +249,10 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def pre_lookup(
-        self, request: service.LookupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.LookupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.LookupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.LookupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup
 
         Override in a subclass to manipulate the request or metadata
@@ -247,8 +272,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     def pre_lookup_public_kg(
         self,
         request: service.LookupPublicKgRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.LookupPublicKgRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.LookupPublicKgRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_public_kg
 
         Override in a subclass to manipulate the request or metadata
@@ -268,8 +293,10 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def pre_search(
-        self, request: service.SearchRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.SearchRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.SearchRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.SearchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search
 
         Override in a subclass to manipulate the request or metadata
@@ -289,8 +316,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     def pre_search_public_kg(
         self,
         request: service.SearchPublicKgRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.SearchPublicKgRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.SearchPublicKgRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_public_kg
 
         Override in a subclass to manipulate the request or metadata
@@ -438,7 +465,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the cancel entity
             reconciliation job method over HTTP.
@@ -450,13 +477,16 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_entity_reconciliation_job(
                 request, metadata
             )
@@ -472,6 +502,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.CancelEntityReconciliationJob",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "CancelEntityReconciliationJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._CancelEntityReconciliationJob._get_response(
@@ -527,7 +584,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.EntityReconciliationJob:
             r"""Call the create entity
             reconciliation job method over HTTP.
@@ -539,8 +596,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.EntityReconciliationJob:
@@ -550,6 +609,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_entity_reconciliation_job(
                 request, metadata
             )
@@ -565,6 +625,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.CreateEntityReconciliationJob",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "CreateEntityReconciliationJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._CreateEntityReconciliationJob._get_response(
@@ -587,7 +674,29 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             pb_resp = service.EntityReconciliationJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_entity_reconciliation_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.EntityReconciliationJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.create_entity_reconciliation_job",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "CreateEntityReconciliationJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEntityReconciliationJob(
@@ -627,7 +736,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete entity
             reconciliation job method over HTTP.
@@ -639,13 +748,16 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseDeleteEntityReconciliationJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_entity_reconciliation_job(
                 request, metadata
             )
@@ -657,6 +769,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseDeleteEntityReconciliationJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.DeleteEntityReconciliationJob",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "DeleteEntityReconciliationJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._DeleteEntityReconciliationJob._get_response(
@@ -710,7 +849,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.EntityReconciliationJob:
             r"""Call the get entity reconciliation
             job method over HTTP.
@@ -722,8 +861,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.EntityReconciliationJob:
@@ -733,6 +874,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseGetEntityReconciliationJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_entity_reconciliation_job(
                 request, metadata
             )
@@ -744,6 +886,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseGetEntityReconciliationJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.GetEntityReconciliationJob",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "GetEntityReconciliationJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._GetEntityReconciliationJob._get_response(
@@ -765,7 +934,29 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             pb_resp = service.EntityReconciliationJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_entity_reconciliation_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.EntityReconciliationJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.get_entity_reconciliation_job",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "GetEntityReconciliationJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEntityReconciliationJobs(
@@ -805,7 +996,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListEntityReconciliationJobsResponse:
             r"""Call the list entity
             reconciliation jobs method over HTTP.
@@ -817,8 +1008,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.ListEntityReconciliationJobsResponse:
@@ -830,6 +1023,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseListEntityReconciliationJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_entity_reconciliation_jobs(
                 request, metadata
             )
@@ -841,6 +1035,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseListEntityReconciliationJobs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.ListEntityReconciliationJobs",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "ListEntityReconciliationJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._ListEntityReconciliationJobs._get_response(
@@ -862,7 +1083,31 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             pb_resp = service.ListEntityReconciliationJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_entity_reconciliation_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service.ListEntityReconciliationJobsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.list_entity_reconciliation_jobs",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "ListEntityReconciliationJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Lookup(
@@ -900,7 +1145,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.LookupResponse:
             r"""Call the lookup method over HTTP.
 
@@ -911,8 +1156,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.LookupResponse:
@@ -924,6 +1171,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_lookup(request, metadata)
             transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_transcoded_request(
                 http_options, request
@@ -933,6 +1181,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.Lookup",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "Lookup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -956,7 +1231,29 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             pb_resp = service.LookupResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.LookupResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.lookup",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "Lookup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LookupPublicKg(
@@ -994,7 +1291,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.LookupPublicKgResponse:
             r"""Call the lookup public kg method over HTTP.
 
@@ -1005,8 +1302,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.LookupPublicKgResponse:
@@ -1018,6 +1317,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_lookup_public_kg(
                 request, metadata
             )
@@ -1029,6 +1329,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.LookupPublicKg",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "LookupPublicKg",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._LookupPublicKg._get_response(
@@ -1050,7 +1377,29 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             pb_resp = service.LookupPublicKgResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup_public_kg(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.LookupPublicKgResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.lookup_public_kg",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "LookupPublicKg",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Search(
@@ -1088,7 +1437,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.SearchResponse:
             r"""Call the search method over HTTP.
 
@@ -1099,8 +1448,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.SearchResponse:
@@ -1112,6 +1463,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search(request, metadata)
             transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_transcoded_request(
                 http_options, request
@@ -1121,6 +1473,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.Search",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "Search",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1144,7 +1523,29 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             pb_resp = service.SearchResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.SearchResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.search",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "Search",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchPublicKg(
@@ -1182,7 +1583,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.SearchPublicKgResponse:
             r"""Call the search public kg method over HTTP.
 
@@ -1193,8 +1594,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.SearchPublicKgResponse:
@@ -1206,6 +1609,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             http_options = (
                 _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_public_kg(
                 request, metadata
             )
@@ -1217,6 +1621,33 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.SearchPublicKg",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "SearchPublicKg",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._SearchPublicKg._get_response(
@@ -1238,7 +1669,29 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             pb_resp = service.SearchPublicKgResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_public_kg(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.SearchPublicKgResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.enterpriseknowledgegraph_v1.EnterpriseKnowledgeGraphServiceClient.search_public_kg",
+                    extra={
+                        "serviceName": "google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService",
+                        "rpcName": "SearchPublicKg",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

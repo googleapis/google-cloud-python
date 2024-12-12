@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,7 +27,10 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.visionai_v1alpha1.types import (
     common,
@@ -33,6 +39,81 @@ from google.cloud.visionai_v1alpha1.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO, StreamsServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.visionai.v1alpha1.StreamsService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class StreamsServiceGrpcTransport(StreamsServiceTransport):
@@ -192,7 +273,12 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -256,7 +342,9 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -282,7 +370,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_clusters" not in self._stubs:
-            self._stubs["list_clusters"] = self.grpc_channel.unary_unary(
+            self._stubs["list_clusters"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/ListClusters",
                 request_serializer=streams_service.ListClustersRequest.serialize,
                 response_deserializer=streams_service.ListClustersResponse.deserialize,
@@ -308,7 +396,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cluster" not in self._stubs:
-            self._stubs["get_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["get_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/GetCluster",
                 request_serializer=streams_service.GetClusterRequest.serialize,
                 response_deserializer=common.Cluster.deserialize,
@@ -335,7 +423,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cluster" not in self._stubs:
-            self._stubs["create_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["create_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/CreateCluster",
                 request_serializer=streams_service.CreateClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -361,7 +449,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_cluster" not in self._stubs:
-            self._stubs["update_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["update_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/UpdateCluster",
                 request_serializer=streams_service.UpdateClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -387,7 +475,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_cluster" not in self._stubs:
-            self._stubs["delete_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/DeleteCluster",
                 request_serializer=streams_service.DeleteClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -415,7 +503,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_streams" not in self._stubs:
-            self._stubs["list_streams"] = self.grpc_channel.unary_unary(
+            self._stubs["list_streams"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/ListStreams",
                 request_serializer=streams_service.ListStreamsRequest.serialize,
                 response_deserializer=streams_service.ListStreamsResponse.deserialize,
@@ -441,7 +529,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_stream" not in self._stubs:
-            self._stubs["get_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["get_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/GetStream",
                 request_serializer=streams_service.GetStreamRequest.serialize,
                 response_deserializer=streams_resources.Stream.deserialize,
@@ -467,7 +555,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_stream" not in self._stubs:
-            self._stubs["create_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["create_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/CreateStream",
                 request_serializer=streams_service.CreateStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -493,7 +581,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_stream" not in self._stubs:
-            self._stubs["update_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["update_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/UpdateStream",
                 request_serializer=streams_service.UpdateStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -519,7 +607,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_stream" not in self._stubs:
-            self._stubs["delete_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/DeleteStream",
                 request_serializer=streams_service.DeleteStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -549,7 +637,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_stream_hls_token" not in self._stubs:
-            self._stubs["generate_stream_hls_token"] = self.grpc_channel.unary_unary(
+            self._stubs["generate_stream_hls_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/GenerateStreamHlsToken",
                 request_serializer=streams_service.GenerateStreamHlsTokenRequest.serialize,
                 response_deserializer=streams_service.GenerateStreamHlsTokenResponse.deserialize,
@@ -577,7 +665,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_events" not in self._stubs:
-            self._stubs["list_events"] = self.grpc_channel.unary_unary(
+            self._stubs["list_events"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/ListEvents",
                 request_serializer=streams_service.ListEventsRequest.serialize,
                 response_deserializer=streams_service.ListEventsResponse.deserialize,
@@ -603,7 +691,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_event" not in self._stubs:
-            self._stubs["get_event"] = self.grpc_channel.unary_unary(
+            self._stubs["get_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/GetEvent",
                 request_serializer=streams_service.GetEventRequest.serialize,
                 response_deserializer=streams_resources.Event.deserialize,
@@ -629,7 +717,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_event" not in self._stubs:
-            self._stubs["create_event"] = self.grpc_channel.unary_unary(
+            self._stubs["create_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/CreateEvent",
                 request_serializer=streams_service.CreateEventRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -655,7 +743,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_event" not in self._stubs:
-            self._stubs["update_event"] = self.grpc_channel.unary_unary(
+            self._stubs["update_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/UpdateEvent",
                 request_serializer=streams_service.UpdateEventRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -681,7 +769,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_event" not in self._stubs:
-            self._stubs["delete_event"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/DeleteEvent",
                 request_serializer=streams_service.DeleteEventRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -709,7 +797,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_series" not in self._stubs:
-            self._stubs["list_series"] = self.grpc_channel.unary_unary(
+            self._stubs["list_series"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/ListSeries",
                 request_serializer=streams_service.ListSeriesRequest.serialize,
                 response_deserializer=streams_service.ListSeriesResponse.deserialize,
@@ -735,7 +823,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_series" not in self._stubs:
-            self._stubs["get_series"] = self.grpc_channel.unary_unary(
+            self._stubs["get_series"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/GetSeries",
                 request_serializer=streams_service.GetSeriesRequest.serialize,
                 response_deserializer=streams_resources.Series.deserialize,
@@ -761,7 +849,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_series" not in self._stubs:
-            self._stubs["create_series"] = self.grpc_channel.unary_unary(
+            self._stubs["create_series"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/CreateSeries",
                 request_serializer=streams_service.CreateSeriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -787,7 +875,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_series" not in self._stubs:
-            self._stubs["update_series"] = self.grpc_channel.unary_unary(
+            self._stubs["update_series"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/UpdateSeries",
                 request_serializer=streams_service.UpdateSeriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -813,7 +901,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_series" not in self._stubs:
-            self._stubs["delete_series"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_series"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/DeleteSeries",
                 request_serializer=streams_service.DeleteSeriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -841,7 +929,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "materialize_channel" not in self._stubs:
-            self._stubs["materialize_channel"] = self.grpc_channel.unary_unary(
+            self._stubs["materialize_channel"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamsService/MaterializeChannel",
                 request_serializer=streams_service.MaterializeChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -849,7 +937,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["materialize_channel"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -861,7 +949,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -878,7 +966,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -895,7 +983,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -914,7 +1002,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -933,7 +1021,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -950,7 +1038,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -975,7 +1063,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1001,7 +1089,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1030,7 +1118,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,

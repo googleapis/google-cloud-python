@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,13 +26,92 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.osconfig_v1.types import patch_deployments, patch_jobs
 
 from .base import DEFAULT_CLIENT_INFO, OsConfigServiceTransport
 from .grpc import OsConfigServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
@@ -231,10 +313,13 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -267,7 +352,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "execute_patch_job" not in self._stubs:
-            self._stubs["execute_patch_job"] = self.grpc_channel.unary_unary(
+            self._stubs["execute_patch_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/ExecutePatchJob",
                 request_serializer=patch_jobs.ExecutePatchJobRequest.serialize,
                 response_deserializer=patch_jobs.PatchJob.deserialize,
@@ -295,7 +380,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_patch_job" not in self._stubs:
-            self._stubs["get_patch_job"] = self.grpc_channel.unary_unary(
+            self._stubs["get_patch_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/GetPatchJob",
                 request_serializer=patch_jobs.GetPatchJobRequest.serialize,
                 response_deserializer=patch_jobs.PatchJob.deserialize,
@@ -322,7 +407,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_patch_job" not in self._stubs:
-            self._stubs["cancel_patch_job"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_patch_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/CancelPatchJob",
                 request_serializer=patch_jobs.CancelPatchJobRequest.serialize,
                 response_deserializer=patch_jobs.PatchJob.deserialize,
@@ -350,7 +435,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_patch_jobs" not in self._stubs:
-            self._stubs["list_patch_jobs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_patch_jobs"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/ListPatchJobs",
                 request_serializer=patch_jobs.ListPatchJobsRequest.serialize,
                 response_deserializer=patch_jobs.ListPatchJobsResponse.deserialize,
@@ -382,7 +467,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         if "list_patch_job_instance_details" not in self._stubs:
             self._stubs[
                 "list_patch_job_instance_details"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/ListPatchJobInstanceDetails",
                 request_serializer=patch_jobs.ListPatchJobInstanceDetailsRequest.serialize,
                 response_deserializer=patch_jobs.ListPatchJobInstanceDetailsResponse.deserialize,
@@ -411,7 +496,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_patch_deployment" not in self._stubs:
-            self._stubs["create_patch_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["create_patch_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/CreatePatchDeployment",
                 request_serializer=patch_deployments.CreatePatchDeploymentRequest.serialize,
                 response_deserializer=patch_deployments.PatchDeployment.deserialize,
@@ -440,7 +525,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_patch_deployment" not in self._stubs:
-            self._stubs["get_patch_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_patch_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/GetPatchDeployment",
                 request_serializer=patch_deployments.GetPatchDeploymentRequest.serialize,
                 response_deserializer=patch_deployments.PatchDeployment.deserialize,
@@ -469,7 +554,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_patch_deployments" not in self._stubs:
-            self._stubs["list_patch_deployments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_patch_deployments"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/ListPatchDeployments",
                 request_serializer=patch_deployments.ListPatchDeploymentsRequest.serialize,
                 response_deserializer=patch_deployments.ListPatchDeploymentsResponse.deserialize,
@@ -497,7 +582,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_patch_deployment" not in self._stubs:
-            self._stubs["delete_patch_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_patch_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/DeletePatchDeployment",
                 request_serializer=patch_deployments.DeletePatchDeploymentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -526,7 +611,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_patch_deployment" not in self._stubs:
-            self._stubs["update_patch_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["update_patch_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/UpdatePatchDeployment",
                 request_serializer=patch_deployments.UpdatePatchDeploymentRequest.serialize,
                 response_deserializer=patch_deployments.PatchDeployment.deserialize,
@@ -557,7 +642,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "pause_patch_deployment" not in self._stubs:
-            self._stubs["pause_patch_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["pause_patch_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/PausePatchDeployment",
                 request_serializer=patch_deployments.PausePatchDeploymentRequest.serialize,
                 response_deserializer=patch_deployments.PatchDeployment.deserialize,
@@ -588,7 +673,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "resume_patch_deployment" not in self._stubs:
-            self._stubs["resume_patch_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["resume_patch_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.osconfig.v1.OsConfigService/ResumePatchDeployment",
                 request_serializer=patch_deployments.ResumePatchDeploymentRequest.serialize,
                 response_deserializer=patch_deployments.PatchDeployment.deserialize,
@@ -666,7 +751,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

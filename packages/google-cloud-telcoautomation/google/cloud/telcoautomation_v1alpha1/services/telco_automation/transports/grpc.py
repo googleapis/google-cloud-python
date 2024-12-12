@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,11 +26,89 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.telcoautomation_v1alpha1.types import telcoautomation
 
 from .base import DEFAULT_CLIENT_INFO, TelcoAutomationTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
@@ -187,7 +268,12 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -251,7 +337,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -279,7 +367,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_orchestration_clusters" not in self._stubs:
-            self._stubs["list_orchestration_clusters"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_orchestration_clusters"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListOrchestrationClusters",
                 request_serializer=telcoautomation.ListOrchestrationClustersRequest.serialize,
                 response_deserializer=telcoautomation.ListOrchestrationClustersResponse.deserialize,
@@ -308,7 +398,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_orchestration_cluster" not in self._stubs:
-            self._stubs["get_orchestration_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["get_orchestration_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/GetOrchestrationCluster",
                 request_serializer=telcoautomation.GetOrchestrationClusterRequest.serialize,
                 response_deserializer=telcoautomation.OrchestrationCluster.deserialize,
@@ -337,7 +427,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_orchestration_cluster" not in self._stubs:
-            self._stubs["create_orchestration_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_orchestration_cluster"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/CreateOrchestrationCluster",
                 request_serializer=telcoautomation.CreateOrchestrationClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -365,7 +457,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_orchestration_cluster" not in self._stubs:
-            self._stubs["delete_orchestration_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_orchestration_cluster"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteOrchestrationCluster",
                 request_serializer=telcoautomation.DeleteOrchestrationClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -393,7 +487,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_edge_slms" not in self._stubs:
-            self._stubs["list_edge_slms"] = self.grpc_channel.unary_unary(
+            self._stubs["list_edge_slms"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListEdgeSlms",
                 request_serializer=telcoautomation.ListEdgeSlmsRequest.serialize,
                 response_deserializer=telcoautomation.ListEdgeSlmsResponse.deserialize,
@@ -419,7 +513,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_edge_slm" not in self._stubs:
-            self._stubs["get_edge_slm"] = self.grpc_channel.unary_unary(
+            self._stubs["get_edge_slm"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/GetEdgeSlm",
                 request_serializer=telcoautomation.GetEdgeSlmRequest.serialize,
                 response_deserializer=telcoautomation.EdgeSlm.deserialize,
@@ -446,7 +540,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_edge_slm" not in self._stubs:
-            self._stubs["create_edge_slm"] = self.grpc_channel.unary_unary(
+            self._stubs["create_edge_slm"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/CreateEdgeSlm",
                 request_serializer=telcoautomation.CreateEdgeSlmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -472,7 +566,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_edge_slm" not in self._stubs:
-            self._stubs["delete_edge_slm"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_edge_slm"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteEdgeSlm",
                 request_serializer=telcoautomation.DeleteEdgeSlmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -498,7 +592,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_blueprint" not in self._stubs:
-            self._stubs["create_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["create_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/CreateBlueprint",
                 request_serializer=telcoautomation.CreateBlueprintRequest.serialize,
                 response_deserializer=telcoautomation.Blueprint.deserialize,
@@ -524,7 +618,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_blueprint" not in self._stubs:
-            self._stubs["update_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["update_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/UpdateBlueprint",
                 request_serializer=telcoautomation.UpdateBlueprintRequest.serialize,
                 response_deserializer=telcoautomation.Blueprint.deserialize,
@@ -550,7 +644,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_blueprint" not in self._stubs:
-            self._stubs["get_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["get_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/GetBlueprint",
                 request_serializer=telcoautomation.GetBlueprintRequest.serialize,
                 response_deserializer=telcoautomation.Blueprint.deserialize,
@@ -576,7 +670,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_blueprint" not in self._stubs:
-            self._stubs["delete_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteBlueprint",
                 request_serializer=telcoautomation.DeleteBlueprintRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -604,7 +698,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_blueprints" not in self._stubs:
-            self._stubs["list_blueprints"] = self.grpc_channel.unary_unary(
+            self._stubs["list_blueprints"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListBlueprints",
                 request_serializer=telcoautomation.ListBlueprintsRequest.serialize,
                 response_deserializer=telcoautomation.ListBlueprintsResponse.deserialize,
@@ -630,7 +724,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "approve_blueprint" not in self._stubs:
-            self._stubs["approve_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["approve_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ApproveBlueprint",
                 request_serializer=telcoautomation.ApproveBlueprintRequest.serialize,
                 response_deserializer=telcoautomation.Blueprint.deserialize,
@@ -656,7 +750,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "propose_blueprint" not in self._stubs:
-            self._stubs["propose_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["propose_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ProposeBlueprint",
                 request_serializer=telcoautomation.ProposeBlueprintRequest.serialize,
                 response_deserializer=telcoautomation.Blueprint.deserialize,
@@ -683,7 +777,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reject_blueprint" not in self._stubs:
-            self._stubs["reject_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["reject_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/RejectBlueprint",
                 request_serializer=telcoautomation.RejectBlueprintRequest.serialize,
                 response_deserializer=telcoautomation.Blueprint.deserialize,
@@ -712,7 +806,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_blueprint_revisions" not in self._stubs:
-            self._stubs["list_blueprint_revisions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_blueprint_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListBlueprintRevisions",
                 request_serializer=telcoautomation.ListBlueprintRevisionsRequest.serialize,
                 response_deserializer=telcoautomation.ListBlueprintRevisionsResponse.deserialize,
@@ -741,7 +835,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_blueprint_revisions" not in self._stubs:
-            self._stubs["search_blueprint_revisions"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "search_blueprint_revisions"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/SearchBlueprintRevisions",
                 request_serializer=telcoautomation.SearchBlueprintRevisionsRequest.serialize,
                 response_deserializer=telcoautomation.SearchBlueprintRevisionsResponse.deserialize,
@@ -770,7 +866,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_deployment_revisions" not in self._stubs:
-            self._stubs["search_deployment_revisions"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "search_deployment_revisions"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/SearchDeploymentRevisions",
                 request_serializer=telcoautomation.SearchDeploymentRevisionsRequest.serialize,
                 response_deserializer=telcoautomation.SearchDeploymentRevisionsResponse.deserialize,
@@ -802,7 +900,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "discard_blueprint_changes" not in self._stubs:
-            self._stubs["discard_blueprint_changes"] = self.grpc_channel.unary_unary(
+            self._stubs["discard_blueprint_changes"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DiscardBlueprintChanges",
                 request_serializer=telcoautomation.DiscardBlueprintChangesRequest.serialize,
                 response_deserializer=telcoautomation.DiscardBlueprintChangesResponse.deserialize,
@@ -832,7 +930,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_public_blueprints" not in self._stubs:
-            self._stubs["list_public_blueprints"] = self.grpc_channel.unary_unary(
+            self._stubs["list_public_blueprints"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListPublicBlueprints",
                 request_serializer=telcoautomation.ListPublicBlueprintsRequest.serialize,
                 response_deserializer=telcoautomation.ListPublicBlueprintsResponse.deserialize,
@@ -860,7 +958,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_public_blueprint" not in self._stubs:
-            self._stubs["get_public_blueprint"] = self.grpc_channel.unary_unary(
+            self._stubs["get_public_blueprint"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/GetPublicBlueprint",
                 request_serializer=telcoautomation.GetPublicBlueprintRequest.serialize,
                 response_deserializer=telcoautomation.PublicBlueprint.deserialize,
@@ -888,7 +986,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_deployment" not in self._stubs:
-            self._stubs["create_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["create_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/CreateDeployment",
                 request_serializer=telcoautomation.CreateDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.Deployment.deserialize,
@@ -916,7 +1014,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_deployment" not in self._stubs:
-            self._stubs["update_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["update_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/UpdateDeployment",
                 request_serializer=telcoautomation.UpdateDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.Deployment.deserialize,
@@ -942,7 +1040,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_deployment" not in self._stubs:
-            self._stubs["get_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/GetDeployment",
                 request_serializer=telcoautomation.GetDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.Deployment.deserialize,
@@ -969,7 +1067,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_deployment" not in self._stubs:
-            self._stubs["remove_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["remove_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/RemoveDeployment",
                 request_serializer=telcoautomation.RemoveDeploymentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -998,7 +1096,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_deployments" not in self._stubs:
-            self._stubs["list_deployments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_deployments"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListDeployments",
                 request_serializer=telcoautomation.ListDeploymentsRequest.serialize,
                 response_deserializer=telcoautomation.ListDeploymentsResponse.deserialize,
@@ -1027,7 +1125,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_deployment_revisions" not in self._stubs:
-            self._stubs["list_deployment_revisions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_deployment_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListDeploymentRevisions",
                 request_serializer=telcoautomation.ListDeploymentRevisionsRequest.serialize,
                 response_deserializer=telcoautomation.ListDeploymentRevisionsResponse.deserialize,
@@ -1059,7 +1157,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "discard_deployment_changes" not in self._stubs:
-            self._stubs["discard_deployment_changes"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "discard_deployment_changes"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DiscardDeploymentChanges",
                 request_serializer=telcoautomation.DiscardDeploymentChangesRequest.serialize,
                 response_deserializer=telcoautomation.DiscardDeploymentChangesResponse.deserialize,
@@ -1086,7 +1186,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "apply_deployment" not in self._stubs:
-            self._stubs["apply_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["apply_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ApplyDeployment",
                 request_serializer=telcoautomation.ApplyDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.Deployment.deserialize,
@@ -1115,7 +1215,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "compute_deployment_status" not in self._stubs:
-            self._stubs["compute_deployment_status"] = self.grpc_channel.unary_unary(
+            self._stubs["compute_deployment_status"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ComputeDeploymentStatus",
                 request_serializer=telcoautomation.ComputeDeploymentStatusRequest.serialize,
                 response_deserializer=telcoautomation.ComputeDeploymentStatusResponse.deserialize,
@@ -1144,7 +1244,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_deployment" not in self._stubs:
-            self._stubs["rollback_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["rollback_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/RollbackDeployment",
                 request_serializer=telcoautomation.RollbackDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.Deployment.deserialize,
@@ -1173,7 +1273,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_hydrated_deployment" not in self._stubs:
-            self._stubs["get_hydrated_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_hydrated_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/GetHydratedDeployment",
                 request_serializer=telcoautomation.GetHydratedDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.HydratedDeployment.deserialize,
@@ -1203,7 +1303,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_hydrated_deployments" not in self._stubs:
-            self._stubs["list_hydrated_deployments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_hydrated_deployments"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ListHydratedDeployments",
                 request_serializer=telcoautomation.ListHydratedDeploymentsRequest.serialize,
                 response_deserializer=telcoautomation.ListHydratedDeploymentsResponse.deserialize,
@@ -1232,7 +1332,9 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_hydrated_deployment" not in self._stubs:
-            self._stubs["update_hydrated_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_hydrated_deployment"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/UpdateHydratedDeployment",
                 request_serializer=telcoautomation.UpdateHydratedDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.HydratedDeployment.deserialize,
@@ -1261,7 +1363,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "apply_hydrated_deployment" not in self._stubs:
-            self._stubs["apply_hydrated_deployment"] = self.grpc_channel.unary_unary(
+            self._stubs["apply_hydrated_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/ApplyHydratedDeployment",
                 request_serializer=telcoautomation.ApplyHydratedDeploymentRequest.serialize,
                 response_deserializer=telcoautomation.HydratedDeployment.deserialize,
@@ -1269,7 +1371,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         return self._stubs["apply_hydrated_deployment"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1281,7 +1383,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1298,7 +1400,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1315,7 +1417,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1334,7 +1436,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1353,7 +1455,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1370,7 +1472,7 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

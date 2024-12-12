@@ -3720,6 +3720,7 @@ def test_create_key_rest_required_fields(request_type=apikeys.CreateKeyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_key(request)
 
@@ -3773,6 +3774,7 @@ def test_create_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_key(**mock_args)
 
@@ -3911,6 +3913,7 @@ def test_list_keys_rest_required_fields(request_type=apikeys.ListKeysRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_keys(request)
 
@@ -3965,6 +3968,7 @@ def test_list_keys_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_keys(**mock_args)
 
@@ -4154,6 +4158,7 @@ def test_get_key_rest_required_fields(request_type=apikeys.GetKeyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_key(request)
 
@@ -4199,6 +4204,7 @@ def test_get_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_key(**mock_args)
 
@@ -4327,6 +4333,7 @@ def test_get_key_string_rest_required_fields(request_type=apikeys.GetKeyStringRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_key_string(request)
 
@@ -4372,6 +4379,7 @@ def test_get_key_string_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_key_string(**mock_args)
 
@@ -4500,6 +4508,7 @@ def test_update_key_rest_required_fields(request_type=apikeys.UpdateKeyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_key(request)
 
@@ -4546,6 +4555,7 @@ def test_update_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_key(**mock_args)
 
@@ -4678,6 +4688,7 @@ def test_delete_key_rest_required_fields(request_type=apikeys.DeleteKeyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_key(request)
 
@@ -4721,6 +4732,7 @@ def test_delete_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_key(**mock_args)
 
@@ -4851,6 +4863,7 @@ def test_undelete_key_rest_required_fields(request_type=apikeys.UndeleteKeyReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.undelete_key(request)
 
@@ -4973,6 +4986,7 @@ def test_lookup_key_rest_required_fields(request_type=apikeys.LookupKeyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.lookup_key(request)
 
@@ -5523,6 +5537,7 @@ def test_create_key_rest_bad_request(request_type=apikeys.CreateKeyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_key(request)
 
 
@@ -5662,6 +5677,7 @@ def test_create_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_key(request)
 
     # Establish that the response is the type that we expect.
@@ -5699,6 +5715,7 @@ def test_create_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -5741,6 +5758,7 @@ def test_list_keys_rest_bad_request(request_type=apikeys.ListKeysRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_keys(request)
 
 
@@ -5776,6 +5794,7 @@ def test_list_keys_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_keys(request)
 
     # Establish that the response is the type that we expect.
@@ -5812,6 +5831,7 @@ def test_list_keys_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apikeys.ListKeysResponse.to_json(apikeys.ListKeysResponse())
         req.return_value.content = return_value
 
@@ -5854,6 +5874,7 @@ def test_get_key_rest_bad_request(request_type=apikeys.GetKeyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_key(request)
 
 
@@ -5893,6 +5914,7 @@ def test_get_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_key(request)
 
     # Establish that the response is the type that we expect.
@@ -5933,6 +5955,7 @@ def test_get_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Key.to_json(resources.Key())
         req.return_value.content = return_value
 
@@ -5975,6 +5998,7 @@ def test_get_key_string_rest_bad_request(request_type=apikeys.GetKeyStringReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_key_string(request)
 
 
@@ -6010,6 +6034,7 @@ def test_get_key_string_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_key_string(request)
 
     # Establish that the response is the type that we expect.
@@ -6046,6 +6071,7 @@ def test_get_key_string_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apikeys.GetKeyStringResponse.to_json(
             apikeys.GetKeyStringResponse()
         )
@@ -6090,6 +6116,7 @@ def test_update_key_rest_bad_request(request_type=apikeys.UpdateKeyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_key(request)
 
 
@@ -6229,6 +6256,7 @@ def test_update_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_key(request)
 
     # Establish that the response is the type that we expect.
@@ -6266,6 +6294,7 @@ def test_update_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -6308,6 +6337,7 @@ def test_delete_key_rest_bad_request(request_type=apikeys.DeleteKeyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_key(request)
 
 
@@ -6338,6 +6368,7 @@ def test_delete_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_key(request)
 
     # Establish that the response is the type that we expect.
@@ -6375,6 +6406,7 @@ def test_delete_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -6417,6 +6449,7 @@ def test_undelete_key_rest_bad_request(request_type=apikeys.UndeleteKeyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.undelete_key(request)
 
 
@@ -6447,6 +6480,7 @@ def test_undelete_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.undelete_key(request)
 
     # Establish that the response is the type that we expect.
@@ -6484,6 +6518,7 @@ def test_undelete_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -6526,6 +6561,7 @@ def test_lookup_key_rest_bad_request(request_type=apikeys.LookupKeyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.lookup_key(request)
 
 
@@ -6562,6 +6598,7 @@ def test_lookup_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.lookup_key(request)
 
     # Establish that the response is the type that we expect.
@@ -6599,6 +6636,7 @@ def test_lookup_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apikeys.LookupKeyResponse.to_json(apikeys.LookupKeyResponse())
         req.return_value.content = return_value
 
@@ -6643,6 +6681,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -6673,6 +6712,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

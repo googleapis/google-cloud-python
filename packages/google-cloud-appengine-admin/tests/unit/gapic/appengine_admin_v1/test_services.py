@@ -2740,6 +2740,7 @@ def test_list_services_rest_bad_request(request_type=appengine.ListServicesReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_services(request)
 
 
@@ -2775,6 +2776,7 @@ def test_list_services_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_services(request)
 
     # Establish that the response is the type that we expect.
@@ -2811,6 +2813,7 @@ def test_list_services_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = appengine.ListServicesResponse.to_json(
             appengine.ListServicesResponse()
         )
@@ -2855,6 +2858,7 @@ def test_get_service_rest_bad_request(request_type=appengine.GetServiceRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_service(request)
 
 
@@ -2891,6 +2895,7 @@ def test_get_service_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_service(request)
 
     # Establish that the response is the type that we expect.
@@ -2928,6 +2933,7 @@ def test_get_service_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.Service.to_json(service.Service())
         req.return_value.content = return_value
 
@@ -2970,6 +2976,7 @@ def test_update_service_rest_bad_request(request_type=appengine.UpdateServiceReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_service(request)
 
 
@@ -3074,6 +3081,7 @@ def test_update_service_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_service(request)
 
     # Establish that the response is the type that we expect.
@@ -3111,6 +3119,7 @@ def test_update_service_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -3153,6 +3162,7 @@ def test_delete_service_rest_bad_request(request_type=appengine.DeleteServiceReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_service(request)
 
 
@@ -3183,6 +3193,7 @@ def test_delete_service_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_service(request)
 
     # Establish that the response is the type that we expect.
@@ -3220,6 +3231,7 @@ def test_delete_service_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 

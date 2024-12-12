@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -158,8 +166,10 @@ class FoldersRestInterceptor:
     """
 
     def pre_create_folder(
-        self, request: folders.CreateFolderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[folders.CreateFolderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: folders.CreateFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.CreateFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_folder
 
         Override in a subclass to manipulate the request or metadata
@@ -179,8 +189,10 @@ class FoldersRestInterceptor:
         return response
 
     def pre_delete_folder(
-        self, request: folders.DeleteFolderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[folders.DeleteFolderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: folders.DeleteFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.DeleteFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_folder
 
         Override in a subclass to manipulate the request or metadata
@@ -200,8 +212,10 @@ class FoldersRestInterceptor:
         return response
 
     def pre_get_folder(
-        self, request: folders.GetFolderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[folders.GetFolderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: folders.GetFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.GetFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_folder
 
         Override in a subclass to manipulate the request or metadata
@@ -221,8 +235,10 @@ class FoldersRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -240,8 +256,10 @@ class FoldersRestInterceptor:
         return response
 
     def pre_list_folders(
-        self, request: folders.ListFoldersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[folders.ListFoldersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: folders.ListFoldersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.ListFoldersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_folders
 
         Override in a subclass to manipulate the request or metadata
@@ -261,8 +279,10 @@ class FoldersRestInterceptor:
         return response
 
     def pre_move_folder(
-        self, request: folders.MoveFolderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[folders.MoveFolderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: folders.MoveFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.MoveFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_folder
 
         Override in a subclass to manipulate the request or metadata
@@ -282,8 +302,10 @@ class FoldersRestInterceptor:
         return response
 
     def pre_search_folders(
-        self, request: folders.SearchFoldersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[folders.SearchFoldersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: folders.SearchFoldersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.SearchFoldersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_folders
 
         Override in a subclass to manipulate the request or metadata
@@ -305,8 +327,10 @@ class FoldersRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -326,8 +350,11 @@ class FoldersRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -349,8 +376,8 @@ class FoldersRestInterceptor:
     def pre_undelete_folder(
         self,
         request: folders.UndeleteFolderRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[folders.UndeleteFolderRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.UndeleteFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_folder
 
         Override in a subclass to manipulate the request or metadata
@@ -370,8 +397,10 @@ class FoldersRestInterceptor:
         return response
 
     def pre_update_folder(
-        self, request: folders.UpdateFolderRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[folders.UpdateFolderRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: folders.UpdateFolderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[folders.UpdateFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_folder
 
         Override in a subclass to manipulate the request or metadata
@@ -393,8 +422,10 @@ class FoldersRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -571,7 +602,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create folder method over HTTP.
 
@@ -581,8 +612,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -595,6 +628,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseCreateFolder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_folder(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseCreateFolder._get_transcoded_request(
@@ -612,6 +646,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.CreateFolder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "CreateFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._CreateFolder._get_response(
@@ -632,7 +693,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_folder(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.create_folder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "CreateFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteFolder(_BaseFoldersRestTransport._BaseDeleteFolder, FoldersRestStub):
@@ -667,7 +750,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete folder method over HTTP.
 
@@ -677,8 +760,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -691,6 +776,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseDeleteFolder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_folder(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseDeleteFolder._get_transcoded_request(
@@ -704,6 +790,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.DeleteFolder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "DeleteFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._DeleteFolder._get_response(
@@ -723,7 +836,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_folder(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.delete_folder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "DeleteFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetFolder(_BaseFoldersRestTransport._BaseGetFolder, FoldersRestStub):
@@ -758,7 +893,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> folders.Folder:
             r"""Call the get folder method over HTTP.
 
@@ -768,8 +903,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.folders.Folder:
@@ -780,6 +917,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             """
 
             http_options = _BaseFoldersRestTransport._BaseGetFolder._get_http_options()
+
             request, metadata = self._interceptor.pre_get_folder(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseGetFolder._get_transcoded_request(
@@ -793,6 +931,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.GetFolder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "GetFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._GetFolder._get_response(
@@ -814,7 +979,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             pb_resp = folders.Folder.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_folder(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = folders.Folder.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.get_folder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "GetFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(_BaseFoldersRestTransport._BaseGetIamPolicy, FoldersRestStub):
@@ -850,7 +1037,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -860,8 +1047,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -946,6 +1135,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -963,6 +1153,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._GetIamPolicy._get_response(
@@ -985,7 +1202,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFolders(_BaseFoldersRestTransport._BaseListFolders, FoldersRestStub):
@@ -1020,7 +1259,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> folders.ListFoldersResponse:
             r"""Call the list folders method over HTTP.
 
@@ -1030,8 +1269,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.folders.ListFoldersResponse:
@@ -1041,6 +1282,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseListFolders._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_folders(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseListFolders._get_transcoded_request(
@@ -1054,6 +1296,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.ListFolders",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "ListFolders",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._ListFolders._get_response(
@@ -1075,7 +1344,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             pb_resp = folders.ListFoldersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_folders(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = folders.ListFoldersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.list_folders",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "ListFolders",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MoveFolder(_BaseFoldersRestTransport._BaseMoveFolder, FoldersRestStub):
@@ -1111,7 +1402,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the move folder method over HTTP.
 
@@ -1121,8 +1412,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1133,6 +1426,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             """
 
             http_options = _BaseFoldersRestTransport._BaseMoveFolder._get_http_options()
+
             request, metadata = self._interceptor.pre_move_folder(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseMoveFolder._get_transcoded_request(
@@ -1150,6 +1444,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.MoveFolder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "MoveFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._MoveFolder._get_response(
@@ -1170,7 +1491,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_move_folder(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.move_folder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "MoveFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchFolders(_BaseFoldersRestTransport._BaseSearchFolders, FoldersRestStub):
@@ -1205,7 +1548,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> folders.SearchFoldersResponse:
             r"""Call the search folders method over HTTP.
 
@@ -1216,8 +1559,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.folders.SearchFoldersResponse:
@@ -1229,6 +1574,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseSearchFolders._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_folders(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseSearchFolders._get_transcoded_request(
@@ -1242,6 +1588,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.SearchFolders",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "SearchFolders",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._SearchFolders._get_response(
@@ -1263,7 +1636,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             pb_resp = folders.SearchFoldersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_folders(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = folders.SearchFoldersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.search_folders",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "SearchFolders",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(_BaseFoldersRestTransport._BaseSetIamPolicy, FoldersRestStub):
@@ -1299,7 +1694,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1309,8 +1704,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1395,6 +1792,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1412,6 +1810,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._SetIamPolicy._get_response(
@@ -1434,7 +1859,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -1472,7 +1919,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1482,8 +1929,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -1493,6 +1942,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1508,6 +1958,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             query_params = _BaseFoldersRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._TestIamPermissions._get_response(
@@ -1530,7 +2007,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeleteFolder(
@@ -1568,7 +2067,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete folder method over HTTP.
 
@@ -1578,8 +2077,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1592,6 +2093,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseUndeleteFolder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_folder(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseUndeleteFolder._get_transcoded_request(
@@ -1609,6 +2111,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.UndeleteFolder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "UndeleteFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._UndeleteFolder._get_response(
@@ -1629,7 +2158,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_folder(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.undelete_folder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "UndeleteFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateFolder(_BaseFoldersRestTransport._BaseUpdateFolder, FoldersRestStub):
@@ -1665,7 +2216,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update folder method over HTTP.
 
@@ -1682,8 +2233,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1696,6 +2249,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseUpdateFolder._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_folder(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseUpdateFolder._get_transcoded_request(
@@ -1713,6 +2267,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.UpdateFolder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "UpdateFolder",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._UpdateFolder._get_response(
@@ -1733,7 +2314,29 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_folder(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersClient.update_folder",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "UpdateFolder",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1861,7 +2464,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1871,8 +2474,10 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1881,6 +2486,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = (
                 _BaseFoldersRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseFoldersRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1894,6 +2500,33 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.FoldersClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FoldersRestTransport._GetOperation._get_response(
@@ -1914,6 +2547,27 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.FoldersAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Folders",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

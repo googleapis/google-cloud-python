@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -48,6 +48,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -280,8 +288,8 @@ class BackupForGKERestInterceptor:
     def pre_create_backup(
         self,
         request: gkebackup.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.CreateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -303,8 +311,10 @@ class BackupForGKERestInterceptor:
     def pre_create_backup_plan(
         self,
         request: gkebackup.CreateBackupPlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.CreateBackupPlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.CreateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -326,8 +336,8 @@ class BackupForGKERestInterceptor:
     def pre_create_restore(
         self,
         request: gkebackup.CreateRestoreRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.CreateRestoreRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.CreateRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_restore
 
         Override in a subclass to manipulate the request or metadata
@@ -349,8 +359,10 @@ class BackupForGKERestInterceptor:
     def pre_create_restore_plan(
         self,
         request: gkebackup.CreateRestorePlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.CreateRestorePlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.CreateRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -372,8 +384,8 @@ class BackupForGKERestInterceptor:
     def pre_delete_backup(
         self,
         request: gkebackup.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -395,8 +407,10 @@ class BackupForGKERestInterceptor:
     def pre_delete_backup_plan(
         self,
         request: gkebackup.DeleteBackupPlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.DeleteBackupPlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.DeleteBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -418,8 +432,8 @@ class BackupForGKERestInterceptor:
     def pre_delete_restore(
         self,
         request: gkebackup.DeleteRestoreRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.DeleteRestoreRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.DeleteRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_restore
 
         Override in a subclass to manipulate the request or metadata
@@ -441,8 +455,10 @@ class BackupForGKERestInterceptor:
     def pre_delete_restore_plan(
         self,
         request: gkebackup.DeleteRestorePlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.DeleteRestorePlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.DeleteRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -462,8 +478,10 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_get_backup(
-        self, request: gkebackup.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gkebackup.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gkebackup.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -483,8 +501,11 @@ class BackupForGKERestInterceptor:
     def pre_get_backup_index_download_url(
         self,
         request: gkebackup.GetBackupIndexDownloadUrlRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.GetBackupIndexDownloadUrlRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.GetBackupIndexDownloadUrlRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_backup_index_download_url
 
         Override in a subclass to manipulate the request or metadata
@@ -506,8 +527,8 @@ class BackupForGKERestInterceptor:
     def pre_get_backup_plan(
         self,
         request: gkebackup.GetBackupPlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.GetBackupPlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.GetBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -527,8 +548,10 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_get_restore(
-        self, request: gkebackup.GetRestoreRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gkebackup.GetRestoreRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gkebackup.GetRestoreRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.GetRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_restore
 
         Override in a subclass to manipulate the request or metadata
@@ -548,8 +571,10 @@ class BackupForGKERestInterceptor:
     def pre_get_restore_plan(
         self,
         request: gkebackup.GetRestorePlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.GetRestorePlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.GetRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -571,8 +596,10 @@ class BackupForGKERestInterceptor:
     def pre_get_volume_backup(
         self,
         request: gkebackup.GetVolumeBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.GetVolumeBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.GetVolumeBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_volume_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -594,8 +621,10 @@ class BackupForGKERestInterceptor:
     def pre_get_volume_restore(
         self,
         request: gkebackup.GetVolumeRestoreRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.GetVolumeRestoreRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.GetVolumeRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_volume_restore
 
         Override in a subclass to manipulate the request or metadata
@@ -617,8 +646,10 @@ class BackupForGKERestInterceptor:
     def pre_list_backup_plans(
         self,
         request: gkebackup.ListBackupPlansRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.ListBackupPlansRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListBackupPlansRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_backup_plans
 
         Override in a subclass to manipulate the request or metadata
@@ -638,8 +669,10 @@ class BackupForGKERestInterceptor:
         return response
 
     def pre_list_backups(
-        self, request: gkebackup.ListBackupsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gkebackup.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gkebackup.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -661,8 +694,10 @@ class BackupForGKERestInterceptor:
     def pre_list_restore_plans(
         self,
         request: gkebackup.ListRestorePlansRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.ListRestorePlansRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListRestorePlansRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_restore_plans
 
         Override in a subclass to manipulate the request or metadata
@@ -684,8 +719,8 @@ class BackupForGKERestInterceptor:
     def pre_list_restores(
         self,
         request: gkebackup.ListRestoresRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.ListRestoresRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.ListRestoresRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_restores
 
         Override in a subclass to manipulate the request or metadata
@@ -707,8 +742,10 @@ class BackupForGKERestInterceptor:
     def pre_list_volume_backups(
         self,
         request: gkebackup.ListVolumeBackupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.ListVolumeBackupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListVolumeBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_volume_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -730,8 +767,10 @@ class BackupForGKERestInterceptor:
     def pre_list_volume_restores(
         self,
         request: gkebackup.ListVolumeRestoresRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.ListVolumeRestoresRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListVolumeRestoresRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_volume_restores
 
         Override in a subclass to manipulate the request or metadata
@@ -753,8 +792,8 @@ class BackupForGKERestInterceptor:
     def pre_update_backup(
         self,
         request: gkebackup.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -776,8 +815,10 @@ class BackupForGKERestInterceptor:
     def pre_update_backup_plan(
         self,
         request: gkebackup.UpdateBackupPlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.UpdateBackupPlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.UpdateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -799,8 +840,8 @@ class BackupForGKERestInterceptor:
     def pre_update_restore(
         self,
         request: gkebackup.UpdateRestoreRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.UpdateRestoreRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.UpdateRestoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_restore
 
         Override in a subclass to manipulate the request or metadata
@@ -822,8 +863,10 @@ class BackupForGKERestInterceptor:
     def pre_update_restore_plan(
         self,
         request: gkebackup.UpdateRestorePlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gkebackup.UpdateRestorePlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.UpdateRestorePlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_restore_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -845,8 +888,10 @@ class BackupForGKERestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -868,8 +913,10 @@ class BackupForGKERestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -891,8 +938,10 @@ class BackupForGKERestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -912,8 +961,10 @@ class BackupForGKERestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -933,8 +984,11 @@ class BackupForGKERestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -956,8 +1010,10 @@ class BackupForGKERestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -977,8 +1033,10 @@ class BackupForGKERestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -998,8 +1056,10 @@ class BackupForGKERestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1021,8 +1081,10 @@ class BackupForGKERestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1219,7 +1281,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup method over HTTP.
 
@@ -1229,8 +1291,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1243,6 +1307,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseCreateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseCreateBackup._get_transcoded_request(
                 http_options, request
@@ -1260,6 +1325,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.CreateBackup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._CreateBackup._get_response(
@@ -1280,7 +1372,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.create_backup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackupPlan(
@@ -1318,7 +1432,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup plan method over HTTP.
 
@@ -1328,8 +1442,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1342,6 +1458,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup_plan(
                 request, metadata
             )
@@ -1357,6 +1474,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseCreateBackupPlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.CreateBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._CreateBackupPlan._get_response(
@@ -1377,7 +1521,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.create_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRestore(
@@ -1415,7 +1581,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create restore method over HTTP.
 
@@ -1425,8 +1591,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1439,6 +1607,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseCreateRestore._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_restore(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseCreateRestore._get_transcoded_request(
                 http_options, request
@@ -1452,6 +1621,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseCreateRestore._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.CreateRestore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateRestore",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._CreateRestore._get_response(
@@ -1472,7 +1668,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_restore(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.create_restore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateRestore",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRestorePlan(
@@ -1510,7 +1728,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create restore plan method over HTTP.
 
@@ -1521,8 +1739,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1535,6 +1755,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_restore_plan(
                 request, metadata
             )
@@ -1550,6 +1771,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.CreateRestorePlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateRestorePlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._CreateRestorePlan._get_response(
@@ -1570,7 +1818,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_restore_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.create_restore_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CreateRestorePlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackup(
@@ -1607,7 +1877,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup method over HTTP.
 
@@ -1617,8 +1887,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1631,6 +1903,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseDeleteBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteBackup._get_transcoded_request(
                 http_options, request
@@ -1642,6 +1915,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._DeleteBackup._get_response(
@@ -1661,7 +1961,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackupPlan(
@@ -1698,7 +2020,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup plan method over HTTP.
 
@@ -1708,8 +2030,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1722,6 +2046,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup_plan(
                 request, metadata
             )
@@ -1733,6 +2058,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseDeleteBackupPlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.DeleteBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._DeleteBackupPlan._get_response(
@@ -1752,7 +2104,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.delete_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRestore(
@@ -1789,7 +2163,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete restore method over HTTP.
 
@@ -1799,8 +2173,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1813,6 +2189,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseDeleteRestore._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_restore(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseDeleteRestore._get_transcoded_request(
                 http_options, request
@@ -1822,6 +2199,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseDeleteRestore._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.DeleteRestore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteRestore",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._DeleteRestore._get_response(
@@ -1841,7 +2245,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_restore(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.delete_restore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteRestore",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRestorePlan(
@@ -1878,7 +2304,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete restore plan method over HTTP.
 
@@ -1889,8 +2315,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1903,6 +2331,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_restore_plan(
                 request, metadata
             )
@@ -1914,6 +2343,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.DeleteRestorePlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteRestorePlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._DeleteRestorePlan._get_response(
@@ -1933,7 +2389,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_restore_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.delete_restore_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteRestorePlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackup(
@@ -1970,7 +2448,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup.Backup:
             r"""Call the get backup method over HTTP.
 
@@ -1980,8 +2458,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup.Backup:
@@ -1998,6 +2478,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = (
                 _BaseBackupForGKERestTransport._BaseGetBackup._get_transcoded_request(
@@ -2011,6 +2492,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetBackup._get_response(
@@ -2032,7 +2540,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = backup.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupIndexDownloadUrl(
@@ -2070,7 +2600,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gkebackup.GetBackupIndexDownloadUrlResponse:
             r"""Call the get backup index download
             url method over HTTP.
@@ -2082,8 +2612,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gkebackup.GetBackupIndexDownloadUrlResponse:
@@ -2095,6 +2627,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_index_download_url(
                 request, metadata
             )
@@ -2106,6 +2639,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetBackupIndexDownloadUrl",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetBackupIndexDownloadUrl",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2129,7 +2689,31 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = gkebackup.GetBackupIndexDownloadUrlResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_index_download_url(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gkebackup.GetBackupIndexDownloadUrlResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.get_backup_index_download_url",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetBackupIndexDownloadUrl",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupPlan(
@@ -2166,7 +2750,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backup_plan.BackupPlan:
             r"""Call the get backup plan method over HTTP.
 
@@ -2176,8 +2760,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backup_plan.BackupPlan:
@@ -2189,6 +2775,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_plan(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_transcoded_request(
                 http_options, request
@@ -2198,6 +2785,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseGetBackupPlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetBackupPlan._get_response(
@@ -2219,7 +2833,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = backup_plan.BackupPlan.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backup_plan.BackupPlan.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.get_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRestore(
@@ -2256,7 +2892,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> restore.Restore:
             r"""Call the get restore method over HTTP.
 
@@ -2266,8 +2902,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.restore.Restore:
@@ -2281,6 +2919,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetRestore._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_restore(request, metadata)
             transcoded_request = (
                 _BaseBackupForGKERestTransport._BaseGetRestore._get_transcoded_request(
@@ -2294,6 +2933,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetRestore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetRestore",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetRestore._get_response(
@@ -2315,7 +2981,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = restore.Restore.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_restore(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = restore.Restore.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.get_restore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetRestore",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRestorePlan(
@@ -2352,7 +3040,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> restore_plan.RestorePlan:
             r"""Call the get restore plan method over HTTP.
 
@@ -2362,8 +3050,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.restore_plan.RestorePlan:
@@ -2377,6 +3067,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_restore_plan(
                 request, metadata
             )
@@ -2388,6 +3079,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseGetRestorePlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetRestorePlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetRestorePlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetRestorePlan._get_response(
@@ -2409,7 +3127,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = restore_plan.RestorePlan.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_restore_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = restore_plan.RestorePlan.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.get_restore_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetRestorePlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVolumeBackup(
@@ -2446,7 +3186,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume.VolumeBackup:
             r"""Call the get volume backup method over HTTP.
 
@@ -2456,8 +3196,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume.VolumeBackup:
@@ -2472,6 +3214,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_volume_backup(
                 request, metadata
             )
@@ -2483,6 +3226,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseGetVolumeBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetVolumeBackup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetVolumeBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetVolumeBackup._get_response(
@@ -2504,7 +3274,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = volume.VolumeBackup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_volume_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume.VolumeBackup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.get_volume_backup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetVolumeBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVolumeRestore(
@@ -2541,7 +3333,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> volume.VolumeRestore:
             r"""Call the get volume restore method over HTTP.
 
@@ -2551,8 +3343,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.volume.VolumeRestore:
@@ -2564,6 +3358,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_volume_restore(
                 request, metadata
             )
@@ -2575,6 +3370,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseGetVolumeRestore._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetVolumeRestore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetVolumeRestore",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetVolumeRestore._get_response(
@@ -2596,7 +3418,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = volume.VolumeRestore.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_volume_restore(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = volume.VolumeRestore.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.get_volume_restore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetVolumeRestore",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupPlans(
@@ -2633,7 +3477,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gkebackup.ListBackupPlansResponse:
             r"""Call the list backup plans method over HTTP.
 
@@ -2643,8 +3487,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gkebackup.ListBackupPlansResponse:
@@ -2654,6 +3500,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListBackupPlans._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_plans(
                 request, metadata
             )
@@ -2665,6 +3512,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseListBackupPlans._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListBackupPlans",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListBackupPlans",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListBackupPlans._get_response(
@@ -2686,7 +3560,31 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = gkebackup.ListBackupPlansResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_plans(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gkebackup.ListBackupPlansResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.list_backup_plans",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListBackupPlans",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackups(
@@ -2723,7 +3621,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gkebackup.ListBackupsResponse:
             r"""Call the list backups method over HTTP.
 
@@ -2733,8 +3631,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gkebackup.ListBackupsResponse:
@@ -2744,6 +3644,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = (
                 _BaseBackupForGKERestTransport._BaseListBackups._get_transcoded_request(
@@ -2757,6 +3658,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListBackups._get_response(
@@ -2778,7 +3706,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = gkebackup.ListBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gkebackup.ListBackupsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRestorePlans(
@@ -2815,7 +3765,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gkebackup.ListRestorePlansResponse:
             r"""Call the list restore plans method over HTTP.
 
@@ -2825,8 +3775,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gkebackup.ListRestorePlansResponse:
@@ -2838,6 +3790,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListRestorePlans._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_restore_plans(
                 request, metadata
             )
@@ -2849,6 +3802,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseListRestorePlans._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListRestorePlans",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListRestorePlans",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListRestorePlans._get_response(
@@ -2870,7 +3850,31 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = gkebackup.ListRestorePlansResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_restore_plans(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gkebackup.ListRestorePlansResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.list_restore_plans",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListRestorePlans",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRestores(
@@ -2907,7 +3911,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gkebackup.ListRestoresResponse:
             r"""Call the list restores method over HTTP.
 
@@ -2917,8 +3921,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gkebackup.ListRestoresResponse:
@@ -2928,6 +3934,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListRestores._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_restores(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseListRestores._get_transcoded_request(
                 http_options, request
@@ -2939,6 +3946,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListRestores",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListRestores",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListRestores._get_response(
@@ -2960,7 +3994,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = gkebackup.ListRestoresResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_restores(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gkebackup.ListRestoresResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.list_restores",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListRestores",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVolumeBackups(
@@ -2997,7 +4053,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gkebackup.ListVolumeBackupsResponse:
             r"""Call the list volume backups method over HTTP.
 
@@ -3008,8 +4064,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gkebackup.ListVolumeBackupsResponse:
@@ -3021,6 +4079,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_volume_backups(
                 request, metadata
             )
@@ -3032,6 +4091,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListVolumeBackups",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListVolumeBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListVolumeBackups._get_response(
@@ -3053,7 +4139,31 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = gkebackup.ListVolumeBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_volume_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gkebackup.ListVolumeBackupsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.list_volume_backups",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListVolumeBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVolumeRestores(
@@ -3090,7 +4200,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gkebackup.ListVolumeRestoresResponse:
             r"""Call the list volume restores method over HTTP.
 
@@ -3101,8 +4211,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gkebackup.ListVolumeRestoresResponse:
@@ -3114,6 +4226,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_volume_restores(
                 request, metadata
             )
@@ -3125,6 +4238,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListVolumeRestores",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListVolumeRestores",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListVolumeRestores._get_response(
@@ -3146,7 +4286,31 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             pb_resp = gkebackup.ListVolumeRestoresResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_volume_restores(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gkebackup.ListVolumeRestoresResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.list_volume_restores",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListVolumeRestores",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackup(
@@ -3184,7 +4348,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup method over HTTP.
 
@@ -3194,8 +4358,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3208,6 +4374,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseUpdateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateBackup._get_transcoded_request(
                 http_options, request
@@ -3225,6 +4392,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.UpdateBackup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._UpdateBackup._get_response(
@@ -3245,7 +4439,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.update_backup",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackupPlan(
@@ -3283,7 +4499,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup plan method over HTTP.
 
@@ -3293,8 +4509,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3307,6 +4525,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup_plan(
                 request, metadata
             )
@@ -3322,6 +4541,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseUpdateBackupPlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.UpdateBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._UpdateBackupPlan._get_response(
@@ -3342,7 +4588,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.update_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRestore(
@@ -3380,7 +4648,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update restore method over HTTP.
 
@@ -3390,8 +4658,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3404,6 +4674,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseUpdateRestore._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_restore(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_transcoded_request(
                 http_options, request
@@ -3417,6 +4688,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseUpdateRestore._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.UpdateRestore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateRestore",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._UpdateRestore._get_response(
@@ -3437,7 +4735,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_restore(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.update_restore",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateRestore",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRestorePlan(
@@ -3475,7 +4795,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update restore plan method over HTTP.
 
@@ -3486,8 +4806,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3500,6 +4822,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_restore_plan(
                 request, metadata
             )
@@ -3515,6 +4838,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.UpdateRestorePlan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateRestorePlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._UpdateRestorePlan._get_response(
@@ -3535,7 +4885,29 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_restore_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEClient.update_restore_plan",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "UpdateRestorePlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3783,7 +5155,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3793,8 +5165,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3803,6 +5177,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseBackupForGKERestTransport._BaseGetLocation._get_transcoded_request(
@@ -3816,6 +5191,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetLocation._get_response(
@@ -3836,6 +5238,27 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3876,7 +5299,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3886,8 +5309,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3896,6 +5321,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3905,6 +5331,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListLocations._get_response(
@@ -3925,6 +5378,27 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3965,7 +5439,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -3975,8 +5449,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -3985,6 +5461,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3996,6 +5473,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetIamPolicy._get_response(
@@ -4016,6 +5520,27 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4057,7 +5582,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -4067,8 +5592,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -4077,6 +5604,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -4094,6 +5622,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._SetIamPolicy._get_response(
@@ -4115,6 +5670,27 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4156,7 +5732,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -4166,8 +5742,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -4176,6 +5754,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -4191,6 +5770,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._TestIamPermissions._get_response(
@@ -4212,6 +5818,27 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4253,7 +5880,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -4263,13 +5890,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBackupForGKERestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -4285,6 +5915,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._CancelOperation._get_response(
@@ -4342,7 +5999,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4352,13 +6009,16 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBackupForGKERestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4370,6 +6030,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._DeleteOperation._get_response(
@@ -4426,7 +6113,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4436,8 +6123,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4446,6 +6135,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -4457,6 +6147,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._GetOperation._get_response(
@@ -4477,6 +6194,27 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4517,7 +6255,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4527,8 +6265,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4537,6 +6277,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             http_options = (
                 _BaseBackupForGKERestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseBackupForGKERestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4546,6 +6287,33 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             query_params = _BaseBackupForGKERestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkebackup_v1.BackupForGKEClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupForGKERestTransport._ListOperations._get_response(
@@ -4566,6 +6334,27 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkebackup_v1.BackupForGKEAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.gkebackup.v1.BackupForGKE",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

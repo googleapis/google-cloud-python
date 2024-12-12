@@ -4507,6 +4507,7 @@ def test_create_entity_reconciliation_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_entity_reconciliation_job(request)
 
@@ -4565,6 +4566,7 @@ def test_create_entity_reconciliation_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_entity_reconciliation_job(**mock_args)
 
@@ -4704,6 +4706,7 @@ def test_get_entity_reconciliation_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_entity_reconciliation_job(request)
 
@@ -4753,6 +4756,7 @@ def test_get_entity_reconciliation_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_entity_reconciliation_job(**mock_args)
 
@@ -4897,6 +4901,7 @@ def test_list_entity_reconciliation_jobs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_entity_reconciliation_jobs(request)
 
@@ -4953,6 +4958,7 @@ def test_list_entity_reconciliation_jobs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_entity_reconciliation_jobs(**mock_args)
 
@@ -5152,6 +5158,7 @@ def test_cancel_entity_reconciliation_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.cancel_entity_reconciliation_job(request)
 
@@ -5199,6 +5206,7 @@ def test_cancel_entity_reconciliation_job_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.cancel_entity_reconciliation_job(**mock_args)
 
@@ -5332,6 +5340,7 @@ def test_delete_entity_reconciliation_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_entity_reconciliation_job(request)
 
@@ -5379,6 +5388,7 @@ def test_delete_entity_reconciliation_job_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_entity_reconciliation_job(**mock_args)
 
@@ -5522,6 +5532,7 @@ def test_lookup_rest_required_fields(request_type=service.LookupRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.lookup(request)
 
@@ -5587,6 +5598,7 @@ def test_lookup_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.lookup(**mock_args)
 
@@ -5733,6 +5745,7 @@ def test_search_rest_required_fields(request_type=service.SearchRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search(request)
 
@@ -5800,6 +5813,7 @@ def test_search_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search(**mock_args)
 
@@ -5948,6 +5962,7 @@ def test_lookup_public_kg_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.lookup_public_kg(request)
 
@@ -6013,6 +6028,7 @@ def test_lookup_public_kg_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.lookup_public_kg(**mock_args)
 
@@ -6163,6 +6179,7 @@ def test_search_public_kg_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_public_kg(request)
 
@@ -6230,6 +6247,7 @@ def test_search_public_kg_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_public_kg(**mock_args)
 
@@ -6846,6 +6864,7 @@ def test_create_entity_reconciliation_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_entity_reconciliation_job(request)
 
 
@@ -6989,6 +7008,7 @@ def test_create_entity_reconciliation_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_entity_reconciliation_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7032,6 +7052,7 @@ def test_create_entity_reconciliation_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.EntityReconciliationJob.to_json(
             service.EntityReconciliationJob()
         )
@@ -7080,6 +7101,7 @@ def test_get_entity_reconciliation_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_entity_reconciliation_job(request)
 
 
@@ -7118,6 +7140,7 @@ def test_get_entity_reconciliation_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_entity_reconciliation_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7161,6 +7184,7 @@ def test_get_entity_reconciliation_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.EntityReconciliationJob.to_json(
             service.EntityReconciliationJob()
         )
@@ -7207,6 +7231,7 @@ def test_list_entity_reconciliation_jobs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_entity_reconciliation_jobs(request)
 
 
@@ -7242,6 +7267,7 @@ def test_list_entity_reconciliation_jobs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_entity_reconciliation_jobs(request)
 
     # Establish that the response is the type that we expect.
@@ -7284,6 +7310,7 @@ def test_list_entity_reconciliation_jobs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListEntityReconciliationJobsResponse.to_json(
             service.ListEntityReconciliationJobsResponse()
         )
@@ -7332,6 +7359,7 @@ def test_cancel_entity_reconciliation_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_entity_reconciliation_job(request)
 
 
@@ -7364,6 +7392,7 @@ def test_cancel_entity_reconciliation_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.cancel_entity_reconciliation_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7401,6 +7430,7 @@ def test_cancel_entity_reconciliation_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = service.CancelEntityReconciliationJobRequest()
         metadata = [
@@ -7443,6 +7473,7 @@ def test_delete_entity_reconciliation_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_entity_reconciliation_job(request)
 
 
@@ -7475,6 +7506,7 @@ def test_delete_entity_reconciliation_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_entity_reconciliation_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7512,6 +7544,7 @@ def test_delete_entity_reconciliation_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = service.DeleteEntityReconciliationJobRequest()
         metadata = [
@@ -7550,6 +7583,7 @@ def test_lookup_rest_bad_request(request_type=service.LookupRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.lookup(request)
 
 
@@ -7583,6 +7617,7 @@ def test_lookup_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.lookup(request)
 
     # Establish that the response is the type that we expect.
@@ -7620,6 +7655,7 @@ def test_lookup_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.LookupResponse.to_json(service.LookupResponse())
         req.return_value.content = return_value
 
@@ -7662,6 +7698,7 @@ def test_search_rest_bad_request(request_type=service.SearchRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search(request)
 
 
@@ -7695,6 +7732,7 @@ def test_search_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search(request)
 
     # Establish that the response is the type that we expect.
@@ -7732,6 +7770,7 @@ def test_search_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.SearchResponse.to_json(service.SearchResponse())
         req.return_value.content = return_value
 
@@ -7774,6 +7813,7 @@ def test_lookup_public_kg_rest_bad_request(request_type=service.LookupPublicKgRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.lookup_public_kg(request)
 
 
@@ -7807,6 +7847,7 @@ def test_lookup_public_kg_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.lookup_public_kg(request)
 
     # Establish that the response is the type that we expect.
@@ -7846,6 +7887,7 @@ def test_lookup_public_kg_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.LookupPublicKgResponse.to_json(
             service.LookupPublicKgResponse()
         )
@@ -7890,6 +7932,7 @@ def test_search_public_kg_rest_bad_request(request_type=service.SearchPublicKgRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_public_kg(request)
 
 
@@ -7923,6 +7966,7 @@ def test_search_public_kg_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_public_kg(request)
 
     # Establish that the response is the type that we expect.
@@ -7962,6 +8006,7 @@ def test_search_public_kg_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.SearchPublicKgResponse.to_json(
             service.SearchPublicKgResponse()
         )

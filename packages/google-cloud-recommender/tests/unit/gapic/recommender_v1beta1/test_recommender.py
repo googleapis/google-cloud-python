@@ -6698,6 +6698,7 @@ def test_list_insights_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_insights(request)
 
@@ -6754,6 +6755,7 @@ def test_list_insights_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_insights(**mock_args)
 
@@ -6950,6 +6952,7 @@ def test_get_insight_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_insight(request)
 
@@ -6997,6 +7000,7 @@ def test_get_insight_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_insight(**mock_args)
 
@@ -7138,6 +7142,7 @@ def test_mark_insight_accepted_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.mark_insight_accepted(request)
 
@@ -7195,6 +7200,7 @@ def test_mark_insight_accepted_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.mark_insight_accepted(**mock_args)
 
@@ -7342,6 +7348,7 @@ def test_list_recommendations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_recommendations(request)
 
@@ -7399,6 +7406,7 @@ def test_list_recommendations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_recommendations(**mock_args)
 
@@ -7600,6 +7608,7 @@ def test_get_recommendation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_recommendation(request)
 
@@ -7647,6 +7656,7 @@ def test_get_recommendation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_recommendation(**mock_args)
 
@@ -7788,6 +7798,7 @@ def test_mark_recommendation_claimed_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.mark_recommendation_claimed(request)
 
@@ -7845,6 +7856,7 @@ def test_mark_recommendation_claimed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.mark_recommendation_claimed(**mock_args)
 
@@ -7988,6 +8000,7 @@ def test_mark_recommendation_succeeded_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.mark_recommendation_succeeded(request)
 
@@ -8047,6 +8060,7 @@ def test_mark_recommendation_succeeded_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.mark_recommendation_succeeded(**mock_args)
 
@@ -8190,6 +8204,7 @@ def test_mark_recommendation_failed_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.mark_recommendation_failed(request)
 
@@ -8247,6 +8262,7 @@ def test_mark_recommendation_failed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.mark_recommendation_failed(**mock_args)
 
@@ -8385,6 +8401,7 @@ def test_get_recommender_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_recommender_config(request)
 
@@ -8432,6 +8449,7 @@ def test_get_recommender_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_recommender_config(**mock_args)
 
@@ -8571,6 +8589,7 @@ def test_update_recommender_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_recommender_config(request)
 
@@ -8631,6 +8650,7 @@ def test_update_recommender_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_recommender_config(**mock_args)
 
@@ -8770,6 +8790,7 @@ def test_get_insight_type_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_insight_type_config(request)
 
@@ -8817,6 +8838,7 @@ def test_get_insight_type_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_insight_type_config(**mock_args)
 
@@ -8956,6 +8978,7 @@ def test_update_insight_type_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_insight_type_config(request)
 
@@ -9016,6 +9039,7 @@ def test_update_insight_type_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_insight_type_config(**mock_args)
 
@@ -10164,6 +10188,7 @@ def test_list_insights_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_insights(request)
 
 
@@ -10199,6 +10224,7 @@ def test_list_insights_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_insights(request)
 
     # Establish that the response is the type that we expect.
@@ -10239,6 +10265,7 @@ def test_list_insights_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommender_service.ListInsightsResponse.to_json(
             recommender_service.ListInsightsResponse()
         )
@@ -10287,6 +10314,7 @@ def test_get_insight_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_insight(request)
 
 
@@ -10330,6 +10358,7 @@ def test_get_insight_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_insight(request)
 
     # Establish that the response is the type that we expect.
@@ -10376,6 +10405,7 @@ def test_get_insight_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = insight.Insight.to_json(insight.Insight())
         req.return_value.content = return_value
 
@@ -10422,6 +10452,7 @@ def test_mark_insight_accepted_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.mark_insight_accepted(request)
 
 
@@ -10465,6 +10496,7 @@ def test_mark_insight_accepted_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.mark_insight_accepted(request)
 
     # Establish that the response is the type that we expect.
@@ -10511,6 +10543,7 @@ def test_mark_insight_accepted_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = insight.Insight.to_json(insight.Insight())
         req.return_value.content = return_value
 
@@ -10555,6 +10588,7 @@ def test_list_recommendations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_recommendations(request)
 
 
@@ -10590,6 +10624,7 @@ def test_list_recommendations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_recommendations(request)
 
     # Establish that the response is the type that we expect.
@@ -10630,6 +10665,7 @@ def test_list_recommendations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommender_service.ListRecommendationsResponse.to_json(
             recommender_service.ListRecommendationsResponse()
         )
@@ -10678,6 +10714,7 @@ def test_get_recommendation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_recommendation(request)
 
 
@@ -10720,6 +10757,7 @@ def test_get_recommendation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_recommendation(request)
 
     # Establish that the response is the type that we expect.
@@ -10765,6 +10803,7 @@ def test_get_recommendation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommendation.Recommendation.to_json(
             recommendation.Recommendation()
         )
@@ -10813,6 +10852,7 @@ def test_mark_recommendation_claimed_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.mark_recommendation_claimed(request)
 
 
@@ -10855,6 +10895,7 @@ def test_mark_recommendation_claimed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.mark_recommendation_claimed(request)
 
     # Establish that the response is the type that we expect.
@@ -10900,6 +10941,7 @@ def test_mark_recommendation_claimed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommendation.Recommendation.to_json(
             recommendation.Recommendation()
         )
@@ -10948,6 +10990,7 @@ def test_mark_recommendation_succeeded_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.mark_recommendation_succeeded(request)
 
 
@@ -10990,6 +11033,7 @@ def test_mark_recommendation_succeeded_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.mark_recommendation_succeeded(request)
 
     # Establish that the response is the type that we expect.
@@ -11035,6 +11079,7 @@ def test_mark_recommendation_succeeded_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommendation.Recommendation.to_json(
             recommendation.Recommendation()
         )
@@ -11083,6 +11128,7 @@ def test_mark_recommendation_failed_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.mark_recommendation_failed(request)
 
 
@@ -11125,6 +11171,7 @@ def test_mark_recommendation_failed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.mark_recommendation_failed(request)
 
     # Establish that the response is the type that we expect.
@@ -11170,6 +11217,7 @@ def test_mark_recommendation_failed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommendation.Recommendation.to_json(
             recommendation.Recommendation()
         )
@@ -11218,6 +11266,7 @@ def test_get_recommender_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_recommender_config(request)
 
 
@@ -11258,6 +11307,7 @@ def test_get_recommender_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_recommender_config(request)
 
     # Establish that the response is the type that we expect.
@@ -11301,6 +11351,7 @@ def test_get_recommender_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommender_config.RecommenderConfig.to_json(
             recommender_config.RecommenderConfig()
         )
@@ -11351,6 +11402,7 @@ def test_update_recommender_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_recommender_config(request)
 
 
@@ -11471,6 +11523,7 @@ def test_update_recommender_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_recommender_config(request)
 
     # Establish that the response is the type that we expect.
@@ -11514,6 +11567,7 @@ def test_update_recommender_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcr_recommender_config.RecommenderConfig.to_json(
             gcr_recommender_config.RecommenderConfig()
         )
@@ -11562,6 +11616,7 @@ def test_get_insight_type_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_insight_type_config(request)
 
 
@@ -11602,6 +11657,7 @@ def test_get_insight_type_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_insight_type_config(request)
 
     # Establish that the response is the type that we expect.
@@ -11645,6 +11701,7 @@ def test_get_insight_type_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = insight_type_config.InsightTypeConfig.to_json(
             insight_type_config.InsightTypeConfig()
         )
@@ -11695,6 +11752,7 @@ def test_update_insight_type_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_insight_type_config(request)
 
 
@@ -11815,6 +11873,7 @@ def test_update_insight_type_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_insight_type_config(request)
 
     # Establish that the response is the type that we expect.
@@ -11858,6 +11917,7 @@ def test_update_insight_type_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcr_insight_type_config.InsightTypeConfig.to_json(
             gcr_insight_type_config.InsightTypeConfig()
         )
@@ -11904,6 +11964,7 @@ def test_list_recommenders_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_recommenders(request)
 
 
@@ -11939,6 +12000,7 @@ def test_list_recommenders_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_recommenders(request)
 
     # Establish that the response is the type that we expect.
@@ -11979,6 +12041,7 @@ def test_list_recommenders_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommender_service.ListRecommendersResponse.to_json(
             recommender_service.ListRecommendersResponse()
         )
@@ -12025,6 +12088,7 @@ def test_list_insight_types_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_insight_types(request)
 
 
@@ -12060,6 +12124,7 @@ def test_list_insight_types_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_insight_types(request)
 
     # Establish that the response is the type that we expect.
@@ -12100,6 +12165,7 @@ def test_list_insight_types_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = recommender_service.ListInsightTypesResponse.to_json(
             recommender_service.ListInsightTypesResponse()
         )

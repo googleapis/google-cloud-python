@@ -975,6 +975,7 @@ def test_get_role_rest_required_fields(request_type=role_service.GetRoleRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_role(request)
 
@@ -1020,6 +1021,7 @@ def test_get_role_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_role(**mock_args)
 
@@ -1157,6 +1159,7 @@ def test_list_roles_rest_required_fields(request_type=role_service.ListRolesRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_roles(request)
 
@@ -1213,6 +1216,7 @@ def test_list_roles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_roles(**mock_args)
 
@@ -1402,6 +1406,7 @@ def test_get_role_rest_bad_request(request_type=role_service.GetRoleRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_role(request)
 
 
@@ -1442,6 +1447,7 @@ def test_get_role_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_role(request)
 
     # Establish that the response is the type that we expect.
@@ -1485,6 +1491,7 @@ def test_get_role_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = role_messages.Role.to_json(role_messages.Role())
         req.return_value.content = return_value
 
@@ -1527,6 +1534,7 @@ def test_list_roles_rest_bad_request(request_type=role_service.ListRolesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_roles(request)
 
 
@@ -1563,6 +1571,7 @@ def test_list_roles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_roles(request)
 
     # Establish that the response is the type that we expect.
@@ -1602,6 +1611,7 @@ def test_list_roles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = role_service.ListRolesResponse.to_json(
             role_service.ListRolesResponse()
         )
@@ -1650,6 +1660,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -1680,6 +1691,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

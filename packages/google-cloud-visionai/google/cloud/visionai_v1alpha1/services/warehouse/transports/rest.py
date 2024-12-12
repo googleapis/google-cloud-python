@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -280,8 +288,10 @@ class WarehouseRestInterceptor:
     """
 
     def pre_clip_asset(
-        self, request: warehouse.ClipAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.ClipAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.ClipAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.ClipAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for clip_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -303,8 +313,10 @@ class WarehouseRestInterceptor:
     def pre_create_annotation(
         self,
         request: warehouse.CreateAnnotationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.CreateAnnotationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.CreateAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -324,8 +336,10 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_create_asset(
-        self, request: warehouse.CreateAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.CreateAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.CreateAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.CreateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -345,8 +359,8 @@ class WarehouseRestInterceptor:
     def pre_create_corpus(
         self,
         request: warehouse.CreateCorpusRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.CreateCorpusRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.CreateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -368,8 +382,10 @@ class WarehouseRestInterceptor:
     def pre_create_data_schema(
         self,
         request: warehouse.CreateDataSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.CreateDataSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.CreateDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_data_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -391,8 +407,10 @@ class WarehouseRestInterceptor:
     def pre_create_search_config(
         self,
         request: warehouse.CreateSearchConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.CreateSearchConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.CreateSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -414,8 +432,10 @@ class WarehouseRestInterceptor:
     def pre_delete_annotation(
         self,
         request: warehouse.DeleteAnnotationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.DeleteAnnotationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.DeleteAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -424,8 +444,10 @@ class WarehouseRestInterceptor:
         return request, metadata
 
     def pre_delete_asset(
-        self, request: warehouse.DeleteAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.DeleteAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.DeleteAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -447,8 +469,8 @@ class WarehouseRestInterceptor:
     def pre_delete_corpus(
         self,
         request: warehouse.DeleteCorpusRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.DeleteCorpusRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.DeleteCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -459,8 +481,10 @@ class WarehouseRestInterceptor:
     def pre_delete_data_schema(
         self,
         request: warehouse.DeleteDataSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.DeleteDataSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.DeleteDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_data_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -471,8 +495,10 @@ class WarehouseRestInterceptor:
     def pre_delete_search_config(
         self,
         request: warehouse.DeleteSearchConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.DeleteSearchConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.DeleteSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -483,8 +509,10 @@ class WarehouseRestInterceptor:
     def pre_generate_hls_uri(
         self,
         request: warehouse.GenerateHlsUriRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.GenerateHlsUriRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.GenerateHlsUriRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for generate_hls_uri
 
         Override in a subclass to manipulate the request or metadata
@@ -506,8 +534,8 @@ class WarehouseRestInterceptor:
     def pre_get_annotation(
         self,
         request: warehouse.GetAnnotationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.GetAnnotationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.GetAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -527,8 +555,10 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_get_asset(
-        self, request: warehouse.GetAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.GetAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.GetAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -546,8 +576,10 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_get_corpus(
-        self, request: warehouse.GetCorpusRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.GetCorpusRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.GetCorpusRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.GetCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -567,8 +599,8 @@ class WarehouseRestInterceptor:
     def pre_get_data_schema(
         self,
         request: warehouse.GetDataSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.GetDataSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.GetDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -590,8 +622,10 @@ class WarehouseRestInterceptor:
     def pre_get_search_config(
         self,
         request: warehouse.GetSearchConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.GetSearchConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.GetSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -613,8 +647,10 @@ class WarehouseRestInterceptor:
     def pre_list_annotations(
         self,
         request: warehouse.ListAnnotationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.ListAnnotationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.ListAnnotationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_annotations
 
         Override in a subclass to manipulate the request or metadata
@@ -634,8 +670,10 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_list_assets(
-        self, request: warehouse.ListAssetsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.ListAssetsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.ListAssetsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -655,8 +693,10 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_list_corpora(
-        self, request: warehouse.ListCorporaRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.ListCorporaRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.ListCorporaRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.ListCorporaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_corpora
 
         Override in a subclass to manipulate the request or metadata
@@ -678,8 +718,10 @@ class WarehouseRestInterceptor:
     def pre_list_data_schemas(
         self,
         request: warehouse.ListDataSchemasRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.ListDataSchemasRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.ListDataSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_data_schemas
 
         Override in a subclass to manipulate the request or metadata
@@ -701,8 +743,10 @@ class WarehouseRestInterceptor:
     def pre_list_search_configs(
         self,
         request: warehouse.ListSearchConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.ListSearchConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.ListSearchConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_search_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -724,8 +768,8 @@ class WarehouseRestInterceptor:
     def pre_search_assets(
         self,
         request: warehouse.SearchAssetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.SearchAssetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.SearchAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -747,8 +791,10 @@ class WarehouseRestInterceptor:
     def pre_update_annotation(
         self,
         request: warehouse.UpdateAnnotationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.UpdateAnnotationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.UpdateAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -768,8 +814,10 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_update_asset(
-        self, request: warehouse.UpdateAssetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[warehouse.UpdateAssetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: warehouse.UpdateAssetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.UpdateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -789,8 +837,8 @@ class WarehouseRestInterceptor:
     def pre_update_corpus(
         self,
         request: warehouse.UpdateCorpusRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.UpdateCorpusRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.UpdateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -810,8 +858,10 @@ class WarehouseRestInterceptor:
     def pre_update_data_schema(
         self,
         request: warehouse.UpdateDataSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.UpdateDataSchemaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.UpdateDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_data_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -833,8 +883,10 @@ class WarehouseRestInterceptor:
     def pre_update_search_config(
         self,
         request: warehouse.UpdateSearchConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[warehouse.UpdateSearchConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.UpdateSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -856,8 +908,10 @@ class WarehouseRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -879,8 +933,10 @@ class WarehouseRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -902,8 +958,10 @@ class WarehouseRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -923,8 +981,10 @@ class WarehouseRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -944,8 +1004,11 @@ class WarehouseRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -967,8 +1030,10 @@ class WarehouseRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -988,8 +1053,10 @@ class WarehouseRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1009,8 +1076,10 @@ class WarehouseRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1032,8 +1101,10 @@ class WarehouseRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1234,7 +1305,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.ClipAssetResponse:
             r"""Call the clip asset method over HTTP.
 
@@ -1244,8 +1315,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.ClipAssetResponse:
@@ -1255,6 +1328,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseClipAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_clip_asset(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseClipAsset._get_transcoded_request(
@@ -1272,6 +1346,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ClipAsset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ClipAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ClipAsset._get_response(
@@ -1294,7 +1395,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.ClipAssetResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_clip_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.ClipAssetResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.clip_asset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ClipAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAnnotation(
@@ -1332,7 +1455,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Annotation:
             r"""Call the create annotation method over HTTP.
 
@@ -1342,8 +1465,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Annotation:
@@ -1356,6 +1481,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseCreateAnnotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_annotation(
                 request, metadata
             )
@@ -1371,6 +1497,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.CreateAnnotation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._CreateAnnotation._get_response(
@@ -1393,7 +1546,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Annotation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_annotation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Annotation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.create_annotation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAsset(_BaseWarehouseRestTransport._BaseCreateAsset, WarehouseRestStub):
@@ -1429,7 +1604,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Asset:
             r"""Call the create asset method over HTTP.
 
@@ -1440,8 +1615,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Asset:
@@ -1458,6 +1635,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseCreateAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_asset(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseCreateAsset._get_transcoded_request(
@@ -1475,6 +1653,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.CreateAsset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._CreateAsset._get_response(
@@ -1497,7 +1702,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Asset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Asset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.create_asset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCorpus(
@@ -1535,7 +1762,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create corpus method over HTTP.
 
@@ -1545,8 +1772,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1559,6 +1788,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseCreateCorpus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_corpus(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseCreateCorpus._get_transcoded_request(
@@ -1576,6 +1806,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.CreateCorpus",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateCorpus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._CreateCorpus._get_response(
@@ -1596,7 +1853,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_corpus(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.create_corpus",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateCorpus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDataSchema(
@@ -1634,7 +1913,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.DataSchema:
             r"""Call the create data schema method over HTTP.
 
@@ -1644,8 +1923,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.DataSchema:
@@ -1658,6 +1939,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseCreateDataSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_data_schema(
                 request, metadata
             )
@@ -1673,6 +1955,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.CreateDataSchema",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateDataSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._CreateDataSchema._get_response(
@@ -1695,7 +2004,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.DataSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_data_schema(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.DataSchema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.create_data_schema",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateDataSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSearchConfig(
@@ -1733,7 +2064,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.SearchConfig:
             r"""Call the create search config method over HTTP.
 
@@ -1744,8 +2075,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.SearchConfig:
@@ -1758,6 +2091,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_search_config(
                 request, metadata
             )
@@ -1773,6 +2107,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.CreateSearchConfig",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateSearchConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._CreateSearchConfig._get_response(
@@ -1795,7 +2156,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.SearchConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_search_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.SearchConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.create_search_config",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CreateSearchConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAnnotation(
@@ -1832,7 +2215,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete annotation method over HTTP.
 
@@ -1843,13 +2226,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_annotation(
                 request, metadata
             )
@@ -1861,6 +2247,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.DeleteAnnotation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "DeleteAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._DeleteAnnotation._get_response(
@@ -1909,7 +2322,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete asset method over HTTP.
 
@@ -1919,8 +2332,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1933,6 +2348,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseDeleteAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseDeleteAsset._get_transcoded_request(
@@ -1946,6 +2362,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.DeleteAsset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "DeleteAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._DeleteAsset._get_response(
@@ -1965,7 +2408,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.delete_asset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "DeleteAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCorpus(
@@ -2002,7 +2467,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete corpus method over HTTP.
 
@@ -2012,13 +2477,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWarehouseRestTransport._BaseDeleteCorpus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_corpus(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseDeleteCorpus._get_transcoded_request(
@@ -2032,6 +2500,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.DeleteCorpus",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "DeleteCorpus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._DeleteCorpus._get_response(
@@ -2082,7 +2577,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete data schema method over HTTP.
 
@@ -2092,13 +2587,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_data_schema(
                 request, metadata
             )
@@ -2110,6 +2608,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.DeleteDataSchema",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "DeleteDataSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._DeleteDataSchema._get_response(
@@ -2160,7 +2685,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete search config method over HTTP.
 
@@ -2171,13 +2696,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_search_config(
                 request, metadata
             )
@@ -2189,6 +2717,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.DeleteSearchConfig",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "DeleteSearchConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._DeleteSearchConfig._get_response(
@@ -2240,7 +2795,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.GenerateHlsUriResponse:
             r"""Call the generate hls uri method over HTTP.
 
@@ -2251,8 +2806,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.GenerateHlsUriResponse:
@@ -2264,6 +2821,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_hls_uri(
                 request, metadata
             )
@@ -2286,6 +2844,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GenerateHlsUri",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GenerateHlsUri",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = WarehouseRestTransport._GenerateHlsUri._get_response(
                 self._host,
@@ -2307,7 +2892,31 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.GenerateHlsUriResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_hls_uri(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.GenerateHlsUriResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.generate_hls_uri",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GenerateHlsUri",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAnnotation(
@@ -2344,7 +2953,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Annotation:
             r"""Call the get annotation method over HTTP.
 
@@ -2355,8 +2964,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Annotation:
@@ -2369,6 +2980,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGetAnnotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_annotation(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseGetAnnotation._get_transcoded_request(
@@ -2382,6 +2994,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetAnnotation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetAnnotation._get_response(
@@ -2403,7 +3042,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Annotation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_annotation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Annotation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.get_annotation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAsset(_BaseWarehouseRestTransport._BaseGetAsset, WarehouseRestStub):
@@ -2438,7 +3099,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Asset:
             r"""Call the get asset method over HTTP.
 
@@ -2448,8 +3109,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Asset:
@@ -2464,6 +3127,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             """
 
             http_options = _BaseWarehouseRestTransport._BaseGetAsset._get_http_options()
+
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseGetAsset._get_transcoded_request(
@@ -2477,6 +3141,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetAsset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetAsset._get_response(
@@ -2498,7 +3189,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Asset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Asset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.get_asset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCorpus(_BaseWarehouseRestTransport._BaseGetCorpus, WarehouseRestStub):
@@ -2533,7 +3246,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Corpus:
             r"""Call the get corpus method over HTTP.
 
@@ -2543,8 +3256,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Corpus:
@@ -2558,6 +3273,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGetCorpus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_corpus(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseGetCorpus._get_transcoded_request(
@@ -2571,6 +3287,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetCorpus",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetCorpus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetCorpus._get_response(
@@ -2592,7 +3335,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Corpus.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_corpus(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Corpus.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.get_corpus",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetCorpus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataSchema(
@@ -2629,7 +3394,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.DataSchema:
             r"""Call the get data schema method over HTTP.
 
@@ -2639,8 +3404,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.DataSchema:
@@ -2653,6 +3420,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGetDataSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_schema(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseGetDataSchema._get_transcoded_request(
@@ -2666,6 +3434,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetDataSchema",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetDataSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetDataSchema._get_response(
@@ -2687,7 +3482,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.DataSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_schema(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.DataSchema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.get_data_schema",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetDataSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSearchConfig(
@@ -2724,7 +3541,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.SearchConfig:
             r"""Call the get search config method over HTTP.
 
@@ -2734,8 +3551,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.SearchConfig:
@@ -2748,6 +3567,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGetSearchConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_search_config(
                 request, metadata
             )
@@ -2761,6 +3581,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetSearchConfig",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetSearchConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetSearchConfig._get_response(
@@ -2782,7 +3629,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.SearchConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_search_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.SearchConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.get_search_config",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetSearchConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _IngestAsset(_BaseWarehouseRestTransport._BaseIngestAsset, WarehouseRestStub):
@@ -2795,7 +3664,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             raise NotImplementedError(
                 "Method IngestAsset is not available over REST transport"
@@ -2835,7 +3704,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.ListAnnotationsResponse:
             r"""Call the list annotations method over HTTP.
 
@@ -2846,8 +3715,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.ListAnnotationsResponse:
@@ -2859,6 +3730,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseListAnnotations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_annotations(
                 request, metadata
             )
@@ -2872,6 +3744,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ListAnnotations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListAnnotations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ListAnnotations._get_response(
@@ -2893,7 +3792,31 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.ListAnnotationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_annotations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.ListAnnotationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.list_annotations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListAnnotations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAssets(_BaseWarehouseRestTransport._BaseListAssets, WarehouseRestStub):
@@ -2928,7 +3851,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
 
@@ -2938,8 +3861,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.ListAssetsResponse:
@@ -2949,6 +3874,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseListAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseListAssets._get_transcoded_request(
@@ -2962,6 +3888,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ListAssets",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ListAssets._get_response(
@@ -2983,7 +3936,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.ListAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.ListAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.list_assets",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCorpora(_BaseWarehouseRestTransport._BaseListCorpora, WarehouseRestStub):
@@ -3018,7 +3993,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.ListCorporaResponse:
             r"""Call the list corpora method over HTTP.
 
@@ -3028,8 +4003,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.ListCorporaResponse:
@@ -3039,6 +4016,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseListCorpora._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_corpora(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseListCorpora._get_transcoded_request(
@@ -3052,6 +4030,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ListCorpora",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListCorpora",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ListCorpora._get_response(
@@ -3073,7 +4078,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.ListCorporaResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_corpora(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.ListCorporaResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.list_corpora",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListCorpora",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDataSchemas(
@@ -3110,7 +4137,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.ListDataSchemasResponse:
             r"""Call the list data schemas method over HTTP.
 
@@ -3120,8 +4147,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.ListDataSchemasResponse:
@@ -3131,6 +4160,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseListDataSchemas._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_data_schemas(
                 request, metadata
             )
@@ -3144,6 +4174,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ListDataSchemas",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListDataSchemas",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ListDataSchemas._get_response(
@@ -3165,7 +4222,31 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.ListDataSchemasResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_data_schemas(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.ListDataSchemasResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.list_data_schemas",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListDataSchemas",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSearchConfigs(
@@ -3202,7 +4283,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.ListSearchConfigsResponse:
             r"""Call the list search configs method over HTTP.
 
@@ -3213,8 +4294,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.ListSearchConfigsResponse:
@@ -3226,6 +4309,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseListSearchConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_search_configs(
                 request, metadata
             )
@@ -3237,6 +4321,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ListSearchConfigs",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListSearchConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ListSearchConfigs._get_response(
@@ -3258,7 +4369,31 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.ListSearchConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_search_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.ListSearchConfigsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.list_search_configs",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListSearchConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchAssets(
@@ -3296,7 +4431,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.SearchAssetsResponse:
             r"""Call the search assets method over HTTP.
 
@@ -3306,8 +4441,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.SearchAssetsResponse:
@@ -3317,6 +4454,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseSearchAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_assets(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseSearchAssets._get_transcoded_request(
@@ -3334,6 +4472,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.SearchAssets",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "SearchAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._SearchAssets._get_response(
@@ -3356,7 +4521,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.SearchAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.SearchAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.search_assets",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "SearchAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAnnotation(
@@ -3394,7 +4581,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Annotation:
             r"""Call the update annotation method over HTTP.
 
@@ -3405,8 +4592,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Annotation:
@@ -3419,6 +4608,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_annotation(
                 request, metadata
             )
@@ -3434,6 +4624,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.UpdateAnnotation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._UpdateAnnotation._get_response(
@@ -3456,7 +4673,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Annotation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_annotation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Annotation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.update_annotation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAsset(_BaseWarehouseRestTransport._BaseUpdateAsset, WarehouseRestStub):
@@ -3492,7 +4731,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Asset:
             r"""Call the update asset method over HTTP.
 
@@ -3502,8 +4741,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Asset:
@@ -3520,6 +4761,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseUpdateAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_asset(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseUpdateAsset._get_transcoded_request(
@@ -3537,6 +4779,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.UpdateAsset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._UpdateAsset._get_response(
@@ -3559,7 +4828,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Asset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Asset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.update_asset",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCorpus(
@@ -3597,7 +4888,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.Corpus:
             r"""Call the update corpus method over HTTP.
 
@@ -3607,8 +4898,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.Corpus:
@@ -3622,6 +4915,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseUpdateCorpus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_corpus(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseUpdateCorpus._get_transcoded_request(
@@ -3639,6 +4933,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.UpdateCorpus",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateCorpus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._UpdateCorpus._get_response(
@@ -3661,7 +4982,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.Corpus.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_corpus(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.Corpus.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.update_corpus",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateCorpus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataSchema(
@@ -3699,7 +5042,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.DataSchema:
             r"""Call the update data schema method over HTTP.
 
@@ -3709,8 +5052,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.DataSchema:
@@ -3723,6 +5068,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_data_schema(
                 request, metadata
             )
@@ -3738,6 +5084,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.UpdateDataSchema",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateDataSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._UpdateDataSchema._get_response(
@@ -3760,7 +5133,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.DataSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_data_schema(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.DataSchema.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.update_data_schema",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateDataSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSearchConfig(
@@ -3798,7 +5193,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> warehouse.SearchConfig:
             r"""Call the update search config method over HTTP.
 
@@ -3809,8 +5204,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.warehouse.SearchConfig:
@@ -3823,6 +5220,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_search_config(
                 request, metadata
             )
@@ -3838,6 +5236,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.UpdateSearchConfig",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateSearchConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._UpdateSearchConfig._get_response(
@@ -3860,7 +5285,29 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             pb_resp = warehouse.SearchConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_search_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = warehouse.SearchConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseClient.update_search_config",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "UpdateSearchConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -4129,7 +5576,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -4139,8 +5586,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -4149,6 +5598,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseGetLocation._get_transcoded_request(
@@ -4162,6 +5612,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetLocation._get_response(
@@ -4182,6 +5659,27 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4222,7 +5720,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -4232,8 +5730,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -4242,6 +5742,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseListLocations._get_transcoded_request(
@@ -4255,6 +5756,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ListLocations._get_response(
@@ -4275,6 +5803,27 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4315,7 +5864,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -4325,8 +5874,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -4335,6 +5886,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -4348,6 +5900,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetIamPolicy._get_response(
@@ -4368,6 +5947,27 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4409,7 +6009,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -4419,8 +6019,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -4429,6 +6031,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -4446,6 +6049,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._SetIamPolicy._get_response(
@@ -4467,6 +6097,27 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4508,7 +6159,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -4518,8 +6169,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -4528,6 +6181,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -4543,6 +6197,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             query_params = _BaseWarehouseRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._TestIamPermissions._get_response(
@@ -4564,6 +6245,27 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4605,7 +6307,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -4615,13 +6317,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWarehouseRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -4641,6 +6346,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._CancelOperation._get_response(
@@ -4698,7 +6430,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4708,13 +6440,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWarehouseRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4728,6 +6463,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._DeleteOperation._get_response(
@@ -4784,7 +6546,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4794,8 +6556,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4804,6 +6568,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4817,6 +6582,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._GetOperation._get_response(
@@ -4837,6 +6629,27 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4877,7 +6690,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4887,8 +6700,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4897,6 +6712,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = (
                 _BaseWarehouseRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseWarehouseRestTransport._BaseListOperations._get_transcoded_request(
@@ -4910,6 +6726,33 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.WarehouseClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WarehouseRestTransport._ListOperations._get_response(
@@ -4930,6 +6773,27 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.WarehouseAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.Warehouse",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

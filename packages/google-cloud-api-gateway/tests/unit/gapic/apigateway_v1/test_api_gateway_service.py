@@ -6875,6 +6875,7 @@ def test_list_gateways_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_gateways(request)
 
@@ -6930,6 +6931,7 @@ def test_list_gateways_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_gateways(**mock_args)
 
@@ -7119,6 +7121,7 @@ def test_get_gateway_rest_required_fields(request_type=apigateway.GetGatewayRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_gateway(request)
 
@@ -7164,6 +7167,7 @@ def test_get_gateway_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_gateway(**mock_args)
 
@@ -7305,6 +7309,7 @@ def test_create_gateway_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_gateway(request)
 
@@ -7365,6 +7370,7 @@ def test_create_gateway_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_gateway(**mock_args)
 
@@ -7496,6 +7502,7 @@ def test_update_gateway_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_gateway(request)
 
@@ -7542,6 +7549,7 @@ def test_update_gateway_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_gateway(**mock_args)
 
@@ -7675,6 +7683,7 @@ def test_delete_gateway_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_gateway(request)
 
@@ -7718,6 +7727,7 @@ def test_delete_gateway_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_gateway(**mock_args)
 
@@ -7855,6 +7865,7 @@ def test_list_apis_rest_required_fields(request_type=apigateway.ListApisRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_apis(request)
 
@@ -7910,6 +7921,7 @@ def test_list_apis_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_apis(**mock_args)
 
@@ -8099,6 +8111,7 @@ def test_get_api_rest_required_fields(request_type=apigateway.GetApiRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_api(request)
 
@@ -8144,6 +8157,7 @@ def test_get_api_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_api(**mock_args)
 
@@ -8283,6 +8297,7 @@ def test_create_api_rest_required_fields(request_type=apigateway.CreateApiReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_api(request)
 
@@ -8343,6 +8358,7 @@ def test_create_api_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_api(**mock_args)
 
@@ -8472,6 +8488,7 @@ def test_update_api_rest_required_fields(request_type=apigateway.UpdateApiReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_api(request)
 
@@ -8518,6 +8535,7 @@ def test_update_api_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_api(**mock_args)
 
@@ -8648,6 +8666,7 @@ def test_delete_api_rest_required_fields(request_type=apigateway.DeleteApiReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_api(request)
 
@@ -8691,6 +8710,7 @@ def test_delete_api_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_api(**mock_args)
 
@@ -8832,6 +8852,7 @@ def test_list_api_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_api_configs(request)
 
@@ -8887,6 +8908,7 @@ def test_list_api_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_api_configs(**mock_args)
 
@@ -9081,6 +9103,7 @@ def test_get_api_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_api_config(request)
 
@@ -9128,6 +9151,7 @@ def test_get_api_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_api_config(**mock_args)
 
@@ -9272,6 +9296,7 @@ def test_create_api_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_api_config(request)
 
@@ -9332,6 +9357,7 @@ def test_create_api_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_api_config(**mock_args)
 
@@ -9466,6 +9492,7 @@ def test_update_api_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_api_config(request)
 
@@ -9514,6 +9541,7 @@ def test_update_api_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_api_config(**mock_args)
 
@@ -9649,6 +9677,7 @@ def test_delete_api_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_api_config(request)
 
@@ -9694,6 +9723,7 @@ def test_delete_api_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_api_config(**mock_args)
 
@@ -10597,6 +10627,7 @@ def test_list_gateways_rest_bad_request(request_type=apigateway.ListGatewaysRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_gateways(request)
 
 
@@ -10633,6 +10664,7 @@ def test_list_gateways_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_gateways(request)
 
     # Establish that the response is the type that we expect.
@@ -10672,6 +10704,7 @@ def test_list_gateways_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apigateway.ListGatewaysResponse.to_json(
             apigateway.ListGatewaysResponse()
         )
@@ -10716,6 +10749,7 @@ def test_get_gateway_rest_bad_request(request_type=apigateway.GetGatewayRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_gateway(request)
 
 
@@ -10755,6 +10789,7 @@ def test_get_gateway_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_gateway(request)
 
     # Establish that the response is the type that we expect.
@@ -10797,6 +10832,7 @@ def test_get_gateway_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apigateway.Gateway.to_json(apigateway.Gateway())
         req.return_value.content = return_value
 
@@ -10839,6 +10875,7 @@ def test_create_gateway_rest_bad_request(request_type=apigateway.CreateGatewayRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_gateway(request)
 
 
@@ -10946,6 +10983,7 @@ def test_create_gateway_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_gateway(request)
 
     # Establish that the response is the type that we expect.
@@ -10987,6 +11025,7 @@ def test_create_gateway_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11031,6 +11070,7 @@ def test_update_gateway_rest_bad_request(request_type=apigateway.UpdateGatewayRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_gateway(request)
 
 
@@ -11140,6 +11180,7 @@ def test_update_gateway_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_gateway(request)
 
     # Establish that the response is the type that we expect.
@@ -11181,6 +11222,7 @@ def test_update_gateway_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11223,6 +11265,7 @@ def test_delete_gateway_rest_bad_request(request_type=apigateway.DeleteGatewayRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_gateway(request)
 
 
@@ -11253,6 +11296,7 @@ def test_delete_gateway_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_gateway(request)
 
     # Establish that the response is the type that we expect.
@@ -11294,6 +11338,7 @@ def test_delete_gateway_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11336,6 +11381,7 @@ def test_list_apis_rest_bad_request(request_type=apigateway.ListApisRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_apis(request)
 
 
@@ -11372,6 +11418,7 @@ def test_list_apis_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_apis(request)
 
     # Establish that the response is the type that we expect.
@@ -11411,6 +11458,7 @@ def test_list_apis_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apigateway.ListApisResponse.to_json(
             apigateway.ListApisResponse()
         )
@@ -11455,6 +11503,7 @@ def test_get_api_rest_bad_request(request_type=apigateway.GetApiRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_api(request)
 
 
@@ -11493,6 +11542,7 @@ def test_get_api_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_api(request)
 
     # Establish that the response is the type that we expect.
@@ -11534,6 +11584,7 @@ def test_get_api_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apigateway.Api.to_json(apigateway.Api())
         req.return_value.content = return_value
 
@@ -11576,6 +11627,7 @@ def test_create_api_rest_bad_request(request_type=apigateway.CreateApiRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_api(request)
 
 
@@ -11682,6 +11734,7 @@ def test_create_api_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_api(request)
 
     # Establish that the response is the type that we expect.
@@ -11721,6 +11774,7 @@ def test_create_api_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11763,6 +11817,7 @@ def test_update_api_rest_bad_request(request_type=apigateway.UpdateApiRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_api(request)
 
 
@@ -11869,6 +11924,7 @@ def test_update_api_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_api(request)
 
     # Establish that the response is the type that we expect.
@@ -11908,6 +11964,7 @@ def test_update_api_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11950,6 +12007,7 @@ def test_delete_api_rest_bad_request(request_type=apigateway.DeleteApiRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_api(request)
 
 
@@ -11980,6 +12038,7 @@ def test_delete_api_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_api(request)
 
     # Establish that the response is the type that we expect.
@@ -12019,6 +12078,7 @@ def test_delete_api_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12063,6 +12123,7 @@ def test_list_api_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_api_configs(request)
 
 
@@ -12099,6 +12160,7 @@ def test_list_api_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_api_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -12140,6 +12202,7 @@ def test_list_api_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apigateway.ListApiConfigsResponse.to_json(
             apigateway.ListApiConfigsResponse()
         )
@@ -12186,6 +12249,7 @@ def test_get_api_config_rest_bad_request(request_type=apigateway.GetApiConfigReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_api_config(request)
 
 
@@ -12227,6 +12291,7 @@ def test_get_api_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_api_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12269,6 +12334,7 @@ def test_get_api_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = apigateway.ApiConfig.to_json(apigateway.ApiConfig())
         req.return_value.content = return_value
 
@@ -12313,6 +12379,7 @@ def test_create_api_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_api_config(request)
 
 
@@ -12425,6 +12492,7 @@ def test_create_api_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_api_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12466,6 +12534,7 @@ def test_create_api_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12514,6 +12583,7 @@ def test_update_api_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_api_config(request)
 
 
@@ -12630,6 +12700,7 @@ def test_update_api_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_api_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12671,6 +12742,7 @@ def test_update_api_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12717,6 +12789,7 @@ def test_delete_api_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_api_config(request)
 
 
@@ -12749,6 +12822,7 @@ def test_delete_api_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_api_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12790,6 +12864,7 @@ def test_delete_api_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 

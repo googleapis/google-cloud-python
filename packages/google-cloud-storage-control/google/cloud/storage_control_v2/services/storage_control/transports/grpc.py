@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -22,11 +25,89 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.storage_control_v2.types import storage_control
 
 from .base import DEFAULT_CLIENT_INFO, StorageControlTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.storage.control.v2.StorageControl",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.storage.control.v2.StorageControl",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class StorageControlGrpcTransport(StorageControlTransport):
@@ -183,7 +264,12 @@ class StorageControlGrpcTransport(StorageControlTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -247,7 +333,9 @@ class StorageControlGrpcTransport(StorageControlTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -272,7 +360,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_folder" not in self._stubs:
-            self._stubs["create_folder"] = self.grpc_channel.unary_unary(
+            self._stubs["create_folder"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/CreateFolder",
                 request_serializer=storage_control.CreateFolderRequest.serialize,
                 response_deserializer=storage_control.Folder.deserialize,
@@ -300,7 +388,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_folder" not in self._stubs:
-            self._stubs["delete_folder"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_folder"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/DeleteFolder",
                 request_serializer=storage_control.DeleteFolderRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -328,7 +416,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_folder" not in self._stubs:
-            self._stubs["get_folder"] = self.grpc_channel.unary_unary(
+            self._stubs["get_folder"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/GetFolder",
                 request_serializer=storage_control.GetFolderRequest.serialize,
                 response_deserializer=storage_control.Folder.deserialize,
@@ -357,7 +445,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_folders" not in self._stubs:
-            self._stubs["list_folders"] = self.grpc_channel.unary_unary(
+            self._stubs["list_folders"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/ListFolders",
                 request_serializer=storage_control.ListFoldersRequest.serialize,
                 response_deserializer=storage_control.ListFoldersResponse.deserialize,
@@ -387,7 +475,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_folder" not in self._stubs:
-            self._stubs["rename_folder"] = self.grpc_channel.unary_unary(
+            self._stubs["rename_folder"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/RenameFolder",
                 request_serializer=storage_control.RenameFolderRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -416,7 +504,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_storage_layout" not in self._stubs:
-            self._stubs["get_storage_layout"] = self.grpc_channel.unary_unary(
+            self._stubs["get_storage_layout"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/GetStorageLayout",
                 request_serializer=storage_control.GetStorageLayoutRequest.serialize,
                 response_deserializer=storage_control.StorageLayout.deserialize,
@@ -444,7 +532,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_managed_folder" not in self._stubs:
-            self._stubs["create_managed_folder"] = self.grpc_channel.unary_unary(
+            self._stubs["create_managed_folder"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/CreateManagedFolder",
                 request_serializer=storage_control.CreateManagedFolderRequest.serialize,
                 response_deserializer=storage_control.ManagedFolder.deserialize,
@@ -470,7 +558,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_managed_folder" not in self._stubs:
-            self._stubs["delete_managed_folder"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_managed_folder"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/DeleteManagedFolder",
                 request_serializer=storage_control.DeleteManagedFolderRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -498,7 +586,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_managed_folder" not in self._stubs:
-            self._stubs["get_managed_folder"] = self.grpc_channel.unary_unary(
+            self._stubs["get_managed_folder"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/GetManagedFolder",
                 request_serializer=storage_control.GetManagedFolderRequest.serialize,
                 response_deserializer=storage_control.ManagedFolder.deserialize,
@@ -528,7 +616,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_managed_folders" not in self._stubs:
-            self._stubs["list_managed_folders"] = self.grpc_channel.unary_unary(
+            self._stubs["list_managed_folders"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/ListManagedFolders",
                 request_serializer=storage_control.ListManagedFoldersRequest.serialize,
                 response_deserializer=storage_control.ListManagedFoldersResponse.deserialize,
@@ -536,7 +624,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["list_managed_folders"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def kind(self) -> str:

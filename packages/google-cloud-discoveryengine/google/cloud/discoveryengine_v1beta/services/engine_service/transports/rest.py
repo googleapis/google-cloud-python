@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -137,8 +145,10 @@ class EngineServiceRestInterceptor:
     def pre_create_engine(
         self,
         request: engine_service.CreateEngineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.CreateEngineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.CreateEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -160,8 +170,10 @@ class EngineServiceRestInterceptor:
     def pre_delete_engine(
         self,
         request: engine_service.DeleteEngineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.DeleteEngineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.DeleteEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -183,8 +195,10 @@ class EngineServiceRestInterceptor:
     def pre_get_engine(
         self,
         request: engine_service.GetEngineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.GetEngineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.GetEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -204,8 +218,10 @@ class EngineServiceRestInterceptor:
     def pre_list_engines(
         self,
         request: engine_service.ListEnginesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.ListEnginesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.ListEnginesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_engines
 
         Override in a subclass to manipulate the request or metadata
@@ -227,8 +243,10 @@ class EngineServiceRestInterceptor:
     def pre_pause_engine(
         self,
         request: engine_service.PauseEngineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.PauseEngineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.PauseEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for pause_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -248,8 +266,10 @@ class EngineServiceRestInterceptor:
     def pre_resume_engine(
         self,
         request: engine_service.ResumeEngineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.ResumeEngineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.ResumeEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for resume_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +289,10 @@ class EngineServiceRestInterceptor:
     def pre_tune_engine(
         self,
         request: engine_service.TuneEngineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.TuneEngineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.TuneEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for tune_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -292,8 +314,10 @@ class EngineServiceRestInterceptor:
     def pre_update_engine(
         self,
         request: engine_service.UpdateEngineRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[engine_service.UpdateEngineRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        engine_service.UpdateEngineRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_engine
 
         Override in a subclass to manipulate the request or metadata
@@ -313,8 +337,10 @@ class EngineServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -334,8 +360,10 @@ class EngineServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -357,8 +385,10 @@ class EngineServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -665,7 +695,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create engine method over HTTP.
 
@@ -677,8 +707,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -691,6 +723,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseCreateEngine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_engine(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BaseCreateEngine._get_transcoded_request(
                 http_options, request
@@ -704,6 +737,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             query_params = _BaseEngineServiceRestTransport._BaseCreateEngine._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.CreateEngine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "CreateEngine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._CreateEngine._get_response(
@@ -724,7 +784,29 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_engine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.create_engine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "CreateEngine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEngine(
@@ -761,7 +843,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete engine method over HTTP.
 
@@ -773,8 +855,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -787,6 +871,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseDeleteEngine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_engine(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BaseDeleteEngine._get_transcoded_request(
                 http_options, request
@@ -796,6 +881,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             query_params = _BaseEngineServiceRestTransport._BaseDeleteEngine._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.DeleteEngine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "DeleteEngine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._DeleteEngine._get_response(
@@ -815,7 +927,29 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_engine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.delete_engine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "DeleteEngine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEngine(
@@ -852,7 +986,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> engine.Engine:
             r"""Call the get engine method over HTTP.
 
@@ -864,8 +998,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.engine.Engine:
@@ -878,6 +1014,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseGetEngine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_engine(request, metadata)
             transcoded_request = (
                 _BaseEngineServiceRestTransport._BaseGetEngine._get_transcoded_request(
@@ -891,6 +1028,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.GetEngine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "GetEngine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._GetEngine._get_response(
@@ -912,7 +1076,29 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             pb_resp = engine.Engine.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_engine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = engine.Engine.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.get_engine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "GetEngine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEngines(
@@ -949,7 +1135,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> engine_service.ListEnginesResponse:
             r"""Call the list engines method over HTTP.
 
@@ -961,8 +1147,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.engine_service.ListEnginesResponse:
@@ -975,6 +1163,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseListEngines._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_engines(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BaseListEngines._get_transcoded_request(
                 http_options, request
@@ -986,6 +1175,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.ListEngines",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "ListEngines",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._ListEngines._get_response(
@@ -1007,7 +1223,31 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             pb_resp = engine_service.ListEnginesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_engines(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = engine_service.ListEnginesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.list_engines",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "ListEngines",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PauseEngine(
@@ -1045,7 +1285,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> engine.Engine:
             r"""Call the pause engine method over HTTP.
 
@@ -1056,8 +1296,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.engine.Engine:
@@ -1070,6 +1312,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BasePauseEngine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_pause_engine(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BasePauseEngine._get_transcoded_request(
                 http_options, request
@@ -1087,6 +1330,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.PauseEngine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "PauseEngine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._PauseEngine._get_response(
@@ -1109,7 +1379,29 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             pb_resp = engine.Engine.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_pause_engine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = engine.Engine.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.pause_engine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "PauseEngine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResumeEngine(
@@ -1147,7 +1439,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> engine.Engine:
             r"""Call the resume engine method over HTTP.
 
@@ -1158,8 +1450,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.engine.Engine:
@@ -1172,6 +1466,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseResumeEngine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resume_engine(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BaseResumeEngine._get_transcoded_request(
                 http_options, request
@@ -1185,6 +1480,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             query_params = _BaseEngineServiceRestTransport._BaseResumeEngine._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.ResumeEngine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "ResumeEngine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._ResumeEngine._get_response(
@@ -1207,7 +1529,29 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             pb_resp = engine.Engine.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resume_engine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = engine.Engine.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.resume_engine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "ResumeEngine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TuneEngine(
@@ -1245,7 +1589,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the tune engine method over HTTP.
 
@@ -1258,8 +1602,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1272,6 +1618,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseTuneEngine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_tune_engine(request, metadata)
             transcoded_request = (
                 _BaseEngineServiceRestTransport._BaseTuneEngine._get_transcoded_request(
@@ -1292,6 +1639,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.TuneEngine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "TuneEngine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = EngineServiceRestTransport._TuneEngine._get_response(
                 self._host,
@@ -1311,7 +1685,29 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_tune_engine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.tune_engine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "TuneEngine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEngine(
@@ -1349,7 +1745,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_engine.Engine:
             r"""Call the update engine method over HTTP.
 
@@ -1361,8 +1757,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_engine.Engine:
@@ -1375,6 +1773,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseUpdateEngine._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_engine(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_transcoded_request(
                 http_options, request
@@ -1388,6 +1787,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             query_params = _BaseEngineServiceRestTransport._BaseUpdateEngine._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.UpdateEngine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "UpdateEngine",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._UpdateEngine._get_response(
@@ -1410,7 +1836,29 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             pb_resp = gcd_engine.Engine.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_engine(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_engine.Engine.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceClient.update_engine",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "UpdateEngine",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1516,7 +1964,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1526,13 +1974,16 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEngineServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1548,6 +1999,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             query_params = _BaseEngineServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._CancelOperation._get_response(
@@ -1605,7 +2083,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1615,8 +2093,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1625,6 +2105,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1634,6 +2115,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             query_params = _BaseEngineServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._GetOperation._get_response(
@@ -1654,6 +2162,27 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1694,7 +2223,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1704,8 +2233,10 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1714,6 +2245,7 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             http_options = (
                 _BaseEngineServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseEngineServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1723,6 +2255,33 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             query_params = _BaseEngineServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.EngineServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EngineServiceRestTransport._ListOperations._get_response(
@@ -1743,6 +2302,27 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.EngineService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -25,13 +28,92 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.migrationcenter_v1.types import migrationcenter
 
 from .base import DEFAULT_CLIENT_INFO, MigrationCenterTransport
 from .grpc import MigrationCenterGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
@@ -230,10 +312,13 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -256,7 +341,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -284,7 +369,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_assets" not in self._stubs:
-            self._stubs["list_assets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_assets"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListAssets",
                 request_serializer=migrationcenter.ListAssetsRequest.serialize,
                 response_deserializer=migrationcenter.ListAssetsResponse.deserialize,
@@ -310,7 +395,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_asset" not in self._stubs:
-            self._stubs["get_asset"] = self.grpc_channel.unary_unary(
+            self._stubs["get_asset"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetAsset",
                 request_serializer=migrationcenter.GetAssetRequest.serialize,
                 response_deserializer=migrationcenter.Asset.deserialize,
@@ -338,7 +423,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_asset" not in self._stubs:
-            self._stubs["update_asset"] = self.grpc_channel.unary_unary(
+            self._stubs["update_asset"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateAsset",
                 request_serializer=migrationcenter.UpdateAssetRequest.serialize,
                 response_deserializer=migrationcenter.Asset.deserialize,
@@ -367,7 +452,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_update_assets" not in self._stubs:
-            self._stubs["batch_update_assets"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_update_assets"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/BatchUpdateAssets",
                 request_serializer=migrationcenter.BatchUpdateAssetsRequest.serialize,
                 response_deserializer=migrationcenter.BatchUpdateAssetsResponse.deserialize,
@@ -393,7 +478,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_asset" not in self._stubs:
-            self._stubs["delete_asset"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_asset"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteAsset",
                 request_serializer=migrationcenter.DeleteAssetRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -421,7 +506,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_delete_assets" not in self._stubs:
-            self._stubs["batch_delete_assets"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_delete_assets"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/BatchDeleteAssets",
                 request_serializer=migrationcenter.BatchDeleteAssetsRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -450,7 +535,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "report_asset_frames" not in self._stubs:
-            self._stubs["report_asset_frames"] = self.grpc_channel.unary_unary(
+            self._stubs["report_asset_frames"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ReportAssetFrames",
                 request_serializer=migrationcenter.ReportAssetFramesRequest.serialize,
                 response_deserializer=migrationcenter.ReportAssetFramesResponse.deserialize,
@@ -480,7 +565,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "aggregate_assets_values" not in self._stubs:
-            self._stubs["aggregate_assets_values"] = self.grpc_channel.unary_unary(
+            self._stubs["aggregate_assets_values"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/AggregateAssetsValues",
                 request_serializer=migrationcenter.AggregateAssetsValuesRequest.serialize,
                 response_deserializer=migrationcenter.AggregateAssetsValuesResponse.deserialize,
@@ -508,7 +593,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_import_job" not in self._stubs:
-            self._stubs["create_import_job"] = self.grpc_channel.unary_unary(
+            self._stubs["create_import_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateImportJob",
                 request_serializer=migrationcenter.CreateImportJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -537,7 +622,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_import_jobs" not in self._stubs:
-            self._stubs["list_import_jobs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_import_jobs"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListImportJobs",
                 request_serializer=migrationcenter.ListImportJobsRequest.serialize,
                 response_deserializer=migrationcenter.ListImportJobsResponse.deserialize,
@@ -565,7 +650,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_import_job" not in self._stubs:
-            self._stubs["get_import_job"] = self.grpc_channel.unary_unary(
+            self._stubs["get_import_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetImportJob",
                 request_serializer=migrationcenter.GetImportJobRequest.serialize,
                 response_deserializer=migrationcenter.ImportJob.deserialize,
@@ -593,7 +678,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_import_job" not in self._stubs:
-            self._stubs["delete_import_job"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_import_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteImportJob",
                 request_serializer=migrationcenter.DeleteImportJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -621,7 +706,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_import_job" not in self._stubs:
-            self._stubs["update_import_job"] = self.grpc_channel.unary_unary(
+            self._stubs["update_import_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateImportJob",
                 request_serializer=migrationcenter.UpdateImportJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -649,7 +734,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_import_job" not in self._stubs:
-            self._stubs["validate_import_job"] = self.grpc_channel.unary_unary(
+            self._stubs["validate_import_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ValidateImportJob",
                 request_serializer=migrationcenter.ValidateImportJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -677,7 +762,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "run_import_job" not in self._stubs:
-            self._stubs["run_import_job"] = self.grpc_channel.unary_unary(
+            self._stubs["run_import_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/RunImportJob",
                 request_serializer=migrationcenter.RunImportJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -706,7 +791,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_import_data_file" not in self._stubs:
-            self._stubs["get_import_data_file"] = self.grpc_channel.unary_unary(
+            self._stubs["get_import_data_file"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetImportDataFile",
                 request_serializer=migrationcenter.GetImportDataFileRequest.serialize,
                 response_deserializer=migrationcenter.ImportDataFile.deserialize,
@@ -735,7 +820,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_import_data_files" not in self._stubs:
-            self._stubs["list_import_data_files"] = self.grpc_channel.unary_unary(
+            self._stubs["list_import_data_files"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListImportDataFiles",
                 request_serializer=migrationcenter.ListImportDataFilesRequest.serialize,
                 response_deserializer=migrationcenter.ListImportDataFilesResponse.deserialize,
@@ -764,7 +849,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_import_data_file" not in self._stubs:
-            self._stubs["create_import_data_file"] = self.grpc_channel.unary_unary(
+            self._stubs["create_import_data_file"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateImportDataFile",
                 request_serializer=migrationcenter.CreateImportDataFileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -793,7 +878,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_import_data_file" not in self._stubs:
-            self._stubs["delete_import_data_file"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_import_data_file"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteImportDataFile",
                 request_serializer=migrationcenter.DeleteImportDataFileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -822,7 +907,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_groups" not in self._stubs:
-            self._stubs["list_groups"] = self.grpc_channel.unary_unary(
+            self._stubs["list_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListGroups",
                 request_serializer=migrationcenter.ListGroupsRequest.serialize,
                 response_deserializer=migrationcenter.ListGroupsResponse.deserialize,
@@ -848,7 +933,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_group" not in self._stubs:
-            self._stubs["get_group"] = self.grpc_channel.unary_unary(
+            self._stubs["get_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetGroup",
                 request_serializer=migrationcenter.GetGroupRequest.serialize,
                 response_deserializer=migrationcenter.Group.deserialize,
@@ -876,7 +961,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_group" not in self._stubs:
-            self._stubs["create_group"] = self.grpc_channel.unary_unary(
+            self._stubs["create_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateGroup",
                 request_serializer=migrationcenter.CreateGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -904,7 +989,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_group" not in self._stubs:
-            self._stubs["update_group"] = self.grpc_channel.unary_unary(
+            self._stubs["update_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateGroup",
                 request_serializer=migrationcenter.UpdateGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -932,7 +1017,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_group" not in self._stubs:
-            self._stubs["delete_group"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteGroup",
                 request_serializer=migrationcenter.DeleteGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -960,7 +1045,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "add_assets_to_group" not in self._stubs:
-            self._stubs["add_assets_to_group"] = self.grpc_channel.unary_unary(
+            self._stubs["add_assets_to_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/AddAssetsToGroup",
                 request_serializer=migrationcenter.AddAssetsToGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -989,7 +1074,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_assets_from_group" not in self._stubs:
-            self._stubs["remove_assets_from_group"] = self.grpc_channel.unary_unary(
+            self._stubs["remove_assets_from_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/RemoveAssetsFromGroup",
                 request_serializer=migrationcenter.RemoveAssetsFromGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1019,7 +1104,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_error_frames" not in self._stubs:
-            self._stubs["list_error_frames"] = self.grpc_channel.unary_unary(
+            self._stubs["list_error_frames"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListErrorFrames",
                 request_serializer=migrationcenter.ListErrorFramesRequest.serialize,
                 response_deserializer=migrationcenter.ListErrorFramesResponse.deserialize,
@@ -1047,7 +1132,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_error_frame" not in self._stubs:
-            self._stubs["get_error_frame"] = self.grpc_channel.unary_unary(
+            self._stubs["get_error_frame"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetErrorFrame",
                 request_serializer=migrationcenter.GetErrorFrameRequest.serialize,
                 response_deserializer=migrationcenter.ErrorFrame.deserialize,
@@ -1077,7 +1162,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_sources" not in self._stubs:
-            self._stubs["list_sources"] = self.grpc_channel.unary_unary(
+            self._stubs["list_sources"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListSources",
                 request_serializer=migrationcenter.ListSourcesRequest.serialize,
                 response_deserializer=migrationcenter.ListSourcesResponse.deserialize,
@@ -1105,7 +1190,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_source" not in self._stubs:
-            self._stubs["get_source"] = self.grpc_channel.unary_unary(
+            self._stubs["get_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetSource",
                 request_serializer=migrationcenter.GetSourceRequest.serialize,
                 response_deserializer=migrationcenter.Source.deserialize,
@@ -1133,7 +1218,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_source" not in self._stubs:
-            self._stubs["create_source"] = self.grpc_channel.unary_unary(
+            self._stubs["create_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateSource",
                 request_serializer=migrationcenter.CreateSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1161,7 +1246,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_source" not in self._stubs:
-            self._stubs["update_source"] = self.grpc_channel.unary_unary(
+            self._stubs["update_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateSource",
                 request_serializer=migrationcenter.UpdateSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1189,7 +1274,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_source" not in self._stubs:
-            self._stubs["delete_source"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_source"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteSource",
                 request_serializer=migrationcenter.DeleteSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1219,7 +1304,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_preference_sets" not in self._stubs:
-            self._stubs["list_preference_sets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_preference_sets"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListPreferenceSets",
                 request_serializer=migrationcenter.ListPreferenceSetsRequest.serialize,
                 response_deserializer=migrationcenter.ListPreferenceSetsResponse.deserialize,
@@ -1248,7 +1333,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_preference_set" not in self._stubs:
-            self._stubs["get_preference_set"] = self.grpc_channel.unary_unary(
+            self._stubs["get_preference_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetPreferenceSet",
                 request_serializer=migrationcenter.GetPreferenceSetRequest.serialize,
                 response_deserializer=migrationcenter.PreferenceSet.deserialize,
@@ -1278,7 +1363,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_preference_set" not in self._stubs:
-            self._stubs["create_preference_set"] = self.grpc_channel.unary_unary(
+            self._stubs["create_preference_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreatePreferenceSet",
                 request_serializer=migrationcenter.CreatePreferenceSetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1307,7 +1392,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_preference_set" not in self._stubs:
-            self._stubs["update_preference_set"] = self.grpc_channel.unary_unary(
+            self._stubs["update_preference_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdatePreferenceSet",
                 request_serializer=migrationcenter.UpdatePreferenceSetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1336,7 +1421,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_preference_set" not in self._stubs:
-            self._stubs["delete_preference_set"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_preference_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeletePreferenceSet",
                 request_serializer=migrationcenter.DeletePreferenceSetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1364,7 +1449,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_settings" not in self._stubs:
-            self._stubs["get_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["get_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetSettings",
                 request_serializer=migrationcenter.GetSettingsRequest.serialize,
                 response_deserializer=migrationcenter.Settings.deserialize,
@@ -1392,7 +1477,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_settings" not in self._stubs:
-            self._stubs["update_settings"] = self.grpc_channel.unary_unary(
+            self._stubs["update_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateSettings",
                 request_serializer=migrationcenter.UpdateSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1420,7 +1505,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_report_config" not in self._stubs:
-            self._stubs["create_report_config"] = self.grpc_channel.unary_unary(
+            self._stubs["create_report_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateReportConfig",
                 request_serializer=migrationcenter.CreateReportConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1449,7 +1534,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_report_config" not in self._stubs:
-            self._stubs["get_report_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_report_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetReportConfig",
                 request_serializer=migrationcenter.GetReportConfigRequest.serialize,
                 response_deserializer=migrationcenter.ReportConfig.deserialize,
@@ -1478,7 +1563,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_report_configs" not in self._stubs:
-            self._stubs["list_report_configs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_report_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListReportConfigs",
                 request_serializer=migrationcenter.ListReportConfigsRequest.serialize,
                 response_deserializer=migrationcenter.ListReportConfigsResponse.deserialize,
@@ -1506,7 +1591,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_report_config" not in self._stubs:
-            self._stubs["delete_report_config"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_report_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteReportConfig",
                 request_serializer=migrationcenter.DeleteReportConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1534,7 +1619,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_report" not in self._stubs:
-            self._stubs["create_report"] = self.grpc_channel.unary_unary(
+            self._stubs["create_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateReport",
                 request_serializer=migrationcenter.CreateReportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1562,7 +1647,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_report" not in self._stubs:
-            self._stubs["get_report"] = self.grpc_channel.unary_unary(
+            self._stubs["get_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetReport",
                 request_serializer=migrationcenter.GetReportRequest.serialize,
                 response_deserializer=migrationcenter.Report.deserialize,
@@ -1591,7 +1676,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_reports" not in self._stubs:
-            self._stubs["list_reports"] = self.grpc_channel.unary_unary(
+            self._stubs["list_reports"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListReports",
                 request_serializer=migrationcenter.ListReportsRequest.serialize,
                 response_deserializer=migrationcenter.ListReportsResponse.deserialize,
@@ -1619,7 +1704,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_report" not in self._stubs:
-            self._stubs["delete_report"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_report"] = self._logged_channel.unary_unary(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteReport",
                 request_serializer=migrationcenter.DeleteReportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1907,7 +1992,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -1923,7 +2008,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1940,7 +2025,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1957,7 +2042,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1976,7 +2061,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1995,7 +2080,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -2012,7 +2097,7 @@ class MigrationCenterGrpcAsyncIOTransport(MigrationCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

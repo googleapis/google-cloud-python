@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,7 +27,10 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.notebooks_v1.types import (
     environment,
@@ -35,6 +41,81 @@ from google.cloud.notebooks_v1.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO, NotebookServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.notebooks.v1.NotebookService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.notebooks.v1.NotebookService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class NotebookServiceGrpcTransport(NotebookServiceTransport):
@@ -190,7 +271,12 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -254,7 +340,9 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -278,7 +366,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
-            self._stubs["list_instances"] = self.grpc_channel.unary_unary(
+            self._stubs["list_instances"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/ListInstances",
                 request_serializer=service.ListInstancesRequest.serialize,
                 response_deserializer=service.ListInstancesResponse.deserialize,
@@ -302,7 +390,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
-            self._stubs["get_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["get_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/GetInstance",
                 request_serializer=service.GetInstanceRequest.serialize,
                 response_deserializer=instance.Instance.deserialize,
@@ -329,7 +417,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_instance" not in self._stubs:
-            self._stubs["create_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["create_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/CreateInstance",
                 request_serializer=service.CreateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -360,7 +448,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "register_instance" not in self._stubs:
-            self._stubs["register_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["register_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/RegisterInstance",
                 request_serializer=service.RegisterInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -386,7 +474,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_instance_accelerator" not in self._stubs:
-            self._stubs["set_instance_accelerator"] = self.grpc_channel.unary_unary(
+            self._stubs["set_instance_accelerator"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/SetInstanceAccelerator",
                 request_serializer=service.SetInstanceAcceleratorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -412,7 +500,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_instance_machine_type" not in self._stubs:
-            self._stubs["set_instance_machine_type"] = self.grpc_channel.unary_unary(
+            self._stubs["set_instance_machine_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/SetInstanceMachineType",
                 request_serializer=service.SetInstanceMachineTypeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -438,7 +526,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_instance_config" not in self._stubs:
-            self._stubs["update_instance_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_instance_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/UpdateInstanceConfig",
                 request_serializer=service.UpdateInstanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -470,7 +558,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         if "update_shielded_instance_config" not in self._stubs:
             self._stubs[
                 "update_shielded_instance_config"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/UpdateShieldedInstanceConfig",
                 request_serializer=service.UpdateShieldedInstanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -496,7 +584,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_instance_labels" not in self._stubs:
-            self._stubs["set_instance_labels"] = self.grpc_channel.unary_unary(
+            self._stubs["set_instance_labels"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/SetInstanceLabels",
                 request_serializer=service.SetInstanceLabelsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -527,7 +615,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         if "update_instance_metadata_items" not in self._stubs:
             self._stubs[
                 "update_instance_metadata_items"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/UpdateInstanceMetadataItems",
                 request_serializer=service.UpdateInstanceMetadataItemsRequest.serialize,
                 response_deserializer=service.UpdateInstanceMetadataItemsResponse.deserialize,
@@ -553,7 +641,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_instance" not in self._stubs:
-            self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/DeleteInstance",
                 request_serializer=service.DeleteInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -579,7 +667,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_instance" not in self._stubs:
-            self._stubs["start_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["start_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/StartInstance",
                 request_serializer=service.StartInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -605,7 +693,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "stop_instance" not in self._stubs:
-            self._stubs["stop_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["stop_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/StopInstance",
                 request_serializer=service.StopInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -631,7 +719,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reset_instance" not in self._stubs:
-            self._stubs["reset_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["reset_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/ResetInstance",
                 request_serializer=service.ResetInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -661,7 +749,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "report_instance_info" not in self._stubs:
-            self._stubs["report_instance_info"] = self.grpc_channel.unary_unary(
+            self._stubs["report_instance_info"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/ReportInstanceInfo",
                 request_serializer=service.ReportInstanceInfoRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -689,7 +777,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "is_instance_upgradeable" not in self._stubs:
-            self._stubs["is_instance_upgradeable"] = self.grpc_channel.unary_unary(
+            self._stubs["is_instance_upgradeable"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/IsInstanceUpgradeable",
                 request_serializer=service.IsInstanceUpgradeableRequest.serialize,
                 response_deserializer=service.IsInstanceUpgradeableResponse.deserialize,
@@ -717,7 +805,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_instance_health" not in self._stubs:
-            self._stubs["get_instance_health"] = self.grpc_channel.unary_unary(
+            self._stubs["get_instance_health"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/GetInstanceHealth",
                 request_serializer=service.GetInstanceHealthRequest.serialize,
                 response_deserializer=service.GetInstanceHealthResponse.deserialize,
@@ -743,7 +831,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "upgrade_instance" not in self._stubs:
-            self._stubs["upgrade_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["upgrade_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/UpgradeInstance",
                 request_serializer=service.UpgradeInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -770,7 +858,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_instance" not in self._stubs:
-            self._stubs["rollback_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["rollback_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/RollbackInstance",
                 request_serializer=service.RollbackInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -797,7 +885,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "diagnose_instance" not in self._stubs:
-            self._stubs["diagnose_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["diagnose_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/DiagnoseInstance",
                 request_serializer=service.DiagnoseInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -825,7 +913,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "upgrade_instance_internal" not in self._stubs:
-            self._stubs["upgrade_instance_internal"] = self.grpc_channel.unary_unary(
+            self._stubs["upgrade_instance_internal"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/UpgradeInstanceInternal",
                 request_serializer=service.UpgradeInstanceInternalRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -851,7 +939,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_environments" not in self._stubs:
-            self._stubs["list_environments"] = self.grpc_channel.unary_unary(
+            self._stubs["list_environments"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/ListEnvironments",
                 request_serializer=service.ListEnvironmentsRequest.serialize,
                 response_deserializer=service.ListEnvironmentsResponse.deserialize,
@@ -877,7 +965,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_environment" not in self._stubs:
-            self._stubs["get_environment"] = self.grpc_channel.unary_unary(
+            self._stubs["get_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/GetEnvironment",
                 request_serializer=service.GetEnvironmentRequest.serialize,
                 response_deserializer=environment.Environment.deserialize,
@@ -903,7 +991,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_environment" not in self._stubs:
-            self._stubs["create_environment"] = self.grpc_channel.unary_unary(
+            self._stubs["create_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/CreateEnvironment",
                 request_serializer=service.CreateEnvironmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -929,7 +1017,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_environment" not in self._stubs:
-            self._stubs["delete_environment"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_environment"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/DeleteEnvironment",
                 request_serializer=service.DeleteEnvironmentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -955,7 +1043,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_schedules" not in self._stubs:
-            self._stubs["list_schedules"] = self.grpc_channel.unary_unary(
+            self._stubs["list_schedules"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/ListSchedules",
                 request_serializer=service.ListSchedulesRequest.serialize,
                 response_deserializer=service.ListSchedulesResponse.deserialize,
@@ -979,7 +1067,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_schedule" not in self._stubs:
-            self._stubs["get_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["get_schedule"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/GetSchedule",
                 request_serializer=service.GetScheduleRequest.serialize,
                 response_deserializer=schedule.Schedule.deserialize,
@@ -1005,7 +1093,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_schedule" not in self._stubs:
-            self._stubs["delete_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_schedule"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/DeleteSchedule",
                 request_serializer=service.DeleteScheduleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1032,7 +1120,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_schedule" not in self._stubs:
-            self._stubs["create_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["create_schedule"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/CreateSchedule",
                 request_serializer=service.CreateScheduleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1058,7 +1146,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "trigger_schedule" not in self._stubs:
-            self._stubs["trigger_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["trigger_schedule"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/TriggerSchedule",
                 request_serializer=service.TriggerScheduleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1084,7 +1172,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_executions" not in self._stubs:
-            self._stubs["list_executions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_executions"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/ListExecutions",
                 request_serializer=service.ListExecutionsRequest.serialize,
                 response_deserializer=service.ListExecutionsResponse.deserialize,
@@ -1110,7 +1198,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_execution" not in self._stubs:
-            self._stubs["get_execution"] = self.grpc_channel.unary_unary(
+            self._stubs["get_execution"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/GetExecution",
                 request_serializer=service.GetExecutionRequest.serialize,
                 response_deserializer=execution.Execution.deserialize,
@@ -1136,7 +1224,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_execution" not in self._stubs:
-            self._stubs["delete_execution"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_execution"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/DeleteExecution",
                 request_serializer=service.DeleteExecutionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1163,7 +1251,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_execution" not in self._stubs:
-            self._stubs["create_execution"] = self.grpc_channel.unary_unary(
+            self._stubs["create_execution"] = self._logged_channel.unary_unary(
                 "/google.cloud.notebooks.v1.NotebookService/CreateExecution",
                 request_serializer=service.CreateExecutionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1171,7 +1259,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["create_execution"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1183,7 +1271,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1200,7 +1288,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1217,7 +1305,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1236,7 +1324,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1255,7 +1343,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1272,7 +1360,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -1297,7 +1385,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1323,7 +1411,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1352,7 +1440,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,

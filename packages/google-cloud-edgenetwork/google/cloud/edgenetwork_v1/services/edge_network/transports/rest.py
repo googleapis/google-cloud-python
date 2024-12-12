@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -279,8 +287,11 @@ class EdgeNetworkRestInterceptor:
     def pre_create_interconnect_attachment(
         self,
         request: service.CreateInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateInterconnectAttachmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateInterconnectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_interconnect_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -300,8 +311,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_create_network(
-        self, request: service.CreateNetworkRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateNetworkRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateNetworkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_network
 
         Override in a subclass to manipulate the request or metadata
@@ -321,8 +334,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_create_router(
-        self, request: service.CreateRouterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateRouterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_router
 
         Override in a subclass to manipulate the request or metadata
@@ -342,8 +357,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_create_subnet(
-        self, request: service.CreateSubnetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateSubnetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateSubnetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -365,8 +382,11 @@ class EdgeNetworkRestInterceptor:
     def pre_delete_interconnect_attachment(
         self,
         request: service.DeleteInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteInterconnectAttachmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DeleteInterconnectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_interconnect_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -386,8 +406,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_delete_network(
-        self, request: service.DeleteNetworkRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteNetworkRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteNetworkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_network
 
         Override in a subclass to manipulate the request or metadata
@@ -407,8 +429,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_delete_router(
-        self, request: service.DeleteRouterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteRouterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_router
 
         Override in a subclass to manipulate the request or metadata
@@ -428,8 +452,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_delete_subnet(
-        self, request: service.DeleteSubnetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteSubnetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteSubnetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -451,8 +477,10 @@ class EdgeNetworkRestInterceptor:
     def pre_diagnose_interconnect(
         self,
         request: service.DiagnoseInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DiagnoseInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DiagnoseInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for diagnose_interconnect
 
         Override in a subclass to manipulate the request or metadata
@@ -474,8 +502,8 @@ class EdgeNetworkRestInterceptor:
     def pre_diagnose_network(
         self,
         request: service.DiagnoseNetworkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DiagnoseNetworkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DiagnoseNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for diagnose_network
 
         Override in a subclass to manipulate the request or metadata
@@ -497,8 +525,8 @@ class EdgeNetworkRestInterceptor:
     def pre_diagnose_router(
         self,
         request: service.DiagnoseRouterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DiagnoseRouterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DiagnoseRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for diagnose_router
 
         Override in a subclass to manipulate the request or metadata
@@ -520,8 +548,8 @@ class EdgeNetworkRestInterceptor:
     def pre_get_interconnect(
         self,
         request: service.GetInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_interconnect
 
         Override in a subclass to manipulate the request or metadata
@@ -543,8 +571,11 @@ class EdgeNetworkRestInterceptor:
     def pre_get_interconnect_attachment(
         self,
         request: service.GetInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetInterconnectAttachmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetInterconnectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_interconnect_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -564,8 +595,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_get_network(
-        self, request: service.GetNetworkRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetNetworkRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetNetworkRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_network
 
         Override in a subclass to manipulate the request or metadata
@@ -583,8 +616,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_get_router(
-        self, request: service.GetRouterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetRouterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_router
 
         Override in a subclass to manipulate the request or metadata
@@ -602,8 +637,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_get_subnet(
-        self, request: service.GetSubnetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetSubnetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetSubnetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -621,8 +658,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_get_zone(
-        self, request: service.GetZoneRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetZoneRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetZoneRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -642,8 +681,8 @@ class EdgeNetworkRestInterceptor:
     def pre_initialize_zone(
         self,
         request: service.InitializeZoneRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.InitializeZoneRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.InitializeZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for initialize_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -665,8 +704,11 @@ class EdgeNetworkRestInterceptor:
     def pre_list_interconnect_attachments(
         self,
         request: service.ListInterconnectAttachmentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListInterconnectAttachmentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListInterconnectAttachmentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_interconnect_attachments
 
         Override in a subclass to manipulate the request or metadata
@@ -688,8 +730,10 @@ class EdgeNetworkRestInterceptor:
     def pre_list_interconnects(
         self,
         request: service.ListInterconnectsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListInterconnectsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListInterconnectsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_interconnects
 
         Override in a subclass to manipulate the request or metadata
@@ -709,8 +753,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_list_networks(
-        self, request: service.ListNetworksRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListNetworksRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListNetworksRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_networks
 
         Override in a subclass to manipulate the request or metadata
@@ -730,8 +776,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_list_routers(
-        self, request: service.ListRoutersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListRoutersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListRoutersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListRoutersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_routers
 
         Override in a subclass to manipulate the request or metadata
@@ -751,8 +799,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_list_subnets(
-        self, request: service.ListSubnetsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListSubnetsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListSubnetsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListSubnetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_subnets
 
         Override in a subclass to manipulate the request or metadata
@@ -772,8 +822,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_list_zones(
-        self, request: service.ListZonesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListZonesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListZonesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListZonesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_zones
 
         Override in a subclass to manipulate the request or metadata
@@ -793,8 +845,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_update_router(
-        self, request: service.UpdateRouterRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateRouterRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateRouterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_router
 
         Override in a subclass to manipulate the request or metadata
@@ -814,8 +868,10 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_update_subnet(
-        self, request: service.UpdateSubnetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateSubnetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateSubnetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -837,8 +893,10 @@ class EdgeNetworkRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -860,8 +918,10 @@ class EdgeNetworkRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -883,8 +943,10 @@ class EdgeNetworkRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -904,8 +966,10 @@ class EdgeNetworkRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -925,8 +989,10 @@ class EdgeNetworkRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -948,8 +1014,10 @@ class EdgeNetworkRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1149,7 +1217,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create interconnect
             attachment method over HTTP.
@@ -1161,8 +1229,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1175,6 +1245,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_interconnect_attachment(
                 request, metadata
             )
@@ -1190,6 +1261,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.CreateInterconnectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateInterconnectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1212,7 +1310,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_interconnect_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.create_interconnect_attachment",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateInterconnectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNetwork(
@@ -1250,7 +1370,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create network method over HTTP.
 
@@ -1260,8 +1380,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1274,6 +1396,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_network(request, metadata)
             transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_transcoded_request(
                 http_options, request
@@ -1291,6 +1414,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.CreateNetwork",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._CreateNetwork._get_response(
@@ -1311,7 +1461,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.create_network",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRouter(
@@ -1349,7 +1521,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create router method over HTTP.
 
@@ -1359,8 +1531,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1373,6 +1547,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_router(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_transcoded_request(
@@ -1393,6 +1568,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.CreateRouter",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateRouter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = EdgeNetworkRestTransport._CreateRouter._get_response(
                 self._host,
@@ -1412,7 +1614,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_router(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.create_router",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateRouter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSubnet(
@@ -1450,7 +1674,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create subnet method over HTTP.
 
@@ -1460,8 +1684,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1474,6 +1700,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_subnet(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_transcoded_request(
@@ -1494,6 +1721,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.CreateSubnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateSubnet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = EdgeNetworkRestTransport._CreateSubnet._get_response(
                 self._host,
@@ -1513,7 +1767,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_subnet(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.create_subnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CreateSubnet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteInterconnectAttachment(
@@ -1551,7 +1827,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete interconnect
             attachment method over HTTP.
@@ -1563,8 +1839,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1577,6 +1855,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_interconnect_attachment(
                 request, metadata
             )
@@ -1588,6 +1867,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DeleteInterconnectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteInterconnectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1609,7 +1915,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_interconnect_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.delete_interconnect_attachment",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteInterconnectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNetwork(
@@ -1646,7 +1974,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete network method over HTTP.
 
@@ -1656,8 +1984,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1670,6 +2000,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_network(request, metadata)
             transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_transcoded_request(
                 http_options, request
@@ -1681,6 +2012,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DeleteNetwork",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteNetwork._get_response(
@@ -1700,7 +2058,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.delete_network",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRouter(
@@ -1737,7 +2117,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete router method over HTTP.
 
@@ -1747,8 +2127,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1761,6 +2143,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_router(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_transcoded_request(
@@ -1774,6 +2157,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DeleteRouter",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteRouter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteRouter._get_response(
@@ -1793,7 +2203,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_router(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.delete_router",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteRouter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSubnet(
@@ -1830,7 +2262,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete subnet method over HTTP.
 
@@ -1840,8 +2272,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1854,6 +2288,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_subnet(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_transcoded_request(
@@ -1867,6 +2302,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DeleteSubnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteSubnet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteSubnet._get_response(
@@ -1886,7 +2348,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_subnet(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.delete_subnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteSubnet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DiagnoseInterconnect(
@@ -1923,7 +2407,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.DiagnoseInterconnectResponse:
             r"""Call the diagnose interconnect method over HTTP.
 
@@ -1935,8 +2419,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.DiagnoseInterconnectResponse:
@@ -1949,6 +2435,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_diagnose_interconnect(
                 request, metadata
             )
@@ -1960,6 +2447,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DiagnoseInterconnect",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DiagnoseInterconnect",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._DiagnoseInterconnect._get_response(
@@ -1981,7 +2495,31 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.DiagnoseInterconnectResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_diagnose_interconnect(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.DiagnoseInterconnectResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.diagnose_interconnect",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DiagnoseInterconnect",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DiagnoseNetwork(
@@ -2018,7 +2556,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.DiagnoseNetworkResponse:
             r"""Call the diagnose network method over HTTP.
 
@@ -2030,8 +2568,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.DiagnoseNetworkResponse:
@@ -2043,6 +2583,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_diagnose_network(
                 request, metadata
             )
@@ -2054,6 +2595,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DiagnoseNetwork",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DiagnoseNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._DiagnoseNetwork._get_response(
@@ -2075,7 +2643,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.DiagnoseNetworkResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_diagnose_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.DiagnoseNetworkResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.diagnose_network",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DiagnoseNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DiagnoseRouter(
@@ -2112,7 +2702,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.DiagnoseRouterResponse:
             r"""Call the diagnose router method over HTTP.
 
@@ -2123,8 +2713,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.DiagnoseRouterResponse:
@@ -2136,6 +2728,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_diagnose_router(request, metadata)
             transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_transcoded_request(
                 http_options, request
@@ -2145,6 +2738,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DiagnoseRouter",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DiagnoseRouter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._DiagnoseRouter._get_response(
@@ -2166,7 +2786,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.DiagnoseRouterResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_diagnose_router(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.DiagnoseRouterResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.diagnose_router",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DiagnoseRouter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInterconnect(
@@ -2203,7 +2845,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Interconnect:
             r"""Call the get interconnect method over HTTP.
 
@@ -2213,8 +2855,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Interconnect:
@@ -2226,6 +2870,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_interconnect(
                 request, metadata
             )
@@ -2237,6 +2882,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetInterconnect",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetInterconnect",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._GetInterconnect._get_response(
@@ -2258,7 +2930,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = resources.Interconnect.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_interconnect(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Interconnect.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.get_interconnect",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetInterconnect",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInterconnectAttachment(
@@ -2296,7 +2990,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.InterconnectAttachment:
             r"""Call the get interconnect
             attachment method over HTTP.
@@ -2308,8 +3002,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.InterconnectAttachment:
@@ -2321,6 +3017,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_interconnect_attachment(
                 request, metadata
             )
@@ -2332,6 +3029,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetInterconnectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetInterconnectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2355,7 +3079,31 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = resources.InterconnectAttachment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_interconnect_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.InterconnectAttachment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.get_interconnect_attachment",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetInterconnectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNetwork(
@@ -2392,7 +3140,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Network:
             r"""Call the get network method over HTTP.
 
@@ -2402,8 +3150,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Network:
@@ -2413,6 +3163,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_network(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_transcoded_request(
@@ -2426,6 +3177,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetNetwork",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetNetwork",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._GetNetwork._get_response(
@@ -2447,7 +3225,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = resources.Network.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_network(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Network.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.get_network",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetNetwork",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRouter(_BaseEdgeNetworkRestTransport._BaseGetRouter, EdgeNetworkRestStub):
@@ -2482,7 +3282,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Router:
             r"""Call the get router method over HTTP.
 
@@ -2492,8 +3292,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Router:
@@ -2503,6 +3305,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetRouter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_router(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseGetRouter._get_transcoded_request(
@@ -2516,6 +3319,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetRouter",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetRouter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._GetRouter._get_response(
@@ -2537,7 +3367,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = resources.Router.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_router(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Router.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.get_router",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetRouter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSubnet(_BaseEdgeNetworkRestTransport._BaseGetSubnet, EdgeNetworkRestStub):
@@ -2572,7 +3424,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Subnet:
             r"""Call the get subnet method over HTTP.
 
@@ -2582,8 +3434,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Subnet:
@@ -2593,6 +3447,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_subnet(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_transcoded_request(
@@ -2606,6 +3461,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetSubnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetSubnet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._GetSubnet._get_response(
@@ -2627,7 +3509,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = resources.Subnet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_subnet(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Subnet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.get_subnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetSubnet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetZone(_BaseEdgeNetworkRestTransport._BaseGetZone, EdgeNetworkRestStub):
@@ -2662,7 +3566,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Zone:
             r"""Call the get zone method over HTTP.
 
@@ -2673,8 +3577,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Zone:
@@ -2684,6 +3590,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetZone._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_zone(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseGetZone._get_transcoded_request(
@@ -2697,6 +3604,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetZone",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetZone",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._GetZone._get_response(
@@ -2718,7 +3652,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = resources.Zone.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_zone(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Zone.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.get_zone",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetZone",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InitializeZone(
@@ -2756,7 +3712,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.InitializeZoneResponse:
             r"""Call the initialize zone method over HTTP.
 
@@ -2767,8 +3723,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.InitializeZoneResponse:
@@ -2778,6 +3736,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_initialize_zone(request, metadata)
             transcoded_request = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_transcoded_request(
                 http_options, request
@@ -2791,6 +3750,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.InitializeZone",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "InitializeZone",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._InitializeZone._get_response(
@@ -2813,7 +3799,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.InitializeZoneResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_initialize_zone(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.InitializeZoneResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.initialize_zone",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "InitializeZone",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInterconnectAttachments(
@@ -2851,7 +3859,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListInterconnectAttachmentsResponse:
             r"""Call the list interconnect
             attachments method over HTTP.
@@ -2863,8 +3871,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.ListInterconnectAttachmentsResponse:
@@ -2876,6 +3886,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_interconnect_attachments(
                 request, metadata
             )
@@ -2887,6 +3898,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListInterconnectAttachments",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListInterconnectAttachments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2910,7 +3948,31 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.ListInterconnectAttachmentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_interconnect_attachments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service.ListInterconnectAttachmentsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.list_interconnect_attachments",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListInterconnectAttachments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInterconnects(
@@ -2947,7 +4009,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListInterconnectsResponse:
             r"""Call the list interconnects method over HTTP.
 
@@ -2958,8 +4020,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListInterconnectsResponse:
@@ -2971,6 +4035,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_interconnects(
                 request, metadata
             )
@@ -2982,6 +4047,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListInterconnects",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListInterconnects",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._ListInterconnects._get_response(
@@ -3003,7 +4095,31 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.ListInterconnectsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_interconnects(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListInterconnectsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.list_interconnects",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListInterconnects",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNetworks(
@@ -3040,7 +4156,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListNetworksResponse:
             r"""Call the list networks method over HTTP.
 
@@ -3051,8 +4167,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListNetworksResponse:
@@ -3064,6 +4182,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListNetworks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_networks(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseListNetworks._get_transcoded_request(
@@ -3077,6 +4196,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListNetworks",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListNetworks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._ListNetworks._get_response(
@@ -3098,7 +4244,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.ListNetworksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_networks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListNetworksResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.list_networks",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListNetworks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRouters(
@@ -3135,7 +4303,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListRoutersResponse:
             r"""Call the list routers method over HTTP.
 
@@ -3146,8 +4314,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListRoutersResponse:
@@ -3159,6 +4329,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListRouters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_routers(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseListRouters._get_transcoded_request(
@@ -3172,6 +4343,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListRouters",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListRouters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._ListRouters._get_response(
@@ -3193,7 +4391,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.ListRoutersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_routers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListRoutersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.list_routers",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListRouters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSubnets(
@@ -3230,7 +4450,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListSubnetsResponse:
             r"""Call the list subnets method over HTTP.
 
@@ -3241,8 +4461,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListSubnetsResponse:
@@ -3254,6 +4476,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListSubnets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_subnets(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseListSubnets._get_transcoded_request(
@@ -3267,6 +4490,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListSubnets",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListSubnets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._ListSubnets._get_response(
@@ -3288,7 +4538,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.ListSubnetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_subnets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListSubnetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.list_subnets",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListSubnets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListZones(_BaseEdgeNetworkRestTransport._BaseListZones, EdgeNetworkRestStub):
@@ -3323,7 +4595,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListZonesResponse:
             r"""Call the list zones method over HTTP.
 
@@ -3334,8 +4606,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListZonesResponse:
@@ -3347,6 +4621,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListZones._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_zones(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseListZones._get_transcoded_request(
@@ -3360,6 +4635,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListZones",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListZones",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._ListZones._get_response(
@@ -3381,7 +4683,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             pb_resp = service.ListZonesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_zones(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListZonesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.list_zones",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListZones",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRouter(
@@ -3419,7 +4743,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update router method over HTTP.
 
@@ -3429,8 +4753,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3443,6 +4769,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_router(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_transcoded_request(
@@ -3463,6 +4790,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.UpdateRouter",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "UpdateRouter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = EdgeNetworkRestTransport._UpdateRouter._get_response(
                 self._host,
@@ -3482,7 +4836,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_router(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.update_router",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "UpdateRouter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSubnet(
@@ -3520,7 +4896,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update subnet method over HTTP.
 
@@ -3530,8 +4906,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3544,6 +4922,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_subnet(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_transcoded_request(
@@ -3564,6 +4943,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.UpdateSubnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "UpdateSubnet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = EdgeNetworkRestTransport._UpdateSubnet._get_response(
                 self._host,
@@ -3583,7 +4989,29 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_subnet(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkClient.update_subnet",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "UpdateSubnet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3837,7 +5265,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3847,8 +5275,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3857,6 +5287,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseGetLocation._get_transcoded_request(
@@ -3870,6 +5301,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._GetLocation._get_response(
@@ -3890,6 +5348,27 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3930,7 +5409,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3940,8 +5419,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3950,6 +5431,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseEdgeNetworkRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3961,6 +5443,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._ListLocations._get_response(
@@ -3981,6 +5490,27 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4022,7 +5552,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -4032,13 +5562,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -4054,6 +5587,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._CancelOperation._get_response(
@@ -4111,7 +5671,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4121,13 +5681,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4139,6 +5702,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteOperation._get_response(
@@ -4195,7 +5785,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4205,8 +5795,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4215,6 +5807,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseEdgeNetworkRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4228,6 +5821,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._GetOperation._get_response(
@@ -4248,6 +5868,27 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4288,7 +5929,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4298,8 +5939,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4308,6 +5951,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             http_options = (
                 _BaseEdgeNetworkRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseEdgeNetworkRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4317,6 +5961,33 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             query_params = _BaseEdgeNetworkRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.edgenetwork_v1.EdgeNetworkClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EdgeNetworkRestTransport._ListOperations._get_response(
@@ -4337,6 +6008,27 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.edgenetwork_v1.EdgeNetworkAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.edgenetwork.v1.EdgeNetwork",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
