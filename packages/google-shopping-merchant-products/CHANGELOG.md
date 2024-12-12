@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.1.4...google-shopping-merchant-products-v0.2.0) (2024-12-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Changed repeated flag of an existing field `gtin` in message `.google.shopping.merchant.products.v1beta.Attributes`
+* An existing field `gtin` is moved out of oneof in message `.google.shopping.merchant.products.v1beta.Attributes`
+
+### Features
+
+* A new field `member_price_effective_date` is added to message `.google.shopping.merchant.products.v1beta.LoyaltyProgram` ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A new field `shipping_label` is added to message `.google.shopping.merchant.products.v1beta.LoyaltyProgram` ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* Add support for opt-in debug logging ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+
+
+### Bug Fixes
+
+* An existing field `gtin` is moved out of oneof in message `.google.shopping.merchant.products.v1beta.Attributes` ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* Changed repeated flag of an existing field `gtin` in message `.google.shopping.merchant.products.v1beta.Attributes` ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* Fix typing issue with gRPC metadata when key ends in -bin ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+
+
+### Documentation
+
+* A comment for field `gtin` in message `.google.shopping.merchant.products.v1beta.Attributes` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `max_handling_time` in message `.google.shopping.merchant.products.v1beta.Shipping` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `max_transit_time` in message `.google.shopping.merchant.products.v1beta.Shipping` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `min_handling_time` in message `.google.shopping.merchant.products.v1beta.Shipping` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `min_transit_time` in message `.google.shopping.merchant.products.v1beta.Shipping` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `name` in message `.google.shopping.merchant.products.v1beta.DeleteProductInputRequest` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `name` in message `.google.shopping.merchant.products.v1beta.GetProductRequest` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `name` in message `.google.shopping.merchant.products.v1beta.Product` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `name` in message `.google.shopping.merchant.products.v1beta.ProductInput` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `page_size` in message `.google.shopping.merchant.products.v1beta.ListProductsRequest` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for field `tax_category` in message `.google.shopping.merchant.products.v1beta.Attributes` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for message `Product` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+* A comment for message `ProductInput` is changed ([ce5c35a](https://github.com/googleapis/google-cloud-python/commit/ce5c35ad8b98f548a3dc8bd862646702b1d9974b))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.1.3...google-shopping-merchant-products-v0.1.4) (2024-11-11)
 
 
