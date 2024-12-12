@@ -38,6 +38,7 @@ from google.maps.routing_v2.types.polyline import (
     PolylineEncoding,
     PolylineQuality,
 )
+from google.maps.routing_v2.types.polyline_details import PolylineDetails
 from google.maps.routing_v2.types.route import (
     Route,
     RouteLeg,
@@ -91,6 +92,7 @@ __all__ = (
     "Polyline",
     "PolylineEncoding",
     "PolylineQuality",
+    "PolylineDetails",
     "Route",
     "RouteLeg",
     "RouteLegStep",
