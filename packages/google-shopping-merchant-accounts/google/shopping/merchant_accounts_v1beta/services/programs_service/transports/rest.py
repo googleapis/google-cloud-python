@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -101,8 +109,8 @@ class ProgramsServiceRestInterceptor:
     def pre_disable_program(
         self,
         request: programs.DisableProgramRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[programs.DisableProgramRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[programs.DisableProgramRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for disable_program
 
         Override in a subclass to manipulate the request or metadata
@@ -122,8 +130,8 @@ class ProgramsServiceRestInterceptor:
     def pre_enable_program(
         self,
         request: programs.EnableProgramRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[programs.EnableProgramRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[programs.EnableProgramRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enable_program
 
         Override in a subclass to manipulate the request or metadata
@@ -141,8 +149,10 @@ class ProgramsServiceRestInterceptor:
         return response
 
     def pre_get_program(
-        self, request: programs.GetProgramRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[programs.GetProgramRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: programs.GetProgramRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[programs.GetProgramRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_program
 
         Override in a subclass to manipulate the request or metadata
@@ -160,8 +170,10 @@ class ProgramsServiceRestInterceptor:
         return response
 
     def pre_list_programs(
-        self, request: programs.ListProgramsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[programs.ListProgramsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: programs.ListProgramsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[programs.ListProgramsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_programs
 
         Override in a subclass to manipulate the request or metadata
@@ -312,7 +324,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> programs.Program:
             r"""Call the disable program method over HTTP.
 
@@ -323,8 +335,10 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.programs.Program:
@@ -343,6 +357,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             http_options = (
                 _BaseProgramsServiceRestTransport._BaseDisableProgram._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_disable_program(request, metadata)
             transcoded_request = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_transcoded_request(
                 http_options, request
@@ -356,6 +371,33 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             query_params = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.DisableProgram",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "DisableProgram",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProgramsServiceRestTransport._DisableProgram._get_response(
@@ -378,7 +420,29 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             pb_resp = programs.Program.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_disable_program(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = programs.Program.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.disable_program",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "DisableProgram",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EnableProgram(
@@ -416,7 +480,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> programs.Program:
             r"""Call the enable program method over HTTP.
 
@@ -427,8 +491,10 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.programs.Program:
@@ -447,6 +513,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             http_options = (
                 _BaseProgramsServiceRestTransport._BaseEnableProgram._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_enable_program(request, metadata)
             transcoded_request = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_transcoded_request(
                 http_options, request
@@ -460,6 +527,33 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             query_params = _BaseProgramsServiceRestTransport._BaseEnableProgram._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.EnableProgram",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "EnableProgram",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProgramsServiceRestTransport._EnableProgram._get_response(
@@ -482,7 +576,29 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             pb_resp = programs.Program.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_enable_program(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = programs.Program.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.enable_program",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "EnableProgram",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProgram(
@@ -519,7 +635,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> programs.Program:
             r"""Call the get program method over HTTP.
 
@@ -530,8 +646,10 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.programs.Program:
@@ -550,6 +668,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             http_options = (
                 _BaseProgramsServiceRestTransport._BaseGetProgram._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_program(request, metadata)
             transcoded_request = _BaseProgramsServiceRestTransport._BaseGetProgram._get_transcoded_request(
                 http_options, request
@@ -559,6 +678,33 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             query_params = _BaseProgramsServiceRestTransport._BaseGetProgram._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.GetProgram",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "GetProgram",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProgramsServiceRestTransport._GetProgram._get_response(
@@ -580,7 +726,29 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             pb_resp = programs.Program.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_program(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = programs.Program.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.get_program",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "GetProgram",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPrograms(
@@ -617,7 +785,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> programs.ListProgramsResponse:
             r"""Call the list programs method over HTTP.
 
@@ -628,8 +796,10 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.programs.ListProgramsResponse:
@@ -641,6 +811,7 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             http_options = (
                 _BaseProgramsServiceRestTransport._BaseListPrograms._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_programs(request, metadata)
             transcoded_request = _BaseProgramsServiceRestTransport._BaseListPrograms._get_transcoded_request(
                 http_options, request
@@ -650,6 +821,33 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             query_params = _BaseProgramsServiceRestTransport._BaseListPrograms._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.ListPrograms",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "ListPrograms",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProgramsServiceRestTransport._ListPrograms._get_response(
@@ -671,7 +869,29 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
             pb_resp = programs.ListProgramsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_programs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = programs.ListProgramsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.ProgramsServiceClient.list_programs",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.ProgramsService",
+                        "rpcName": "ListPrograms",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

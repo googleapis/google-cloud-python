@@ -2468,6 +2468,7 @@ def test_search_nearby_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_nearby(request)
 
@@ -2588,6 +2589,7 @@ def test_search_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_text(request)
 
@@ -2715,6 +2717,7 @@ def test_get_photo_media_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_photo_media(request)
 
@@ -2769,6 +2772,7 @@ def test_get_photo_media_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_photo_media(**mock_args)
 
@@ -2904,6 +2908,7 @@ def test_get_place_rest_required_fields(request_type=places_service.GetPlaceRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_place(request)
 
@@ -2958,6 +2963,7 @@ def test_get_place_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_place(**mock_args)
 
@@ -3092,6 +3098,7 @@ def test_autocomplete_places_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.autocomplete_places(request)
 
@@ -3537,6 +3544,7 @@ def test_search_nearby_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_nearby(request)
 
 
@@ -3570,6 +3578,7 @@ def test_search_nearby_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_nearby(request)
 
     # Establish that the response is the type that we expect.
@@ -3607,6 +3616,7 @@ def test_search_nearby_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = places_service.SearchNearbyResponse.to_json(
             places_service.SearchNearbyResponse()
         )
@@ -3651,6 +3661,7 @@ def test_search_text_rest_bad_request(request_type=places_service.SearchTextRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_text(request)
 
 
@@ -3684,6 +3695,7 @@ def test_search_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_text(request)
 
     # Establish that the response is the type that we expect.
@@ -3721,6 +3733,7 @@ def test_search_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = places_service.SearchTextResponse.to_json(
             places_service.SearchTextResponse()
         )
@@ -3767,6 +3780,7 @@ def test_get_photo_media_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_photo_media(request)
 
 
@@ -3803,6 +3817,7 @@ def test_get_photo_media_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_photo_media(request)
 
     # Establish that the response is the type that we expect.
@@ -3842,6 +3857,7 @@ def test_get_photo_media_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = places_service.PhotoMedia.to_json(places_service.PhotoMedia())
         req.return_value.content = return_value
 
@@ -3884,6 +3900,7 @@ def test_get_place_rest_bad_request(request_type=places_service.GetPlaceRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_place(request)
 
 
@@ -3960,6 +3977,7 @@ def test_get_place_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_place(request)
 
     # Establish that the response is the type that we expect.
@@ -4037,6 +4055,7 @@ def test_get_place_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = place.Place.to_json(place.Place())
         req.return_value.content = return_value
 
@@ -4081,6 +4100,7 @@ def test_autocomplete_places_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.autocomplete_places(request)
 
 
@@ -4114,6 +4134,7 @@ def test_autocomplete_places_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.autocomplete_places(request)
 
     # Establish that the response is the type that we expect.
@@ -4151,6 +4172,7 @@ def test_autocomplete_places_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = places_service.AutocompletePlacesResponse.to_json(
             places_service.AutocompletePlacesResponse()
         )

@@ -2402,6 +2402,7 @@ def test_list_local_inventories_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_local_inventories(request)
 
@@ -2455,6 +2456,7 @@ def test_list_local_inventories_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_local_inventories(**mock_args)
 
@@ -2655,6 +2657,7 @@ def test_insert_local_inventory_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert_local_inventory(request)
 
@@ -2784,6 +2787,7 @@ def test_delete_local_inventory_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_local_inventory(request)
 
@@ -2829,6 +2833,7 @@ def test_delete_local_inventory_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_local_inventory(**mock_args)
 
@@ -3165,6 +3170,7 @@ def test_list_local_inventories_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_local_inventories(request)
 
 
@@ -3200,6 +3206,7 @@ def test_list_local_inventories_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_local_inventories(request)
 
     # Establish that the response is the type that we expect.
@@ -3240,6 +3247,7 @@ def test_list_local_inventories_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = localinventory.ListLocalInventoriesResponse.to_json(
             localinventory.ListLocalInventoriesResponse()
         )
@@ -3286,6 +3294,7 @@ def test_insert_local_inventory_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.insert_local_inventory(request)
 
 
@@ -3416,6 +3425,7 @@ def test_insert_local_inventory_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.insert_local_inventory(request)
 
     # Establish that the response is the type that we expect.
@@ -3463,6 +3473,7 @@ def test_insert_local_inventory_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = localinventory.LocalInventory.to_json(
             localinventory.LocalInventory()
         )
@@ -3511,6 +3522,7 @@ def test_delete_local_inventory_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_local_inventory(request)
 
 
@@ -3543,6 +3555,7 @@ def test_delete_local_inventory_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_local_inventory(request)
 
     # Establish that the response is the type that we expect.
@@ -3579,6 +3592,7 @@ def test_delete_local_inventory_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = localinventory.DeleteLocalInventoryRequest()
         metadata = [

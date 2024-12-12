@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -90,9 +98,10 @@ class RegionalInventoryServiceRestInterceptor:
     def pre_delete_regional_inventory(
         self,
         request: regionalinventory.DeleteRegionalInventoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        regionalinventory.DeleteRegionalInventoryRequest, Sequence[Tuple[str, str]]
+        regionalinventory.DeleteRegionalInventoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_regional_inventory
 
@@ -104,9 +113,10 @@ class RegionalInventoryServiceRestInterceptor:
     def pre_insert_regional_inventory(
         self,
         request: regionalinventory.InsertRegionalInventoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        regionalinventory.InsertRegionalInventoryRequest, Sequence[Tuple[str, str]]
+        regionalinventory.InsertRegionalInventoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for insert_regional_inventory
 
@@ -129,9 +139,10 @@ class RegionalInventoryServiceRestInterceptor:
     def pre_list_regional_inventories(
         self,
         request: regionalinventory.ListRegionalInventoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        regionalinventory.ListRegionalInventoriesRequest, Sequence[Tuple[str, str]]
+        regionalinventory.ListRegionalInventoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_regional_inventories
 
@@ -274,7 +285,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete regional inventory method over HTTP.
 
@@ -285,13 +296,16 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_regional_inventory(
                 request, metadata
             )
@@ -303,6 +317,33 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             query_params = _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.inventories_v1beta.RegionalInventoryServiceClient.DeleteRegionalInventory",
+                    extra={
+                        "serviceName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+                        "rpcName": "DeleteRegionalInventory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionalInventoryServiceRestTransport._DeleteRegionalInventory._get_response(
@@ -355,7 +396,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> regionalinventory.RegionalInventory:
             r"""Call the insert regional inventory method over HTTP.
 
@@ -366,8 +407,10 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.regionalinventory.RegionalInventory:
@@ -384,6 +427,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             http_options = (
                 _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert_regional_inventory(
                 request, metadata
             )
@@ -399,6 +443,33 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             query_params = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.inventories_v1beta.RegionalInventoryServiceClient.InsertRegionalInventory",
+                    extra={
+                        "serviceName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+                        "rpcName": "InsertRegionalInventory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionalInventoryServiceRestTransport._InsertRegionalInventory._get_response(
@@ -421,7 +492,31 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             pb_resp = regionalinventory.RegionalInventory.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert_regional_inventory(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = regionalinventory.RegionalInventory.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.inventories_v1beta.RegionalInventoryServiceClient.insert_regional_inventory",
+                    extra={
+                        "serviceName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+                        "rpcName": "InsertRegionalInventory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRegionalInventories(
@@ -459,7 +554,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> regionalinventory.ListRegionalInventoriesResponse:
             r"""Call the list regional inventories method over HTTP.
 
@@ -470,8 +565,10 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.regionalinventory.ListRegionalInventoriesResponse:
@@ -483,6 +580,7 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             http_options = (
                 _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_regional_inventories(
                 request, metadata
             )
@@ -494,6 +592,33 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             query_params = _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.inventories_v1beta.RegionalInventoryServiceClient.ListRegionalInventories",
+                    extra={
+                        "serviceName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+                        "rpcName": "ListRegionalInventories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionalInventoryServiceRestTransport._ListRegionalInventories._get_response(
@@ -515,7 +640,33 @@ class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTra
             pb_resp = regionalinventory.ListRegionalInventoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_regional_inventories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        regionalinventory.ListRegionalInventoriesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.inventories_v1beta.RegionalInventoryServiceClient.list_regional_inventories",
+                    extra={
+                        "serviceName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+                        "rpcName": "ListRegionalInventories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
