@@ -1,4 +1,16 @@
 # Changelog
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.15.1...google-cloud-billing-budgets-v1.16.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([e31cbb0](https://github.com/googleapis/google-cloud-python/commit/e31cbb0e11ab2cb093411005682c2fa2c38e787c))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([e31cbb0](https://github.com/googleapis/google-cloud-python/commit/e31cbb0e11ab2cb093411005682c2fa2c38e787c))
+
 ## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.15.0...google-cloud-billing-budgets-v1.15.1) (2024-10-31)
 
 
