@@ -82,7 +82,7 @@ class Compiler:
         if self.enable_pruning:
             used_fields = frozenset(field.id for field in node.fields)
             node = node.prune(used_fields)
-        node = functools.cache(rewrites.replace_slice_ops)(node)
+        node = nodes.bottom_up(node, rewrites.rewrite_slice)
         if self.enable_densify_ids:
             original_names = [id.name for id in node.ids]
             node, _ = rewrites.remap_variables(

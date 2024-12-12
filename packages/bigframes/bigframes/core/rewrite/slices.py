@@ -14,7 +14,7 @@
 from __future__ import annotations
 
 import functools
-from typing import cast, Optional, Sequence, Tuple
+from typing import Optional, Sequence, Tuple
 
 import bigframes.core.expression as scalar_exprs
 import bigframes.core.guid as guids
@@ -55,18 +55,11 @@ def pullup_limit_from_slice(
     return root, None
 
 
-def replace_slice_ops(root: nodes.BigFrameNode) -> nodes.BigFrameNode:
-    # TODO: we want to pull up some slices into limit op if near root.
-    if isinstance(root, nodes.SliceNode):
-        root = root.transform_children(replace_slice_ops)
-        return rewrite_slice(cast(nodes.SliceNode, root))
-    else:
-        return root.transform_children(replace_slice_ops)
+def rewrite_slice(node: nodes.BigFrameNode):
+    if not isinstance(node, nodes.SliceNode):
+        return node
 
-
-def rewrite_slice(node: nodes.SliceNode):
     slice_def = (node.start, node.stop, node.step)
-
     # no-op (eg. df[::1])
     if slices.is_noop(slice_def, node.child.row_count):
         return node.child

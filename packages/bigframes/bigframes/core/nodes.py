@@ -1486,3 +1486,56 @@ class ExplodeNode(UnaryNode):
     ) -> BigFrameNode:
         new_ids = tuple(id.remap_column_refs(mappings) for id in self.column_ids)
         return dataclasses.replace(self, column_ids=new_ids)  # type: ignore
+
+
+# Tree operators
+def top_down(
+    root: BigFrameNode,
+    transform: Callable[[BigFrameNode], BigFrameNode],
+    *,
+    memoize=False,
+    validate=False,
+) -> BigFrameNode:
+    """
+    Perform a top-down transformation of the BigFrameNode tree.
+
+    If memoize=True, recursive calls are memoized within the scope of the traversal only.
+    """
+
+    def top_down_internal(root: BigFrameNode) -> BigFrameNode:
+        return transform(root).transform_children(top_down_internal)
+
+    if memoize:
+        # MUST reassign to the same name or caching won't work recursively
+        top_down_internal = functools.cache(top_down_internal)
+
+    result = top_down_internal(root)
+    if validate:
+        result.validate_tree()
+    return result
+
+
+def bottom_up(
+    root: BigFrameNode,
+    transform: Callable[[BigFrameNode], BigFrameNode],
+    *,
+    memoize=False,
+    validate=False,
+) -> BigFrameNode:
+    """
+    Perform a bottom-up transformation of the BigFrameNode tree.
+
+    If memoize=True, recursive calls are memoized within the scope of the traversal only.
+    """
+
+    def bottom_up_internal(root: BigFrameNode) -> BigFrameNode:
+        return transform(root.transform_children(bottom_up_internal))
+
+    if memoize:
+        # MUST reassign to the same name or caching won't work recursively
+        bottom_up_internal = functools.cache(bottom_up_internal)
+
+    result = bottom_up_internal(root)
+    if validate:
+        result.validate_tree()
+    return result
