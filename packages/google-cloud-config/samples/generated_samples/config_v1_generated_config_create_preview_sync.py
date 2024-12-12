@@ -41,6 +41,7 @@ def sample_create_preview():
     # Initialize request argument(s)
     preview = config_v1.Preview()
     preview.terraform_blueprint.gcs_source = "gcs_source_value"
+    preview.service_account = "service_account_value"
 
     request = config_v1.CreatePreviewRequest(
         parent="parent_value",

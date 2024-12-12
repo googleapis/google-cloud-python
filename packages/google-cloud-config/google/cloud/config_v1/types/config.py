@@ -176,7 +176,7 @@ class Deployment(proto.Message):
 
             This field is a member of `oneof`_ ``_artifacts_gcs_bucket``.
         service_account (str):
-            Optional. User-specified Service Account (SA) credentials to
+            Required. User-specified Service Account (SA) credentials to
             be used when actuating resources. Format:
             ``projects/{projectID}/serviceAccounts/{serviceAccount}``
 
@@ -445,7 +445,7 @@ class TerraformBlueprint(proto.Message):
 
     Attributes:
         gcs_source (str):
-            Required. URI of an object in Google Cloud Storage. Format:
+            URI of an object in Google Cloud Storage. Format:
             ``gs://{bucket}/{object}``
 
             URI may also specify an object version for zipped objects.
@@ -453,7 +453,7 @@ class TerraformBlueprint(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         git_source (google.cloud.config_v1.types.GitSource):
-            Required. URI of a public Git repo.
+            URI of a public Git repo.
 
             This field is a member of `oneof`_ ``source``.
         input_values (MutableMapping[str, google.cloud.config_v1.types.TerraformVariable]):
@@ -1004,9 +1004,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of ``1``,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.
@@ -1693,7 +1695,7 @@ class ListResourcesResponse(proto.Message):
 
     Attributes:
         resources (MutableSequence[google.cloud.config_v1.types.Resource]):
-            List of [Resources][]s.
+            List of [Resources][google.cloud.config.v1.Resource].
         next_page_token (str):
             A token to request the next page of resources
             from the 'ListResources' method. The value of an
@@ -1973,7 +1975,7 @@ class Preview(proto.Message):
         preview_mode (google.cloud.config_v1.types.Preview.PreviewMode):
             Optional. Current mode of preview.
         service_account (str):
-            Optional. User-specified Service Account (SA) credentials to
+            Required. User-specified Service Account (SA) credentials to
             be used when previewing resources. Format:
             ``projects/{projectID}/serviceAccounts/{serviceAccount}``
         artifacts_gcs_bucket (str):
@@ -2033,6 +2035,12 @@ class Preview(proto.Message):
             version constraint. Example: "=1.3.10".
 
             This field is a member of `oneof`_ ``_tf_version_constraint``.
+        annotations (MutableMapping[str, str]):
+            Optional. Arbitrary key-value metadata
+            storage e.g. to help client tools identifiy
+            preview during automation. See
+            https://google.aip.dev/148#annotations for
+            details on format and size limitations.
     """
 
     class State(proto.Enum):
@@ -2210,6 +2218,11 @@ class Preview(proto.Message):
         proto.STRING,
         number=19,
         optional=True,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=20,
     )
 
 
@@ -2457,7 +2470,7 @@ class ListPreviewsResponse(proto.Message):
 
     Attributes:
         previews (MutableSequence[google.cloud.config_v1.types.Preview]):
-            List of [Previews][]s.
+            List of [Previews][google.cloud.config.v1.Preview].
         next_page_token (str):
             Token to be supplied to the next ListPreviews request via
             ``page_token`` to obtain the next set of results.
