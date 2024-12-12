@@ -27,6 +27,7 @@ from google.cloud.parallelstore_v1beta.services.parallelstore.client import (
 from google.cloud.parallelstore_v1beta.types.parallelstore import (
     CreateInstanceRequest,
     DeleteInstanceRequest,
+    DeploymentType,
     DestinationGcsBucket,
     DestinationParallelstore,
     DirectoryStripeLevel,
@@ -73,6 +74,7 @@ __all__ = (
     "TransferCounters",
     "TransferOperationMetadata",
     "UpdateInstanceRequest",
+    "DeploymentType",
     "DirectoryStripeLevel",
     "FileStripeLevel",
     "TransferType",
