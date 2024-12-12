@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -109,9 +117,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_create_knowledge_base(
         self,
         request: gcd_knowledge_base.CreateKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcd_knowledge_base.CreateKnowledgeBaseRequest, Sequence[Tuple[str, str]]
+        gcd_knowledge_base.CreateKnowledgeBaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_knowledge_base
 
@@ -134,8 +143,11 @@ class KnowledgeBasesRestInterceptor:
     def pre_delete_knowledge_base(
         self,
         request: knowledge_base.DeleteKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[knowledge_base.DeleteKnowledgeBaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        knowledge_base.DeleteKnowledgeBaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_knowledge_base
 
         Override in a subclass to manipulate the request or metadata
@@ -146,8 +158,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_get_knowledge_base(
         self,
         request: knowledge_base.GetKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[knowledge_base.GetKnowledgeBaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        knowledge_base.GetKnowledgeBaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_knowledge_base
 
         Override in a subclass to manipulate the request or metadata
@@ -169,8 +183,11 @@ class KnowledgeBasesRestInterceptor:
     def pre_list_knowledge_bases(
         self,
         request: knowledge_base.ListKnowledgeBasesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[knowledge_base.ListKnowledgeBasesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        knowledge_base.ListKnowledgeBasesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_knowledge_bases
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +209,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_update_knowledge_base(
         self,
         request: gcd_knowledge_base.UpdateKnowledgeBaseRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcd_knowledge_base.UpdateKnowledgeBaseRequest, Sequence[Tuple[str, str]]
+        gcd_knowledge_base.UpdateKnowledgeBaseRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_knowledge_base
 
@@ -217,8 +235,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -240,8 +260,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -263,8 +285,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -284,8 +308,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -307,8 +333,10 @@ class KnowledgeBasesRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -451,7 +479,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_knowledge_base.KnowledgeBase:
             r"""Call the create knowledge base method over HTTP.
 
@@ -462,8 +490,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_knowledge_base.KnowledgeBase:
@@ -485,6 +515,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_knowledge_base(
                 request, metadata
             )
@@ -500,6 +531,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseCreateKnowledgeBase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.CreateKnowledgeBase",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "CreateKnowledgeBase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._CreateKnowledgeBase._get_response(
@@ -522,7 +580,31 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             pb_resp = gcd_knowledge_base.KnowledgeBase.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_knowledge_base(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_knowledge_base.KnowledgeBase.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.create_knowledge_base",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "CreateKnowledgeBase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteKnowledgeBase(
@@ -560,7 +642,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete knowledge base method over HTTP.
 
@@ -571,13 +653,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_knowledge_base(
                 request, metadata
             )
@@ -589,6 +674,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseDeleteKnowledgeBase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.DeleteKnowledgeBase",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "DeleteKnowledgeBase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._DeleteKnowledgeBase._get_response(
@@ -639,7 +751,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> knowledge_base.KnowledgeBase:
             r"""Call the get knowledge base method over HTTP.
 
@@ -650,8 +762,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.knowledge_base.KnowledgeBase:
@@ -673,6 +787,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_knowledge_base(
                 request, metadata
             )
@@ -684,6 +799,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseGetKnowledgeBase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.GetKnowledgeBase",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "GetKnowledgeBase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._GetKnowledgeBase._get_response(
@@ -705,7 +847,29 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             pb_resp = knowledge_base.KnowledgeBase.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_knowledge_base(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = knowledge_base.KnowledgeBase.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.get_knowledge_base",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "GetKnowledgeBase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListKnowledgeBases(
@@ -742,7 +906,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> knowledge_base.ListKnowledgeBasesResponse:
             r"""Call the list knowledge bases method over HTTP.
 
@@ -753,8 +917,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.knowledge_base.ListKnowledgeBasesResponse:
@@ -766,6 +932,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_knowledge_bases(
                 request, metadata
             )
@@ -777,6 +944,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseListKnowledgeBases._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.ListKnowledgeBases",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "ListKnowledgeBases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._ListKnowledgeBases._get_response(
@@ -798,7 +992,31 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             pb_resp = knowledge_base.ListKnowledgeBasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_knowledge_bases(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        knowledge_base.ListKnowledgeBasesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.list_knowledge_bases",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "ListKnowledgeBases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateKnowledgeBase(
@@ -837,7 +1055,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_knowledge_base.KnowledgeBase:
             r"""Call the update knowledge base method over HTTP.
 
@@ -848,8 +1066,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_knowledge_base.KnowledgeBase:
@@ -871,6 +1091,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_knowledge_base(
                 request, metadata
             )
@@ -886,6 +1107,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseUpdateKnowledgeBase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.UpdateKnowledgeBase",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "UpdateKnowledgeBase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._UpdateKnowledgeBase._get_response(
@@ -908,7 +1156,31 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             pb_resp = gcd_knowledge_base.KnowledgeBase.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_knowledge_base(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_knowledge_base.KnowledgeBase.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.update_knowledge_base",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "UpdateKnowledgeBase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1000,7 +1272,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1010,8 +1282,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1020,6 +1294,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1029,6 +1304,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._GetLocation._get_response(
@@ -1049,6 +1351,27 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1089,7 +1412,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1099,8 +1422,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1109,6 +1434,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1118,6 +1444,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._ListLocations._get_response(
@@ -1138,6 +1491,27 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1178,7 +1552,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1188,13 +1562,16 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1206,6 +1583,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._CancelOperation._get_response(
@@ -1262,7 +1666,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1272,8 +1676,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1282,6 +1688,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1291,6 +1698,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._GetOperation._get_response(
@@ -1311,6 +1745,27 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1351,7 +1806,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1361,8 +1816,10 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1371,6 +1828,7 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             http_options = (
                 _BaseKnowledgeBasesRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseKnowledgeBasesRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1380,6 +1838,33 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             query_params = _BaseKnowledgeBasesRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow_v2beta1.KnowledgeBasesClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = KnowledgeBasesRestTransport._ListOperations._get_response(
@@ -1400,6 +1885,27 @@ class KnowledgeBasesRestTransport(_BaseKnowledgeBasesRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow_v2beta1.KnowledgeBasesAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.v2beta1.KnowledgeBases",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -177,8 +185,10 @@ class ServiceManagerRestInterceptor:
     def pre_create_service(
         self,
         request: servicemanager.CreateServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.CreateServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.CreateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_service
 
         Override in a subclass to manipulate the request or metadata
@@ -200,8 +210,11 @@ class ServiceManagerRestInterceptor:
     def pre_create_service_config(
         self,
         request: servicemanager.CreateServiceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.CreateServiceConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.CreateServiceConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_service_config
 
         Override in a subclass to manipulate the request or metadata
@@ -223,8 +236,11 @@ class ServiceManagerRestInterceptor:
     def pre_create_service_rollout(
         self,
         request: servicemanager.CreateServiceRolloutRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.CreateServiceRolloutRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.CreateServiceRolloutRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_service_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -246,8 +262,10 @@ class ServiceManagerRestInterceptor:
     def pre_delete_service(
         self,
         request: servicemanager.DeleteServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.DeleteServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.DeleteServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_service
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +287,11 @@ class ServiceManagerRestInterceptor:
     def pre_generate_config_report(
         self,
         request: servicemanager.GenerateConfigReportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.GenerateConfigReportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.GenerateConfigReportRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for generate_config_report
 
         Override in a subclass to manipulate the request or metadata
@@ -292,8 +313,10 @@ class ServiceManagerRestInterceptor:
     def pre_get_service(
         self,
         request: servicemanager.GetServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.GetServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_service
 
         Override in a subclass to manipulate the request or metadata
@@ -315,8 +338,10 @@ class ServiceManagerRestInterceptor:
     def pre_get_service_config(
         self,
         request: servicemanager.GetServiceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.GetServiceConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.GetServiceConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_service_config
 
         Override in a subclass to manipulate the request or metadata
@@ -338,8 +363,10 @@ class ServiceManagerRestInterceptor:
     def pre_get_service_rollout(
         self,
         request: servicemanager.GetServiceRolloutRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.GetServiceRolloutRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.GetServiceRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_service_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -361,8 +388,11 @@ class ServiceManagerRestInterceptor:
     def pre_list_service_configs(
         self,
         request: servicemanager.ListServiceConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.ListServiceConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.ListServiceConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_service_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -384,8 +414,11 @@ class ServiceManagerRestInterceptor:
     def pre_list_service_rollouts(
         self,
         request: servicemanager.ListServiceRolloutsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.ListServiceRolloutsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.ListServiceRolloutsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_service_rollouts
 
         Override in a subclass to manipulate the request or metadata
@@ -407,8 +440,10 @@ class ServiceManagerRestInterceptor:
     def pre_list_services(
         self,
         request: servicemanager.ListServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.ListServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.ListServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_services
 
         Override in a subclass to manipulate the request or metadata
@@ -430,8 +465,11 @@ class ServiceManagerRestInterceptor:
     def pre_submit_config_source(
         self,
         request: servicemanager.SubmitConfigSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.SubmitConfigSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.SubmitConfigSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for submit_config_source
 
         Override in a subclass to manipulate the request or metadata
@@ -453,8 +491,10 @@ class ServiceManagerRestInterceptor:
     def pre_undelete_service(
         self,
         request: servicemanager.UndeleteServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[servicemanager.UndeleteServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        servicemanager.UndeleteServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for undelete_service
 
         Override in a subclass to manipulate the request or metadata
@@ -476,8 +516,10 @@ class ServiceManagerRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -497,8 +539,10 @@ class ServiceManagerRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -518,8 +562,11 @@ class ServiceManagerRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -541,8 +588,10 @@ class ServiceManagerRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -719,7 +768,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create service method over HTTP.
 
@@ -730,8 +779,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -744,6 +795,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseCreateService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service(request, metadata)
             transcoded_request = _BaseServiceManagerRestTransport._BaseCreateService._get_transcoded_request(
                 http_options, request
@@ -757,6 +809,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseCreateService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.CreateService",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "CreateService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._CreateService._get_response(
@@ -777,7 +856,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.create_service",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "CreateService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateServiceConfig(
@@ -816,7 +917,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service_pb2.Service:
             r"""Call the create service config method over HTTP.
 
@@ -827,8 +928,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service_pb2.Service:
@@ -875,6 +978,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseCreateServiceConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service_config(
                 request, metadata
             )
@@ -890,6 +994,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseCreateServiceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.CreateServiceConfig",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "CreateServiceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._CreateServiceConfig._get_response(
@@ -912,7 +1043,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.create_service_config",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "CreateServiceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateServiceRollout(
@@ -951,7 +1104,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create service rollout method over HTTP.
 
@@ -962,8 +1115,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -976,6 +1131,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseCreateServiceRollout._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service_rollout(
                 request, metadata
             )
@@ -991,6 +1147,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseCreateServiceRollout._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.CreateServiceRollout",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "CreateServiceRollout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._CreateServiceRollout._get_response(
@@ -1011,7 +1194,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service_rollout(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.create_service_rollout",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "CreateServiceRollout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteService(
@@ -1048,7 +1253,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete service method over HTTP.
 
@@ -1059,8 +1264,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1073,6 +1280,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseDeleteService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
             transcoded_request = _BaseServiceManagerRestTransport._BaseDeleteService._get_transcoded_request(
                 http_options, request
@@ -1082,6 +1290,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseDeleteService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.DeleteService",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "DeleteService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._DeleteService._get_response(
@@ -1101,7 +1336,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.delete_service",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "DeleteService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateConfigReport(
@@ -1140,7 +1397,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> servicemanager.GenerateConfigReportResponse:
             r"""Call the generate config report method over HTTP.
 
@@ -1151,8 +1408,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.servicemanager.GenerateConfigReportResponse:
@@ -1164,6 +1423,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseGenerateConfigReport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_config_report(
                 request, metadata
             )
@@ -1179,6 +1439,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseGenerateConfigReport._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.GenerateConfigReport",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GenerateConfigReport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._GenerateConfigReport._get_response(
@@ -1201,7 +1488,31 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = servicemanager.GenerateConfigReportResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_config_report(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        servicemanager.GenerateConfigReportResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.generate_config_report",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GenerateConfigReport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetService(
@@ -1238,7 +1549,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ManagedService:
             r"""Call the get service method over HTTP.
 
@@ -1248,8 +1559,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ManagedService:
@@ -1262,6 +1575,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseGetService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service(request, metadata)
             transcoded_request = _BaseServiceManagerRestTransport._BaseGetService._get_transcoded_request(
                 http_options, request
@@ -1273,6 +1587,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.GetService",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._GetService._get_response(
@@ -1294,7 +1635,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = resources.ManagedService.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ManagedService.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.get_service",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetServiceConfig(
@@ -1331,7 +1694,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service_pb2.Service:
             r"""Call the get service config method over HTTP.
 
@@ -1342,8 +1705,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service_pb2.Service:
@@ -1390,6 +1755,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseGetServiceConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service_config(
                 request, metadata
             )
@@ -1401,6 +1767,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseGetServiceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.GetServiceConfig",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetServiceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._GetServiceConfig._get_response(
@@ -1422,7 +1815,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.get_service_config",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetServiceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetServiceRollout(
@@ -1459,7 +1874,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Rollout:
             r"""Call the get service rollout method over HTTP.
 
@@ -1470,8 +1885,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Rollout:
@@ -1487,6 +1904,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseGetServiceRollout._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service_rollout(
                 request, metadata
             )
@@ -1498,6 +1916,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseGetServiceRollout._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.GetServiceRollout",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetServiceRollout",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._GetServiceRollout._get_response(
@@ -1519,7 +1964,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = resources.Rollout.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service_rollout(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Rollout.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.get_service_rollout",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetServiceRollout",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServiceConfigs(
@@ -1556,7 +2023,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> servicemanager.ListServiceConfigsResponse:
             r"""Call the list service configs method over HTTP.
 
@@ -1567,8 +2034,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.servicemanager.ListServiceConfigsResponse:
@@ -1580,6 +2049,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseListServiceConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_service_configs(
                 request, metadata
             )
@@ -1591,6 +2061,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseListServiceConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.ListServiceConfigs",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListServiceConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._ListServiceConfigs._get_response(
@@ -1612,7 +2109,31 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = servicemanager.ListServiceConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_service_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        servicemanager.ListServiceConfigsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.list_service_configs",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListServiceConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServiceRollouts(
@@ -1650,7 +2171,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> servicemanager.ListServiceRolloutsResponse:
             r"""Call the list service rollouts method over HTTP.
 
@@ -1661,8 +2182,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.servicemanager.ListServiceRolloutsResponse:
@@ -1674,6 +2197,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseListServiceRollouts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_service_rollouts(
                 request, metadata
             )
@@ -1685,6 +2209,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseListServiceRollouts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.ListServiceRollouts",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListServiceRollouts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._ListServiceRollouts._get_response(
@@ -1706,7 +2257,31 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = servicemanager.ListServiceRolloutsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_service_rollouts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        servicemanager.ListServiceRolloutsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.list_service_rollouts",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListServiceRollouts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServices(
@@ -1743,7 +2318,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> servicemanager.ListServicesResponse:
             r"""Call the list services method over HTTP.
 
@@ -1753,8 +2328,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.servicemanager.ListServicesResponse:
@@ -1764,6 +2341,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseListServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_services(request, metadata)
             transcoded_request = _BaseServiceManagerRestTransport._BaseListServices._get_transcoded_request(
                 http_options, request
@@ -1773,6 +2351,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseListServices._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.ListServices",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._ListServices._get_response(
@@ -1794,7 +2399,31 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             pb_resp = servicemanager.ListServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = servicemanager.ListServicesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.list_services",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SubmitConfigSource(
@@ -1832,7 +2461,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the submit config source method over HTTP.
 
@@ -1843,8 +2472,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1857,6 +2488,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseSubmitConfigSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_submit_config_source(
                 request, metadata
             )
@@ -1872,6 +2504,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseSubmitConfigSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.SubmitConfigSource",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "SubmitConfigSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._SubmitConfigSource._get_response(
@@ -1892,7 +2551,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_submit_config_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.submit_config_source",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "SubmitConfigSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeleteService(
@@ -1929,7 +2610,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete service method over HTTP.
 
@@ -1940,8 +2621,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1954,6 +2637,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseUndeleteService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_service(
                 request, metadata
             )
@@ -1965,6 +2649,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseUndeleteService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.UndeleteService",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "UndeleteService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._UndeleteService._get_response(
@@ -1984,7 +2695,29 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerClient.undelete_service",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "UndeleteService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2143,7 +2876,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -2153,8 +2886,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -2163,6 +2898,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseServiceManagerRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2176,6 +2912,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._GetIamPolicy._get_response(
@@ -2197,6 +2960,27 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2238,7 +3022,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2248,8 +3032,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -2258,6 +3044,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseServiceManagerRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2271,6 +3058,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._SetIamPolicy._get_response(
@@ -2292,6 +3106,27 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2333,7 +3168,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2343,8 +3178,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -2353,6 +3190,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2368,6 +3206,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._TestIamPermissions._get_response(
@@ -2389,6 +3254,27 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2429,7 +3315,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2439,8 +3325,10 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2449,6 +3337,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             http_options = (
                 _BaseServiceManagerRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseServiceManagerRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2458,6 +3347,33 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             query_params = _BaseServiceManagerRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicemanagement_v1.ServiceManagerClient.ListOperations",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceManagerRestTransport._ListOperations._get_response(
@@ -2478,6 +3394,27 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicemanagement_v1.ServiceManagerAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.api.servicemanagement.v1.ServiceManager",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

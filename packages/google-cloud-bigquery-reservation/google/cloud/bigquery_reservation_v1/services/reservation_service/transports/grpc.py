@@ -391,6 +391,37 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
         return self._stubs["update_reservation"]
 
     @property
+    def failover_reservation(
+        self,
+    ) -> Callable[[reservation.FailoverReservationRequest], reservation.Reservation]:
+        r"""Return a callable for the failover reservation method over gRPC.
+
+        Fail over a reservation to the secondary location. The operation
+        should be done in the current secondary location, which will be
+        promoted to the new primary location for the reservation.
+        Attempting to failover a reservation in the current primary
+        location will fail with the error code
+        ``google.rpc.Code.FAILED_PRECONDITION``.
+
+        Returns:
+            Callable[[~.FailoverReservationRequest],
+                    ~.Reservation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "failover_reservation" not in self._stubs:
+            self._stubs["failover_reservation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/FailoverReservation",
+                request_serializer=reservation.FailoverReservationRequest.serialize,
+                response_deserializer=reservation.Reservation.deserialize,
+            )
+        return self._stubs["failover_reservation"]
+
+    @property
     def create_capacity_commitment(
         self,
     ) -> Callable[

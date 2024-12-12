@@ -473,10 +473,11 @@ class SuggestConversationSummaryResponse(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
             Number of messages prior to and including
-            [last_conversation_message][] used to compile the
-            suggestion. It may be smaller than the
-            [SuggestSummaryRequest.context_size][] field in the request
-            if there weren't that many messages in the conversation.
+            [latest_message][google.cloud.dialogflow.v2.SuggestConversationSummaryResponse.latest_message]
+            used to compile the suggestion. It may be smaller than the
+            [SuggestConversationSummaryRequest.context_size][google.cloud.dialogflow.v2.SuggestConversationSummaryRequest.context_size]
+            field in the request if there weren't that many messages in
+            the conversation.
     """
 
     class Summary(proto.Message):
@@ -623,11 +624,11 @@ class GenerateStatelessSummaryResponse(proto.Message):
             the messages provided.
         context_size (int):
             Number of messages prior to and including
-            [last_conversation_message][] used to compile the
-            suggestion. It may be smaller than the
-            [GenerateStatelessSummaryRequest.context_size][] field in
-            the request if there weren't that many messages in the
-            conversation.
+            [latest_message][google.cloud.dialogflow.v2.GenerateStatelessSummaryResponse.latest_message]
+            used to compile the suggestion. It may be smaller than the
+            [GenerateStatelessSummaryRequest.max_context_size][google.cloud.dialogflow.v2.GenerateStatelessSummaryRequest.max_context_size]
+            field in the request if there weren't that many messages in
+            the conversation.
     """
 
     class Summary(proto.Message):
