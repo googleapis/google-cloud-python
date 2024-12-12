@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.2...google-maps-areainsights-v0.1.3) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([cf4d0e0](https://github.com/googleapis/google-cloud-python/commit/cf4d0e0ddd6d9d8808bde59d8b62acb4ff7f1750))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([cf4d0e0](https://github.com/googleapis/google-cloud-python/commit/cf4d0e0ddd6d9d8808bde59d8b62acb4ff7f1750))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.1...google-maps-areainsights-v0.1.2) (2024-11-11)
 
 
