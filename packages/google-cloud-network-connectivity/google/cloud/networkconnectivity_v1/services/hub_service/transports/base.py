@@ -163,6 +163,11 @@ class HubServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.query_hub_status: gapic_v1.method.wrap_method(
+                self.query_hub_status,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_spokes: gapic_v1.method.wrap_method(
                 self.list_spokes,
                 default_timeout=None,
@@ -225,6 +230,11 @@ class HubServiceTransport(abc.ABC):
             ),
             self.list_groups: gapic_v1.method.wrap_method(
                 self.list_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_group: gapic_v1.method.wrap_method(
+                self.update_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -341,6 +351,15 @@ class HubServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def query_hub_status(
+        self,
+    ) -> Callable[
+        [hub.QueryHubStatusRequest],
+        Union[hub.QueryHubStatusResponse, Awaitable[hub.QueryHubStatusResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_spokes(
         self,
     ) -> Callable[
@@ -444,6 +463,15 @@ class HubServiceTransport(abc.ABC):
     ) -> Callable[
         [hub.ListGroupsRequest],
         Union[hub.ListGroupsResponse, Awaitable[hub.ListGroupsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_group(
+        self,
+    ) -> Callable[
+        [hub.UpdateGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

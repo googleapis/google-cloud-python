@@ -1567,6 +1567,9 @@ def test_get_hub(request_type, transport: str = "grpc"):
             unique_id="unique_id_value",
             state=hub.State.CREATING,
             route_tables=["route_tables_value"],
+            policy_mode=hub.PolicyMode.PRESET,
+            preset_topology=hub.PresetTopology.MESH,
+            export_psc=True,
         )
         response = client.get_hub(request)
 
@@ -1583,6 +1586,9 @@ def test_get_hub(request_type, transport: str = "grpc"):
     assert response.unique_id == "unique_id_value"
     assert response.state == hub.State.CREATING
     assert response.route_tables == ["route_tables_value"]
+    assert response.policy_mode == hub.PolicyMode.PRESET
+    assert response.preset_topology == hub.PresetTopology.MESH
+    assert response.export_psc is True
 
 
 def test_get_hub_non_empty_request_with_auto_populated_field():
@@ -1711,6 +1717,9 @@ async def test_get_hub_async(
                 unique_id="unique_id_value",
                 state=hub.State.CREATING,
                 route_tables=["route_tables_value"],
+                policy_mode=hub.PolicyMode.PRESET,
+                preset_topology=hub.PresetTopology.MESH,
+                export_psc=True,
             )
         )
         response = await client.get_hub(request)
@@ -1728,6 +1737,9 @@ async def test_get_hub_async(
     assert response.unique_id == "unique_id_value"
     assert response.state == hub.State.CREATING
     assert response.route_tables == ["route_tables_value"]
+    assert response.policy_mode == hub.PolicyMode.PRESET
+    assert response.preset_topology == hub.PresetTopology.MESH
+    assert response.export_psc is True
 
 
 @pytest.mark.asyncio
@@ -3406,6 +3418,533 @@ async def test_list_hub_spokes_async_pages():
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         async for page_ in (  # pragma: no branch
             await client.list_hub_spokes(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.QueryHubStatusRequest,
+        dict,
+    ],
+)
+def test_query_hub_status(request_type, transport: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = hub.QueryHubStatusResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.query_hub_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = hub.QueryHubStatusRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryHubStatusPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_query_hub_status_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = hub.QueryHubStatusRequest(
+        name="name_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+        group_by="group_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.query_hub_status(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == hub.QueryHubStatusRequest(
+            name="name_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+            group_by="group_by_value",
+        )
+
+
+def test_query_hub_status_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = HubServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_hub_status in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.query_hub_status
+        ] = mock_rpc
+        request = {}
+        client.query_hub_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.query_hub_status(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = HubServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.query_hub_status
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.query_hub_status
+        ] = mock_rpc
+
+        request = {}
+        await client.query_hub_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.query_hub_status(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_async(
+    transport: str = "grpc_asyncio", request_type=hub.QueryHubStatusRequest
+):
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            hub.QueryHubStatusResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.query_hub_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = hub.QueryHubStatusRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryHubStatusAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_async_from_dict():
+    await test_query_hub_status_async(request_type=dict)
+
+
+def test_query_hub_status_field_headers():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = hub.QueryHubStatusRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        call.return_value = hub.QueryHubStatusResponse()
+        client.query_hub_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_field_headers_async():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = hub.QueryHubStatusRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            hub.QueryHubStatusResponse()
+        )
+        await client.query_hub_status(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_query_hub_status_flattened():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = hub.QueryHubStatusResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.query_hub_status(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_query_hub_status_flattened_error():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.query_hub_status(
+            hub.QueryHubStatusRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_flattened_async():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = hub.QueryHubStatusResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            hub.QueryHubStatusResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.query_hub_status(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_flattened_error_async():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.query_hub_status(
+            hub.QueryHubStatusRequest(),
+            name="name_value",
+        )
+
+
+def test_query_hub_status_pager(transport_name: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[],
+                next_page_token="def",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", ""),)),
+        )
+        pager = client.query_hub_status(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, hub.HubStatusEntry) for i in results)
+
+
+def test_query_hub_status_pages(transport_name: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[],
+                next_page_token="def",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.query_hub_status(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_async_pager():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_hub_status), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[],
+                next_page_token="def",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.query_hub_status(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, hub.HubStatusEntry) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_query_hub_status_async_pages():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_hub_status), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="abc",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[],
+                next_page_token="def",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            hub.QueryHubStatusResponse(
+                hub_status_entries=[
+                    hub.HubStatusEntry(),
+                    hub.HubStatusEntry(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.query_hub_status(request={})
         ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -6345,6 +6884,7 @@ def test_get_route(request_type, transport: str = "grpc"):
             state=hub.State.CREATING,
             spoke="spoke_value",
             location="location_value",
+            priority=898,
         )
         response = client.get_route(request)
 
@@ -6364,6 +6904,7 @@ def test_get_route(request_type, transport: str = "grpc"):
     assert response.state == hub.State.CREATING
     assert response.spoke == "spoke_value"
     assert response.location == "location_value"
+    assert response.priority == 898
 
 
 def test_get_route_non_empty_request_with_auto_populated_field():
@@ -6495,6 +7036,7 @@ async def test_get_route_async(
                 state=hub.State.CREATING,
                 spoke="spoke_value",
                 location="location_value",
+                priority=898,
             )
         )
         response = await client.get_route(request)
@@ -6515,6 +7057,7 @@ async def test_get_route_async(
     assert response.state == hub.State.CREATING
     assert response.spoke == "spoke_value"
     assert response.location == "location_value"
+    assert response.priority == 898
 
 
 @pytest.mark.asyncio
@@ -7764,6 +8307,7 @@ def test_get_group(request_type, transport: str = "grpc"):
             description="description_value",
             uid="uid_value",
             state=hub.State.CREATING,
+            route_table="route_table_value",
         )
         response = client.get_group(request)
 
@@ -7779,6 +8323,7 @@ def test_get_group(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.uid == "uid_value"
     assert response.state == hub.State.CREATING
+    assert response.route_table == "route_table_value"
 
 
 def test_get_group_non_empty_request_with_auto_populated_field():
@@ -7906,6 +8451,7 @@ async def test_get_group_async(
                 description="description_value",
                 uid="uid_value",
                 state=hub.State.CREATING,
+                route_table="route_table_value",
             )
         )
         response = await client.get_group(request)
@@ -7922,6 +8468,7 @@ async def test_get_group_async(
     assert response.description == "description_value"
     assert response.uid == "uid_value"
     assert response.state == hub.State.CREATING
+    assert response.route_table == "route_table_value"
 
 
 @pytest.mark.asyncio
@@ -8595,6 +9142,343 @@ async def test_list_groups_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        hub.UpdateGroupRequest,
+        dict,
+    ],
+)
+def test_update_group(request_type, transport: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = hub.UpdateGroupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_group_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = hub.UpdateGroupRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_group(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == hub.UpdateGroupRequest(
+            request_id="request_id_value",
+        )
+
+
+def test_update_group_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = HubServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_group in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_group] = mock_rpc
+        request = {}
+        client.update_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_group(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_group_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = HubServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_group
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_group
+        ] = mock_rpc
+
+        request = {}
+        await client.update_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_group(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_group_async(
+    transport: str = "grpc_asyncio", request_type=hub.UpdateGroupRequest
+):
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = hub.UpdateGroupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_group_async_from_dict():
+    await test_update_group_async(request_type=dict)
+
+
+def test_update_group_field_headers():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = hub.UpdateGroupRequest()
+
+    request.group.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "group.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_group_field_headers_async():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = hub.UpdateGroupRequest()
+
+    request.group.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_group(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "group.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_group_flattened():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_group(
+            group=hub.Group(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].group
+        mock_val = hub.Group(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_group_flattened_error():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_group(
+            hub.UpdateGroupRequest(),
+            group=hub.Group(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_group_flattened_async():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_group(
+            group=hub.Group(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].group
+        mock_val = hub.Group(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_group_flattened_error_async():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_group(
+            hub.UpdateGroupRequest(),
+            group=hub.Group(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.HubServiceGrpcTransport(
@@ -8822,6 +9706,27 @@ def test_list_hub_spokes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListHubSpokesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_query_hub_status_empty_call_grpc():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        call.return_value = hub.QueryHubStatusResponse()
+        client.query_hub_status(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = hub.QueryHubStatusRequest()
 
         assert args[0] == request_msg
 
@@ -9101,6 +10006,27 @@ def test_list_groups_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_group_empty_call_grpc():
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = hub.UpdateGroupRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = HubServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -9162,6 +10088,9 @@ async def test_get_hub_empty_call_grpc_asyncio():
                 unique_id="unique_id_value",
                 state=hub.State.CREATING,
                 route_tables=["route_tables_value"],
+                policy_mode=hub.PolicyMode.PRESET,
+                preset_topology=hub.PresetTopology.MESH,
+                export_psc=True,
             )
         )
         await client.get_hub(request=None)
@@ -9273,6 +10202,33 @@ async def test_list_hub_spokes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListHubSpokesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_query_hub_status_empty_call_grpc_asyncio():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_hub_status), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            hub.QueryHubStatusResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.query_hub_status(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = hub.QueryHubStatusRequest()
 
         assert args[0] == request_msg
 
@@ -9515,6 +10471,7 @@ async def test_get_route_empty_call_grpc_asyncio():
                 state=hub.State.CREATING,
                 spoke="spoke_value",
                 location="location_value",
+                priority=898,
             )
         )
         await client.get_route(request=None)
@@ -9603,6 +10560,7 @@ async def test_get_group_empty_call_grpc_asyncio():
                 description="description_value",
                 uid="uid_value",
                 state=hub.State.CREATING,
+                route_table="route_table_value",
             )
         )
         await client.get_group(request=None)
@@ -9639,6 +10597,31 @@ async def test_list_groups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = hub.ListGroupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_group_empty_call_grpc_asyncio():
+    client = HubServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = hub.UpdateGroupRequest()
 
         assert args[0] == request_msg
 
@@ -9682,6 +10665,7 @@ def test_hub_service_base_transport():
         "update_hub",
         "delete_hub",
         "list_hub_spokes",
+        "query_hub_status",
         "list_spokes",
         "get_spoke",
         "create_spoke",
@@ -9695,6 +10679,7 @@ def test_hub_service_base_transport():
         "list_route_tables",
         "get_group",
         "list_groups",
+        "update_group",
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -121,9 +129,10 @@ class SubscriptionsServiceRestInterceptor:
     def pre_create_subscription(
         self,
         request: subscriptions_service.CreateSubscriptionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        subscriptions_service.CreateSubscriptionRequest, Sequence[Tuple[str, str]]
+        subscriptions_service.CreateSubscriptionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_subscription
 
@@ -146,9 +155,10 @@ class SubscriptionsServiceRestInterceptor:
     def pre_delete_subscription(
         self,
         request: subscriptions_service.DeleteSubscriptionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        subscriptions_service.DeleteSubscriptionRequest, Sequence[Tuple[str, str]]
+        subscriptions_service.DeleteSubscriptionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_subscription
 
@@ -171,8 +181,11 @@ class SubscriptionsServiceRestInterceptor:
     def pre_get_subscription(
         self,
         request: subscriptions_service.GetSubscriptionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[subscriptions_service.GetSubscriptionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        subscriptions_service.GetSubscriptionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -194,9 +207,10 @@ class SubscriptionsServiceRestInterceptor:
     def pre_list_subscriptions(
         self,
         request: subscriptions_service.ListSubscriptionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        subscriptions_service.ListSubscriptionsRequest, Sequence[Tuple[str, str]]
+        subscriptions_service.ListSubscriptionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_subscriptions
 
@@ -219,9 +233,10 @@ class SubscriptionsServiceRestInterceptor:
     def pre_reactivate_subscription(
         self,
         request: subscriptions_service.ReactivateSubscriptionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        subscriptions_service.ReactivateSubscriptionRequest, Sequence[Tuple[str, str]]
+        subscriptions_service.ReactivateSubscriptionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for reactivate_subscription
 
@@ -244,9 +259,10 @@ class SubscriptionsServiceRestInterceptor:
     def pre_update_subscription(
         self,
         request: subscriptions_service.UpdateSubscriptionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        subscriptions_service.UpdateSubscriptionRequest, Sequence[Tuple[str, str]]
+        subscriptions_service.UpdateSubscriptionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_subscription
 
@@ -269,8 +285,10 @@ class SubscriptionsServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -448,7 +466,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create subscription method over HTTP.
 
@@ -459,8 +477,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -473,6 +493,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             http_options = (
                 _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_subscription(
                 request, metadata
             )
@@ -488,6 +509,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             query_params = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.CreateSubscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "CreateSubscription",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -510,7 +558,29 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_subscription(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.create_subscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "CreateSubscription",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSubscription(
@@ -548,7 +618,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete subscription method over HTTP.
 
@@ -559,8 +629,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -573,6 +645,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             http_options = (
                 _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_subscription(
                 request, metadata
             )
@@ -584,6 +657,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             query_params = _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.DeleteSubscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "DeleteSubscription",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -605,7 +705,29 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_subscription(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.delete_subscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "DeleteSubscription",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSubscription(
@@ -643,7 +765,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> subscription_resource.Subscription:
             r"""Call the get subscription method over HTTP.
 
@@ -654,8 +776,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.subscription_resource.Subscription:
@@ -669,6 +793,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             http_options = (
                 _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_subscription(
                 request, metadata
             )
@@ -680,6 +805,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             query_params = _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.GetSubscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "GetSubscription",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SubscriptionsServiceRestTransport._GetSubscription._get_response(
@@ -701,7 +853,31 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             pb_resp = subscription_resource.Subscription.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_subscription(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = subscription_resource.Subscription.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.get_subscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "GetSubscription",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSubscriptions(
@@ -739,7 +915,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> subscriptions_service.ListSubscriptionsResponse:
             r"""Call the list subscriptions method over HTTP.
 
@@ -750,8 +926,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.subscriptions_service.ListSubscriptionsResponse:
@@ -763,6 +941,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             http_options = (
                 _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_subscriptions(
                 request, metadata
             )
@@ -774,6 +953,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             query_params = _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.ListSubscriptions",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "ListSubscriptions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -797,7 +1003,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             pb_resp = subscriptions_service.ListSubscriptionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_subscriptions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        subscriptions_service.ListSubscriptionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.list_subscriptions",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "ListSubscriptions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReactivateSubscription(
@@ -836,7 +1068,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the reactivate subscription method over HTTP.
 
@@ -847,8 +1079,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -861,6 +1095,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             http_options = (
                 _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reactivate_subscription(
                 request, metadata
             )
@@ -876,6 +1111,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             query_params = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.ReactivateSubscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "ReactivateSubscription",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -898,7 +1160,29 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reactivate_subscription(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.reactivate_subscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "ReactivateSubscription",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSubscription(
@@ -937,7 +1221,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update subscription method over HTTP.
 
@@ -948,8 +1232,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -962,6 +1248,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             http_options = (
                 _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_subscription(
                 request, metadata
             )
@@ -977,6 +1264,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             query_params = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.UpdateSubscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "UpdateSubscription",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -999,7 +1313,29 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_subscription(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.update_subscription",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "UpdateSubscription",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1103,7 +1439,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1113,8 +1449,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1123,6 +1461,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             http_options = (
                 _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1132,6 +1471,33 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             query_params = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.apps.events.subscriptions_v1.SubscriptionsServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SubscriptionsServiceRestTransport._GetOperation._get_response(
@@ -1152,6 +1518,27 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.apps.events.subscriptions_v1.SubscriptionsServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
