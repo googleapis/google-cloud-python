@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -166,8 +174,11 @@ class CatalogServiceRestInterceptor:
     def pre_add_catalog_attribute(
         self,
         request: catalog_service.AddCatalogAttributeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.AddCatalogAttributeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.AddCatalogAttributeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_catalog_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -189,9 +200,10 @@ class CatalogServiceRestInterceptor:
     def pre_batch_remove_catalog_attributes(
         self,
         request: catalog_service.BatchRemoveCatalogAttributesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        catalog_service.BatchRemoveCatalogAttributesRequest, Sequence[Tuple[str, str]]
+        catalog_service.BatchRemoveCatalogAttributesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_remove_catalog_attributes
 
@@ -214,8 +226,11 @@ class CatalogServiceRestInterceptor:
     def pre_get_attributes_config(
         self,
         request: catalog_service.GetAttributesConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.GetAttributesConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.GetAttributesConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_attributes_config
 
         Override in a subclass to manipulate the request or metadata
@@ -237,8 +252,11 @@ class CatalogServiceRestInterceptor:
     def pre_get_completion_config(
         self,
         request: catalog_service.GetCompletionConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.GetCompletionConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.GetCompletionConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_completion_config
 
         Override in a subclass to manipulate the request or metadata
@@ -260,8 +278,10 @@ class CatalogServiceRestInterceptor:
     def pre_get_default_branch(
         self,
         request: catalog_service.GetDefaultBranchRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.GetDefaultBranchRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.GetDefaultBranchRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_default_branch
 
         Override in a subclass to manipulate the request or metadata
@@ -283,8 +303,10 @@ class CatalogServiceRestInterceptor:
     def pre_list_catalogs(
         self,
         request: catalog_service.ListCatalogsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.ListCatalogsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.ListCatalogsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_catalogs
 
         Override in a subclass to manipulate the request or metadata
@@ -306,9 +328,10 @@ class CatalogServiceRestInterceptor:
     def pre_remove_catalog_attribute(
         self,
         request: catalog_service.RemoveCatalogAttributeRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        catalog_service.RemoveCatalogAttributeRequest, Sequence[Tuple[str, str]]
+        catalog_service.RemoveCatalogAttributeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for remove_catalog_attribute
 
@@ -331,9 +354,10 @@ class CatalogServiceRestInterceptor:
     def pre_replace_catalog_attribute(
         self,
         request: catalog_service.ReplaceCatalogAttributeRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        catalog_service.ReplaceCatalogAttributeRequest, Sequence[Tuple[str, str]]
+        catalog_service.ReplaceCatalogAttributeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for replace_catalog_attribute
 
@@ -356,8 +380,10 @@ class CatalogServiceRestInterceptor:
     def pre_set_default_branch(
         self,
         request: catalog_service.SetDefaultBranchRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.SetDefaultBranchRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.SetDefaultBranchRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_default_branch
 
         Override in a subclass to manipulate the request or metadata
@@ -368,9 +394,10 @@ class CatalogServiceRestInterceptor:
     def pre_update_attributes_config(
         self,
         request: catalog_service.UpdateAttributesConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        catalog_service.UpdateAttributesConfigRequest, Sequence[Tuple[str, str]]
+        catalog_service.UpdateAttributesConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_attributes_config
 
@@ -393,8 +420,10 @@ class CatalogServiceRestInterceptor:
     def pre_update_catalog(
         self,
         request: catalog_service.UpdateCatalogRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.UpdateCatalogRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.UpdateCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -414,9 +443,10 @@ class CatalogServiceRestInterceptor:
     def pre_update_completion_config(
         self,
         request: catalog_service.UpdateCompletionConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        catalog_service.UpdateCompletionConfigRequest, Sequence[Tuple[str, str]]
+        catalog_service.UpdateCompletionConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_completion_config
 
@@ -439,8 +469,10 @@ class CatalogServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -462,8 +494,10 @@ class CatalogServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -605,7 +639,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.AttributesConfig:
             r"""Call the add catalog attribute method over HTTP.
 
@@ -617,8 +651,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.AttributesConfig:
@@ -628,6 +664,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseAddCatalogAttribute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_catalog_attribute(
                 request, metadata
             )
@@ -643,6 +680,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseAddCatalogAttribute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.AddCatalogAttribute",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "AddCatalogAttribute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._AddCatalogAttribute._get_response(
@@ -665,7 +729,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.AttributesConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_catalog_attribute(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.AttributesConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.add_catalog_attribute",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "AddCatalogAttribute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchRemoveCatalogAttributes(
@@ -704,7 +790,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog_service.BatchRemoveCatalogAttributesResponse:
             r"""Call the batch remove catalog
             attributes method over HTTP.
@@ -717,8 +803,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.catalog_service.BatchRemoveCatalogAttributesResponse:
@@ -730,6 +818,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseBatchRemoveCatalogAttributes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_remove_catalog_attributes(
                 request, metadata
             )
@@ -745,6 +834,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseBatchRemoveCatalogAttributes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.BatchRemoveCatalogAttributes",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "BatchRemoveCatalogAttributes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -769,7 +885,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog_service.BatchRemoveCatalogAttributesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_remove_catalog_attributes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        catalog_service.BatchRemoveCatalogAttributesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.batch_remove_catalog_attributes",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "BatchRemoveCatalogAttributes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAttributesConfig(
@@ -807,7 +949,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.AttributesConfig:
             r"""Call the get attributes config method over HTTP.
 
@@ -819,8 +961,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.AttributesConfig:
@@ -830,6 +974,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseGetAttributesConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_attributes_config(
                 request, metadata
             )
@@ -841,6 +986,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseGetAttributesConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.GetAttributesConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetAttributesConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._GetAttributesConfig._get_response(
@@ -862,7 +1034,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.AttributesConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_attributes_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.AttributesConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.get_attributes_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetAttributesConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCompletionConfig(
@@ -900,7 +1094,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.CompletionConfig:
             r"""Call the get completion config method over HTTP.
 
@@ -912,8 +1106,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.CompletionConfig:
@@ -926,6 +1122,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseGetCompletionConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_completion_config(
                 request, metadata
             )
@@ -937,6 +1134,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseGetCompletionConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.GetCompletionConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetCompletionConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._GetCompletionConfig._get_response(
@@ -958,7 +1182,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.CompletionConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_completion_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.CompletionConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.get_completion_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetCompletionConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDefaultBranch(
@@ -995,7 +1241,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog_service.GetDefaultBranchResponse:
             r"""Call the get default branch method over HTTP.
 
@@ -1006,8 +1252,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog_service.GetDefaultBranchResponse:
@@ -1019,6 +1267,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseGetDefaultBranch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_default_branch(
                 request, metadata
             )
@@ -1030,6 +1279,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseGetDefaultBranch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.GetDefaultBranch",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetDefaultBranch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._GetDefaultBranch._get_response(
@@ -1051,7 +1327,31 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog_service.GetDefaultBranchResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_default_branch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog_service.GetDefaultBranchResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.get_default_branch",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetDefaultBranch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCatalogs(
@@ -1088,7 +1388,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog_service.ListCatalogsResponse:
             r"""Call the list catalogs method over HTTP.
 
@@ -1100,8 +1400,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog_service.ListCatalogsResponse:
@@ -1114,6 +1416,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseListCatalogs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_catalogs(request, metadata)
             transcoded_request = _BaseCatalogServiceRestTransport._BaseListCatalogs._get_transcoded_request(
                 http_options, request
@@ -1123,6 +1426,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseListCatalogs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.ListCatalogs",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "ListCatalogs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._ListCatalogs._get_response(
@@ -1144,7 +1474,31 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog_service.ListCatalogsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_catalogs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog_service.ListCatalogsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.list_catalogs",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "ListCatalogs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveCatalogAttribute(
@@ -1183,7 +1537,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.AttributesConfig:
             r"""Call the remove catalog attribute method over HTTP.
 
@@ -1195,8 +1549,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.AttributesConfig:
@@ -1206,6 +1562,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseRemoveCatalogAttribute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_catalog_attribute(
                 request, metadata
             )
@@ -1221,6 +1578,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseRemoveCatalogAttribute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.RemoveCatalogAttribute",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "RemoveCatalogAttribute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1245,7 +1629,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.AttributesConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_catalog_attribute(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.AttributesConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.remove_catalog_attribute",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "RemoveCatalogAttribute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReplaceCatalogAttribute(
@@ -1284,7 +1690,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.AttributesConfig:
             r"""Call the replace catalog attribute method over HTTP.
 
@@ -1296,8 +1702,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.AttributesConfig:
@@ -1307,6 +1715,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseReplaceCatalogAttribute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_replace_catalog_attribute(
                 request, metadata
             )
@@ -1322,6 +1731,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseReplaceCatalogAttribute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.ReplaceCatalogAttribute",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "ReplaceCatalogAttribute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1346,7 +1782,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.AttributesConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_replace_catalog_attribute(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.AttributesConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.replace_catalog_attribute",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "ReplaceCatalogAttribute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetDefaultBranch(
@@ -1384,7 +1842,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the set default branch method over HTTP.
 
@@ -1395,13 +1853,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseSetDefaultBranch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_default_branch(
                 request, metadata
             )
@@ -1417,6 +1878,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseSetDefaultBranch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.SetDefaultBranch",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "SetDefaultBranch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._SetDefaultBranch._get_response(
@@ -1470,7 +1958,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.AttributesConfig:
             r"""Call the update attributes config method over HTTP.
 
@@ -1482,8 +1970,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.AttributesConfig:
@@ -1493,6 +1983,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseUpdateAttributesConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_attributes_config(
                 request, metadata
             )
@@ -1508,6 +1999,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseUpdateAttributesConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.UpdateAttributesConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "UpdateAttributesConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1532,7 +2050,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.AttributesConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_attributes_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.AttributesConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.update_attributes_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "UpdateAttributesConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCatalog(
@@ -1570,7 +2110,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcr_catalog.Catalog:
             r"""Call the update catalog method over HTTP.
 
@@ -1582,8 +2122,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcr_catalog.Catalog:
@@ -1593,6 +2135,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseUpdateCatalog._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_catalog(request, metadata)
             transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateCatalog._get_transcoded_request(
                 http_options, request
@@ -1606,6 +2149,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseUpdateCatalog._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.UpdateCatalog",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "UpdateCatalog",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._UpdateCatalog._get_response(
@@ -1628,7 +2198,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = gcr_catalog.Catalog.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_catalog(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcr_catalog.Catalog.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.update_catalog",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "UpdateCatalog",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCompletionConfig(
@@ -1667,7 +2259,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.CompletionConfig:
             r"""Call the update completion config method over HTTP.
 
@@ -1679,8 +2271,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.CompletionConfig:
@@ -1693,6 +2287,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseUpdateCompletionConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_completion_config(
                 request, metadata
             )
@@ -1708,6 +2303,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseUpdateCompletionConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.UpdateCompletionConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "UpdateCompletionConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1732,7 +2354,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.CompletionConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_completion_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.CompletionConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceClient.update_completion_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "UpdateCompletionConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1891,7 +2535,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1901,8 +2545,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1911,6 +2557,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCatalogServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1920,6 +2567,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._GetOperation._get_response(
@@ -1940,6 +2614,27 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1980,7 +2675,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1990,8 +2685,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2000,6 +2697,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCatalogServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2009,6 +2707,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.CatalogServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._ListOperations._get_response(
@@ -2029,6 +2754,27 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.CatalogServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.CatalogService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,13 +27,92 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.securitycentermanagement_v1.types import security_center_management
 
 from .base import DEFAULT_CLIENT_INFO, SecurityCenterManagementTransport
 from .grpc import SecurityCenterManagementGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTransport):
@@ -228,10 +310,13 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -278,7 +363,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "list_effective_security_health_analytics_custom_modules" not in self._stubs:
             self._stubs[
                 "list_effective_security_health_analytics_custom_modules"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveSecurityHealthAnalyticsCustomModules",
                 request_serializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.deserialize,
@@ -315,7 +400,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "get_effective_security_health_analytics_custom_module" not in self._stubs:
             self._stubs[
                 "get_effective_security_health_analytics_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.deserialize,
@@ -354,7 +439,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "list_security_health_analytics_custom_modules" not in self._stubs:
             self._stubs[
                 "list_security_health_analytics_custom_modules"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityHealthAnalyticsCustomModules",
                 request_serializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.deserialize,
@@ -396,7 +481,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         ):
             self._stubs[
                 "list_descendant_security_health_analytics_custom_modules"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantSecurityHealthAnalyticsCustomModules",
                 request_serializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.deserialize,
@@ -429,7 +514,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "get_security_health_analytics_custom_module" not in self._stubs:
             self._stubs[
                 "get_security_health_analytics_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
@@ -466,7 +551,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "create_security_health_analytics_custom_module" not in self._stubs:
             self._stubs[
                 "create_security_health_analytics_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
@@ -504,7 +589,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "update_security_health_analytics_custom_module" not in self._stubs:
             self._stubs[
                 "update_security_health_analytics_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
@@ -539,7 +624,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "delete_security_health_analytics_custom_module" not in self._stubs:
             self._stubs[
                 "delete_security_health_analytics_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -575,7 +660,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "simulate_security_health_analytics_custom_module" not in self._stubs:
             self._stubs[
                 "simulate_security_health_analytics_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/SimulateSecurityHealthAnalyticsCustomModule",
                 request_serializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.deserialize,
@@ -614,7 +699,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "list_effective_event_threat_detection_custom_modules" not in self._stubs:
             self._stubs[
                 "list_effective_event_threat_detection_custom_modules"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveEventThreatDetectionCustomModules",
                 request_serializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.deserialize,
@@ -661,7 +746,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "get_effective_event_threat_detection_custom_module" not in self._stubs:
             self._stubs[
                 "get_effective_event_threat_detection_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EffectiveEventThreatDetectionCustomModule.deserialize,
@@ -698,7 +783,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "list_event_threat_detection_custom_modules" not in self._stubs:
             self._stubs[
                 "list_event_threat_detection_custom_modules"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEventThreatDetectionCustomModules",
                 request_serializer=security_center_management.ListEventThreatDetectionCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListEventThreatDetectionCustomModulesResponse.deserialize,
@@ -736,7 +821,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "list_descendant_event_threat_detection_custom_modules" not in self._stubs:
             self._stubs[
                 "list_descendant_event_threat_detection_custom_modules"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantEventThreatDetectionCustomModules",
                 request_serializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest.serialize,
                 response_deserializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.deserialize,
@@ -768,7 +853,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "get_event_threat_detection_custom_module" not in self._stubs:
             self._stubs[
                 "get_event_threat_detection_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.GetEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
@@ -804,7 +889,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "create_event_threat_detection_custom_module" not in self._stubs:
             self._stubs[
                 "create_event_threat_detection_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.CreateEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
@@ -843,7 +928,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "update_event_threat_detection_custom_module" not in self._stubs:
             self._stubs[
                 "update_event_threat_detection_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.UpdateEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
@@ -878,7 +963,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "delete_event_threat_detection_custom_module" not in self._stubs:
             self._stubs[
                 "delete_event_threat_detection_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.DeleteEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -913,7 +998,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "validate_event_threat_detection_custom_module" not in self._stubs:
             self._stubs[
                 "validate_event_threat_detection_custom_module"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ValidateEventThreatDetectionCustomModule",
                 request_serializer=security_center_management.ValidateEventThreatDetectionCustomModuleRequest.serialize,
                 response_deserializer=security_center_management.ValidateEventThreatDetectionCustomModuleResponse.deserialize,
@@ -943,7 +1028,9 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_security_center_service" not in self._stubs:
-            self._stubs["get_security_center_service"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "get_security_center_service"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityCenterService",
                 request_serializer=security_center_management.GetSecurityCenterServiceRequest.serialize,
                 response_deserializer=security_center_management.SecurityCenterService.deserialize,
@@ -975,7 +1062,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "list_security_center_services" not in self._stubs:
             self._stubs[
                 "list_security_center_services"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityCenterServices",
                 request_serializer=security_center_management.ListSecurityCenterServicesRequest.serialize,
                 response_deserializer=security_center_management.ListSecurityCenterServicesResponse.deserialize,
@@ -1007,7 +1094,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         if "update_security_center_service" not in self._stubs:
             self._stubs[
                 "update_security_center_service"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityCenterService",
                 request_serializer=security_center_management.UpdateSecurityCenterServiceRequest.serialize,
                 response_deserializer=security_center_management.SecurityCenterService.deserialize,
@@ -1260,7 +1347,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -1278,7 +1365,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1295,7 +1382,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

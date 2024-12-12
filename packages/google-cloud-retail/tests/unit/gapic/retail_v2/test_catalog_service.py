@@ -5003,6 +5003,7 @@ def test_list_catalogs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_catalogs(request)
 
@@ -5056,6 +5057,7 @@ def test_list_catalogs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_catalogs(**mock_args)
 
@@ -5247,6 +5249,7 @@ def test_update_catalog_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_catalog(request)
 
@@ -5295,6 +5298,7 @@ def test_update_catalog_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_catalog(**mock_args)
 
@@ -5393,6 +5397,7 @@ def test_set_default_branch_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.set_default_branch(**mock_args)
 
@@ -5492,6 +5497,7 @@ def test_get_default_branch_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_default_branch(**mock_args)
 
@@ -5628,6 +5634,7 @@ def test_get_completion_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_completion_config(request)
 
@@ -5675,6 +5682,7 @@ def test_get_completion_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_completion_config(**mock_args)
 
@@ -5809,6 +5817,7 @@ def test_update_completion_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_completion_config(request)
 
@@ -5859,6 +5868,7 @@ def test_update_completion_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_completion_config(**mock_args)
 
@@ -5996,6 +6006,7 @@ def test_get_attributes_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_attributes_config(request)
 
@@ -6043,6 +6054,7 @@ def test_get_attributes_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_attributes_config(**mock_args)
 
@@ -6177,6 +6189,7 @@ def test_update_attributes_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_attributes_config(request)
 
@@ -6227,6 +6240,7 @@ def test_update_attributes_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_attributes_config(**mock_args)
 
@@ -6365,6 +6379,7 @@ def test_add_catalog_attribute_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.add_catalog_attribute(request)
 
@@ -6502,6 +6517,7 @@ def test_remove_catalog_attribute_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.remove_catalog_attribute(request)
 
@@ -6635,6 +6651,7 @@ def test_replace_catalog_attribute_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.replace_catalog_attribute(request)
 
@@ -7389,6 +7406,7 @@ def test_list_catalogs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_catalogs(request)
 
 
@@ -7424,6 +7442,7 @@ def test_list_catalogs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_catalogs(request)
 
     # Establish that the response is the type that we expect.
@@ -7464,6 +7483,7 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog_service.ListCatalogsResponse.to_json(
             catalog_service.ListCatalogsResponse()
         )
@@ -7512,6 +7532,7 @@ def test_update_catalog_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_catalog(request)
 
 
@@ -7625,6 +7646,7 @@ def test_update_catalog_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_catalog(request)
 
     # Establish that the response is the type that we expect.
@@ -7666,6 +7688,7 @@ def test_update_catalog_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcr_catalog.Catalog.to_json(gcr_catalog.Catalog())
         req.return_value.content = return_value
 
@@ -7710,6 +7733,7 @@ def test_set_default_branch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_default_branch(request)
 
 
@@ -7740,6 +7764,7 @@ def test_set_default_branch_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.set_default_branch(request)
 
     # Establish that the response is the type that we expect.
@@ -7776,6 +7801,7 @@ def test_set_default_branch_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = catalog_service.SetDefaultBranchRequest()
         metadata = [
@@ -7816,6 +7842,7 @@ def test_get_default_branch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_default_branch(request)
 
 
@@ -7852,6 +7879,7 @@ def test_get_default_branch_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_default_branch(request)
 
     # Establish that the response is the type that we expect.
@@ -7893,6 +7921,7 @@ def test_get_default_branch_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog_service.GetDefaultBranchResponse.to_json(
             catalog_service.GetDefaultBranchResponse()
         )
@@ -7941,6 +7970,7 @@ def test_get_completion_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_completion_config(request)
 
 
@@ -7985,6 +8015,7 @@ def test_get_completion_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_completion_config(request)
 
     # Establish that the response is the type that we expect.
@@ -8041,6 +8072,7 @@ def test_get_completion_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog.CompletionConfig.to_json(catalog.CompletionConfig())
         req.return_value.content = return_value
 
@@ -8089,6 +8121,7 @@ def test_update_completion_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_completion_config(request)
 
 
@@ -8226,6 +8259,7 @@ def test_update_completion_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_completion_config(request)
 
     # Establish that the response is the type that we expect.
@@ -8282,6 +8316,7 @@ def test_update_completion_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog.CompletionConfig.to_json(catalog.CompletionConfig())
         req.return_value.content = return_value
 
@@ -8328,6 +8363,7 @@ def test_get_attributes_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_attributes_config(request)
 
 
@@ -8366,6 +8402,7 @@ def test_get_attributes_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_attributes_config(request)
 
     # Establish that the response is the type that we expect.
@@ -8410,6 +8447,7 @@ def test_get_attributes_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog.AttributesConfig.to_json(catalog.AttributesConfig())
         req.return_value.content = return_value
 
@@ -8458,6 +8496,7 @@ def test_update_attributes_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_attributes_config(request)
 
 
@@ -8572,6 +8611,7 @@ def test_update_attributes_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_attributes_config(request)
 
     # Establish that the response is the type that we expect.
@@ -8616,6 +8656,7 @@ def test_update_attributes_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog.AttributesConfig.to_json(catalog.AttributesConfig())
         req.return_value.content = return_value
 
@@ -8662,6 +8703,7 @@ def test_add_catalog_attribute_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.add_catalog_attribute(request)
 
 
@@ -8700,6 +8742,7 @@ def test_add_catalog_attribute_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.add_catalog_attribute(request)
 
     # Establish that the response is the type that we expect.
@@ -8744,6 +8787,7 @@ def test_add_catalog_attribute_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog.AttributesConfig.to_json(catalog.AttributesConfig())
         req.return_value.content = return_value
 
@@ -8790,6 +8834,7 @@ def test_remove_catalog_attribute_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.remove_catalog_attribute(request)
 
 
@@ -8828,6 +8873,7 @@ def test_remove_catalog_attribute_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.remove_catalog_attribute(request)
 
     # Establish that the response is the type that we expect.
@@ -8872,6 +8918,7 @@ def test_remove_catalog_attribute_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog.AttributesConfig.to_json(catalog.AttributesConfig())
         req.return_value.content = return_value
 
@@ -8918,6 +8965,7 @@ def test_replace_catalog_attribute_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.replace_catalog_attribute(request)
 
 
@@ -8956,6 +9004,7 @@ def test_replace_catalog_attribute_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.replace_catalog_attribute(request)
 
     # Establish that the response is the type that we expect.
@@ -9000,6 +9049,7 @@ def test_replace_catalog_attribute_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = catalog.AttributesConfig.to_json(catalog.AttributesConfig())
         req.return_value.content = return_value
 
@@ -9046,6 +9096,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -9076,6 +9127,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -9106,6 +9158,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -9136,6 +9189,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
