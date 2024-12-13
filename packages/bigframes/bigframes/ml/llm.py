@@ -79,6 +79,11 @@ _GEMINI_PREVIEW_ENDPOINTS = (
     _GEMINI_1P5_PRO_FLASH_PREVIEW_ENDPOINT,
     _GEMINI_2_FLASH_EXP_ENDPOINT,
 )
+_GEMINI_FINE_TUNE_SCORE_ENDPOINTS = (
+    _GEMINI_PRO_ENDPOINT,
+    _GEMINI_1P5_PRO_002_ENDPOINT,
+    _GEMINI_1P5_FLASH_002_ENDPOINT,
+)
 
 _CLAUDE_3_SONNET_ENDPOINT = "claude-3-sonnet"
 _CLAUDE_3_HAIKU_ENDPOINT = "claude-3-haiku"
@@ -890,7 +895,8 @@ class GeminiTextGenerator(base.BaseEstimator):
         X: utils.ArrayType,
         y: utils.ArrayType,
     ) -> GeminiTextGenerator:
-        """Fine tune GeminiTextGenerator model. Only support "gemini-pro" model for now.
+        """Fine tune GeminiTextGenerator model. Only support "gemini-pro", "gemini-1.5-pro-002",
+           "gemini-1.5-flash-002" models for now.
 
         .. note::
 
@@ -908,13 +914,18 @@ class GeminiTextGenerator(base.BaseEstimator):
         Returns:
             GeminiTextGenerator: Fitted estimator.
         """
-        if self._bqml_model.model_name.startswith("gemini-1.5"):
-            raise NotImplementedError("Fit is not supported for gemini-1.5 model.")
+        if self.model_name not in _GEMINI_FINE_TUNE_SCORE_ENDPOINTS:
+            raise NotImplementedError(
+                "fit() only supports gemini-pro, \
+                    gemini-1.5-pro-002, or gemini-1.5-flash-002 model."
+            )
 
         X, y = utils.batch_convert_to_dataframe(X, y)
 
         options = self._bqml_options
-        options["endpoint"] = "gemini-1.0-pro-002"
+        options["endpoint"] = (
+            "gemini-1.0-pro-002" if self.model_name == "gemini-pro" else self.model_name
+        )
         options["prompt_col"] = X.columns.tolist()[0]
 
         self._bqml_model = self._bqml_model_factory.create_llm_remote_model(
@@ -1025,7 +1036,7 @@ class GeminiTextGenerator(base.BaseEstimator):
             "text_generation", "classification", "summarization", "question_answering"
         ] = "text_generation",
     ) -> bpd.DataFrame:
-        """Calculate evaluation metrics of the model. Only "gemini-pro" model is supported for now.
+        """Calculate evaluation metrics of the model. Only support "gemini-pro" and "gemini-1.5-pro-002", and "gemini-1.5-flash-002".
 
         .. note::
 
@@ -1057,9 +1068,11 @@ class GeminiTextGenerator(base.BaseEstimator):
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        # TODO(ashleyxu): Support gemini-1.5 when the rollout is ready. b/344891364.
-        if self._bqml_model.model_name.startswith("gemini-1.5"):
-            raise NotImplementedError("Score is not supported for gemini-1.5 model.")
+        if self.model_name not in _GEMINI_FINE_TUNE_SCORE_ENDPOINTS:
+            raise NotImplementedError(
+                "score() only supports gemini-pro \
+                , gemini-1.5-pro-002, and gemini-1.5-flash-2 model."
+            )
 
         X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)
 

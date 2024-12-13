@@ -417,9 +417,16 @@ def test_llm_palm_score_params(llm_fine_tune_df_default_index):
     )
 
 
-@pytest.mark.flaky(retries=2)
-def test_llm_gemini_pro_score(llm_fine_tune_df_default_index):
-    model = llm.GeminiTextGenerator(model_name="gemini-pro")
+@pytest.mark.parametrize(
+    "model_name",
+    (
+        "gemini-pro",
+        "gemini-1.5-pro-002",
+        "gemini-1.5-flash-002",
+    ),
+)
+def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
+    model = llm.GeminiTextGenerator(model_name=model_name)
 
     # Check score to ensure the model was fitted
     score_result = model.score(
@@ -439,9 +446,16 @@ def test_llm_gemini_pro_score(llm_fine_tune_df_default_index):
     )
 
 
-@pytest.mark.flaky(retries=2)
-def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index):
-    model = llm.GeminiTextGenerator(model_name="gemini-pro")
+@pytest.mark.parametrize(
+    "model_name",
+    (
+        "gemini-pro",
+        "gemini-1.5-pro-002",
+        "gemini-1.5-flash-002",
+    ),
+)
+def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name):
+    model = llm.GeminiTextGenerator(model_name=model_name)
 
     # Check score to ensure the model was fitted
     score_result = model.score(
