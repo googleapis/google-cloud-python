@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.14](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.13...google-ai-generativelanguage-v0.6.14) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
 ## [0.6.13](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.12...google-ai-generativelanguage-v0.6.13) (2024-11-21)
 
 

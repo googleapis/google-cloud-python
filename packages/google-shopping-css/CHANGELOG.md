@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.10...google-shopping-css-v0.1.11) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([74833d3](https://github.com/googleapis/google-cloud-python/commit/74833d3e77bb5869bd9f2290c23be7ccaa20193f))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([74833d3](https://github.com/googleapis/google-cloud-python/commit/74833d3e77bb5869bd9f2290c23be7ccaa20193f))
+
+
+### Documentation
+
+* fix comment on list account labels ([74833d3](https://github.com/googleapis/google-cloud-python/commit/74833d3e77bb5869bd9f2290c23be7ccaa20193f))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.9...google-shopping-css-v0.1.10) (2024-11-11)
 
 

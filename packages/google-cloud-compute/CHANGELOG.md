@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.22.0...google-cloud-compute-v1.23.0) (2024-12-12)
+
+
+### Features
+
+* [google-cloud-compute] Update Compute Engine API to revision 20241201 (https://github.com/googleapis/google-cloud-python/issues/966) ([dfe5518](https://github.com/googleapis/google-cloud-python/commit/dfe5518bf0c5ef8a26681625d36c6e325b59feda))
+* Add support for opt-in debug logging ([dfe5518](https://github.com/googleapis/google-cloud-python/commit/dfe5518bf0c5ef8a26681625d36c6e325b59feda))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([dfe5518](https://github.com/googleapis/google-cloud-python/commit/dfe5518bf0c5ef8a26681625d36c6e325b59feda))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.21.0...google-cloud-compute-v1.22.0) (2024-11-14)
 
 

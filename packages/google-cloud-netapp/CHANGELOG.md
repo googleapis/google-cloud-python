@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.16...google-cloud-netapp-v0.3.17) (2024-12-12)
+
+
+### Features
+
+* Add EstablishPeering API for Onprem Migration ([2b05355](https://github.com/googleapis/google-cloud-python/commit/2b053555536107335ff5ea08b37fdfbeed864e6a))
+* Add new Active Directory state for AD Diagnostics support ([2b05355](https://github.com/googleapis/google-cloud-python/commit/2b053555536107335ff5ea08b37fdfbeed864e6a))
+* Add support for opt-in debug logging ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+* Add Sync API for Replications ([2b05355](https://github.com/googleapis/google-cloud-python/commit/2b053555536107335ff5ea08b37fdfbeed864e6a))
+* Enable creation of Onprem Migration in CreateVolume ([2b05355](https://github.com/googleapis/google-cloud-python/commit/2b053555536107335ff5ea08b37fdfbeed864e6a))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
+
+### Documentation
+
+* Docs now do not allow underscore in IDs of various Resources ([2b05355](https://github.com/googleapis/google-cloud-python/commit/2b053555536107335ff5ea08b37fdfbeed864e6a))
+
 ## [0.3.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.15...google-cloud-netapp-v0.3.16) (2024-11-11)
 
 

@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [1.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.37.0...google-cloud-dialogflow-cx-v1.38.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
 ## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.36.0...google-cloud-dialogflow-cx-v1.37.0) (2024-11-11)
 
 

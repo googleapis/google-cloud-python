@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.14.1...google-cloud-bigquery-reservation-v1.15.0) (2024-12-12)
+
+
+### Features
+
+* Add a new field `is_flat_rate` to `.google.cloud.bigquery.reservation.v1.CapacityCommitment` to distinguish between flat rate and edition commitments ([e87d4e9](https://github.com/googleapis/google-cloud-python/commit/e87d4e98a60b4b607699f5ef3b98b8e0963346f6))
+* Add support for opt-in debug logging ([e31cbb0](https://github.com/googleapis/google-cloud-python/commit/e31cbb0e11ab2cb093411005682c2fa2c38e787c))
+* Add the managed disaster recovery API(https://cloud.google.com/bigquery/docs/managed-disaster-recovery) ([e87d4e9](https://github.com/googleapis/google-cloud-python/commit/e87d4e98a60b4b607699f5ef3b98b8e0963346f6))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([e31cbb0](https://github.com/googleapis/google-cloud-python/commit/e31cbb0e11ab2cb093411005682c2fa2c38e787c))
+
+
+### Documentation
+
+* Clarify that `Autoscale.current_slots` in message `.google.cloud.bigquery.reservation.v1.Reservation` can temporarily be larger than `Autoscale.max_slots` if users reduce `Autoscale.max_slots` ([e87d4e9](https://github.com/googleapis/google-cloud-python/commit/e87d4e98a60b4b607699f5ef3b98b8e0963346f6))
+* Update comment for `slot_capacity` in message `.google.cloud.bigquery.reservation.v1.Reservation` to provide more clarity about reservation baselines, committed slots and autoscaler SKU charges when the baseline exceeds committed slots ([e87d4e9](https://github.com/googleapis/google-cloud-python/commit/e87d4e98a60b4b607699f5ef3b98b8e0963346f6))
+* Update comments for `commitment_start_time` and `commitment_end_time` in message `.google.cloud.bigquery.reservation.v1.CapacityCommitment` to provide details on how these values are affected by commitment renewal ([e87d4e9](https://github.com/googleapis/google-cloud-python/commit/e87d4e98a60b4b607699f5ef3b98b8e0963346f6))
+
 ## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.14.0...google-cloud-bigquery-reservation-v1.14.1) (2024-10-31)
 
 

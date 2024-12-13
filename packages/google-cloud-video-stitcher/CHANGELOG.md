@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.14...google-cloud-video-stitcher-v0.7.15) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([cf4d0e0](https://github.com/googleapis/google-cloud-python/commit/cf4d0e0ddd6d9d8808bde59d8b62acb4ff7f1750))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([cf4d0e0](https://github.com/googleapis/google-cloud-python/commit/cf4d0e0ddd6d9d8808bde59d8b62acb4ff7f1750))
+
 ## [0.7.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.13...google-cloud-video-stitcher-v0.7.14) (2024-11-11)
 
 

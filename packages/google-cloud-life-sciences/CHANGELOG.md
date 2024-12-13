@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.14...google-cloud-life-sciences-v0.9.15) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
 ## [0.9.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.13...google-cloud-life-sciences-v0.9.14) (2024-11-11)
 
 

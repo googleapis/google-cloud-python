@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.2...google-ads-marketingplatform-admin-v0.1.3) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.1...google-ads-marketingplatform-admin-v0.1.2) (2024-11-11)
 
 

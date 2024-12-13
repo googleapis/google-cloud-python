@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.6...google-cloud-parallelstore-v0.2.7) (2024-12-12)
+
+
+### Features
+
+* A new enum `DeploymentType` is added ([d406707](https://github.com/googleapis/google-cloud-python/commit/d406707a668e2dcbc80bda91cbe08ef9bf06b5b7))
+* A new field `deployment_type` is added to message `.google.cloud.parallelstore.v1beta.Instance` ([d406707](https://github.com/googleapis/google-cloud-python/commit/d406707a668e2dcbc80bda91cbe08ef9bf06b5b7))
+* Add support for opt-in debug logging ([d406707](https://github.com/googleapis/google-cloud-python/commit/d406707a668e2dcbc80bda91cbe08ef9bf06b5b7))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([d406707](https://github.com/googleapis/google-cloud-python/commit/d406707a668e2dcbc80bda91cbe08ef9bf06b5b7))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.5...google-cloud-parallelstore-v0.2.6) (2024-11-11)
 
 

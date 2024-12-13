@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.5.1...google-cloud-network-connectivity-v2.6.0) (2024-12-12)
+
+
+### Features
+
+* add Network Connectivity Center APIs for dynamic route exchange ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* add Network Connectivity Center APIs for include export filters ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* add Network Connectivity Center APIs for include import ranges on hybrid spokes ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* add Network Connectivity Center APIs for producer VPC spokes ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* add Network Connectivity Center APIs for PSC connection propagation through NCC ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* add Network Connectivity Center APIs for star topology ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* Add support for opt-in debug logging ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+
+
+### Documentation
+
+* update comment for `ListRoutes` method in service `HubService` to clarify that it lists routes in a route table ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* update comment for `ListRouteTables` method in service `HubService` to clarify that it lists route tables in a hub ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+* update comment for field `location` in message `.google.cloud.networkconnectivity.v1.Route` to clarify that it's the origin location ([e188f1a](https://github.com/googleapis/google-cloud-python/commit/e188f1ab6108b67d7a8bb538cb6601d7fa8944cf))
+
 ## [2.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.5.0...google-cloud-network-connectivity-v2.5.1) (2024-11-11)
 
 

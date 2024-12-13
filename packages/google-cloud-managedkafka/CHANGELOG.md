@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.5...google-cloud-managedkafka-v0.1.6) (2024-12-12)
+
+
+### Features
+
+* A new field `satisfies_pzi` is added to message `.google.cloud.managedkafka.v1.Cluster` ([a9d60f4](https://github.com/googleapis/google-cloud-python/commit/a9d60f40dff04f6240dbc8ed46a284830de77ad3))
+* A new field `satisfies_pzs` is added to message `.google.cloud.managedkafka.v1.Cluster` ([a9d60f4](https://github.com/googleapis/google-cloud-python/commit/a9d60f40dff04f6240dbc8ed46a284830de77ad3))
+* Add support for opt-in debug logging ([a9d60f4](https://github.com/googleapis/google-cloud-python/commit/a9d60f40dff04f6240dbc8ed46a284830de77ad3))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([a9d60f4](https://github.com/googleapis/google-cloud-python/commit/a9d60f40dff04f6240dbc8ed46a284830de77ad3))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.4...google-cloud-managedkafka-v0.1.5) (2024-11-11)
 
 

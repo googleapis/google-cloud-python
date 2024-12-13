@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.25.1...google-cloud-dlp-v3.26.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
 ## [3.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.25.0...google-cloud-dlp-v3.25.1) (2024-11-11)
 
 

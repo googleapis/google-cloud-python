@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.13...google-cloud-dataform-v0.5.14) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
 ## [0.5.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.12...google-cloud-dataform-v0.5.13) (2024-10-31)
 
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.6...google-maps-fleetengine-delivery-v0.2.7) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([cf4d0e0](https://github.com/googleapis/google-cloud-python/commit/cf4d0e0ddd6d9d8808bde59d8b62acb4ff7f1750))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([cf4d0e0](https://github.com/googleapis/google-cloud-python/commit/cf4d0e0ddd6d9d8808bde59d8b62acb4ff7f1750))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.5...google-maps-fleetengine-delivery-v0.2.6) (2024-11-11)
 
 

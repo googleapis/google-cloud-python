@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.14.1...google-cloud-iap-v1.15.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
 ## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.14.0...google-cloud-iap-v1.14.1) (2024-11-11)
 
 

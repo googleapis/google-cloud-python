@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.11...google-cloud-kms-inventory-v0.2.12) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
 ## [0.2.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.10...google-cloud-kms-inventory-v0.2.11) (2024-11-11)
 
 

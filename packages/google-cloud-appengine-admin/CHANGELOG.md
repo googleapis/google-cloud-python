@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.12.1...google-cloud-appengine-admin-v1.13.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.12.0...google-cloud-appengine-admin-v1.12.1) (2024-10-31)
 
 

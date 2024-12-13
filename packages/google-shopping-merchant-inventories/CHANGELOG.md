@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.11...google-shopping-merchant-inventories-v0.1.12) (2024-12-12)
+
+
+### Features
+
+* [Many APIs] Add support for opt-in debug logging ([#13349](https://github.com/googleapis/google-cloud-python/issues/13349)) ([8b9c7bf](https://github.com/googleapis/google-cloud-python/commit/8b9c7bf3bb1c4f0beabd71a45c469fcedb19a2c8))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([8b9c7bf](https://github.com/googleapis/google-cloud-python/commit/8b9c7bf3bb1c4f0beabd71a45c469fcedb19a2c8))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.10...google-shopping-merchant-inventories-v0.1.11) (2024-11-11)
 
 

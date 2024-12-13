@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.16.1...google-cloud-monitoring-dashboards-v2.17.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
 ## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.16.0...google-cloud-monitoring-dashboards-v2.16.1) (2024-11-11)
 
 

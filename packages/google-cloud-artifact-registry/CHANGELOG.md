@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.13.1...google-cloud-artifact-registry-v1.14.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.13.0...google-cloud-artifact-registry-v1.13.1) (2024-11-11)
 
 

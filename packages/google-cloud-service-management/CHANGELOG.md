@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.11.0...google-cloud-service-management-v1.12.0) (2024-12-12)
+
+
+### Features
+
+* add service renaming to GoSettings ([9dc3d4a](https://github.com/googleapis/google-cloud-python/commit/9dc3d4ac473823860bb27172c0d05a37643c794a))
+* Add support for opt-in debug logging ([9dc3d4a](https://github.com/googleapis/google-cloud-python/commit/9dc3d4ac473823860bb27172c0d05a37643c794a))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([9dc3d4a](https://github.com/googleapis/google-cloud-python/commit/9dc3d4ac473823860bb27172c0d05a37643c794a))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-management-v1.10.1...google-cloud-service-management-v1.11.0) (2024-11-11)
 
 
