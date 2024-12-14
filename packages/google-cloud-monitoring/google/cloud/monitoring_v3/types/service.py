@@ -594,7 +594,7 @@ class ServiceLevelObjective(proto.Message):
             respect to a single aspect of service quality.
         goal (float):
             The fraction of service that must be good in order for this
-            objective to be met. ``0 < goal <= 0.999``.
+            objective to be met. ``0 < goal <= 0.9999``.
         rolling_period (google.protobuf.duration_pb2.Duration):
             A rolling time period, semantically "in the past
             ``<rolling_period>``". Must be an integer multiple of 1 day

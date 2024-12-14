@@ -641,10 +641,12 @@ class UptimeCheckConfig(proto.Message):
             )
 
         class ServiceAgentAuthentication(proto.Message):
-            r"""Contains information needed for generating an `OpenID Connect
-            token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
-            The OIDC token will be generated for the Monitoring service agent
-            service account.
+            r"""Contains information needed for generating either an `OpenID Connect
+            token <https://developers.google.com/identity/protocols/OpenIDConnect>`__
+            or `OAuth
+            token <https://developers.google.com/identity/protocols/oauth2>`__.
+            The token will be generated for the Monitoring service agent service
+            account.
 
             Attributes:
                 type_ (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.ServiceAgentAuthentication.ServiceAgentAuthenticationType):
