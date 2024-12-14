@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2.types import participant
+from google.cloud.dialogflow_v2.types import participant, session
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -34,6 +34,10 @@ class ConversationEvent(proto.Message):
     r"""Represents a notification sent to Pub/Sub subscribers for
     conversation lifecycle events.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -50,6 +54,10 @@ class ConversationEvent(proto.Message):
             UNRECOVERABLE_ERROR_IN_PHONE_CALL.
         new_message_payload (google.cloud.dialogflow_v2.types.Message):
             Payload of NEW_MESSAGE event.
+
+            This field is a member of `oneof`_ ``payload``.
+        new_recognition_result_payload (google.cloud.dialogflow_v2.types.StreamingRecognitionResult):
+            Payload of NEW_RECOGNITION_RESULT event.
 
             This field is a member of `oneof`_ ``payload``.
     """
@@ -76,6 +84,11 @@ class ConversationEvent(proto.Message):
                 An existing conversation has received a new message, either
                 from API or telephony. It is configured in
                 [ConversationProfile.new_message_event_notification_config][google.cloud.dialogflow.v2.ConversationProfile.new_message_event_notification_config]
+            NEW_RECOGNITION_RESULT (7):
+                An existing conversation has received a new speech
+                recognition result. This is mainly for delivering
+                intermediate transcripts. The notification is configured in
+                [ConversationProfile.new_recognition_event_notification_config][].
             UNRECOVERABLE_ERROR (4):
                 Unrecoverable error during a telephone call.
 
@@ -95,6 +108,7 @@ class ConversationEvent(proto.Message):
         CONVERSATION_FINISHED = 2
         HUMAN_INTERVENTION_NEEDED = 3
         NEW_MESSAGE = 5
+        NEW_RECOGNITION_RESULT = 7
         UNRECOVERABLE_ERROR = 4
 
     conversation: str = proto.Field(
@@ -116,6 +130,12 @@ class ConversationEvent(proto.Message):
         number=4,
         oneof="payload",
         message=participant.Message,
+    )
+    new_recognition_result_payload: session.StreamingRecognitionResult = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="payload",
+        message=session.StreamingRecognitionResult,
     )
 
 
