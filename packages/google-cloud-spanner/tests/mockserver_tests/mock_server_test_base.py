@@ -28,6 +28,37 @@ from google.cloud.spanner_v1 import Client, TypeCode, FixedSizePool
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
 import grpc
+from google.rpc import code_pb2
+from google.rpc import status_pb2
+from google.rpc.error_details_pb2 import RetryInfo
+from google.protobuf.duration_pb2 import Duration
+from grpc_status._common import code_to_grpc_status_code
+from grpc_status.rpc_status import _Status
+
+
+# Creates an aborted status with the smallest possible retry delay.
+def aborted_status() -> _Status:
+    error = status_pb2.Status(
+        code=code_pb2.ABORTED,
+        message="Transaction was aborted.",
+    )
+    retry_info = RetryInfo(retry_delay=Duration(seconds=0, nanos=1))
+    status = _Status(
+        code=code_to_grpc_status_code(error.code),
+        details=error.message,
+        trailing_metadata=(
+            ("grpc-status-details-bin", error.SerializeToString()),
+            (
+                "google.rpc.retryinfo-bin",
+                retry_info.SerializeToString(),
+            ),
+        ),
+    )
+    return status
+
+
+def add_error(method: str, error: status_pb2.Status):
+    MockServerTestBase.spanner_service.mock_spanner.add_error(method, error)
 
 
 def add_result(sql: str, result: result_set.ResultSet):

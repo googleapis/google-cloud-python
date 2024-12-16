@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import base64
+import inspect
 import grpc
 from concurrent import futures
 
 from google.protobuf import empty_pb2
+from grpc_status.rpc_status import _Status
 from google.cloud.spanner_v1.testing.mock_database_admin import DatabaseAdminServicer
 import google.cloud.spanner_v1.testing.spanner_database_admin_pb2_grpc as database_admin_grpc
 import google.cloud.spanner_v1.testing.spanner_pb2_grpc as spanner_grpc
@@ -28,6 +30,7 @@ import google.cloud.spanner_v1.types.transaction as transaction
 class MockSpanner:
     def __init__(self):
         self.results = {}
+        self.errors = {}
 
     def add_result(self, sql: str, result: result_set.ResultSet):
         self.results[sql.lower().strip()] = result
@@ -37,6 +40,15 @@ class MockSpanner:
         if result is None:
             raise ValueError(f"No result found for {sql}")
         return result
+
+    def add_error(self, method: str, error: _Status):
+        self.errors[method] = error
+
+    def pop_error(self, context):
+        name = inspect.currentframe().f_back.f_code.co_name
+        error: _Status | None = self.errors.pop(name, None)
+        if error:
+            context.abort_with_status(error)
 
     def get_result_as_partial_result_sets(
         self, sql: str
@@ -174,6 +186,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
 
     def Commit(self, request, context):
         self._requests.append(request)
+        self.mock_spanner.pop_error(context)
         tx = self.transactions[request.transaction_id]
         if tx is None:
             raise ValueError(f"Transaction not found: {request.transaction_id}")
