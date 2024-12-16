@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-test-utils/compare/v1.4.0...v1.5.0) (2024-11-12)
+
+
+### Features
+
+* Add support for Python 3.13 ([#219](https://github.com/googleapis/python-test-utils/issues/219)) ([37b1ff1](https://github.com/googleapis/python-test-utils/commit/37b1ff1c3473922a57b1858955e0efe94cca1db1))
+
 ## [1.4.0](https://github.com/googleapis/python-test-utils/compare/v1.3.3...v1.4.0) (2023-11-29)
 
 
