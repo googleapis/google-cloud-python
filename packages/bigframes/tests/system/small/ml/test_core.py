@@ -260,6 +260,28 @@ def test_model_predict(penguins_bqml_linear_model: core.BqmlModel, new_penguins_
     )
 
 
+def test_model_predict_explain(
+    penguins_bqml_linear_model: core.BqmlModel, new_penguins_df
+):
+    predictions = penguins_bqml_linear_model.explain_predict(
+        new_penguins_df
+    ).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "predicted_body_mass_g": [4030.1, 3280.8, 3177.9],
+            "approximation_error": [0.0, 0.0, 0.0],
+        },
+        dtype="Float64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+    pd.testing.assert_frame_equal(
+        predictions[["predicted_body_mass_g", "approximation_error"]].sort_index(),
+        expected,
+        check_exact=False,
+        rtol=0.1,
+    )
+
+
 def test_model_predict_with_unnamed_index(
     penguins_bqml_linear_model: core.BqmlModel, new_penguins_df
 ):
@@ -282,6 +304,39 @@ def test_model_predict_with_unnamed_index(
     )
     pd.testing.assert_frame_equal(
         predictions[["predicted_body_mass_g"]].sort_index(),
+        expected,
+        check_exact=False,
+        rtol=0.1,
+    )
+
+
+def test_model_predict_explain_with_unnamed_index(
+    penguins_bqml_linear_model: core.BqmlModel, new_penguins_df
+):
+    # This will result in an index that lacks a name, which the ML library will
+    # need to persist through the call to ML.PREDICT
+    new_penguins_df = new_penguins_df.reset_index()
+
+    # remove the middle tag number to ensure we're really keeping the unnamed index
+    new_penguins_df = typing.cast(
+        bigframes.dataframe.DataFrame,
+        new_penguins_df[new_penguins_df.tag_number != 1672],
+    )
+
+    predictions = penguins_bqml_linear_model.explain_predict(
+        new_penguins_df
+    ).to_pandas()
+
+    expected = pd.DataFrame(
+        {
+            "predicted_body_mass_g": [4030.1, 3177.9],
+            "approximation_error": [0.0, 0.0],
+        },
+        dtype="Float64",
+        index=pd.Index([0, 2], dtype="Int64"),
+    )
+    pd.testing.assert_frame_equal(
+        predictions[["predicted_body_mass_g", "approximation_error"]].sort_index(),
         expected,
         check_exact=False,
         rtol=0.1,

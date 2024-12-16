@@ -304,6 +304,11 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
         return f"""SELECT * FROM ML.PREDICT(MODEL {self._model_ref_sql()},
   ({source_sql}))"""
 
+    def ml_explain_predict(self, source_sql: str) -> str:
+        """Encode ML.EXPLAIN_PREDICT for BQML"""
+        return f"""SELECT * FROM ML.EXPLAIN_PREDICT(MODEL {self._model_ref_sql()},
+  ({source_sql}))"""
+
     def ml_forecast(self, struct_options: Mapping[str, Union[int, float]]) -> str:
         """Encode ML.FORECAST for BQML"""
         struct_options_sql = self.struct_options(**struct_options)
