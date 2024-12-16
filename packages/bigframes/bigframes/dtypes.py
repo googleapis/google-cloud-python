@@ -253,6 +253,10 @@ def is_time_like(type_: ExpressionType) -> bool:
     return type_ in (DATETIME_DTYPE, TIMESTAMP_DTYPE, TIME_DTYPE)
 
 
+def is_geo_like(type_: ExpressionType) -> bool:
+    return type_ in (GEO_DTYPE,)
+
+
 def is_binary_like(type_: ExpressionType) -> bool:
     return type_ in (BOOL_DTYPE, BYTES_DTYPE, INT_DTYPE)
 

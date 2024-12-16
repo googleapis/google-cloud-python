@@ -1,0 +1,72 @@
+[
+  {
+    "mode": "NULLABLE",
+    "name": "geo_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "urban_area_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "lsad_name",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "area_lsad_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "mtfcc_feature_class_code",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "type",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "functional_status",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "area_land_meters",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "area_water_meters",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "internal_point_lon",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "internal_point_lat",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "internal_point_geom",
+    "type": "GEOGRAPHY"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "urban_area_geom",
+    "type": "GEOGRAPHY"
+  }
+]

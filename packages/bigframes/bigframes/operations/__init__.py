@@ -314,6 +314,19 @@ arccosh_op = create_unary_op(
 arctanh_op = create_unary_op(
     name="arctanh", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+# Geo Ops
+geo_x_op = create_unary_op(
+    name="geo_x",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_geo_like, dtypes.FLOAT_DTYPE, description="geo-like"
+    ),
+)
+geo_y_op = create_unary_op(
+    name="geo_y",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_geo_like, dtypes.FLOAT_DTYPE, description="geo-like"
+    ),
+)
 ## Numeric Ops
 floor_op = create_unary_op(name="floor", type_signature=op_typing.UNARY_REAL_NUMERIC)
 ceil_op = create_unary_op(name="ceil", type_signature=op_typing.UNARY_REAL_NUMERIC)

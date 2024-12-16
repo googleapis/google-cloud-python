@@ -967,6 +967,17 @@ def normalize_op_impl(x: ibis_types.Value):
     return result.cast(result_type)
 
 
+# Geo Ops
+@scalar_op_compiler.register_unary_op(ops.geo_x_op)
+def geo_x_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).x()
+
+
+@scalar_op_compiler.register_unary_op(ops.geo_y_op)
+def geo_y_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).y()
+
+
 # Parameterized ops
 @scalar_op_compiler.register_unary_op(ops.StructFieldOp, pass_op=True)
 def struct_field_op_impl(x: ibis_types.Value, op: ops.StructFieldOp):

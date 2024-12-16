@@ -16,6 +16,7 @@ from __future__ import annotations
 import bigframes_vendored.geopandas.geoseries as vendored_geoseries
 import geopandas.array  # type: ignore
 
+import bigframes.operations as ops
 import bigframes.series
 
 
@@ -26,3 +27,15 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
         super().__init__(
             data=data, index=index, dtype=geopandas.array.GeometryDtype(), **kwargs
         )
+
+    @property
+    def x(self) -> bigframes.series.Series:
+        series = self._apply_unary_op(ops.geo_x_op)
+        series.name = None
+        return series
+
+    @property
+    def y(self) -> bigframes.series.Series:
+        series = self._apply_unary_op(ops.geo_y_op)
+        series.name = None
+        return series
