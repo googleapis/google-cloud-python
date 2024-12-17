@@ -8,7 +8,7 @@ in a Jupyter notebook cell.
 
     %load_ext bigquery_magics
 
-This makes the ``%%bigquery`` magic available.
+This makes the ``%%bigquery`` and ``%%bqsql`` magics available.
 
 Code Samples
 ------------
@@ -30,5 +30,11 @@ Running a parameterized query:
 API Reference
 -------------
 
-.. automodule:: google.cloud.bigquery.magics.magics
+.. automodule:: bigquery_magics.bigquery
+    :members:
+
+Configuration
+~~~~~~~~~~~~~
+
+.. automodule:: bigquery_magics.config
     :members:

@@ -14,13 +14,13 @@
 
 """IPython Magics
 
-.. function:: %%bigquery
+.. function:: ``%%bigquery`` or ``%%bqsql``
 
     IPython cell magic to run a query and display the result as a DataFrame
 
     .. code-block:: python
 
-        %%bigquery [<destination_var>] [--project <project>] [--use_legacy_sql]
+        %%bqsql [<destination_var>] [--project <project>] [--use_legacy_sql]
                    [--verbose] [--params <params>]
         <query>
 
@@ -74,11 +74,12 @@
         fully-qualified table ID, and the latter's data will be fetched.
 
     Returns:
-        A :class:`pandas.DataFrame` with the query results.
+        A :class:`pandas.DataFrame` or :class:`bigframes.pandas.DataFrame`
+        with the query results, depending on the ``engine`` chosen.
 
     .. note::
         All queries run using this magic will run using the context
-        :attr:`~google.cloud.bigquery.magics.Context.credentials`.
+        :attr:`~bigquery_magics.config.Context.credentials`.
 """
 
 from __future__ import print_function

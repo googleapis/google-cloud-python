@@ -395,13 +395,20 @@ def test__create_dataset_if_necessary_not_exist():
         client.create_dataset.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    ("magic_name",),
+    (
+        ("bigquery",),
+        ("bqsql",),
+    ),
+)
 @pytest.mark.usefixtures("ipython_interactive")
-def test_extension_load():
+def test_extension_load(magic_name):
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("bigquery_magics")
 
     # verify that the magic is registered and has the correct source
-    magic = ip.magics_manager.magics["cell"].get("bigquery")
+    magic = ip.magics_manager.magics["cell"].get(magic_name)
     assert magic.__module__ == "bigquery_magics.bigquery"
 
 
