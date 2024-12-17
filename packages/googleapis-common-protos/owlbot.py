@@ -15,6 +15,11 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
+
+for library in s.get_staging_dirs():
+    s.move([library / "**/*.py*"])
+s.remove_staging_dirs()
+
 # ----------------------------------------------------------------------------
 #  Add templated files
 # ----------------------------------------------------------------------------

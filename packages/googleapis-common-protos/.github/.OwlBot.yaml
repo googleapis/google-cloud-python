@@ -14,5 +14,29 @@
 
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
+deep-remove-regex:
+  - /owl-bot-staging
+
+deep-copy-regex:
+  - source: /gapic/metadata/(metadata-py)/(gapic_metadata.*)
+    dest: /owl-bot-staging/$1/google/gapic/metadata/$2
+  - source: /google/api/(api-py)/(.*)
+    dest: /owl-bot-staging/$1/google/api/$2
+  - source: /google/cloud/(extended-operations-py)/(extended_operations.*)
+    dest: /owl-bot-staging/$1/google/cloud/$2
+  - source: /google/cloud/location/(location-py)/(locations.*)
+    dest: /owl-bot-staging/$1/google/cloud/location/$2
+  - source: /google/logging/type/(logging-type-py)/(http_request.*)
+    dest: /owl-bot-staging/$1/google/logging/type/$2
+  - source: /google/logging/type/(logging-type-py)/(log_severity.*)
+    dest: /owl-bot-staging/$1/google/logging/type/$2
+  - source: /google/longrunning/(operations-py)/(operations)(.*pb2.*)
+    dest: /owl-bot-staging/$1/google/longrunning/$2_proto$3
+  - source: /google/rpc/(rpc-py)/(.*)
+    dest: /owl-bot-staging/$1/google/rpc/$2
+  - source: /google/rpc/context/(rpc-context-py)/(.*)
+    dest: /owl-bot-staging/$1/google/rpc/context/$2
+  - source: /google/type/(type-py)/(.*)
+    dest: /owl-bot-staging/$1/google/type/$2
 
 begin-after-commit-hash: 6acf4a0a797f1082027985c55c4b14b60f673dd7
