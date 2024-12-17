@@ -558,8 +558,11 @@ class TestSession(OpenTelemetryBase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        attrs = {"session.id": session._session_id, "session.name": session.name}
+        attrs.update(TestSession.BASE_ATTRIBUTES)
         self.assertSpanAttributes(
-            "CloudSpanner.DeleteSession", attributes=TestSession.BASE_ATTRIBUTES
+            "CloudSpanner.DeleteSession",
+            attributes=attrs,
         )
 
     def test_delete_miss(self):
@@ -580,10 +583,13 @@ class TestSession(OpenTelemetryBase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        attrs = {"session.id": session._session_id, "session.name": session.name}
+        attrs.update(TestSession.BASE_ATTRIBUTES)
+
         self.assertSpanAttributes(
             "CloudSpanner.DeleteSession",
             status=StatusCode.ERROR,
-            attributes=TestSession.BASE_ATTRIBUTES,
+            attributes=attrs,
         )
 
     def test_delete_error(self):
@@ -604,10 +610,13 @@ class TestSession(OpenTelemetryBase):
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
+        attrs = {"session.id": session._session_id, "session.name": session.name}
+        attrs.update(TestSession.BASE_ATTRIBUTES)
+
         self.assertSpanAttributes(
             "CloudSpanner.DeleteSession",
             status=StatusCode.ERROR,
-            attributes=TestSession.BASE_ATTRIBUTES,
+            attributes=attrs,
         )
 
     def test_snapshot_not_created(self):

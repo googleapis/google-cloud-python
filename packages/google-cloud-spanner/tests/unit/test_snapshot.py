@@ -616,7 +616,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             list(derived.read(TABLE_NAME, COLUMNS, keyset))
 
         self.assertSpanAttributes(
-            "CloudSpanner.ReadOnlyTransaction",
+            "CloudSpanner._Derived.read",
             status=StatusCode.ERROR,
             attributes=dict(
                 BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
@@ -773,7 +773,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.ReadOnlyTransaction",
+            "CloudSpanner._Derived.read",
             attributes=dict(
                 BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
             ),
@@ -868,7 +868,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertEqual(derived._execute_sql_count, 1)
 
         self.assertSpanAttributes(
-            "CloudSpanner.ReadWriteTransaction",
+            "CloudSpanner._Derived.execute_streaming_sql",
             status=StatusCode.ERROR,
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
         )
@@ -1024,7 +1024,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertEqual(derived._execute_sql_count, sql_count + 1)
 
         self.assertSpanAttributes(
-            "CloudSpanner.ReadWriteTransaction",
+            "CloudSpanner._Derived.execute_streaming_sql",
             status=StatusCode.OK,
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY_WITH_PARAM}),
         )
@@ -1195,7 +1195,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.PartitionReadOnlyTransaction",
+            "CloudSpanner._Derived.partition_read",
             status=StatusCode.OK,
             attributes=dict(
                 BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
@@ -1226,7 +1226,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
 
         self.assertSpanAttributes(
-            "CloudSpanner.PartitionReadOnlyTransaction",
+            "CloudSpanner._Derived.partition_read",
             status=StatusCode.ERROR,
             attributes=dict(
                 BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
@@ -1697,7 +1697,7 @@ class TestSnapshot(OpenTelemetryBase):
             snapshot.begin()
 
         self.assertSpanAttributes(
-            "CloudSpanner.BeginTransaction",
+            "CloudSpanner.Snapshot.begin",
             status=StatusCode.ERROR,
             attributes=BASE_ATTRIBUTES,
         )
@@ -1755,7 +1755,7 @@ class TestSnapshot(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.BeginTransaction",
+            "CloudSpanner.Snapshot.begin",
             status=StatusCode.OK,
             attributes=BASE_ATTRIBUTES,
         )
@@ -1791,7 +1791,7 @@ class TestSnapshot(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.BeginTransaction",
+            "CloudSpanner.Snapshot.begin",
             status=StatusCode.OK,
             attributes=BASE_ATTRIBUTES,
         )

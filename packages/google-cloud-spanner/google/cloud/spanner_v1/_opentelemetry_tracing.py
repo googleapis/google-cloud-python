@@ -56,11 +56,11 @@ def get_tracer(tracer_provider=None):
 
 
 @contextmanager
-def trace_call(name, session, extra_attributes=None, observability_options=None):
+def trace_call(name, session=None, extra_attributes=None, observability_options=None):
     if session:
         session._last_use_time = datetime.now()
 
-    if not HAS_OPENTELEMETRY_INSTALLED or not session:
+    if not (HAS_OPENTELEMETRY_INSTALLED and name):
         # Empty context manager. Users will have to check if the generated value is None or a span
         yield None
         return
@@ -72,20 +72,24 @@ def trace_call(name, session, extra_attributes=None, observability_options=None)
     # on by default.
     enable_extended_tracing = True
 
+    db_name = ""
+    if session and getattr(session, "_database", None):
+        db_name = session._database.name
+
     if isinstance(observability_options, dict):  # Avoid false positives with mock.Mock
         tracer_provider = observability_options.get("tracer_provider", None)
         enable_extended_tracing = observability_options.get(
             "enable_extended_tracing", enable_extended_tracing
         )
+        db_name = observability_options.get("db_name", db_name)
 
     tracer = get_tracer(tracer_provider)
 
     # Set base attributes that we know for every trace created
-    db = session._database
     attributes = {
         "db.type": "spanner",
         "db.url": SpannerClient.DEFAULT_ENDPOINT,
-        "db.instance": "" if not db else db.name,
+        "db.instance": db_name,
         "net.host.name": SpannerClient.DEFAULT_ENDPOINT,
         OTEL_SCOPE_NAME: TRACER_NAME,
         OTEL_SCOPE_VERSION: TRACER_VERSION,

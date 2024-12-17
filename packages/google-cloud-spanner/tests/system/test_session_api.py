@@ -447,7 +447,7 @@ def test_batch_insert_then_read(sessions_database, ot_exporter):
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.Commit",
+            "CloudSpanner.Batch.commit",
             attributes=_make_attributes(db_name, num_mutations=2),
             span=span_list[1],
         )
@@ -459,7 +459,7 @@ def test_batch_insert_then_read(sessions_database, ot_exporter):
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.ReadOnlyTransaction",
+            "CloudSpanner.Snapshot.read",
             attributes=_make_attributes(db_name, columns=sd.COLUMNS, table_id=sd.TABLE),
             span=span_list[3],
         )
@@ -608,7 +608,18 @@ def test_transaction_read_and_insert_then_rollback(
 
     if ot_exporter is not None:
         span_list = ot_exporter.get_finished_spans()
-        assert len(span_list) == 8
+        got_span_names = [span.name for span in span_list]
+        want_span_names = [
+            "CloudSpanner.CreateSession",
+            "CloudSpanner.GetSession",
+            "CloudSpanner.Batch.commit",
+            "CloudSpanner.Transaction.begin",
+            "CloudSpanner.Transaction.read",
+            "CloudSpanner.Transaction.read",
+            "CloudSpanner.Transaction.rollback",
+            "CloudSpanner.Snapshot.read",
+        ]
+        assert got_span_names == want_span_names
 
         assert_span_attributes(
             ot_exporter,
@@ -624,19 +635,19 @@ def test_transaction_read_and_insert_then_rollback(
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.Commit",
+            "CloudSpanner.Batch.commit",
             attributes=_make_attributes(db_name, num_mutations=1),
             span=span_list[2],
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.BeginTransaction",
+            "CloudSpanner.Transaction.begin",
             attributes=_make_attributes(db_name),
             span=span_list[3],
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.ReadOnlyTransaction",
+            "CloudSpanner.Transaction.read",
             attributes=_make_attributes(
                 db_name,
                 table_id=sd.TABLE,
@@ -646,7 +657,7 @@ def test_transaction_read_and_insert_then_rollback(
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.ReadOnlyTransaction",
+            "CloudSpanner.Transaction.read",
             attributes=_make_attributes(
                 db_name,
                 table_id=sd.TABLE,
@@ -656,13 +667,13 @@ def test_transaction_read_and_insert_then_rollback(
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.Rollback",
+            "CloudSpanner.Transaction.rollback",
             attributes=_make_attributes(db_name),
             span=span_list[6],
         )
         assert_span_attributes(
             ot_exporter,
-            "CloudSpanner.ReadOnlyTransaction",
+            "CloudSpanner.Snapshot.read",
             attributes=_make_attributes(
                 db_name,
                 table_id=sd.TABLE,
@@ -1183,18 +1194,29 @@ def test_transaction_batch_update_w_parent_span(
         session.run_in_transaction(unit_of_work)
 
     span_list = ot_exporter.get_finished_spans()
-    assert len(span_list) == 5
-    expected_span_names = [
+    got_span_names = [span.name for span in span_list]
+    want_span_names = [
         "CloudSpanner.CreateSession",
-        "CloudSpanner.Commit",
+        "CloudSpanner.Batch.commit",
         "CloudSpanner.DMLTransaction",
-        "CloudSpanner.Commit",
+        "CloudSpanner.Transaction.commit",
+        "CloudSpanner.Session.run_in_transaction",
         "Test Span",
     ]
-    assert [span.name for span in span_list] == expected_span_names
-    for span in span_list[2:-1]:
-        assert span.context.trace_id == span_list[-1].context.trace_id
-        assert span.parent.span_id == span_list[-1].context.span_id
+    assert got_span_names == want_span_names
+
+    def assert_parent_hierarchy(parent, children):
+        for child in children:
+            assert child.context.trace_id == parent.context.trace_id
+            assert child.parent.span_id == parent.context.span_id
+
+    test_span = span_list[-1]
+    test_span_children = [span_list[-2]]
+    assert_parent_hierarchy(test_span, test_span_children)
+
+    session_run_in_txn = span_list[-2]
+    session_run_in_txn_children = span_list[2:-2]
+    assert_parent_hierarchy(session_run_in_txn, session_run_in_txn_children)
 
 
 def test_execute_partitioned_dml(
@@ -2844,31 +2866,13 @@ def test_mutation_groups_insert_or_update_then_query(not_emulator, sessions_data
     sd._check_rows_data(rows, sd.BATCH_WRITE_ROW_DATA)
 
 
-class FauxCall:
-    def __init__(self, code, details="FauxCall"):
-        self._code = code
-        self._details = details
-
-    def initial_metadata(self):
-        return {}
-
-    def trailing_metadata(self):
-        return {}
-
-    def code(self):
-        return self._code
-
-    def details(self):
-        return self._details
-
-
 def _check_batch_status(status_code, expected=code_pb2.OK):
     if status_code != expected:
         _status_code_to_grpc_status_code = {
             member.value[0]: member for member in grpc.StatusCode
         }
         grpc_status_code = _status_code_to_grpc_status_code[status_code]
-        call = FauxCall(status_code)
+        call = _helpers.FauxCall(status_code)
         raise exceptions.from_grpc_status(
             grpc_status_code, "batch_update failed", errors=[call]
         )

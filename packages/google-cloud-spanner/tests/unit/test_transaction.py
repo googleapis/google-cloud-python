@@ -162,7 +162,7 @@ class TestTransaction(OpenTelemetryBase):
             transaction.begin()
 
         self.assertSpanAttributes(
-            "CloudSpanner.BeginTransaction",
+            "CloudSpanner.Transaction.begin",
             status=StatusCode.ERROR,
             attributes=TestTransaction.BASE_ATTRIBUTES,
         )
@@ -195,7 +195,7 @@ class TestTransaction(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.BeginTransaction", attributes=TestTransaction.BASE_ATTRIBUTES
+            "CloudSpanner.Transaction.begin", attributes=TestTransaction.BASE_ATTRIBUTES
         )
 
     def test_begin_w_retry(self):
@@ -266,7 +266,7 @@ class TestTransaction(OpenTelemetryBase):
         self.assertFalse(transaction.rolled_back)
 
         self.assertSpanAttributes(
-            "CloudSpanner.Rollback",
+            "CloudSpanner.Transaction.rollback",
             status=StatusCode.ERROR,
             attributes=TestTransaction.BASE_ATTRIBUTES,
         )
@@ -299,7 +299,8 @@ class TestTransaction(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.Rollback", attributes=TestTransaction.BASE_ATTRIBUTES
+            "CloudSpanner.Transaction.rollback",
+            attributes=TestTransaction.BASE_ATTRIBUTES,
         )
 
     def test_commit_not_begun(self):
@@ -345,7 +346,7 @@ class TestTransaction(OpenTelemetryBase):
         self.assertIsNone(transaction.committed)
 
         self.assertSpanAttributes(
-            "CloudSpanner.Commit",
+            "CloudSpanner.Transaction.commit",
             status=StatusCode.ERROR,
             attributes=dict(TestTransaction.BASE_ATTRIBUTES, num_mutations=1),
         )
@@ -427,7 +428,7 @@ class TestTransaction(OpenTelemetryBase):
             self.assertEqual(transaction.commit_stats.mutation_count, 4)
 
         self.assertSpanAttributes(
-            "CloudSpanner.Commit",
+            "CloudSpanner.Transaction.commit",
             attributes=dict(
                 TestTransaction.BASE_ATTRIBUTES,
                 num_mutations=len(transaction._mutations),

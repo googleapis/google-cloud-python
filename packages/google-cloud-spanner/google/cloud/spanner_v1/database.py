@@ -70,6 +70,7 @@ from google.cloud.spanner_v1.table import Table
 from google.cloud.spanner_v1._opentelemetry_tracing import (
     add_span_event,
     get_current_span,
+    trace_call,
 )
 
 
@@ -720,6 +721,7 @@ class Database(object):
 
                 iterator = _restart_on_unavailable(
                     method=method,
+                    trace_name="CloudSpanner.ExecuteStreamingSql",
                     request=request,
                     transaction_selector=txn_selector,
                     observability_options=self.observability_options,
@@ -881,20 +883,25 @@ class Database(object):
         :raises Exception:
             reraises any non-ABORT exceptions raised by ``func``.
         """
-        # Sanity check: Is there a transaction already running?
-        # If there is, then raise a red flag. Otherwise, mark that this one
-        # is running.
-        if getattr(self._local, "transaction_running", False):
-            raise RuntimeError("Spanner does not support nested transactions.")
-        self._local.transaction_running = True
+        observability_options = getattr(self, "observability_options", None)
+        with trace_call(
+            "CloudSpanner.Database.run_in_transaction",
+            observability_options=observability_options,
+        ):
+            # Sanity check: Is there a transaction already running?
+            # If there is, then raise a red flag. Otherwise, mark that this one
+            # is running.
+            if getattr(self._local, "transaction_running", False):
+                raise RuntimeError("Spanner does not support nested transactions.")
+            self._local.transaction_running = True
 
-        # Check out a session and run the function in a transaction; once
-        # done, flip the sanity check bit back.
-        try:
-            with SessionCheckout(self._pool) as session:
-                return session.run_in_transaction(func, *args, **kw)
-        finally:
-            self._local.transaction_running = False
+            # Check out a session and run the function in a transaction; once
+            # done, flip the sanity check bit back.
+            try:
+                with SessionCheckout(self._pool) as session:
+                    return session.run_in_transaction(func, *args, **kw)
+            finally:
+                self._local.transaction_running = False
 
     def restore(self, source):
         """Restore from a backup to this database.
@@ -1120,7 +1127,12 @@ class Database(object):
         if not (self._instance and self._instance._client):
             return None
 
-        return getattr(self._instance._client, "observability_options", None)
+        opts = getattr(self._instance._client, "observability_options", None)
+        if not opts:
+            opts = dict()
+
+        opts["db_name"] = self.name
+        return opts
 
 
 class BatchCheckout(object):

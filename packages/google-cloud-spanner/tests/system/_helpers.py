@@ -137,3 +137,21 @@ def cleanup_old_instances(spanner_client):
 
 def unique_id(prefix, separator="-"):
     return f"{prefix}{system.unique_resource_id(separator)}"
+
+
+class FauxCall:
+    def __init__(self, code, details="FauxCall"):
+        self._code = code
+        self._details = details
+
+    def initial_metadata(self):
+        return {}
+
+    def trailing_metadata(self):
+        return {}
+
+    def code(self):
+        return self._code
+
+    def details(self):
+        return self._details

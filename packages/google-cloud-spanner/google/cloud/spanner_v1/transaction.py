@@ -157,7 +157,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         )
         observability_options = getattr(database, "observability_options", None)
         with trace_call(
-            "CloudSpanner.BeginTransaction",
+            f"CloudSpanner.{type(self).__name__}.begin",
             self._session,
             observability_options=observability_options,
         ) as span:
@@ -199,7 +199,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 )
             observability_options = getattr(database, "observability_options", None)
             with trace_call(
-                "CloudSpanner.Rollback",
+                f"CloudSpanner.{type(self).__name__}.rollback",
                 self._session,
                 observability_options=observability_options,
             ):
@@ -278,7 +278,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         trace_attributes = {"num_mutations": len(self._mutations)}
         observability_options = getattr(database, "observability_options", None)
         with trace_call(
-            "CloudSpanner.Commit",
+            f"CloudSpanner.{type(self).__name__}.commit",
             self._session,
             trace_attributes,
             observability_options,
@@ -447,7 +447,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 response = self._execute_request(
                     method,
                     request,
-                    "CloudSpanner.ReadWriteTransaction",
+                    f"CloudSpanner.{type(self).__name__}.execute_update",
                     self._session,
                     trace_attributes,
                     observability_options=observability_options,
@@ -464,7 +464,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             response = self._execute_request(
                 method,
                 request,
-                "CloudSpanner.ReadWriteTransaction",
+                f"CloudSpanner.{type(self).__name__}.execute_update",
                 self._session,
                 trace_attributes,
                 observability_options=observability_options,

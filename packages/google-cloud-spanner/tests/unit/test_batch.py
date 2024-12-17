@@ -212,7 +212,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             batch.commit()
 
         self.assertSpanAttributes(
-            "CloudSpanner.Commit",
+            "CloudSpanner.Batch.commit",
             status=StatusCode.ERROR,
             attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
         )
@@ -261,7 +261,8 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(max_commit_delay, None)
 
         self.assertSpanAttributes(
-            "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
+            "CloudSpanner.Batch.commit",
+            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
         )
 
     def _test_commit_with_options(
@@ -327,7 +328,8 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(actual_request_options, expected_request_options)
 
         self.assertSpanAttributes(
-            "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
+            "CloudSpanner.Batch.commit",
+            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
         )
 
         self.assertEqual(max_commit_delay_in, max_commit_delay)
@@ -438,7 +440,8 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(request_options, RequestOptions())
 
         self.assertSpanAttributes(
-            "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
+            "CloudSpanner.Batch.commit",
+            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
         )
 
     def test_context_mgr_failure(self):

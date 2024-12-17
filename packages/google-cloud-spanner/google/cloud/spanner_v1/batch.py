@@ -70,6 +70,8 @@ class _BatchBase(_SessionWrapper):
         :param values: Values to be modified.
         """
         self._mutations.append(Mutation(insert=_make_write_pb(table, columns, values)))
+        # TODO: Decide if we should add a span event per mutation:
+        # https://github.com/googleapis/python-spanner/issues/1269
 
     def update(self, table, columns, values):
         """Update one or more existing table rows.
@@ -84,6 +86,8 @@ class _BatchBase(_SessionWrapper):
         :param values: Values to be modified.
         """
         self._mutations.append(Mutation(update=_make_write_pb(table, columns, values)))
+        # TODO: Decide if we should add a span event per mutation:
+        # https://github.com/googleapis/python-spanner/issues/1269
 
     def insert_or_update(self, table, columns, values):
         """Insert/update one or more table rows.
@@ -100,6 +104,8 @@ class _BatchBase(_SessionWrapper):
         self._mutations.append(
             Mutation(insert_or_update=_make_write_pb(table, columns, values))
         )
+        # TODO: Decide if we should add a span event per mutation:
+        # https://github.com/googleapis/python-spanner/issues/1269
 
     def replace(self, table, columns, values):
         """Replace one or more table rows.
@@ -114,6 +120,8 @@ class _BatchBase(_SessionWrapper):
         :param values: Values to be modified.
         """
         self._mutations.append(Mutation(replace=_make_write_pb(table, columns, values)))
+        # TODO: Decide if we should add a span event per mutation:
+        # https://github.com/googleapis/python-spanner/issues/1269
 
     def delete(self, table, keyset):
         """Delete one or more table rows.
@@ -126,6 +134,8 @@ class _BatchBase(_SessionWrapper):
         """
         delete = Mutation.Delete(table=table, key_set=keyset._to_pb())
         self._mutations.append(Mutation(delete=delete))
+        # TODO: Decide if we should add a span event per mutation:
+        # https://github.com/googleapis/python-spanner/issues/1269
 
 
 class Batch(_BatchBase):
@@ -207,7 +217,7 @@ class Batch(_BatchBase):
         )
         observability_options = getattr(database, "observability_options", None)
         with trace_call(
-            "CloudSpanner.Commit",
+            f"CloudSpanner.{type(self).__name__}.commit",
             self._session,
             trace_attributes,
             observability_options=observability_options,

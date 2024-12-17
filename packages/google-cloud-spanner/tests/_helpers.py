@@ -78,7 +78,7 @@ class OpenTelemetryBase(unittest.TestCase):
 
     def assertNoSpans(self):
         if HAS_OPENTELEMETRY_INSTALLED:
-            span_list = self.ot_exporter.get_finished_spans()
+            span_list = self.get_finished_spans()
             self.assertEqual(len(span_list), 0)
 
     def assertSpanAttributes(
@@ -119,11 +119,16 @@ class OpenTelemetryBase(unittest.TestCase):
 
     def get_finished_spans(self):
         if HAS_OPENTELEMETRY_INSTALLED:
-            return list(
+            span_list = list(
                 filter(
                     lambda span: span and span.name,
                     self.ot_exporter.get_finished_spans(),
                 )
             )
+            # Sort the spans by their start time in the hierarchy.
+            return sorted(span_list, key=lambda span: span.start_time)
         else:
             return []
+
+    def reset(self):
+        self.tearDown()
