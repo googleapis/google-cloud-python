@@ -30,7 +30,8 @@
         variable to store the query results. The results are not displayed if
         this parameter is used. If an error occurs during the query execution,
         the corresponding ``QueryJob`` instance (if available) is stored in
-        the variable instead.
+        the variable instead. Set ``bigquery_magics.context.default_variable``
+        to set a destination variable without specifying this argument.
     * ``--destination_table`` (Optional[line argument]):
         A dataset and table to store the query results. If table does not exists,
         it will be created. If table already exists, its data will be overwritten.
@@ -478,10 +479,7 @@ def _query_with_bigframes(query: str, params: List[Any], args: Any):
         configuration=_create_job_config(args, params).to_api_repr(),
     )
 
-    if args.destination_var:
-        get_ipython().push({args.destination_var: result})
-    else:
-        return result
+    return _handle_result(result, args)
 
 
 def _query_with_pandas(query: str, params: List[Any], args: Any):
@@ -545,6 +543,28 @@ def _create_clients(args: Any) -> Tuple[bigquery.Client, Any]:
     return bq_client, bqstorage_client
 
 
+def _handle_result(result, args):
+    """Determine the output of the cell, depending on options set.
+
+    If an explicit destination is set, that takes precedence. Write to that
+    variable and skip showing any results.
+
+    Otherwise, if there is a default variable set (such as if this module is
+    initialized by bigframes), then set that but also show the output.
+
+    Finally, there is no variable to save to, so just show the output.
+    """
+    if args.destination_var:
+        get_ipython().push({args.destination_var: result})
+        return None
+
+    if context.default_variable:
+        # If a default variable is set, save the result _and_ show the results.
+        get_ipython().push({context.default_variable: result})
+
+    return result
+
+
 def _make_bq_query(
     query: str,
     args: Any,
@@ -567,11 +587,7 @@ def _make_bq_query(
             bqstorage_client=bqstorage_client,
             create_bqstorage_client=False,
         )
-        if args.destination_var:
-            get_ipython().push({args.destination_var: result})
-            return
-        else:
-            return result
+        return _handle_result(result, args)
 
     job_config = _create_job_config(args, params)
     if args.destination_table:
@@ -599,6 +615,9 @@ def _make_bq_query(
         display.clear_output()
 
     if args.dry_run:
+        # TODO(tswast): Use _handle_result() here, too, but perhaps change the
+        # format to match the dry run schema from bigframes and pandas-gbq.
+        # See: https://github.com/googleapis/python-bigquery-pandas/issues/585
         if args.destination_var:
             get_ipython().push({args.destination_var: query_job})
             return
@@ -625,10 +644,7 @@ def _make_bq_query(
             progress_bar_type=progress_bar,
         )
 
-    if args.destination_var:
-        get_ipython().push({args.destination_var: result})
-    else:
-        return result
+    return _handle_result(result, args)
 
 
 def _validate_and_resolve_query(query: str, args: Any) -> str:

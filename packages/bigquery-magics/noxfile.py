@@ -34,7 +34,7 @@ LINT_PATHS = ["docs", "bigquery_magics", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.7", "3.8", "3.9", "3.11", "3.12"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.7", "3.8", "3.9", "3.11", "3.12", "3.13"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -64,13 +64,14 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "bigframes",
     ],
     "3.11": [],
-    "3.12": [
+    "3.12": [],
+    "3.13": [
         "bqstorage",
         "bigframes",
     ],
 }
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.11", "3.12"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.11", "3.12", "3.13"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -96,7 +97,8 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "bigframes",
     ],
     "3.11": [],
-    "3.12": [
+    "3.12": [],
+    "3.13": [
         "bqstorage",
         "bigframes",
     ],
@@ -409,7 +411,7 @@ def docfx(session):
     )
 
 
-@nox.session(python="3.12")
+@nox.session(python="3.13")
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],

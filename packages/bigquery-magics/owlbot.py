@@ -37,11 +37,12 @@ extras_by_python = {
     "3.10": extras_bf,
     # Use a middle version of Python to test when no extras are installed.
     "3.11": [],
-    "3.12": extras_bf,
+    "3.12": [],
+    "3.13": extras_bf,
 }
 templated_files = common.py_library(
-    unit_test_python_versions=["3.7", "3.8", "3.9", "3.11", "3.12"],
-    system_test_python_versions=["3.8", "3.9", "3.11", "3.12"],
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.11", "3.12", "3.13"],
+    system_test_python_versions=["3.8", "3.11", "3.12", "3.13"],
     cov_level=100,
     unit_test_extras_by_python=extras_by_python,
     unit_test_external_dependencies=["google-cloud-testutils"],
@@ -67,18 +68,24 @@ s.move(
 # ----------------------------------------------------------------------------
 
 s.replace(
-    ["noxfile.py"], r"[\"']google[\"']", '"bigquery_magics"',
+    ["noxfile.py"],
+    r"[\"']google[\"']",
+    '"bigquery_magics"',
 )
 
 
 s.replace(
-    ["noxfile.py"], "--cov=google", "--cov=bigquery_magics",
+    ["noxfile.py"],
+    "--cov=google",
+    "--cov=bigquery_magics",
 )
 
 
 # Workaround for https://github.com/googleapis/synthtool/issues/1317
 s.replace(
-    ["noxfile.py"], r'extras = "\[\]"', 'extras = ""',
+    ["noxfile.py"],
+    r'extras = "\[\]"',
+    'extras = ""',
 )
 
 # ----------------------------------------------------------------------------

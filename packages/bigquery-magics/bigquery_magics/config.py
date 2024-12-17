@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from typing import Optional
 
 import google.api_core.client_options as client_options
 import google.cloud.bigquery as bigquery
@@ -137,6 +138,19 @@ class Context(object):
     @credentials.setter
     def credentials(self, value):
         self._credentials = value
+
+    _default_variable: Optional[str] = None
+
+    @property
+    def default_variable(self) -> Optional[str]:
+        """Optional[str]: If set, the variable name to use for the DataFrame
+        returned from running the query.
+        """
+        return self._default_variable
+
+    @default_variable.setter
+    def default_variable(self, value: Optional[str]):
+        self._default_variable = value
 
     _project = None
 
