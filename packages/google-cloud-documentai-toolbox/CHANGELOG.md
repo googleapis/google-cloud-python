@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.14.0-alpha...v0.14.1-alpha) (2024-12-17)
+
+
+### Bug Fixes
+
+* Update setup.py to allow Document AI client library &gt;=3.0.0 ([d680e3e](https://github.com/googleapis/python-documentai-toolbox/commit/d680e3ec444f903a3f0df2e4df6318efe7358e76))
+
 ## [0.14.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.5-alpha...v0.14.0-alpha) (2024-07-16)
 
 
