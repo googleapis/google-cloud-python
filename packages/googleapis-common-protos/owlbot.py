@@ -11,29 +11,46 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import json
+from pathlib import Path
+import shutil
+
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
 
-for library in s.get_staging_dirs():
-    s.move([library / "**/*.py*"])
+clean_up_generated_samples = True
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
+
+for library in s.get_staging_dirs(default_version):
+    if clean_up_generated_samples:
+        shutil.rmtree("samples/generated_samples", ignore_errors=True)
+        clean_up_generated_samples = False
+    s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
-#  Add templated files
+# Add templated files
 # ----------------------------------------------------------------------------
-common = gcp.CommonTemplates()
-templated_files = common.py_library()
-# TODO: use protoc-docs-plugin to add docstrings to protos
-s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
-s.move(templated_files / "setup.cfg")
-s.move(templated_files / "LICENSE")
-s.move(templated_files / "MANIFEST.in")
-s.move(templated_files / "renovate.json")
-s.move(templated_files / ".github", excludes=["workflows"])
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+templated_files = gcp.CommonTemplates().py_library(
+    cov_level=100,
+    microgenerator=True,
+    versions=gcp.common.detect_versions(path="./google", default_first=True),
+)
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
-# Add license headers
-python.fix_pb2_headers()
+python.py_samples(skip_readmes=True)
+
+# run format session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)
