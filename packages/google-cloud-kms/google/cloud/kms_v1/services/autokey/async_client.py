@@ -321,10 +321,11 @@ class AutokeyAsyncClient:
         triggering the provisioning of a new
         [CryptoKey][google.cloud.kms.v1.CryptoKey] for CMEK use with the
         given resource type in the configured key project and the same
-        location. [GetOperation][Operations.GetOperation] should be used
-        to resolve the resulting long-running operation and get the
-        resulting [KeyHandle][google.cloud.kms.v1.KeyHandle] and
-        [CryptoKey][google.cloud.kms.v1.CryptoKey].
+        location.
+        [GetOperation][google.longrunning.Operations.GetOperation]
+        should be used to resolve the resulting long-running operation
+        and get the resulting [KeyHandle][google.cloud.kms.v1.KeyHandle]
+        and [CryptoKey][google.cloud.kms.v1.CryptoKey].
 
         .. code-block:: python
 
