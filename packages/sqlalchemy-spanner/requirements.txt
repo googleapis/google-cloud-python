@@ -329,9 +329,9 @@ opentelemetry-instrumentation==0.48b0 \
     --hash=sha256:94929685d906380743a71c3970f76b5f07476eea1834abd5dd9d17abfe23cc35 \
     --hash=sha256:a69750dc4ba6a5c3eb67986a337185a25b739966d80479befe37b546fc870b44
     # via -r requirements.in
-opentelemetry-sdk==1.28.2 \
-    --hash=sha256:5fed24c5497e10df30282456fe2910f83377797511de07d14cec0d3e0a1a3110 \
-    --hash=sha256:93336c129556f1e3ccd21442b94d3521759541521861b2214c499571b85cb71b
+opentelemetry-sdk==1.29.0 \
+    --hash=sha256:173be3b5d3f8f7d671f20ea37056710217959e774e2749d984355d1f9391a30a \
+    --hash=sha256:b0787ce6aade6ab84315302e72bd7a7f2f014b0fb1b7c3295b88afe014ed0643
     # via -r requirements.in
 opentelemetry-semantic-conventions==0.48b0 \
     --hash=sha256:12d74983783b6878162208be57c9effcb89dc88691c64992d70bb89dc00daa1a \
