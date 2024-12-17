@@ -57,6 +57,28 @@ BIGNUMERIC_DTYPE = pd.ArrowDtype(pa.decimal256(76, 38))
 GEO_DTYPE = gpd.array.GeometryDtype()
 # JSON
 JSON_DTYPE = pd.ArrowDtype(pa.large_string())
+OBJ_REF_DTYPE = pd.ArrowDtype(
+    pa.struct(
+        (
+            pa.field(
+                "uri",
+                pa.string(),
+            ),
+            pa.field(
+                "version",
+                pa.string(),
+            ),
+            pa.field(
+                "authorizer",
+                pa.string(),
+            ),
+            pa.field(
+                "details",
+                pa.large_string(),  # JSON
+            ),
+        )
+    )
+)
 
 # Used when storing Null expressions
 DEFAULT_DTYPE = FLOAT_DTYPE

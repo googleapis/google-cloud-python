@@ -27,6 +27,13 @@ class BlobAccessor(base.SeriesMethods):
         super().__init__(*args, **kwargs)
 
     def metadata(self):
+        """Retrive the metadata of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            JSON: metadata of the Blob. Contains fields: content_type, md5_hash, size and updated(time)."""
         details_json = self._apply_unary_op(ops.obj_fetch_metadata_op).struct.field(
             "details"
         )
