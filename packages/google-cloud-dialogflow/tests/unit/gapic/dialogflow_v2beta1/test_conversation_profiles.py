@@ -6201,6 +6201,7 @@ def test_create_conversation_profile_rest_call_success(request_type):
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
+        "new_recognition_result_notification_config": {},
         "stt_config": {
             "speech_model_variant": 1,
             "model": "model_value",
@@ -6515,6 +6516,7 @@ def test_update_conversation_profile_rest_call_success(request_type):
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
+        "new_recognition_result_notification_config": {},
         "stt_config": {
             "speech_model_variant": 1,
             "model": "model_value",
