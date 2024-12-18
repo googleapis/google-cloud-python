@@ -273,6 +273,8 @@ class Conversation(proto.Message):
                 disposition_code (str):
                     A user-provided string indicating the outcome
                     of the agent's segment of the call.
+                agent_type (google.cloud.contact_center_insights_v1.types.ConversationParticipant.Role):
+                    The agent type, e.g. HUMAN_AGENT.
             """
 
             agent_id: str = proto.Field(
@@ -290,6 +292,11 @@ class Conversation(proto.Message):
             disposition_code: str = proto.Field(
                 proto.STRING,
                 number=4,
+            )
+            agent_type: "ConversationParticipant.Role" = proto.Field(
+                proto.ENUM,
+                number=5,
+                enum="ConversationParticipant.Role",
             )
 
         customer_satisfaction_rating: int = proto.Field(
