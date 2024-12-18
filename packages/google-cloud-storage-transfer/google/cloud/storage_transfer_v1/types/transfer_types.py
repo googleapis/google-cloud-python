@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
         "AgentPool",
         "TransferOptions",
         "TransferSpec",
+        "ReplicationSpec",
         "MetadataOptions",
         "TransferManifest",
         "Schedule",
@@ -1113,6 +1114,62 @@ class TransferSpec(proto.Message):
     )
 
 
+class ReplicationSpec(proto.Message):
+    r"""Specifies the configuration for a cross-bucket replication
+    job. Cross-bucket replication copies new or updated objects from
+    a source Cloud Storage bucket to a destination Cloud Storage
+    bucket. Existing objects in the source bucket are not copied by
+    a new cross-bucket replication job.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_data_source (google.cloud.storage_transfer_v1.types.GcsData):
+            The Cloud Storage bucket from which to
+            replicate objects.
+
+            This field is a member of `oneof`_ ``data_source``.
+        gcs_data_sink (google.cloud.storage_transfer_v1.types.GcsData):
+            The Cloud Storage bucket to which to
+            replicate objects.
+
+            This field is a member of `oneof`_ ``data_sink``.
+        object_conditions (google.cloud.storage_transfer_v1.types.ObjectConditions):
+            Object conditions that determine which objects are
+            transferred. For replication jobs, only ``include_prefixes``
+            and ``exclude_prefixes`` are supported.
+        transfer_options (google.cloud.storage_transfer_v1.types.TransferOptions):
+            Specifies the metadata options to be applied during
+            replication. Delete options are not supported. If a delete
+            option is specified, the request fails with an
+            [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.
+    """
+
+    gcs_data_source: "GcsData" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="data_source",
+        message="GcsData",
+    )
+    gcs_data_sink: "GcsData" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="data_sink",
+        message="GcsData",
+    )
+    object_conditions: "ObjectConditions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ObjectConditions",
+    )
+    transfer_options: "TransferOptions" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="TransferOptions",
+    )
+
+
 class MetadataOptions(proto.Message):
     r"""Specifies the metadata options for running a transfer.
 
@@ -1604,6 +1661,8 @@ class TransferJob(proto.Message):
             the job.
         transfer_spec (google.cloud.storage_transfer_v1.types.TransferSpec):
             Transfer specification.
+        replication_spec (google.cloud.storage_transfer_v1.types.ReplicationSpec):
+            Replication specification.
         notification_config (google.cloud.storage_transfer_v1.types.NotificationConfig):
             Notification configuration.
         logging_config (google.cloud.storage_transfer_v1.types.LoggingConfig):
@@ -1685,6 +1744,11 @@ class TransferJob(proto.Message):
         proto.MESSAGE,
         number=4,
         message="TransferSpec",
+    )
+    replication_spec: "ReplicationSpec" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="ReplicationSpec",
     )
     notification_config: "NotificationConfig" = proto.Field(
         proto.MESSAGE,
