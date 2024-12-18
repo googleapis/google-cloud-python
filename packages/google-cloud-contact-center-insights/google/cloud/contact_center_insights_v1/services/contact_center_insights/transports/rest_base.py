@@ -400,6 +400,10 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     "method": "get",
                     "uri": "/v1/{location=projects/*/locations/*}/conversations:calculateStats",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{location=projects/*/locations/*/authorizedViewSet/*/authorizedView/*}:calculateStats",
+                },
             ]
             return http_options
 
@@ -3121,6 +3125,11 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{location=projects/*/locations/*}:queryMetrics",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{location=projects/*/locations/*/authorizedViewSet/*/authorizedView/*}:queryMetrics",
                     "body": "*",
                 },
             ]
