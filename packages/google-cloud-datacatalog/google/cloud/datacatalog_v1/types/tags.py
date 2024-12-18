@@ -257,7 +257,8 @@ class TagTemplate(proto.Message):
         is_publicly_readable (bool):
             Indicates whether tags created with this template are
             public. Public tags do not require tag template access to
-            appear in [ListTags][google.cloud.datacatalog.v1.ListTags]
+            appear in
+            [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags]
             API response.
 
             Additionally, you can search for a public tag by value with
