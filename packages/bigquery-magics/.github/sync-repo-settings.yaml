@@ -12,7 +12,7 @@ branchProtectionRules:
     - 'lint'
     - 'Kokoro system-3.8'
     - 'Kokoro system-3.11 (noextras)'
-    - 'Kokoro system-3.12'
+    - 'Kokoro system-3.13'
     - 'docs'
     - 'unit (3.7)'
     - 'unit (3.8)'
