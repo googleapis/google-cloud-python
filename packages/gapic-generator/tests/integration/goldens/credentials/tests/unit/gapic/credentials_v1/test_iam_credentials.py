@@ -3162,9 +3162,11 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_access_token") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_access_token_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_access_token") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = common.GenerateAccessTokenRequest.pb(common.GenerateAccessTokenRequest())
         transcode.return_value = {
             "method": "post",
@@ -3186,11 +3188,13 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common.GenerateAccessTokenResponse()
+        post_with_metadata.return_value = common.GenerateAccessTokenResponse(), metadata
 
         client.generate_access_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_id_token_rest_bad_request(request_type=common.GenerateIdTokenRequest):
@@ -3264,9 +3268,11 @@ def test_generate_id_token_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_id_token") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_id_token_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_id_token") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = common.GenerateIdTokenRequest.pb(common.GenerateIdTokenRequest())
         transcode.return_value = {
             "method": "post",
@@ -3288,11 +3294,13 @@ def test_generate_id_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common.GenerateIdTokenResponse()
+        post_with_metadata.return_value = common.GenerateIdTokenResponse(), metadata
 
         client.generate_id_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_sign_blob_rest_bad_request(request_type=common.SignBlobRequest):
@@ -3368,9 +3376,11 @@ def test_sign_blob_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_blob") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_blob_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_blob") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = common.SignBlobRequest.pb(common.SignBlobRequest())
         transcode.return_value = {
             "method": "post",
@@ -3392,11 +3402,13 @@ def test_sign_blob_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common.SignBlobResponse()
+        post_with_metadata.return_value = common.SignBlobResponse(), metadata
 
         client.sign_blob(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_sign_jwt_rest_bad_request(request_type=common.SignJwtRequest):
@@ -3472,9 +3484,11 @@ def test_sign_jwt_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_jwt") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_jwt_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_jwt") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = common.SignJwtRequest.pb(common.SignJwtRequest())
         transcode.return_value = {
             "method": "post",
@@ -3496,11 +3510,13 @@ def test_sign_jwt_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common.SignJwtResponse()
+        post_with_metadata.return_value = common.SignJwtResponse(), metadata
 
         client.sign_jwt(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 def test_initialize_client_w_rest():
     client = IAMCredentialsClient(

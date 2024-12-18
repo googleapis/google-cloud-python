@@ -256,6 +256,8 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}{# method.lro #}
             {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #} 
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_{{ method.name|snake_case }}_with_metadata(resp, response_metadata)
             {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2279): Add logging support for rest streaming. #}
             {% if not method.server_streaming %}
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER

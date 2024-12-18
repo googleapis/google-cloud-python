@@ -2218,11 +2218,13 @@ def test_initialize_client_w_{{transport_name}}():
         {% endif %}
         {% if not method.void %}
         mock.patch.object(transports.{{async_method_prefix}}{{ service.name }}RestInterceptor, "post_{{method.name|snake_case}}") as post, \
+        mock.patch.object(transports.{{async_method_prefix}}{{ service.name }}RestInterceptor, "post_{{method.name|snake_case}}_with_metadata") as post_with_metadata, \
         {% endif %}
         mock.patch.object(transports.{{async_method_prefix}}{{ service.name }}RestInterceptor, "pre_{{ method.name|snake_case }}") as pre:
         pre.assert_not_called()
         {% if not method.void %}
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         {% endif %}
         {% if method.input.ident.is_proto_plus_type %}
         pb_message = {{ method.input.ident }}.pb({{ method.input.ident }}())
@@ -2265,6 +2267,7 @@ def test_initialize_client_w_{{transport_name}}():
         pre.return_value = request, metadata
         {% if not method.void %}
         post.return_value = {{ method.output.ident }}()
+        post_with_metadata.return_value = {{ method.output.ident }}(), metadata
         {% endif %}
 
         {{await_prefix}}client.{{ method_name }}(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
@@ -2272,6 +2275,7 @@ def test_initialize_client_w_{{transport_name}}():
         pre.assert_called_once()
         {% if not method.void %}
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
         {% endif %}
 {% endif %}{# end 'grpc' in transport #}
 {% endmacro%}{# inteceptor_class_test #}
