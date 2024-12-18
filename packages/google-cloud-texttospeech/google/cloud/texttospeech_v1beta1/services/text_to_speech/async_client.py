@@ -434,7 +434,7 @@ class TextToSpeechAsyncClient:
                 voice.language_code = "language_code_value"
 
                 audio_config = texttospeech_v1beta1.AudioConfig()
-                audio_config.audio_encoding = "ALAW"
+                audio_config.audio_encoding = "PCM"
 
                 request = texttospeech_v1beta1.SynthesizeSpeechRequest(
                     input=input,
