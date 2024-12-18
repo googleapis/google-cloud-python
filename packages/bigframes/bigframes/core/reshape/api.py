@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from bigframes.core.reshape.concat import concat
+from bigframes.core.reshape.encoding import get_dummies
 from bigframes.core.reshape.merge import merge
 from bigframes.core.reshape.tile import cut, qcut
 
-__all__ = ["concat", "cut", "qcut", "merge"]
+__all__ = ["concat", "get_dummies", "merge", "cut", "qcut"]
