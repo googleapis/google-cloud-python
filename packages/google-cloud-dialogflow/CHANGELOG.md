@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.37.0...google-cloud-dialogflow-v2.38.0) (2024-12-18)
+
+
+### Features
+
+* [google-cloud-dialogflow] add new fields for delivering ([aa99816](https://github.com/googleapis/google-cloud-python/commit/aa998161a58ad9ce48c61ce913184fd49532327d))
+* [google-cloud-dialogflow] add new fields for delivering intermediate transcriptions through PubSub ([#13358](https://github.com/googleapis/google-cloud-python/issues/13358)) ([aa99816](https://github.com/googleapis/google-cloud-python/commit/aa998161a58ad9ce48c61ce913184fd49532327d))
+
 ## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.36.0...google-cloud-dialogflow-v2.37.0) (2024-12-12)
 
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.21.0...google-cloud-contact-center-insights-v1.22.0) (2024-12-18)
+
+
+### Features
+
+* [google-cloud-contact-center-insights] A new resource pattern value `projects/{project}/locations/{location}/authorizedViewSets/{authorized_view_set}/authorizedViews/{authorized_view}/conversations/{conversation}` added to the resource definition `contactcenterinsights.googleapis.com/Conversation` ([8963da7](https://github.com/googleapis/google-cloud-python/commit/8963da77bf07fd2d2b4058c236b769ac4df63f18))
+* A new field `agent_type` is added to message `.google.cloud.contactcenterinsights.v1.Conversation` ([8963da7](https://github.com/googleapis/google-cloud-python/commit/8963da77bf07fd2d2b4058c236b769ac4df63f18))
+* A new resource pattern value `projects/{project}/locations/{location}/authorizedViewSets/{authorized_view_set}/authorizedViews/{authorized_view}/conversations/{conversation}/analyses/{analysis}` added to the resource definition `contactcenterinsights.googleapis.com/Analysis` ([8963da7](https://github.com/googleapis/google-cloud-python/commit/8963da77bf07fd2d2b4058c236b769ac4df63f18))
+* A new resource pattern value `projects/{project}/locations/{location}/authorizedViewSets/{authorized_view_set}/authorizedViews/{authorized_view}/conversations/{conversation}/feedbackLabels/{feedback_label}` added to the resource definition `contactcenterinsights.googleapis.com/FeedbackLabel` ([8963da7](https://github.com/googleapis/google-cloud-python/commit/8963da77bf07fd2d2b4058c236b769ac4df63f18))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.20.0...google-cloud-contact-center-insights-v1.21.0) (2024-12-12)
 
 
