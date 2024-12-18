@@ -27,7 +27,7 @@ fi
 SCRIPT_DIR=$(realpath $(dirname "$0"))
 cd $SCRIPT_DIR
 
-export PROXY_SERVER_PORT=50055
+export PROXY_SERVER_PORT=$(shuf -i 50000-60000 -n 1)
 
 # download test suite
 if [ ! -d "cloud-bigtable-clients-test" ]; then
@@ -43,6 +43,19 @@ function finish {
 }
 trap finish EXIT
 
+if [[ $CLIENT_TYPE == "legacy" ]]; then
+  echo "Using legacy client"
+  # legacy client does not expose mutate_row. Disable those tests
+  TEST_ARGS="-skip TestMutateRow_"
+fi
+
+if [[ $CLIENT_TYPE != "async" ]]; then
+  echo "Using legacy client"
+  # sync and legacy client do not support concurrent streams
+  TEST_ARGS="$TEST_ARGS -skip _Generic_MultiStream "
+fi
+
 # run tests
 pushd cloud-bigtable-clients-test/tests
-go test -v -proxy_addr=:$PROXY_SERVER_PORT
+echo "Running with $TEST_ARGS"
+go test -v -proxy_addr=:$PROXY_SERVER_PORT $TEST_ARGS

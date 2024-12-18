@@ -114,6 +114,9 @@ async def client_handler_process_async(request_q, queue_pool, client_type="async
                 if client_type == "legacy":
                     import client_handler_legacy
                     client = client_handler_legacy.LegacyTestProxyClientHandler(**json_data)
+                elif client_type == "sync":
+                    import client_handler_data_sync_autogen
+                    client = client_handler_data_sync_autogen.TestProxyClientHandler(**json_data)
                 else:
                     client = client_handler_data_async.TestProxyClientHandlerAsync(**json_data)
                 client_map[client_id] = client
@@ -150,7 +153,7 @@ def client_handler_process(request_q, queue_pool, client_type="async"):
 
 p = argparse.ArgumentParser()
 p.add_argument("--port", dest='port', default="50055")
-p.add_argument("--client_type", dest='client_type', default="async", choices=["async", "legacy"])
+p.add_argument("--client_type", dest='client_type', default="async", choices=["async", "sync", "legacy"])
 
 if __name__ == "__main__":
     port = p.parse_args().port

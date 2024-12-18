@@ -26,7 +26,15 @@ jobs:
       matrix:
         test-version: [ "v0.0.2" ]
         py-version: [ 3.8 ]
-        client-type: [ "async", "legacy" ]
+        client-type: [ "async", "sync", "legacy" ]
+        include:
+          - client-type: "sync"
+            # sync client does not support concurrent streams
+            test_args: "-skip _Generic_MultiStream"
+          - client-type: "legacy"
+            # legacy client is synchronous and does not support concurrent streams
+            # legacy client does not expose mutate_row. Disable those tests
+            test_args: "-skip _Generic_MultiStream -skip TestMutateRow_"
       fail-fast: false
     name: "${{ matrix.client-type }} client / python ${{ matrix.py-version }} / test tag ${{ matrix.test-version }}"
     steps:
@@ -53,4 +61,6 @@ jobs:
       env:
         CLIENT_TYPE: ${{ matrix.client-type }}
         PYTHONUNBUFFERED: 1
+        TEST_ARGS: ${{ matrix.test_args }}
+        PROXY_PORT: 9999
 
