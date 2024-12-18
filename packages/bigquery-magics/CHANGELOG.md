@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.4.0...v0.5.0) (2024-12-17)
+
+
+### Features
+
+* Add `%%bqsql` as an alias to the `%%bigquery` magic ([#72](https://github.com/googleapis/python-bigquery-magics/issues/72)) ([03fe1d5](https://github.com/googleapis/python-bigquery-magics/commit/03fe1d544ef22865c07c680873f980c64bbc7abc))
+* Add `bigquery_magics.context.default_variable` option ([#70](https://github.com/googleapis/python-bigquery-magics/issues/70)) ([72ed882](https://github.com/googleapis/python-bigquery-magics/commit/72ed882c9359718a702bab2bca76933548650064))
+
 ## [0.4.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.3.0...v0.4.0) (2024-09-24)
 
 
