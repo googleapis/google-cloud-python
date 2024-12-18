@@ -31,7 +31,7 @@ python test_proxy.py --port 8080
 ```
 
 By default, the test_proxy targets the async client. You can change this by passing in the `--client_type` flag.
-Valid options are `async` and `legacy`.
+Valid options are `async`, `sync`, and `legacy`.
 
 ```
 python test_proxy.py --client_type=legacy
