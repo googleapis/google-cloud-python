@@ -1475,6 +1475,63 @@ class Session(
             self.bqclient, sql, job_config, metrics=self._metrics
         )
 
+    def _create_object_table(self, path: str, connection: str) -> str:
+        """Create a random id Object Table from the input path and connection."""
+        table = str(self._loader._storage_manager._random_table())
+
+        import textwrap
+
+        sql = textwrap.dedent(
+            f"""
+            CREATE EXTERNAL TABLE `{table}`
+            WITH CONNECTION `{connection}`
+            OPTIONS(
+                object_metadata = 'SIMPLE',
+                uris = ['{path}']);
+            """
+        )
+        bf_io_bigquery.start_query_with_client(
+            self.bqclient,
+            sql,
+            job_config=bigquery.QueryJobConfig(),
+            metrics=self._metrics,
+        )
+
+        return table
+
+    def from_glob_path(
+        self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None
+    ) -> dataframe.DataFrame:
+        r"""Create a BigFrames DataFrame that contains a BigFrames Blob column from a global wildcard path.
+
+        Args:
+            path (str):
+                The wildcard global path, such as "gs://<bucket>/<folder>/\*".
+            connection (str or None, default None):
+                Connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+                If None, use default connection in session context. BigQuery DataFrame will try to create the connection and attach
+                permission if the connection isn't fully set up.
+            name (str):
+                The column name of the Blob column.
+        Returns:
+            bigframes.pandas.DataFrame:
+                Result BigFrames DataFrame.
+        """
+        if not bigframes.options.experiments.blob:
+            raise NotImplementedError()
+
+        connection = connection or self._bq_connection
+        connection = bigframes.clients.resolve_full_bq_connection_name(
+            connection,
+            default_project=self._project,
+            default_location=self._location,
+        )
+
+        table = self._create_object_table(path, connection)
+
+        s = self.read_gbq(table)["uri"].str.to_blob(connection)
+        return s.rename(name).to_frame()
+
 
 def connect(context: Optional[bigquery_options.BigQueryOptions] = None) -> Session:
     return Session(context)

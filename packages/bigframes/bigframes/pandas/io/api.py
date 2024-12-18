@@ -307,6 +307,20 @@ def read_gbq_function(function_name: str, is_row_processor: bool = False):
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
 
 
+def from_glob_path(
+    path: str, *, connection: Optional[str] = None, name: Optional[str] = None
+) -> bigframes.dataframe.DataFrame:
+    return global_session.with_default_session(
+        bigframes.session.Session.from_glob_path,
+        path=path,
+        connection=connection,
+        name=name,
+    )
+
+
+from_glob_path.__doc__ = inspect.getdoc(bigframes.session.Session.from_glob_path)
+
+
 def _set_default_session_location_if_possible(query):
     # Set the location as per the query if this is the first query the user is
     # running and:

@@ -36,6 +36,7 @@ import bigframes.dataframe
 import bigframes.enums
 import bigframes.functions._utils as functions_utils
 from bigframes.pandas.io.api import (
+    from_glob_path,
     read_csv,
     read_gbq,
     read_gbq_function,
@@ -311,6 +312,7 @@ __all__ = [
     "read_pickle",
     "remote_function",
     "to_datetime",
+    "from_glob_path",
     # pandas dtype attributes
     "NA",
     "BooleanDtype",
