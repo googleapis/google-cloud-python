@@ -307,6 +307,50 @@ def test_logistic_model_predict(penguins_logistic_model, new_penguins_df):
     )
 
 
+def test_logistic_model_predict_params(
+    penguins_logistic_model: linear_model.LogisticRegression, new_penguins_df
+):
+    predictions = penguins_logistic_model.predict(new_penguins_df).to_pandas()
+    assert predictions.shape[0] >= 1
+    prediction_columns = set(predictions.columns)
+    expected_columns = {
+        "predicted_sex",
+        "predicted_sex_probs",
+        "species",
+        "island",
+        "culmen_length_mm",
+        "culmen_depth_mm",
+        "flipper_length_mm",
+        "body_mass_g",
+        "sex",
+    }
+    assert expected_columns <= prediction_columns
+
+
+def test_logistic_model_predict_explain_params(
+    penguins_logistic_model: linear_model.LogisticRegression, new_penguins_df
+):
+    predictions = penguins_logistic_model.predict_explain(new_penguins_df).to_pandas()
+    assert predictions.shape[0] >= 1
+    prediction_columns = set(predictions.columns)
+    expected_columns = {
+        "predicted_sex",
+        "probability",
+        "top_feature_attributions",
+        "baseline_prediction_value",
+        "prediction_value",
+        "approximation_error",
+        "species",
+        "island",
+        "culmen_length_mm",
+        "culmen_depth_mm",
+        "flipper_length_mm",
+        "body_mass_g",
+        "sex",
+    }
+    assert expected_columns <= prediction_columns
+
+
 def test_logistic_model_to_gbq_saved_score(
     penguins_logistic_model, table_id_unique, penguins_df_default_index
 ):

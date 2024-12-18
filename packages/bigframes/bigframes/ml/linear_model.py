@@ -353,6 +353,34 @@ class LogisticRegression(
 
         return self._bqml_model.predict(X)
 
+    def predict_explain(
+        self,
+        X: utils.ArrayType,
+    ) -> bpd.DataFrame:
+        """
+        Explain predictions for a logistic regression model.
+
+        .. note::
+            Output matches that of the BigQuery ML.EXPLAIN_PREDICT function.
+            See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-explain-predict
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series or
+            pandas.core.frame.DataFrame or pandas.core.series.Series):
+                Series or a DataFrame to explain its predictions.
+
+        Returns:
+            bigframes.pandas.DataFrame:
+                The predicted DataFrames with explanation columns.
+        """
+        # TODO(b/377366612): Add support for `top_k_features` parameter
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before predict")
+
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
+
+        return self._bqml_model.explain_predict(X)
+
     def score(
         self,
         X: utils.ArrayType,
