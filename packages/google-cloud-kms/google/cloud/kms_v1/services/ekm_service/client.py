@@ -922,7 +922,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                    with a
                    [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
                    of
-                   [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC],
+                   [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC],
                    as well as performing cryptographic operations using
                    keys created within the
                    [EkmConnection][google.cloud.kms.v1.EkmConnection].
@@ -1058,7 +1058,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                    with a
                    [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
                    of
-                   [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC],
+                   [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC],
                    as well as performing cryptographic operations using
                    keys created within the
                    [EkmConnection][google.cloud.kms.v1.EkmConnection].
@@ -1186,7 +1186,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                    with a
                    [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
                    of
-                   [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC],
+                   [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC],
                    as well as performing cryptographic operations using
                    keys created within the
                    [EkmConnection][google.cloud.kms.v1.EkmConnection].
@@ -1306,7 +1306,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                    with a
                    [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
                    of
-                   [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC]
+                   [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC]
                    in a given project and location.
 
         """
@@ -1426,7 +1426,7 @@ class EkmServiceClient(metaclass=EkmServiceClientMeta):
                    with a
                    [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
                    of
-                   [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC]
+                   [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC]
                    in a given project and location.
 
         """

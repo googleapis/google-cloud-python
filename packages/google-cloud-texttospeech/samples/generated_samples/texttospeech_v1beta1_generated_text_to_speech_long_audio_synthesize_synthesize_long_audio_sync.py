@@ -43,7 +43,7 @@ def sample_synthesize_long_audio():
     input.text = "text_value"
 
     audio_config = texttospeech_v1beta1.AudioConfig()
-    audio_config.audio_encoding = "ALAW"
+    audio_config.audio_encoding = "PCM"
 
     voice = texttospeech_v1beta1.VoiceSelectionParams()
     voice.language_code = "language_code_value"
