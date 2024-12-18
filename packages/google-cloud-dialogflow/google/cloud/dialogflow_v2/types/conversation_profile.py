@@ -86,6 +86,18 @@ class ConversationProfile(proto.Message):
             Configuration for publishing new message events. Event will
             be sent in format of
             [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]
+        new_recognition_result_notification_config (google.cloud.dialogflow_v2.types.NotificationConfig):
+            Optional. Configuration for publishing transcription
+            intermediate results. Event will be sent in format of
+            [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent].
+            If configured, the following information will be populated
+            as
+            [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]
+            Pub/Sub message attributes:
+
+            -  "participant_id"
+            -  "participant_role"
+            -  "message_id".
         stt_config (google.cloud.dialogflow_v2.types.SpeechToTextConfig):
             Settings for speech transcription.
         language_code (str):
@@ -159,6 +171,11 @@ class ConversationProfile(proto.Message):
     new_message_event_notification_config: "NotificationConfig" = proto.Field(
         proto.MESSAGE,
         number=8,
+        message="NotificationConfig",
+    )
+    new_recognition_result_notification_config: "NotificationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
         message="NotificationConfig",
     )
     stt_config: audio_config.SpeechToTextConfig = proto.Field(
