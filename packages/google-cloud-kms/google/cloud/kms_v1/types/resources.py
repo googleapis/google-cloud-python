@@ -288,7 +288,7 @@ class CryptoKey(proto.Message):
             [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
             have a
             [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
-            [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC],
+            [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC],
             with the resource name in the format
             ``projects/*/locations/*/ekmConnections/*``. Note, this list
             is non-exhaustive and may apply to additional

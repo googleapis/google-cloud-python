@@ -334,7 +334,7 @@ class EkmConnection(proto.Message):
     [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
     [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] with a
     [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
-    [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC], as
+    [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC], as
     well as performing cryptographic operations using keys created
     within the [EkmConnection][google.cloud.kms.v1.EkmConnection].
 
@@ -412,7 +412,7 @@ class EkmConnection(proto.Message):
                 -  Destruction of external key material associated with this
                    [EkmConnection][google.cloud.kms.v1.EkmConnection] can be
                    requested by calling
-                   [DestroyCryptoKeyVersion][EkmService.DestroyCryptoKeyVersion].
+                   [DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
                 -  Automatic rotation of key material is supported.
         """
         KEY_MANAGEMENT_MODE_UNSPECIFIED = 0
@@ -502,8 +502,8 @@ class EkmConfig(proto.Message):
     [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
     [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] with a
     [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
-    [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC] in a
-    given project and location.
+    [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC] in
+    a given project and location.
 
     Attributes:
         name (str):
