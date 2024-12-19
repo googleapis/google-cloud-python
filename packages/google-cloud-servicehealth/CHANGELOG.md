@@ -1,5 +1,5 @@
 # Changelog
- 
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.8...google-cloud-servicehealth-v0.1.9) (2024-12-12)
 
 
