@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.24.0...google-cloud-datacatalog-v3.24.1) (2024-12-18)
+
+
+### Documentation
+
+* [google-cloud-datacatalog] fix markdown reference in `TagTemplate.is_publicly_readable` comment ([#13369](https://github.com/googleapis/google-cloud-python/issues/13369)) ([d8afab0](https://github.com/googleapis/google-cloud-python/commit/d8afab0223e90ea0f13a8669cfd88ff06318d4ec))
+
 ## [3.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.23.0...google-cloud-datacatalog-v3.24.0) (2024-12-12)
 
 

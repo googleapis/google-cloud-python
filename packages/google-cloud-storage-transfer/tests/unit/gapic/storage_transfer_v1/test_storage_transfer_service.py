@@ -8766,6 +8766,12 @@ def test_create_transfer_job_rest_call_success(request_type):
             "source_agent_pool_name": "source_agent_pool_name_value",
             "sink_agent_pool_name": "sink_agent_pool_name_value",
         },
+        "replication_spec": {
+            "gcs_data_source": {},
+            "gcs_data_sink": {},
+            "object_conditions": {},
+            "transfer_options": {},
+        },
         "notification_config": {
             "pubsub_topic": "pubsub_topic_value",
             "event_types": [1],

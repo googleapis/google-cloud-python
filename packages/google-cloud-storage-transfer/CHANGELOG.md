@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.14.0...google-cloud-storage-transfer-v1.15.0) (2024-12-18)
+
+
+### Features
+
+* [google-cloud-storage-transfer] support cross-bucket replication ([#13372](https://github.com/googleapis/google-cloud-python/issues/13372)) ([20d6e4c](https://github.com/googleapis/google-cloud-python/commit/20d6e4ca97d18e711abde3cda6953b8476ad489f))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.13.1...google-cloud-storage-transfer-v1.14.0) (2024-12-12)
 
 

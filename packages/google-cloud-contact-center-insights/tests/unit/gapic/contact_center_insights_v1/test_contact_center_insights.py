@@ -46721,6 +46721,7 @@ def test_create_conversation_rest_call_success(request_type):
                     "display_name": "display_name_value",
                     "team": "team_value",
                     "disposition_code": "disposition_code_value",
+                    "agent_type": 1,
                 }
             ],
         },
@@ -47307,6 +47308,7 @@ def test_update_conversation_rest_call_success(request_type):
                     "display_name": "display_name_value",
                     "team": "team_value",
                     "disposition_code": "disposition_code_value",
+                    "agent_type": 1,
                 }
             ],
         },
