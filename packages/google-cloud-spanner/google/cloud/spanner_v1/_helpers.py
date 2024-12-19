@@ -19,6 +19,7 @@ import decimal
 import math
 import time
 import base64
+import threading
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
@@ -30,6 +31,7 @@ from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud.spanner_v1 import TypeCode
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import JsonObject
+from google.cloud.spanner_v1.request_id_header import with_request_id
 
 # Validation error messages
 NUMERIC_MAX_SCALE_ERR_MSG = (
@@ -525,3 +527,45 @@ def _metadata_with_leader_aware_routing(value, **kw):
         List[Tuple[str, str]]: RPC metadata with leader aware routing header
     """
     return ("x-goog-spanner-route-to-leader", str(value).lower())
+
+
+class AtomicCounter:
+    def __init__(self, start_value=0):
+        self.__lock = threading.Lock()
+        self.__value = start_value
+
+    @property
+    def value(self):
+        with self.__lock:
+            return self.__value
+
+    def increment(self, n=1):
+        with self.__lock:
+            self.__value += n
+            return self.__value
+
+    def __iadd__(self, n):
+        """
+        Defines the inplace += operator result.
+        """
+        with self.__lock:
+            self.__value += n
+            return self
+
+    def __add__(self, n):
+        """
+        Defines the result of invoking: value = AtomicCounter + addable
+        """
+        with self.__lock:
+            n += self.__value
+            return n
+
+    def __radd__(self, n):
+        """
+        Defines the result of invoking: value = addable + AtomicCounter
+        """
+        return self.__add__(n)
+
+
+def _metadata_with_request_id(*args, **kwargs):
+    return with_request_id(*args, **kwargs)
