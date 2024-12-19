@@ -42,16 +42,14 @@ def test_arrow_type_to_bigquery_field_scalar_types(pyarrow_type, bigquery_type):
 
 
 def test_arrow_type_to_bigquery_field_unknown():
-    assert (
-        pyarrow_to_bigquery.arrow_type_to_bigquery_field("test_name", pyarrow.null())
-        is None
-    )
+    assert pyarrow_to_bigquery.arrow_type_to_bigquery_field(
+        "test_name", pyarrow.null(), default_type="DEFAULT_TYPE"
+    ) == bigquery.SchemaField("test_name", "DEFAULT_TYPE")
 
 
 def test_arrow_type_to_bigquery_field_list_of_unknown():
-    assert (
-        pyarrow_to_bigquery.arrow_type_to_bigquery_field(
-            "test_name", pyarrow.list_(pyarrow.null())
-        )
-        is None
-    )
+    assert pyarrow_to_bigquery.arrow_type_to_bigquery_field(
+        "test_name",
+        pyarrow.list_(pyarrow.null()),
+        default_type="DEFAULT_TYPE",
+    ) == bigquery.SchemaField("test_name", "DEFAULT_TYPE", mode="REPEATED")

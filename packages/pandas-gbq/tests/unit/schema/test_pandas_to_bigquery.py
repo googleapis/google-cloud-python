@@ -21,13 +21,34 @@ def module_under_test():
 def test_dataframe_to_bigquery_fields_w_named_index(module_under_test):
     df_data = collections.OrderedDict(
         [
+            ("str_index", ["a", "b"]),
             ("str_column", ["hello", "world"]),
             ("int_column", [42, 8]),
+            ("nullable_int_column", pandas.Series([42, None], dtype="Int64")),
+            ("uint_column", pandas.Series([7, 13], dtype="uint8")),
             ("bool_column", [True, False]),
+            ("boolean_column", pandas.Series([True, None], dtype="boolean")),
+            (
+                "datetime_column",
+                [
+                    datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+                    datetime.datetime(2000, 1, 1, 0, 0, 0),
+                ],
+            ),
+            (
+                "timestamp_column",
+                [
+                    datetime.datetime(
+                        1999, 12, 31, 23, 59, 59, 999999, tzinfo=datetime.timezone.utc
+                    ),
+                    datetime.datetime(
+                        2000, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
+                    ),
+                ],
+            ),
         ]
     )
-    index = pandas.Index(["a", "b"], name="str_index")
-    dataframe = pandas.DataFrame(df_data, index=index)
+    dataframe = pandas.DataFrame(df_data).set_index("str_index", drop=True)
 
     returned_schema = module_under_test.dataframe_to_bigquery_fields(
         dataframe, [], index=True
@@ -37,7 +58,12 @@ def test_dataframe_to_bigquery_fields_w_named_index(module_under_test):
         schema.SchemaField("str_index", "STRING", "NULLABLE"),
         schema.SchemaField("str_column", "STRING", "NULLABLE"),
         schema.SchemaField("int_column", "INTEGER", "NULLABLE"),
+        schema.SchemaField("nullable_int_column", "INTEGER", "NULLABLE"),
+        schema.SchemaField("uint_column", "INTEGER", "NULLABLE"),
         schema.SchemaField("bool_column", "BOOLEAN", "NULLABLE"),
+        schema.SchemaField("boolean_column", "BOOLEAN", "NULLABLE"),
+        schema.SchemaField("datetime_column", "DATETIME", "NULLABLE"),
+        schema.SchemaField("timestamp_column", "TIMESTAMP", "NULLABLE"),
     )
     assert returned_schema == expected_schema
 
@@ -45,19 +71,24 @@ def test_dataframe_to_bigquery_fields_w_named_index(module_under_test):
 def test_dataframe_to_bigquery_fields_w_multiindex(module_under_test):
     df_data = collections.OrderedDict(
         [
+            ("str_index", ["a", "a"]),
+            ("int_index", [0, 0]),
+            (
+                "dt_index",
+                [
+                    datetime.datetime(1999, 12, 31, 23, 59, 59, 999999),
+                    datetime.datetime(2000, 1, 1, 0, 0, 0),
+                ],
+            ),
             ("str_column", ["hello", "world"]),
             ("int_column", [42, 8]),
             ("bool_column", [True, False]),
         ]
     )
-    index = pandas.MultiIndex.from_tuples(
-        [
-            ("a", 0, datetime.datetime(1999, 12, 31, 23, 59, 59, 999999)),
-            ("a", 0, datetime.datetime(2000, 1, 1, 0, 0, 0)),
-        ],
-        names=["str_index", "int_index", "dt_index"],
+    dataframe = pandas.DataFrame(df_data).set_index(
+        ["str_index", "int_index", "dt_index"],
+        drop=True,
     )
-    dataframe = pandas.DataFrame(df_data, index=index)
 
     returned_schema = module_under_test.dataframe_to_bigquery_fields(
         dataframe, [], index=True

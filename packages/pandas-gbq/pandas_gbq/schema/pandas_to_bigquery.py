@@ -4,7 +4,7 @@
 
 import collections.abc
 import datetime
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 import warnings
 
 import db_dtypes
@@ -28,14 +28,21 @@ except ImportError:
 # `docs/source/writing.rst`.
 _PANDAS_DTYPE_TO_BQ = {
     "bool": "BOOLEAN",
+    "boolean": "BOOLEAN",
     "datetime64[ns, UTC]": "TIMESTAMP",
+    "datetime64[us, UTC]": "TIMESTAMP",
     "datetime64[ns]": "DATETIME",
+    "datetime64[us]": "DATETIME",
     "float32": "FLOAT",
     "float64": "FLOAT",
     "int8": "INTEGER",
     "int16": "INTEGER",
     "int32": "INTEGER",
     "int64": "INTEGER",
+    "Int8": "INTEGER",
+    "Int16": "INTEGER",
+    "Int32": "INTEGER",
+    "Int64": "INTEGER",
     "uint8": "INTEGER",
     "uint16": "INTEGER",
     "uint32": "INTEGER",
@@ -103,7 +110,7 @@ def dataframe_to_bigquery_fields(
 
         # Try to automatically determine the type based on a few rows of the data.
         values = dataframe.reset_index()[column]
-        bq_field = values_to_bigquery_field(column, values)
+        bq_field = values_to_bigquery_field(column, values, default_type=default_type)
 
         if bq_field:
             bq_schema_out.append(bq_field)
@@ -114,7 +121,9 @@ def dataframe_to_bigquery_fields(
             arrow_value = pyarrow.array(values)
             bq_field = (
                 pandas_gbq.schema.pyarrow_to_bigquery.arrow_type_to_bigquery_field(
-                    column, arrow_value.type
+                    column,
+                    arrow_value.type,
+                    default_type=default_type,
                 )
             )
 
@@ -151,6 +160,19 @@ def dataframe_to_bigquery_fields(
 
 
 def dtype_to_bigquery_field(name, dtype) -> Optional[schema.SchemaField]:
+    """Infers the BigQuery schema field type from a pandas dtype.
+
+    Args:
+        name (str):
+            Name of the column/field.
+        dtype:
+            A pandas / numpy dtype object.
+
+    Returns:
+        Optional[schema.SchemaField]:
+            The schema field, or None if a type cannot be inferred, such as if
+            it is ambiguous like the object dtype.
+    """
     bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
 
     if bq_type is not None:
@@ -164,9 +186,44 @@ def dtype_to_bigquery_field(name, dtype) -> Optional[schema.SchemaField]:
     return None
 
 
-def value_to_bigquery_field(name, value) -> Optional[schema.SchemaField]:
-    if isinstance(value, str):
-        return schema.SchemaField(name, "STRING")
+def value_to_bigquery_field(
+    name: str, value: Any, default_type: Optional[str] = None
+) -> Optional[schema.SchemaField]:
+    """Infers the BigQuery schema field type from a single value.
+
+    Args:
+        name:
+            The name of the field.
+        value:
+            The value to infer the type from. If None, the default type is used
+            if available.
+        default_type:
+            The default field type.  Defaults to None.
+
+    Returns:
+        The schema field, or None if a type cannot be inferred.
+    """
+
+    # Set the SchemaField datatype to the given default_type if the value
+    # being assessed is None.
+    if value is None:
+        return schema.SchemaField(name, default_type)
+
+    # Map from Python types to BigQuery types. This isn't super exhaustive
+    # because we rely more on pyarrow, which can check more than one value to
+    # determine the type.
+    type_mapping = {
+        str: "STRING",
+    }
+
+    # geopandas and shapely are optional dependencies, so only check if those
+    # are installed.
+    if _BaseGeometry is not None:
+        type_mapping[_BaseGeometry] = "GEOGRAPHY"
+
+    for type_, bq_type in type_mapping.items():
+        if isinstance(value, type_):
+            return schema.SchemaField(name, bq_type)
 
     # For timezone-naive datetimes, the later pyarrow conversion to try and
     # learn the type add a timezone to such datetimes, causing them to be
@@ -182,35 +239,51 @@ def value_to_bigquery_field(name, value) -> Optional[schema.SchemaField]:
         else:
             return schema.SchemaField(name, "DATETIME")
 
-    if _BaseGeometry is not None and isinstance(value, _BaseGeometry):
-        return schema.SchemaField(name, "GEOGRAPHY")
-
     return None
 
 
-def values_to_bigquery_field(name, values) -> Optional[schema.SchemaField]:
+def values_to_bigquery_field(
+    name: str, values: Any, default_type: str = "STRING"
+) -> Optional[schema.SchemaField]:
+    """Infers the BigQuery schema field type from a list of values.
+
+    This function iterates through the given values to determine the
+    corresponding schema field type.
+
+    Args:
+        name:
+            The name of the field.
+        values:
+            An iterable of values to infer the type from. If all the values
+            are None or the iterable is empty, the function returns None.
+        default_type:
+            The default field type to use if a specific type cannot be
+            determined from the values. Defaults to "STRING".
+
+    Returns:
+        The schema field, or None if a type cannot be inferred.
+    """
     value = pandas_gbq.core.pandas.first_valid(values)
 
-    # All NULL, type not determinable.
+    # All values came back as NULL, thus type not determinable by this method.
+    # Return None so we can try other methods.
     if value is None:
         return None
 
-    field = value_to_bigquery_field(name, value)
-    if field is not None:
+    field = value_to_bigquery_field(name, value, default_type=default_type)
+    if field:
         return field
 
-    if isinstance(value, str):
-        return schema.SchemaField(name, "STRING")
-
-    # Check plain ARRAY values here. Let STRUCT get determined by pyarrow,
-    # which can examine more values to determine all keys.
+    # Check plain ARRAY values here. Exclude mapping types to let STRUCT get
+    # determined by pyarrow, which can examine more values to determine all
+    # keys.
     if isinstance(value, collections.abc.Iterable) and not isinstance(
         value, collections.abc.Mapping
     ):
         # It could be that this value contains all None or is empty, so get the
         # first non-None value we can find.
         valid_item = pandas_gbq.core.pandas.first_array_valid(values)
-        field = value_to_bigquery_field(name, valid_item)
+        field = value_to_bigquery_field(name, valid_item, default_type=default_type)
 
         if field is not None:
             return schema.SchemaField(name, field.field_type, mode="REPEATED")

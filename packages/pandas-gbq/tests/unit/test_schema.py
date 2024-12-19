@@ -70,7 +70,7 @@ def test_schema_is_subset_fails_if_not_subset():
     [
         pytest.param(
             pandas.DataFrame(data={"col1": [object()]}),
-            {"fields": [{"name": "col1", "type": "STRING"}]},
+            {"fields": [{"name": "col1", "type": "DEFAULT_TYPE"}]},
             id="default-type-fails-pyarrow-conversion",
         ),
         (
@@ -182,13 +182,15 @@ def test_schema_is_subset_fails_if_not_subset():
                         else "object",
                     ),
                     "list_of_struct": pandas.Series(
-                        [[], [{"test": "abc"}], []],
+                        [[], [{"test": 123.0}], []],
                         dtype=pandas.ArrowDtype(
-                            pyarrow.list_(pyarrow.struct([("test", pyarrow.string())]))
+                            pyarrow.list_(pyarrow.struct([("test", pyarrow.float64())]))
                         )
                         if hasattr(pandas, "ArrowDtype")
                         else "object",
                     ),
+                    "list_of_unknown": [[], [], []],
+                    "list_of_null": [[None, None], [None], [None, None]],
                 }
             ),
             {
@@ -200,17 +202,56 @@ def test_schema_is_subset_fails_if_not_subset():
                         "type": "RECORD",
                         "mode": "REPEATED",
                         "fields": [
-                            {"name": "test", "type": "STRING", "mode": "NULLABLE"},
+                            {"name": "test", "type": "FLOAT", "mode": "NULLABLE"},
                         ],
+                    },
+                    # Use DEFAULT_TYPE because there are no values to detect a type.
+                    {
+                        "name": "list_of_unknown",
+                        "type": "DEFAULT_TYPE",
+                        "mode": "REPEATED",
+                    },
+                    {
+                        "name": "list_of_null",
+                        "type": "DEFAULT_TYPE",
+                        "mode": "REPEATED",
                     },
                 ],
             },
             id="array",
         ),
+        pytest.param(
+            # If a struct contains only nulls in a sub-field, use the default
+            # type for subfields without a type we can determine.
+            # https://github.com/googleapis/python-bigquery-pandas/issues/836
+            pandas.DataFrame(
+                {
+                    "id": [0, 1],
+                    "positions": [{"state": None}, {"state": None}],
+                },
+            ),
+            {
+                "fields": [
+                    {"name": "id", "type": "INTEGER"},
+                    {
+                        "name": "positions",
+                        "type": "RECORD",
+                        "fields": [
+                            {
+                                "name": "state",
+                                "type": "DEFAULT_TYPE",
+                                "mode": "NULLABLE",
+                            },
+                        ],
+                    },
+                ],
+            },
+            id="issue832-null-struct-field",
+        ),
     ],
 )
 def test_generate_bq_schema(dataframe, expected_schema):
-    schema = pandas_gbq.gbq._generate_bq_schema(dataframe)
+    schema = pandas_gbq.gbq._generate_bq_schema(dataframe, default_type="DEFAULT_TYPE")
 
     # NULLABLE is the default mode.
     for field in expected_schema["fields"]:

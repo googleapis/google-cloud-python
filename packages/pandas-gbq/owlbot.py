@@ -57,6 +57,7 @@ s.move(
         "noxfile.py",
         "README.rst",
         # exclude this file as we have an alternate prerelease.cfg
+        ".github/workflows/docs.yml",
         ".kokoro/presubmit/prerelease-deps.cfg",
         ".kokoro/presubmit/presubmit.cfg",
     ],
