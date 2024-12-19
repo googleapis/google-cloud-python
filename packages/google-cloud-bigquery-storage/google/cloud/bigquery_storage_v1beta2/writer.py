@@ -269,7 +269,7 @@ class AppendRowsStream(object):
         future: AppendRowsFuture = self._futures_queue.get_nowait()
         if response.error.code:
             exc = exceptions.from_grpc_status(
-                response.error.code, response.error.message
+                response.error.code, response.error.message, response=response
             )
             future.set_exception(exc)
         else:
