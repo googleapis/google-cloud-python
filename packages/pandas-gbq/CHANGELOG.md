@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.26.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.25.0...v0.26.0) (2024-12-19)
+
+
+### Features
+
+* `to_gbq` fails with `TypeError` if passing in a bigframes DataFrame object ([#833](https://github.com/googleapis/python-bigquery-pandas/issues/833)) ([5004d08](https://github.com/googleapis/python-bigquery-pandas/commit/5004d08c6af93471686ccb319c69cd38c7893042))
+
+
+### Bug Fixes
+
+* `to_gbq` uses `default_type` for ambiguous array types and struct field types ([#838](https://github.com/googleapis/python-bigquery-pandas/issues/838)) ([cf1aadd](https://github.com/googleapis/python-bigquery-pandas/commit/cf1aadd48165617768fecff91e68941255148dbd))
+
 ## [0.25.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.24.0...v0.25.0) (2024-12-11)
 
 
