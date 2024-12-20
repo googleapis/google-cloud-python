@@ -73,6 +73,24 @@ class MultiCallableStub(object):
         if response:
             return response
 
+    # This method is required; otherwise we see `AttributeError: 'MultiCallableStub' object has no attribute 'with_call'`
+    # See https://github.com/grpc/grpc/blob/b53f4055a93fb98601c75dcefaa8f3665167e6cf/src/python/grpcio/grpc/_interceptor.py#L315
+    # for the specific location in gRPC code which expects this method.
+    def with_call(
+        self,
+        request,
+        timeout=None,
+        metadata=None,
+        credentials=None,
+        wait_for_ready=None,
+        compression=None,
+    ):
+        self.channel_stub.requests.append((self.method, request))
+        mock_call = None  # Actual type is grpc.Call but using None since `with_call` is not needed for tests
+        response = self.channel_stub.responses.pop()
+        if response:
+            return (response, mock_call)
+
 
 class ChannelStub(grpc.Channel):
     """Stub for the grpc.Channel interface."""
@@ -84,7 +102,16 @@ class ChannelStub(grpc.Channel):
         ]
         self.requests = []
 
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
+    # The method signature should be compatible with this code
+    # https://github.com/grpc/grpc/blob/b53f4055a93fb98601c75dcefaa8f3665167e6cf/src/python/grpcio/grpc/_interceptor.py#L696-L701
+    # where arguments `method`, `request_serializer`, `response_deserializer` and `_registered_method` are supported
+    def unary_unary(
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+        _registered_method=None,
+    ):
         return MultiCallableStub(method, self)
 
     def subscribe(self, callback, try_to_connect=False):
