@@ -30,6 +30,7 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
+    default_python_version="3.10",
     unit_test_python_versions=["3.9", "3.10", "3.11", "3.12"],
     system_test_python_versions=["3.9", "3.11", "3.12"],
     cov_level=35,
@@ -53,6 +54,8 @@ s.move(
         ".kokoro/build.sh",
         ".kokoro/continuous/common.cfg",
         ".kokoro/presubmit/common.cfg",
+        # Temporary workaround to update docs job to use python 3.10
+        ".github/workflows/docs.yml",
     ],
 )
 
