@@ -1212,8 +1212,13 @@ def json_extract_string_array_op_impl(
 
 # Blob Ops
 @scalar_op_compiler.register_unary_op(ops.obj_fetch_metadata_op)
-def obj_fetch_metadata_op_impl(x: ibis_types.Value):
-    return obj_fetch_metadata(obj_ref=x)
+def obj_fetch_metadata_op_impl(obj_ref: ibis_types.Value):
+    return obj_fetch_metadata(obj_ref=obj_ref)
+
+
+@scalar_op_compiler.register_unary_op(ops.ObjGetAccessUrl, pass_op=True)
+def obj_get_access_url_op_impl(obj_ref: ibis_types.Value, op: ops.ObjGetAccessUrl):
+    return obj_get_access_url(obj_ref=obj_ref, mode=op.mode)
 
 
 ### Binary Ops
@@ -1917,3 +1922,8 @@ def obj_fetch_metadata(obj_ref: _OBJ_REF_IBIS_DTYPE) -> _OBJ_REF_IBIS_DTYPE:  # 
 @ibis_udf.scalar.builtin(name="OBJ.MAKE_REF")
 def obj_make_ref(uri: str, authorizer: str) -> _OBJ_REF_IBIS_DTYPE:  # type: ignore
     """Make ObjectRef Struct from uri and connection."""
+
+
+@ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
+def obj_get_access_url(obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String) -> ibis_dtypes.JSON:  # type: ignore
+    """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""

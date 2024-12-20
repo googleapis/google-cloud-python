@@ -740,6 +740,16 @@ class JSONExtractStringArray(UnaryOp):
         )
 
 
+## Blob Ops
+@dataclasses.dataclass(frozen=True)
+class ObjGetAccessUrl(UnaryOp):
+    name: typing.ClassVar[str] = "obj_get_access_url"
+    mode: str  # access mode, e.g. R read, W write, RW read & write
+
+    def output_type(self, *input_types):
+        return dtypes.JSON_DTYPE
+
+
 # Binary Ops
 fillna_op = create_binary_op(name="fillna", type_signature=op_typing.COERCE)
 maximum_op = create_binary_op(name="maximum", type_signature=op_typing.COERCE)
