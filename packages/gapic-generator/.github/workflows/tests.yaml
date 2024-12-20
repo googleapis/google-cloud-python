@@ -60,7 +60,9 @@ jobs:
         target: [showcase, showcase_alternative_templates, showcase_w_rest_async]
         logging_scope: ["", "google"]
 
-    runs-on: ubuntu-latest
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python "${{ matrix.python }}"
@@ -149,7 +151,10 @@ jobs:
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
         logging_scope: ["", "google"]
-    runs-on: ubuntu-latest
+    
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python "${{ matrix.python }}"
@@ -250,7 +255,10 @@ jobs:
     strategy:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
-    runs-on: ubuntu-latest
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
@@ -272,7 +280,10 @@ jobs:
       matrix:
         python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         variant: ['', _alternative_templates]
-    runs-on: ubuntu-latest
+
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
