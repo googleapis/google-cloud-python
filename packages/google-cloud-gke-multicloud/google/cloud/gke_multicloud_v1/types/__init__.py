@@ -145,6 +145,7 @@ from .azure_service import (
 )
 from .common_resources import (
     BinaryAuthorization,
+    CloudMonitoringConfig,
     Fleet,
     Jwk,
     LoggingComponentConfig,
@@ -279,6 +280,7 @@ __all__ = (
     "UpdateAzureClusterRequest",
     "UpdateAzureNodePoolRequest",
     "BinaryAuthorization",
+    "CloudMonitoringConfig",
     "Fleet",
     "Jwk",
     "LoggingComponentConfig",
