@@ -27,6 +27,28 @@ class _BaseKMeans(BaseEstimator, ABC):
 class KMeans(_BaseKMeans):
     """K-Means clustering.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.display.progress_bar = None
+        >>> from bigframes.ml.cluster import KMeans
+
+        >>> X = bpd.DataFrame({"feat0": [1, 1, 1, 10, 10, 10], "feat1": [2, 4, 0, 2, 4, 0]})
+        >>> kmeans = KMeans(n_clusters=2).fit(X)
+        >>> kmeans.predict(bpd.DataFrame({"feat0": [0, 12], "feat1": [0, 3]}))["CENTROID_ID"] # doctest:+SKIP
+        0    1
+        1    2
+        Name: CENTROID_ID, dtype: Int64
+
+        >>> kmeans.cluster_centers_ # doctest:+SKIP
+        centroid_id feature  numerical_value categorical_value
+        0            1   feat0              5.5                []
+        1            1   feat1              1.0                []
+        2            2   feat0              5.5                []
+        3            2   feat1              4.0                []
+
+        [4 rows x 4 columns]
+
     Args:
         n_clusters (int, default 8):
             The number of clusters to form as well as the number of centroids to generate.
