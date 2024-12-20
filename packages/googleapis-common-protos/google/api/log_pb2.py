@@ -29,7 +29,6 @@ _sym_db = _symbol_database.Default()
 
 from google.api import label_pb2 as google_dot_api_dot_label__pb2
 
-
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n\x14google/api/log.proto\x12\ngoogle.api\x1a\x16google/api/label.proto"u\n\rLogDescriptor\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x06labels\x18\x02 \x03(\x0b\x32\x1b.google.api.LabelDescriptor\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x04 \x01(\tBj\n\x0e\x63om.google.apiB\x08LogProtoP\x01ZEgoogle.golang.org/genproto/googleapis/api/serviceconfig;serviceconfig\xa2\x02\x04GAPIb\x06proto3'
 )

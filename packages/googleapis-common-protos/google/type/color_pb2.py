@@ -29,7 +29,6 @@ _sym_db = _symbol_database.Default()
 
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
-
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n\x17google/type/color.proto\x12\x0bgoogle.type\x1a\x1egoogle/protobuf/wrappers.proto"]\n\x05\x43olor\x12\x0b\n\x03red\x18\x01 \x01(\x02\x12\r\n\x05green\x18\x02 \x01(\x02\x12\x0c\n\x04\x62lue\x18\x03 \x01(\x02\x12*\n\x05\x61lpha\x18\x04 \x01(\x0b\x32\x1b.google.protobuf.FloatValueB`\n\x0f\x63om.google.typeB\nColorProtoP\x01Z6google.golang.org/genproto/googleapis/type/color;color\xf8\x01\x01\xa2\x02\x03GTPb\x06proto3'
 )

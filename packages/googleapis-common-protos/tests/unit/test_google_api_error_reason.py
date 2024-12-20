@@ -13,6 +13,5 @@
 # limitations under the License.
 
 
-
 def test_error_reason():
     from google.api import error_reason_pb2

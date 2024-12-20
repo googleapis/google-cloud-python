@@ -18,7 +18,6 @@ import os
 import setuptools
 from setuptools import find_namespace_packages
 
-
 name = "googleapis-common-protos"
 description = "Common protobufs used in Google APIs"
 version = "1.66.0"

@@ -10,6 +10,7 @@
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
@@ -42,14 +43,21 @@ pip-log.txt
 # emacs
 *~
 
+# Built documentation
+docs/_build
+bigquery/docs/generated
+docs.metadata
+
 # Virtual environment
 env/
-coverage.xml
 
+# Test logs
+coverage.xml
+*sponge_log.xml
+
+# System test environment variables.
+system_tests/local_test_setup
 
 # Make sure a generated file isn't accidentally committed.
 pylintrc
 pylintrc.test
-
-# Repositories copied for testing
-python-*
