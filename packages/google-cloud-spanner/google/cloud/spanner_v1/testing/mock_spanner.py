@@ -18,6 +18,13 @@ from concurrent import futures
 
 from google.protobuf import empty_pb2
 from grpc_status.rpc_status import _Status
+
+from google.cloud.spanner_v1 import (
+    TransactionOptions,
+    ResultSetMetadata,
+    ExecuteSqlRequest,
+    ExecuteBatchDmlRequest,
+)
 from google.cloud.spanner_v1.testing.mock_database_admin import DatabaseAdminServicer
 import google.cloud.spanner_v1.testing.spanner_database_admin_pb2_grpc as database_admin_grpc
 import google.cloud.spanner_v1.testing.spanner_pb2_grpc as spanner_grpc
@@ -51,23 +58,25 @@ class MockSpanner:
             context.abort_with_status(error)
 
     def get_result_as_partial_result_sets(
-        self, sql: str
+        self, sql: str, started_transaction: transaction.Transaction
     ) -> [result_set.PartialResultSet]:
         result: result_set.ResultSet = self.get_result(sql)
         partials = []
         first = True
         if len(result.rows) == 0:
             partial = result_set.PartialResultSet()
-            partial.metadata = result.metadata
+            partial.metadata = ResultSetMetadata(result.metadata)
             partials.append(partial)
         else:
             for row in result.rows:
                 partial = result_set.PartialResultSet()
                 if first:
-                    partial.metadata = result.metadata
+                    partial.metadata = ResultSetMetadata(result.metadata)
                 partial.values.extend(row)
                 partials.append(partial)
         partials[len(partials) - 1].stats = result.stats
+        if started_transaction:
+            partials[0].metadata.transaction = started_transaction
         return partials
 
 
@@ -129,22 +138,29 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
 
     def ExecuteSql(self, request, context):
         self._requests.append(request)
-        return result_set.ResultSet()
+        self.mock_spanner.pop_error(context)
+        started_transaction = self.__maybe_create_transaction(request)
+        result: result_set.ResultSet = self.mock_spanner.get_result(request.sql)
+        if started_transaction:
+            result.metadata = ResultSetMetadata(result.metadata)
+            result.metadata.transaction = started_transaction
+        return result
 
     def ExecuteStreamingSql(self, request, context):
         self._requests.append(request)
-        partials = self.mock_spanner.get_result_as_partial_result_sets(request.sql)
+        self.mock_spanner.pop_error(context)
+        started_transaction = self.__maybe_create_transaction(request)
+        partials = self.mock_spanner.get_result_as_partial_result_sets(
+            request.sql, started_transaction
+        )
         for result in partials:
             yield result
 
     def ExecuteBatchDml(self, request, context):
         self._requests.append(request)
+        self.mock_spanner.pop_error(context)
         response = spanner.ExecuteBatchDmlResponse()
-        started_transaction = None
-        if not request.transaction.begin == transaction.TransactionOptions():
-            started_transaction = self.__create_transaction(
-                request.session, request.transaction.begin
-            )
+        started_transaction = self.__maybe_create_transaction(request)
         first = True
         for statement in request.statements:
             result = self.mock_spanner.get_result(statement.sql)
@@ -169,6 +185,16 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
     def BeginTransaction(self, request, context):
         self._requests.append(request)
         return self.__create_transaction(request.session, request.options)
+
+    def __maybe_create_transaction(
+        self, request: ExecuteSqlRequest | ExecuteBatchDmlRequest
+    ):
+        started_transaction = None
+        if not request.transaction.begin == TransactionOptions():
+            started_transaction = self.__create_transaction(
+                request.session, request.transaction.begin
+            )
+        return started_transaction
 
     def __create_transaction(
         self, session: str, options: transaction.TransactionOptions
