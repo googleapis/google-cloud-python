@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.shopping.type.types import types
 import proto  # type: ignore
@@ -28,6 +29,7 @@ __protobuf__ = proto.module(
     manifest={
         "CssProductInput",
         "InsertCssProductInputRequest",
+        "UpdateCssProductInputRequest",
         "DeleteCssProductInputRequest",
     },
 )
@@ -63,27 +65,25 @@ class CssProductInput(proto.Message):
             country" and hence should always be a valid region code. For
             example: 'DE' for Germany, 'FR' for France.
         freshness_time (google.protobuf.timestamp_pb2.Timestamp):
-            Represents the existing version (freshness)
-            of the CSS Product, which can be used to
-            preserve the right order when multiple updates
+            DEPRECATED. Use expiration_date instead. Represents the
+            existing version (freshness) of the CSS Product, which can
+            be used to preserve the right order when multiple updates
             are done at the same time.
 
             This field must not be set to the future time.
 
-            If set, the update is prevented if a newer
-            version of the item already exists in our system
-            (that is the last update time of the existing
-            CSS products is later than the freshness time
-            set in the update). If the update happens, the
-            last update time is then set to this freshness
-            time.
+            If set, the update is prevented if a newer version of the
+            item already exists in our system (that is the last update
+            time of the existing CSS products is later than the
+            freshness time set in the update). If the update happens,
+            the last update time is then set to this freshness time.
 
-            If not set, the update will not be prevented and
-            the last update time will default to when this
-            request was received by the CSS API.
+            If not set, the update will not be prevented and the last
+            update time will default to when this request was received
+            by the CSS API.
 
-            If the operation is prevented, the aborted
-            exception will be thrown.
+            If the operation is prevented, the aborted exception will be
+            thrown.
         attributes (google.shopping.css_v1.types.Attributes):
             A list of CSS Product attributes.
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
@@ -143,13 +143,15 @@ class InsertCssProductInputRequest(proto.Message):
         css_product_input (google.shopping.css_v1.types.CssProductInput):
             Required. The CSS Product Input to insert.
         feed_id (int):
-            Required. The primary or supplemental feed
-            id. If CSS Product already exists and feed id
-            provided is different, then the CSS Product will
-            be moved to a new feed. Note: For now, CSSs do
-            not need to provide feed ids as we create feeds
-            on the fly. We do not have supplemental feed
-            support for CSS Products yet.
+            Optional. DEPRECATED. Feed id is not required
+            for CSS Products. The primary or supplemental
+            feed id. If CSS Product already exists and feed
+            id provided is different, then the CSS Product
+            will be moved to a new feed.
+            Note: For now, CSSs do not need to provide feed
+            ids as we create feeds on the fly.
+            We do not have supplemental feed support for CSS
+            Products yet.
     """
 
     parent: str = proto.Field(
@@ -164,6 +166,46 @@ class InsertCssProductInputRequest(proto.Message):
     feed_id: int = proto.Field(
         proto.INT64,
         number=3,
+    )
+
+
+class UpdateCssProductInputRequest(proto.Message):
+    r"""Request message for the UpdateCssProductInput method.
+
+    Attributes:
+        css_product_input (google.shopping.css_v1.types.CssProductInput):
+            Required. The CSS product input resource to
+            update. Information you submit will be applied
+            to the processed CSS product as well.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of CSS product attributes to be updated.
+
+            If the update mask is omitted, then it is treated as implied
+            field mask equivalent to all fields that are populated (have
+            a non-empty value).
+
+            Attributes specified in the update mask without a value
+            specified in the body will be deleted from the CSS product.
+
+            Update mask can only be specified for top level fields in
+            attributes and custom attributes.
+
+            To specify the update mask for custom attributes you need to
+            add the ``custom_attribute.`` prefix.
+
+            Providing special "*" value for full CSS product replacement
+            is not supported.
+    """
+
+    css_product_input: "CssProductInput" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CssProductInput",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

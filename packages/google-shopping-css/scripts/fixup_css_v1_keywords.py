@@ -49,6 +49,7 @@ class cssCallTransformer(cst.CSTTransformer):
         'list_child_accounts': ('parent', 'label_id', 'full_name', 'page_size', 'page_token', ),
         'list_css_products': ('parent', 'page_size', 'page_token', ),
         'update_account_label': ('account_label', ),
+        'update_css_product_input': ('css_product_input', 'update_mask', ),
         'update_labels': ('name', 'label_ids', 'parent', ),
     }
 

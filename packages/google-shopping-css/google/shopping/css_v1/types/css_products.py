@@ -49,7 +49,7 @@ class GetCssProductRequest(proto.Message):
 
 
 class CssProduct(proto.Message):
-    r"""The processed CSS Product(a.k.a Aggregate Offer internally).
+    r"""The processed CSS Product.
 
     Attributes:
         name (str):
