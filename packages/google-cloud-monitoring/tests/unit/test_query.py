@@ -73,7 +73,7 @@ class MultiCallableStub(object):
         if response:
             return response
 
-    # This method is required otherwise we see `AttributeError: 'MultiCallableStub' object has no attribute 'with_call'`
+    # This method is required; otherwise we see `AttributeError: 'MultiCallableStub' object has no attribute 'with_call'`
     # See https://github.com/grpc/grpc/blob/b53f4055a93fb98601c75dcefaa8f3665167e6cf/src/python/grpcio/grpc/_interceptor.py#L315
     # for the specific location in gRPC code which expects this method.
     def with_call(
