@@ -18,6 +18,22 @@ class SimpleImputer(_BaseImputer):
     Replace missing values using a descriptive statistic (e.g. mean, median, or
     most frequent) along each column.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.impute import SimpleImputer
+        >>> bpd.options.display.progress_bar = None
+        >>> X_train = bpd.DataFrame({"feat0": [7.0, 4.0, 10.0], "feat1": [2.0, None, 5.0], "feat2": [3.0, 6.0, 9.0]})
+        >>> imp_mean = SimpleImputer().fit(X_train)
+        >>> X_test = bpd.DataFrame({"feat0": [None, 4.0, 10.0], "feat1": [2.0, None, None], "feat2": [3.0, 6.0, 9.0]})
+        >>> imp_mean.transform(X_test)
+           imputer_feat0  imputer_feat1  imputer_feat2
+        0            7.0            2.0            3.0
+        1            4.0            3.5            6.0
+        2           10.0            3.5            9.0
+        <BLANKLINE>
+        [3 rows x 3 columns]
+
     Args:
         strategy ({'mean', 'median', 'most_frequent'}, default='mean'):
             The imputation strategy. 'mean': replace missing values using the mean along
