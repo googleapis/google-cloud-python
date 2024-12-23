@@ -13899,7 +13899,10 @@ def test_create_azure_cluster_rest_call_success(request_type):
         },
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "monitoring_config": {
+            "managed_prometheus_config": {"enabled": True},
+            "cloud_monitoring_config": {"enabled": True},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -14166,7 +14169,10 @@ def test_update_azure_cluster_rest_call_success(request_type):
         },
         "logging_config": {"component_config": {"enable_components": [1]}},
         "errors": [{"message": "message_value"}],
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "monitoring_config": {
+            "managed_prometheus_config": {"enabled": True},
+            "cloud_monitoring_config": {"enabled": True},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -168,6 +168,7 @@ from google.cloud.gke_multicloud_v1.types.azure_service import (
 )
 from google.cloud.gke_multicloud_v1.types.common_resources import (
     BinaryAuthorization,
+    CloudMonitoringConfig,
     Fleet,
     Jwk,
     LoggingComponentConfig,
@@ -308,6 +309,7 @@ __all__ = (
     "UpdateAzureClusterRequest",
     "UpdateAzureNodePoolRequest",
     "BinaryAuthorization",
+    "CloudMonitoringConfig",
     "Fleet",
     "Jwk",
     "LoggingComponentConfig",
