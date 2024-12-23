@@ -14,4 +14,4 @@
 
 
 def test_error_reason():
-    from google.api import error_reason_pb2
+    from google.api import error_reason_pb2  # noqa: F401
