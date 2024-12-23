@@ -36,7 +36,7 @@ ARIMA_EVALUATE_OUTPUT_COL = [
 @pytest.fixture(scope="module")
 def arima_model(time_series_df_default_index):
     model = forecasting.ARIMAPlus()
-    X_train = time_series_df_default_index[["parsed_date"]]
+    X_train = time_series_df_default_index["parsed_date"]
     y_train = time_series_df_default_index[["total_visits"]]
     model.fit(X_train, y_train)
     return model
@@ -114,7 +114,7 @@ def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):
     )
 
     X_train = time_series_df_default_index[["parsed_date"]]
-    y_train = time_series_df_default_index[["total_visits"]]
+    y_train = time_series_df_default_index["total_visits"]
     model.fit(X_train, y_train)
 
     # save, load to ensure configuration was kept

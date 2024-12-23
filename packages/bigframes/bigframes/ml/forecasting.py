@@ -199,14 +199,14 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         Returns:
             ARIMAPlus: Fitted estimator.
         """
+        X, y = utils.batch_convert_to_dataframe(X, y)
+
         if X.columns.size != 1:
             raise ValueError(
                 "Time series timestamp input X must only contain 1 column."
             )
         if y.columns.size != 1:
             raise ValueError("Time series data input y must only contain 1 column.")
-
-        X, y = utils.batch_convert_to_dataframe(X, y)
 
         self._bqml_model = self._bqml_model_factory.create_time_series_model(
             X,
