@@ -62,6 +62,30 @@ class LinearRegression(RegressorMixin, LinearModel):
     to minimize the residual sum of squares between the observed targets in
     the dataset, and the targets predicted by the linear approximation.
 
+    **Examples:**
+
+        >>> from bigframes.ml.linear_model import LinearRegression
+        >>> import bigframes.pandas as bpd
+        >>> bpd.options.display.progress_bar = None
+        >>> X = bpd.DataFrame({ \
+                "feature0": [20, 21, 19, 18], \
+                "feature1": [0, 1, 1, 0], \
+                "feature2": [0.2, 0.3, 0.4, 0.5]})
+        >>> y = bpd.DataFrame({"outcome": [0, 0, 1, 1]})
+        >>> # Create the linear model
+        >>> model = LinearRegression()
+        >>> model.fit(X, y)
+        LinearRegression()
+
+        >>> # Score the model
+        >>> score = model.score(X, y)
+        >>> print(score) # doctest:+SKIP
+            mean_absolute_error  mean_squared_error  mean_squared_log_error  \
+        0             0.022812            0.000602                 0.00035
+            median_absolute_error  r2_score  explained_variance
+        0               0.015077  0.997591            0.997591
+
+
     Args:
         optimize_strategy (str, default "auto_strategy"):
             The strategy to train linear regression models. Possible values are
