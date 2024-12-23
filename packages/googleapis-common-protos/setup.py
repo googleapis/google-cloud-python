@@ -23,10 +23,11 @@ description = "Common protobufs used in Google APIs"
 version = "1.66.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "protobuf>=3.20.2,<6.0.0.dev0,!=3.20.0,!=3.20.1,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2,<6.0.0.dev0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 
-extras_require = {"grpc": ["grpcio >= 1.44.0, <2.0.0.dev0"]}
+extras = {"grpc": ["grpcio >= 1.44.0, <2.0.0.dev0"]}
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -34,11 +35,21 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+packages = [
+    package
+    for package in setuptools.find_namespace_packages(exclude=("tests*", "testing*"))
+    if package.startswith("google")
+]
+
 setuptools.setup(
     name=name,
     version=version,
+    description=description,
+    long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url=url,
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
@@ -51,17 +62,15 @@ setuptools.setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: 3.13",
+        "Operating System :: OS Independent",
+        "Topic :: Internet",
     ],
-    description=description,
-    long_description=readme,
-    long_description_content_type="text/markdown",
-    install_requires=dependencies,
-    extras_require=extras_require,
-    license="Apache-2.0",
-    package_data={"": ["*.proto"]},
+    platforms="Posix; MacOS X; Windows",
+    packages=packages,
     python_requires=">=3.7",
-    packages=find_namespace_packages(exclude=("tests*", "testing*")),
-    url="https://github.com/googleapis/python-api-common-protos",
+    install_requires=dependencies,
+    extras_require=extras,
     include_package_data=True,
+    zip_safe=False,
 )
