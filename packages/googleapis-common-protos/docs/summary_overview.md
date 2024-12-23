@@ -14,9 +14,9 @@ Overview of the APIs available for Google APIs Common Protos API.
 Classes, methods and properties & attributes for
 Google APIs Common Protos API.
 
-[classes](https://github.com/googleapis/python-api-common-protos/summary_class.html)
+[classes](https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/summary_class.html)
 
-[methods](https://github.com/googleapis/python-api-common-protos/summary_method.html)
+[methods](https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/summary_method.html)
 
 [properties and
-attributes](https://github.com/googleapis/python-api-common-protos/summary_property.html)
+attributes](https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/summary_property.html)
