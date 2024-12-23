@@ -9,6 +9,6 @@
     "library_type": "CORE",
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "googleapis-common-protos",
-    "default_version": "",
+    "default_version": "apiVersion",
     "codeowner_team": ""
 }
