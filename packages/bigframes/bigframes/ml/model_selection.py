@@ -115,6 +115,8 @@ train_test_split.__doc__ = inspect.getdoc(
 
 @log_adapter.class_logger
 class KFold(vendored_model_selection_split.KFold):
+    __doc__ = inspect.getdoc(vendored_model_selection_split.KFold)
+
     def __init__(self, n_splits: int = 5, *, random_state: Union[int, None] = None):
         if n_splits < 2:
             raise ValueError(f"n_splits must be at least 2. Got {n_splits}")

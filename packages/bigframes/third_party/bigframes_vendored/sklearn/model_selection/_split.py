@@ -65,6 +65,80 @@ class KFold(_BaseKFold):
     Each fold is then used once as a validation while the k - 1 remaining
     folds form the training set.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.model_selection import KFold
+        >>> bpd.options.display.progress_bar = None
+        >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})
+        >>> y = bpd.DataFrame({"label": [1, 2, 3]})
+        >>> kf = KFold(n_splits=3, random_state=42)
+        >>> for i, (X_train, X_test, y_train, y_test) in enumerate(kf.split(X, y)):
+        ...     print(f"Fold {i}:")
+        ...     print(f"  X_train: {X_train}")
+        ...     print(f"  X_test: {X_test}")
+        ...     print(f"  y_train: {y_train}")
+        ...     print(f"  y_test: {y_test}")
+        ...
+        Fold 0:
+          X_train:    feat0  feat1
+        1      3      4
+        2      5      6
+        <BLANKLINE>
+        [2 rows x 2 columns]
+          X_test:    feat0  feat1
+        0      1      2
+        <BLANKLINE>
+        [1 rows x 2 columns]
+          y_train:    label
+        1      2
+        2      3
+        <BLANKLINE>
+        [2 rows x 1 columns]
+          y_test:    label
+        0      1
+        <BLANKLINE>
+        [1 rows x 1 columns]
+        Fold 1:
+          X_train:    feat0  feat1
+        0      1      2
+        2      5      6
+        <BLANKLINE>
+        [2 rows x 2 columns]
+          X_test:    feat0  feat1
+        1      3      4
+        <BLANKLINE>
+        [1 rows x 2 columns]
+          y_train:    label
+        0      1
+        2      3
+        <BLANKLINE>
+        [2 rows x 1 columns]
+          y_test:    label
+        1      2
+        <BLANKLINE>
+        [1 rows x 1 columns]
+        Fold 2:
+          X_train:    feat0  feat1
+        0      1      2
+        1      3      4
+        <BLANKLINE>
+        [2 rows x 2 columns]
+          X_test:    feat0  feat1
+        2      5      6
+        <BLANKLINE>
+        [1 rows x 2 columns]
+          y_train:    label
+        0      1
+        1      2
+        <BLANKLINE>
+        [2 rows x 1 columns]
+          y_test:    label
+        2      3
+        <BLANKLINE>
+        [1 rows x 1 columns]
+
+
     Args:
         n_splits (int):
             Number of folds. Must be at least 2. Default to 5.
@@ -83,6 +157,41 @@ def train_test_split(
     stratify=None,
 ):
     """Splits dataframes or series into random train and test subsets.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.model_selection import train_test_split
+        >>> bpd.options.display.progress_bar = None
+        >>> X = bpd.DataFrame({"feat0": [0, 2, 4, 6, 8], "feat1": [1, 3, 5, 7, 9]})
+        >>> y = bpd.DataFrame({"label": [0, 1, 2, 3, 4]})
+        >>> X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+        >>> X_train
+            feat0  feat1
+        0      0      1
+        1      2      3
+        4      8      9
+        <BLANKLINE>
+        [3 rows x 2 columns]
+        >>> y_train
+            label
+        0      0
+        1      1
+        4      4
+        <BLANKLINE>
+        [3 rows x 1 columns]
+        >>> X_test
+            feat0  feat1
+        2      4      5
+        3      6      7
+        <BLANKLINE>
+        [2 rows x 2 columns]
+        >>> y_test
+            label
+        2      2
+        3      3
+        <BLANKLINE>
+        [2 rows x 1 columns]
 
     Args:
         *arrays (bigframes.dataframe.DataFrame or bigframes.series.Series):

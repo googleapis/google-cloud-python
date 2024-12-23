@@ -14,6 +14,23 @@ functions to validate the model.
 def cross_validate(estimator, X, y=None, *, cv=None):
     """Evaluate metric(s) by cross-validation and also record fit/score times.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> from bigframes.ml.model_selection import cross_validate, KFold
+        >>> from bigframes.ml.linear_model import LinearRegression
+        >>> bpd.options.display.progress_bar = None
+        >>> X = bpd.DataFrame({"feat0": [1, 3, 5], "feat1": [2, 4, 6]})
+        >>> y = bpd.DataFrame({"label": [1, 2, 3]})
+        >>> model = LinearRegression()
+        >>> scores = cross_validate(model, X, y, cv=3) # doctest: +SKIP
+        >>> for score in scores["test_score"]: # doctest: +SKIP
+        ...   print(score["mean_squared_error"][0])
+        ...
+        5.218167286047954e-19
+        2.726229944928669e-18
+        1.6197635612324266e-17
+
     Args:
         estimator:
             bigframes.ml model that implements fit().
