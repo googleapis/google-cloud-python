@@ -47,7 +47,6 @@ async def sample_insert_css_product_input():
     request = css_v1.InsertCssProductInputRequest(
         parent="parent_value",
         css_product_input=css_product_input,
-        feed_id=704,
     )
 
     # Make the request

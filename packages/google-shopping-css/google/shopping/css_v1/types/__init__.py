@@ -43,6 +43,7 @@ from .css_product_inputs import (
     CssProductInput,
     DeleteCssProductInputRequest,
     InsertCssProductInputRequest,
+    UpdateCssProductInputRequest,
 )
 from .css_products import (
     CssProduct,
@@ -75,6 +76,7 @@ __all__ = (
     "CssProductInput",
     "DeleteCssProductInputRequest",
     "InsertCssProductInputRequest",
+    "UpdateCssProductInputRequest",
     "CssProduct",
     "GetCssProductRequest",
     "ListCssProductsRequest",

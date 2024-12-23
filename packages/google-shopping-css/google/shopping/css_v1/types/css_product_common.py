@@ -79,11 +79,11 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_cpp_ads_redirect``.
         low_price (google.shopping.type.types.Price):
-            Low Price of the aggregate offer.
+            Low Price of the CSS Product.
         high_price (google.shopping.type.types.Price):
-            High Price of the aggregate offer.
+            High Price of the CSS Product.
         number_of_offers (int):
-            The number of aggregate offers.
+            The number of CSS Products.
 
             This field is a member of `oneof`_ ``_number_of_offers``.
         headline_offer_condition (str):
@@ -91,7 +91,7 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_headline_offer_condition``.
         headline_offer_price (google.shopping.type.types.Price):
-            Headline Price of the aggregate offer.
+            Headline Price of the CSS Product.
         headline_offer_link (str):
             Link to the headline offer.
 
@@ -101,7 +101,7 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_headline_offer_mobile_link``.
         headline_offer_shipping_price (google.shopping.type.types.Price):
-            Headline Price of the aggregate offer.
+            Headline Price of the CSS Product.
         title (str):
             Title of the item.
 
@@ -678,13 +678,13 @@ class CssProductStatus(proto.Message):
                 The name of the destination
             approved_countries (MutableSequence[str]):
                 List of country codes (ISO 3166-1 alpha-2)
-                where the aggregate offer is approved.
+                where the CSS Product is approved.
             pending_countries (MutableSequence[str]):
                 List of country codes (ISO 3166-1 alpha-2)
-                where the aggregate offer is pending approval.
+                where the CSS Product is pending approval.
             disapproved_countries (MutableSequence[str]):
                 List of country codes (ISO 3166-1 alpha-2)
-                where the aggregate offer is disapproved.
+                where the CSS Product is disapproved.
         """
 
         destination: str = proto.Field(
@@ -711,8 +711,8 @@ class CssProductStatus(proto.Message):
             code (str):
                 The error code of the issue.
             servability (str):
-                How this issue affects serving of the
-                aggregate offer.
+                How this issue affects serving of the CSS
+                Product.
             resolution (str):
                 Whether the issue can be resolved by the
                 merchant.
@@ -730,7 +730,7 @@ class CssProductStatus(proto.Message):
                 this issue.
             applicable_countries (MutableSequence[str]):
                 List of country codes (ISO 3166-1 alpha-2)
-                where issue applies to the aggregate offer.
+                where issue applies to the CSS Product.
         """
 
         code: str = proto.Field(

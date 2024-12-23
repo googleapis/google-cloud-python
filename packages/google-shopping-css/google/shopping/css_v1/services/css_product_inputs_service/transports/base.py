@@ -134,6 +134,11 @@ class CssProductInputsServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_css_product_input: gapic_v1.method.wrap_method(
+                self.update_css_product_input,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.delete_css_product_input: gapic_v1.method.wrap_method(
                 self.delete_css_product_input,
                 default_timeout=60.0,
@@ -155,6 +160,18 @@ class CssProductInputsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [css_product_inputs.InsertCssProductInputRequest],
+        Union[
+            css_product_inputs.CssProductInput,
+            Awaitable[css_product_inputs.CssProductInput],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_css_product_input(
+        self,
+    ) -> Callable[
+        [css_product_inputs.UpdateCssProductInputRequest],
         Union[
             css_product_inputs.CssProductInput,
             Awaitable[css_product_inputs.CssProductInput],

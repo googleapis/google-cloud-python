@@ -366,6 +366,39 @@ class CssProductInputsServiceGrpcAsyncIOTransport(CssProductInputsServiceTranspo
         return self._stubs["insert_css_product_input"]
 
     @property
+    def update_css_product_input(
+        self,
+    ) -> Callable[
+        [css_product_inputs.UpdateCssProductInputRequest],
+        Awaitable[css_product_inputs.CssProductInput],
+    ]:
+        r"""Return a callable for the update css product input method over gRPC.
+
+        Updates the existing Css Product input in your CSS
+        Center account.
+        After inserting, updating, or deleting a CSS Product
+        input, it may take several minutes before the processed
+        Css Product can be retrieved.
+
+        Returns:
+            Callable[[~.UpdateCssProductInputRequest],
+                    Awaitable[~.CssProductInput]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_css_product_input" not in self._stubs:
+            self._stubs["update_css_product_input"] = self._logged_channel.unary_unary(
+                "/google.shopping.css.v1.CssProductInputsService/UpdateCssProductInput",
+                request_serializer=css_product_inputs.UpdateCssProductInputRequest.serialize,
+                response_deserializer=css_product_inputs.CssProductInput.deserialize,
+            )
+        return self._stubs["update_css_product_input"]
+
+    @property
     def delete_css_product_input(
         self,
     ) -> Callable[
@@ -401,6 +434,11 @@ class CssProductInputsServiceGrpcAsyncIOTransport(CssProductInputsServiceTranspo
         self._wrapped_methods = {
             self.insert_css_product_input: self._wrap_method(
                 self.insert_css_product_input,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_css_product_input: self._wrap_method(
+                self.update_css_product_input,
                 default_timeout=60.0,
                 client_info=client_info,
             ),

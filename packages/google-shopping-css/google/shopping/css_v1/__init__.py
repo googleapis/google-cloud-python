@@ -61,6 +61,7 @@ from .types.css_product_inputs import (
     CssProductInput,
     DeleteCssProductInputRequest,
     InsertCssProductInputRequest,
+    UpdateCssProductInputRequest,
 )
 from .types.css_products import (
     CssProduct,
@@ -105,4 +106,5 @@ __all__ = (
     "SubscriptionPeriod",
     "UpdateAccountLabelRequest",
     "UpdateAccountLabelsRequest",
+    "UpdateCssProductInputRequest",
 )
