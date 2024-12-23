@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import mutation_record as gm_mutation_record
@@ -366,6 +367,11 @@ class AlertPolicy(proto.Message):
             condition_prometheus_query_language (google.cloud.monitoring_v3.types.AlertPolicy.Condition.PrometheusQueryLanguageCondition):
                 A condition that uses the Prometheus query
                 language to define alerts.
+
+                This field is a member of `oneof`_ ``condition``.
+            condition_sql (google.cloud.monitoring_v3.types.AlertPolicy.Condition.SqlCondition):
+                A condition that periodically evaluates a SQL
+                query result.
 
                 This field is a member of `oneof`_ ``condition``.
         """
@@ -867,6 +873,17 @@ class AlertPolicy(proto.Message):
                     must be a `valid Prometheus label
                     name <https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels>`__.
                     This field may not exceed 2048 Unicode characters in length.
+                disable_metric_validation (bool):
+                    Optional. Whether to disable metric existence validation for
+                    this condition.
+
+                    This allows alerting policies to be defined on metrics that
+                    do not yet exist, improving advanced customer workflows such
+                    as configuring alerting policies using Terraform.
+
+                    Users with the ``monitoring.alertPolicyViewer`` role are
+                    able to see the name of the non-existent metric in the
+                    alerting policy condition.
             """
 
             query: str = proto.Field(
@@ -895,6 +912,218 @@ class AlertPolicy(proto.Message):
             alert_rule: str = proto.Field(
                 proto.STRING,
                 number=6,
+            )
+            disable_metric_validation: bool = proto.Field(
+                proto.BOOL,
+                number=7,
+            )
+
+        class SqlCondition(proto.Message):
+            r"""A condition that allows alerting policies to be defined using
+            GoogleSQL. SQL conditions examine a sliding window of logs using
+            GoogleSQL. Alert policies with SQL conditions may incur
+            additional billing.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                query (str):
+                    Required. The Log Analytics SQL query to run, as a string.
+                    The query must conform to the required shape. Specifically,
+                    the query must not try to filter the input by time. A filter
+                    will automatically be applied to filter the input so that
+                    the query receives all rows received since the last time the
+                    query was run.
+
+                    For example, the following query extracts all log entries
+                    containing an HTTP request:
+
+                    ::
+
+                        SELECT
+                          timestamp, log_name, severity, http_request, resource, labels
+                        FROM
+                          my-project.global._Default._AllLogs
+                        WHERE
+                          http_request IS NOT NULL
+                minutes (google.cloud.monitoring_v3.types.AlertPolicy.Condition.SqlCondition.Minutes):
+                    Schedule the query to execute every so many
+                    minutes.
+
+                    This field is a member of `oneof`_ ``schedule``.
+                hourly (google.cloud.monitoring_v3.types.AlertPolicy.Condition.SqlCondition.Hourly):
+                    Schedule the query to execute every so many
+                    hours.
+
+                    This field is a member of `oneof`_ ``schedule``.
+                daily (google.cloud.monitoring_v3.types.AlertPolicy.Condition.SqlCondition.Daily):
+                    Schedule the query to execute every so many
+                    days.
+
+                    This field is a member of `oneof`_ ``schedule``.
+                row_count_test (google.cloud.monitoring_v3.types.AlertPolicy.Condition.SqlCondition.RowCountTest):
+                    Test the row count against a threshold.
+
+                    This field is a member of `oneof`_ ``evaluate``.
+                boolean_test (google.cloud.monitoring_v3.types.AlertPolicy.Condition.SqlCondition.BooleanTest):
+                    Test the boolean value in the indicated
+                    column.
+
+                    This field is a member of `oneof`_ ``evaluate``.
+            """
+
+            class Minutes(proto.Message):
+                r"""Used to schedule the query to run every so many minutes.
+
+                Attributes:
+                    periodicity (int):
+                        Required. Number of minutes between runs. The
+                        interval must be greater than or equal to 5
+                        minutes and less than or equal to 1440 minutes.
+                """
+
+                periodicity: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+
+            class Hourly(proto.Message):
+                r"""Used to schedule the query to run every so many hours.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                Attributes:
+                    periodicity (int):
+                        Required. The number of hours between runs.
+                        Must be greater than or equal to 1 hour and less
+                        than or equal to 48 hours.
+                    minute_offset (int):
+                        Optional. The number of minutes after the
+                        hour (in UTC) to run the query. Must be greater
+                        than or equal to 0 minutes and less than or
+                        equal to 59 minutes.  If left unspecified, then
+                        an arbitrary offset is used.
+
+                        This field is a member of `oneof`_ ``_minute_offset``.
+                """
+
+                periodicity: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+                minute_offset: int = proto.Field(
+                    proto.INT32,
+                    number=2,
+                    optional=True,
+                )
+
+            class Daily(proto.Message):
+                r"""Used to schedule the query to run every so many days.
+
+                Attributes:
+                    periodicity (int):
+                        Required. The number of days between runs.
+                        Must be greater than or equal to 1 day and less
+                        than or equal to 31 days.
+                    execution_time (google.type.timeofday_pb2.TimeOfDay):
+                        Optional. The time of day (in UTC) at which
+                        the query should run. If left unspecified, the
+                        server picks an arbitrary time of day and runs
+                        the query at the same time each day.
+                """
+
+                periodicity: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+                execution_time: timeofday_pb2.TimeOfDay = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message=timeofday_pb2.TimeOfDay,
+                )
+
+            class RowCountTest(proto.Message):
+                r"""A test that checks if the number of rows in the result set
+                violates some threshold.
+
+                Attributes:
+                    comparison (google.cloud.monitoring_v3.types.ComparisonType):
+                        Required. The comparison to apply between the
+                        number of rows returned by the query and the
+                        threshold.
+                    threshold (int):
+                        Required. The value against which to compare
+                        the row count.
+                """
+
+                comparison: common.ComparisonType = proto.Field(
+                    proto.ENUM,
+                    number=1,
+                    enum=common.ComparisonType,
+                )
+                threshold: int = proto.Field(
+                    proto.INT64,
+                    number=2,
+                )
+
+            class BooleanTest(proto.Message):
+                r"""A test that uses an alerting result in a boolean column
+                produced by the SQL query.
+
+                Attributes:
+                    column (str):
+                        Required. The name of the column containing
+                        the boolean value. If the value in a row is
+                        NULL, that row is ignored.
+                """
+
+                column: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+
+            query: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            minutes: "AlertPolicy.Condition.SqlCondition.Minutes" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="schedule",
+                message="AlertPolicy.Condition.SqlCondition.Minutes",
+            )
+            hourly: "AlertPolicy.Condition.SqlCondition.Hourly" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="schedule",
+                message="AlertPolicy.Condition.SqlCondition.Hourly",
+            )
+            daily: "AlertPolicy.Condition.SqlCondition.Daily" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="schedule",
+                message="AlertPolicy.Condition.SqlCondition.Daily",
+            )
+            row_count_test: "AlertPolicy.Condition.SqlCondition.RowCountTest" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=5,
+                    oneof="evaluate",
+                    message="AlertPolicy.Condition.SqlCondition.RowCountTest",
+                )
+            )
+            boolean_test: "AlertPolicy.Condition.SqlCondition.BooleanTest" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=6,
+                    oneof="evaluate",
+                    message="AlertPolicy.Condition.SqlCondition.BooleanTest",
+                )
             )
 
         name: str = proto.Field(
@@ -934,6 +1163,12 @@ class AlertPolicy(proto.Message):
             number=21,
             oneof="condition",
             message="AlertPolicy.Condition.PrometheusQueryLanguageCondition",
+        )
+        condition_sql: "AlertPolicy.Condition.SqlCondition" = proto.Field(
+            proto.MESSAGE,
+            number=22,
+            oneof="condition",
+            message="AlertPolicy.Condition.SqlCondition",
         )
 
     class AlertStrategy(proto.Message):
