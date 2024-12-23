@@ -72,6 +72,7 @@ from google.shopping.css_v1.types.css_product_inputs import (
     CssProductInput,
     DeleteCssProductInputRequest,
     InsertCssProductInputRequest,
+    UpdateCssProductInputRequest,
 )
 from google.shopping.css_v1.types.css_products import (
     CssProduct,
@@ -112,6 +113,7 @@ __all__ = (
     "CssProductInput",
     "DeleteCssProductInputRequest",
     "InsertCssProductInputRequest",
+    "UpdateCssProductInputRequest",
     "CssProduct",
     "GetCssProductRequest",
     "ListCssProductsRequest",

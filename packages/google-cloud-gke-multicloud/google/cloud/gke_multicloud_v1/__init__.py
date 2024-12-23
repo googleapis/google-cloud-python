@@ -156,6 +156,7 @@ from .types.azure_service import (
 )
 from .types.common_resources import (
     BinaryAuthorization,
+    CloudMonitoringConfig,
     Fleet,
     Jwk,
     LoggingComponentConfig,
@@ -235,6 +236,7 @@ __all__ = (
     "AzureServicesAuthentication",
     "AzureSshConfig",
     "BinaryAuthorization",
+    "CloudMonitoringConfig",
     "CreateAttachedClusterRequest",
     "CreateAwsClusterRequest",
     "CreateAwsNodePoolRequest",

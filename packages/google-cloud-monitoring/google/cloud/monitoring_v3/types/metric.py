@@ -128,7 +128,14 @@ class TimeSeries(proto.Message):
             The units in which the metric value is reported. It is only
             applicable if the ``value_type`` is ``INT64``, ``DOUBLE``,
             or ``DISTRIBUTION``. The ``unit`` defines the representation
-            of the stored metric values.
+            of the stored metric values. This field can only be changed
+            through CreateTimeSeries when it is empty.
+        description (str):
+            Input only. A detailed description of the time series that
+            will be associated with the
+            [google.api.MetricDescriptor][google.api.MetricDescriptor]
+            for the metric. Once set, this field cannot be changed
+            through CreateTimeSeries.
     """
 
     metric: metric_pb2.Metric = proto.Field(
@@ -164,6 +171,10 @@ class TimeSeries(proto.Message):
     unit: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 

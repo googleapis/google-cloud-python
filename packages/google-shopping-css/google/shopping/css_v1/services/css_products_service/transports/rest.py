@@ -280,9 +280,7 @@ class CssProductsServiceRestTransport(_BaseCssProductsServiceRestTransport):
 
             Returns:
                 ~.css_products.CssProduct:
-                    The processed CSS Product(a.k.a
-                Aggregate Offer internally).
-
+                    The processed CSS Product.
             """
 
             http_options = (

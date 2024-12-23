@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "LoggingComponentConfig",
         "MonitoringConfig",
         "ManagedPrometheusConfig",
+        "CloudMonitoringConfig",
         "BinaryAuthorization",
         "SecurityPostureConfig",
     },
@@ -172,9 +173,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether it has been requested
             cancellation for the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -448,12 +451,20 @@ class MonitoringConfig(proto.Message):
         managed_prometheus_config (google.cloud.gke_multicloud_v1.types.ManagedPrometheusConfig):
             Enable Google Cloud Managed Service for
             Prometheus in the cluster.
+        cloud_monitoring_config (google.cloud.gke_multicloud_v1.types.CloudMonitoringConfig):
+            Optionally enable GKE metrics.
+            Only for Attached Clusters.
     """
 
     managed_prometheus_config: "ManagedPrometheusConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ManagedPrometheusConfig",
+    )
+    cloud_monitoring_config: "CloudMonitoringConfig" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="CloudMonitoringConfig",
     )
 
 
@@ -469,6 +480,29 @@ class ManagedPrometheusConfig(proto.Message):
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class CloudMonitoringConfig(proto.Message):
+    r"""CloudMonitoringConfig defines the configuration for
+    built-in Cloud Logging and Monitoring.
+    Only for Attached Clusters.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            Enable GKE-native logging and metrics.
+            Only for Attached Clusters.
+
+            This field is a member of `oneof`_ ``_enabled``.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
     )
 
 

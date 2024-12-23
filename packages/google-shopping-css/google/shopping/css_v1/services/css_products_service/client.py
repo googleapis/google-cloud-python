@@ -746,9 +746,7 @@ class CssProductsServiceClient(metaclass=CssProductsServiceClientMeta):
 
         Returns:
             google.shopping.css_v1.types.CssProduct:
-                The processed CSS Product(a.k.a
-                Aggregate Offer internally).
-
+                The processed CSS Product.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have

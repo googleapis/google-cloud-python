@@ -137,6 +137,22 @@ class AttachedCluster(proto.Message):
         security_posture_config (google.cloud.gke_multicloud_v1.types.SecurityPostureConfig):
             Optional. Security Posture configuration for
             this cluster.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Tag keys/values directly bound to this
+            resource.
+
+            Tag key must be specified in the format / where the tag
+            namespace is the ID of the organization or name of the
+            project that the tag key is defined in. The short name of a
+            tag key or value can have a maximum length of 256
+            characters. The permitted character set for the short name
+            includes UTF-8 encoded Unicode characters except single
+            quotes ('), double quotes ("), backslashes (), and forward
+            slashes (/).
+
+            See
+            `Tags <http://cloud/resource-manager/docs/tags/tags-overview>`__
+            for more details on Google Cloud Platform tags.
     """
 
     class State(proto.Enum):
@@ -279,6 +295,11 @@ class AttachedCluster(proto.Message):
         proto.MESSAGE,
         number=26,
         message=common_resources.SecurityPostureConfig,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=27,
     )
 
 
@@ -449,6 +470,10 @@ class AttachedProxyConfig(proto.Message):
             the HTTP(S) proxy configuration. The secret must
             be a JSON encoded proxy configuration as
             described in
+            https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/eks/how-to/use-a-proxy#configure-proxy-support
+            for EKS clusters and
+            https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/aks/how-to/use-a-proxy#configure-proxy-support
+            for AKS clusters.
     """
 
     kubernetes_secret: "KubernetesSecret" = proto.Field(
