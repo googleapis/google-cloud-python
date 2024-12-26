@@ -406,12 +406,19 @@ def arrow_dtype_to_bigframes_dtype(arrow_dtype: pa.DataType) -> Dtype:
         return pd.ArrowDtype(arrow_dtype)
     if pa.types.is_struct(arrow_dtype):
         return pd.ArrowDtype(arrow_dtype)
+
+    # BigFrames doesn't distinguish between string and large_string because the
+    # largest string (2 GB) is already larger than the largest BigQuery row.
+    if pa.types.is_string(arrow_dtype) or pa.types.is_large_string(arrow_dtype):
+        return STRING_DTYPE
+
     if arrow_dtype == pa.null():
         return DEFAULT_DTYPE
-    else:
-        raise ValueError(
-            f"Unexpected Arrow data type {arrow_dtype}. {constants.FEEDBACK_LINK}"
-        )
+
+    # No other types matched.
+    raise ValueError(
+        f"Unexpected Arrow data type {arrow_dtype}. {constants.FEEDBACK_LINK}"
+    )
 
 
 _BIGFRAMES_TO_ARROW = {

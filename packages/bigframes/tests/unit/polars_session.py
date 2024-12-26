@@ -87,7 +87,7 @@ class TestSession(bigframes.session.Session):
         self._executor = TestExecutor()
         self._loader = None  # type: ignore
 
-    def read_pandas(self, pandas_dataframe):
+    def read_pandas(self, pandas_dataframe, write_engine="default"):
         # override read_pandas to always keep data local-only
         local_block = bigframes.core.blocks.Block.from_local(pandas_dataframe, self)
         return bigframes.dataframe.DataFrame(local_block)

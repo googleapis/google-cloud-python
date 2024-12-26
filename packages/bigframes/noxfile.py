@@ -620,9 +620,10 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
         "git+https://github.com/googleapis/python-bigquery-storage.git#egg=google-cloud-bigquery-storage",
     )
     already_installed.add("google-cloud-bigquery-storage")
-
-    # Workaround to install pandas-gbq >=0.15.0, which is required by test only.
-    session.install("--no-deps", "pandas-gbq")
+    session.install(
+        "--upgrade",
+        "git+https://github.com/googleapis/python-bigquery-pandas.git#egg=pandas-gbq",
+    )
     already_installed.add("pandas-gbq")
 
     session.install(

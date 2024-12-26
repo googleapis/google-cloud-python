@@ -33,27 +33,26 @@ import google.cloud.bigquery_storage_v1
 import google.cloud.functions_v2
 import google.cloud.resourcemanager_v3
 import jellyfish
-import numpy as np
 import pandas
+import pandas_gbq.schema.pandas_to_bigquery  # type: ignore
 
 import bigframes.clients
 import bigframes.constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.compile
+import bigframes.core.expression as expression
 import bigframes.core.guid
 import bigframes.core.pruning
 import bigframes.core.schema as schemata
-import bigframes.core.utils as utils
-
-# Even though the ibis.backends.bigquery import is unused, it's needed
-# to register new and replacement ops with the Ibis BigQuery backend.
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions
 import bigframes.formatting_helpers as formatting_helpers
+import bigframes.operations.aggregations as agg_ops
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
+import bigframes.session._io.pandas as bf_io_pandas
 import bigframes.session.clients
 import bigframes.session.executor
 import bigframes.session.metrics
@@ -137,45 +136,28 @@ class GbqDataLoader:
     ) -> dataframe.DataFrame:
         import bigframes.dataframe as dataframe
 
-        col_index = pandas_dataframe.columns.copy()
-        col_labels, idx_labels = (
-            col_index.to_list(),
-            pandas_dataframe.index.names,
-        )
-        new_col_ids, new_idx_ids = utils.get_standardized_ids(
-            col_labels,
-            idx_labels,
-            # Loading parquet files into BigQuery with special column names
-            # is only supported under an allowlist.
-            strict=True,
-        )
+        df_and_labels = bf_io_pandas.pandas_to_bq_compatible(pandas_dataframe)
+        pandas_dataframe_copy = df_and_labels.df
+        new_idx_ids = pandas_dataframe_copy.index.names
+        ordering_col = df_and_labels.ordering_col
 
-        # Add order column to pandas DataFrame to preserve order in BigQuery
-        ordering_col = "rowid"
-        columns = frozenset(col_labels + idx_labels)
-        suffix = 2
-        while ordering_col in columns:
-            ordering_col = f"rowid_{suffix}"
-            suffix += 1
-
-        # Maybe should just convert to pyarrow or parquet?
-        pandas_dataframe_copy = pandas_dataframe.copy()
-        pandas_dataframe_copy.index.names = new_idx_ids
-        pandas_dataframe_copy.columns = pandas.Index(new_col_ids)
-        pandas_dataframe_copy[ordering_col] = np.arange(pandas_dataframe_copy.shape[0])
-        pandas_dataframe_copy = pandas_dataframe_copy.reset_index(drop=False)
+        # TODO(https://github.com/googleapis/python-bigquery-pandas/issues/760):
+        # Once pandas-gbq can show a link to the running load job like
+        # bigframes does, switch to using pandas-gbq to load the
+        # bigquery-compatible pandas DataFrame.
+        schema: list[
+            bigquery.SchemaField
+        ] = pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(
+            pandas_dataframe_copy,
+            index=True,
+        )
 
         job_config = bigquery.LoadJobConfig()
-        # Specify the datetime dtypes, which is auto-detected as timestamp types.
-        schema: list[bigquery.SchemaField] = []
-        for column, dtype in zip(new_col_ids, pandas_dataframe.dtypes):
-            if dtype == "timestamp[us][pyarrow]":
-                schema.append(
-                    bigquery.SchemaField(column, bigquery.enums.SqlTypeNames.DATETIME)
-                )
         job_config.schema = schema
 
-        # Clustering probably not needed anyways as pandas tables are small
+        # TODO: Remove this. It's likely that the slower load job due to
+        # clustering doesn't improve speed of queries because pandas tables are
+        # small.
         cluster_cols = [ordering_col]
         job_config.clustering_fields = cluster_cols
 
@@ -201,8 +183,79 @@ class GbqDataLoader:
         block = blocks.Block(
             array_value,
             index_columns=new_idx_ids,
-            column_labels=col_index,
-            index_labels=idx_labels,
+            column_labels=df_and_labels.column_labels,
+            index_labels=df_and_labels.index_labels,
+        )
+        return dataframe.DataFrame(block)
+
+    def read_pandas_streaming(
+        self,
+        pandas_dataframe: pandas.DataFrame,
+    ) -> dataframe.DataFrame:
+        """Same as pandas_to_bigquery_load, but uses the BQ legacy streaming API."""
+        import bigframes.dataframe as dataframe
+
+        df_and_labels = bf_io_pandas.pandas_to_bq_compatible(pandas_dataframe)
+        pandas_dataframe_copy = df_and_labels.df
+        new_idx_ids = pandas_dataframe_copy.index.names
+        ordering_col = df_and_labels.ordering_col
+
+        # TODO(https://github.com/googleapis/python-bigquery-pandas/issues/300):
+        # Once pandas-gbq can do streaming inserts (again), switch to using
+        # pandas-gbq to write the bigquery-compatible pandas DataFrame.
+        schema: list[
+            bigquery.SchemaField
+        ] = pandas_gbq.schema.pandas_to_bigquery.dataframe_to_bigquery_fields(
+            pandas_dataframe_copy,
+            index=True,
+        )
+
+        destination = self._storage_manager.create_temp_table(
+            schema,
+            [ordering_col],
+        )
+        destination_table = bigquery.Table(destination, schema=schema)
+        # TODO(swast): Confirm that the index is written.
+        for errors in self._bqclient.insert_rows_from_dataframe(
+            destination_table,
+            pandas_dataframe_copy,
+        ):
+            if errors:
+                raise ValueError(
+                    f"Problem loading at least one row from DataFrame: {errors}. {constants.FEEDBACK_LINK}"
+                )
+
+        array_value = (
+            core.ArrayValue.from_table(
+                table=destination_table,
+                schema=schemata.ArraySchema.from_bq_table(destination_table),
+                session=self._session,
+                # Don't set the offsets column because we want to group by it.
+            )
+            # There may be duplicate rows because of hidden retries, so use a query to
+            # deduplicate based on the ordering ID, which is guaranteed to be unique.
+            # We know that rows with same ordering ID are duplicates,
+            # so ANY_VALUE() is deterministic.
+            .aggregate(
+                by_column_ids=[ordering_col],
+                aggregations=[
+                    (
+                        expression.UnaryAggregation(
+                            agg_ops.AnyValueOp(),
+                            expression.deref(field.name),
+                        ),
+                        field.name,
+                    )
+                    for field in destination_table.schema
+                    if field.name != ordering_col
+                ],
+            ).drop_columns([ordering_col])
+        )
+        block = blocks.Block(
+            array_value,
+            index_columns=new_idx_ids,
+            column_labels=df_and_labels.column_labels,
+            index_labels=df_and_labels.index_labels,
         )
         return dataframe.DataFrame(block)
 

@@ -74,7 +74,7 @@ def test_ibis_dtype_converts(ibis_dtype, bigframes_dtype):
 
 def test_ibis_timestamp_pst_raises_unexpected_datatype():
     """BigQuery timestamp only supports UTC time"""
-    with pytest.raises(ValueError, match="Unexpected Ibis data type"):
+    with pytest.raises(ValueError, match="'PST'"):
         bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
             ibis_dtypes.Timestamp(timezone="PST")
         )

@@ -75,6 +75,7 @@ import bigframes.session.loader
 import bigframes.session.metrics
 import bigframes.session.planner
 import bigframes.session.temp_storage
+import bigframes.session.validation
 import bigframes.version
 
 # Avoid circular imports.
@@ -105,12 +106,13 @@ MAX_INLINE_DF_BYTES = 5000
 
 logger = logging.getLogger(__name__)
 
-# Excludes geography, bytes, and nested (array, struct) datatypes
+# Excludes geography and nested (array, struct) datatypes
 INLINABLE_DTYPES: Sequence[bigframes.dtypes.Dtype] = (
     pandas.BooleanDtype(),
     pandas.Float64Dtype(),
     pandas.Int64Dtype(),
     pandas.StringDtype(storage="pyarrow"),
+    pandas.ArrowDtype(pa.binary()),
     pandas.ArrowDtype(pa.date32()),
     pandas.ArrowDtype(pa.time64("us")),
     pandas.ArrowDtype(pa.timestamp("us")),
@@ -643,20 +645,36 @@ class Session(
 
     @typing.overload
     def read_pandas(
-        self, pandas_dataframe: pandas.Index
+        self,
+        pandas_dataframe: pandas.Index,
+        *,
+        write_engine: constants.WriteEngineType = "default",
     ) -> bigframes.core.indexes.Index:
         ...
 
     @typing.overload
-    def read_pandas(self, pandas_dataframe: pandas.Series) -> bigframes.series.Series:
+    def read_pandas(
+        self,
+        pandas_dataframe: pandas.Series,
+        *,
+        write_engine: constants.WriteEngineType = "default",
+    ) -> bigframes.series.Series:
         ...
 
     @typing.overload
-    def read_pandas(self, pandas_dataframe: pandas.DataFrame) -> dataframe.DataFrame:
+    def read_pandas(
+        self,
+        pandas_dataframe: pandas.DataFrame,
+        *,
+        write_engine: constants.WriteEngineType = "default",
+    ) -> dataframe.DataFrame:
         ...
 
     def read_pandas(
-        self, pandas_dataframe: Union[pandas.DataFrame, pandas.Series, pandas.Index]
+        self,
+        pandas_dataframe: Union[pandas.DataFrame, pandas.Series, pandas.Index],
+        *,
+        write_engine: constants.WriteEngineType = "default",
     ):
         """Loads DataFrame from a pandas DataFrame.
 
@@ -687,6 +705,24 @@ class Session(
         Args:
             pandas_dataframe (pandas.DataFrame, pandas.Series, or pandas.Index):
                 a pandas DataFrame/Series/Index object to be loaded.
+            write_engine (str):
+                How data should be written to BigQuery (if at all). Supported
+                values:
+
+                * "default":
+                  (Recommended) Select an appropriate mechanism to write data
+                  to BigQuery. Depends on data size and supported data types.
+                * "bigquery_inline":
+                  Inline data in BigQuery SQL. Use this when you know the data
+                  is small enough to fit within BigQuery's 1 MB query text size
+                  limit.
+                * "bigquery_load":
+                  Use a BigQuery load job. Use this for larger data sizes.
+                * "bigquery_streaming":
+                  Use the BigQuery streaming JSON API. Use this if your
+                  workload is such that you exhaust the BigQuery load job
+                  quota and your data cannot be embedded in SQL due to size or
+                  data type limitations.
 
         Returns:
             An equivalent bigframes.pandas.(DataFrame/Series/Index) object
@@ -699,24 +735,36 @@ class Session(
 
         # Try to handle non-dataframe pandas objects as well
         if isinstance(pandas_dataframe, pandas.Series):
-            bf_df = self._read_pandas(pandas.DataFrame(pandas_dataframe), "read_pandas")
+            bf_df = self._read_pandas(
+                pandas.DataFrame(pandas_dataframe),
+                "read_pandas",
+                write_engine=write_engine,
+            )
             bf_series = series.Series(bf_df._block)
             # wrapping into df can set name to 0 so reset to original object name
             bf_series.name = pandas_dataframe.name
             return bf_series
         if isinstance(pandas_dataframe, pandas.Index):
             return self._read_pandas(
-                pandas.DataFrame(index=pandas_dataframe), "read_pandas"
+                pandas.DataFrame(index=pandas_dataframe),
+                "read_pandas",
+                write_engine=write_engine,
             ).index
         if isinstance(pandas_dataframe, pandas.DataFrame):
-            return self._read_pandas(pandas_dataframe, "read_pandas")
+            return self._read_pandas(
+                pandas_dataframe, "read_pandas", write_engine=write_engine
+            )
         else:
             raise ValueError(
                 f"read_pandas() expects a pandas.DataFrame, but got a {type(pandas_dataframe)}"
             )
 
     def _read_pandas(
-        self, pandas_dataframe: pandas.DataFrame, api_name: str
+        self,
+        pandas_dataframe: pandas.DataFrame,
+        api_name: str,
+        *,
+        write_engine: constants.WriteEngineType = "default",
     ) -> dataframe.DataFrame:
         import bigframes.dataframe as dataframe
 
@@ -726,18 +774,23 @@ class Session(
                 "bigframes.pandas.DataFrame."
             )
 
-        inline_df = self._read_pandas_inline(pandas_dataframe)
-        if inline_df is not None:
-            return inline_df
-        try:
-            return self._loader.read_pandas_load_job(pandas_dataframe, api_name)
-        except pa.ArrowInvalid as e:
-            raise pa.ArrowInvalid(
-                f"Could not convert with a BigQuery type: `{e}`. "
-            ) from e
+        if write_engine == "default":
+            inline_df = self._read_pandas_inline(pandas_dataframe, should_raise=False)
+            if inline_df is not None:
+                return inline_df
+            return self._read_pandas_load_job(pandas_dataframe, api_name)
+        elif write_engine == "bigquery_inline":
+            # Regarding the type: ignore, with should_raise=True, this should never return None.
+            return self._read_pandas_inline(pandas_dataframe, should_raise=True)  # type: ignore
+        elif write_engine == "bigquery_load":
+            return self._read_pandas_load_job(pandas_dataframe, api_name)
+        elif write_engine == "bigquery_streaming":
+            return self._read_pandas_streaming(pandas_dataframe)
+        else:
+            raise ValueError(f"Got unexpected write_engine '{write_engine}'")
 
     def _read_pandas_inline(
-        self, pandas_dataframe: pandas.DataFrame
+        self, pandas_dataframe: pandas.DataFrame, should_raise=False
     ) -> Optional[dataframe.DataFrame]:
         import bigframes.dataframe as dataframe
 
@@ -747,18 +800,52 @@ class Session(
         try:
             local_block = blocks.Block.from_local(pandas_dataframe, self)
             inline_df = dataframe.DataFrame(local_block)
-        except pa.ArrowInvalid:  # Thrown by arrow for unsupported types, such as geo.
-            return None
-        except ValueError:  # Thrown by ibis for some unhandled types
-            return None
-        except pa.ArrowTypeError:  # Thrown by arrow for types without mapping (geo).
-            return None
+        except (
+            pa.ArrowInvalid,  # Thrown by arrow for unsupported types, such as geo.
+            pa.ArrowTypeError,  # Thrown by arrow for types without mapping (geo).
+            ValueError,  # Thrown by ibis for some unhandled types
+        ) as exc:
+            if should_raise:
+                raise ValueError(
+                    f"Could not convert with a BigQuery type: `{exc}`. "
+                ) from exc
+            else:
+                return None
 
         inline_types = inline_df._block.expr.schema.dtypes
-        # Ibis has problems escaping bytes literals, which will cause syntax errors server-side.
-        if all(dtype in INLINABLE_DTYPES for dtype in inline_types):
+
+        # Make sure all types are inlinable to avoid escaping errors.
+        noninlinable_types = [
+            dtype for dtype in inline_types if dtype not in INLINABLE_DTYPES
+        ]
+        if len(noninlinable_types) == 0:
             return inline_df
-        return None
+
+        if should_raise:
+            raise ValueError(
+                f"Could not inline with a BigQuery type: `{noninlinable_types}`. "
+                f"{constants.FEEDBACK_LINK}"
+            )
+        else:
+            return None
+
+    def _read_pandas_load_job(
+        self,
+        pandas_dataframe: pandas.DataFrame,
+        api_name: str,
+    ) -> dataframe.DataFrame:
+        try:
+            return self._loader.read_pandas_load_job(pandas_dataframe, api_name)
+        except (pa.ArrowInvalid, pa.ArrowTypeError) as exc:
+            raise ValueError(
+                f"Could not convert with a BigQuery type: `{exc}`."
+            ) from exc
+
+    def _read_pandas_streaming(
+        self,
+        pandas_dataframe: pandas.DataFrame,
+    ) -> dataframe.DataFrame:
+        return self._loader.read_pandas_streaming(pandas_dataframe)
 
     def read_csv(
         self,
@@ -794,8 +881,13 @@ class Session(
             Literal["c", "python", "pyarrow", "python-fwf", "bigquery"]
         ] = None,
         encoding: Optional[str] = None,
+        write_engine: constants.WriteEngineType = "default",
         **kwargs,
     ) -> dataframe.DataFrame:
+        bigframes.session.validation.validate_engine_compatibility(
+            engine=engine,
+            write_engine=write_engine,
+        )
         table = self._temp_storage_manager._random_table()
 
         if engine is not None and engine == "bigquery":
@@ -906,13 +998,15 @@ class Session(
                 encoding=encoding,
                 **kwargs,
             )
-            return self._read_pandas(pandas_df, "read_csv")  # type: ignore
+            return self._read_pandas(pandas_df, api_name="read_csv", write_engine=write_engine)  # type: ignore
 
     def read_pickle(
         self,
         filepath_or_buffer: FilePath | ReadPickleBuffer,
         compression: CompressionOptions = "infer",
         storage_options: StorageOptions = None,
+        *,
+        write_engine: constants.WriteEngineType = "default",
     ):
         pandas_obj = pandas.read_pickle(
             filepath_or_buffer,
@@ -925,14 +1019,21 @@ class Session(
                 pandas_obj.name = 0
             bigframes_df = self._read_pandas(pandas_obj.to_frame(), "read_pickle")
             return bigframes_df[bigframes_df.columns[0]]
-        return self._read_pandas(pandas_obj, "read_pickle")
+        return self._read_pandas(
+            pandas_obj, api_name="read_pickle", write_engine=write_engine
+        )
 
     def read_parquet(
         self,
         path: str | IO["bytes"],
         *,
         engine: str = "auto",
+        write_engine: constants.WriteEngineType = "default",
     ) -> dataframe.DataFrame:
+        bigframes.session.validation.validate_engine_compatibility(
+            engine=engine,
+            write_engine=write_engine,
+        )
         table = self._temp_storage_manager._random_table()
 
         if engine == "bigquery":
@@ -965,7 +1066,9 @@ class Session(
                 engine=engine,  # type: ignore
                 **read_parquet_kwargs,
             )
-            return self._read_pandas(pandas_obj, "read_parquet")
+            return self._read_pandas(
+                pandas_obj, api_name="read_parquet", write_engine=write_engine
+            )
 
     def read_json(
         self,
@@ -978,8 +1081,13 @@ class Session(
         encoding: Optional[str] = None,
         lines: bool = False,
         engine: Literal["ujson", "pyarrow", "bigquery"] = "ujson",
+        write_engine: constants.WriteEngineType = "default",
         **kwargs,
     ) -> dataframe.DataFrame:
+        bigframes.session.validation.validate_engine_compatibility(
+            engine=engine,
+            write_engine=write_engine,
+        )
         table = self._temp_storage_manager._random_table()
 
         if engine == "bigquery":
@@ -1046,7 +1154,9 @@ class Session(
                     engine=engine,
                     **kwargs,
                 )
-            return self._read_pandas(pandas_df, "read_json")
+            return self._read_pandas(
+                pandas_df, api_name="read_json", write_engine=write_engine
+            )
 
     def _check_file_size(self, filepath: str):
         max_size = 1024 * 1024 * 1024  # 1 GB in bytes

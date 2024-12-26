@@ -13,10 +13,12 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Union
+import dataclasses
+from typing import Collection, Union
 
 import bigframes_vendored.constants as constants
 import geopandas  # type: ignore
+import numpy as np
 import pandas
 import pandas.arrays
 import pyarrow  # type: ignore
@@ -24,8 +26,17 @@ import pyarrow.compute  # type: ignore
 import pyarrow.types  # type: ignore
 
 import bigframes.core.schema
+import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.features
+
+
+@dataclasses.dataclass(frozen=True)
+class DataFrameAndLabels:
+    df: pandas.DataFrame
+    column_labels: Collection
+    index_labels: Collection
+    ordering_col: str
 
 
 def _arrow_to_pandas_arrowdtype(
@@ -117,3 +128,41 @@ def arrow_to_pandas(
         serieses[field.name] = series
 
     return pandas.DataFrame(serieses)
+
+
+def pandas_to_bq_compatible(pandas_dataframe: pandas.DataFrame) -> DataFrameAndLabels:
+    """Convert a pandas DataFrame into something compatible with uploading to a
+    BigQuery table (without flexible column names enabled).
+    """
+    col_index = pandas_dataframe.columns.copy()
+    col_labels, idx_labels = (
+        col_index.to_list(),
+        pandas_dataframe.index.names,
+    )
+    new_col_ids, new_idx_ids = utils.get_standardized_ids(
+        col_labels,
+        idx_labels,
+        # Loading parquet files into BigQuery with special column names
+        # is only supported under an allowlist.
+        strict=True,
+    )
+
+    # Add order column to pandas DataFrame to preserve order in BigQuery
+    ordering_col = "rowid"
+    columns = frozenset(col_labels + idx_labels)
+    suffix = 2
+    while ordering_col in columns:
+        ordering_col = f"rowid_{suffix}"
+        suffix += 1
+
+    pandas_dataframe_copy = pandas_dataframe.copy()
+    pandas_dataframe_copy.index.names = new_idx_ids
+    pandas_dataframe_copy.columns = pandas.Index(new_col_ids)
+    pandas_dataframe_copy[ordering_col] = np.arange(pandas_dataframe_copy.shape[0])
+
+    return DataFrameAndLabels(
+        df=pandas_dataframe_copy,
+        column_labels=col_labels,
+        index_labels=idx_labels,
+        ordering_col=ordering_col,
+    )
