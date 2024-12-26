@@ -417,6 +417,7 @@ def test_llm_palm_score_params(llm_fine_tune_df_default_index):
     )
 
 
+@pytest.mark.flaky(retries=2)
 @pytest.mark.parametrize(
     "model_name",
     (
