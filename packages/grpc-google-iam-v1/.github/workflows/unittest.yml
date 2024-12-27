@@ -5,10 +5,10 @@ on:
 name: unittest
 jobs:
   unit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -31,6 +31,7 @@ jobs:
       with:
         name: coverage-artifact-${{ matrix.python }}
         path: .coverage-${{ matrix.python }}
+        include-hidden-files: true
 
   cover:
     runs-on: ubuntu-latest

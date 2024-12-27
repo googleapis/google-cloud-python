@@ -17,6 +17,7 @@ import pathlib
 from pathlib import Path
 import re
 import shutil
+import tempfile
 
 import nox
 
@@ -29,7 +30,7 @@ LINT_PATHS = ["docs", "google", "noxfile.py", "setup.py"]
 GRPCIO_TOOLS_VERSION = "grpcio-tools==1.59.0"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 
 @nox.session(python="3.8")
@@ -51,39 +52,38 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--strict")
 
 
-def unit(session, repository, package, prerelease, protobuf_implementation):
+def unit(
+    session, repository, package, prerelease, protobuf_implementation, working_dir
+):
     """Run the unit test suite."""
     downstream_dir = repository
     if package:
         downstream_dir = f"{repository}/packages/{package}"
 
     # Install all test dependencies, then install this package in-place.
-    session.install("asyncmock", "pytest-asyncio")
+    session.install("asyncmock", "pytest-asyncio", "flaky")
 
     # Pin mock due to https://github.com/googleapis/python-pubsub/issues/840
     session.install("mock==5.0.0", "pytest", "pytest-cov")
 
-    install_command = ["-e", f"{CURRENT_DIRECTORY}/{downstream_dir}"]
-
     if prerelease:
+        session.install("-e", f"{working_dir}/{downstream_dir}")
         install_prerelease_dependencies(
             session,
-            f"{CURRENT_DIRECTORY}/{downstream_dir}/testing/constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+            f"{working_dir}/{downstream_dir}/testing/constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
         )
-        # Use the `--no-deps` options to allow pre-release versions of dependencies to be installed
-        install_command.extend(["--no-deps"])
     else:
+        install_command = ["-e", f"{working_dir}/{downstream_dir}"]
         # Install the pinned dependencies in constraints file
         install_command.extend(
             [
                 "-c",
-                f"{CURRENT_DIRECTORY}/{downstream_dir}/testing/constraints-{session.python}.txt",
+                f"{working_dir}/{downstream_dir}/testing/constraints-{session.python}.txt",
             ]
         )
+        session.install(*install_command)
 
     # These *must* be the last 3 install commands to get the packages from source.
-    session.install(*install_command)
-
     # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
     # The 'cpp' implementation requires Protobuf<4.
     if protobuf_implementation == "cpp":
@@ -104,11 +104,12 @@ def unit(session, repository, package, prerelease, protobuf_implementation):
     )
 
     # Run py.test against the unit tests in the downstream repository
-    with session.chdir(downstream_dir):
+    with session.chdir(f"{working_dir}/{downstream_dir}"):
         # Run py.test against the unit tests.
         session.run(
             "py.test",
             "--quiet",
+            f"--junitxml=unit_{session.python}_sponge_log.xml",
             "--cov=google/cloud",
             "--cov=tests/unit",
             "--cov-append",
@@ -189,28 +190,27 @@ def unit_remote(session, library, prerelease, protobuf_implementation):
     * Speech: Full GAPIC, has long running operations.
     """
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     repository, package = library
-    try:
-        session.run("git", "-C", repository, "pull", external=True)
-    except nox.command.CommandFailed:
+    with tempfile.TemporaryDirectory() as working_dir:
         session.run(
             "git",
             "clone",
             "--single-branch",
             f"https://github.com/googleapis/{repository}",
+            f"{working_dir}/{repository}",
             external=True,
         )
-
-    unit(
-        session=session,
-        repository=repository,
-        package=package,
-        prerelease=prerelease,
-        protobuf_implementation=protobuf_implementation,
-    )
+        unit(
+            session=session,
+            repository=repository,
+            package=package,
+            prerelease=prerelease,
+            protobuf_implementation=protobuf_implementation,
+            working_dir=working_dir,
+        )
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
@@ -224,7 +224,7 @@ def unit_local(session, protobuf_implementation):
     # The 'cpp' implementation requires Protobuf == 3.x however version 3.x
     # does not support Python 3.11 and newer. The 'cpp' implementation
     # must be excluded from the test matrix for these runtimes.
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
