@@ -63,7 +63,7 @@ class dataplexCallTransformer(cst.CSTTransformer):
         'delete_content': ('name', ),
         'delete_data_attribute': ('name', 'etag', ),
         'delete_data_attribute_binding': ('name', 'etag', ),
-        'delete_data_scan': ('name', ),
+        'delete_data_scan': ('name', 'force', ),
         'delete_data_taxonomy': ('name', 'etag', ),
         'delete_entity': ('name', 'etag', ),
         'delete_entry': ('name', ),
