@@ -1625,7 +1625,7 @@ class UpdateEntryRequest(proto.Message):
                an aspect to a field that is specified by the ``schema``
                aspect, the path should have the format
                ``Schema.<field_name>``.
-            -  ``<aspect_type_reference>*`` - matches aspects of the
+            -  ``<aspect_type_reference>@*`` - matches aspects of the
                given type for all paths.
             -  ``*@path`` - matches aspects of all types on the given
                path.
@@ -1860,8 +1860,10 @@ class SearchEntriesRequest(proto.Message):
             attributed in the following form:
             ``projects/{project}/locations/{location}``.
         query (str):
-            Required. The query against which entries in
-            scope should be matched.
+            Required. The query against which entries in scope should be
+            matched. The query syntax is defined in `Search syntax for
+            Dataplex
+            Catalog <https://cloud.google.com/dataplex/docs/search-syntax>`__.
         page_size (int):
             Optional. Number of results in the search page. If <=0, then
             defaults to 10. Max limit for page_size is 1000. Throws an
@@ -1871,7 +1873,12 @@ class SearchEntriesRequest(proto.Message):
             ``SearchEntries`` call. Provide this to retrieve the
             subsequent page.
         order_by (str):
-            Optional. Specifies the ordering of results.
+            Optional. Specifies the ordering of results. Supported
+            values are:
+
+            -  ``relevance`` (default)
+            -  ``last_modified_timestamp``
+            -  ``last_modified_timestamp asc``
         scope (str):
             Optional. The scope under which the search should be
             operating. It must either be ``organizations/<org_id>`` or
@@ -2035,12 +2042,12 @@ class ImportItem(proto.Message):
                the entry.
             -  ``{aspect_type_reference}@{path}``: matches aspects that
                belong to the specified aspect type and path.
-            -  ``{aspect_type_reference}@*``: matches aspects that
-               belong to the specified aspect type for all paths.
-
-            Replace ``{aspect_type_reference}`` with a reference to the
-            aspect type, in the format
-            ``{project_id_or_number}.{location_id}.{aspect_type_id}``.
+            -  ``<aspect_type_reference>@*`` : matches aspects of the
+               given type for all paths.
+            -  ``*@path`` : matches aspects of all types on the given
+               path. Replace ``{aspect_type_reference}`` with a
+               reference to the aspect type, in the format
+               ``{project_id_or_number}.{location_id}.{aspect_type_id}``.
 
             If you leave this field empty, it is treated as specifying
             exactly those aspects that are present within the specified
