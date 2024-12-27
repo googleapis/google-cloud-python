@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -158,8 +166,10 @@ class OrgPolicyRestInterceptor:
     def pre_create_custom_constraint(
         self,
         request: orgpolicy.CreateCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.CreateCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.CreateCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -181,8 +191,8 @@ class OrgPolicyRestInterceptor:
     def pre_create_policy(
         self,
         request: orgpolicy.CreatePolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.CreatePolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.CreatePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -202,8 +212,10 @@ class OrgPolicyRestInterceptor:
     def pre_delete_custom_constraint(
         self,
         request: orgpolicy.DeleteCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.DeleteCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.DeleteCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -214,8 +226,8 @@ class OrgPolicyRestInterceptor:
     def pre_delete_policy(
         self,
         request: orgpolicy.DeletePolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.DeletePolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.DeletePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -226,8 +238,10 @@ class OrgPolicyRestInterceptor:
     def pre_get_custom_constraint(
         self,
         request: orgpolicy.GetCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.GetCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.GetCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -249,8 +263,10 @@ class OrgPolicyRestInterceptor:
     def pre_get_effective_policy(
         self,
         request: orgpolicy.GetEffectivePolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.GetEffectivePolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.GetEffectivePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_effective_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -268,8 +284,10 @@ class OrgPolicyRestInterceptor:
         return response
 
     def pre_get_policy(
-        self, request: orgpolicy.GetPolicyRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[orgpolicy.GetPolicyRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: orgpolicy.GetPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.GetPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -289,8 +307,10 @@ class OrgPolicyRestInterceptor:
     def pre_list_constraints(
         self,
         request: orgpolicy.ListConstraintsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.ListConstraintsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.ListConstraintsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_constraints
 
         Override in a subclass to manipulate the request or metadata
@@ -312,8 +332,10 @@ class OrgPolicyRestInterceptor:
     def pre_list_custom_constraints(
         self,
         request: orgpolicy.ListCustomConstraintsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.ListCustomConstraintsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.ListCustomConstraintsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_custom_constraints
 
         Override in a subclass to manipulate the request or metadata
@@ -335,8 +357,8 @@ class OrgPolicyRestInterceptor:
     def pre_list_policies(
         self,
         request: orgpolicy.ListPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.ListPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.ListPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -358,8 +380,10 @@ class OrgPolicyRestInterceptor:
     def pre_update_custom_constraint(
         self,
         request: orgpolicy.UpdateCustomConstraintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.UpdateCustomConstraintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.UpdateCustomConstraintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_custom_constraint
 
         Override in a subclass to manipulate the request or metadata
@@ -381,8 +405,8 @@ class OrgPolicyRestInterceptor:
     def pre_update_policy(
         self,
         request: orgpolicy.UpdatePolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[orgpolicy.UpdatePolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.UpdatePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -543,7 +567,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> constraint.CustomConstraint:
             r"""Call the create custom constraint method over HTTP.
 
@@ -555,8 +579,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.constraint.CustomConstraint:
@@ -574,6 +600,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_custom_constraint(
                 request, metadata
             )
@@ -589,6 +616,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             query_params = _BaseOrgPolicyRestTransport._BaseCreateCustomConstraint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.CreateCustomConstraint",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "CreateCustomConstraint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._CreateCustomConstraint._get_response(
@@ -611,7 +665,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = constraint.CustomConstraint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_custom_constraint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = constraint.CustomConstraint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.create_custom_constraint",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "CreateCustomConstraint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePolicy(
@@ -650,7 +726,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> orgpolicy.Policy:
             r"""Call the create policy method over HTTP.
 
@@ -662,8 +738,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.orgpolicy.Policy:
@@ -677,6 +755,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_policy(request, metadata)
             transcoded_request = (
                 _BaseOrgPolicyRestTransport._BaseCreatePolicy._get_transcoded_request(
@@ -694,6 +773,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.CreatePolicy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "CreatePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._CreatePolicy._get_response(
@@ -716,7 +822,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = orgpolicy.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = orgpolicy.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.create_policy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "CreatePolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCustomConstraint(
@@ -754,7 +882,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete custom constraint method over HTTP.
 
@@ -766,13 +894,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_custom_constraint(
                 request, metadata
             )
@@ -784,6 +915,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             query_params = _BaseOrgPolicyRestTransport._BaseDeleteCustomConstraint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.DeleteCustomConstraint",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "DeleteCustomConstraint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._DeleteCustomConstraint._get_response(
@@ -835,7 +993,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete policy method over HTTP.
 
@@ -847,13 +1005,16 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_policy(request, metadata)
             transcoded_request = (
                 _BaseOrgPolicyRestTransport._BaseDeletePolicy._get_transcoded_request(
@@ -867,6 +1028,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.DeletePolicy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "DeletePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._DeletePolicy._get_response(
@@ -918,7 +1106,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> constraint.CustomConstraint:
             r"""Call the get custom constraint method over HTTP.
 
@@ -930,8 +1118,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.constraint.CustomConstraint:
@@ -949,6 +1139,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_custom_constraint(
                 request, metadata
             )
@@ -960,6 +1151,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             query_params = _BaseOrgPolicyRestTransport._BaseGetCustomConstraint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.GetCustomConstraint",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "GetCustomConstraint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._GetCustomConstraint._get_response(
@@ -981,7 +1199,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = constraint.CustomConstraint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_custom_constraint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = constraint.CustomConstraint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.get_custom_constraint",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "GetCustomConstraint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEffectivePolicy(
@@ -1019,7 +1259,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> orgpolicy.Policy:
             r"""Call the get effective policy method over HTTP.
 
@@ -1031,8 +1271,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.orgpolicy.Policy:
@@ -1046,6 +1288,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_effective_policy(
                 request, metadata
             )
@@ -1057,6 +1300,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             query_params = _BaseOrgPolicyRestTransport._BaseGetEffectivePolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.GetEffectivePolicy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "GetEffectivePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._GetEffectivePolicy._get_response(
@@ -1078,7 +1348,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = orgpolicy.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_effective_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = orgpolicy.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.get_effective_policy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "GetEffectivePolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPolicy(_BaseOrgPolicyRestTransport._BaseGetPolicy, OrgPolicyRestStub):
@@ -1114,7 +1406,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> orgpolicy.Policy:
             r"""Call the get policy method over HTTP.
 
@@ -1125,8 +1417,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.orgpolicy.Policy:
@@ -1140,6 +1434,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseGetPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
             transcoded_request = (
                 _BaseOrgPolicyRestTransport._BaseGetPolicy._get_transcoded_request(
@@ -1153,6 +1448,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.GetPolicy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "GetPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._GetPolicy._get_response(
@@ -1174,7 +1496,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = orgpolicy.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = orgpolicy.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.get_policy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "GetPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConstraints(
@@ -1212,7 +1556,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> orgpolicy.ListConstraintsResponse:
             r"""Call the list constraints method over HTTP.
 
@@ -1224,8 +1568,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.orgpolicy.ListConstraintsResponse:
@@ -1238,6 +1584,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseListConstraints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_constraints(
                 request, metadata
             )
@@ -1251,6 +1598,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.ListConstraints",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "ListConstraints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._ListConstraints._get_response(
@@ -1272,7 +1646,31 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = orgpolicy.ListConstraintsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_constraints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = orgpolicy.ListConstraintsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.list_constraints",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "ListConstraints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCustomConstraints(
@@ -1310,7 +1708,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> orgpolicy.ListCustomConstraintsResponse:
             r"""Call the list custom constraints method over HTTP.
 
@@ -1322,8 +1720,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.orgpolicy.ListCustomConstraintsResponse:
@@ -1337,6 +1737,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_custom_constraints(
                 request, metadata
             )
@@ -1348,6 +1749,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             query_params = _BaseOrgPolicyRestTransport._BaseListCustomConstraints._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.ListCustomConstraints",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "ListCustomConstraints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._ListCustomConstraints._get_response(
@@ -1369,7 +1797,31 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = orgpolicy.ListCustomConstraintsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_custom_constraints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = orgpolicy.ListCustomConstraintsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.list_custom_constraints",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "ListCustomConstraints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPolicies(
@@ -1407,7 +1859,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> orgpolicy.ListPoliciesResponse:
             r"""Call the list policies method over HTTP.
 
@@ -1419,8 +1871,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.orgpolicy.ListPoliciesResponse:
@@ -1434,6 +1888,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseListPolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_policies(request, metadata)
             transcoded_request = (
                 _BaseOrgPolicyRestTransport._BaseListPolicies._get_transcoded_request(
@@ -1447,6 +1902,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.ListPolicies",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "ListPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._ListPolicies._get_response(
@@ -1468,7 +1950,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = orgpolicy.ListPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = orgpolicy.ListPoliciesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.list_policies",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "ListPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCustomConstraint(
@@ -1507,7 +2011,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> constraint.CustomConstraint:
             r"""Call the update custom constraint method over HTTP.
 
@@ -1519,8 +2023,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.constraint.CustomConstraint:
@@ -1538,6 +2044,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_custom_constraint(
                 request, metadata
             )
@@ -1553,6 +2060,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             query_params = _BaseOrgPolicyRestTransport._BaseUpdateCustomConstraint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.UpdateCustomConstraint",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "UpdateCustomConstraint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._UpdateCustomConstraint._get_response(
@@ -1575,7 +2109,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = constraint.CustomConstraint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_custom_constraint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = constraint.CustomConstraint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.update_custom_constraint",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "UpdateCustomConstraint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePolicy(
@@ -1614,7 +2170,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> orgpolicy.Policy:
             r"""Call the update policy method over HTTP.
 
@@ -1626,8 +2182,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.orgpolicy.Policy:
@@ -1641,6 +2199,7 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             http_options = (
                 _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_policy(request, metadata)
             transcoded_request = (
                 _BaseOrgPolicyRestTransport._BaseUpdatePolicy._get_transcoded_request(
@@ -1658,6 +2217,33 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orgpolicy_v2.OrgPolicyClient.UpdatePolicy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "UpdatePolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OrgPolicyRestTransport._UpdatePolicy._get_response(
@@ -1680,7 +2266,29 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             pb_resp = orgpolicy.Policy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = orgpolicy.Policy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orgpolicy_v2.OrgPolicyClient.update_policy",
+                    extra={
+                        "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                        "rpcName": "UpdatePolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

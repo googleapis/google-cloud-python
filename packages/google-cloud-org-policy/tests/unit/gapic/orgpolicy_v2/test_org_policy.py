@@ -5781,6 +5781,7 @@ def test_list_constraints_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_constraints(request)
 
@@ -5834,6 +5835,7 @@ def test_list_constraints_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_constraints(**mock_args)
 
@@ -6029,6 +6031,7 @@ def test_list_policies_rest_required_fields(request_type=orgpolicy.ListPoliciesR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_policies(request)
 
@@ -6082,6 +6085,7 @@ def test_list_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_policies(**mock_args)
 
@@ -6270,6 +6274,7 @@ def test_get_policy_rest_required_fields(request_type=orgpolicy.GetPolicyRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_policy(request)
 
@@ -6315,6 +6320,7 @@ def test_get_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_policy(**mock_args)
 
@@ -6448,6 +6454,7 @@ def test_get_effective_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_effective_policy(request)
 
@@ -6493,6 +6500,7 @@ def test_get_effective_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_effective_policy(**mock_args)
 
@@ -6623,6 +6631,7 @@ def test_create_policy_rest_required_fields(request_type=orgpolicy.CreatePolicyR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_policy(request)
 
@@ -6677,6 +6686,7 @@ def test_create_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_policy(**mock_args)
 
@@ -6803,6 +6813,7 @@ def test_update_policy_rest_required_fields(request_type=orgpolicy.UpdatePolicyR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_policy(request)
 
@@ -6848,6 +6859,7 @@ def test_update_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_policy(**mock_args)
 
@@ -6975,6 +6987,7 @@ def test_delete_policy_rest_required_fields(request_type=orgpolicy.DeletePolicyR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_policy(request)
 
@@ -7018,6 +7031,7 @@ def test_delete_policy_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_policy(**mock_args)
 
@@ -7153,6 +7167,7 @@ def test_create_custom_constraint_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_custom_constraint(request)
 
@@ -7207,6 +7222,7 @@ def test_create_custom_constraint_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_custom_constraint(**mock_args)
 
@@ -7339,6 +7355,7 @@ def test_update_custom_constraint_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_custom_constraint(request)
 
@@ -7388,6 +7405,7 @@ def test_update_custom_constraint_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_custom_constraint(**mock_args)
 
@@ -7524,6 +7542,7 @@ def test_get_custom_constraint_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_custom_constraint(request)
 
@@ -7569,6 +7588,7 @@ def test_get_custom_constraint_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_custom_constraint(**mock_args)
 
@@ -7711,6 +7731,7 @@ def test_list_custom_constraints_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_custom_constraints(request)
 
@@ -7764,6 +7785,7 @@ def test_list_custom_constraints_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_custom_constraints(**mock_args)
 
@@ -7959,6 +7981,7 @@ def test_delete_custom_constraint_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_custom_constraint(request)
 
@@ -8002,6 +8025,7 @@ def test_delete_custom_constraint_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_custom_constraint(**mock_args)
 
@@ -8792,6 +8816,7 @@ def test_list_constraints_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_constraints(request)
 
 
@@ -8827,6 +8852,7 @@ def test_list_constraints_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_constraints(request)
 
     # Establish that the response is the type that we expect.
@@ -8865,6 +8891,7 @@ def test_list_constraints_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = orgpolicy.ListConstraintsResponse.to_json(
             orgpolicy.ListConstraintsResponse()
         )
@@ -8909,6 +8936,7 @@ def test_list_policies_rest_bad_request(request_type=orgpolicy.ListPoliciesReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_policies(request)
 
 
@@ -8944,6 +8972,7 @@ def test_list_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -8980,6 +9009,7 @@ def test_list_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = orgpolicy.ListPoliciesResponse.to_json(
             orgpolicy.ListPoliciesResponse()
         )
@@ -9024,6 +9054,7 @@ def test_get_policy_rest_bad_request(request_type=orgpolicy.GetPolicyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_policy(request)
 
 
@@ -9060,6 +9091,7 @@ def test_get_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -9097,6 +9129,7 @@ def test_get_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = orgpolicy.Policy.to_json(orgpolicy.Policy())
         req.return_value.content = return_value
 
@@ -9141,6 +9174,7 @@ def test_get_effective_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_effective_policy(request)
 
 
@@ -9177,6 +9211,7 @@ def test_get_effective_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_effective_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -9216,6 +9251,7 @@ def test_get_effective_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = orgpolicy.Policy.to_json(orgpolicy.Policy())
         req.return_value.content = return_value
 
@@ -9258,6 +9294,7 @@ def test_create_policy_rest_bad_request(request_type=orgpolicy.CreatePolicyReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_policy(request)
 
 
@@ -9396,6 +9433,7 @@ def test_create_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -9433,6 +9471,7 @@ def test_create_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = orgpolicy.Policy.to_json(orgpolicy.Policy())
         req.return_value.content = return_value
 
@@ -9475,6 +9514,7 @@ def test_update_policy_rest_bad_request(request_type=orgpolicy.UpdatePolicyReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_policy(request)
 
 
@@ -9613,6 +9653,7 @@ def test_update_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -9650,6 +9691,7 @@ def test_update_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = orgpolicy.Policy.to_json(orgpolicy.Policy())
         req.return_value.content = return_value
 
@@ -9692,6 +9734,7 @@ def test_delete_policy_rest_bad_request(request_type=orgpolicy.DeletePolicyReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_policy(request)
 
 
@@ -9722,6 +9765,7 @@ def test_delete_policy_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -9754,6 +9798,7 @@ def test_delete_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = orgpolicy.DeletePolicyRequest()
         metadata = [
@@ -9794,6 +9839,7 @@ def test_create_custom_constraint_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_custom_constraint(request)
 
 
@@ -9914,6 +9960,7 @@ def test_create_custom_constraint_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_custom_constraint(request)
 
     # Establish that the response is the type that we expect.
@@ -9958,6 +10005,7 @@ def test_create_custom_constraint_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = constraint.CustomConstraint.to_json(
             constraint.CustomConstraint()
         )
@@ -10006,6 +10054,7 @@ def test_update_custom_constraint_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_custom_constraint(request)
 
 
@@ -10128,6 +10177,7 @@ def test_update_custom_constraint_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_custom_constraint(request)
 
     # Establish that the response is the type that we expect.
@@ -10172,6 +10222,7 @@ def test_update_custom_constraint_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = constraint.CustomConstraint.to_json(
             constraint.CustomConstraint()
         )
@@ -10218,6 +10269,7 @@ def test_get_custom_constraint_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_custom_constraint(request)
 
 
@@ -10259,6 +10311,7 @@ def test_get_custom_constraint_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_custom_constraint(request)
 
     # Establish that the response is the type that we expect.
@@ -10303,6 +10356,7 @@ def test_get_custom_constraint_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = constraint.CustomConstraint.to_json(
             constraint.CustomConstraint()
         )
@@ -10349,6 +10403,7 @@ def test_list_custom_constraints_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_custom_constraints(request)
 
 
@@ -10384,6 +10439,7 @@ def test_list_custom_constraints_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_custom_constraints(request)
 
     # Establish that the response is the type that we expect.
@@ -10422,6 +10478,7 @@ def test_list_custom_constraints_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = orgpolicy.ListCustomConstraintsResponse.to_json(
             orgpolicy.ListCustomConstraintsResponse()
         )
@@ -10468,6 +10525,7 @@ def test_delete_custom_constraint_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_custom_constraint(request)
 
 
@@ -10498,6 +10556,7 @@ def test_delete_custom_constraint_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_custom_constraint(request)
 
     # Establish that the response is the type that we expect.
@@ -10532,6 +10591,7 @@ def test_delete_custom_constraint_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = orgpolicy.DeleteCustomConstraintRequest()
         metadata = [

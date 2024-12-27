@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,13 +26,92 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
 
 from .base import DEFAULT_CLIENT_INFO, OrgPolicyTransport
 from .grpc import OrgPolicyGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.orgpolicy.v2.OrgPolicy",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
@@ -248,10 +330,13 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -286,7 +371,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_constraints" not in self._stubs:
-            self._stubs["list_constraints"] = self.grpc_channel.unary_unary(
+            self._stubs["list_constraints"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListConstraints",
                 request_serializer=orgpolicy.ListConstraintsRequest.serialize,
                 response_deserializer=orgpolicy.ListConstraintsResponse.deserialize,
@@ -315,7 +400,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_policies" not in self._stubs:
-            self._stubs["list_policies"] = self.grpc_channel.unary_unary(
+            self._stubs["list_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListPolicies",
                 request_serializer=orgpolicy.ListPoliciesRequest.serialize,
                 response_deserializer=orgpolicy.ListPoliciesResponse.deserialize,
@@ -345,7 +430,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_policy" not in self._stubs:
-            self._stubs["get_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetPolicy",
                 request_serializer=orgpolicy.GetPolicyRequest.serialize,
                 response_deserializer=orgpolicy.Policy.deserialize,
@@ -376,7 +461,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_effective_policy" not in self._stubs:
-            self._stubs["get_effective_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_effective_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetEffectivePolicy",
                 request_serializer=orgpolicy.GetEffectivePolicyRequest.serialize,
                 response_deserializer=orgpolicy.Policy.deserialize,
@@ -408,7 +493,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_policy" not in self._stubs:
-            self._stubs["create_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["create_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/CreatePolicy",
                 request_serializer=orgpolicy.CreatePolicyRequest.serialize,
                 response_deserializer=orgpolicy.Policy.deserialize,
@@ -443,7 +528,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_policy" not in self._stubs:
-            self._stubs["update_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["update_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/UpdatePolicy",
                 request_serializer=orgpolicy.UpdatePolicyRequest.serialize,
                 response_deserializer=orgpolicy.Policy.deserialize,
@@ -473,7 +558,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_policy" not in self._stubs:
-            self._stubs["delete_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/DeletePolicy",
                 request_serializer=orgpolicy.DeletePolicyRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -508,7 +593,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_custom_constraint" not in self._stubs:
-            self._stubs["create_custom_constraint"] = self.grpc_channel.unary_unary(
+            self._stubs["create_custom_constraint"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/CreateCustomConstraint",
                 request_serializer=orgpolicy.CreateCustomConstraintRequest.serialize,
                 response_deserializer=constraint.CustomConstraint.deserialize,
@@ -543,7 +628,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_custom_constraint" not in self._stubs:
-            self._stubs["update_custom_constraint"] = self.grpc_channel.unary_unary(
+            self._stubs["update_custom_constraint"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/UpdateCustomConstraint",
                 request_serializer=orgpolicy.UpdateCustomConstraintRequest.serialize,
                 response_deserializer=constraint.CustomConstraint.deserialize,
@@ -575,7 +660,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_custom_constraint" not in self._stubs:
-            self._stubs["get_custom_constraint"] = self.grpc_channel.unary_unary(
+            self._stubs["get_custom_constraint"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetCustomConstraint",
                 request_serializer=orgpolicy.GetCustomConstraintRequest.serialize,
                 response_deserializer=constraint.CustomConstraint.deserialize,
@@ -605,7 +690,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_custom_constraints" not in self._stubs:
-            self._stubs["list_custom_constraints"] = self.grpc_channel.unary_unary(
+            self._stubs["list_custom_constraints"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListCustomConstraints",
                 request_serializer=orgpolicy.ListCustomConstraintsRequest.serialize,
                 response_deserializer=orgpolicy.ListCustomConstraintsResponse.deserialize,
@@ -636,7 +721,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_custom_constraint" not in self._stubs:
-            self._stubs["delete_custom_constraint"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_custom_constraint"] = self._logged_channel.unary_unary(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/DeleteCustomConstraint",
                 request_serializer=orgpolicy.DeleteCustomConstraintRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -834,7 +919,7 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
