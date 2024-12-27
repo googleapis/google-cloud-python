@@ -26,6 +26,7 @@ import typing_extensions
 import bigframes
 from bigframes import clients, exceptions
 from bigframes.core import blocks, log_adapter
+import bigframes.dataframe
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
@@ -945,6 +946,7 @@ class GeminiTextGenerator(base.BaseEstimator):
         top_k: int = 40,
         top_p: float = 1.0,
         ground_with_google_search: bool = False,
+        max_retries: int = 0,
     ) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
 
@@ -983,6 +985,10 @@ class GeminiTextGenerator(base.BaseEstimator):
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
 
+            max_retries (int, default 0):
+                Max number of retry rounds if any rows failed in the prediction. Each round need to make progress (has succeeded rows) to continue the next retry round.
+                Each round will append newly succeeded rows. When the max retry rounds is reached, the remaining failed rows will be appended to the end of the result.
+
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
@@ -1002,6 +1008,11 @@ class GeminiTextGenerator(base.BaseEstimator):
         if top_p < 0.0 or top_p > 1.0:
             raise ValueError(f"top_p must be [0.0, 1.0], but is {top_p}.")
 
+        if max_retries < 0:
+            raise ValueError(
+                f"max_retries must be larger than or equal to 0, but is {max_retries}."
+            )
+
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         if len(X.columns) == 1:
@@ -1018,15 +1029,37 @@ class GeminiTextGenerator(base.BaseEstimator):
             "ground_with_google_search": ground_with_google_search,
         }
 
-        df = self._bqml_model.generate_text(X, options)
+        df_result = bpd.DataFrame(session=self._bqml_model.session)  # placeholder
+        df_fail = X
+        for _ in range(max_retries + 1):
+            df = self._bqml_model.generate_text(df_fail, options)
 
-        if (df[_ML_GENERATE_TEXT_STATUS] != "").any():
+            df_succ = df[df[_ML_GENERATE_TEXT_STATUS].str.len() == 0]
+            df_fail = df[df[_ML_GENERATE_TEXT_STATUS].str.len() > 0]
+
+            if df_succ.empty:
+                warnings.warn("Can't make any progress, stop retrying.", RuntimeWarning)
+                break
+
+            df_result = (
+                bpd.concat([df_result, df_succ]) if not df_result.empty else df_succ
+            )
+
+            if df_fail.empty:
+                break
+
+        if not df_fail.empty:
             warnings.warn(
                 f"Some predictions failed. Check column {_ML_GENERATE_TEXT_STATUS} for detailed status. You may want to filter the failed rows and retry.",
                 RuntimeWarning,
             )
 
-        return df
+        df_result = cast(
+            bpd.DataFrame,
+            bpd.concat([df_result, df_fail]) if not df_result.empty else df_fail,
+        )
+
+        return df_result
 
     def score(
         self,
