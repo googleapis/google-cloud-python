@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import datetime
 import logging
 import re
@@ -711,14 +712,35 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.schema = [full_name, age]
         self.assertEqual(table.schema, [full_name, age])
 
-    def test_schema_setter_invalid_mapping_representation(self):
+    def test_schema_setter_allows_unknown_properties(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        full_name = {"name": "full_name", "type": "STRING", "mode": "REQUIRED"}
-        invalid_field = {"name": "full_name", "typeooo": "STRING", "mode": "REQUIRED"}
-        with self.assertRaises(Exception):
-            table.schema = [full_name, invalid_field]
+        schema = [
+            {
+                "name": "full_name",
+                "type": "STRING",
+                "mode": "REQUIRED",
+                "someNewProperty": "test-value",
+            },
+            {
+                "name": "age",
+                # Note: This type should be included, too. Avoid client-side
+                # validation, as it could prevent backwards-compatible
+                # evolution of the server-side behavior.
+                "typo": "INTEGER",
+                "mode": "REQUIRED",
+                "anotherNewProperty": "another-test",
+            },
+        ]
+
+        # Make sure the setter doesn't mutate schema.
+        expected_schema = copy.deepcopy(schema)
+
+        table.schema = schema
+
+        # _properties should include all fields, including unknown ones.
+        assert table._properties["schema"]["fields"] == expected_schema
 
     def test_schema_setter_valid_mapping_representation(self):
         from google.cloud.bigquery.schema import SchemaField

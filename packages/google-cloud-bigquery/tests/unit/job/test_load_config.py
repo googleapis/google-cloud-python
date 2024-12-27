@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import warnings
 
 import pytest
@@ -571,16 +572,34 @@ class TestLoadJobConfig(_Base):
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
         )
 
-    def test_schema_setter_invalid_mappings_list(self):
+    def test_schema_setter_allows_unknown_properties(self):
         config = self._get_target_class()()
 
         schema = [
-            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
-            {"name": "age", "typeoo": "INTEGER", "mode": "REQUIRED"},
+            {
+                "name": "full_name",
+                "type": "STRING",
+                "mode": "REQUIRED",
+                "someNewProperty": "test-value",
+            },
+            {
+                "name": "age",
+                # Note: This type should be included, too. Avoid client-side
+                # validation, as it could prevent backwards-compatible
+                # evolution of the server-side behavior.
+                "typo": "INTEGER",
+                "mode": "REQUIRED",
+                "anotherNewProperty": "another-test",
+            },
         ]
 
-        with self.assertRaises(Exception):
-            config.schema = schema
+        # Make sure the setter doesn't mutate schema.
+        expected_schema = copy.deepcopy(schema)
+
+        config.schema = schema
+
+        # _properties should include all fields, including unknown ones.
+        assert config._properties["load"]["schema"]["fields"] == expected_schema
 
     def test_schema_setter_unsetting_schema(self):
         from google.cloud.bigquery.schema import SchemaField
