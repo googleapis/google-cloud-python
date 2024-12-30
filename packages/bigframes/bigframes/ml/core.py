@@ -123,10 +123,15 @@ class BqmlModel(BaseBqml):
             self._model_manipulation_sql_generator.ml_predict,
         )
 
-    def explain_predict(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
+    def explain_predict(
+        self, input_data: bpd.DataFrame, options: Mapping[str, int | float]
+    ) -> bpd.DataFrame:
         return self._apply_ml_tvf(
             input_data,
-            self._model_manipulation_sql_generator.ml_explain_predict,
+            lambda source_sql: self._model_manipulation_sql_generator.ml_explain_predict(
+                source_sql=source_sql,
+                struct_options=options,
+            ),
         )
 
     def transform(self, input_data: bpd.DataFrame) -> bpd.DataFrame:

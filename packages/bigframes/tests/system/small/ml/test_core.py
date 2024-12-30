@@ -263,8 +263,9 @@ def test_model_predict(penguins_bqml_linear_model: core.BqmlModel, new_penguins_
 def test_model_predict_explain(
     penguins_bqml_linear_model: core.BqmlModel, new_penguins_df
 ):
+    options = {"top_k_features": 3}
     predictions = penguins_bqml_linear_model.explain_predict(
-        new_penguins_df
+        new_penguins_df, options
     ).to_pandas()
     expected = pd.DataFrame(
         {
@@ -317,6 +318,7 @@ def test_model_predict_explain_with_unnamed_index(
     # need to persist through the call to ML.PREDICT
     new_penguins_df = new_penguins_df.reset_index()
 
+    options = {"top_k_features": 3}
     # remove the middle tag number to ensure we're really keeping the unnamed index
     new_penguins_df = typing.cast(
         bigframes.dataframe.DataFrame,
@@ -324,7 +326,7 @@ def test_model_predict_explain_with_unnamed_index(
     )
 
     predictions = penguins_bqml_linear_model.explain_predict(
-        new_penguins_df
+        new_penguins_df, options
     ).to_pandas()
 
     expected = pd.DataFrame(

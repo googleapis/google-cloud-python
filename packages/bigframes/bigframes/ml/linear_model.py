@@ -155,14 +155,15 @@ class LinearRegression(
     def predict(self, X: utils.ArrayType) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
-
-        (X,) = utils.batch_convert_to_dataframe(X)
+        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         return self._bqml_model.predict(X)
 
     def predict_explain(
         self,
         X: utils.ArrayType,
+        *,
+        top_k_features: int = 5,
     ) -> bpd.DataFrame:
         """
         Explain predictions for a linear regression model.
@@ -175,18 +176,32 @@ class LinearRegression(
             X (bigframes.dataframe.DataFrame or bigframes.series.Series or
             pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Series or a DataFrame to explain its predictions.
+            top_k_features (int, default 5):
+                an INT64 value that specifies how many top feature attribution
+                pairs are generated for each row of input data. The features are
+                ranked by the absolute values of their attributions.
+
+                By default, top_k_features is set to 5. If its value is greater
+                than the number of features in the training data, the
+                attributions of all features are returned.
 
         Returns:
             bigframes.pandas.DataFrame:
                 The predicted DataFrames with explanation columns.
         """
-        # TODO(b/377366612): Add support for `top_k_features` parameter
+        if top_k_features < 1:
+            raise ValueError(
+                f"top_k_features must be at least 1, but is {top_k_features}."
+            )
+
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
-        return self._bqml_model.explain_predict(X)
+        return self._bqml_model.explain_predict(
+            X, options={"top_k_features": top_k_features}
+        )
 
     def score(
         self,
@@ -356,6 +371,8 @@ class LogisticRegression(
     def predict_explain(
         self,
         X: utils.ArrayType,
+        *,
+        top_k_features: int = 5,
     ) -> bpd.DataFrame:
         """
         Explain predictions for a logistic regression model.
@@ -368,18 +385,32 @@ class LogisticRegression(
             X (bigframes.dataframe.DataFrame or bigframes.series.Series or
             pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Series or a DataFrame to explain its predictions.
+            top_k_features (int, default 5):
+                an INT64 value that specifies how many top feature attribution
+                pairs are generated for each row of input data. The features are
+                ranked by the absolute values of their attributions.
+
+                By default, top_k_features is set to 5. If its value is greater
+                than the number of features in the training data, the
+                attributions of all features are returned.
 
         Returns:
             bigframes.pandas.DataFrame:
                 The predicted DataFrames with explanation columns.
         """
-        # TODO(b/377366612): Add support for `top_k_features` parameter
+        if top_k_features < 1:
+            raise ValueError(
+                f"top_k_features must be at least 1, but is {top_k_features}."
+            )
+
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
-        return self._bqml_model.explain_predict(X)
+        return self._bqml_model.explain_predict(
+            X, options={"top_k_features": top_k_features}
+        )
 
     def score(
         self,

@@ -342,18 +342,6 @@ def test_ml_predict_correct(
     )
 
 
-def test_ml_explain_predict_correct(
-    model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
-    mock_df: bpd.DataFrame,
-):
-    sql = model_manipulation_sql_generator.ml_explain_predict(source_sql=mock_df.sql)
-    assert (
-        sql
-        == """SELECT * FROM ML.EXPLAIN_PREDICT(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
-  (input_X_y_sql))"""
-    )
-
-
 def test_ml_llm_evaluate_correct(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
     mock_df: bpd.DataFrame,
@@ -459,6 +447,23 @@ def test_ml_generate_embedding_correct(
   (input_X_y_sql), STRUCT(
   1 AS `option_key1`,
   2.2 AS `option_key2`))"""
+    )
+
+
+def test_ml_explain_predict_correct(
+    model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+    mock_df: bpd.DataFrame,
+):
+    sql = model_manipulation_sql_generator.ml_explain_predict(
+        source_sql=mock_df.sql,
+        struct_options={"option_key1": 1, "option_key2": 2.25},
+    )
+    assert (
+        sql
+        == """SELECT * FROM ML.EXPLAIN_PREDICT(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
+  (input_X_y_sql), STRUCT(
+  1 AS `option_key1`,
+  2.25 AS `option_key2`))"""
     )
 
 
