@@ -21,11 +21,14 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     TransactionOptions,
 )
+from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_select1_result,
     add_update_count,
+    add_error,
+    unavailable_status,
 )
 
 
@@ -85,3 +88,22 @@ class TestBasics(MockServerTestBase):
         self.assertEqual(
             TransactionOptions(dict(partitioned_dml={})), begin_request.options
         )
+
+    def test_execute_streaming_sql_unavailable(self):
+        add_select1_result()
+        # Add an UNAVAILABLE error that is returned the first time the
+        # ExecuteStreamingSql RPC is called.
+        add_error(SpannerServicer.ExecuteStreamingSql.__name__, unavailable_status())
+        with self.database.snapshot() as snapshot:
+            results = snapshot.execute_sql("select 1")
+            result_list = []
+            for row in results:
+                result_list.append(row)
+                self.assertEqual(1, row[0])
+            self.assertEqual(1, len(result_list))
+        requests = self.spanner_service.requests
+        self.assertEqual(3, len(requests), msg=requests)
+        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
+        # The ExecuteStreamingSql call should be retried.
+        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
+        self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))

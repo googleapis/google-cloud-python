@@ -86,13 +86,18 @@ def _restart_on_unavailable(
         )
 
     request.transaction = transaction_selector
+    iterator = None
 
-    with trace_call(
-        trace_name, session, attributes, observability_options=observability_options
-    ):
-        iterator = method(request=request)
     while True:
         try:
+            if iterator is None:
+                with trace_call(
+                    trace_name,
+                    session,
+                    attributes,
+                    observability_options=observability_options,
+                ):
+                    iterator = method(request=request)
             for item in iterator:
                 item_buffer.append(item)
                 # Setting the transaction id because the transaction begin was inlined for first rpc.
