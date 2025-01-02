@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.14.0](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.13.1...v0.14.0) (2024-12-27)
+
+
+### Features
+
+* Add `google.iam.v1.resource_policy_member_pb2` ([2e1af7c](https://github.com/googleapis/python-grpc-google-iam-v1/commit/2e1af7c538cb5904d6ac51c5f7b7fa788248987a))
+* Add support for Python 3.13 ([2e1af7c](https://github.com/googleapis/python-grpc-google-iam-v1/commit/2e1af7c538cb5904d6ac51c5f7b7fa788248987a))
+
 ## [0.13.1](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.13.0...v0.13.1) (2024-06-20)
 
 
