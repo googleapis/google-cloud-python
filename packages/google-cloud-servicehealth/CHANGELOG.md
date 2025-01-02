@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.9...google-cloud-servicehealth-v0.1.10) (2025-01-02)
+
+
+### Documentation
+
+* [google-cloud-servicehealth] update documentation for various messages ([#13374](https://github.com/googleapis/google-cloud-python/issues/13374)) ([8e53145](https://github.com/googleapis/google-cloud-python/commit/8e531455b2ea2ecaf19981ad7871bdba0389afaa))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-servicehealth-v0.1.8...google-cloud-servicehealth-v0.1.9) (2024-12-12)
 
 

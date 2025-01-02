@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.33](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.32...google-cloud-batch-v0.17.33) (2025-01-02)
+
+
+### Documentation
+
+* [google-cloud-batch] fix a few broken references in documentation ([651dcb6](https://github.com/googleapis/google-cloud-python/commit/651dcb611ee0ff3327b67aee2fbe1e53d20d89ee))
+* [google-cloud-batch] fix broken references in comments ([#13390](https://github.com/googleapis/google-cloud-python/issues/13390)) ([651dcb6](https://github.com/googleapis/google-cloud-python/commit/651dcb611ee0ff3327b67aee2fbe1e53d20d89ee))
+
 ## [0.17.32](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.31...google-cloud-batch-v0.17.32) (2024-12-12)
 
 

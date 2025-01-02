@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.11...google-shopping-css-v0.1.12) (2025-01-02)
+
+
+### Features
+
+* UpdateCssProduct is added to CssProductInput proto ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+
+
+### Documentation
+
+* A comment for field `applicable_countries` in message `.google.shopping.css.v1.CssProductStatus` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `approved_countries` in message `.google.shopping.css.v1.CssProductStatus` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `disapproved_countries` in message `.google.shopping.css.v1.CssProductStatus` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `feed_id` in message`.google.shopping.css.v1.InsertCssProductInputRequest` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `headline_offer_price` in message `.google.shopping.css.v1.Attributes` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `headline_offer_shipping_price` in message `.google.shopping.css.v1.Attributes` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `high_price` in message `.google.shopping.css.v1.Attributes` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `low_price` in message `.google.shopping.css.v1.Attributes` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `number_of_offers` in message `.google.shopping.css.v1.Attributes` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `page_size` in message `.google.shopping.css.v1.ListChildAccountsRequest` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `pending_countries` in message `.google.shopping.css.v1.CssProductStatus` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for field `servability` in message `.google.shopping.css.v1.CssProductStatus` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+* A comment for message `CssProduct` is changed ([5db8939](https://github.com/googleapis/google-cloud-python/commit/5db8939bb631938a19f99b384e1a0676ed973e28))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.10...google-shopping-css-v0.1.11) (2024-12-12)
 
 

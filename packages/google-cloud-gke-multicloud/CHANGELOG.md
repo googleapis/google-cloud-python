@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.16...google-cloud-gke-multicloud-v0.6.17) (2025-01-02)
+
+
+### Features
+
+* added support for optionally disabling built-in GKE metrics ([57232b6](https://github.com/googleapis/google-cloud-python/commit/57232b6b38c004c5136a8ad8051fa1f667d2353d))
+* added tag bindings support for Attached Clusters ([57232b6](https://github.com/googleapis/google-cloud-python/commit/57232b6b38c004c5136a8ad8051fa1f667d2353d))
+
+
+### Documentation
+
+* updated comments of existing fields ([57232b6](https://github.com/googleapis/google-cloud-python/commit/57232b6b38c004c5136a8ad8051fa1f667d2353d))
+
 ## [0.6.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.15...google-cloud-gke-multicloud-v0.6.16) (2024-12-12)
 
 
