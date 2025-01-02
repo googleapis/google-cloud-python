@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-org-policy/compare/v1.11.1...v1.12.0) (2024-12-27)
+
+
+### Features
+
+* Add support for opt-in debug logging ([c000d74](https://github.com/googleapis/python-org-policy/commit/c000d7444601c5e19ac4da080e12c41c3eaa5f80))
+* Add support for Python 3.13 ([#315](https://github.com/googleapis/python-org-policy/issues/315)) ([2b6bd80](https://github.com/googleapis/python-org-policy/commit/2b6bd80895b85d48e875b74b2b6369374299fdd5))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([c000d74](https://github.com/googleapis/python-org-policy/commit/c000d7444601c5e19ac4da080e12c41c3eaa5f80))
+
 ## [1.11.1](https://github.com/googleapis/python-org-policy/compare/v1.11.0...v1.11.1) (2024-08-13)
 
 
