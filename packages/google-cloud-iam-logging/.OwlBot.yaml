@@ -15,6 +15,9 @@
 deep-remove-regex:
   - /owl-bot-staging
 
+deep-preserve-regex:
+  - /owl-bot-staging/google-cloud-iam-logging/v1/.*_pb2.py.*
+
 deep-copy-regex:
   - source: /google/iam/(v.*)/logging/.*-py
     dest: /owl-bot-staging/google-cloud-iam-logging/$1
