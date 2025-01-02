@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.7...google-cloud-parallelstore-v0.2.8) (2025-01-02)
+
+
+### Documentation
+
+* fix links in documentation ([e895308](https://github.com/googleapis/google-cloud-python/commit/e895308064e35edff15c7e9ba4146a89cb272e21))
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.6...google-cloud-parallelstore-v0.2.7) (2024-12-12)
 
 
