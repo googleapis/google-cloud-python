@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.24.0...google-cloud-monitoring-v2.25.0) (2025-01-02)
+
+
+### Features
+
+* Add support for opt-in debug logging ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+* added PrometheusQueryLanguageCondition.disable_metric_validation ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+* added SqlCondition in AlertPolicy ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+* added TimeSeries.description for input only ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+* deprecated QueryTimeSeries (MQL query endpoint) ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+
+
+### Documentation
+
+* ServiceAgentAuthentication supports generating an OAuth token ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+* ServiceLevelObjective.goal must be &lt;= 0.9999 ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+* TimeSeries.unit allows limited updating by CreateTimeSeries ([7ecb33c](https://github.com/googleapis/google-cloud-python/commit/7ecb33c399a341f8b4505cfd4be04f2510416e82))
+
 ## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.23.1...google-cloud-monitoring-v2.24.0) (2024-12-12)
 
 

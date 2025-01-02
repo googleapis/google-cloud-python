@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.5.0...google-cloud-dataplex-v2.6.0) (2025-01-02)
+
+
+### Features
+
+* A new field `force` is added to message `.google.cloud.dataplex.v1.DeleteDataScanRequest` ([0da9e0a](https://github.com/googleapis/google-cloud-python/commit/0da9e0a01ddb9fae0df361d7cb131f2141ce5135))
+
+
+### Documentation
+
+* miscellaneous doc updates ([0da9e0a](https://github.com/googleapis/google-cloud-python/commit/0da9e0a01ddb9fae0df361d7cb131f2141ce5135))
+
 ## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.4.0...google-cloud-dataplex-v2.5.0) (2024-12-12)
 
 

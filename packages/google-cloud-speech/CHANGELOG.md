@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.29.0...google-cloud-speech-v2.30.0) (2025-01-02)
+
+
+### Features
+
+* expand the set of supported explicit audio encodings ([6ddf897](https://github.com/googleapis/google-cloud-python/commit/6ddf8978ba597538d12cdb4ede5440dba5023c4f))
+
+
+### Documentation
+
+* updated ExplicitDecodingConfig documentation to reflect changes related to newly supported encodings ([6ddf897](https://github.com/googleapis/google-cloud-python/commit/6ddf8978ba597538d12cdb4ede5440dba5023c4f))
+
 ## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.28.1...google-cloud-speech-v2.29.0) (2024-12-12)
 
 
