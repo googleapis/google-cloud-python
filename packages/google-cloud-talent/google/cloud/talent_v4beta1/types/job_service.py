@@ -648,6 +648,13 @@ class SearchJobsRequest(proto.Message):
             Defaults to
             [KeywordMatchMode.KEYWORD_MATCH_ALL][google.cloud.talent.v4beta1.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_ALL]
             if no value is specified.
+        relevance_threshold (google.cloud.talent_v4beta1.types.SearchJobsRequest.RelevanceThreshold):
+            Optional. The relevance threshold of the
+            search results.
+            Default to Google defined threshold, leveraging
+            a balance of precision and recall to deliver
+            both highly accurate results and comprehensive
+            coverage of relevant information.
     """
 
     class SearchMode(proto.Enum):
@@ -752,6 +759,30 @@ class SearchJobsRequest(proto.Message):
         KEYWORD_MATCH_DISABLED = 1
         KEYWORD_MATCH_ALL = 2
         KEYWORD_MATCH_TITLE_ONLY = 3
+
+    class RelevanceThreshold(proto.Enum):
+        r"""The relevance threshold of the search results. The higher
+        relevance threshold is, the higher relevant results are shown
+        and the less number of results are returned.
+
+        Values:
+            RELEVANCE_THRESHOLD_UNSPECIFIED (0):
+                Default value. In this case, server behavior
+                defaults to Google defined threshold.
+            LOWEST (1):
+                Lowest relevance threshold.
+            LOW (2):
+                Low relevance threshold.
+            MEDIUM (3):
+                Medium relevance threshold.
+            HIGH (4):
+                High relevance threshold.
+        """
+        RELEVANCE_THRESHOLD_UNSPECIFIED = 0
+        LOWEST = 1
+        LOW = 2
+        MEDIUM = 3
+        HIGH = 4
 
     class CustomRankingInfo(proto.Message):
         r"""Custom ranking information for
@@ -922,6 +953,11 @@ class SearchJobsRequest(proto.Message):
         proto.ENUM,
         number=18,
         enum=KeywordMatchMode,
+    )
+    relevance_threshold: RelevanceThreshold = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=RelevanceThreshold,
     )
 
 
