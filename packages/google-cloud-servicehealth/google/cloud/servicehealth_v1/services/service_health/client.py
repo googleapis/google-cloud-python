@@ -767,8 +767,7 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.ListEventsRequest, dict]):
-                The request object. Message for requesting list of
-                events.
+                The request object. Requests list of events.
             parent (str):
                 Required. Parent value using the form
                 ``projects/{project_id}/locations/{location}/events``.
@@ -792,7 +791,7 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Returns:
             google.cloud.servicehealth_v1.services.service_health.pagers.ListEventsPager:
-                Message for response to listing
+                Response to request for listing
                 events.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -893,7 +892,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.GetEventRequest, dict]):
-                The request object. Message for getting an event.
+                The request object. Gets information about a specific
+                event.
             name (str):
                 Required. Unique name of the event in this scope
                 including project and location using the form
@@ -1010,8 +1010,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.ListOrganizationEventsRequest, dict]):
-                The request object. Message for requesting list of
-                organization events.
+                The request object. Requests list of events that affect
+                an organization.
             parent (str):
                 Required. Parent value using the form
                 ``organizations/{organization_id}/locations/{location}/organizationEvents``.
@@ -1037,7 +1037,7 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Returns:
             google.cloud.servicehealth_v1.services.service_health.pagers.ListOrganizationEventsPager:
-                Message for response to listing
+                Response to request for listing
                 organization events.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -1140,8 +1140,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.GetOrganizationEventRequest, dict]):
-                The request object. Message for getting an organization
-                event.
+                The request object. Gets information about a specific
+                event affecting an organization.
             name (str):
                 Required. Unique name of the event in this scope
                 including organization and event ID using the form
@@ -1259,8 +1259,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.ListOrganizationImpactsRequest, dict]):
-                The request object. Message for requesting list of
-                organization impacts.
+                The request object. Requests list of projects under an
+                organization affected by an event.
             parent (str):
                 Required. Parent value using the form
                 ``organizations/{organization_id}/locations/{location}/organizationImpacts``.
@@ -1283,8 +1283,10 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Returns:
             google.cloud.servicehealth_v1.services.service_health.pagers.ListOrganizationImpactsPager:
-                Message for response to listing
-                organization impacts.
+                Response to request for listing
+                projects under an organization affected
+                by an event.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1389,8 +1391,8 @@ class ServiceHealthClient(metaclass=ServiceHealthClientMeta):
 
         Args:
             request (Union[google.cloud.servicehealth_v1.types.GetOrganizationImpactRequest, dict]):
-                The request object. Message for getting an organization
-                impact.
+                The request object. Gets information about an event that
+                affects a project under an organization.
             name (str):
                 Required. Name of the resource using the form
                 ``organizations/{organization_id}/locations/global/organizationImpacts/{organization_impact_id}``.

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for InsertCssProductInput
+# Snippet for UpdateCssProductInput
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-shopping-css
 
 
-# [START css_v1_generated_CssProductInputsService_InsertCssProductInput_sync]
+# [START css_v1_generated_CssProductInputsService_UpdateCssProductInput_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,7 +34,7 @@
 from google.shopping import css_v1
 
 
-def sample_insert_css_product_input():
+def sample_update_css_product_input():
     # Create a client
     client = css_v1.CssProductInputsServiceClient()
 
@@ -44,15 +44,14 @@ def sample_insert_css_product_input():
     css_product_input.content_language = "content_language_value"
     css_product_input.feed_label = "feed_label_value"
 
-    request = css_v1.InsertCssProductInputRequest(
-        parent="parent_value",
+    request = css_v1.UpdateCssProductInputRequest(
         css_product_input=css_product_input,
     )
 
     # Make the request
-    response = client.insert_css_product_input(request=request)
+    response = client.update_css_product_input(request=request)
 
     # Handle the response
     print(response)
 
-# [END css_v1_generated_CssProductInputsService_InsertCssProductInput_sync]
+# [END css_v1_generated_CssProductInputsService_UpdateCssProductInput_sync]

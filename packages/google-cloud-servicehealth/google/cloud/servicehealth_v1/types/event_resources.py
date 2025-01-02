@@ -737,7 +737,7 @@ class Asset(proto.Message):
 
 
 class ListEventsRequest(proto.Message):
-    r"""Message for requesting list of events.
+    r"""Requests list of events.
 
     Attributes:
         parent (str):
@@ -816,7 +816,7 @@ class ListEventsRequest(proto.Message):
 
 
 class ListEventsResponse(proto.Message):
-    r"""Message for response to listing events.
+    r"""Response to request for listing events.
 
     Attributes:
         events (MutableSequence[google.cloud.servicehealth_v1.types.Event]):
@@ -853,7 +853,7 @@ class ListEventsResponse(proto.Message):
 
 
 class GetEventRequest(proto.Message):
-    r"""Message for getting an event.
+    r"""Gets information about a specific event.
 
     Attributes:
         name (str):
@@ -873,7 +873,7 @@ class GetEventRequest(proto.Message):
 
 
 class ListOrganizationEventsRequest(proto.Message):
-    r"""Message for requesting list of organization events.
+    r"""Requests list of events that affect an organization.
 
     Attributes:
         parent (str):
@@ -953,7 +953,7 @@ class ListOrganizationEventsRequest(proto.Message):
 
 
 class ListOrganizationEventsResponse(proto.Message):
-    r"""Message for response to listing organization events.
+    r"""Response to request for listing organization events.
 
     Attributes:
         organization_events (MutableSequence[google.cloud.servicehealth_v1.types.OrganizationEvent]):
@@ -991,7 +991,8 @@ class ListOrganizationEventsResponse(proto.Message):
 
 
 class GetOrganizationEventRequest(proto.Message):
-    r"""Message for getting an organization event.
+    r"""Gets information about a specific event affecting an
+    organization.
 
     Attributes:
         name (str):
@@ -1013,7 +1014,8 @@ class GetOrganizationEventRequest(proto.Message):
 
 
 class ListOrganizationImpactsRequest(proto.Message):
-    r"""Message for requesting list of organization impacts.
+    r"""Requests list of projects under an organization affected by
+    an event.
 
     Attributes:
         parent (str):
@@ -1085,7 +1087,8 @@ class ListOrganizationImpactsRequest(proto.Message):
 
 
 class ListOrganizationImpactsResponse(proto.Message):
-    r"""Message for response to listing organization impacts.
+    r"""Response to request for listing projects under an
+    organization affected by an event.
 
     Attributes:
         organization_impacts (MutableSequence[google.cloud.servicehealth_v1.types.OrganizationImpact]):
@@ -1124,7 +1127,8 @@ class ListOrganizationImpactsResponse(proto.Message):
 
 
 class GetOrganizationImpactRequest(proto.Message):
-    r"""Message for getting an organization impact.
+    r"""Gets information about an event that affects a project under
+    an organization.
 
     Attributes:
         name (str):

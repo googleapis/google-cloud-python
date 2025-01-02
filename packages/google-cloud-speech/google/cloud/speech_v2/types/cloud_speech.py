@@ -809,29 +809,21 @@ class ExplicitDecodingConfig(proto.Message):
             Required. Encoding of the audio data sent for
             recognition.
         sample_rate_hertz (int):
-            Sample rate in Hertz of the audio data sent for recognition.
-            Valid values are: 8000-48000. 16000 is optimal. For best
-            results, set the sampling rate of the audio source to 16000
-            Hz. If that's not possible, use the native sample rate of
-            the audio source (instead of re-sampling). Supported for the
-            following encodings:
-
-            -  LINEAR16: Headerless 16-bit signed little-endian PCM
-               samples.
-
-            -  MULAW: Headerless 8-bit companded mulaw samples.
-
-            -  ALAW: Headerless 8-bit companded alaw samples.
+            Optional. Sample rate in Hertz of the audio
+            data sent for recognition. Valid values are:
+            8000-48000. 16000 is optimal. For best results,
+            set the sampling rate of the audio source to
+            16000 Hz. If that's not possible, use the native
+            sample rate of the audio source (instead of
+            re-sampling). Note that this field is marked as
+            OPTIONAL for backward compatibility reasons. It
+            is (and has always been) effectively REQUIRED.
         audio_channel_count (int):
-            Number of channels present in the audio data sent for
-            recognition. Supported for the following encodings:
-
-            -  LINEAR16: Headerless 16-bit signed little-endian PCM
-               samples.
-
-            -  MULAW: Headerless 8-bit companded mulaw samples.
-
-            -  ALAW: Headerless 8-bit companded alaw samples.
+            Optional. Number of channels present in the
+            audio data sent for recognition. Note that this
+            field is marked as OPTIONAL for backward
+            compatibility reasons. It is (and has always
+            been) effectively REQUIRED.
 
             The maximum allowed value is 8.
     """
@@ -849,11 +841,40 @@ class ExplicitDecodingConfig(proto.Message):
                 Headerless 8-bit companded mulaw samples.
             ALAW (3):
                 Headerless 8-bit companded alaw samples.
+            AMR (4):
+                AMR frames with an rfc4867.5 header.
+            AMR_WB (5):
+                AMR-WB frames with an rfc4867.5 header.
+            FLAC (6):
+                FLAC frames in the "native FLAC" container
+                format.
+            MP3 (7):
+                MPEG audio frames with optional (ignored) ID3
+                metadata.
+            OGG_OPUS (8):
+                Opus audio frames in an Ogg container.
+            WEBM_OPUS (9):
+                Opus audio frames in a WebM container.
+            MP4_AAC (10):
+                AAC audio frames in an MP4 container.
+            M4A_AAC (11):
+                AAC audio frames in an M4A container.
+            MOV_AAC (12):
+                AAC audio frames in an MOV container.
         """
         AUDIO_ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
         MULAW = 2
         ALAW = 3
+        AMR = 4
+        AMR_WB = 5
+        FLAC = 6
+        MP3 = 7
+        OGG_OPUS = 8
+        WEBM_OPUS = 9
+        MP4_AAC = 10
+        M4A_AAC = 11
+        MOV_AAC = 12
 
     encoding: AudioEncoding = proto.Field(
         proto.ENUM,
@@ -1871,16 +1892,16 @@ class OutputFormatConfig(proto.Message):
         native (google.cloud.speech_v2.types.NativeOutputFileFormatConfig):
             Configuration for the native output format.
             If this field is set or if no other output
-            format field is set then transcripts will be
+            format field is set, then transcripts will be
             written to the sink in the native format.
         vtt (google.cloud.speech_v2.types.VttOutputFileFormatConfig):
-            Configuration for the vtt output format. If
-            this field is set then transcripts will be
-            written to the sink in the vtt format.
+            Configuration for the VTT output format. If
+            this field is set, then transcripts will be
+            written to the sink in the VTT format.
         srt (google.cloud.speech_v2.types.SrtOutputFileFormatConfig):
-            Configuration for the srt output format. If
-            this field is set then transcripts will be
-            written to the sink in the srt format.
+            Configuration for the SRT output format. If
+            this field is set, then transcripts will be
+            written to the sink in the SRT format.
     """
 
     native: "NativeOutputFileFormatConfig" = proto.Field(

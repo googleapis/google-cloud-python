@@ -568,6 +568,7 @@ class AttachedClustersAsyncClient:
                 -  ``proxy_config.kubernetes_secret.name``.
                 -  ``proxy_config.kubernetes_secret.namespace``.
                 -  ``security_posture_config.vulnerability_mode``
+                -  ``monitoring_config.cloud_monitoring_config.enabled``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

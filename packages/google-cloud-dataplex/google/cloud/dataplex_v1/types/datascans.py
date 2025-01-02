@@ -123,7 +123,7 @@ class UpdateDataScanRequest(proto.Message):
 
             Only fields specified in ``update_mask`` are updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Mask of fields to update.
+            Optional. Mask of fields to update.
         validate_only (bool):
             Optional. Only validate the request, but do not perform
             mutations. The default is ``false``.
@@ -154,11 +154,20 @@ class DeleteDataScanRequest(proto.Message):
             ``projects/{project}/locations/{location_id}/dataScans/{data_scan_id}``
             where ``project`` refers to a *project_id* or
             *project_number* and ``location_id`` refers to a GCP region.
+        force (bool):
+            Optional. If set to true, any child resources
+            of this data scan will also be deleted.
+            (Otherwise, the request will only work if the
+            data scan has no child resources.)
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -506,8 +515,8 @@ class DataScan(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the scan, of the
-            form:
+            Output only. Identifier. The relative resource name of the
+            scan, of the form:
             ``projects/{project}/locations/{location_id}/dataScans/{datascan_id}``,
             where ``project`` refers to a *project_id* or
             *project_number* and ``location_id`` refers to a GCP region.
@@ -615,9 +624,11 @@ class DataScan(proto.Message):
 
         Attributes:
             latest_job_start_time (google.protobuf.timestamp_pb2.Timestamp):
-                The time when the latest DataScanJob started.
+                Optional. The time when the latest
+                DataScanJob started.
             latest_job_end_time (google.protobuf.timestamp_pb2.Timestamp):
-                The time when the latest DataScanJob ended.
+                Optional. The time when the latest
+                DataScanJob ended.
             latest_job_create_time (google.protobuf.timestamp_pb2.Timestamp):
                 Optional. The time when the DataScanJob
                 execution was created.
@@ -745,8 +756,8 @@ class DataScanJob(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the DataScanJob,
-            of the form:
+            Output only. Identifier. The relative resource name of the
+            DataScanJob, of the form:
             ``projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}``,
             where ``project`` refers to a *project_id* or
             *project_number* and ``location_id`` refers to a GCP region.

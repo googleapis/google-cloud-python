@@ -3394,8 +3394,10 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (str):
-                Required. The query against which
-                entries in scope should be matched.
+                Required. The query against which entries in scope
+                should be matched. The query syntax is defined in
+                `Search syntax for Dataplex
+                Catalog <https://cloud.google.com/dataplex/docs/search-syntax>`__.
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this

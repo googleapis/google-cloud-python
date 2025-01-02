@@ -7006,12 +7006,16 @@ def test_create_attached_cluster_rest_call_success(request_type):
             "admin_users": [{"username": "username_value"}],
             "admin_groups": [{"group": "group_value"}],
         },
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "monitoring_config": {
+            "managed_prometheus_config": {"enabled": True},
+            "cloud_monitoring_config": {"enabled": True},
+        },
         "proxy_config": {
             "kubernetes_secret": {"name": "name_value", "namespace": "namespace_value"}
         },
         "binary_authorization": {"evaluation_mode": 1},
         "security_posture_config": {"vulnerability_mode": 1},
+        "tags": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7235,12 +7239,16 @@ def test_update_attached_cluster_rest_call_success(request_type):
             "admin_users": [{"username": "username_value"}],
             "admin_groups": [{"group": "group_value"}],
         },
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
+        "monitoring_config": {
+            "managed_prometheus_config": {"enabled": True},
+            "cloud_monitoring_config": {"enabled": True},
+        },
         "proxy_config": {
             "kubernetes_secret": {"name": "name_value", "namespace": "namespace_value"}
         },
         "binary_authorization": {"evaluation_mode": 1},
         "security_posture_config": {"vulnerability_mode": 1},
+        "tags": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
