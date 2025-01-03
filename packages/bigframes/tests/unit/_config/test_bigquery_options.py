@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import re
+from unittest import mock
 import warnings
 
+import google.auth.credentials
 import pytest
 
 import bigframes
@@ -35,6 +37,7 @@ import bigframes.exceptions
         ("kms_key_name", "kms/key/name/1", "kms/key/name/2"),
         ("skip_bq_connection_check", False, True),
         ("client_endpoints_override", {}, {"bqclient": "endpoint_address"}),
+        ("ordering_mode", "strict", "partial"),
     ],
 )
 def test_setter_raises_if_session_started(attribute, original_value, new_value):
@@ -57,32 +60,46 @@ def test_setter_raises_if_session_started(attribute, original_value, new_value):
 @pytest.mark.parametrize(
     [
         "attribute",
+        "original_value",
     ],
     [
-        (attribute,)
-        for attribute in [
-            "application_name",
-            "credentials",
-            "location",
-            "project",
-            "bq_connection",
-            "use_regional_endpoints",
-            "bq_kms_key_name",
-            "client_endpoints_override",
-        ]
+        ("application_name", "test-partner"),
+        ("location", "us-east1"),
+        ("project", "my-project"),
+        ("bq_connection", "path/to/connection/1"),
+        ("use_regional_endpoints", True),
+        ("kms_key_name", "kms/key/name/1"),
+        ("skip_bq_connection_check", True),
+        ("client_endpoints_override", {"bqclient": "endpoint_address"}),
+        ("ordering_mode", "partial"),
     ],
 )
-def test_setter_if_session_started_but_setting_the_same_value(attribute):
+def test_setter_if_session_started_but_setting_the_same_value(
+    attribute, original_value
+):
     options = bigquery_options.BigQueryOptions()
-    original_object = object()
-    setattr(options, attribute, original_object)
-    assert getattr(options, attribute) is original_object
+    setattr(options, attribute, original_value)
+    assert getattr(options, attribute) == original_value
 
     # This should work fine since we're setting the same value as before.
     options._session_started = True
-    setattr(options, attribute, original_object)
+    setattr(options, attribute, original_value)
 
-    assert getattr(options, attribute) is original_object
+    assert getattr(options, attribute) == original_value
+
+
+def test_setter_if_session_started_but_setting_the_same_credentials_object():
+    options = bigquery_options.BigQueryOptions()
+    original_object = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    options.credentials = original_object
+    assert options.credentials is original_object
+
+    # This should work fine since we're setting the same value as before.
+    options._session_started = True
+    options.credentials = original_object
+    assert options.credentials is original_object
 
 
 @pytest.mark.parametrize(

@@ -317,8 +317,11 @@ class BigQueryOptions:
         return self._ordering_mode.value
 
     @ordering_mode.setter
-    def ordering_mode(self, ordering_mode: Literal["strict", "partial"]) -> None:
-        self._ordering_mode = _validate_ordering_mode(ordering_mode)
+    def ordering_mode(self, value: Literal["strict", "partial"]) -> None:
+        ordering_mode = _validate_ordering_mode(value)
+        if self._session_started and self._ordering_mode != ordering_mode:
+            raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="ordering_mode"))
+        self._ordering_mode = ordering_mode
 
     @property
     def client_endpoints_override(self) -> dict:
