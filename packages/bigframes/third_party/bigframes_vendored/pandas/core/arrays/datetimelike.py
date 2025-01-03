@@ -33,7 +33,8 @@ class DatelikeOps:
                 Date format string (e.g. "%Y-%m-%d").
 
         Returns:
-            bigframes.series.Series: Series of formatted strings.
+            bigframes.pandas.Series:
+                Series of formatted strings.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -64,7 +65,8 @@ class DatelikeOps:
             dtype: timestamp[us, tz=UTC][pyarrow]
 
         Returns:
-            bigframes.series.Series of the same dtype as the data.
+            bigframes.pandas.Series:
+                Series of the same dtype as the data.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -95,5 +97,9 @@ class DatelikeOps:
         Args:
             freq (str):
                 Frequency string (e.g. "D", "min", "s").
+
+        Returns:
+            bigframes.pandas.Series:
+                Series of the same dtype as the data.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
