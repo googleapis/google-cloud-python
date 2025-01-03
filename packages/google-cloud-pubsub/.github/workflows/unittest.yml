@@ -5,7 +5,10 @@ on:
 name: unittest
 jobs:
   unit:
-    runs-on: ubuntu-latest
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    # https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
