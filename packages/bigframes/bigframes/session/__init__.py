@@ -373,10 +373,18 @@ class Session(
         """Delete resources that were created with this session's session_id.
         This includes BigQuery tables, remote functions and cloud functions
         serving the remote functions."""
-        self._temp_storage_manager.clean_up_tables()
-        self._remote_function_session.clean_up(
-            self.bqclient, self.cloudfunctionsclient, self.session_id
-        )
+
+        # Protect against failure when the Session is a fake for testing or
+        # failed to initialize.
+        temp_storage_manager = getattr(self, "_temp_storage_manager", None)
+        if temp_storage_manager:
+            self._temp_storage_manager.clean_up_tables()
+
+        remote_function_session = getattr(self, "_remote_function_session", None)
+        if remote_function_session:
+            self._remote_function_session.clean_up(
+                self.bqclient, self.cloudfunctionsclient, self.session_id
+            )
 
     def read_gbq(
         self,

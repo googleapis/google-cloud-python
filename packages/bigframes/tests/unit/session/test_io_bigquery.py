@@ -114,7 +114,7 @@ def test_create_job_configs_labels_length_limit_met_and_labels_is_none():
         job_configs_labels=None, api_methods=api_methods
     )
     assert labels is not None
-    assert len(labels) == 64
+    assert len(labels) == log_adapter.MAX_LABELS_COUNT
     assert "dataframe-head" in labels.values()
 
 

@@ -16,7 +16,10 @@ import pytest
 
 from bigframes.core import log_adapter
 
-MAX_LABELS_COUNT = 64
+# The limit is 64 (https://cloud.google.com/bigquery/docs/labels-intro#requirements),
+# but leave a few spare for internal labels to be added.
+# See internal issue 386825477.
+MAX_LABELS_COUNT = 56
 
 
 @pytest.fixture
