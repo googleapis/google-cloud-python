@@ -116,15 +116,18 @@ class Job(proto.Message):
             experience.
 
             Jobs with multiple addresses must have their addresses with
-            the same [LocationType][] to allow location filtering to
-            work properly. (For example, a Job with addresses "1600
-            Amphitheatre Parkway, Mountain View, CA, USA" and "London,
-            UK" may not have location filters applied correctly at
-            search time since the first is a
-            [LocationType.STREET_ADDRESS][] and the second is a
-            [LocationType.LOCALITY][].) If a job needs to have multiple
-            addresses, it is suggested to split it into multiple jobs
-            with same LocationTypes.
+            the same
+            [LocationType][google.cloud.talent.v4.Location.LocationType]
+            to allow location filtering to work properly. (For example,
+            a Job with addresses "1600 Amphitheatre Parkway, Mountain
+            View, CA, USA" and "London, UK" may not have location
+            filters applied correctly at search time since the first is
+            a
+            [LocationType.STREET_ADDRESS][google.cloud.talent.v4.Location.LocationType.STREET_ADDRESS]
+            and the second is a
+            [LocationType.LOCALITY][google.cloud.talent.v4.Location.LocationType.LOCALITY].)
+            If a job needs to have multiple addresses, it is suggested
+            to split it into multiple jobs with same LocationTypes.
 
             The maximum number of allowed characters is 500.
         application_info (google.cloud.talent_v4.types.Job.ApplicationInfo):
@@ -293,10 +296,11 @@ class Job(proto.Message):
             must be set before
             [posting_expire_time][google.cloud.talent.v4.Job.posting_expire_time].
             The purpose of this feature is to allow other objects, such
-            as [Application][], to refer a job that didn't exist in the
-            system prior to becoming expired. If you want to modify a
-            job that was expired on creation, delete it and create a new
-            one.
+            as
+            [ApplicationInfo][google.cloud.talent.v4.Job.ApplicationInfo],
+            to refer a job that didn't exist in the system prior to
+            becoming expired. If you want to modify a job that was
+            expired on creation, delete it and create a new one.
 
             If this value isn't provided at the time of job creation or
             is invalid, the job posting expires after 30 days from the
