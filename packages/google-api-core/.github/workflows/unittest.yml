@@ -8,7 +8,10 @@ on:
 jobs:
   run-unittests:
     name: unit${{ matrix.option }}-${{ matrix.python }}
-    runs-on: ubuntu-latest
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
+    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
+    # https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         option: ["", "_grpc_gcp", "_wo_grpc", "_w_prerelease_deps", "_w_async_rest_extra"]
