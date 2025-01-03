@@ -468,7 +468,7 @@ def test_subscriber_not_leaking_open_sockets(
     publisher.create_topic(name=topic_path)
 
     current_process = psutil.Process()
-    conn_count_start = len(current_process.connections())
+    conn_count_start = len(current_process.net_connections())
 
     # Publish a few messages, then synchronously pull them and check that
     # no sockets are leaked.
@@ -487,7 +487,7 @@ def test_subscriber_not_leaking_open_sockets(
         response = subscriber.pull(subscription=subscription_path, max_messages=3)
         assert len(response.received_messages) == 3
 
-    conn_count_end = len(current_process.connections())
+    conn_count_end = len(current_process.net_connections())
 
     # To avoid flakiness, use <= in the assertion, since on rare occasions additional
     # sockets are closed, causing the == assertion to fail.
