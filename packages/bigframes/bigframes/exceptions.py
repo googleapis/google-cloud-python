@@ -59,6 +59,10 @@ class QueryComplexityError(RuntimeError):
     """Query plan is too complex to execute."""
 
 
+class OperationAbortedError(RuntimeError):
+    """Operation is aborted."""
+
+
 class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""
 
