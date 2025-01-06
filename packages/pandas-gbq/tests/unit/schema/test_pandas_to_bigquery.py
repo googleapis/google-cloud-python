@@ -4,6 +4,7 @@
 
 import collections
 import datetime
+import decimal
 import operator
 
 from google.cloud.bigquery import schema
@@ -46,6 +47,29 @@ def test_dataframe_to_bigquery_fields_w_named_index(module_under_test):
                     ),
                 ],
             ),
+            # Need to fallback to Arrow to avoid data loss and disambiguate
+            # NUMERIC from BIGNUMERIC. We don't want to pick too small of a
+            # type and lose precision. See:
+            # https://github.com/googleapis/python-bigquery/issues/1650
+            #
+            (
+                "bignumeric_column",
+                [
+                    # Start with a lower precision Decimal to make sure we
+                    # aren't trying to determine the type from just one value.
+                    decimal.Decimal("1.25"),
+                    decimal.Decimal("0.1234567891"),
+                ],
+            ),
+            (
+                "numeric_column",
+                [
+                    # Minimum value greater than 0 that can be handled: 1e-9
+                    # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types
+                    decimal.Decimal("0.000000001"),
+                    decimal.Decimal("-0.000000001"),
+                ],
+            ),
         ]
     )
     dataframe = pandas.DataFrame(df_data).set_index("str_index", drop=True)
@@ -64,6 +88,8 @@ def test_dataframe_to_bigquery_fields_w_named_index(module_under_test):
         schema.SchemaField("boolean_column", "BOOLEAN", "NULLABLE"),
         schema.SchemaField("datetime_column", "DATETIME", "NULLABLE"),
         schema.SchemaField("timestamp_column", "TIMESTAMP", "NULLABLE"),
+        schema.SchemaField("bignumeric_column", "BIGNUMERIC", "NULLABLE"),
+        schema.SchemaField("numeric_column", "NUMERIC", "NULLABLE"),
     )
     assert returned_schema == expected_schema
 

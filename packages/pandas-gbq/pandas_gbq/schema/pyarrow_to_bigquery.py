@@ -72,6 +72,13 @@ def arrow_type_to_bigquery_field(
             return schema.SchemaField(name, "TIMESTAMP")
 
     detected_type = _ARROW_SCALAR_IDS_TO_BQ.get(type_.id, None)
+
+    # We need a special case for values that might fit in Arrow decimal128 but
+    # not with the scale/precision that is used in BigQuery's NUMERIC type.
+    # See: https://github.com/googleapis/python-bigquery/issues/1650
+    if detected_type == "NUMERIC" and type_.scale > 9:
+        detected_type = "BIGNUMERIC"
+
     if detected_type is not None:
         return schema.SchemaField(name, detected_type)
 
