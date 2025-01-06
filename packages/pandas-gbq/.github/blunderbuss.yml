@@ -5,6 +5,7 @@
 # team, please update `codeowner_team` in `.repo-metadata.json`.
 assign_issues:
   - googleapis/api-bigquery
+  - googleapis/api-bigquery-dataframe
 
 assign_issues_by:
   - labels:
@@ -12,6 +13,8 @@ assign_issues_by:
     to:
       - googleapis/python-samples-reviewers
       - googleapis/api-bigquery
+      - googleapis/api-bigquery-dataframe
 
 assign_prs:
   - googleapis/api-bigquery
+  - googleapis/api-bigquery-dataframe

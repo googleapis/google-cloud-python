@@ -11,5 +11,5 @@
     "distribution_name": "pandas-gbq",
     "api_id": "bigquery.googleapis.com",
     "default_version": "",
-    "codeowner_team": "@googleapis/api-bigquery"
+    "codeowner_team": "@googleapis/api-bigquery @googleapis/api-bigquery-dataframe"
 }
