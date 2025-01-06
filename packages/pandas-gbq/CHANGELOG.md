@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.26.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.26.0...v0.26.1) (2025-01-06)
+
+
+### Bug Fixes
+
+* Ensure BIGNUMERIC type is used if scale &gt; 9 in Decimal values ([#844](https://github.com/googleapis/python-bigquery-pandas/issues/844)) ([d2f32df](https://github.com/googleapis/python-bigquery-pandas/commit/d2f32df4670f4c18464c6772896bf1583c36e338))
+
 ## [0.26.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.25.0...v0.26.0) (2024-12-19)
 
 
