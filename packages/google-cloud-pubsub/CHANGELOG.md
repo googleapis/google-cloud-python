@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.27.2](https://github.com/googleapis/python-pubsub/compare/v2.27.1...v2.27.2) (2025-01-06)
+
+
+### Bug Fixes
+
+* Handle TransportError Exceptions thrown from gapic_publish ([#1318](https://github.com/googleapis/python-pubsub/issues/1318)) ([0e058c7](https://github.com/googleapis/python-pubsub/commit/0e058c73487384100847adcb2f4ab95a61c072c4))
+
 ## [2.27.1](https://github.com/googleapis/python-pubsub/compare/v2.27.0...v2.27.1) (2024-11-08)
 
 
