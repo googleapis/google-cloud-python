@@ -22,7 +22,8 @@ This library is an evolving attempt to
 """
 
 import abc
-from typing import cast, Optional, TypeVar
+from typing import Callable, cast, Mapping, Optional, TypeVar
+import warnings
 
 import bigframes_vendored.sklearn.base
 
@@ -77,6 +78,9 @@ class BaseEstimator(bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
                 ...
     """
 
+    def __init__(self):
+        self._bqml_model: Optional[core.BqmlModel] = None
+
     def __repr__(self):
         """Print the estimator's constructor with all non-default parameter values."""
 
@@ -94,9 +98,6 @@ class BaseEstimator(bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
 # TODO(garrettwu): refactor to reflect the actual property. Now the class contains .register() method.
 class Predictor(BaseEstimator):
     """A BigQuery DataFrames ML Model base class that can be used to predict outputs."""
-
-    def __init__(self):
-        self._bqml_model: Optional[core.BqmlModel] = None
 
     @abc.abstractmethod
     def predict(self, X):
@@ -213,11 +214,60 @@ class UnsupervisedTrainablePredictor(TrainablePredictor):
         return self._fit(X, y)
 
 
+class RetriableRemotePredictor(BaseEstimator):
+    @property
+    @abc.abstractmethod
+    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
+        pass
+
+    @property
+    @abc.abstractmethod
+    def _status_col(self) -> str:
+        pass
+
+    def _predict_and_retry(
+        self, X: bpd.DataFrame, options: Mapping, max_retries: int
+    ) -> bpd.DataFrame:
+        assert self._bqml_model is not None
+
+        df_result = bpd.DataFrame(session=self._bqml_model.session)  # placeholder
+        df_fail = X
+        for _ in range(max_retries + 1):
+            df = self._predict_func(df_fail, options)
+
+            success = df[self._status_col].str.len() == 0
+            df_succ = df[success]
+            df_fail = df[~success]
+
+            if df_succ.empty:
+                if max_retries > 0:
+                    warnings.warn(
+                        "Can't make any progress, stop retrying.", RuntimeWarning
+                    )
+                break
+
+            df_result = (
+                bpd.concat([df_result, df_succ]) if not df_result.empty else df_succ
+            )
+
+            if df_fail.empty:
+                break
+
+        if not df_fail.empty:
+            warnings.warn(
+                f"Some predictions failed. Check column {self._status_col} for detailed status. You may want to filter the failed rows and retry.",
+                RuntimeWarning,
+            )
+
+        df_result = cast(
+            bpd.DataFrame,
+            bpd.concat([df_result, df_fail]) if not df_result.empty else df_fail,
+        )
+        return df_result
+
+
 class BaseTransformer(BaseEstimator):
     """Transformer base class."""
-
-    def __init__(self):
-        self._bqml_model: Optional[core.BqmlModel] = None
 
     @abc.abstractmethod
     def _keys(self):

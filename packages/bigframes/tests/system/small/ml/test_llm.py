@@ -381,7 +381,35 @@ class EqCmpAllDataFrame(bpd.DataFrame):
         return self.equals(other)
 
 
-def test_gemini_text_generator_retry_success(session, bq_connection):
+@pytest.mark.parametrize(
+    (
+        "model_class",
+        "options",
+    ),
+    [
+        (
+            llm.GeminiTextGenerator,
+            {
+                "temperature": 0.9,
+                "max_output_tokens": 8192,
+                "top_k": 40,
+                "top_p": 1.0,
+                "flatten_json_output": True,
+                "ground_with_google_search": False,
+            },
+        ),
+        (
+            llm.Claude3TextGenerator,
+            {
+                "max_output_tokens": 128,
+                "top_k": 40,
+                "top_p": 0.95,
+                "flatten_json_output": True,
+            },
+        ),
+    ],
+)
+def test_text_generator_retry_success(session, bq_connection, model_class, options):
     # Requests.
     df0 = EqCmpAllDataFrame(
         {
@@ -455,22 +483,12 @@ def test_gemini_text_generator_retry_success(session, bq_connection):
             session=session,
         ),
     ]
-    options = {
-        "temperature": 0.9,
-        "max_output_tokens": 8192,
-        "top_k": 40,
-        "top_p": 1.0,
-        "flatten_json_output": True,
-        "ground_with_google_search": False,
-    }
 
-    gemini_text_generator_model = llm.GeminiTextGenerator(
-        connection_name=bq_connection, session=session
-    )
-    gemini_text_generator_model._bqml_model = mock_bqml_model
+    text_generator_model = model_class(connection_name=bq_connection, session=session)
+    text_generator_model._bqml_model = mock_bqml_model
 
     # 3rd retry isn't triggered
-    result = gemini_text_generator_model.predict(df0, max_retries=3)
+    result = text_generator_model.predict(df0, max_retries=3)
 
     mock_bqml_model.generate_text.assert_has_calls(
         [
@@ -497,7 +515,35 @@ def test_gemini_text_generator_retry_success(session, bq_connection):
     )
 
 
-def test_gemini_text_generator_retry_no_progress(session, bq_connection):
+@pytest.mark.parametrize(
+    (
+        "model_class",
+        "options",
+    ),
+    [
+        (
+            llm.GeminiTextGenerator,
+            {
+                "temperature": 0.9,
+                "max_output_tokens": 8192,
+                "top_k": 40,
+                "top_p": 1.0,
+                "flatten_json_output": True,
+                "ground_with_google_search": False,
+            },
+        ),
+        (
+            llm.Claude3TextGenerator,
+            {
+                "max_output_tokens": 128,
+                "top_k": 40,
+                "top_p": 0.95,
+                "flatten_json_output": True,
+            },
+        ),
+    ],
+)
+def test_text_generator_retry_no_progress(session, bq_connection, model_class, options):
     # Requests.
     df0 = EqCmpAllDataFrame(
         {
@@ -550,22 +596,12 @@ def test_gemini_text_generator_retry_no_progress(session, bq_connection):
             session=session,
         ),
     ]
-    options = {
-        "temperature": 0.9,
-        "max_output_tokens": 8192,
-        "top_k": 40,
-        "top_p": 1.0,
-        "flatten_json_output": True,
-        "ground_with_google_search": False,
-    }
 
-    gemini_text_generator_model = llm.GeminiTextGenerator(
-        connection_name=bq_connection, session=session
-    )
-    gemini_text_generator_model._bqml_model = mock_bqml_model
+    text_generator_model = model_class(connection_name=bq_connection, session=session)
+    text_generator_model._bqml_model = mock_bqml_model
 
     # No progress, only conduct retry once
-    result = gemini_text_generator_model.predict(df0, max_retries=3)
+    result = text_generator_model.predict(df0, max_retries=3)
 
     mock_bqml_model.generate_text.assert_has_calls(
         [
@@ -579,6 +615,206 @@ def test_gemini_text_generator_retry_no_progress(session, bq_connection):
             {
                 "ml_generate_text_status": ["", "error", "error"],
                 "prompt": [
+                    "What is BigQuery?",
+                    "What is BQML?",
+                    "What is BigQuery DataFrame?",
+                ],
+            },
+            index=[0, 1, 2],
+        ),
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+
+def test_text_embedding_generator_retry_success(session, bq_connection):
+    # Requests.
+    df0 = EqCmpAllDataFrame(
+        {
+            "content": [
+                "What is BigQuery?",
+                "What is BQML?",
+                "What is BigQuery DataFrame?",
+            ]
+        },
+        index=[0, 1, 2],
+        session=session,
+    )
+    df1 = EqCmpAllDataFrame(
+        {
+            "ml_generate_embedding_status": ["error", "error"],
+            "content": [
+                "What is BQML?",
+                "What is BigQuery DataFrame?",
+            ],
+        },
+        index=[1, 2],
+        session=session,
+    )
+    df2 = EqCmpAllDataFrame(
+        {
+            "ml_generate_embedding_status": ["error"],
+            "content": [
+                "What is BQML?",
+            ],
+        },
+        index=[1],
+        session=session,
+    )
+
+    mock_bqml_model = mock.create_autospec(spec=core.BqmlModel)
+    type(mock_bqml_model).session = mock.PropertyMock(return_value=session)
+
+    # Responses. Retry twice then all succeeded.
+    mock_bqml_model.generate_embedding.side_effect = [
+        EqCmpAllDataFrame(
+            {
+                "ml_generate_embedding_status": ["", "error", "error"],
+                "content": [
+                    "What is BigQuery?",
+                    "What is BQML?",
+                    "What is BigQuery DataFrame?",
+                ],
+            },
+            index=[0, 1, 2],
+            session=session,
+        ),
+        EqCmpAllDataFrame(
+            {
+                "ml_generate_embedding_status": ["error", ""],
+                "content": [
+                    "What is BQML?",
+                    "What is BigQuery DataFrame?",
+                ],
+            },
+            index=[1, 2],
+            session=session,
+        ),
+        EqCmpAllDataFrame(
+            {
+                "ml_generate_embedding_status": [""],
+                "content": [
+                    "What is BQML?",
+                ],
+            },
+            index=[1],
+            session=session,
+        ),
+    ]
+    options = {
+        "flatten_json_output": True,
+    }
+
+    text_embedding_model = llm.TextEmbeddingGenerator(
+        connection_name=bq_connection, session=session
+    )
+    text_embedding_model._bqml_model = mock_bqml_model
+
+    # 3rd retry isn't triggered
+    result = text_embedding_model.predict(df0, max_retries=3)
+
+    mock_bqml_model.generate_embedding.assert_has_calls(
+        [
+            mock.call(df0, options),
+            mock.call(df1, options),
+            mock.call(df2, options),
+        ]
+    )
+    pd.testing.assert_frame_equal(
+        result.to_pandas(),
+        pd.DataFrame(
+            {
+                "ml_generate_embedding_status": ["", "", ""],
+                "content": [
+                    "What is BigQuery?",
+                    "What is BigQuery DataFrame?",
+                    "What is BQML?",
+                ],
+            },
+            index=[0, 2, 1],
+        ),
+        check_dtype=False,
+        check_index_type=False,
+    )
+
+
+def test_text_embedding_generator_retry_no_progress(session, bq_connection):
+    # Requests.
+    df0 = EqCmpAllDataFrame(
+        {
+            "content": [
+                "What is BigQuery?",
+                "What is BQML?",
+                "What is BigQuery DataFrame?",
+            ]
+        },
+        index=[0, 1, 2],
+        session=session,
+    )
+    df1 = EqCmpAllDataFrame(
+        {
+            "ml_generate_embedding_status": ["error", "error"],
+            "content": [
+                "What is BQML?",
+                "What is BigQuery DataFrame?",
+            ],
+        },
+        index=[1, 2],
+        session=session,
+    )
+
+    mock_bqml_model = mock.create_autospec(spec=core.BqmlModel)
+    type(mock_bqml_model).session = mock.PropertyMock(return_value=session)
+    # Responses. Retry once, no progress, just stop.
+    mock_bqml_model.generate_embedding.side_effect = [
+        EqCmpAllDataFrame(
+            {
+                "ml_generate_embedding_status": ["", "error", "error"],
+                "content": [
+                    "What is BigQuery?",
+                    "What is BQML?",
+                    "What is BigQuery DataFrame?",
+                ],
+            },
+            index=[0, 1, 2],
+            session=session,
+        ),
+        EqCmpAllDataFrame(
+            {
+                "ml_generate_embedding_status": ["error", "error"],
+                "content": [
+                    "What is BQML?",
+                    "What is BigQuery DataFrame?",
+                ],
+            },
+            index=[1, 2],
+            session=session,
+        ),
+    ]
+    options = {
+        "flatten_json_output": True,
+    }
+
+    text_embedding_model = llm.TextEmbeddingGenerator(
+        connection_name=bq_connection, session=session
+    )
+    text_embedding_model._bqml_model = mock_bqml_model
+
+    # No progress, only conduct retry once
+    result = text_embedding_model.predict(df0, max_retries=3)
+
+    mock_bqml_model.generate_embedding.assert_has_calls(
+        [
+            mock.call(df0, options),
+            mock.call(df1, options),
+        ]
+    )
+    pd.testing.assert_frame_equal(
+        result.to_pandas(),
+        pd.DataFrame(
+            {
+                "ml_generate_embedding_status": ["", "error", "error"],
+                "content": [
                     "What is BigQuery?",
                     "What is BQML?",
                     "What is BigQuery DataFrame?",

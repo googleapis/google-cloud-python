@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from typing import cast, Literal, Optional
+from typing import Callable, cast, Literal, Mapping, Optional
 import warnings
 
 import bigframes_vendored.constants as constants
@@ -616,7 +616,7 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
 
 
 @log_adapter.class_logger
-class TextEmbeddingGenerator(base.BaseEstimator):
+class TextEmbeddingGenerator(base.RetriableRemotePredictor):
     """Text embedding generator LLM model.
 
     Args:
@@ -715,18 +715,33 @@ class TextEmbeddingGenerator(base.BaseEstimator):
         model._bqml_model = core.BqmlModel(session, bq_model)
         return model
 
-    def predict(self, X: utils.ArrayType) -> bpd.DataFrame:
+    @property
+    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
+        return self._bqml_model.generate_embedding
+
+    @property
+    def _status_col(self) -> str:
+        return _ML_GENERATE_EMBEDDING_STATUS
+
+    def predict(self, X: utils.ArrayType, *, max_retries: int = 0) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
                 Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "content" column for prediction.
 
+            max_retries (int, default 0):
+                Max number of retries if the prediction for any rows failed. Each try needs to make progress (i.e. has successfully predicted rows) to continue the retry.
+                Each retry will append newly succeeded rows. When the max retries are reached, the remaining rows (the ones without successful predictions) will be appended to the end of the result.
+
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
+        if max_retries < 0:
+            raise ValueError(
+                f"max_retries must be larger than or equal to 0, but is {max_retries}."
+            )
 
-        # Params reference: https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         if len(X.columns) == 1:
@@ -738,15 +753,7 @@ class TextEmbeddingGenerator(base.BaseEstimator):
             "flatten_json_output": True,
         }
 
-        df = self._bqml_model.generate_embedding(X, options)
-
-        if (df[_ML_GENERATE_EMBEDDING_STATUS] != "").any():
-            warnings.warn(
-                f"Some predictions failed. Check column {_ML_GENERATE_EMBEDDING_STATUS} for detailed status. You may want to filter the failed rows and retry.",
-                RuntimeWarning,
-            )
-
-        return df
+        return self._predict_and_retry(X, options=options, max_retries=max_retries)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> TextEmbeddingGenerator:
         """Save the model to BigQuery.
@@ -765,7 +772,7 @@ class TextEmbeddingGenerator(base.BaseEstimator):
 
 
 @log_adapter.class_logger
-class GeminiTextGenerator(base.BaseEstimator):
+class GeminiTextGenerator(base.RetriableRemotePredictor):
     """Gemini text generator LLM model.
 
     Args:
@@ -890,6 +897,14 @@ class GeminiTextGenerator(base.BaseEstimator):
             "data_split_method": "NO_SPLIT",
         }
         return options
+
+    @property
+    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
+        return self._bqml_model.generate_text
+
+    @property
+    def _status_col(self) -> str:
+        return _ML_GENERATE_TEXT_STATUS
 
     def fit(
         self,
@@ -1028,41 +1043,7 @@ class GeminiTextGenerator(base.BaseEstimator):
             "ground_with_google_search": ground_with_google_search,
         }
 
-        df_result = bpd.DataFrame(session=self._bqml_model.session)  # placeholder
-        df_fail = X
-        for _ in range(max_retries + 1):
-            df = self._bqml_model.generate_text(df_fail, options)
-
-            success = df[_ML_GENERATE_TEXT_STATUS].str.len() == 0
-            df_succ = df[success]
-            df_fail = df[~success]
-
-            if df_succ.empty:
-                if max_retries > 0:
-                    warnings.warn(
-                        "Can't make any progress, stop retrying.", RuntimeWarning
-                    )
-                break
-
-            df_result = (
-                bpd.concat([df_result, df_succ]) if not df_result.empty else df_succ
-            )
-
-            if df_fail.empty:
-                break
-
-        if not df_fail.empty:
-            warnings.warn(
-                f"Some predictions failed. Check column {_ML_GENERATE_TEXT_STATUS} for detailed status. You may want to filter the failed rows and retry.",
-                RuntimeWarning,
-            )
-
-        df_result = cast(
-            bpd.DataFrame,
-            bpd.concat([df_result, df_fail]) if not df_result.empty else df_fail,
-        )
-
-        return df_result
+        return self._predict_and_retry(X, options=options, max_retries=max_retries)
 
     def score(
         self,
@@ -1144,7 +1125,7 @@ class GeminiTextGenerator(base.BaseEstimator):
 
 
 @log_adapter.class_logger
-class Claude3TextGenerator(base.BaseEstimator):
+class Claude3TextGenerator(base.RetriableRemotePredictor):
     """Claude3 text generator LLM model.
 
     Go to Google Cloud Console -> Vertex AI -> Model Garden page to enabe the models before use. Must have the Consumer Procurement Entitlement Manager Identity and Access Management (IAM) role to enable the models.
@@ -1273,6 +1254,14 @@ class Claude3TextGenerator(base.BaseEstimator):
         }
         return options
 
+    @property
+    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
+        return self._bqml_model.generate_text
+
+    @property
+    def _status_col(self) -> str:
+        return _ML_GENERATE_TEXT_STATUS
+
     def predict(
         self,
         X: utils.ArrayType,
@@ -1280,6 +1269,7 @@ class Claude3TextGenerator(base.BaseEstimator):
         max_output_tokens: int = 128,
         top_k: int = 40,
         top_p: float = 0.95,
+        max_retries: int = 0,
     ) -> bpd.DataFrame:
         """Predict the result from input DataFrame.
 
@@ -1307,6 +1297,10 @@ class Claude3TextGenerator(base.BaseEstimator):
                 Specify a lower value for less random responses and a higher value for more random responses.
                 Default 0.95. Possible values [0.0, 1.0].
 
+            max_retries (int, default 0):
+                Max number of retries if the prediction for any rows failed. Each try needs to make progress (i.e. has successfully predicted rows) to continue the retry.
+                Each retry will append newly succeeded rows. When the max retries are reached, the remaining rows (the ones without successful predictions) will be appended to the end of the result.
+
 
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
@@ -1324,6 +1318,11 @@ class Claude3TextGenerator(base.BaseEstimator):
         if top_p < 0.0 or top_p > 1.0:
             raise ValueError(f"top_p must be [0.0, 1.0], but is {top_p}.")
 
+        if max_retries < 0:
+            raise ValueError(
+                f"max_retries must be larger than or equal to 0, but is {max_retries}."
+            )
+
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
 
         if len(X.columns) == 1:
@@ -1338,15 +1337,7 @@ class Claude3TextGenerator(base.BaseEstimator):
             "flatten_json_output": True,
         }
 
-        df = self._bqml_model.generate_text(X, options)
-
-        if (df[_ML_GENERATE_TEXT_STATUS] != "").any():
-            warnings.warn(
-                f"Some predictions failed. Check column {_ML_GENERATE_TEXT_STATUS} for detailed status. You may want to filter the failed rows and retry.",
-                RuntimeWarning,
-            )
-
-        return df
+        return self._predict_and_retry(X, options=options, max_retries=max_retries)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> Claude3TextGenerator:
         """Save the model to BigQuery.
