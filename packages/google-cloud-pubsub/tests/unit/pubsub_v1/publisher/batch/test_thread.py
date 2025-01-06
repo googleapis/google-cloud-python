@@ -31,6 +31,7 @@ from opentelemetry.trace import SpanContext
 import google.api_core.exceptions
 from google.api_core import gapic_v1
 from google.auth import credentials
+from google.auth import exceptions as auth_exceptions
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
@@ -329,7 +330,14 @@ def test_blocking__commit_wrong_messageid_length():
         assert isinstance(future.exception(), exceptions.PublishError)
 
 
-def test_block__commmit_api_error():
+@pytest.mark.parametrize(
+    "error",
+    [
+        (google.api_core.exceptions.InternalServerError("Internal server error"),),
+        (auth_exceptions.TransportError("some transport error"),),
+    ],
+)
+def test_block__commmit_api_error(error):
     batch = create_batch()
     futures = (
         batch.publish(
@@ -345,7 +353,6 @@ def test_block__commmit_api_error():
     )
 
     # Make the API throw an error when publishing.
-    error = google.api_core.exceptions.InternalServerError("uh oh")
     patch = mock.patch.object(type(batch.client), "_gapic_publish", side_effect=error)
 
     with patch:
@@ -353,7 +360,7 @@ def test_block__commmit_api_error():
 
     for future in futures:
         assert future.done()
-        assert future.exception() == error
+        assert future.exception() == error[0]
 
 
 def test_block__commmit_retry_error():

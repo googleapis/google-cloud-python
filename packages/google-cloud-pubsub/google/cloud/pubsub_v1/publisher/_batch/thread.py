@@ -24,6 +24,7 @@ from datetime import datetime
 from opentelemetry import trace
 import google.api_core.exceptions
 from google.api_core import gapic_v1
+from google.auth import exceptions as auth_exceptions
 
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
@@ -342,7 +343,10 @@ class Batch(base.Batch):
                     )
                     span.set_attribute(key="messaging.message.id", value=message_id)
                     wrapper.end_create_span()
-        except google.api_core.exceptions.GoogleAPIError as exc:
+        except (
+            google.api_core.exceptions.GoogleAPIError,
+            auth_exceptions.TransportError,
+        ) as exc:
             # We failed to publish, even after retries, so set the exception on
             # all futures and exit.
             self._status = base.BatchStatus.ERROR
