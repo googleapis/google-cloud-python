@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.31.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.30.0...v1.31.0) (2025-01-05)
+
+
+### Features
+
+* Implement confirmation threshold for semantic operators ([#1251](https://github.com/googleapis/python-bigquery-dataframes/issues/1251)) ([5ba4511](https://github.com/googleapis/python-bigquery-dataframes/commit/5ba4511ad85cf02f0e5ad4e33ea3826b19527293))
+
+
+### Bug Fixes
+
+* Raise if trying to change `ordering_mode` after session has started ([#1252](https://github.com/googleapis/python-bigquery-dataframes/issues/1252)) ([8cfaae8](https://github.com/googleapis/python-bigquery-dataframes/commit/8cfaae8718f3c4c6739b7155a02ef13dbed73425))
+* Reduce the number of labels added to query jobs ([#1245](https://github.com/googleapis/python-bigquery-dataframes/issues/1245)) ([fdcdc18](https://github.com/googleapis/python-bigquery-dataframes/commit/fdcdc189e5fcae9de68bf8fb3872136f55be36cb))
+
+
+### Documentation
+
+* Remove bq studio link ([#1258](https://github.com/googleapis/python-bigquery-dataframes/issues/1258)) ([dd4fd2e](https://github.com/googleapis/python-bigquery-dataframes/commit/dd4fd2e8bafa73b4b5d99f095943bd9a757cd5b5))
+* Update bigframes.pandas.DatetimeMethods docstrings ([#1246](https://github.com/googleapis/python-bigquery-dataframes/issues/1246)) ([10f08da](https://github.com/googleapis/python-bigquery-dataframes/commit/10f08daec6034aafe48096be56683c953accc79a))
+* Update semantic_operators.ipynb ([#1260](https://github.com/googleapis/python-bigquery-dataframes/issues/1260)) ([a2ed989](https://github.com/googleapis/python-bigquery-dataframes/commit/a2ed989fac789b0debacc0ec8a044b473cc6112c))
+
 ## [1.30.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.29.0...v1.30.0) (2024-12-30)
 
 
