@@ -14,9 +14,12 @@
 
 from __future__ import annotations
 
+from typing import Optional
+
 import IPython.display as ipy_display
 import requests
 
+from bigframes import clients
 from bigframes.operations import base
 import bigframes.operations as ops
 import bigframes.series
@@ -66,3 +69,51 @@ class BlobAccessor(base.SeriesMethods):
             read_url = str(read_url).strip('"')
             response = requests.get(read_url)
             ipy_display.display(ipy_display.Image(response.content))
+
+    def image_blur(
+        self,
+        ksize: tuple[int, int],
+        *,
+        dst: bigframes.series.Series,
+        connection: Optional[str] = None,
+    ) -> bigframes.series.Series:
+        """Blurs images.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Args:
+            ksize (tuple(int, int)): Kernel size.
+            dst (bigframes.series.Series): Destination blob series.
+            connection (str or None, default None): BQ connection used for internet transactions. If None, uses default connection of the session.
+
+        Returns:
+            JSON: Runtime info of the Blob.
+        """
+        import bigframes.blob._functions as blob_func
+
+        connection = connection or self._block.session._bq_connection
+        connection = clients.resolve_full_bq_connection_name(
+            connection,
+            default_project=self._block.session._project,
+            default_location=self._block.session._location,
+        )
+
+        image_blur_udf = blob_func.TransformFunction(
+            blob_func.image_blur_def,
+            session=self._block.session,
+            connection=connection,
+        ).udf()
+
+        src_rt = bigframes.series.Series(self._block)._apply_unary_op(
+            ops.ObjGetAccessUrl(mode="R")
+        )
+        dst_rt = dst._apply_unary_op(ops.ObjGetAccessUrl(mode="RW"))
+
+        src_rt = src_rt._apply_unary_op(ops.to_json_string_op)
+        dst_rt = dst_rt._apply_unary_op(ops.to_json_string_op)
+
+        df = src_rt.to_frame().join(dst_rt.to_frame(), how="outer")
+        df["ksize_x"], df["ksize_y"] = ksize
+
+        return df.apply(image_blur_udf, axis=1)

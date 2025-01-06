@@ -1210,6 +1210,11 @@ def json_extract_string_array_op_impl(
     return json_extract_string_array(json_obj=x, json_path=op.json_path)
 
 
+@scalar_op_compiler.register_unary_op(ops.ToJSONString)
+def to_json_string_op_impl(json_obj: ibis_types.Value):
+    return to_json_string(json_obj=json_obj)
+
+
 # Blob Ops
 @scalar_op_compiler.register_unary_op(ops.obj_fetch_metadata_op)
 def obj_fetch_metadata_op_impl(obj_ref: ibis_types.Value):
@@ -1907,6 +1912,13 @@ def json_extract_string_array(  # type: ignore[empty-body]
     json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.String
 ) -> ibis_dtypes.Array[ibis_dtypes.String]:
     """Extracts a JSON array and converts it to a SQL ARRAY of STRINGs."""
+
+
+@ibis_udf.scalar.builtin(name="to_json_string")
+def to_json_string(  # type: ignore[empty-body]
+    json_obj: ibis_dtypes.JSON,
+) -> ibis_dtypes.String:
+    """Convert JSON to STRING."""
 
 
 @ibis_udf.scalar.builtin(name="ML.DISTANCE")
