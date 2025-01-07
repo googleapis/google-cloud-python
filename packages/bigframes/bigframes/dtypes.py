@@ -36,6 +36,8 @@ Dtype = Union[
     pd.ArrowDtype,
     gpd.array.GeometryDtype,
 ]
+
+DTYPES = typing.get_args(Dtype)
 # Represents both column types (dtypes) and local-only types
 # None represents the type of a None scalar.
 ExpressionType = typing.Optional[Dtype]
@@ -237,6 +239,8 @@ DtypeString = Literal[
     "decimal256(76, 38)[pyarrow]",
     "binary[pyarrow]",
 ]
+
+DTYPE_STRINGS = typing.get_args(DtypeString)
 
 BOOL_BIGFRAMES_TYPES = [BOOL_DTYPE]
 

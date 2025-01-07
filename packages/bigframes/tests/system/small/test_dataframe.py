@@ -5199,3 +5199,33 @@ def test__resample_start_time(rule, origin, data):
     pd.testing.assert_frame_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
+
+
+@pytest.mark.parametrize(
+    "dtype",
+    [
+        pytest.param("string[pyarrow]", id="type-string"),
+        pytest.param(pd.StringDtype(storage="pyarrow"), id="type-literal"),
+        pytest.param(
+            {"bool_col": "string[pyarrow]", "int64_col": pd.Float64Dtype()},
+            id="multiple-types",
+        ),
+    ],
+)
+def test_astype(scalars_dfs, dtype):
+    bf_df, pd_df = scalars_dfs
+    target_cols = ["bool_col", "int64_col"]
+    bf_df = bf_df[target_cols]
+    pd_df = pd_df[target_cols]
+
+    bf_result = bf_df.astype(dtype).to_pandas()
+    pd_result = pd_df.astype(dtype)
+
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+
+
+def test_astype_invalid_type_fail(scalars_dfs):
+    bf_df, _ = scalars_dfs
+
+    with pytest.raises(TypeError, match=r".*Share your usecase with.*"):
+        bf_df.astype(123)
