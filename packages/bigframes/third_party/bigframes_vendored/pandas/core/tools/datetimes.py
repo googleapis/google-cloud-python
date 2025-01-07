@@ -71,6 +71,7 @@ def to_datetime(
             float number.
 
     Returns:
-        Timestamp, datetime.datetime or bigframes.series.Series: Return type depends on input.
+        Union[pandas.Timestamp, datetime.datetime or bigframes.pandas.Series]:
+            Return type depends on input.
     """
     raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

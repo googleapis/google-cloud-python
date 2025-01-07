@@ -74,6 +74,7 @@ def merge(
             no suffix. At least one of the values must not be None.
 
     Returns:
-        bigframes.dataframe.DataFrame: A DataFrame of the two merged objects.
+        bigframes.pandas.DataFrame:
+            A DataFrame of the two merged objects.
     """
     raise NotImplementedError("abstract method")

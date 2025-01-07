@@ -167,6 +167,7 @@ class GBQIOMixin:
                 from a table.
 
         Returns:
-            bigframes.pandas.DataFrame: A DataFrame representing results of the query or table.
+            bigframes.pandas.DataFrame:
+                A DataFrame representing results of the query or table.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

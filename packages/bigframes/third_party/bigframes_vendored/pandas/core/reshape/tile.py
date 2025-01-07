@@ -28,6 +28,7 @@ def cut(
 
         >>> import bigframes.pandas as bpd
         >>> bpd.options.display.progress_bar = None
+
         >>> s = bpd.Series([0, 1, 5, 10])
         >>> s
         0     0
@@ -108,7 +109,8 @@ def cut(
             bins. This affects the type of the output container.
 
     Returns:
-        Series: A Series representing the respective bin for each value
+        bigframes.pandas.Series:
+            A Series representing the respective bin for each value
             of `x`. The type depends on the value of `labels`.
             sequence of scalars : returns a Series for Series `x` or a
             Categorical for all other inputs. The values stored within
@@ -140,7 +142,8 @@ def qcut(x, q, *, labels=None, duplicates="error"):
             If bin edges are not unique, raise ValueError or drop non-uniques.
 
     Returns:
-        Series: Categorical or Series of integers if labels is False
+        bigframes.pandas.Series:
+            Categorical or Series of integers if labels is False
             The return type (Categorical or Series) depends on the input: a Series
             of type category if input is a Series else Categorical. Bins are
             represented as categories when categorical data is returned.

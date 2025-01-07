@@ -152,7 +152,8 @@ class ReaderIOMixin:
                 keyword arguments for `pandas.read_csv` when not using the BigQuery engine.
 
         Returns:
-            bigframes.pandas.DataFrame: A BigQuery DataFrames.
+            bigframes.pandas.DataFrame:
+                A BigQuery DataFrames.
 
         Raises:
             bigframes.exceptions.DefaultIndexWarning:

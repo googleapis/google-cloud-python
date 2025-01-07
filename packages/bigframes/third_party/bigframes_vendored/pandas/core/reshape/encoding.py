@@ -113,8 +113,9 @@ def get_dummies(
         Data type for new columns. Only a single dtype is allowed.
 
     Returns:
-      DataFrame: Dummy-coded data. If data contains other columns than the
-      dummy-coded one(s), these will be prepended, unaltered, to the
-      result.
+      bigframes.pandas.DataFrame:
+        Dummy-coded data. If data contains other columns than the
+        dummy-coded one(s), these will be prepended, unaltered, to the
+        result.
     """
     raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

@@ -163,7 +163,8 @@ def get_default_session_id() -> str:
     the table id of all temporary tables created in the global session.
 
     Returns:
-        str, the default global session id, ex. 'sessiona1b2c'
+        str:
+            The default global session id, ex. 'sessiona1b2c'
     """
     return get_global_session().session_id
 
