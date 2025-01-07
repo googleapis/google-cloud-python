@@ -1,2 +1,0 @@
-recursive-include google/api/cloudquotas *.py
-recursive-include google/api/cloudquotas_v1beta *.py
