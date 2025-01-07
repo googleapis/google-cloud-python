@@ -97,6 +97,11 @@
 * Update df.corr, df.cov to be used with more than 30 columns case. ([#1161](https://github.com/googleapis/python-bigquery-dataframes/issues/1161)) ([9dcf1aa](https://github.com/googleapis/python-bigquery-dataframes/commit/9dcf1aa918919704dcf4d12b05935b22fb502fc6))
 
 
+### Dependencies
+
+* Remove `ibis-framework` by vendoring a fork of the package to `bigframes_vendored`. ([#1170](https://github.com/googleapis/python-bigquery-dataframes/pull/1170)) ([421d24d](https://github.com/googleapis/python-bigquery-dataframes/commit/421d24d6e61d557aa696fc701c08c84389f72ed2))
+
+
 ### Documentation
 
 * Add a code sample using `bpd.options.bigquery.ordering_mode = "partial"` ([#909](https://github.com/googleapis/python-bigquery-dataframes/issues/909)) ([f80d705](https://github.com/googleapis/python-bigquery-dataframes/commit/f80d70503b80559a0b1fe64434383aa3e028bf9b))
