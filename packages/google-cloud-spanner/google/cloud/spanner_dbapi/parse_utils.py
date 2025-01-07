@@ -155,7 +155,7 @@ STMT_UPDATING = "UPDATING"
 STMT_INSERT = "INSERT"
 
 # Heuristic for identifying statements that don't need to be run as updates.
-RE_NON_UPDATE = re.compile(r"^\W*(SELECT)", re.IGNORECASE)
+RE_NON_UPDATE = re.compile(r"^\W*(SELECT|GRAPH|FROM)", re.IGNORECASE)
 
 RE_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
 

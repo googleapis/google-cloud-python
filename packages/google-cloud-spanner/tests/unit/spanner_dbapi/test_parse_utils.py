@@ -40,6 +40,11 @@ class TestParseUtils(unittest.TestCase):
                 StatementType.QUERY,
             ),
             (
+                "GRAPH FinGraph MATCH (n) RETURN LABELS(n) AS label, n.id",
+                StatementType.QUERY,
+            ),
+            ("FROM Produce |> WHERE item != 'bananas'", StatementType.QUERY),
+            (
                 "CREATE TABLE django_content_type (id STRING(64) NOT NULL, name STRING(100) "
                 "NOT NULL, app_label STRING(100) NOT NULL, model STRING(100) NOT NULL) PRIMARY KEY(id)",
                 StatementType.DDL,
