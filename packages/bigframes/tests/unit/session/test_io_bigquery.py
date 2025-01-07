@@ -26,6 +26,24 @@ import bigframes.session._io.bigquery as io_bq
 from tests.unit import resources
 
 
+@pytest.fixture(scope="function")
+def mock_bq_client(mocker):
+    mock_client = mocker.Mock(spec=bigquery.Client)
+    mock_query_job = mocker.Mock(spec=bigquery.QueryJob)
+    mock_row_iterator = mocker.Mock(spec=bigquery.table.RowIterator)
+
+    mock_query_job.result.return_value = mock_row_iterator
+
+    mock_destination = bigquery.DatasetReference(
+        project="mock_project", dataset_id="mock_dataset"
+    )
+    mock_query_job.destination = mock_destination
+
+    mock_client.query.return_value = mock_query_job
+
+    return mock_client
+
+
 def test_create_job_configs_labels_is_none():
     api_methods = ["agg", "series-mode"]
     labels = io_bq.create_job_configs_labels(
@@ -124,7 +142,7 @@ def test_create_job_configs_labels_length_limit_met():
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
     }
-    for i in range(61):
+    for i in range(53):
         key = f"bigframes-api-test-{i}"
         value = f"test{i}"
         cur_labels[key] = value
@@ -141,11 +159,87 @@ def test_create_job_configs_labels_length_limit_met():
         job_configs_labels=cur_labels, api_methods=api_methods
     )
     assert labels is not None
-    assert len(labels) == 64
+    assert len(labels) == 56
     assert "dataframe-max" in labels.values()
     assert "dataframe-head" not in labels.values()
     assert "bigframes-api" in labels.keys()
     assert "source" in labels.keys()
+
+
+def test_add_and_trim_labels_length_limit_met():
+    log_adapter.get_and_reset_api_methods()
+    cur_labels = {
+        "bigframes-api": "read_pandas",
+        "source": "bigquery-dataframes-temp",
+    }
+    for i in range(10):
+        key = f"bigframes-api-test-{i}"
+        value = f"test{i}"
+        cur_labels[key] = value
+
+    df = bpd.DataFrame(
+        {"col1": [1, 2], "col2": [3, 4]}, session=resources.create_bigquery_session()
+    )
+
+    job_config = bigquery.job.QueryJobConfig()
+    job_config.labels = cur_labels
+
+    df.max()
+    for _ in range(52):
+        df.head()
+
+    io_bq.add_and_trim_labels(job_config=job_config)
+    assert job_config.labels is not None
+    assert len(job_config.labels) == 56
+    assert "dataframe-max" not in job_config.labels.values()
+    assert "dataframe-head" in job_config.labels.values()
+    assert "bigframes-api" in job_config.labels.keys()
+    assert "source" in job_config.labels.keys()
+
+
+@pytest.mark.parametrize(
+    ("max_results", "timeout", "api_name"),
+    [(None, None, None), (100, 30.0, "test_api")],
+)
+def test_start_query_with_client_labels_length_limit_met(
+    mock_bq_client, max_results, timeout, api_name
+):
+    sql = "select * from abc"
+    cur_labels = {
+        "bigframes-api": "read_pandas",
+        "source": "bigquery-dataframes-temp",
+    }
+    for i in range(10):
+        key = f"bigframes-api-test-{i}"
+        value = f"test{i}"
+        cur_labels[key] = value
+
+    df = bpd.DataFrame(
+        {"col1": [1, 2], "col2": [3, 4]}, session=resources.create_bigquery_session()
+    )
+
+    job_config = bigquery.job.QueryJobConfig()
+    job_config.labels = cur_labels
+
+    df.max()
+    for _ in range(52):
+        df.head()
+
+    io_bq.start_query_with_client(
+        mock_bq_client,
+        sql,
+        job_config,
+        max_results=max_results,
+        timeout=timeout,
+        api_name=api_name,
+    )
+
+    assert job_config.labels is not None
+    assert len(job_config.labels) == 56
+    assert "dataframe-max" not in job_config.labels.values()
+    assert "dataframe-head" in job_config.labels.values()
+    assert "bigframes-api" in job_config.labels.keys()
+    assert "source" in job_config.labels.keys()
 
 
 def test_create_temp_table_default_expiration():

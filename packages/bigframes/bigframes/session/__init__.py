@@ -1592,7 +1592,7 @@ class Session(
         job_config.destination_encryption_configuration = None
 
         return bf_io_bigquery.start_query_with_client(
-            self.bqclient, sql, job_config, metrics=self._metrics
+            self.bqclient, sql, job_config=job_config, metrics=self._metrics
         )
 
     def _create_object_table(self, path: str, connection: str) -> str:

@@ -707,9 +707,9 @@ class GbqDataLoader:
         return bf_io_bigquery.start_query_with_client(
             self._bqclient,
             sql,
-            job_config,
-            max_results,
-            timeout,
+            job_config=job_config,
+            max_results=max_results,
+            timeout=timeout,
             api_name=api_name,
         )
 
