@@ -92,6 +92,7 @@ class netappCallTransformer(cst.CSTTransformer):
         'update_snapshot': ('update_mask', 'snapshot', ),
         'update_storage_pool': ('update_mask', 'storage_pool', ),
         'update_volume': ('update_mask', 'volume', ),
+        'validate_directory_service': ('name', 'directory_service_type', ),
         'verify_kms_config': ('name', ),
     }
 

@@ -275,6 +275,11 @@
                 "update_volume"
               ]
             },
+            "ValidateDirectoryService": {
+              "methods": [
+                "validate_directory_service"
+              ]
+            },
             "VerifyKmsConfig": {
               "methods": [
                 "verify_kms_config"
@@ -550,6 +555,11 @@
                 "update_volume"
               ]
             },
+            "ValidateDirectoryService": {
+              "methods": [
+                "validate_directory_service"
+              ]
+            },
             "VerifyKmsConfig": {
               "methods": [
                 "verify_kms_config"
@@ -823,6 +833,11 @@
             "UpdateVolume": {
               "methods": [
                 "update_volume"
+              ]
+            },
+            "ValidateDirectoryService": {
+              "methods": [
+                "validate_directory_service"
               ]
             },
             "VerifyKmsConfig": {
