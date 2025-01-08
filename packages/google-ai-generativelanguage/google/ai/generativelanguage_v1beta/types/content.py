@@ -371,7 +371,17 @@ class Tool(proto.Message):
         code_execution (google.ai.generativelanguage_v1beta.types.CodeExecution):
             Optional. Enables the model to execute code
             as part of generation.
+        google_search (google.ai.generativelanguage_v1beta.types.Tool.GoogleSearch):
+            Optional. GoogleSearch tool type.
+            Tool to support Google Search in Model. Powered
+            by Google.
     """
+
+    class GoogleSearch(proto.Message):
+        r"""GoogleSearch tool type.
+        Tool to support Google Search in Model. Powered by Google.
+
+        """
 
     function_declarations: MutableSequence["FunctionDeclaration"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -387,6 +397,11 @@ class Tool(proto.Message):
         proto.MESSAGE,
         number=3,
         message="CodeExecution",
+    )
+    google_search: GoogleSearch = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=GoogleSearch,
     )
 
 
@@ -560,6 +575,14 @@ class FunctionDeclaration(proto.Message):
             parameter.
 
             This field is a member of `oneof`_ ``_parameters``.
+        response (google.ai.generativelanguage_v1beta.types.Schema):
+            Optional. Describes the output from this
+            function in JSON Schema format. Reflects the
+            Open API 3.03 Response Object. The Schema
+            defines the type used for the response value of
+            the function.
+
+            This field is a member of `oneof`_ ``_response``.
     """
 
     name: str = proto.Field(
@@ -576,6 +599,12 @@ class FunctionDeclaration(proto.Message):
         optional=True,
         message="Schema",
     )
+    response: "Schema" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message="Schema",
+    )
 
 
 class FunctionCall(proto.Message):
@@ -587,6 +616,10 @@ class FunctionCall(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        id (str):
+            Optional. The unique id of the function call. If populated,
+            the client to execute the ``function_call`` and return the
+            response with the matching ``id``.
         name (str):
             Required. The name of the function to call.
             Must be a-z, A-Z, 0-9, or contain underscores
@@ -598,6 +631,10 @@ class FunctionCall(proto.Message):
             This field is a member of `oneof`_ ``_args``.
     """
 
+    id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -618,6 +655,10 @@ class FunctionResponse(proto.Message):
     made based on model prediction.
 
     Attributes:
+        id (str):
+            Optional. The id of the function call this response is for.
+            Populated by the client to match the corresponding function
+            call ``id``.
         name (str):
             Required. The name of the function to call.
             Must be a-z, A-Z, 0-9, or contain underscores
@@ -627,6 +668,10 @@ class FunctionResponse(proto.Message):
             object format.
     """
 
+    id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
