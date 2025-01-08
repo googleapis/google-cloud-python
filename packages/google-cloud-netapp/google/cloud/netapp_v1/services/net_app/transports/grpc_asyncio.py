@@ -508,6 +508,39 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_storage_pool"]
 
     @property
+    def validate_directory_service(
+        self,
+    ) -> Callable[
+        [storage_pool.ValidateDirectoryServiceRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the validate directory service method over gRPC.
+
+        ValidateDirectoryService does a connectivity check
+        for a directory service policy attached to the storage
+        pool.
+
+        Returns:
+            Callable[[~.ValidateDirectoryServiceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "validate_directory_service" not in self._stubs:
+            self._stubs[
+                "validate_directory_service"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ValidateDirectoryService",
+                request_serializer=storage_pool.ValidateDirectoryServiceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["validate_directory_service"]
+
+    @property
     def switch_active_replica_zone(
         self,
     ) -> Callable[
@@ -1929,6 +1962,11 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
             self.delete_storage_pool: self._wrap_method(
                 self.delete_storage_pool,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.validate_directory_service: self._wrap_method(
+                self.validate_directory_service,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.switch_active_replica_zone: self._wrap_method(

@@ -1252,9 +1252,8 @@ class HybridReplicationParameters(proto.Message):
 
     Attributes:
         replication (str):
-            Required. Desired Identifier (name) of the replication which
-            will be created for this volume. Format:
-            ``projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}``
+            Required. Desired name for the replication of
+            this volume.
         peer_volume_name (str):
             Required. Name of the user's local source
             volume to be peered with the destination volume.

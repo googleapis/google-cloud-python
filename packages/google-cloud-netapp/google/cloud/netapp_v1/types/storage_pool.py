@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "DeleteStoragePoolRequest",
         "SwitchActiveReplicaZoneRequest",
         "StoragePool",
+        "ValidateDirectoryServiceRequest",
     },
 )
 
@@ -398,6 +399,29 @@ class StoragePool(proto.Message):
     zone: str = proto.Field(
         proto.STRING,
         number=21,
+    )
+
+
+class ValidateDirectoryServiceRequest(proto.Message):
+    r"""ValidateDirectoryServiceRequest validates the directory
+    service policy attached to the storage pool.
+
+    Attributes:
+        name (str):
+            Required. Name of the storage pool
+        directory_service_type (google.cloud.netapp_v1.types.DirectoryServiceType):
+            Type of directory service policy attached to
+            the storage pool.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    directory_service_type: common.DirectoryServiceType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=common.DirectoryServiceType,
     )
 
 

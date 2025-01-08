@@ -50,7 +50,7 @@ from .backup_vault import (
     UpdateBackupVaultRequest,
 )
 from .cloud_netapp_service import OperationMetadata
-from .common import EncryptionType, LocationMetadata, ServiceLevel
+from .common import DirectoryServiceType, EncryptionType, LocationMetadata, ServiceLevel
 from .kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
@@ -98,6 +98,7 @@ from .storage_pool import (
     StoragePool,
     SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
+    ValidateDirectoryServiceRequest,
 )
 from .volume import (
     AccessType,
@@ -158,6 +159,7 @@ __all__ = (
     "UpdateBackupVaultRequest",
     "OperationMetadata",
     "LocationMetadata",
+    "DirectoryServiceType",
     "EncryptionType",
     "ServiceLevel",
     "CreateKmsConfigRequest",
@@ -200,6 +202,7 @@ __all__ = (
     "StoragePool",
     "SwitchActiveReplicaZoneRequest",
     "UpdateStoragePoolRequest",
+    "ValidateDirectoryServiceRequest",
     "BackupConfig",
     "CreateVolumeRequest",
     "DailySchedule",

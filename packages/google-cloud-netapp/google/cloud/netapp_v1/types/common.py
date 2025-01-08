@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     manifest={
         "ServiceLevel",
         "EncryptionType",
+        "DirectoryServiceType",
         "LocationMetadata",
     },
 )
@@ -67,6 +68,20 @@ class EncryptionType(proto.Enum):
     ENCRYPTION_TYPE_UNSPECIFIED = 0
     SERVICE_MANAGED = 1
     CLOUD_KMS = 2
+
+
+class DirectoryServiceType(proto.Enum):
+    r"""Type of directory service
+
+    Values:
+        DIRECTORY_SERVICE_TYPE_UNSPECIFIED (0):
+            Directory service type is not specified.
+        ACTIVE_DIRECTORY (1):
+            Active directory policy attached to the
+            storage pool.
+    """
+    DIRECTORY_SERVICE_TYPE_UNSPECIFIED = 0
+    ACTIVE_DIRECTORY = 1
 
 
 class LocationMetadata(proto.Message):

@@ -56,7 +56,12 @@ from .types.backup_vault import (
     UpdateBackupVaultRequest,
 )
 from .types.cloud_netapp_service import OperationMetadata
-from .types.common import EncryptionType, LocationMetadata, ServiceLevel
+from .types.common import (
+    DirectoryServiceType,
+    EncryptionType,
+    LocationMetadata,
+    ServiceLevel,
+)
 from .types.kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
@@ -104,6 +109,7 @@ from .types.storage_pool import (
     StoragePool,
     SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
+    ValidateDirectoryServiceRequest,
 )
 from .types.volume import (
     AccessType,
@@ -161,6 +167,7 @@ __all__ = (
     "DeleteStoragePoolRequest",
     "DeleteVolumeRequest",
     "DestinationVolumeParameters",
+    "DirectoryServiceType",
     "EncryptVolumesRequest",
     "EncryptionType",
     "EstablishPeeringRequest",
@@ -229,6 +236,7 @@ __all__ = (
     "UpdateSnapshotRequest",
     "UpdateStoragePoolRequest",
     "UpdateVolumeRequest",
+    "ValidateDirectoryServiceRequest",
     "VerifyKmsConfigRequest",
     "VerifyKmsConfigResponse",
     "Volume",
