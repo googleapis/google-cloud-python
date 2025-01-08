@@ -27,6 +27,8 @@ __protobuf__ = proto.module(
         "LocalInventoryDataSource",
         "RegionalInventoryDataSource",
         "PromotionDataSource",
+        "ProductReviewDataSource",
+        "MerchantReviewDataSource",
         "DataSourceReference",
     },
 )
@@ -123,10 +125,7 @@ class PrimaryProductDataSource(proto.Message):
                 a new reference to this list (in sequential order).
 
                 To unlink the data source from the default rule, you need to
-                remove the given reference from this list. To create
-                attribute rules that are different from the default rule,
-                see `Set up your attribute
-                rules <//support.google.com/merchants/answer/14994083>`__.
+                remove the given reference from this list.
 
                 Changing the order of this list will result in changing the
                 priority of data sources in the default rule.
@@ -173,12 +172,9 @@ class PrimaryProductDataSource(proto.Message):
 
 class SupplementalProductDataSource(proto.Message):
     r"""The supplemental data source for local and online products.
-    Supplemental API data sources must not have ``feedLabel`` and
-    ``contentLanguage`` fields set. You can only use supplemental data
-    sources to update existing products. For information about creating
-    a supplemental data source, see `Create a supplemental data source
-    and link it to the primary data
-    source </merchant/api/guides/data-sources/overview#create-supplemental-data-source>`__.
+    After creation, you should make sure to link the supplemental
+    product data source into one or more primary product data
+    sources.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -196,7 +192,11 @@ class SupplementalProductDataSource(proto.Message):
 
             ``feedLabel`` and ``contentLanguage`` must be either both
             set or unset for data sources with product content type.
-            They must be set for data sources with a file input.
+
+            They must be set for data sources with a [file
+            input][google.shopping.merchant.datasources.v1main.FileInput].
+            The fields must be unset for data sources without [file
+            input][google.shopping.merchant.datasources.v1main.FileInput].
 
             If set, the data source will only accept products matching
             this combination. If unset, the data source will accept
@@ -325,6 +325,14 @@ class PromotionDataSource(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class ProductReviewDataSource(proto.Message):
+    r"""The product review data source."""
+
+
+class MerchantReviewDataSource(proto.Message):
+    r"""The merchant review data source."""
 
 
 class DataSourceReference(proto.Message):
