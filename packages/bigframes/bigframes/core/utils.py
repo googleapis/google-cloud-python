@@ -11,13 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import functools
 import re
 import typing
 from typing import Hashable, Iterable, List
+import warnings
 
 import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import pandas as pd
 import typing_extensions
+
+import bigframes.exceptions as exc
 
 UNNAMED_COLUMN_ID = "bigframes_unnamed_column"
 UNNAMED_INDEX_ID = "bigframes_unnamed_index"
@@ -164,3 +168,24 @@ def merge_column_labels(
             result_labels.append(col_label)
 
     return pd.Index(result_labels)
+
+
+def warn_preview(msg=""):
+    """Warn a preview API."""
+    warnings.warn(msg, exc.PreviewWarning)
+
+
+def preview(*, name: str):
+    """Decorate to warn of a preview API."""
+
+    def decorator(func):
+        msg = f"{name} is in preview. Its behavior may change in future versions."
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            warn_preview(msg=msg)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator

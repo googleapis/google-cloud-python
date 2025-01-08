@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from typing import Any, cast, Optional, Sequence, Tuple, Union
 
+import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.series as series
@@ -30,12 +31,17 @@ import bigframes.series as series
 from . import array
 
 
+@utils.preview(name="The JSON-related API `json_set`")
 def json_set(
     input: series.Series,
     json_path_value_pairs: Sequence[Tuple[str, Any]],
 ) -> series.Series:
     """Produces a new JSON value within a Series by inserting or replacing values at
     specified paths.
+
+    .. warning::
+        The JSON-related API `parse_json` is in preview. Its behavior may change in
+        future versions.
 
     **Examples:**
 
@@ -223,3 +229,37 @@ def json_extract_string_array(
             ),
         )
     return array_series
+
+
+@utils.preview(name="The JSON-related API `parse_json`")
+def parse_json(
+    input: series.Series,
+) -> series.Series:
+    """Converts a series with a JSON-formatted STRING value to a JSON value.
+
+    .. warning::
+        The JSON-related API `parse_json` is in preview. Its behavior may change in
+        future versions.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+
+        >>> s = bpd.Series(['{"class": {"students": [{"id": 5}, {"id": 12}]}}'])
+        >>> s
+        0    {"class": {"students": [{"id": 5}, {"id": 12}]}}
+        dtype: string
+        >>> bbq.parse_json(s)
+        0    {"class":{"students":[{"id":5},{"id":12}]}}
+        dtype: large_string[pyarrow]
+
+    Args:
+        input (bigframes.series.Series):
+            The Series containing JSON-formatted strings).
+
+    Returns:
+        bigframes.series.Series: A new Series with the JSON value.
+    """
+    return input._apply_unary_op(ops.ParseJSON())

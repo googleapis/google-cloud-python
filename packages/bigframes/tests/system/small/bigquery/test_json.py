@@ -209,3 +209,8 @@ def test_json_in_struct():
         "SELECT STRUCT(JSON '{\\\"a\\\": 1}' AS data, 1 AS number) as struct_col"
     )
     assert df["struct_col"].struct.field("data")[0] == '{"a":1}'
+
+
+def test_parse_json_w_invalid_series_type():
+    with pytest.raises(TypeError):
+        bbq.parse_json(bpd.Series([1, 2]))

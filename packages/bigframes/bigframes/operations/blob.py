@@ -110,8 +110,8 @@ class BlobAccessor(base.SeriesMethods):
         )
         dst_rt = dst._apply_unary_op(ops.ObjGetAccessUrl(mode="RW"))
 
-        src_rt = src_rt._apply_unary_op(ops.to_json_string_op)
-        dst_rt = dst_rt._apply_unary_op(ops.to_json_string_op)
+        src_rt = src_rt._apply_unary_op(ops.ToJSONString())
+        dst_rt = dst_rt._apply_unary_op(ops.ToJSONString())
 
         df = src_rt.to_frame().join(dst_rt.to_frame(), how="outer")
         df["ksize_x"], df["ksize_y"] = ksize

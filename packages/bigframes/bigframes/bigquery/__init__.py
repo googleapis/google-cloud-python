@@ -27,20 +27,27 @@ from bigframes.bigquery._operations.json import (
     json_extract_array,
     json_extract_string_array,
     json_set,
+    parse_json,
 )
 from bigframes.bigquery._operations.search import create_vector_index, vector_search
 from bigframes.bigquery._operations.struct import struct
 
 __all__ = [
+    # approximate aggregate ops
+    "approx_top_count",
+    # array ops
     "array_length",
     "array_agg",
     "array_to_string",
+    # json ops
     "json_set",
     "json_extract",
     "json_extract_array",
     "json_extract_string_array",
-    "approx_top_count",
-    "struct",
+    "parse_json",
+    # search ops
     "create_vector_index",
     "vector_search",
+    # struct ops
+    "struct",
 ]
