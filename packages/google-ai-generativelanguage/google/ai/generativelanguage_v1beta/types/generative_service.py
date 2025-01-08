@@ -28,6 +28,9 @@ __protobuf__ = proto.module(
     manifest={
         "TaskType",
         "GenerateContentRequest",
+        "PrebuiltVoiceConfig",
+        "VoiceConfig",
+        "SpeechConfig",
         "GenerationConfig",
         "SemanticRetrieverConfig",
         "GenerateContentResponse",
@@ -103,7 +106,7 @@ class GenerateContentRequest(proto.Message):
             Required. The name of the ``Model`` to use for generating
             the completion.
 
-            Format: ``name=models/{model}``.
+            Format: ``models/{model}``.
         system_instruction (google.ai.generativelanguage_v1beta.types.Content):
             Optional. Developer set `system
             instruction(s) <https://ai.google.dev/gemini-api/docs/system-instructions>`__.
@@ -153,8 +156,8 @@ class GenerateContentRequest(proto.Message):
             will use the default safety setting for that category. Harm
             categories HARM_CATEGORY_HATE_SPEECH,
             HARM_CATEGORY_SEXUALLY_EXPLICIT,
-            HARM_CATEGORY_DANGEROUS_CONTENT, HARM_CATEGORY_HARASSMENT
-            are supported. Refer to the
+            HARM_CATEGORY_DANGEROUS_CONTENT, HARM_CATEGORY_HARASSMENT,
+            HARM_CATEGORY_CIVIC_INTEGRITY are supported. Refer to the
             `guide <https://ai.google.dev/gemini-api/docs/safety-settings>`__
             for detailed information on available safety settings. Also
             refer to the `Safety
@@ -215,6 +218,61 @@ class GenerateContentRequest(proto.Message):
         proto.STRING,
         number=9,
         optional=True,
+    )
+
+
+class PrebuiltVoiceConfig(proto.Message):
+    r"""The configuration for the prebuilt speaker to use.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        voice_name (str):
+            The name of the preset voice to use.
+
+            This field is a member of `oneof`_ ``_voice_name``.
+    """
+
+    voice_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+
+
+class VoiceConfig(proto.Message):
+    r"""The configuration for the voice to use.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        prebuilt_voice_config (google.ai.generativelanguage_v1beta.types.PrebuiltVoiceConfig):
+            The configuration for the prebuilt voice to
+            use.
+
+            This field is a member of `oneof`_ ``voice_config``.
+    """
+
+    prebuilt_voice_config: "PrebuiltVoiceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="voice_config",
+        message="PrebuiltVoiceConfig",
+    )
+
+
+class SpeechConfig(proto.Message):
+    r"""The speech generation config.
+
+    Attributes:
+        voice_config (google.ai.generativelanguage_v1beta.types.VoiceConfig):
+            The configuration for the speaker to use.
+    """
+
+    voice_config: "VoiceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="VoiceConfig",
     )
 
 
@@ -363,7 +421,48 @@ class GenerationConfig(proto.Message):
             [Candidate.logprobs_result][google.ai.generativelanguage.v1beta.Candidate.logprobs_result].
 
             This field is a member of `oneof`_ ``_logprobs``.
+        enable_enhanced_civic_answers (bool):
+            Optional. Enables enhanced civic answers. It
+            may not be available for all models.
+
+            This field is a member of `oneof`_ ``_enable_enhanced_civic_answers``.
+        response_modalities (MutableSequence[google.ai.generativelanguage_v1beta.types.GenerationConfig.Modality]):
+            Optional. The requested modalities of the
+            response. Represents the set of modalities that
+            the model can return, and should be expected in
+            the response. This is an exact match to the
+            modalities of the response.
+
+            A model may have multiple combinations of
+            supported modalities. If the requested
+            modalities do not match any of the supported
+            combinations, an error will be returned.
+
+            An empty list is equivalent to requesting only
+            text.
+        speech_config (google.ai.generativelanguage_v1beta.types.SpeechConfig):
+            Optional. The speech generation config.
+
+            This field is a member of `oneof`_ ``_speech_config``.
     """
+
+    class Modality(proto.Enum):
+        r"""Supported modalities of the response.
+
+        Values:
+            MODALITY_UNSPECIFIED (0):
+                Default value.
+            TEXT (1):
+                Indicates the model should return text.
+            IMAGE (2):
+                Indicates the model should return images.
+            AUDIO (3):
+                Indicates the model should return audio.
+        """
+        MODALITY_UNSPECIFIED = 0
+        TEXT = 1
+        IMAGE = 2
+        AUDIO = 3
 
     candidate_count: int = proto.Field(
         proto.INT32,
@@ -422,6 +521,22 @@ class GenerationConfig(proto.Message):
         proto.INT32,
         number=18,
         optional=True,
+    )
+    enable_enhanced_civic_answers: bool = proto.Field(
+        proto.BOOL,
+        number=19,
+        optional=True,
+    )
+    response_modalities: MutableSequence[Modality] = proto.RepeatedField(
+        proto.ENUM,
+        number=20,
+        enum=Modality,
+    )
+    speech_config: "SpeechConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        optional=True,
+        message="SpeechConfig",
     )
 
 
@@ -537,12 +652,16 @@ class GenerateContentResponse(proto.Message):
                     included from the terminology blocklist.
                 PROHIBITED_CONTENT (4):
                     Prompt was blocked due to prohibited content.
+                IMAGE_SAFETY (5):
+                    Candidates blocked due to unsafe image
+                    generation content.
             """
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
             OTHER = 2
             BLOCKLIST = 3
             PROHIBITED_CONTENT = 4
+            IMAGE_SAFETY = 5
 
         block_reason: "GenerateContentResponse.PromptFeedback.BlockReason" = (
             proto.Field(
@@ -700,6 +819,9 @@ class Candidate(proto.Message):
             MALFORMED_FUNCTION_CALL (10):
                 The function call generated by the model is
                 invalid.
+            IMAGE_SAFETY (11):
+                Token generation stopped because generated
+                images contain safety violations.
         """
         FINISH_REASON_UNSPECIFIED = 0
         STOP = 1
@@ -712,6 +834,7 @@ class Candidate(proto.Message):
         PROHIBITED_CONTENT = 8
         SPII = 9
         MALFORMED_FUNCTION_CALL = 10
+        IMAGE_SAFETY = 11
 
     index: int = proto.Field(
         proto.INT32,

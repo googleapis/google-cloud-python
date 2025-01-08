@@ -144,11 +144,14 @@ from google.ai.generativelanguage_v1beta.types.generative_service import (
     GroundingMetadata,
     GroundingSupport,
     LogprobsResult,
+    PrebuiltVoiceConfig,
     RetrievalMetadata,
     SearchEntryPoint,
     Segment,
     SemanticRetrieverConfig,
+    SpeechConfig,
     TaskType,
+    VoiceConfig,
 )
 from google.ai.generativelanguage_v1beta.types.model import Model
 from google.ai.generativelanguage_v1beta.types.model_service import (
@@ -330,10 +333,13 @@ __all__ = (
     "GroundingMetadata",
     "GroundingSupport",
     "LogprobsResult",
+    "PrebuiltVoiceConfig",
     "RetrievalMetadata",
     "SearchEntryPoint",
     "Segment",
     "SemanticRetrieverConfig",
+    "SpeechConfig",
+    "VoiceConfig",
     "TaskType",
     "Model",
     "CreateTunedModelMetadata",
