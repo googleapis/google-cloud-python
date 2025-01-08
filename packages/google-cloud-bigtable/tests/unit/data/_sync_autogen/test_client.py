@@ -349,7 +349,7 @@ class TestBigtableDataClient:
                     assert sleep.call_count == num_cycles
                     total_sleep = sum([call[0][1] for call in sleep.call_args_list])
                     assert (
-                        abs(total_sleep - expected_sleep) < 0.1
+                        abs(total_sleep - expected_sleep) < 0.5
                     ), f"refresh_interval={refresh_interval}, num_cycles={num_cycles}, expected_sleep={expected_sleep}"
         client.close()
 

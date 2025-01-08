@@ -128,8 +128,8 @@ class AstDecorator:
         # extract the module and decorator names
         if "CrossSync" in ast.dump(root_attr):
             decorator_name = root_attr.attr
-            got_kwargs = (
-                {kw.arg: cls._convert_ast_to_py(kw.value) for kw in node.keywords}
+            got_kwargs: dict[str, Any] = (
+                {str(kw.arg): cls._convert_ast_to_py(kw.value) for kw in node.keywords}
                 if hasattr(node, "keywords")
                 else {}
             )
