@@ -693,8 +693,6 @@ class CryptoKeyVersion(proto.Message):
         The suffix following ``HMAC_`` corresponds to the hash algorithm
         being used (eg. SHA256).
 
-        Algorithms beginning with ``PQ_`` are post-quantum.
-
         For more information, see [Key purposes and algorithms]
         (https://cloud.google.com/kms/docs/algorithms).
 
