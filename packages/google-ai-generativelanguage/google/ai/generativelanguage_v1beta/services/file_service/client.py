@@ -895,6 +895,8 @@ class FileServiceClient(metaclass=FileServiceClientMeta):
         Returns:
             google.ai.generativelanguage_v1beta.types.File:
                 A file uploaded to the API.
+                Next ID: 15
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have

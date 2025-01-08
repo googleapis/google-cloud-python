@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Cloud Quotas API.
+By default, you will get version ``cloudquotas_v1``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     cloudquotas_v1/services_
     cloudquotas_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    cloudquotas_v1beta/services_
+    cloudquotas_v1beta/types_
 
 
 Changelog

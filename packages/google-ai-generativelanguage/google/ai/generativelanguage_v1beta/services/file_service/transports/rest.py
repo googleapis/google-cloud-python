@@ -630,6 +630,8 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             Returns:
                 ~.file.File:
                     A file uploaded to the API.
+                Next ID: 15
+
             """
 
             http_options = (
