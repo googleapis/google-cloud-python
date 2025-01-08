@@ -57,11 +57,14 @@ class Entitlement(proto.Message):
                 Account is linked but not active.
             ACTIVE (3):
                 Entitlement and Account are active.
+            ACCOUNT_SUSPENDED (4):
+                Account is suspended.
         """
         STATE_UNSPECIFIED = 0
         ACCOUNT_NOT_LINKED = 1
         ACCOUNT_NOT_ACTIVE = 2
         ACTIVE = 3
+        ACCOUNT_SUSPENDED = 4
 
     name: str = proto.Field(
         proto.STRING,
