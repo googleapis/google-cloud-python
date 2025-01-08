@@ -64,6 +64,17 @@ def test_create_single_timeseries() -> None:
 
     model.fit(X, y)
     # [END bigquery_dataframes_single_timeseries_forecasting_model_tutorial_create]
+
+    # [START bigquery_dataframes_single_timeseries_forecasting_model_tutorial_evaluate]
+    coef = model.coef_
+    print(coef.peek())
+
+    # Expected output:
+    #       ar_coefficients   ma_coefficients   intercept_or_drift
+    #   0	 [0.40944762]	   [-0.81168198]	      0.0
+
+    # [END bigquery_dataframes_single_timeseries_forecasting_model_tutorial_evaluate]
+    assert coef is not None
     assert model is not None
     assert parsed_date is not None
     assert total_visits is not None
