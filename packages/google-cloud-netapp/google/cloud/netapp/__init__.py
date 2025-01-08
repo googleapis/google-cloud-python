@@ -58,6 +58,7 @@ from google.cloud.netapp_v1.types.backup_vault import (
 )
 from google.cloud.netapp_v1.types.cloud_netapp_service import OperationMetadata
 from google.cloud.netapp_v1.types.common import (
+    DirectoryServiceType,
     EncryptionType,
     LocationMetadata,
     ServiceLevel,
@@ -109,6 +110,7 @@ from google.cloud.netapp_v1.types.storage_pool import (
     StoragePool,
     SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
+    ValidateDirectoryServiceRequest,
 )
 from google.cloud.netapp_v1.types.volume import (
     AccessType,
@@ -171,6 +173,7 @@ __all__ = (
     "UpdateBackupVaultRequest",
     "OperationMetadata",
     "LocationMetadata",
+    "DirectoryServiceType",
     "EncryptionType",
     "ServiceLevel",
     "CreateKmsConfigRequest",
@@ -213,6 +216,7 @@ __all__ = (
     "StoragePool",
     "SwitchActiveReplicaZoneRequest",
     "UpdateStoragePoolRequest",
+    "ValidateDirectoryServiceRequest",
     "BackupConfig",
     "CreateVolumeRequest",
     "DailySchedule",
