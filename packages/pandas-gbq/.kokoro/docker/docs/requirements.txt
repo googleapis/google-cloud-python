@@ -4,9 +4,9 @@
 #
 #    pip-compile --allow-unsafe --generate-hashes synthtool/gcp/templates/python_library/.kokoro/docker/docs/requirements.in
 #
-argcomplete==3.5.2 \
-    --hash=sha256:036d020d79048a5d525bc63880d7a4b8d1668566b8a76daf1144c0bbe0f63472 \
-    --hash=sha256:23146ed7ac4403b70bd6026402468942ceba34a6732255b9edf5b7354f68a6bb
+argcomplete==3.5.3 \
+    --hash=sha256:2ab2c4a215c59fd6caaff41a869480a23e8f6a5f910b266c1808037f4e375b61 \
+    --hash=sha256:c12bf50eded8aebb298c7b7da7a5ff3ee24dffd9f5281867dfe1424b58c55392
     # via nox
 colorlog==6.9.0 \
     --hash=sha256:5906e71acd67cb07a71e779c47c4bcb45fb8c2993eebe9e5adcd6a6f1b283eff \
@@ -66,7 +66,7 @@ tomli==2.2.1 \
     --hash=sha256:ece47d672db52ac607a3d9599a9d48dcb2f2f735c6c2d1f34130085bb12b112a \
     --hash=sha256:f4039b9cbc3048b2416cc57ab3bda989a6fcf9b36cf8937f01a6e731b64f80d7
     # via nox
-virtualenv==20.28.0 \
-    --hash=sha256:23eae1b4516ecd610481eda647f3a7c09aea295055337331bb4e6892ecce47b0 \
-    --hash=sha256:2c9c3262bb8e7b87ea801d715fae4495e6032450c71d2309be9550e7364049aa
+virtualenv==20.28.1 \
+    --hash=sha256:412773c85d4dab0409b83ec36f7a6499e72eaf08c80e81e9576bca61831c71cb \
+    --hash=sha256:5d34ab240fdb5d21549b76f9e8ff3af28252f5499fb6d6f031adac4e5a8c5329
     # via nox
