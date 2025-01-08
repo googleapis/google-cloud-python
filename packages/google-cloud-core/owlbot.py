@@ -36,6 +36,7 @@ s.move(
         ".coveragerc",
         "setup.cfg",
         "README.rst",
+        ".github/workflows/lint.yml",
     ],
 )
 
