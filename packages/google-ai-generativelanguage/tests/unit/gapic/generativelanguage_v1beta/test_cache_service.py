@@ -4172,8 +4172,16 @@ def test_create_cached_content_rest_call_success(request_type):
                         "mime_type": "mime_type_value",
                         "data": b"data_blob",
                     },
-                    "function_call": {"name": "name_value", "args": {"fields": {}}},
-                    "function_response": {"name": "name_value", "response": {}},
+                    "function_call": {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "args": {"fields": {}},
+                    },
+                    "function_response": {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "response": {},
+                    },
                     "file_data": {
                         "mime_type": "mime_type_value",
                         "file_uri": "file_uri_value",
@@ -4203,12 +4211,14 @@ def test_create_cached_content_rest_call_success(request_type):
                             "properties": {},
                             "required": ["required_value1", "required_value2"],
                         },
+                        "response": {},
                     }
                 ],
                 "google_search_retrieval": {
                     "dynamic_retrieval_config": {"mode": 1, "dynamic_threshold": 0.1809}
                 },
                 "code_execution": {},
+                "google_search": {},
             }
         ],
         "tool_config": {
@@ -4561,8 +4571,16 @@ def test_update_cached_content_rest_call_success(request_type):
                         "mime_type": "mime_type_value",
                         "data": b"data_blob",
                     },
-                    "function_call": {"name": "name_value", "args": {"fields": {}}},
-                    "function_response": {"name": "name_value", "response": {}},
+                    "function_call": {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "args": {"fields": {}},
+                    },
+                    "function_response": {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "response": {},
+                    },
                     "file_data": {
                         "mime_type": "mime_type_value",
                         "file_uri": "file_uri_value",
@@ -4592,12 +4610,14 @@ def test_update_cached_content_rest_call_success(request_type):
                             "properties": {},
                             "required": ["required_value1", "required_value2"],
                         },
+                        "response": {},
                     }
                 ],
                 "google_search_retrieval": {
                     "dynamic_retrieval_config": {"mode": 1, "dynamic_threshold": 0.1809}
                 },
                 "code_execution": {},
+                "google_search": {},
             }
         ],
         "tool_config": {

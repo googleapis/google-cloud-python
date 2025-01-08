@@ -755,7 +755,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 Required. The name of the ``Model`` to use for
                 generating the completion.
 
-                Format: ``name=models/{model}``.
+                Format: ``models/{model}``.
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1063,7 +1063,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 Required. The name of the ``Model`` to use for
                 generating the completion.
 
-                Format: ``name=models/{model}``.
+                Format: ``models/{model}``.
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
