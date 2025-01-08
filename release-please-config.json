@@ -37,12 +37,18 @@
             "extra-files": [
                 "google/ai/generativelanguage/gapic_version.py",
                 "google/ai/generativelanguage_v1/gapic_version.py",
+                "google/ai/generativelanguage_v1alpha/gapic_version.py",
                 "google/ai/generativelanguage_v1beta/gapic_version.py",
                 "google/ai/generativelanguage_v1beta2/gapic_version.py",
                 "google/ai/generativelanguage_v1beta3/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1alpha.json",
                     "type": "json"
                 },
                 {
@@ -2260,9 +2266,15 @@
             "extra-files": [
                 "google/cloud/cloudquotas/gapic_version.py",
                 "google/cloud/cloudquotas_v1/gapic_version.py",
+                "google/cloud/cloudquotas_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.api.cloudquotas.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.api.cloudquotas.v1beta.json",
                     "type": "json"
                 }
             ],
