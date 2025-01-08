@@ -82,11 +82,14 @@ from .generative_service import (
     GroundingMetadata,
     GroundingSupport,
     LogprobsResult,
+    PrebuiltVoiceConfig,
     RetrievalMetadata,
     SearchEntryPoint,
     Segment,
     SemanticRetrieverConfig,
+    SpeechConfig,
     TaskType,
+    VoiceConfig,
 )
 from .model import Model
 from .model_service import (
@@ -247,10 +250,13 @@ __all__ = (
     "GroundingMetadata",
     "GroundingSupport",
     "LogprobsResult",
+    "PrebuiltVoiceConfig",
     "RetrievalMetadata",
     "SearchEntryPoint",
     "Segment",
     "SemanticRetrieverConfig",
+    "SpeechConfig",
+    "VoiceConfig",
     "TaskType",
     "Model",
     "CreateTunedModelMetadata",
