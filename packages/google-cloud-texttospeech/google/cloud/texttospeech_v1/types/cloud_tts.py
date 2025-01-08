@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
         "CustomVoiceParams",
         "VoiceCloneParams",
         "SynthesizeSpeechResponse",
+        "StreamingAudioConfig",
         "StreamingSynthesizeConfig",
         "StreamingSynthesisInput",
         "StreamingSynthesizeRequest",
@@ -103,6 +104,11 @@ class AudioEncoding(proto.Enum):
             8-bit samples that compand 14-bit audio
             samples using G.711 PCMU/A-law. Audio content
             returned as ALAW also contains a WAV header.
+        PCM (7):
+            Uncompressed 16-bit signed little-endian
+            samples (Linear PCM). Note that as opposed to
+            LINEAR16, audio will not be wrapped in a WAV (or
+            any other) header.
     """
     AUDIO_ENCODING_UNSPECIFIED = 0
     LINEAR16 = 1
@@ -110,6 +116,7 @@ class AudioEncoding(proto.Enum):
     OGG_OPUS = 3
     MULAW = 5
     ALAW = 6
+    PCM = 7
 
 
 class ListVoicesRequest(proto.Message):
@@ -657,6 +664,30 @@ class SynthesizeSpeechResponse(proto.Message):
     )
 
 
+class StreamingAudioConfig(proto.Message):
+    r"""Description of the desired output audio data.
+
+    Attributes:
+        audio_encoding (google.cloud.texttospeech_v1.types.AudioEncoding):
+            Required. The format of the audio byte stream. For now,
+            streaming only supports PCM and OGG_OPUS. All other
+            encodings will return an error.
+        sample_rate_hertz (int):
+            Optional. The synthesis sample rate (in
+            hertz) for this audio.
+    """
+
+    audio_encoding: "AudioEncoding" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="AudioEncoding",
+    )
+    sample_rate_hertz: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+
+
 class StreamingSynthesizeConfig(proto.Message):
     r"""Provides configuration information for the
     StreamingSynthesize request.
@@ -665,12 +696,20 @@ class StreamingSynthesizeConfig(proto.Message):
         voice (google.cloud.texttospeech_v1.types.VoiceSelectionParams):
             Required. The desired voice of the
             synthesized audio.
+        streaming_audio_config (google.cloud.texttospeech_v1.types.StreamingAudioConfig):
+            Optional. The configuration of the
+            synthesized audio.
     """
 
     voice: "VoiceSelectionParams" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="VoiceSelectionParams",
+    )
+    streaming_audio_config: "StreamingAudioConfig" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="StreamingAudioConfig",
     )
 
 
