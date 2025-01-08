@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.28.0](https://github.com/googleapis/python-bigtable/compare/v2.27.0...v2.28.0) (2025-01-08)
+
+
+### Features
+
+* Add generated sync client ([#1017](https://github.com/googleapis/python-bigtable/issues/1017)) ([f974823](https://github.com/googleapis/python-bigtable/commit/f974823bf8a74c2f8b1bc69997b13bc1acaf8bef))
+
 ## [2.27.0](https://github.com/googleapis/python-bigtable/compare/v2.26.0...v2.27.0) (2024-11-12)
 
 
