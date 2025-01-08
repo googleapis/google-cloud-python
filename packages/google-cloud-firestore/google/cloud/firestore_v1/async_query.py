@@ -231,14 +231,17 @@ class AsyncQuery(BaseQuery):
             timeout=timeout,
             explain_options=explain_options,
         )
-        result_list = [d async for d in result]
-        if is_limited_to_last:
-            result_list = list(reversed(result_list))
+        try:
+            result_list = [d async for d in result]
+            if is_limited_to_last:
+                result_list = list(reversed(result_list))
 
-        if explain_options is None:
-            explain_metrics = None
-        else:
-            explain_metrics = await result.get_explain_metrics()
+            if explain_options is None:
+                explain_metrics = None
+            else:
+                explain_metrics = await result.get_explain_metrics()
+        finally:
+            await result.aclose()
 
         return QueryResultsList(result_list, explain_options, explain_metrics)
 

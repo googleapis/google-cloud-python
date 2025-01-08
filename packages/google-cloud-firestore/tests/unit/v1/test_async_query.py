@@ -371,6 +371,7 @@ async def _stream_helper(retry=None, timeout=None, explain_options=None):
     assert isinstance(stream_response, AsyncStreamGenerator)
 
     returned = [x async for x in stream_response]
+    await stream_response.aclose()
     assert len(returned) == 1
     snapshot = returned[0]
     assert snapshot.reference._path == ("dee", "sleep")

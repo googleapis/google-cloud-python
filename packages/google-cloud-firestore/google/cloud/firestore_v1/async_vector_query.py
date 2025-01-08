@@ -91,12 +91,15 @@ class AsyncVectorQuery(BaseVectorQuery):
             timeout=timeout,
             explain_options=explain_options,
         )
-        result = [snapshot async for snapshot in stream_result]
+        try:
+            result = [snapshot async for snapshot in stream_result]
 
-        if explain_options is None:
-            explain_metrics = None
-        else:
-            explain_metrics = await stream_result.get_explain_metrics()
+            if explain_options is None:
+                explain_metrics = None
+            else:
+                explain_metrics = await stream_result.get_explain_metrics()
+        finally:
+            await stream_result.aclose()
 
         return QueryResultsList(result, explain_options, explain_metrics)
 
@@ -151,7 +154,6 @@ class AsyncVectorQuery(BaseVectorQuery):
             metadata=self._client._rpc_metadata,
             **kwargs,
         )
-
         async for response in response_iterator:
             if self._nested_query._all_descendants:
                 snapshot = _collection_group_query_response_to_snapshot(

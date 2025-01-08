@@ -88,12 +88,15 @@ class AsyncAggregationQuery(BaseAggregationQuery):
             timeout=timeout,
             explain_options=explain_options,
         )
-        result = [aggregation async for aggregation in stream_result]
+        try:
+            result = [aggregation async for aggregation in stream_result]
 
-        if explain_options is None:
-            explain_metrics = None
-        else:
-            explain_metrics = await stream_result.get_explain_metrics()
+            if explain_options is None:
+                explain_metrics = None
+            else:
+                explain_metrics = await stream_result.get_explain_metrics()
+        finally:
+            await stream_result.aclose()
 
         return QueryResultsList(result, explain_options, explain_metrics)
 

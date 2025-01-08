@@ -592,6 +592,7 @@ async def _async_aggregation_query_stream_helper(
             assert r.alias == aggregation_result.alias
             assert r.value == aggregation_result.value
         results.append(result)
+    await returned.aclose()
     assert len(results) == len(results_list)
 
     if explain_options is None:

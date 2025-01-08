@@ -595,6 +595,7 @@ async def _async_vector_query_stream_helper(
     assert isinstance(returned, AsyncStreamGenerator)
 
     results_list = [item async for item in returned]
+    await returned.aclose()
     assert len(results_list) == 1
     assert results_list[0].to_dict() == data
 

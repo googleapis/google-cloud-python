@@ -192,6 +192,7 @@ async def test_async_stream_generator_explain_metrics_explain_options_analyze_tr
         "index_entries_scanned": "index_entries_scanned",
     }
     assert actual_explain_metrics.execution_stats.debug_stats == expected_debug_stats
+    await inst.aclose()
 
 
 @pytest.mark.asyncio
@@ -230,6 +231,7 @@ async def test_async_stream_generator_explain_metrics_explain_options_analyze_fa
             }
         }
     ]
+    await inst.aclose()
 
 
 @pytest.mark.asyncio
@@ -242,6 +244,7 @@ async def test_async_stream_generator_explain_metrics_missing_explain_options_an
         query_profile.QueryExplainError, match="Did not receive explain_metrics"
     ):
         await inst.get_explain_metrics()
+    await inst.aclose()
 
 
 @pytest.mark.asyncio

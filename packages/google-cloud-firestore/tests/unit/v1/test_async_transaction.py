@@ -442,6 +442,7 @@ async def _get_w_query_helper(retry=None, timeout=None, explain_options=None):
         metadata=client._rpc_metadata,
         **kwargs,
     )
+    await returned_generator.aclose()
 
 
 @pytest.mark.asyncio

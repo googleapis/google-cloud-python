@@ -2538,17 +2538,12 @@ class AsyncMock(mock.MagicMock):
         return super(AsyncMock, self).__call__(*args, **kwargs)
 
 
-class AsyncIter:
+async def AsyncIter(items):
     """Utility to help recreate the effect of an async generator. Useful when
     you need to mock a system that requires `async for`.
     """
-
-    def __init__(self, items):
-        self.items = items
-
-    async def __aiter__(self):
-        for i in self.items:
-            yield i
+    for i in items:
+        yield i
 
 
 def _value_pb(**kwargs):
