@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
 
 class File(proto.Message):
     r"""A file uploaded to the API.
+    Next ID: 15
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 

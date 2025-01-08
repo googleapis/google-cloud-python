@@ -27,6 +27,14 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
+    generativelanguage_v1alpha/services_
+    generativelanguage_v1alpha/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
     generativelanguage_v1beta2/services_
     generativelanguage_v1beta2/types_
 

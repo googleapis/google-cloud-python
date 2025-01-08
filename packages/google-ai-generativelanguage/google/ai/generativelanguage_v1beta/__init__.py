@@ -108,11 +108,14 @@ from .types.generative_service import (
     GroundingMetadata,
     GroundingSupport,
     LogprobsResult,
+    PrebuiltVoiceConfig,
     RetrievalMetadata,
     SearchEntryPoint,
     Segment,
     SemanticRetrieverConfig,
+    SpeechConfig,
     TaskType,
+    VoiceConfig,
 )
 from .types.model import Model
 from .types.model_service import (
@@ -338,6 +341,7 @@ __all__ = (
     "Part",
     "Permission",
     "PermissionServiceClient",
+    "PrebuiltVoiceConfig",
     "PredictRequest",
     "PredictResponse",
     "PredictionServiceClient",
@@ -355,6 +359,7 @@ __all__ = (
     "SearchEntryPoint",
     "Segment",
     "SemanticRetrieverConfig",
+    "SpeechConfig",
     "StringList",
     "TaskType",
     "TextCompletion",
@@ -378,4 +383,5 @@ __all__ = (
     "UpdatePermissionRequest",
     "UpdateTunedModelRequest",
     "VideoMetadata",
+    "VoiceConfig",
 )
