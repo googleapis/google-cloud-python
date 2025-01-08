@@ -16,3 +16,4 @@ opentelemetry-semantic-conventions==0.43b0
 protobuf==3.20.2
 deprecated==1.2.14
 grpc-interceptor==0.15.4
+google-cloud-monitoring==2.16.0
