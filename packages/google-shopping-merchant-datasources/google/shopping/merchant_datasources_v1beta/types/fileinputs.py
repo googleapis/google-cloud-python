@@ -58,10 +58,10 @@ class FileInput(proto.Message):
                 Center.
             FETCH (2):
                 The file is fetched from the configured
-                [fetch_uri][google.shopping.content.bundles.DataSources.FileInput.FetchSettings.fetch_uri].
+                [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
             GOOGLE_SHEETS (3):
                 The file is fetched from Google Sheets specified in the
-                [fetch_uri][google.shopping.content.bundles.DataSources.FileInput.FetchSettings.fetch_uri].
+                [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
         """
         FILE_INPUT_TYPE_UNSPECIFIED = 0
         UPLOAD = 1
@@ -102,13 +102,13 @@ class FileInput(proto.Message):
                 to be a valid link using one of those three
                 protocols. Immutable for Google Sheets files.
             username (str):
-                Optional. An optional user name for [fetch
-                url][google.shopping.content.bundles.DataSources.FileInput.fetch_url].
+                Optional. An optional user name for
+                [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
                 Used for `submitting data sources through
                 SFTP <https://support.google.com/merchants/answer/13813117>`__.
             password (str):
-                Optional. An optional password for [fetch
-                url][google.shopping.content.bundles.DataSources.FileInput.fetch_url].
+                Optional. An optional password for
+                [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
                 Used for `submitting data sources through
                 SFTP <https://support.google.com/merchants/answer/13813117>`__.
         """
