@@ -1899,8 +1899,8 @@ class TestBatchCheckout(_BaseTest):
             "CommitStats: mutation_count: 4\n", extra={"commit_stats": commit_stats}
         )
 
-    def test_context_mgr_w_commit_stats_error(self):
-        from google.api_core.exceptions import Unknown
+    def test_context_mgr_w_aborted_commit_status(self):
+        from google.api_core.exceptions import Aborted
         from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import TransactionOptions
         from google.cloud.spanner_v1.batch import Batch
@@ -1908,13 +1908,13 @@ class TestBatchCheckout(_BaseTest):
         database = _Database(self.DATABASE_NAME)
         database.log_commit_stats = True
         api = database.spanner_api = self._make_spanner_client()
-        api.commit.side_effect = Unknown("testing")
+        api.commit.side_effect = Aborted("aborted exception", errors=("Aborted error"))
         pool = database._pool = _Pool()
         session = _Session(database)
         pool.put(session)
         checkout = self._make_one(database)
 
-        with self.assertRaises(Unknown):
+        with self.assertRaises(Aborted):
             with checkout as batch:
                 self.assertIsNone(pool._session)
                 self.assertIsInstance(batch, Batch)
@@ -1931,7 +1931,10 @@ class TestBatchCheckout(_BaseTest):
             return_commit_stats=True,
             request_options=RequestOptions(),
         )
-        api.commit.assert_called_once_with(
+        # Asserts that the exponential backoff retry for aborted transactions with a 30-second deadline
+        # allows for a maximum of 4 retries (2^x <= 30) to stay within the time limit.
+        self.assertEqual(api.commit.call_count, 4)
+        api.commit.assert_any_call(
             request=request,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),

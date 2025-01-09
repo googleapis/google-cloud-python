@@ -775,6 +775,7 @@ class Database(object):
         request_options=None,
         max_commit_delay=None,
         exclude_txn_from_change_streams=False,
+        **kw,
     ):
         """Return an object which wraps a batch.
 
@@ -805,7 +806,11 @@ class Database(object):
         :returns: new wrapper
         """
         return BatchCheckout(
-            self, request_options, max_commit_delay, exclude_txn_from_change_streams
+            self,
+            request_options,
+            max_commit_delay,
+            exclude_txn_from_change_streams,
+            **kw,
         )
 
     def mutation_groups(self):
@@ -1166,6 +1171,7 @@ class BatchCheckout(object):
         request_options=None,
         max_commit_delay=None,
         exclude_txn_from_change_streams=False,
+        **kw,
     ):
         self._database = database
         self._session = self._batch = None
@@ -1177,6 +1183,7 @@ class BatchCheckout(object):
             self._request_options = request_options
         self._max_commit_delay = max_commit_delay
         self._exclude_txn_from_change_streams = exclude_txn_from_change_streams
+        self._kw = kw
 
     def __enter__(self):
         """Begin ``with`` block."""
@@ -1197,6 +1204,7 @@ class BatchCheckout(object):
                     request_options=self._request_options,
                     max_commit_delay=self._max_commit_delay,
                     exclude_txn_from_change_streams=self._exclude_txn_from_change_streams,
+                    **self._kw,
                 )
         finally:
             if self._database.log_commit_stats and self._batch.commit_stats:

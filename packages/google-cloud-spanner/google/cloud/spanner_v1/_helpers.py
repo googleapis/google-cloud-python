@@ -27,11 +27,15 @@ from google.protobuf.message import Message
 from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 
 from google.api_core import datetime_helpers
+from google.api_core.exceptions import Aborted
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud.spanner_v1 import TypeCode
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import JsonObject
 from google.cloud.spanner_v1.request_id_header import with_request_id
+from google.rpc.error_details_pb2 import RetryInfo
+
+import random
 
 # Validation error messages
 NUMERIC_MAX_SCALE_ERR_MSG = (
@@ -460,6 +464,23 @@ def _metadata_with_prefix(prefix, **kw):
     return [("google-cloud-resource-prefix", prefix)]
 
 
+def _retry_on_aborted_exception(
+    func,
+    deadline,
+):
+    """
+    Handles retry logic for Aborted exceptions, considering the deadline.
+    """
+    attempts = 0
+    while True:
+        try:
+            attempts += 1
+            return func()
+        except Aborted as exc:
+            _delay_until_retry(exc, deadline=deadline, attempts=attempts)
+            continue
+
+
 def _retry(
     func,
     retry_count=5,
@@ -527,6 +548,60 @@ def _metadata_with_leader_aware_routing(value, **kw):
         List[Tuple[str, str]]: RPC metadata with leader aware routing header
     """
     return ("x-goog-spanner-route-to-leader", str(value).lower())
+
+
+def _delay_until_retry(exc, deadline, attempts):
+    """Helper for :meth:`Session.run_in_transaction`.
+
+    Detect retryable abort, and impose server-supplied delay.
+
+    :type exc: :class:`google.api_core.exceptions.Aborted`
+    :param exc: exception for aborted transaction
+
+    :type deadline: float
+    :param deadline: maximum timestamp to continue retrying the transaction.
+
+    :type attempts: int
+    :param attempts: number of call retries
+    """
+
+    cause = exc.errors[0]
+    now = time.time()
+    if now >= deadline:
+        raise
+
+    delay = _get_retry_delay(cause, attempts)
+    if delay is not None:
+        if now + delay > deadline:
+            raise
+
+        time.sleep(delay)
+
+
+def _get_retry_delay(cause, attempts):
+    """Helper for :func:`_delay_until_retry`.
+
+    :type exc: :class:`grpc.Call`
+    :param exc: exception for aborted transaction
+
+    :rtype: float
+    :returns: seconds to wait before retrying the transaction.
+
+    :type attempts: int
+    :param attempts: number of call retries
+    """
+    if hasattr(cause, "trailing_metadata"):
+        metadata = dict(cause.trailing_metadata())
+    else:
+        metadata = {}
+    retry_info_pb = metadata.get("google.rpc.retryinfo-bin")
+    if retry_info_pb is not None:
+        retry_info = RetryInfo()
+        retry_info.ParseFromString(retry_info_pb)
+        nanos = retry_info.retry_delay.nanos
+        return retry_info.retry_delay.seconds + nanos / 1.0e9
+
+    return 2**attempts + random.random()
 
 
 class AtomicCounter:

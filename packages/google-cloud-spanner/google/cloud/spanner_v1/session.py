@@ -15,7 +15,6 @@
 """Wrapper for Cloud Spanner Session objects."""
 
 from functools import total_ordering
-import random
 import time
 from datetime import datetime
 
@@ -23,7 +22,8 @@ from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import GoogleAPICallError
 from google.api_core.exceptions import NotFound
 from google.api_core.gapic_v1 import method
-from google.rpc.error_details_pb2 import RetryInfo
+from google.cloud.spanner_v1._helpers import _delay_until_retry
+from google.cloud.spanner_v1._helpers import _get_retry_delay
 
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import CreateSessionRequest
@@ -554,57 +554,3 @@ class Session(object):
                             extra={"commit_stats": txn.commit_stats},
                         )
                     return return_value
-
-
-# Rational:  this function factors out complex shared deadline / retry
-#            handling from two `except:` clauses.
-def _delay_until_retry(exc, deadline, attempts):
-    """Helper for :meth:`Session.run_in_transaction`.
-
-    Detect retryable abort, and impose server-supplied delay.
-
-    :type exc: :class:`google.api_core.exceptions.Aborted`
-    :param exc: exception for aborted transaction
-
-    :type deadline: float
-    :param deadline: maximum timestamp to continue retrying the transaction.
-
-    :type attempts: int
-    :param attempts: number of call retries
-    """
-    cause = exc.errors[0]
-
-    now = time.time()
-
-    if now >= deadline:
-        raise
-
-    delay = _get_retry_delay(cause, attempts)
-    if delay is not None:
-        if now + delay > deadline:
-            raise
-
-        time.sleep(delay)
-
-
-def _get_retry_delay(cause, attempts):
-    """Helper for :func:`_delay_until_retry`.
-
-    :type exc: :class:`grpc.Call`
-    :param exc: exception for aborted transaction
-
-    :rtype: float
-    :returns: seconds to wait before retrying the transaction.
-
-    :type attempts: int
-    :param attempts: number of call retries
-    """
-    metadata = dict(cause.trailing_metadata())
-    retry_info_pb = metadata.get("google.rpc.retryinfo-bin")
-    if retry_info_pb is not None:
-        retry_info = RetryInfo()
-        retry_info.ParseFromString(retry_info_pb)
-        nanos = retry_info.retry_delay.nanos
-        return retry_info.retry_delay.seconds + nanos / 1.0e9
-
-    return 2**attempts + random.random()

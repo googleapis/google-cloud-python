@@ -1911,7 +1911,7 @@ class TestSession(OpenTelemetryBase):
         )
 
     def test_delay_helper_w_no_delay(self):
-        from google.cloud.spanner_v1.session import _delay_until_retry
+        from google.cloud.spanner_v1._helpers import _delay_until_retry
 
         metadata_mock = mock.Mock()
         metadata_mock.trailing_metadata.return_value = {}
@@ -1928,7 +1928,7 @@ class TestSession(OpenTelemetryBase):
 
         with mock.patch("time.time", _time_func):
             with mock.patch(
-                "google.cloud.spanner_v1.session._get_retry_delay"
+                "google.cloud.spanner_v1._helpers._get_retry_delay"
             ) as get_retry_delay_mock:
                 with mock.patch("time.sleep") as sleep_mock:
                     get_retry_delay_mock.return_value = None

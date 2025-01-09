@@ -213,10 +213,19 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
     def Commit(self, request, context):
         self._requests.append(request)
         self.mock_spanner.pop_error(context)
-        tx = self.transactions[request.transaction_id]
-        if tx is None:
-            raise ValueError(f"Transaction not found: {request.transaction_id}")
-        del self.transactions[request.transaction_id]
+        if not request.transaction_id == b"":
+            tx = self.transactions[request.transaction_id]
+            if tx is None:
+                raise ValueError(f"Transaction not found: {request.transaction_id}")
+            tx_id = request.transaction_id
+        elif not request.single_use_transaction == TransactionOptions():
+            tx = self.__create_transaction(
+                request.session, request.single_use_transaction
+            )
+            tx_id = tx.id
+        else:
+            raise ValueError("Unsupported transaction type")
+        del self.transactions[tx_id]
         return commit.CommitResponse()
 
     def Rollback(self, request, context):

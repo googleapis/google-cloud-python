@@ -882,6 +882,66 @@ class Test_retry(unittest.TestCase):
 
         self.assertEqual(test_api.test_fxn.call_count, 3)
 
+    def test_retry_on_aborted_exception_with_success_after_first_aborted_retry(self):
+        from google.api_core.exceptions import Aborted
+        import time
+        from google.cloud.spanner_v1._helpers import _retry_on_aborted_exception
+        import functools
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            Aborted("aborted exception", errors=("Aborted error")),
+            "true",
+        ]
+        deadline = time.time() + 30
+        result_after_retry = _retry_on_aborted_exception(
+            functools.partial(test_api.test_fxn), deadline
+        )
+
+        self.assertEqual(test_api.test_fxn.call_count, 2)
+        self.assertTrue(result_after_retry)
+
+    def test_retry_on_aborted_exception_with_success_after_three_retries(self):
+        from google.api_core.exceptions import Aborted
+        import time
+        from google.cloud.spanner_v1._helpers import _retry_on_aborted_exception
+        import functools
+
+        test_api = mock.create_autospec(self.test_class)
+        # Case where aborted exception is thrown after other generic exceptions
+        test_api.test_fxn.side_effect = [
+            Aborted("aborted exception", errors=("Aborted error")),
+            Aborted("aborted exception", errors=("Aborted error")),
+            Aborted("aborted exception", errors=("Aborted error")),
+            "true",
+        ]
+        deadline = time.time() + 30
+        _retry_on_aborted_exception(
+            functools.partial(test_api.test_fxn),
+            deadline=deadline,
+        )
+
+        self.assertEqual(test_api.test_fxn.call_count, 4)
+
+    def test_retry_on_aborted_exception_raises_aborted_if_deadline_expires(self):
+        from google.api_core.exceptions import Aborted
+        import time
+        from google.cloud.spanner_v1._helpers import _retry_on_aborted_exception
+        import functools
+
+        test_api = mock.create_autospec(self.test_class)
+        test_api.test_fxn.side_effect = [
+            Aborted("aborted exception", errors=("Aborted error")),
+            "true",
+        ]
+        deadline = time.time() + 0.1
+        with self.assertRaises(Aborted):
+            _retry_on_aborted_exception(
+                functools.partial(test_api.test_fxn), deadline=deadline
+            )
+
+        self.assertEqual(test_api.test_fxn.call_count, 1)
+
 
 class Test_metadata_with_leader_aware_routing(unittest.TestCase):
     def _call_fut(self, *args, **kw):

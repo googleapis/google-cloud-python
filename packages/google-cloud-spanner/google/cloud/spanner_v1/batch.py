@@ -29,8 +29,12 @@ from google.cloud.spanner_v1._helpers import (
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1._helpers import _retry
+from google.cloud.spanner_v1._helpers import _retry_on_aborted_exception
 from google.cloud.spanner_v1._helpers import _check_rst_stream_error
 from google.api_core.exceptions import InternalServerError
+import time
+
+DEFAULT_RETRY_TIMEOUT_SECS = 30
 
 
 class _BatchBase(_SessionWrapper):
@@ -162,6 +166,7 @@ class Batch(_BatchBase):
         request_options=None,
         max_commit_delay=None,
         exclude_txn_from_change_streams=False,
+        **kwargs,
     ):
         """Commit mutations to the database.
 
@@ -227,9 +232,12 @@ class Batch(_BatchBase):
                 request=request,
                 metadata=metadata,
             )
-            response = _retry(
+            deadline = time.time() + kwargs.get(
+                "timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS
+            )
+            response = _retry_on_aborted_exception(
                 method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                deadline=deadline,
             )
         self.committed = response.commit_timestamp
         self.commit_stats = response.commit_stats
@@ -348,7 +356,9 @@ class MutationGroups(_SessionWrapper):
             )
             response = _retry(
                 method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
+                allowed_exceptions={
+                    InternalServerError: _check_rst_stream_error,
+                },
             )
         self.committed = True
         return response

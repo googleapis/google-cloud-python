@@ -95,6 +95,30 @@ class TestAbortedTransaction(MockServerTestBase):
         self.assertTrue(isinstance(requests[2], ExecuteBatchDmlRequest))
         self.assertTrue(isinstance(requests[3], CommitRequest))
 
+    def test_batch_commit_aborted(self):
+        # Add an Aborted error for the Commit method on the mock server.
+        add_error(SpannerServicer.Commit.__name__, aborted_status())
+        with self.database.batch() as batch:
+            batch.insert(
+                table="Singers",
+                columns=("SingerId", "FirstName", "LastName"),
+                values=[
+                    (1, "Marc", "Richards"),
+                    (2, "Catalina", "Smith"),
+                    (3, "Alice", "Trentor"),
+                    (4, "Lea", "Martin"),
+                    (5, "David", "Lomond"),
+                ],
+            )
+
+        # Verify that the transaction was retried.
+        requests = self.spanner_service.requests
+        self.assertEqual(3, len(requests), msg=requests)
+        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
+        self.assertTrue(isinstance(requests[1], CommitRequest))
+        # The transaction is aborted and retried.
+        self.assertTrue(isinstance(requests[2], CommitRequest))
+
 
 def _insert_mutations(transaction: Transaction):
     transaction.insert("my_table", ["col1", "col2"], ["value1", "value2"])
