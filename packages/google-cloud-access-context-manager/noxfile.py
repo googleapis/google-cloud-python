@@ -28,9 +28,6 @@ BLACK_VERSION = "black==22.3.0"
 LINT_PATHS = ["docs", "google", "noxfile.py", "setup.py"]
 
 
-# `grpcio-tools` 1.59.0 or newer is required for protobuf 5.x compatibility.
-GRPCIO_TOOLS_VERSION = "grpcio-tools==1.59.0"
-
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
@@ -333,28 +330,6 @@ def unit_local(session, protobuf_implementation):
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
-    )
-
-
-@nox.session(python="3.8")
-def generate_protos(session):
-    """Generates the protos using protoc.
-
-    This session but be last to avoid overwriting the protos used in CI runs.
-
-    Some notes on the `google` directory:
-    1. The `_pb2.py` files are produced by protoc.
-    2. The .proto files are non-functional but are left in the repository
-       to make it easier to understand diffs.
-    3. The `google` directory also has `__init__.py` files to create proper modules.
-       If a new subdirectory is added, you will need to create more `__init__.py`
-       files.
-    """
-
-    session.install(GRPCIO_TOOLS_VERSION)
-    protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
-    session.run(
-        "python", "-m", "grpc_tools.protoc", "--proto_path=.", "--python_out=.", *protos
     )
 
 
