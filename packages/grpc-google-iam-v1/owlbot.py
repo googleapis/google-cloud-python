@@ -20,6 +20,10 @@ from synthtool.languages import python
 # Add templated files
 # ----------------------------------------------------------------------------
 
+for library in s.get_staging_dirs():
+    s.move([library / "**/*.py*"])
+s.remove_staging_dirs()
+
 templated_files = gcp.CommonTemplates().py_library()
 s.move(templated_files / ".kokoro")
 s.replace(
