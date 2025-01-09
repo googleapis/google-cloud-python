@@ -72,9 +72,27 @@ def test_create_single_timeseries() -> None:
     # Expected output:
     #       ar_coefficients   ma_coefficients   intercept_or_drift
     #   0	 [0.40944762]	   [-0.81168198]	      0.0
-
     # [END bigquery_dataframes_single_timeseries_forecasting_model_tutorial_coef]
+
+    # [START bigquery_dataframes_single_timeseries_forecasting_model_tutorial_evaluate]
+    # Evaluate the time series models by using the summary() function. The summary()
+    # function shows you the evaluation metrics of all the candidate models evaluated
+    # during the process of automatic hyperparameter tuning.
+    summary = model.summary(
+        show_all_candidate_models=True,
+    )
+    print(summary.peek())
+
+    # Expected output:
+    # row   non_seasonal_p	non_seasonal_d	non_seasonal_q	has_drift	log_likelihood	AIC	variance	seasonal_periods	has_holiday_effect	has_spikes_and_dips	has_step_changes	error_message
+    #  0	      0	              1	               3	      True	     -2464.255656	4938.511313	     42772.506055	        ['WEEKLY']	            False	        False	            True
+    #  1	      2	              1	               0	      False	     -2473.141651	4952.283303	     44942.416463	        ['WEEKLY']	            False	        False	            True
+    #  2	      1	              1	               0 	      False	     -2479.880885	4963.76177	     46642.953433	        ['WEEKLY']	            False	        False	            True
+    #  3	      0	              1	               1	      False	     -2470.632377	4945.264753	     44319.379307	        ['WEEKLY']	            False	        False	            True
+    #  4	      2	              1	               1	      True	     -2463.671247	4937.342493	     42633.299513	        ['WEEKLY']	            False	        False	            True
+    # [END bigquery_dataframes_single_timeseries_forecasting_model_tutorial_evaluate]
     assert coef is not None
+    assert summary is not None
     assert model is not None
     assert parsed_date is not None
     assert total_visits is not None

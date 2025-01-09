@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import bigframes_vendored.ibis.backends.bigquery.datatypes as ibis_bq_types
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.types as ibis_types
 import geopandas as gpd  # type: ignore
@@ -150,6 +151,15 @@ def test_arrow_dtype_to_ibis_dtype(ibis_dtype, arrow_dtype):
 def test_ibis_dtype_to_arrow_dtype(ibis_dtype, arrow_dtype):
     result = bigframes.core.compile.ibis_types._ibis_dtype_to_arrow_dtype(ibis_dtype)
     assert result == arrow_dtype
+
+
+@pytest.mark.parametrize(
+    ("ibis_dtype", "bigquery_type"),
+    [(ibis_dtypes.String(), "STRING"), (ibis_dtypes.String(nullable=False), "STRING")],
+)
+def test_ibis_dtype_to_bigquery_type(ibis_dtype, bigquery_type):
+    result = ibis_bq_types.BigQueryType.from_ibis(ibis_dtype)
+    assert result == bigquery_type
 
 
 @pytest.mark.parametrize(

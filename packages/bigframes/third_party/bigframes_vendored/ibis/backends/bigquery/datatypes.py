@@ -55,6 +55,8 @@ class BigQueryType(TypeMapper):
             return "INT64"
         elif dtype.is_binary():
             return "BYTES"
+        elif dtype.is_string():
+            return "STRING"
         elif dtype.is_date():
             return "DATE"
         elif dtype.is_timestamp():
