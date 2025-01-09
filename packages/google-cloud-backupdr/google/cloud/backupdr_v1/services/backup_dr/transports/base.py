@@ -371,6 +371,20 @@ class BackupDRTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.initialize_service: gapic_v1.method.wrap_method(
+                self.initialize_service,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -694,6 +708,15 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [backupplanassociation.TriggerBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def initialize_service(
+        self,
+    ) -> Callable[
+        [backupdr.InitializeServiceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -76,8 +76,9 @@ class BackupPlan(proto.Message):
         resource_type (str):
             Required. The resource type to which the ``BackupPlan`` will
             be applied. Examples include,
-            "compute.googleapis.com/Instance" and
-            "storage.googleapis.com/Bucket".
+            "compute.googleapis.com/Instance",
+            "sqladmin.googleapis.com/Instance", or
+            "alloydb.googleapis.com/Cluster".
         etag (str):
             Optional. ``etag`` is returned from the service in the
             response. As a user of the service, you may provide an etag
@@ -187,6 +188,14 @@ class BackupRule(proto.Message):
             “days”. The value should be greater than or
             equal to minimum enforced retention of the
             backup vault.
+
+            Minimum value is 1 and maximum value is 90 for
+            hourly backups. Minimum value is 1 and maximum
+            value is 90 for daily backups. Minimum value is
+            7 and maximum value is 186 for weekly backups.
+            Minimum value is 30 and maximum value is 732 for
+            monthly backups. Minimum value is 365 and
+            maximum value is 36159 for yearly backups.
         standard_schedule (google.cloud.backupdr_v1.types.StandardSchedule):
             Required. Defines a schedule that runs within
             the confines of a defined window of time.
