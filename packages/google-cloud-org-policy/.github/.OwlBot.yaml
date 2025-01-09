@@ -15,15 +15,13 @@
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
-# See https://github.com/googleapis/python-org-policy/issues/22
-deep-preserve-regex:
-  - /owl-bot-staging/v1
-
 deep-remove-regex:
   - /owl-bot-staging
 
 deep-copy-regex:
-  - source: /google/cloud/orgpolicy/(v.*)/.*-py/(.*)
+  - source: /google/cloud/orgpolicy/(v1)/.*-py/(orgpolicy.*)
+    dest: /owl-bot-staging/$1/google/cloud/orgpolicy/v1/$2
+  - source: /google/cloud/orgpolicy/(v2)/.*-py/(.*)
     dest: /owl-bot-staging/$1/$2
 
 begin-after-commit-hash: b06c9034cfcbce180ba732d03be6526e5c8ea1bc
