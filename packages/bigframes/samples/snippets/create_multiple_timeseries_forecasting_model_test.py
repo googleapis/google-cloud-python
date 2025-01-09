@@ -17,7 +17,6 @@ def test_multiple_timeseries_forecasting_model(random_model_id: str) -> None:
     your_model_id = random_model_id
 
     # [START bigquery_dataframes_bqml_arima_multiple_step_2_visualize]
-
     import bigframes.pandas as bpd
 
     df = bpd.read_gbq("bigquery-public-data.new_york.citibike_trips")
