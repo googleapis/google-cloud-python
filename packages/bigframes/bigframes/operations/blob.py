@@ -14,12 +14,14 @@
 
 from __future__ import annotations
 
-from typing import Optional
+import os
+from typing import cast, Optional, Union
 
 import IPython.display as ipy_display
 import requests
 
 from bigframes import clients
+import bigframes.dataframe
 from bigframes.operations import base
 import bigframes.operations as ops
 import bigframes.series
@@ -74,7 +76,7 @@ class BlobAccessor(base.SeriesMethods):
         self,
         ksize: tuple[int, int],
         *,
-        dst: bigframes.series.Series,
+        dst: Union[str, bigframes.series.Series],
         connection: Optional[str] = None,
     ) -> bigframes.series.Series:
         """Blurs images.
@@ -84,11 +86,11 @@ class BlobAccessor(base.SeriesMethods):
 
         Args:
             ksize (tuple(int, int)): Kernel size.
-            dst (bigframes.series.Series): Destination blob series.
-            connection (str or None, default None): BQ connection used for internet transactions. If None, uses default connection of the session.
+            dst (str or bigframes.series.Series): Destination GCS folder str or blob series.
+            connection (str or None, default None): BQ connection used for function internet transactions, and the output blob if "dst" is str. If None, uses default connection of the session.
 
         Returns:
-            JSON: Runtime info of the Blob.
+            BigFrames Blob Series
         """
         import bigframes.blob._functions as blob_func
 
@@ -98,6 +100,15 @@ class BlobAccessor(base.SeriesMethods):
             default_project=self._block.session._project,
             default_location=self._block.session._location,
         )
+
+        if isinstance(dst, str):
+            dst = os.path.join(dst, "")
+            src_uri = bigframes.series.Series(self._block).struct.explode()["uri"]
+            # Replace src folder with dst folder, keep the file names.
+            dst_uri = src_uri.str.replace(r"^.*\/(.*)$", rf"{dst}\1", regex=True)
+            dst = cast(
+                bigframes.series.Series, dst_uri.str.to_blob(connection=connection)
+            )
 
         image_blur_udf = blob_func.TransformFunction(
             blob_func.image_blur_def,
@@ -116,4 +127,7 @@ class BlobAccessor(base.SeriesMethods):
         df = src_rt.to_frame().join(dst_rt.to_frame(), how="outer")
         df["ksize_x"], df["ksize_y"] = ksize
 
-        return df.apply(image_blur_udf, axis=1)
+        res = df.apply(image_blur_udf, axis=1)
+        res.cache()  # to execute the udf
+
+        return dst
