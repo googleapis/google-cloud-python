@@ -22,7 +22,7 @@ import math
 import re
 import os
 import warnings
-from typing import Optional, Union
+from typing import Optional, Union, Any, Tuple, Type
 
 from dateutil import relativedelta
 from google.cloud._helpers import UTC  # type: ignore
@@ -1004,3 +1004,33 @@ def _verify_job_config_type(job_config, expected_type, param_name="job_config"):
                 job_config=job_config,
             )
         )
+
+
+def _isinstance_or_raise(
+    value: Any,
+    dtype: Union[Type, Tuple[Type, ...]],
+    none_allowed: Optional[bool] = False,
+) -> Any:
+    """Determine whether a value type matches a given datatype or None.
+    Args:
+        value (Any): Value to be checked.
+        dtype (type): Expected data type or tuple of data types.
+        none_allowed Optional(bool): whether value is allowed to be None. Default
+           is False.
+    Returns:
+        Any: Returns the input value if the type check is successful.
+    Raises:
+        TypeError: If the input value's type does not match the expected data type(s).
+    """
+    if none_allowed and value is None:
+        return value
+
+    if isinstance(value, dtype):
+        return value
+
+    or_none = ""
+    if none_allowed:
+        or_none = " (or None)"
+
+    msg = f"Pass {value} as a '{dtype}'{or_none}. Got {type(value)}."
+    raise TypeError(msg)
