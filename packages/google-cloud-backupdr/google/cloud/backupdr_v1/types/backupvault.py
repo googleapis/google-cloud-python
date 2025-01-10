@@ -199,9 +199,8 @@ class BackupVault(proto.Message):
             Output only. Total size of the storage used
             by all backup resources.
         uid (str):
-            Output only. Output only
-            Immutable after resource creation until resource
-            deletion.
+            Output only. Immutable after resource
+            creation until resource deletion.
         annotations (MutableMapping[str, str]):
             Optional. User annotations. See
             https://google.aip.dev/128#annotations Stores
@@ -209,8 +208,6 @@ class BackupVault(proto.Message):
         access_restriction (google.cloud.backupdr_v1.types.BackupVault.AccessRestriction):
             Optional. Note: This field is added for future use case and
             will not be supported in the current release.
-
-            Optional.
 
             Access restriction for the backup vault. Default value is
             WITHIN_ORGANIZATION if not provided during creation.
@@ -244,7 +241,9 @@ class BackupVault(proto.Message):
 
         Values:
             ACCESS_RESTRICTION_UNSPECIFIED (0):
-                Access restriction not set.
+                Access restriction not set. If user does not provide any
+                value or pass this value, it will be changed to
+                WITHIN_ORGANIZATION.
             WITHIN_PROJECT (1):
                 Access to or from resources outside your
                 current project will be denied.
@@ -253,11 +252,16 @@ class BackupVault(proto.Message):
                 current organization will be denied.
             UNRESTRICTED (3):
                 No access restriction.
+            WITHIN_ORG_BUT_UNRESTRICTED_FOR_BA (4):
+                Access to or from resources outside your
+                current organization will be denied except for
+                backup appliance.
         """
         ACCESS_RESTRICTION_UNSPECIFIED = 0
         WITHIN_PROJECT = 1
         WITHIN_ORGANIZATION = 2
         UNRESTRICTED = 3
+        WITHIN_ORG_BUT_UNRESTRICTED_FOR_BA = 4
 
     name: str = proto.Field(
         proto.STRING,
@@ -1532,6 +1536,11 @@ class DeleteBackupVaultRequest(proto.Message):
             Optional. If true and the BackupVault is not
             found, the request will succeed but no action
             will be taken.
+        ignore_backup_plan_references (bool):
+            Optional. If set to true, backupvault
+            deletion will proceed even if there are backup
+            plans referencing the backupvault. The default
+            is 'false'.
     """
 
     name: str = proto.Field(
@@ -1557,6 +1566,10 @@ class DeleteBackupVaultRequest(proto.Message):
     allow_missing: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    ignore_backup_plan_references: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 

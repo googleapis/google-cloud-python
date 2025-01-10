@@ -1131,6 +1131,34 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
             )
         return self._stubs["trigger_backup"]
 
+    @property
+    def initialize_service(
+        self,
+    ) -> Callable[
+        [backupdr.InitializeServiceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the initialize service method over gRPC.
+
+        Initializes the service related config for a project.
+
+        Returns:
+            Callable[[~.InitializeServiceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "initialize_service" not in self._stubs:
+            self._stubs["initialize_service"] = self._logged_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/InitializeService",
+                request_serializer=backupdr.InitializeServiceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["initialize_service"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1366,6 +1394,20 @@ class BackupDRGrpcAsyncIOTransport(BackupDRTransport):
             self.trigger_backup: self._wrap_method(
                 self.trigger_backup,
                 default_timeout=None,
+                client_info=client_info,
+            ),
+            self.initialize_service: self._wrap_method(
+                self.initialize_service,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateBackupPlanAssociation
+# Snippet for InitializeService
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-backupdr
 
 
-# [START backupdr_v1_generated_BackupDR_CreateBackupPlanAssociation_sync]
+# [START backupdr_v1_generated_BackupDR_InitializeService_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,30 +34,24 @@
 from google.cloud import backupdr_v1
 
 
-def sample_create_backup_plan_association():
+async def sample_initialize_service():
     # Create a client
-    client = backupdr_v1.BackupDRClient()
+    client = backupdr_v1.BackupDRAsyncClient()
 
     # Initialize request argument(s)
-    backup_plan_association = backupdr_v1.BackupPlanAssociation()
-    backup_plan_association.resource_type = "resource_type_value"
-    backup_plan_association.resource = "resource_value"
-    backup_plan_association.backup_plan = "backup_plan_value"
-
-    request = backupdr_v1.CreateBackupPlanAssociationRequest(
-        parent="parent_value",
-        backup_plan_association_id="backup_plan_association_id_value",
-        backup_plan_association=backup_plan_association,
+    request = backupdr_v1.InitializeServiceRequest(
+        name="name_value",
+        resource_type="resource_type_value",
     )
 
     # Make the request
-    operation = client.create_backup_plan_association(request=request)
+    operation = client.initialize_service(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = operation.result()
+    response = (await operation).result()
 
     # Handle the response
     print(response)
 
-# [END backupdr_v1_generated_BackupDR_CreateBackupPlanAssociation_sync]
+# [END backupdr_v1_generated_BackupDR_InitializeService_async]
