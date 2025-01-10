@@ -680,10 +680,14 @@ class _SnapshotBase(_SessionWrapper):
         )
 
         trace_attributes = {"table_id": table, "columns": columns}
+        can_include_index = (index != "") and (index is not None)
+        if can_include_index:
+            trace_attributes["index"] = index
+
         with trace_call(
             f"CloudSpanner.{type(self).__name__}.partition_read",
             self._session,
-            trace_attributes,
+            extra_attributes=trace_attributes,
             observability_options=getattr(database, "observability_options", None),
         ):
             method = functools.partial(
@@ -784,7 +788,7 @@ class _SnapshotBase(_SessionWrapper):
 
         trace_attributes = {"db.statement": sql}
         with trace_call(
-            "CloudSpanner.PartitionReadWriteTransaction",
+            f"CloudSpanner.{type(self).__name__}.partition_query",
             self._session,
             trace_attributes,
             observability_options=getattr(database, "observability_options", None),

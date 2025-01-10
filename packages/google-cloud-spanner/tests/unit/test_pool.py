@@ -918,7 +918,11 @@ class TestPingingPool(OpenTelemetryBase):
             attributes=attrs,
             span=span_list[-1],
         )
-        wantEventNames = ["Requested for 4 sessions, returned 4"]
+        wantEventNames = [
+            "Created 2 sessions",
+            "Created 2 sessions",
+            "Requested for 4 sessions, returned 4",
+        ]
         self.assertSpanEvents(
             "CloudSpanner.PingingPool.BatchCreateSessions", wantEventNames
         )

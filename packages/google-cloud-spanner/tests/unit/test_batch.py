@@ -527,7 +527,7 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         group.delete(TABLE_NAME, keyset=keyset)
         groups.batch_write()
         self.assertSpanAttributes(
-            "CloudSpanner.BatchWrite",
+            "CloudSpanner.batch_write",
             status=StatusCode.OK,
             attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
         )
@@ -553,7 +553,7 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
             groups.batch_write()
 
         self.assertSpanAttributes(
-            "CloudSpanner.BatchWrite",
+            "CloudSpanner.batch_write",
             status=StatusCode.ERROR,
             attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
         )
@@ -615,7 +615,7 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.BatchWrite",
+            "CloudSpanner.batch_write",
             status=StatusCode.OK,
             attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
         )

@@ -699,38 +699,43 @@ class Database(object):
             )
 
         def execute_pdml():
-            with SessionCheckout(self._pool) as session:
-                txn = api.begin_transaction(
-                    session=session.name, options=txn_options, metadata=metadata
-                )
+            with trace_call(
+                "CloudSpanner.Database.execute_partitioned_pdml",
+                observability_options=self.observability_options,
+            ) as span:
+                with SessionCheckout(self._pool) as session:
+                    add_span_event(span, "Starting BeginTransaction")
+                    txn = api.begin_transaction(
+                        session=session.name, options=txn_options, metadata=metadata
+                    )
 
-                txn_selector = TransactionSelector(id=txn.id)
+                    txn_selector = TransactionSelector(id=txn.id)
 
-                request = ExecuteSqlRequest(
-                    session=session.name,
-                    sql=dml,
-                    params=params_pb,
-                    param_types=param_types,
-                    query_options=query_options,
-                    request_options=request_options,
-                )
-                method = functools.partial(
-                    api.execute_streaming_sql,
-                    metadata=metadata,
-                )
+                    request = ExecuteSqlRequest(
+                        session=session.name,
+                        sql=dml,
+                        params=params_pb,
+                        param_types=param_types,
+                        query_options=query_options,
+                        request_options=request_options,
+                    )
+                    method = functools.partial(
+                        api.execute_streaming_sql,
+                        metadata=metadata,
+                    )
 
-                iterator = _restart_on_unavailable(
-                    method=method,
-                    trace_name="CloudSpanner.ExecuteStreamingSql",
-                    request=request,
-                    transaction_selector=txn_selector,
-                    observability_options=self.observability_options,
-                )
+                    iterator = _restart_on_unavailable(
+                        method=method,
+                        trace_name="CloudSpanner.ExecuteStreamingSql",
+                        request=request,
+                        transaction_selector=txn_selector,
+                        observability_options=self.observability_options,
+                    )
 
-                result_set = StreamedResultSet(iterator)
-                list(result_set)  # consume all partials
+                    result_set = StreamedResultSet(iterator)
+                    list(result_set)  # consume all partials
 
-                return result_set.stats.row_count_lower_bound
+                    return result_set.stats.row_count_lower_bound
 
         return _retry_on_aborted(execute_pdml, DEFAULT_RETRY_BACKOFF)()
 
@@ -1357,6 +1362,10 @@ class BatchSnapshot(object):
             "transaction_id": snapshot._transaction_id,
         }
 
+    @property
+    def observability_options(self):
+        return getattr(self._database, "observability_options", {})
+
     def _get_session(self):
         """Create session as needed.
 
@@ -1476,27 +1485,32 @@ class BatchSnapshot(object):
             mappings of information used perform actual partitioned reads via
             :meth:`process_read_batch`.
         """
-        partitions = self._get_snapshot().partition_read(
-            table=table,
-            columns=columns,
-            keyset=keyset,
-            index=index,
-            partition_size_bytes=partition_size_bytes,
-            max_partitions=max_partitions,
-            retry=retry,
-            timeout=timeout,
-        )
+        with trace_call(
+            f"CloudSpanner.{type(self).__name__}.generate_read_batches",
+            extra_attributes=dict(table=table, columns=columns),
+            observability_options=self.observability_options,
+        ):
+            partitions = self._get_snapshot().partition_read(
+                table=table,
+                columns=columns,
+                keyset=keyset,
+                index=index,
+                partition_size_bytes=partition_size_bytes,
+                max_partitions=max_partitions,
+                retry=retry,
+                timeout=timeout,
+            )
 
-        read_info = {
-            "table": table,
-            "columns": columns,
-            "keyset": keyset._to_dict(),
-            "index": index,
-            "data_boost_enabled": data_boost_enabled,
-            "directed_read_options": directed_read_options,
-        }
-        for partition in partitions:
-            yield {"partition": partition, "read": read_info.copy()}
+            read_info = {
+                "table": table,
+                "columns": columns,
+                "keyset": keyset._to_dict(),
+                "index": index,
+                "data_boost_enabled": data_boost_enabled,
+                "directed_read_options": directed_read_options,
+            }
+            for partition in partitions:
+                yield {"partition": partition, "read": read_info.copy()}
 
     def process_read_batch(
         self,
@@ -1522,12 +1536,17 @@ class BatchSnapshot(object):
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
-        kwargs = copy.deepcopy(batch["read"])
-        keyset_dict = kwargs.pop("keyset")
-        kwargs["keyset"] = KeySet._from_dict(keyset_dict)
-        return self._get_snapshot().read(
-            partition=batch["partition"], **kwargs, retry=retry, timeout=timeout
-        )
+        observability_options = self.observability_options
+        with trace_call(
+            f"CloudSpanner.{type(self).__name__}.process_read_batch",
+            observability_options=observability_options,
+        ):
+            kwargs = copy.deepcopy(batch["read"])
+            keyset_dict = kwargs.pop("keyset")
+            kwargs["keyset"] = KeySet._from_dict(keyset_dict)
+            return self._get_snapshot().read(
+                partition=batch["partition"], **kwargs, retry=retry, timeout=timeout
+            )
 
     def generate_query_batches(
         self,
@@ -1602,34 +1621,39 @@ class BatchSnapshot(object):
             mappings of information used perform actual partitioned reads via
             :meth:`process_read_batch`.
         """
-        partitions = self._get_snapshot().partition_query(
-            sql=sql,
-            params=params,
-            param_types=param_types,
-            partition_size_bytes=partition_size_bytes,
-            max_partitions=max_partitions,
-            retry=retry,
-            timeout=timeout,
-        )
+        with trace_call(
+            f"CloudSpanner.{type(self).__name__}.generate_query_batches",
+            extra_attributes=dict(sql=sql),
+            observability_options=self.observability_options,
+        ):
+            partitions = self._get_snapshot().partition_query(
+                sql=sql,
+                params=params,
+                param_types=param_types,
+                partition_size_bytes=partition_size_bytes,
+                max_partitions=max_partitions,
+                retry=retry,
+                timeout=timeout,
+            )
 
-        query_info = {
-            "sql": sql,
-            "data_boost_enabled": data_boost_enabled,
-            "directed_read_options": directed_read_options,
-        }
-        if params:
-            query_info["params"] = params
-            query_info["param_types"] = param_types
+            query_info = {
+                "sql": sql,
+                "data_boost_enabled": data_boost_enabled,
+                "directed_read_options": directed_read_options,
+            }
+            if params:
+                query_info["params"] = params
+                query_info["param_types"] = param_types
 
-        # Query-level options have higher precedence than client-level and
-        # environment-level options
-        default_query_options = self._database._instance._client._query_options
-        query_info["query_options"] = _merge_query_options(
-            default_query_options, query_options
-        )
+            # Query-level options have higher precedence than client-level and
+            # environment-level options
+            default_query_options = self._database._instance._client._query_options
+            query_info["query_options"] = _merge_query_options(
+                default_query_options, query_options
+            )
 
-        for partition in partitions:
-            yield {"partition": partition, "query": query_info}
+            for partition in partitions:
+                yield {"partition": partition, "query": query_info}
 
     def process_query_batch(
         self,
@@ -1654,9 +1678,16 @@ class BatchSnapshot(object):
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
-        return self._get_snapshot().execute_sql(
-            partition=batch["partition"], **batch["query"], retry=retry, timeout=timeout
-        )
+        with trace_call(
+            f"CloudSpanner.{type(self).__name__}.process_query_batch",
+            observability_options=self.observability_options,
+        ):
+            return self._get_snapshot().execute_sql(
+                partition=batch["partition"],
+                **batch["query"],
+                retry=retry,
+                timeout=timeout,
+            )
 
     def run_partitioned_query(
         self,
@@ -1711,18 +1742,23 @@ class BatchSnapshot(object):
         :rtype: :class:`~google.cloud.spanner_v1.merged_result_set.MergedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
-        partitions = list(
-            self.generate_query_batches(
-                sql,
-                params,
-                param_types,
-                partition_size_bytes,
-                max_partitions,
-                query_options,
-                data_boost_enabled,
+        with trace_call(
+            f"CloudSpanner.${type(self).__name__}.run_partitioned_query",
+            extra_attributes=dict(sql=sql),
+            observability_options=self.observability_options,
+        ):
+            partitions = list(
+                self.generate_query_batches(
+                    sql,
+                    params,
+                    param_types,
+                    partition_size_bytes,
+                    max_partitions,
+                    query_options,
+                    data_boost_enabled,
+                )
             )
-        )
-        return MergedResultSet(self, partitions, 0)
+            return MergedResultSet(self, partitions, 0)
 
     def process(self, batch):
         """Process a single, partitioned query or read.

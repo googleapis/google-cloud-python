@@ -344,7 +344,7 @@ class MutationGroups(_SessionWrapper):
         )
         observability_options = getattr(database, "observability_options", None)
         with trace_call(
-            "CloudSpanner.BatchWrite",
+            "CloudSpanner.batch_write",
             self._session,
             trace_attributes,
             observability_options=observability_options,

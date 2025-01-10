@@ -523,12 +523,11 @@ class PingingPool(AbstractSessionPool):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        created_session_count = 0
         self._database_role = self._database_role or self._database.database_role
 
         request = BatchCreateSessionsRequest(
             database=database.name,
-            session_count=self.size - created_session_count,
+            session_count=self.size,
             session_template=Session(creator_role=self.database_role),
         )
 
@@ -549,38 +548,28 @@ class PingingPool(AbstractSessionPool):
             span_event_attributes,
         )
 
-        if created_session_count >= self.size:
-            add_span_event(
-                current_span,
-                "Created no new sessions as sessionPool is full",
-                span_event_attributes,
-            )
-            return
-
-        add_span_event(
-            current_span,
-            f"Creating {request.session_count} sessions",
-            span_event_attributes,
-        )
-
         observability_options = getattr(self._database, "observability_options", None)
         with trace_call(
             "CloudSpanner.PingingPool.BatchCreateSessions",
             observability_options=observability_options,
         ) as span:
             returned_session_count = 0
-            while created_session_count < self.size:
+            while returned_session_count < self.size:
                 resp = api.batch_create_sessions(
                     request=request,
                     metadata=metadata,
                 )
+
+                add_span_event(
+                    span,
+                    f"Created {len(resp.session)} sessions",
+                )
+
                 for session_pb in resp.session:
                     session = self._new_session()
+                    returned_session_count += 1
                     session._session_id = session_pb.name.split("/")[-1]
                     self.put(session)
-                    returned_session_count += 1
-
-                created_session_count += len(resp.session)
 
             add_span_event(
                 span,

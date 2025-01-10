@@ -17,6 +17,8 @@ from queue import Queue
 from typing import Any, TYPE_CHECKING
 from threading import Lock, Event
 
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+
 if TYPE_CHECKING:
     from google.cloud.spanner_v1.database import BatchSnapshot
 
@@ -37,6 +39,16 @@ class PartitionExecutor:
         self._queue: Queue[PartitionExecutorResult] = merged_result_set._queue
 
     def run(self):
+        observability_options = getattr(
+            self._batch_snapshot, "observability_options", {}
+        )
+        with trace_call(
+            "CloudSpanner.PartitionExecutor.run",
+            observability_options=observability_options,
+        ):
+            self.__run()
+
+    def __run(self):
         results = None
         try:
             results = self._batch_snapshot.process_query_batch(self._partition_id)

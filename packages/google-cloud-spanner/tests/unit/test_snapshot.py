@@ -1194,12 +1194,17 @@ class Test_SnapshotBase(OpenTelemetryBase):
             timeout=timeout,
         )
 
+        want_span_attributes = dict(
+            BASE_ATTRIBUTES,
+            table_id=TABLE_NAME,
+            columns=tuple(COLUMNS),
+        )
+        if index:
+            want_span_attributes["index"] = index
         self.assertSpanAttributes(
             "CloudSpanner._Derived.partition_read",
             status=StatusCode.OK,
-            attributes=dict(
-                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
-            ),
+            attributes=want_span_attributes,
         )
 
     def test_partition_read_single_use_raises(self):
@@ -1369,7 +1374,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.PartitionReadWriteTransaction",
+            "CloudSpanner._Derived.partition_query",
             status=StatusCode.OK,
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY_WITH_PARAM}),
         )
@@ -1387,7 +1392,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             list(derived.partition_query(SQL_QUERY))
 
         self.assertSpanAttributes(
-            "CloudSpanner.PartitionReadWriteTransaction",
+            "CloudSpanner._Derived.partition_query",
             status=StatusCode.ERROR,
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
         )
@@ -1696,6 +1701,14 @@ class TestSnapshot(OpenTelemetryBase):
         with self.assertRaises(RuntimeError):
             snapshot.begin()
 
+        if not HAS_OPENTELEMETRY_INSTALLED:
+            return
+
+        span_list = self.get_finished_spans()
+        got_span_names = [span.name for span in span_list]
+        want_span_names = ["CloudSpanner.Snapshot.begin"]
+        assert got_span_names == want_span_names
+
         self.assertSpanAttributes(
             "CloudSpanner.Snapshot.begin",
             status=StatusCode.ERROR,
@@ -1815,6 +1828,10 @@ class _Database(object):
         self._instance = _Instance()
         self._route_to_leader_enabled = True
         self._directed_read_options = directed_read_options
+
+    @property
+    def observability_options(self):
+        return dict(db_name=self.name)
 
 
 class _Session(object):

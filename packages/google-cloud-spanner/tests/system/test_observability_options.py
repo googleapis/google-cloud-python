@@ -16,6 +16,9 @@ import pytest
 
 from . import _helpers
 from google.cloud.spanner_v1 import Client
+from google.api_core.exceptions import Aborted
+from google.auth.credentials import AnonymousCredentials
+from google.rpc import code_pb2
 
 HAS_OTEL_INSTALLED = False
 
@@ -37,7 +40,7 @@ except ImportError:
     not HAS_OTEL_INSTALLED, reason="OpenTelemetry is necessary to test traces."
 )
 @pytest.mark.skipif(
-    not _helpers.USE_EMULATOR, reason="mulator is necessary to test traces."
+    not _helpers.USE_EMULATOR, reason="Emulator is necessary to test traces."
 )
 def test_observability_options_propagation():
     PROJECT = _helpers.EMULATOR_PROJECT
@@ -97,7 +100,8 @@ def test_observability_options_propagation():
                 _ = val
 
         from_global_spans = global_trace_exporter.get_finished_spans()
-        from_inject_spans = inject_trace_exporter.get_finished_spans()
+        target_spans = inject_trace_exporter.get_finished_spans()
+        from_inject_spans = sorted(target_spans, key=lambda v1: v1.start_time)
         assert (
             len(from_global_spans) == 0
         )  # "Expecting no spans from the global trace exporter"
@@ -131,23 +135,11 @@ def test_observability_options_propagation():
     test_propagation(False)
 
 
-@pytest.mark.skipif(
-    not _helpers.USE_EMULATOR,
-    reason="Emulator needed to run this tests",
-)
-@pytest.mark.skipif(
-    not HAS_OTEL_INSTALLED,
-    reason="Tracing requires OpenTelemetry",
-)
-def test_transaction_abort_then_retry_spans():
-    from google.auth.credentials import AnonymousCredentials
-    from google.api_core.exceptions import Aborted
-    from google.rpc import code_pb2
+def create_db_trace_exporter():
     from opentelemetry.sdk.trace.export import SimpleSpanProcessor
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
-    from opentelemetry.trace.status import StatusCode
     from opentelemetry.sdk.trace import TracerProvider
     from opentelemetry.sdk.trace.sampling import ALWAYS_ON
 
@@ -158,20 +150,6 @@ def test_transaction_abort_then_retry_spans():
     DATABASE_ID = _helpers.unique_id("temp_db")
     NODE_COUNT = 5
     LABELS = {"test": "true"}
-
-    counters = dict(aborted=0)
-
-    def select_in_txn(txn):
-        results = txn.execute_sql("SELECT 1")
-        for row in results:
-            _ = row
-
-        if counters["aborted"] == 0:
-            counters["aborted"] = 1
-            raise Aborted(
-                "Thrown from ClientInterceptor for testing",
-                errors=[_helpers.FauxCall(code_pb2.ABORTED)],
-            )
 
     tracer_provider = TracerProvider(sampler=ALWAYS_ON)
     trace_exporter = InMemorySpanExporter()
@@ -206,40 +184,39 @@ def test_transaction_abort_then_retry_spans():
     except Exception:
         pass
 
+    return db, trace_exporter
+
+
+@pytest.mark.skipif(
+    not _helpers.USE_EMULATOR,
+    reason="Emulator needed to run this test",
+)
+@pytest.mark.skipif(
+    not HAS_OTEL_INSTALLED,
+    reason="Tracing requires OpenTelemetry",
+)
+def test_transaction_abort_then_retry_spans():
+    from opentelemetry.trace.status import StatusCode
+
+    db, trace_exporter = create_db_trace_exporter()
+
+    counters = dict(aborted=0)
+
+    def select_in_txn(txn):
+        results = txn.execute_sql("SELECT 1")
+        for row in results:
+            _ = row
+
+        if counters["aborted"] == 0:
+            counters["aborted"] = 1
+            raise Aborted(
+                "Thrown from ClientInterceptor for testing",
+                errors=[_helpers.FauxCall(code_pb2.ABORTED)],
+            )
+
     db.run_in_transaction(select_in_txn)
 
-    span_list = trace_exporter.get_finished_spans()
-    # Sort the spans by their start time in the hierarchy.
-    span_list = sorted(span_list, key=lambda span: span.start_time)
-    got_span_names = [span.name for span in span_list]
-    want_span_names = [
-        "CloudSpanner.Database.run_in_transaction",
-        "CloudSpanner.CreateSession",
-        "CloudSpanner.Session.run_in_transaction",
-        "CloudSpanner.Transaction.execute_streaming_sql",
-        "CloudSpanner.Transaction.execute_streaming_sql",
-        "CloudSpanner.Transaction.commit",
-    ]
-
-    assert got_span_names == want_span_names
-
-    got_events = []
-    got_statuses = []
-
-    # Some event attributes are noisy/highly ephemeral
-    # and can't be directly compared against.
-    imprecise_event_attributes = ["exception.stacktrace", "delay_seconds", "cause"]
-    for span in span_list:
-        got_statuses.append(
-            (span.name, span.status.status_code, span.status.description)
-        )
-        for event in span.events:
-            evt_attributes = event.attributes.copy()
-            for attr_name in imprecise_event_attributes:
-                if attr_name in evt_attributes:
-                    evt_attributes[attr_name] = "EPHEMERAL"
-
-            got_events.append((event.name, evt_attributes))
+    got_statuses, got_events = finished_spans_statuses(trace_exporter)
 
     # Check for the series of events
     want_events = [
@@ -265,6 +242,98 @@ def test_transaction_abort_then_retry_spans():
         ("CloudSpanner.Transaction.execute_streaming_sql", codes.OK, None),
         ("CloudSpanner.Transaction.execute_streaming_sql", codes.OK, None),
         ("CloudSpanner.Transaction.commit", codes.OK, None),
+    ]
+    assert got_statuses == want_statuses
+
+
+def finished_spans_statuses(trace_exporter):
+    span_list = trace_exporter.get_finished_spans()
+    # Sort the spans by their start time in the hierarchy.
+    span_list = sorted(span_list, key=lambda span: span.start_time)
+
+    got_events = []
+    got_statuses = []
+
+    # Some event attributes are noisy/highly ephemeral
+    # and can't be directly compared against.
+    imprecise_event_attributes = ["exception.stacktrace", "delay_seconds", "cause"]
+    for span in span_list:
+        got_statuses.append(
+            (span.name, span.status.status_code, span.status.description)
+        )
+
+        for event in span.events:
+            evt_attributes = event.attributes.copy()
+            for attr_name in imprecise_event_attributes:
+                if attr_name in evt_attributes:
+                    evt_attributes[attr_name] = "EPHEMERAL"
+
+            got_events.append((event.name, evt_attributes))
+
+    return got_statuses, got_events
+
+
+@pytest.mark.skipif(
+    not _helpers.USE_EMULATOR,
+    reason="Emulator needed to run this test",
+)
+@pytest.mark.skipif(
+    not HAS_OTEL_INSTALLED,
+    reason="Tracing requires OpenTelemetry",
+)
+def test_database_partitioned_error():
+    from opentelemetry.trace.status import StatusCode
+
+    db, trace_exporter = create_db_trace_exporter()
+
+    try:
+        db.execute_partitioned_dml("UPDATE NonExistent SET name = 'foo' WHERE id > 1")
+    except Exception:
+        pass
+
+    got_statuses, got_events = finished_spans_statuses(trace_exporter)
+    # Check for the series of events
+    want_events = [
+        ("Acquiring session", {"kind": "BurstyPool"}),
+        ("Waiting for a session to become available", {"kind": "BurstyPool"}),
+        ("No sessions available in pool. Creating session", {"kind": "BurstyPool"}),
+        ("Creating Session", {}),
+        ("Starting BeginTransaction", {}),
+        (
+            "exception",
+            {
+                "exception.type": "google.api_core.exceptions.InvalidArgument",
+                "exception.message": "400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
+                "exception.stacktrace": "EPHEMERAL",
+                "exception.escaped": "False",
+            },
+        ),
+        (
+            "exception",
+            {
+                "exception.type": "google.api_core.exceptions.InvalidArgument",
+                "exception.message": "400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
+                "exception.stacktrace": "EPHEMERAL",
+                "exception.escaped": "False",
+            },
+        ),
+    ]
+    assert got_events == want_events
+
+    # Check for the statues.
+    codes = StatusCode
+    want_statuses = [
+        (
+            "CloudSpanner.Database.execute_partitioned_pdml",
+            codes.ERROR,
+            "InvalidArgument: 400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
+        ),
+        ("CloudSpanner.CreateSession", codes.OK, None),
+        (
+            "CloudSpanner.ExecuteStreamingSql",
+            codes.ERROR,
+            "InvalidArgument: 400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
+        ),
     ]
     assert got_statuses == want_statuses
 
