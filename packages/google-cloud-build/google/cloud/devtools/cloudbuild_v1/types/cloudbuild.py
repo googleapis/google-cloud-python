@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "BuiltImage",
         "UploadedPythonPackage",
         "UploadedMavenArtifact",
+        "UploadedGoModule",
         "UploadedNpmPackage",
         "BuildStep",
         "Volume",
@@ -530,6 +531,37 @@ class UploadedMavenArtifact(proto.Message):
     )
 
 
+class UploadedGoModule(proto.Message):
+    r"""A Go module artifact uploaded to Artifact Registry using the
+    GoModule directive.
+
+    Attributes:
+        uri (str):
+            URI of the uploaded artifact.
+        file_hashes (google.cloud.devtools.cloudbuild_v1.types.FileHashes):
+            Hash types and values of the Go Module
+            Artifact.
+        push_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
+            Output only. Stores timing information for
+            pushing the specified artifact.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    file_hashes: "FileHashes" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="FileHashes",
+    )
+    push_timing: "TimeSpan" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="TimeSpan",
+    )
+
+
 class UploadedNpmPackage(proto.Message):
     r"""An npm package uploaded to Artifact Registry using the
     NpmPackage directive.
@@ -835,6 +867,9 @@ class Results(proto.Message):
         maven_artifacts (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.UploadedMavenArtifact]):
             Maven artifacts uploaded to Artifact Registry
             at the end of the build.
+        go_modules (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.UploadedGoModule]):
+            Optional. Go module artifacts uploaded to
+            Artifact Registry at the end of the build.
         npm_packages (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.UploadedNpmPackage]):
             Npm packages uploaded to Artifact Registry at
             the end of the build.
@@ -875,6 +910,11 @@ class Results(proto.Message):
         proto.MESSAGE,
         number=9,
         message="UploadedMavenArtifact",
+    )
+    go_modules: MutableSequence["UploadedGoModule"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="UploadedGoModule",
     )
     npm_packages: MutableSequence["UploadedNpmPackage"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1368,6 +1408,13 @@ class Artifacts(proto.Message):
 
             If any artifacts fail to be pushed, the build is
             marked FAILURE.
+        go_modules (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.Artifacts.GoModule]):
+            Optional. A list of Go modules to be uploaded
+            to Artifact Registry upon successful completion
+            of all build steps.
+
+            If any objects fail to be pushed, the build is
+            marked FAILURE.
         python_packages (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.Artifacts.PythonPackage]):
             A list of Python packages to be uploaded to
             Artifact Registry upon successful completion of
@@ -1478,6 +1525,68 @@ class Artifacts(proto.Message):
             number=5,
         )
 
+    class GoModule(proto.Message):
+        r"""Go module to upload to Artifact Registry upon successful
+        completion of all build steps. A module refers to all
+        dependencies in a go.mod file.
+
+        Attributes:
+            repository_name (str):
+                Optional. Artifact Registry repository name.
+
+                Specified Go modules will be zipped and uploaded
+                to Artifact Registry with this location as a
+                prefix.
+                e.g. my-go-repo
+            repository_location (str):
+                Optional. Location of the Artifact Registry
+                repository. i.e. us-east1 Defaults to the
+                build’s location.
+            repository_project_id (str):
+                Optional. Project ID of the Artifact Registry
+                repository. Defaults to the build project.
+            source_path (str):
+                Optional. Source path of the go.mod file in
+                the build's workspace. If not specified, this
+                will default to the current directory. e.g.
+                ~/code/go/mypackage
+            module_path (str):
+                Optional. The Go module's "module path".
+                e.g. example.com/foo/v2
+            module_version (str):
+                Optional. The Go module's semantic version in
+                the form vX.Y.Z. e.g. v0.1.1 Pre-release
+                identifiers can also be added by appending a
+                dash and dot separated ASCII alphanumeric
+                characters and hyphens. e.g.
+                v0.2.3-alpha.x.12m.5
+        """
+
+        repository_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        repository_location: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        repository_project_id: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        source_path: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        module_path: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        module_version: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+
     class PythonPackage(proto.Message):
         r"""Python package to upload to Artifact Registry upon successful
         completion of all build steps. A package can encapsulate
@@ -1545,6 +1654,11 @@ class Artifacts(proto.Message):
         proto.MESSAGE,
         number=3,
         message=MavenArtifact,
+    )
+    go_modules: MutableSequence[GoModule] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=GoModule,
     )
     python_packages: MutableSequence[PythonPackage] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1685,12 +1799,16 @@ class Hash(proto.Message):
                 Use a sha256 hash.
             MD5 (2):
                 Use a md5 hash.
+            GO_MODULE_H1 (3):
+                Dirhash of a Go module's source code which is
+                then hex-encoded.
             SHA512 (4):
                 Use a sha512 hash.
         """
         NONE = 0
         SHA256 = 1
         MD5 = 2
+        GO_MODULE_H1 = 3
         SHA512 = 4
 
     type_: HashType = proto.Field(
