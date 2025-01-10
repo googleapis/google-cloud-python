@@ -15,5 +15,12 @@
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
+deep-remove-regex:
+  - /owl-bot-staging
+
+deep-copy-regex:
+  - source: /google/cloud/audit/(audit-py)/(.*audit.*)
+    dest: /owl-bot-staging/$1/google/cloud/audit/$2
+  
 begin-after-commit-hash: 7af2cb8b2b725641ac0d07e2f256d453682802e6
 

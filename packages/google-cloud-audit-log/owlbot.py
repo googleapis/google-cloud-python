@@ -19,7 +19,9 @@ from synthtool.languages import python
 #  Add templated files
 # ----------------------------------------------------------------------------
 
-# TODO: generate via Bazel
+for library in s.get_staging_dirs():
+    s.move([library / "**/*.py*"])
+s.remove_staging_dirs()
 
 common = gcp.CommonTemplates()
 templated_files = common.py_library()
