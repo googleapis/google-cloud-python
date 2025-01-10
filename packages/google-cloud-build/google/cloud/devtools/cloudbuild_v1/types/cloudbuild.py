@@ -3278,6 +3278,11 @@ class BuildOptions(proto.Message):
         default_logs_bucket_behavior (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.DefaultLogsBucketBehavior):
             Optional. Option to specify how default logs
             buckets are setup.
+        enable_structured_logging (bool):
+            Optional. Option to specify whether
+            structured logging is enabled.
+            If true, JSON-formatted logs are parsed as
+            structured logs.
     """
 
     class VerifyOption(proto.Enum):
@@ -3505,6 +3510,10 @@ class BuildOptions(proto.Message):
         proto.ENUM,
         number=21,
         enum=DefaultLogsBucketBehavior,
+    )
+    enable_structured_logging: bool = proto.Field(
+        proto.BOOL,
+        number=23,
     )
 
 
