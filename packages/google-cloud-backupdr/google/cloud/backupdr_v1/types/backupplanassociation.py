@@ -48,8 +48,8 @@ class BackupPlanAssociation(proto.Message):
 
             projects/{project}/locations/{location}/backupPlanAssociations/{backupPlanAssociationId}
         resource_type (str):
-            Optional. Resource type of workload on which
-            backupplan is applied
+            Required. Immutable. Resource type of
+            workload on which backupplan is applied
         resource (str):
             Required. Immutable. Resource name of
             workload on which backupplan is applied
@@ -71,11 +71,9 @@ class BackupPlanAssociation(proto.Message):
             Output only. The config info related to
             backup rules.
         data_source (str):
-            Output only. Output Only.
-
-            Resource name of data source which will be used
-            as storage location for backups taken.
-            Format :
+            Output only. Resource name of data source
+            which will be used as storage location for
+            backups taken. Format :
 
             projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
     """
@@ -150,16 +148,13 @@ class RuleConfigInfo(proto.Message):
 
     Attributes:
         rule_id (str):
-            Output only. Output Only.
-
-            Backup Rule id fetched from backup plan.
+            Output only. Backup Rule id fetched from
+            backup plan.
         last_backup_state (google.cloud.backupdr_v1.types.RuleConfigInfo.LastBackupState):
             Output only. The last backup state for rule.
         last_backup_error (google.rpc.status_pb2.Status):
-            Output only. Output Only.
-
-            google.rpc.Status object to store the last
-            backup error.
+            Output only. google.rpc.Status object to
+            store the last backup error.
         last_successful_backup_consistency_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The point in time when the last
             successful backup was captured from the source.

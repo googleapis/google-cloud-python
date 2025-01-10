@@ -40,6 +40,7 @@ async def sample_create_backup_plan_association():
 
     # Initialize request argument(s)
     backup_plan_association = backupdr_v1.BackupPlanAssociation()
+    backup_plan_association.resource_type = "resource_type_value"
     backup_plan_association.resource = "resource_value"
     backup_plan_association.backup_plan = "backup_plan_value"
 
