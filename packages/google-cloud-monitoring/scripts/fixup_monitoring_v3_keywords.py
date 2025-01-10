@@ -70,7 +70,7 @@ class monitoringCallTransformer(cst.CSTTransformer):
         'list_alert_policies': ('name', 'filter', 'order_by', 'page_size', 'page_token', ),
         'list_group_members': ('name', 'page_size', 'page_token', 'filter', 'interval', ),
         'list_groups': ('name', 'children_of_group', 'ancestors_of_group', 'descendants_of_group', 'page_size', 'page_token', ),
-        'list_metric_descriptors': ('name', 'filter', 'page_size', 'page_token', ),
+        'list_metric_descriptors': ('name', 'filter', 'page_size', 'page_token', 'active_only', ),
         'list_monitored_resource_descriptors': ('name', 'filter', 'page_size', 'page_token', ),
         'list_notification_channel_descriptors': ('name', 'page_size', 'page_token', ),
         'list_notification_channels': ('name', 'filter', 'order_by', 'page_size', 'page_token', ),
