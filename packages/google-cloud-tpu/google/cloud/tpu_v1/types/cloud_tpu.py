@@ -214,6 +214,9 @@ class Node(proto.Message):
                 TPU node has been hidden.
             UNHIDING (15):
                 TPU node is currently unhiding.
+            UNKNOWN (16):
+                TPU node has unknown state after a failed
+                repair.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -230,6 +233,7 @@ class Node(proto.Message):
         HIDING = 13
         HIDDEN = 14
         UNHIDING = 15
+        UNKNOWN = 16
 
     class Health(proto.Enum):
         r"""Health defines the status of a TPU node as reported by
