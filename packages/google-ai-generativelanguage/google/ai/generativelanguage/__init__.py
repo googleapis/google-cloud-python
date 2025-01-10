@@ -18,61 +18,61 @@ from google.ai.generativelanguage import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.ai.generativelanguage_v1beta.services.cache_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.cache_service.async_client import (
     CacheServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.cache_service.client import (
+from google.ai.generativelanguage_v1alpha.services.cache_service.client import (
     CacheServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.discuss_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.discuss_service.async_client import (
     DiscussServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.discuss_service.client import (
+from google.ai.generativelanguage_v1alpha.services.discuss_service.client import (
     DiscussServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.file_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.file_service.async_client import (
     FileServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.file_service.client import (
+from google.ai.generativelanguage_v1alpha.services.file_service.client import (
     FileServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.generative_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.generative_service.async_client import (
     GenerativeServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.generative_service.client import (
+from google.ai.generativelanguage_v1alpha.services.generative_service.client import (
     GenerativeServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.model_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.model_service.async_client import (
     ModelServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.model_service.client import (
+from google.ai.generativelanguage_v1alpha.services.model_service.client import (
     ModelServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.permission_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.permission_service.async_client import (
     PermissionServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.permission_service.client import (
+from google.ai.generativelanguage_v1alpha.services.permission_service.client import (
     PermissionServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.prediction_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.prediction_service.async_client import (
     PredictionServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.prediction_service.client import (
+from google.ai.generativelanguage_v1alpha.services.prediction_service.client import (
     PredictionServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.retriever_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.retriever_service.async_client import (
     RetrieverServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.retriever_service.client import (
+from google.ai.generativelanguage_v1alpha.services.retriever_service.client import (
     RetrieverServiceClient,
 )
-from google.ai.generativelanguage_v1beta.services.text_service.async_client import (
+from google.ai.generativelanguage_v1alpha.services.text_service.async_client import (
     TextServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta.services.text_service.client import (
+from google.ai.generativelanguage_v1alpha.services.text_service.client import (
     TextServiceClient,
 )
-from google.ai.generativelanguage_v1beta.types.cache_service import (
+from google.ai.generativelanguage_v1alpha.types.cache_service import (
     CreateCachedContentRequest,
     DeleteCachedContentRequest,
     GetCachedContentRequest,
@@ -80,12 +80,12 @@ from google.ai.generativelanguage_v1beta.types.cache_service import (
     ListCachedContentsResponse,
     UpdateCachedContentRequest,
 )
-from google.ai.generativelanguage_v1beta.types.cached_content import CachedContent
-from google.ai.generativelanguage_v1beta.types.citation import (
+from google.ai.generativelanguage_v1alpha.types.cached_content import CachedContent
+from google.ai.generativelanguage_v1alpha.types.citation import (
     CitationMetadata,
     CitationSource,
 )
-from google.ai.generativelanguage_v1beta.types.content import (
+from google.ai.generativelanguage_v1alpha.types.content import (
     Blob,
     CodeExecution,
     CodeExecutionResult,
@@ -106,7 +106,7 @@ from google.ai.generativelanguage_v1beta.types.content import (
     ToolConfig,
     Type,
 )
-from google.ai.generativelanguage_v1beta.types.discuss_service import (
+from google.ai.generativelanguage_v1alpha.types.discuss_service import (
     CountMessageTokensRequest,
     CountMessageTokensResponse,
     Example,
@@ -115,8 +115,8 @@ from google.ai.generativelanguage_v1beta.types.discuss_service import (
     Message,
     MessagePrompt,
 )
-from google.ai.generativelanguage_v1beta.types.file import File, VideoMetadata
-from google.ai.generativelanguage_v1beta.types.file_service import (
+from google.ai.generativelanguage_v1alpha.types.file import File, VideoMetadata
+from google.ai.generativelanguage_v1alpha.types.file_service import (
     CreateFileRequest,
     CreateFileResponse,
     DeleteFileRequest,
@@ -124,10 +124,20 @@ from google.ai.generativelanguage_v1beta.types.file_service import (
     ListFilesRequest,
     ListFilesResponse,
 )
-from google.ai.generativelanguage_v1beta.types.generative_service import (
+from google.ai.generativelanguage_v1alpha.types.generative_service import (
     AttributionSourceId,
     BatchEmbedContentsRequest,
     BatchEmbedContentsResponse,
+    BidiGenerateContentClientContent,
+    BidiGenerateContentClientMessage,
+    BidiGenerateContentRealtimeInput,
+    BidiGenerateContentServerContent,
+    BidiGenerateContentServerMessage,
+    BidiGenerateContentSetup,
+    BidiGenerateContentSetupComplete,
+    BidiGenerateContentToolCall,
+    BidiGenerateContentToolCallCancellation,
+    BidiGenerateContentToolResponse,
     Candidate,
     ContentEmbedding,
     CountTokensRequest,
@@ -153,8 +163,8 @@ from google.ai.generativelanguage_v1beta.types.generative_service import (
     TaskType,
     VoiceConfig,
 )
-from google.ai.generativelanguage_v1beta.types.model import Model
-from google.ai.generativelanguage_v1beta.types.model_service import (
+from google.ai.generativelanguage_v1alpha.types.model import Model
+from google.ai.generativelanguage_v1alpha.types.model_service import (
     CreateTunedModelMetadata,
     CreateTunedModelRequest,
     DeleteTunedModelRequest,
@@ -166,8 +176,8 @@ from google.ai.generativelanguage_v1beta.types.model_service import (
     ListTunedModelsResponse,
     UpdateTunedModelRequest,
 )
-from google.ai.generativelanguage_v1beta.types.permission import Permission
-from google.ai.generativelanguage_v1beta.types.permission_service import (
+from google.ai.generativelanguage_v1alpha.types.permission import Permission
+from google.ai.generativelanguage_v1alpha.types.permission_service import (
     CreatePermissionRequest,
     DeletePermissionRequest,
     GetPermissionRequest,
@@ -177,11 +187,11 @@ from google.ai.generativelanguage_v1beta.types.permission_service import (
     TransferOwnershipResponse,
     UpdatePermissionRequest,
 )
-from google.ai.generativelanguage_v1beta.types.prediction_service import (
+from google.ai.generativelanguage_v1alpha.types.prediction_service import (
     PredictRequest,
     PredictResponse,
 )
-from google.ai.generativelanguage_v1beta.types.retriever import (
+from google.ai.generativelanguage_v1alpha.types.retriever import (
     Chunk,
     ChunkData,
     Condition,
@@ -191,7 +201,7 @@ from google.ai.generativelanguage_v1beta.types.retriever import (
     MetadataFilter,
     StringList,
 )
-from google.ai.generativelanguage_v1beta.types.retriever_service import (
+from google.ai.generativelanguage_v1alpha.types.retriever_service import (
     BatchCreateChunksRequest,
     BatchCreateChunksResponse,
     BatchDeleteChunksRequest,
@@ -221,14 +231,14 @@ from google.ai.generativelanguage_v1beta.types.retriever_service import (
     UpdateCorpusRequest,
     UpdateDocumentRequest,
 )
-from google.ai.generativelanguage_v1beta.types.safety import (
+from google.ai.generativelanguage_v1alpha.types.safety import (
     ContentFilter,
     HarmCategory,
     SafetyFeedback,
     SafetyRating,
     SafetySetting,
 )
-from google.ai.generativelanguage_v1beta.types.text_service import (
+from google.ai.generativelanguage_v1alpha.types.text_service import (
     BatchEmbedTextRequest,
     BatchEmbedTextResponse,
     CountTextTokensRequest,
@@ -241,13 +251,16 @@ from google.ai.generativelanguage_v1beta.types.text_service import (
     TextCompletion,
     TextPrompt,
 )
-from google.ai.generativelanguage_v1beta.types.tuned_model import (
+from google.ai.generativelanguage_v1alpha.types.tuned_model import (
     Dataset,
     Hyperparameters,
     TunedModel,
     TunedModelSource,
+    TuningContent,
     TuningExample,
     TuningExamples,
+    TuningMultiturnExample,
+    TuningPart,
     TuningSnapshot,
     TuningTask,
 )
@@ -317,6 +330,16 @@ __all__ = (
     "AttributionSourceId",
     "BatchEmbedContentsRequest",
     "BatchEmbedContentsResponse",
+    "BidiGenerateContentClientContent",
+    "BidiGenerateContentClientMessage",
+    "BidiGenerateContentRealtimeInput",
+    "BidiGenerateContentServerContent",
+    "BidiGenerateContentServerMessage",
+    "BidiGenerateContentSetup",
+    "BidiGenerateContentSetupComplete",
+    "BidiGenerateContentToolCall",
+    "BidiGenerateContentToolCallCancellation",
+    "BidiGenerateContentToolResponse",
     "Candidate",
     "ContentEmbedding",
     "CountTokensRequest",
@@ -419,8 +442,11 @@ __all__ = (
     "Hyperparameters",
     "TunedModel",
     "TunedModelSource",
+    "TuningContent",
     "TuningExample",
     "TuningExamples",
+    "TuningMultiturnExample",
+    "TuningPart",
     "TuningSnapshot",
     "TuningTask",
 )

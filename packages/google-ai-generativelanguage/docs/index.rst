@@ -2,8 +2,8 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Generative Language API.
-By default, you will get version ``generativelanguage_v1beta``.
+This package includes clients for multiple versions of .
+By default, you will get version ``generativelanguage_v1alpha``.
 
 
 API Reference
@@ -11,8 +11,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    generativelanguage_v1beta/services_
-    generativelanguage_v1beta/types_
+    generativelanguage_v1alpha/services_
+    generativelanguage_v1alpha/types_
 
 API Reference
 -------------
@@ -27,8 +27,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    generativelanguage_v1alpha/services_
-    generativelanguage_v1alpha/types_
+    generativelanguage_v1beta/services_
+    generativelanguage_v1beta/types_
 
 API Reference
 -------------
