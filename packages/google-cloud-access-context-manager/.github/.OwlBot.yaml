@@ -15,5 +15,16 @@
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
+deep-remove-regex:
+  - /owl-bot-staging
+
+deep-copy-regex:
+  - source: /google/identity/accesscontextmanager/type/(accesscontextmanager-type-py)/(device_resources.*)
+    dest: /owl-bot-staging/$1/google/identity/accesscontextmanager/type/$2
+  - source: /google/identity/accesscontextmanager/v1/(identity-accesscontextmanager-v1-py)/(.*access.*)
+    dest: /owl-bot-staging/$1/google/identity/accesscontextmanager/v1/$2
+  - source: /google/identity/accesscontextmanager/v1/(identity-accesscontextmanager-v1-py)/(service_perimeter.*)
+    dest: /owl-bot-staging/$1/google/identity/accesscontextmanager/v1/$2
+
 begin-after-commit-hash: d7c95df3ab1ea1b4c22a4542bad4924cc46d1388
 
