@@ -1,9 +1,9 @@
-Python Client for Organization Policy API
-=========================================
+Python Client for Organization Policy
+=====================================
 
 |stable| |pypi| |versions|
 
-`Organization Policy API`_: The Organization Policy API allows users to configure governance rules on their GCP resources across the Cloud Resource Hierarchy.
+`Organization Policy`_: The Organization Policy API allows users to configure governance rules on their GCP resources across the Cloud Resource Hierarchy.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Organization Policy API
    :target: https://pypi.org/project/google-cloud-org-policy/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-org-policy.svg
    :target: https://pypi.org/project/google-cloud-org-policy/
-.. _Organization Policy API: https://cloud.google.com/resource-manager/docs/organization-policy/overview
+.. _Organization Policy: https://cloud.google.com/resource-manager/docs/organization-policy/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/orgpolicy/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Organization Policy API.`_
+3. `Enable the Organization Policy.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Organization Policy API.:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
+.. _Enable the Organization Policy.:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-org-policy/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-org-policy/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Organization Policy API
+-  Read the `Client Library Documentation`_ for Organization Policy
    to see other available methods on the client.
--  Read the `Organization Policy API Product documentation`_ to learn
+-  Read the `Organization Policy Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Organization Policy API Product documentation:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
+.. _Organization Policy Product documentation:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
