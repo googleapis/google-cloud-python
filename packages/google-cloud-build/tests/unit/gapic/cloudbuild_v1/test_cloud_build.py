@@ -12776,6 +12776,7 @@ def test_create_build_rest_call_success(request_type):
             "maven_artifacts": [
                 {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
             ],
+            "go_modules": [{"uri": "uri_value", "file_hashes": {}, "push_timing": {}}],
             "npm_packages": [
                 {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
             ],
@@ -12800,6 +12801,16 @@ def test_create_build_rest_call_success(request_type):
                     "artifact_id": "artifact_id_value",
                     "group_id": "group_id_value",
                     "version": "version_value",
+                }
+            ],
+            "go_modules": [
+                {
+                    "repository_name": "repository_name_value",
+                    "repository_location": "repository_location_value",
+                    "repository_project_id": "repository_project_id_value",
+                    "source_path": "source_path_value",
+                    "module_path": "module_path_value",
+                    "module_version": "module_version_value",
                 }
             ],
             "python_packages": [
@@ -13786,6 +13797,9 @@ def test_create_build_trigger_rest_call_success(request_type):
                 "maven_artifacts": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
+                "go_modules": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
                 "npm_packages": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
@@ -13810,6 +13824,16 @@ def test_create_build_trigger_rest_call_success(request_type):
                         "artifact_id": "artifact_id_value",
                         "group_id": "group_id_value",
                         "version": "version_value",
+                    }
+                ],
+                "go_modules": [
+                    {
+                        "repository_name": "repository_name_value",
+                        "repository_location": "repository_location_value",
+                        "repository_project_id": "repository_project_id_value",
+                        "source_path": "source_path_value",
+                        "module_path": "module_path_value",
+                        "module_version": "module_version_value",
                     }
                 ],
                 "python_packages": [
@@ -14604,6 +14628,9 @@ def test_update_build_trigger_rest_call_success(request_type):
                 "maven_artifacts": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
+                "go_modules": [
+                    {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
+                ],
                 "npm_packages": [
                     {"uri": "uri_value", "file_hashes": {}, "push_timing": {}}
                 ],
@@ -14628,6 +14655,16 @@ def test_update_build_trigger_rest_call_success(request_type):
                         "artifact_id": "artifact_id_value",
                         "group_id": "group_id_value",
                         "version": "version_value",
+                    }
+                ],
+                "go_modules": [
+                    {
+                        "repository_name": "repository_name_value",
+                        "repository_location": "repository_location_value",
+                        "repository_project_id": "repository_project_id_value",
+                        "source_path": "source_path_value",
+                        "module_path": "module_path_value",
+                        "module_version": "module_version_value",
                     }
                 ],
                 "python_packages": [
