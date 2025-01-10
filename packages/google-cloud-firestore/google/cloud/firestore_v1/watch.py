@@ -333,9 +333,13 @@ class Watch(object):
             if self.is_active:
                 _LOGGER.debug("Stopping consumer.")
                 self._consumer.stop()
+            self._consumer._on_response = None
             self._consumer = None
 
+            self._snapshot_callback = None
             self._rpc.close()
+            self._rpc._initial_request = None
+            self._rpc._callbacks = []
             self._rpc = None
             self._closed = True
             _LOGGER.debug("Finished stopping manager.")
