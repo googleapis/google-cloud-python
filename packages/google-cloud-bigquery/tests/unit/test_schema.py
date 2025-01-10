@@ -20,6 +20,7 @@ import pytest
 
 from google.cloud import bigquery
 from google.cloud.bigquery.standard_sql import StandardSqlStructType
+from google.cloud.bigquery import schema
 from google.cloud.bigquery.schema import PolicyTagList
 
 
@@ -130,8 +131,6 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.range_element_type.element_type, "DATETIME")
 
     def test_to_api_repr(self):
-        from google.cloud.bigquery.schema import PolicyTagList
-
         policy = PolicyTagList(names=("foo", "bar"))
         self.assertEqual(
             policy.to_api_repr(),
@@ -886,8 +885,6 @@ class Test_to_schema_fields(unittest.TestCase):
 class TestPolicyTags(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.schema import PolicyTagList
-
         return PolicyTagList
 
     def _make_one(self, *args, **kw):
@@ -1129,3 +1126,90 @@ def test_to_api_repr_parameterized(field, api):
     from google.cloud.bigquery.schema import SchemaField
 
     assert SchemaField(**field).to_api_repr() == api
+
+
+class TestSerDeInfo:
+    """Tests for the SerDeInfo class."""
+
+    @staticmethod
+    def _get_target_class():
+        return schema.SerDeInfo
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    @pytest.mark.parametrize(
+        "serialization_library,name,parameters",
+        [
+            ("testpath.to.LazySimpleSerDe", None, None),
+            ("testpath.to.LazySimpleSerDe", "serde_name", None),
+            ("testpath.to.LazySimpleSerDe", None, {"key": "value"}),
+            ("testpath.to.LazySimpleSerDe", "serde_name", {"key": "value"}),
+        ],
+    )
+    def test_ctor_valid_input(self, serialization_library, name, parameters):
+        serde_info = self._make_one(
+            serialization_library=serialization_library,
+            name=name,
+            parameters=parameters,
+        )
+        assert serde_info.serialization_library == serialization_library
+        assert serde_info.name == name
+        assert serde_info.parameters == parameters
+
+    @pytest.mark.parametrize(
+        "serialization_library,name,parameters",
+        [
+            (123, None, None),
+            ("testpath.to.LazySimpleSerDe", 123, None),
+            ("testpath.to.LazySimpleSerDe", None, ["test", "list"]),
+            ("testpath.to.LazySimpleSerDe", None, 123),
+        ],
+    )
+    def test_ctor_invalid_input(self, serialization_library, name, parameters):
+        with pytest.raises(TypeError) as e:
+            self._make_one(
+                serialization_library=serialization_library,
+                name=name,
+                parameters=parameters,
+            )
+        # Looking for the first word from the string "Pass <variable> as..."
+        assert "Pass " in str(e.value)
+
+    def test_to_api_repr(self):
+        serde_info = self._make_one(
+            serialization_library="testpath.to.LazySimpleSerDe",
+            name="serde_name",
+            parameters={"key": "value"},
+        )
+        expected_repr = {
+            "serializationLibrary": "testpath.to.LazySimpleSerDe",
+            "name": "serde_name",
+            "parameters": {"key": "value"},
+        }
+        assert serde_info.to_api_repr() == expected_repr
+
+    def test_from_api_repr(self):
+        """GIVEN an api representation of a SerDeInfo object (i.e. resource)
+        WHEN converted into a SerDeInfo object using from_api_repr()
+        THEN it will have the representation in dict format as a SerDeInfo
+        object made directly (via _make_one()) and represented in dict format.
+        """
+        api_repr = {
+            "serializationLibrary": "testpath.to.LazySimpleSerDe",
+            "name": "serde_name",
+            "parameters": {"key": "value"},
+        }
+
+        expected = self._make_one(
+            serialization_library="testpath.to.LazySimpleSerDe",
+            name="serde_name",
+            parameters={"key": "value"},
+        )
+
+        klass = self._get_target_class()
+        result = klass.from_api_repr(api_repr)
+
+        # We convert both to dict format because these classes do not have a
+        # __eq__() method to facilitate direct equality comparisons.
+        assert result.to_api_repr() == expected.to_api_repr()

@@ -14,8 +14,10 @@
 
 """Schemas for BigQuery tables / queries."""
 
+from __future__ import annotations
 import collections
 import enum
+import typing
 from typing import Any, cast, Dict, Iterable, Optional, Union
 
 from google.cloud.bigquery import _helpers
@@ -556,3 +558,89 @@ class PolicyTagList(object):
         """
         answer = {"names": list(self.names)}
         return answer
+
+
+class SerDeInfo:
+    """Serializer and deserializer information.
+
+    Args:
+        serialization_library (str): Required. Specifies a fully-qualified class
+            name of the serialization library that is responsible for the
+            translation of data between table representation and the underlying
+            low-level input and output format structures. The maximum length is
+            256 characters.
+        name (Optional[str]): Name of the SerDe. The maximum length is 256
+            characters.
+        parameters: (Optional[dict[str, str]]): Key-value pairs that define the initialization
+            parameters for the serialization library. Maximum size 10 Kib.
+    """
+
+    def __init__(
+        self,
+        serialization_library: str,
+        name: Optional[str] = None,
+        parameters: Optional[dict[str, str]] = None,
+    ):
+        self._properties: Dict[str, Any] = {}
+        self.serialization_library = serialization_library
+        self.name = name
+        self.parameters = parameters
+
+    @property
+    def serialization_library(self) -> str:
+        """Required. Specifies a fully-qualified class name of the serialization
+        library that is responsible for the translation of data between table
+        representation and the underlying low-level input and output format
+        structures. The maximum length is 256 characters."""
+
+        return typing.cast(str, self._properties.get("serializationLibrary"))
+
+    @serialization_library.setter
+    def serialization_library(self, value: str):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=False)
+        self._properties["serializationLibrary"] = value
+
+    @property
+    def name(self) -> Optional[str]:
+        """Optional. Name of the SerDe. The maximum length is 256 characters."""
+
+        return self._properties.get("name")
+
+    @name.setter
+    def name(self, value: Optional[str] = None):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=True)
+        self._properties["name"] = value
+
+    @property
+    def parameters(self) -> Optional[dict[str, str]]:
+        """Optional. Key-value pairs that define the initialization parameters
+        for the serialization library. Maximum size 10 Kib."""
+
+        return self._properties.get("parameters")
+
+    @parameters.setter
+    def parameters(self, value: Optional[dict[str, str]] = None):
+        value = _helpers._isinstance_or_raise(value, dict, none_allowed=True)
+        self._properties["parameters"] = value
+
+    def to_api_repr(self) -> dict:
+        """Build an API representation of this object.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
+        """
+        return self._properties
+
+    @classmethod
+    def from_api_repr(cls, api_repr: dict) -> SerDeInfo:
+        """Factory: constructs an instance of the class (cls)
+        given its API representation.
+        Args:
+            resource (Dict[str, Any]):
+                API representation of the object to be instantiated.
+        Returns:
+            An instance of the class initialized with data from 'resource'.
+        """
+        config = cls("PLACEHOLDER")
+        config._properties = api_repr
+        return config
