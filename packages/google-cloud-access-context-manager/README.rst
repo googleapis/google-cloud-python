@@ -14,9 +14,9 @@ Python Client for Access Context Manager
    :target: https://pypi.org/project/google-cloud-access-context-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-access-context-manager.svg
    :target: https://pypi.org/project/google-cloud-access-context-manager/
-.. _Access Context Manager: 
-.. _Client Library Documentation: https://googleapis.dev/python/accesscontextmanager/latest
-.. _Product Documentation:  
+.. _Access Context Manager: https://cloud.google.com/access-context-manager/docs/overview
+.. _Client Library Documentation: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager
+.. _Product Documentation:  https://cloud.google.com/access-context-manager/docs/overview
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Access Context Manager.:  
+.. _Enable the Access Context Manager.:  https://cloud.google.com/access-context-manager/docs/overview
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,5 +104,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Access Context Manager Product documentation:  
+.. _Access Context Manager Product documentation:  https://cloud.google.com/access-context-manager/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
