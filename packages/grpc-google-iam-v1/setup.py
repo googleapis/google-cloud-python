@@ -19,11 +19,10 @@ import os
 
 import setuptools
 
-
 name = "grpc-google-iam-v1"
 description = "IAM API client library"
 version = "0.14.0"
-url = "https://github.com/googleapis/python-grpc-google-iam-v1"
+url = "https://github.com/googleapis/google-cloud-python"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "grpcio>=1.44.0, <2.0.0dev",

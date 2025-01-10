@@ -7,10 +7,10 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-grpc-google-iam-v1",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "grpc-google-iam-v1",
     "api_id": "iam.googleapis.com",
-    "default_version": "v1",
+    "default_version": "apiVersion",
     "codeowner_team": "",
     "api_shortname": "iam"
 }

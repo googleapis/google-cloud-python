@@ -29,7 +29,6 @@ _sym_db = _symbol_database.Default()
 
 from google.iam.v1 import policy_pb2 as google_dot_iam_dot_v1_dot_policy__pb2
 
-
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b'\n&google/iam/v1/logging/audit_data.proto\x12\x15google.iam.v1.logging\x1a\x1agoogle/iam/v1/policy.proto"=\n\tAuditData\x12\x30\n\x0cpolicy_delta\x18\x02 \x01(\x0b\x32\x1a.google.iam.v1.PolicyDeltaB\x86\x01\n\x19\x63om.google.iam.v1.loggingB\x0e\x41uditDataProtoP\x01Z9cloud.google.com/go/iam/apiv1/logging/loggingpb;loggingpb\xaa\x02\x1bGoogle.Cloud.Iam.V1.Loggingb\x06proto3'
 )

@@ -1,13 +1,15 @@
 .. include:: README.rst
 
+.. include:: multiprocessing.rst
+
 API Reference
 -------------
 
 .. toctree::
     :maxdepth: 2
 
-    iam_v1/services_.rst
-    iam_v1/types_.rst
+    v1
+    v1/logging
 
 Changelog
 ---------
