@@ -30,7 +30,6 @@ _sym_db = _symbol_database.Default()
 from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
 
-
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
     b"\nEgoogle/identity/accesscontextmanager/v1/gcp_user_access_binding.proto\x12'google.identity.accesscontextmanager.v1\x1a\x1fgoogle/api/field_behavior.proto\x1a\x19google/api/resource.proto\"\xa3\x02\n\x14GcpUserAccessBinding\x12\x11\n\x04name\x18\x01 \x01(\tB\x03\xe0\x41\x05\x12\x19\n\tgroup_key\x18\x02 \x01(\tB\x06\xe0\x41\x02\xe0\x41\x05\x12N\n\raccess_levels\x18\x03 \x03(\tB7\xe0\x41\x02\xfa\x41\x31\n/accesscontextmanager.googleapis.com/AccessLevel:\x8c\x01\xea\x41\x88\x01\n8accesscontextmanager.googleapis.com/GcpUserAccessBinding\x12Lorganizations/{organization}/gcpUserAccessBindings/{gcp_user_access_binding}B\xb0\x02\n+com.google.identity.accesscontextmanager.v1B\x19GcpUserAccessBindingProtoP\x01Z\\cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb;accesscontextmanagerpb\xa2\x02\x04GACM\xaa\x02'Google.Identity.AccessContextManager.V1\xca\x02'Google\\Identity\\AccessContextManager\\V1\xea\x02*Google::Identity::AccessContextManager::V1b\x06proto3"
 )
