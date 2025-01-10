@@ -100,7 +100,7 @@ def lint(session):
         *LINT_PATHS,
     )
 
-    session.run("flake8", "grpc-google-iam-v1", "tests")
+    session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
