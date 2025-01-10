@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "GetManagementServerRequest",
         "CreateManagementServerRequest",
         "DeleteManagementServerRequest",
+        "InitializeServiceRequest",
+        "InitializeServiceResponse",
         "OperationMetadata",
     },
 )
@@ -185,9 +187,11 @@ class ManagementServer(proto.Message):
         state (google.cloud.backupdr_v1.types.ManagementServer.InstanceState):
             Output only. The ManagementServer state.
         networks (MutableSequence[google.cloud.backupdr_v1.types.NetworkConfig]):
-            Required. VPC networks to which the
+            Optional. VPC networks to which the
             ManagementServer instance is connected. For this
             version, only a single network is supported.
+            This field is optional if MS is created without
+            PSA
         etag (str):
             Optional. Server specified ETag for the
             ManagementServer resource to prevent
@@ -548,6 +552,79 @@ class DeleteManagementServerRequest(proto.Message):
     )
 
 
+class InitializeServiceRequest(proto.Message):
+    r"""Request message for initializing the service.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the serviceConfig used to
+            initialize the service. Format:
+            ``projects/{project_id}/locations/{location}/serviceConfig``.
+        resource_type (str):
+            Required. The resource type to which the
+            default service config will be applied. Examples
+            include, "compute.googleapis.com/Instance" and
+            "storage.googleapis.com/Bucket".
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and t he request times out.
+            If you make the request again with the same
+            request ID, the server can check if original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class InitializeServiceResponse(proto.Message):
+    r"""Response message for initializing the service.
+
+    Attributes:
+        backup_vault_name (str):
+            The resource name of the default ``BackupVault`` created.
+            Format:
+            ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``.
+        backup_plan_name (str):
+            The resource name of the default ``BackupPlan`` created.
+            Format:
+            ``projects/{project_id}/locations/{location}/backupPlans/{backup_plan_id}``.
+    """
+
+    backup_vault_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    backup_plan_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
@@ -570,9 +647,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to 'Code.CANCELLED'.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to 'Code.CANCELLED'.
         api_version (str):
             Output only. API version used to start the
             operation.

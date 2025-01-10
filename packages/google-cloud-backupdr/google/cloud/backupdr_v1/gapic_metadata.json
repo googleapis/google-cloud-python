@@ -90,6 +90,11 @@
                 "get_management_server"
               ]
             },
+            "InitializeService": {
+              "methods": [
+                "initialize_service"
+              ]
+            },
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
@@ -230,6 +235,11 @@
                 "get_management_server"
               ]
             },
+            "InitializeService": {
+              "methods": [
+                "initialize_service"
+              ]
+            },
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
@@ -368,6 +378,11 @@
             "GetManagementServer": {
               "methods": [
                 "get_management_server"
+              ]
+            },
+            "InitializeService": {
+              "methods": [
+                "initialize_service"
               ]
             },
             "ListBackupPlanAssociations": {
