@@ -113,7 +113,7 @@ class Connection:
         self.request_priority = None
         self._transaction_begin_marked = False
         # whether transaction started at Spanner. This means that we had
-        # made atleast one call to Spanner.
+        # made at least one call to Spanner.
         self._spanner_transaction_started = False
         self._batch_mode = BatchMode.NONE
         self._batch_dml_executor: BatchDmlExecutor = None
@@ -262,6 +262,28 @@ class Connection:
         return req_opts
 
     @property
+    def transaction_tag(self):
+        """The transaction tag that will be applied to the next read/write
+        transaction on this `Connection`. This property is automatically cleared
+        when a new transaction is started.
+
+        Returns:
+            str: The transaction tag that will be applied to the next read/write transaction.
+        """
+        return self._connection_variables.get("transaction_tag", None)
+
+    @transaction_tag.setter
+    def transaction_tag(self, value):
+        """Sets the transaction tag for the next read/write transaction on this
+        `Connection`. This property is automatically cleared when a new transaction
+        is started.
+
+        Args:
+            value (str): The transaction tag for the next read/write transaction.
+        """
+        self._connection_variables["transaction_tag"] = value
+
+    @property
     def staleness(self):
         """Current read staleness option value of this `Connection`.
 
@@ -340,6 +362,8 @@ class Connection:
         if not self.read_only and self._client_transaction_started:
             if not self._spanner_transaction_started:
                 self._transaction = self._session_checkout().transaction()
+                self._transaction.transaction_tag = self.transaction_tag
+                self.transaction_tag = None
                 self._snapshot = None
                 self._spanner_transaction_started = True
                 self._transaction.begin()
@@ -458,7 +482,9 @@ class Connection:
 
             return self.database.update_ddl(ddl_statements).result()
 
-    def run_statement(self, statement: Statement):
+    def run_statement(
+        self, statement: Statement, request_options: RequestOptions = None
+    ):
         """Run single SQL statement in begun transaction.
 
         This method is never used in autocommit mode. In
@@ -472,6 +498,9 @@ class Connection:
         :param retried: (Optional) Retry the SQL statement if statement
                         execution failed. Defaults to false.
 
+        :type request_options: :class:`RequestOptions`
+        :param request_options: Request options to use for this statement.
+
         :rtype: :class:`google.cloud.spanner_v1.streamed.StreamedResultSet`,
                 :class:`google.cloud.spanner_dbapi.checksum.ResultsChecksum`
         :returns: Streamed result set of the statement and a
@@ -482,7 +511,7 @@ class Connection:
             statement.sql,
             statement.params,
             param_types=statement.param_types,
-            request_options=self.request_options,
+            request_options=request_options or self.request_options,
         )
 
     @check_not_closed

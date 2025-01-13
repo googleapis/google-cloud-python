@@ -50,6 +50,7 @@ from google.cloud.spanner_dbapi.parsed_statement import (
 from google.cloud.spanner_dbapi.transaction_helper import CursorStatementType
 from google.cloud.spanner_dbapi.utils import PeekIterator
 from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
+from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
@@ -97,6 +98,39 @@ class Cursor(object):
         self._parsed_statement: ParsedStatement = None
         self._in_retry_mode = False
         self._batch_dml_rows_count = None
+        self._request_tag = None
+
+    @property
+    def request_tag(self):
+        """The request tag that will be applied to the next statement on this
+        cursor. This property is automatically cleared when a statement is
+        executed.
+
+        Returns:
+            str: The request tag that will be applied to the next statement on
+                 this cursor.
+        """
+        return self._request_tag
+
+    @request_tag.setter
+    def request_tag(self, value):
+        """Sets the request tag for the next statement on this cursor. This
+        property is automatically cleared when a statement is executed.
+
+        Args:
+            value (str): The request tag for the statement.
+        """
+        self._request_tag = value
+
+    @property
+    def request_options(self):
+        options = self.connection.request_options
+        if self._request_tag:
+            if not options:
+                options = RequestOptions()
+            options.request_tag = self._request_tag
+            self._request_tag = None
+        return options
 
     @property
     def is_closed(self):
@@ -284,7 +318,7 @@ class Cursor(object):
                     sql,
                     params=args,
                     param_types=self._parsed_statement.statement.param_types,
-                    request_options=self.connection.request_options,
+                    request_options=self.request_options,
                 )
                 self._result_set = None
             else:
@@ -318,7 +352,9 @@ class Cursor(object):
         if self.connection._client_transaction_started:
             while True:
                 try:
-                    self._result_set = self.connection.run_statement(statement)
+                    self._result_set = self.connection.run_statement(
+                        statement, self.request_options
+                    )
                     self._itr = PeekIterator(self._result_set)
                     return
                 except Aborted:
@@ -478,7 +514,7 @@ class Cursor(object):
             sql,
             params,
             get_param_types(params),
-            request_options=self.connection.request_options,
+            request_options=self.request_options,
         )
         # Read the first element so that the StreamedResultSet can
         # return the metadata after a DQL statement.
