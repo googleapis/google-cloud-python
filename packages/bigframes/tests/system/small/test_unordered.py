@@ -152,6 +152,27 @@ def test_unordered_merge(unordered_session):
     assert_pandas_df_equal(bf_result.to_pandas(), pd_result, ignore_order=True)
 
 
+def test_unordered_drop_duplicates_ambiguous(unordered_session):
+    pd_df = pd.DataFrame(
+        {"a": [1, 1, 1], "b": [4, 4, 6], "c": [1, 1, 3]}, dtype=pd.Int64Dtype()
+    )
+    bf_df = bpd.DataFrame(pd_df, session=unordered_session)
+
+    # merge first to discard original ordering
+    bf_result = (
+        bf_df.merge(bf_df, left_on="a", right_on="c")
+        .sort_values("c_y")
+        .drop_duplicates()
+    )
+    pd_result = (
+        pd_df.merge(pd_df, left_on="a", right_on="c")
+        .sort_values("c_y")
+        .drop_duplicates()
+    )
+
+    assert_pandas_df_equal(bf_result.to_pandas(), pd_result, ignore_order=True)
+
+
 def test_unordered_mode_cache_preserves_order(unordered_session):
     pd_df = pd.DataFrame(
         {"a": [1, 2, 3, 4, 5, 6], "b": [4, 5, 9, 3, 1, 6]}, dtype=pd.Int64Dtype()

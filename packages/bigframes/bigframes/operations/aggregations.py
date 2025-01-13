@@ -379,6 +379,19 @@ class AnyValueOp(UnaryAggregateOp):
         return True
 
 
+# This should really by a NullaryWindowOp, but APIs don't support that yet.
+@dataclasses.dataclass(frozen=True)
+class RowNumberOp(UnaryWindowOp):
+    name: ClassVar[str] = "rownumber"
+
+    @property
+    def skips_nulls(self):
+        return False
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.INT_DTYPE
+
+
 @dataclasses.dataclass(frozen=True)
 class RankOp(UnaryWindowOp):
     name: ClassVar[str] = "rank"

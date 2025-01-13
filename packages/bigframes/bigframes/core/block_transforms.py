@@ -86,9 +86,10 @@ def indicate_duplicates(
         # Discard this value if there are copies ANYWHERE
         window_spec = windows.unbound(grouping_keys=tuple(columns))
     block, dummy = block.create_constant(1)
+    # use row number as will work even with partial ordering
     block, val_count_col_id = block.apply_window_op(
         dummy,
-        agg_ops.count_op,
+        agg_ops.sum_op,
         window_spec=window_spec,
     )
     block, duplicate_indicator = block.project_expr(

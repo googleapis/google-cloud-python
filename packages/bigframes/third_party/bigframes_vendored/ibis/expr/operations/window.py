@@ -69,7 +69,8 @@ class WindowFunction(Value):
     """Window function operation."""
 
     func: Analytic | Reduction
-    how: LiteralType["rows", "range"] = "rows"  # noqa: F821
+    # none is a hacky way to express that window bounds are not supported (eg row_number())
+    how: LiteralType["rows", "range", "none"] = "rows"  # noqa: F821
     start: Optional[WindowBoundary[dt.Numeric | dt.Interval]] = None
     end: Optional[WindowBoundary[dt.Numeric | dt.Interval]] = None
     group_by: VarTuple[Column] = ()
@@ -100,7 +101,7 @@ class WindowFunction(Value):
                 raise com.IbisTypeError(
                     "Window frame start and end boundaries must have the same datatype"
                 )
-        else:
+        elif how != "none":
             raise com.IbisTypeError(
                 f"Window frame type must be either 'rows' or 'range', got {how}"
             )

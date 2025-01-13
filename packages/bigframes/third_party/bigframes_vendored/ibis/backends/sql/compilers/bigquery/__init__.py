@@ -252,17 +252,6 @@ class BigQueryCompiler(SQLGlotCompiler):
         sources.append(result)
         return sources
 
-    @staticmethod
-    def _minimize_spec(start, end, spec):
-        if (
-            start is None
-            and isinstance(getattr(end, "value", None), ops.Literal)
-            and end.value.value == 0
-            and end.following
-        ):
-            return None
-        return spec
-
     def visit_BoundingBox(self, op, *, arg):
         name = type(op).__name__[len("Geo") :].lower()
         return sge.Dot(
@@ -1105,27 +1094,26 @@ class BigQueryCompiler(SQLGlotCompiler):
 
     def visit_WindowFunction(self, op, *, how, func, start, end, group_by, order_by):
         # Patch for https://github.com/ibis-project/ibis/issues/9872
-        if start is None and end is None:
-            spec = None
-        else:
-            if start is None:
-                start = {}
-            if end is None:
-                end = {}
 
-            start_value = start.get("value", "UNBOUNDED")
-            start_side = start.get("side", "PRECEDING")
-            end_value = end.get("value", "UNBOUNDED")
-            end_side = end.get("side", "FOLLOWING")
+        if start is None:
+            start = {}
+        if end is None:
+            end = {}
 
-            if getattr(start_value, "this", None) == "0":
-                start_value = "CURRENT ROW"
-                start_side = None
+        start_value = start.get("value", "UNBOUNDED")
+        start_side = start.get("side", "PRECEDING")
+        end_value = end.get("value", "UNBOUNDED")
+        end_side = end.get("side", "FOLLOWING")
 
-            if getattr(end_value, "this", None) == "0":
-                end_value = "CURRENT ROW"
-                end_side = None
+        if getattr(start_value, "this", None) == "0":
+            start_value = "CURRENT ROW"
+            start_side = None
 
+        if getattr(end_value, "this", None) == "0":
+            end_value = "CURRENT ROW"
+            end_side = None
+
+        if how != "none":
             spec = sge.WindowSpec(
                 kind=how.upper(),
                 start=start_value,
@@ -1134,7 +1122,12 @@ class BigQueryCompiler(SQLGlotCompiler):
                 end_side=end_side,
                 over="OVER",
             )
-            spec = self._minimize_spec(op.start, op.end, spec)
+        else:
+            spec = None
+
+        # If unordered, unbound range window is implicit
+        if (not order_by) and (not start) and (not end):
+            spec = None
 
         order = sge.Order(expressions=order_by) if order_by else None
 
