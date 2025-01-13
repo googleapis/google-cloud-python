@@ -22,6 +22,10 @@ from .services.reachability_service import (
     ReachabilityServiceAsyncClient,
     ReachabilityServiceClient,
 )
+from .services.vpc_flow_logs_service import (
+    VpcFlowLogsServiceAsyncClient,
+    VpcFlowLogsServiceClient,
+)
 from .types.connectivity_test import (
     ConnectivityTest,
     Endpoint,
@@ -73,9 +77,19 @@ from .types.trace import (
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
+from .types.vpc_flow_logs import (
+    CreateVpcFlowLogsConfigRequest,
+    DeleteVpcFlowLogsConfigRequest,
+    GetVpcFlowLogsConfigRequest,
+    ListVpcFlowLogsConfigsRequest,
+    ListVpcFlowLogsConfigsResponse,
+    UpdateVpcFlowLogsConfigRequest,
+)
+from .types.vpc_flow_logs_config import VpcFlowLogsConfig
 
 __all__ = (
     "ReachabilityServiceAsyncClient",
+    "VpcFlowLogsServiceAsyncClient",
     "AbortInfo",
     "AppEngineVersionInfo",
     "CloudFunctionInfo",
@@ -83,7 +97,9 @@ __all__ = (
     "CloudSQLInstanceInfo",
     "ConnectivityTest",
     "CreateConnectivityTestRequest",
+    "CreateVpcFlowLogsConfigRequest",
     "DeleteConnectivityTestRequest",
+    "DeleteVpcFlowLogsConfigRequest",
     "DeliverInfo",
     "DropInfo",
     "Endpoint",
@@ -93,12 +109,15 @@ __all__ = (
     "ForwardingRuleInfo",
     "GKEMasterInfo",
     "GetConnectivityTestRequest",
+    "GetVpcFlowLogsConfigRequest",
     "GoogleServiceInfo",
     "InstanceInfo",
     "LatencyDistribution",
     "LatencyPercentile",
     "ListConnectivityTestsRequest",
     "ListConnectivityTestsResponse",
+    "ListVpcFlowLogsConfigsRequest",
+    "ListVpcFlowLogsConfigsResponse",
     "LoadBalancerBackend",
     "LoadBalancerBackendInfo",
     "LoadBalancerInfo",
@@ -119,7 +138,10 @@ __all__ = (
     "StorageBucketInfo",
     "Trace",
     "UpdateConnectivityTestRequest",
+    "UpdateVpcFlowLogsConfigRequest",
     "VpcConnectorInfo",
+    "VpcFlowLogsConfig",
+    "VpcFlowLogsServiceClient",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
 )

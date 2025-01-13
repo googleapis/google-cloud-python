@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.17...google-cloud-netapp-v0.3.18) (2025-01-13)
+
+
+### Features
+
+* Add ValidateDirectoryService API for testing AD connection of a storage pool ([b45a11d](https://github.com/googleapis/google-cloud-python/commit/b45a11db722f709f055d703f4ef7fd4cbf8655fa))
+
+
+### Documentation
+
+* Remove the format for `replication` in message `google.cloud.netapp.v1.HybridReplicationParameters` ([b45a11d](https://github.com/googleapis/google-cloud-python/commit/b45a11db722f709f055d703f4ef7fd4cbf8655fa))
+
 ## [0.3.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.16...google-cloud-netapp-v0.3.17) (2024-12-12)
 
 

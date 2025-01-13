@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.17...google-cloud-gke-multicloud-v0.6.18) (2025-01-13)
+
+
+### Documentation
+
+* [google-cloud-gke-multicloud] fix comments of existing field ([#13417](https://github.com/googleapis/google-cloud-python/issues/13417)) ([3a9a8fb](https://github.com/googleapis/google-cloud-python/commit/3a9a8fb2be1304ff8d4593320236e1ea008ee696))
+
 ## [0.6.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.16...google-cloud-gke-multicloud-v0.6.17) (2025-01-02)
 
 

@@ -78,11 +78,27 @@ class TpuRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_queued_resource(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_queued_resource(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_node(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_delete_node(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_queued_resource(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_queued_resource(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -118,6 +134,14 @@ class TpuRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_queued_resource(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_queued_resource(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_runtime_version(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -142,11 +166,27 @@ class TpuRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_queued_resources(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_queued_resources(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_runtime_versions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_runtime_versions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_reset_queued_resource(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_reset_queued_resource(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -203,6 +243,31 @@ class TpuRestInterceptor:
         """
         return response
 
+    def pre_create_queued_resource(
+        self,
+        request: cloud_tpu.CreateQueuedResourceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.CreateQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_queued_resource
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Tpu server.
+        """
+        return request, metadata
+
+    def post_create_queued_resource(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_queued_resource
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Tpu server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_node(
         self,
         request: cloud_tpu.DeleteNodeRequest,
@@ -219,6 +284,31 @@ class TpuRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_node
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Tpu server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_queued_resource(
+        self,
+        request: cloud_tpu.DeleteQueuedResourceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.DeleteQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_queued_resource
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Tpu server.
+        """
+        return request, metadata
+
+    def post_delete_queued_resource(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_queued_resource
 
         Override in a subclass to manipulate the response
         after it is returned by the Tpu server but before
@@ -323,6 +413,31 @@ class TpuRestInterceptor:
         """
         return response
 
+    def pre_get_queued_resource(
+        self,
+        request: cloud_tpu.GetQueuedResourceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.GetQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_queued_resource
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Tpu server.
+        """
+        return request, metadata
+
+    def post_get_queued_resource(
+        self, response: cloud_tpu.QueuedResource
+    ) -> cloud_tpu.QueuedResource:
+        """Post-rpc interceptor for get_queued_resource
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Tpu server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_runtime_version(
         self,
         request: cloud_tpu.GetRuntimeVersionRequest,
@@ -396,6 +511,31 @@ class TpuRestInterceptor:
         """
         return response
 
+    def pre_list_queued_resources(
+        self,
+        request: cloud_tpu.ListQueuedResourcesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.ListQueuedResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_queued_resources
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Tpu server.
+        """
+        return request, metadata
+
+    def post_list_queued_resources(
+        self, response: cloud_tpu.ListQueuedResourcesResponse
+    ) -> cloud_tpu.ListQueuedResourcesResponse:
+        """Post-rpc interceptor for list_queued_resources
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Tpu server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_runtime_versions(
         self,
         request: cloud_tpu.ListRuntimeVersionsRequest,
@@ -414,6 +554,31 @@ class TpuRestInterceptor:
         self, response: cloud_tpu.ListRuntimeVersionsResponse
     ) -> cloud_tpu.ListRuntimeVersionsResponse:
         """Post-rpc interceptor for list_runtime_versions
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Tpu server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_reset_queued_resource(
+        self,
+        request: cloud_tpu.ResetQueuedResourceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.ResetQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for reset_queued_resource
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Tpu server.
+        """
+        return request, metadata
+
+    def post_reset_queued_resource(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for reset_queued_resource
 
         Override in a subclass to manipulate the response
         after it is returned by the Tpu server but before
@@ -924,6 +1089,162 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
+    class _CreateQueuedResource(
+        _BaseTpuRestTransport._BaseCreateQueuedResource, TpuRestStub
+    ):
+        def __hash__(self):
+            return hash("TpuRestTransport.CreateQueuedResource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_tpu.CreateQueuedResourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create queued resource method over HTTP.
+
+            Args:
+                request (~.cloud_tpu.CreateQueuedResourceRequest):
+                    The request object. Request for
+                [CreateQueuedResource][google.cloud.tpu.v2.Tpu.CreateQueuedResource].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseTpuRestTransport._BaseCreateQueuedResource._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_queued_resource(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseTpuRestTransport._BaseCreateQueuedResource._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseTpuRestTransport._BaseCreateQueuedResource._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTpuRestTransport._BaseCreateQueuedResource._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.tpu_v2.TpuClient.CreateQueuedResource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "CreateQueuedResource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TpuRestTransport._CreateQueuedResource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_queued_resource(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.tpu_v2.TpuClient.create_queued_resource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "CreateQueuedResource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteNode(_BaseTpuRestTransport._BaseDeleteNode, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.DeleteNode")
@@ -1058,6 +1379,154 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     extra={
                         "serviceName": "google.cloud.tpu.v2.Tpu",
                         "rpcName": "DeleteNode",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteQueuedResource(
+        _BaseTpuRestTransport._BaseDeleteQueuedResource, TpuRestStub
+    ):
+        def __hash__(self):
+            return hash("TpuRestTransport.DeleteQueuedResource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_tpu.DeleteQueuedResourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete queued resource method over HTTP.
+
+            Args:
+                request (~.cloud_tpu.DeleteQueuedResourceRequest):
+                    The request object. Request for
+                [DeleteQueuedResource][google.cloud.tpu.v2.Tpu.DeleteQueuedResource].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseTpuRestTransport._BaseDeleteQueuedResource._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_queued_resource(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseTpuRestTransport._BaseDeleteQueuedResource._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTpuRestTransport._BaseDeleteQueuedResource._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.tpu_v2.TpuClient.DeleteQueuedResource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "DeleteQueuedResource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TpuRestTransport._DeleteQueuedResource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_queued_resource(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.tpu_v2.TpuClient.delete_queued_resource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "DeleteQueuedResource",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1661,6 +2130,155 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
+    class _GetQueuedResource(_BaseTpuRestTransport._BaseGetQueuedResource, TpuRestStub):
+        def __hash__(self):
+            return hash("TpuRestTransport.GetQueuedResource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_tpu.GetQueuedResourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_tpu.QueuedResource:
+            r"""Call the get queued resource method over HTTP.
+
+            Args:
+                request (~.cloud_tpu.GetQueuedResourceRequest):
+                    The request object. Request for
+                [GetQueuedResource][google.cloud.tpu.v2.Tpu.GetQueuedResource]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_tpu.QueuedResource:
+                    A QueuedResource represents a request
+                for resources that will be placed in a
+                queue and fulfilled when the necessary
+                resources are available.
+
+            """
+
+            http_options = (
+                _BaseTpuRestTransport._BaseGetQueuedResource._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_queued_resource(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseTpuRestTransport._BaseGetQueuedResource._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTpuRestTransport._BaseGetQueuedResource._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.tpu_v2.TpuClient.GetQueuedResource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "GetQueuedResource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TpuRestTransport._GetQueuedResource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_tpu.QueuedResource()
+            pb_resp = cloud_tpu.QueuedResource.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_queued_resource(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_tpu.QueuedResource.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.tpu_v2.TpuClient.get_queued_resource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "GetQueuedResource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetRuntimeVersion(_BaseTpuRestTransport._BaseGetRuntimeVersion, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.GetRuntimeVersion")
@@ -2100,6 +2718,157 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
+    class _ListQueuedResources(
+        _BaseTpuRestTransport._BaseListQueuedResources, TpuRestStub
+    ):
+        def __hash__(self):
+            return hash("TpuRestTransport.ListQueuedResources")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_tpu.ListQueuedResourcesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_tpu.ListQueuedResourcesResponse:
+            r"""Call the list queued resources method over HTTP.
+
+            Args:
+                request (~.cloud_tpu.ListQueuedResourcesRequest):
+                    The request object. Request for
+                [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_tpu.ListQueuedResourcesResponse:
+                    Response for
+                [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
+
+            """
+
+            http_options = (
+                _BaseTpuRestTransport._BaseListQueuedResources._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_queued_resources(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseTpuRestTransport._BaseListQueuedResources._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTpuRestTransport._BaseListQueuedResources._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.tpu_v2.TpuClient.ListQueuedResources",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "ListQueuedResources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TpuRestTransport._ListQueuedResources._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_tpu.ListQueuedResourcesResponse()
+            pb_resp = cloud_tpu.ListQueuedResourcesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_queued_resources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_tpu.ListQueuedResourcesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.tpu_v2.TpuClient.list_queued_resources",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "ListQueuedResources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListRuntimeVersions(
         _BaseTpuRestTransport._BaseListRuntimeVersions, TpuRestStub
     ):
@@ -2245,6 +3014,162 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     extra={
                         "serviceName": "google.cloud.tpu.v2.Tpu",
                         "rpcName": "ListRuntimeVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ResetQueuedResource(
+        _BaseTpuRestTransport._BaseResetQueuedResource, TpuRestStub
+    ):
+        def __hash__(self):
+            return hash("TpuRestTransport.ResetQueuedResource")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_tpu.ResetQueuedResourceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the reset queued resource method over HTTP.
+
+            Args:
+                request (~.cloud_tpu.ResetQueuedResourceRequest):
+                    The request object. Request for
+                [ResetQueuedResource][google.cloud.tpu.v2.Tpu.ResetQueuedResource].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseTpuRestTransport._BaseResetQueuedResource._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_reset_queued_resource(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseTpuRestTransport._BaseResetQueuedResource._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseTpuRestTransport._BaseResetQueuedResource._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTpuRestTransport._BaseResetQueuedResource._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.tpu_v2.TpuClient.ResetQueuedResource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "ResetQueuedResource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TpuRestTransport._ResetQueuedResource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_reset_queued_resource(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.tpu_v2.TpuClient.reset_queued_resource",
+                    extra={
+                        "serviceName": "google.cloud.tpu.v2.Tpu",
+                        "rpcName": "ResetQueuedResource",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2698,12 +3623,28 @@ class TpuRestTransport(_BaseTpuRestTransport):
         return self._CreateNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_queued_resource(
+        self,
+    ) -> Callable[[cloud_tpu.CreateQueuedResourceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_node(
         self,
     ) -> Callable[[cloud_tpu.DeleteNodeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNode(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_queued_resource(
+        self,
+    ) -> Callable[[cloud_tpu.DeleteQueuedResourceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def generate_service_identity(
@@ -2741,6 +3682,14 @@ class TpuRestTransport(_BaseTpuRestTransport):
         return self._GetNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_queued_resource(
+        self,
+    ) -> Callable[[cloud_tpu.GetQueuedResourceRequest], cloud_tpu.QueuedResource]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_runtime_version(
         self,
     ) -> Callable[[cloud_tpu.GetRuntimeVersionRequest], cloud_tpu.RuntimeVersion]:
@@ -2767,6 +3716,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
         return self._ListNodes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_queued_resources(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ListQueuedResourcesRequest], cloud_tpu.ListQueuedResourcesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListQueuedResources(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_runtime_versions(
         self,
     ) -> Callable[
@@ -2775,6 +3734,14 @@ class TpuRestTransport(_BaseTpuRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRuntimeVersions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def reset_queued_resource(
+        self,
+    ) -> Callable[[cloud_tpu.ResetQueuedResourceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ResetQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def start_node(

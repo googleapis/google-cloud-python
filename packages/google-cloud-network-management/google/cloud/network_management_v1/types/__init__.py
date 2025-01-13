@@ -64,6 +64,15 @@ from .trace import (
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
+from .vpc_flow_logs import (
+    CreateVpcFlowLogsConfigRequest,
+    DeleteVpcFlowLogsConfigRequest,
+    GetVpcFlowLogsConfigRequest,
+    ListVpcFlowLogsConfigsRequest,
+    ListVpcFlowLogsConfigsResponse,
+    UpdateVpcFlowLogsConfigRequest,
+)
+from .vpc_flow_logs_config import VpcFlowLogsConfig
 
 __all__ = (
     "ConnectivityTest",
@@ -111,4 +120,11 @@ __all__ = (
     "VpnGatewayInfo",
     "VpnTunnelInfo",
     "LoadBalancerType",
+    "CreateVpcFlowLogsConfigRequest",
+    "DeleteVpcFlowLogsConfigRequest",
+    "GetVpcFlowLogsConfigRequest",
+    "ListVpcFlowLogsConfigsRequest",
+    "ListVpcFlowLogsConfigsResponse",
+    "UpdateVpcFlowLogsConfigRequest",
+    "VpcFlowLogsConfig",
 )

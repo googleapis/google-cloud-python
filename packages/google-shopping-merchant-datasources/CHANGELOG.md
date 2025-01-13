@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.6...google-shopping-merchant-datasources-v0.1.7) (2025-01-13)
+
+
+### Features
+
+* A new message `MerchantReviewDataSource` is added to specify the datasource of the merchant review ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* A new message `ProductReviewDataSource` is added to specify the datasource of the product review ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* New field `merchant_review_data_source` added in message `.google.shopping.merchant.datasources.v1beta.DataSource` to specify the datasource of the merchant review ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* New field product_review_data_source added in message google.shopping.merchant.datasources.v1beta.DataSource to ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+
+
+### Documentation
+
+* A comment for enum value `FETCH` in enum `FileInputType` is changed ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* A comment for enum value `GOOGLE_SHEETS` in enum `FileInputType` is changed ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* A comment for field `feed_label` in message `.google.shopping.merchant.datasources.v1beta.SupplementalProductDataSource` is changed ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* A comment for field `password` in message `.google.shopping.merchant.datasources.v1beta.FileInput` is changed ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* A comment for field `take_from_data_sources` in message `.google.shopping.merchant.datasources.v1beta.PrimaryProductDataSource` is changed ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* A comment for field `username` in message `.google.shopping.merchant.datasources.v1beta.FileInput` is changed ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+* A comment for message `SupplementalProductDataSource` is changed ([e89d3b2](https://github.com/googleapis/google-cloud-python/commit/e89d3b2c3ad57fb68a84b02d8683dbb556d5adda))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.5...google-shopping-merchant-datasources-v0.1.6) (2024-12-12)
 
 

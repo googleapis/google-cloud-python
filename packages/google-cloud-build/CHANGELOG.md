@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.28.0...google-cloud-build-v3.29.0) (2025-01-13)
+
+
+### Features
+
+* [google-cloud-build] Add GoModule to Artifact and Results messages and new GO_MODULE_H1 hash type ([#13416](https://github.com/googleapis/google-cloud-python/issues/13416)) ([8a3a6d6](https://github.com/googleapis/google-cloud-python/commit/8a3a6d61b63ce4321e8c9e94511010a7245e3d40))
+* [google-cloud-build] Add option to enable structured logging ([#13430](https://github.com/googleapis/google-cloud-python/issues/13430)) ([dc7d7f2](https://github.com/googleapis/google-cloud-python/commit/dc7d7f21bad125dd98967a3e840e91c34d6a8a10))
+
 ## [3.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.27.1...google-cloud-build-v3.28.0) (2024-12-12)
 
 

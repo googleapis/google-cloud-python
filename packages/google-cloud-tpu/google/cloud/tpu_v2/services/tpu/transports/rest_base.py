@@ -146,6 +146,63 @@ class _BaseTpuRestTransport(TpuTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseCreateQueuedResource:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/queuedResources",
+                    "body": "queued_resource",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = cloud_tpu.CreateQueuedResourceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseTpuRestTransport._BaseCreateQueuedResource._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseDeleteNode:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -186,6 +243,53 @@ class _BaseTpuRestTransport(TpuTransport):
             )
             query_params.update(
                 _BaseTpuRestTransport._BaseDeleteNode._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseDeleteQueuedResource:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/queuedResources/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = cloud_tpu.DeleteQueuedResourceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseTpuRestTransport._BaseDeleteQueuedResource._get_unset_required_fields(
                     query_params
                 )
             )
@@ -401,6 +505,53 @@ class _BaseTpuRestTransport(TpuTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseGetQueuedResource:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/queuedResources/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = cloud_tpu.GetQueuedResourceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseTpuRestTransport._BaseGetQueuedResource._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseGetRuntimeVersion:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -542,6 +693,53 @@ class _BaseTpuRestTransport(TpuTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseListQueuedResources:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/queuedResources",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = cloud_tpu.ListQueuedResourcesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseTpuRestTransport._BaseListQueuedResources._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseListRuntimeVersions:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -582,6 +780,63 @@ class _BaseTpuRestTransport(TpuTransport):
             )
             query_params.update(
                 _BaseTpuRestTransport._BaseListRuntimeVersions._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseResetQueuedResource:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/queuedResources/*}:reset",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = cloud_tpu.ResetQueuedResourceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseTpuRestTransport._BaseResetQueuedResource._get_unset_required_fields(
                     query_params
                 )
             )
