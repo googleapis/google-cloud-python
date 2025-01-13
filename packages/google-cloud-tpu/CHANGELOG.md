@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.20.0...google-cloud-tpu-v1.21.0) (2025-01-13)
+
+
+### Features
+
+* [google-cloud-tpu] Add UNKNOWN to TPU node state, This state will be used to prevent a node from being marked as READY during diagnose after it has failed repair ([#13429](https://github.com/googleapis/google-cloud-python/issues/13429)) ([9adc081](https://github.com/googleapis/google-cloud-python/commit/9adc081395d805241602aaac71711576dc9340c0))
+* Add UNKNOWN to TPU node state, This state will be used to prevent a node from being marked as READY during diagnose after it has failed repair ([ad5c169](https://github.com/googleapis/google-cloud-python/commit/ad5c169e9c9d7bc130ab8fc90a8fedb76eede436))
+* Make V5Litepod accelerator config available for v2 ([ad5c169](https://github.com/googleapis/google-cloud-python/commit/ad5c169e9c9d7bc130ab8fc90a8fedb76eede436))
+* Make v5p available for GA ([ad5c169](https://github.com/googleapis/google-cloud-python/commit/ad5c169e9c9d7bc130ab8fc90a8fedb76eede436))
+* Make v6e available for GA ([ad5c169](https://github.com/googleapis/google-cloud-python/commit/ad5c169e9c9d7bc130ab8fc90a8fedb76eede436))
+* Promote network_configs field to v2 API ([ad5c169](https://github.com/googleapis/google-cloud-python/commit/ad5c169e9c9d7bc130ab8fc90a8fedb76eede436))
+
+
+### Documentation
+
+* A comment for field `network_config` in message `.google.cloud.tpu.v2.Node` is changed ([ad5c169](https://github.com/googleapis/google-cloud-python/commit/ad5c169e9c9d7bc130ab8fc90a8fedb76eede436))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.19.1...google-cloud-tpu-v1.20.0) (2024-12-12)
 
 
