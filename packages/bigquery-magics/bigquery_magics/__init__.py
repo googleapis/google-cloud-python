@@ -18,6 +18,9 @@ import bigquery_magics.version
 context = bigquery_magics.config.context
 __version__ = bigquery_magics.version.__version__
 
+# Whether the magics has already been reigstered by some other packages.
+is_registered = False
+
 
 def load_ipython_extension(ipython):
     """Called by IPython when this module is loaded as an IPython extension."""
@@ -29,6 +32,14 @@ def load_ipython_extension(ipython):
     )
     ipython.register_magic_function(_cell_magic, magic_kind="cell", magic_name="bqsql")
 
+    global is_registered
+    is_registered = True
+
+
+def unload_ipython_extension(ipython):
+    global is_registered
+    is_registered = False
+
 
 __all__ = (
     # For backwards compatibility we need to make the context available in
@@ -36,4 +47,6 @@ __all__ = (
     "context",
     "__version__",
     "load_ipython_extension",
+    "unload_ipython_extension",
+    "is_registered",
 )

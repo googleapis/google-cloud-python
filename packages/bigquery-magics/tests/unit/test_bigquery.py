@@ -74,6 +74,8 @@ def ipython_interactive(request, ipython):
     with ipython.builtin_trap:
         yield ipython
 
+        ipython.get_ipython().extension_manager.unload_extension("bigquery_magics")
+
 
 @pytest.fixture()
 def ipython_ns_cleanup():
@@ -2138,3 +2140,16 @@ def test_bigquery_magic_bigframes_with_dry_run__should_fail():
 
     with bf_patch, pytest.raises(ValueError):
         ip.run_cell_magic("bigquery", "--dry_run", sql)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_test_bigquery_magic__extension_not_loaded__is_registered_set_to_false():
+    assert bigquery_magics.is_registered is False
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_test_bigquery_magic__extension_loaded__is_registered_set_to_true():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+
+    assert bigquery_magics.is_registered is True
