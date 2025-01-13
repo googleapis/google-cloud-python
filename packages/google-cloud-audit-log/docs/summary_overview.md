@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Audit Log API
+# Audit Log API API
 
-Overview of the APIs available for Audit Log API.
+Overview of the APIs available for Audit Log API API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Audit Log API.
+Audit Log API API.
 
 [classes](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-audit-log/summary_class.html)
 
