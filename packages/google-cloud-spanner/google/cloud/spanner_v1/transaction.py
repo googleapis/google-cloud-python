@@ -242,39 +242,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         :returns: timestamp of the committed changes.
         :raises ValueError: if there are no mutations to commit.
         """
-        self._check_state()
-        if self._transaction_id is None and len(self._mutations) > 0:
-            self.begin()
-        elif self._transaction_id is None and len(self._mutations) == 0:
-            raise ValueError("Transaction is not begun")
-
         database = self._session._database
-        api = database.spanner_api
-        metadata = _metadata_with_prefix(database.name)
-        if database._route_to_leader_enabled:
-            metadata.append(
-                _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
-            )
-
-        if request_options is None:
-            request_options = RequestOptions()
-        elif type(request_options) is dict:
-            request_options = RequestOptions(request_options)
-        if self.transaction_tag is not None:
-            request_options.transaction_tag = self.transaction_tag
-
-        # Request tags are not supported for commit requests.
-        request_options.request_tag = None
-
-        request = CommitRequest(
-            session=self._session.name,
-            mutations=self._mutations,
-            transaction_id=self._transaction_id,
-            return_commit_stats=return_commit_stats,
-            max_commit_delay=max_commit_delay,
-            request_options=request_options,
-        )
-
         trace_attributes = {"num_mutations": len(self._mutations)}
         observability_options = getattr(database, "observability_options", None)
         with trace_call(
@@ -283,6 +251,40 @@ class Transaction(_SnapshotBase, _BatchBase):
             trace_attributes,
             observability_options,
         ) as span:
+            self._check_state()
+            if self._transaction_id is None and len(self._mutations) > 0:
+                self.begin()
+            elif self._transaction_id is None and len(self._mutations) == 0:
+                raise ValueError("Transaction is not begun")
+
+            api = database.spanner_api
+            metadata = _metadata_with_prefix(database.name)
+            if database._route_to_leader_enabled:
+                metadata.append(
+                    _metadata_with_leader_aware_routing(
+                        database._route_to_leader_enabled
+                    )
+                )
+
+            if request_options is None:
+                request_options = RequestOptions()
+            elif type(request_options) is dict:
+                request_options = RequestOptions(request_options)
+            if self.transaction_tag is not None:
+                request_options.transaction_tag = self.transaction_tag
+
+            # Request tags are not supported for commit requests.
+            request_options.request_tag = None
+
+            request = CommitRequest(
+                session=self._session.name,
+                mutations=self._mutations,
+                transaction_id=self._transaction_id,
+                return_commit_stats=return_commit_stats,
+                max_commit_delay=max_commit_delay,
+                request_options=request_options,
+            )
+
             add_span_event(span, "Starting Commit")
 
             method = functools.partial(

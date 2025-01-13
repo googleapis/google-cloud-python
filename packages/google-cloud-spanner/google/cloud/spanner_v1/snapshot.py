@@ -583,7 +583,7 @@ class _SnapshotBase(_SessionWrapper):
         iterator = _restart_on_unavailable(
             restart,
             request,
-            f"CloudSpanner.{type(self).__name__}.execute_streaming_sql",
+            f"CloudSpanner.{type(self).__name__}.execute_sql",
             self._session,
             trace_attributes,
             transaction=self,

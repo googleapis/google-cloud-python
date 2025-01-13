@@ -159,7 +159,7 @@ if HAS_OPENTELEMETRY_INSTALLED:
             span = span_list[0]
             self.assertEqual(span.status.status_code, StatusCode.ERROR)
 
-        def test_trace_call_terminal_span_status(self):
+        def test_trace_call_terminal_span_status_ALWAYS_ON_sampler(self):
             # Verify that we don't unconditionally set the terminal span status to
             # SpanStatus.OK per https://github.com/googleapis/python-spanner/issues/1246
             from opentelemetry.sdk.trace.export import SimpleSpanProcessor
@@ -195,3 +195,32 @@ if HAS_OPENTELEMETRY_INSTALLED:
                 ("VerifyTerminalSpanStatus", StatusCode.ERROR, "Our error exhibit"),
             ]
             assert got_statuses == want_statuses
+
+        def test_trace_call_terminal_span_status_ALWAYS_OFF_sampler(self):
+            # Verify that we get the correct status even when using the ALWAYS_OFF
+            # sampler which produces the NonRecordingSpan per
+            # https://github.com/googleapis/python-spanner/issues/1286
+            from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+            from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+                InMemorySpanExporter,
+            )
+            from opentelemetry.sdk.trace import TracerProvider
+            from opentelemetry.sdk.trace.sampling import ALWAYS_OFF
+
+            tracer_provider = TracerProvider(sampler=ALWAYS_OFF)
+            trace_exporter = InMemorySpanExporter()
+            tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+            observability_options = dict(tracer_provider=tracer_provider)
+
+            session = _make_session()
+            used_span = None
+            with _opentelemetry_tracing.trace_call(
+                "VerifyWithNonRecordingSpan",
+                session,
+                observability_options=observability_options,
+            ) as span:
+                used_span = span
+
+            assert type(used_span).__name__ == "NonRecordingSpan"
+            span_list = list(trace_exporter.get_finished_spans())
+            assert span_list == []

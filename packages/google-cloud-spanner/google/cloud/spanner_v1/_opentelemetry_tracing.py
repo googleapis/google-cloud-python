@@ -117,7 +117,10 @@ def trace_call(name, session=None, extra_attributes=None, observability_options=
             # invoke .record_exception on our own else we shall have 2 exceptions.
             raise
         else:
-            if (not span._status) or span._status.status_code == StatusCode.UNSET:
+            # All spans still have set_status available even if for example
+            # NonRecordingSpan doesn't have "_status".
+            absent_span_status = getattr(span, "_status", None) is None
+            if absent_span_status or span._status.status_code == StatusCode.UNSET:
                 # OpenTelemetry-Python only allows a status change
                 # if the current code is UNSET or ERROR. At the end
                 # of the generator's consumption, only set it to OK

@@ -868,7 +868,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertEqual(derived._execute_sql_count, 1)
 
         self.assertSpanAttributes(
-            "CloudSpanner._Derived.execute_streaming_sql",
+            "CloudSpanner._Derived.execute_sql",
             status=StatusCode.ERROR,
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
         )
@@ -1024,7 +1024,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertEqual(derived._execute_sql_count, sql_count + 1)
 
         self.assertSpanAttributes(
-            "CloudSpanner._Derived.execute_streaming_sql",
+            "CloudSpanner._Derived.execute_sql",
             status=StatusCode.OK,
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY_WITH_PARAM}),
         )

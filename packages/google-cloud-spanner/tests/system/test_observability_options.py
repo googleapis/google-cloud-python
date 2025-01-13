@@ -111,7 +111,7 @@ def test_observability_options_propagation():
         gotNames = [span.name for span in from_inject_spans]
         wantNames = [
             "CloudSpanner.CreateSession",
-            "CloudSpanner.Snapshot.execute_streaming_sql",
+            "CloudSpanner.Snapshot.execute_sql",
         ]
         assert gotNames == wantNames
 
@@ -239,8 +239,8 @@ def test_transaction_abort_then_retry_spans():
         ("CloudSpanner.Database.run_in_transaction", codes.OK, None),
         ("CloudSpanner.CreateSession", codes.OK, None),
         ("CloudSpanner.Session.run_in_transaction", codes.OK, None),
-        ("CloudSpanner.Transaction.execute_streaming_sql", codes.OK, None),
-        ("CloudSpanner.Transaction.execute_streaming_sql", codes.OK, None),
+        ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
+        ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
         ("CloudSpanner.Transaction.commit", codes.OK, None),
     ]
     assert got_statuses == want_statuses
@@ -271,6 +271,116 @@ def finished_spans_statuses(trace_exporter):
             got_events.append((event.name, evt_attributes))
 
     return got_statuses, got_events
+
+
+@pytest.mark.skipif(
+    not _helpers.USE_EMULATOR,
+    reason="Emulator needed to run this tests",
+)
+@pytest.mark.skipif(
+    not HAS_OTEL_INSTALLED,
+    reason="Tracing requires OpenTelemetry",
+)
+def test_transaction_update_implicit_begin_nested_inside_commit():
+    # Tests to ensure that transaction.commit() without a began transaction
+    # has transaction.begin() inlined and nested under the commit span.
+    from google.auth.credentials import AnonymousCredentials
+    from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+    from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+        InMemorySpanExporter,
+    )
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.sampling import ALWAYS_ON
+
+    PROJECT = _helpers.EMULATOR_PROJECT
+    CONFIGURATION_NAME = "config-name"
+    INSTANCE_ID = _helpers.INSTANCE_ID
+    DISPLAY_NAME = "display-name"
+    DATABASE_ID = _helpers.unique_id("temp_db")
+    NODE_COUNT = 5
+    LABELS = {"test": "true"}
+
+    def tx_update(txn):
+        txn.insert(
+            "Singers",
+            columns=["SingerId", "FirstName"],
+            values=[["1", "Bryan"], ["2", "Slash"]],
+        )
+
+    tracer_provider = TracerProvider(sampler=ALWAYS_ON)
+    trace_exporter = InMemorySpanExporter()
+    tracer_provider.add_span_processor(SimpleSpanProcessor(trace_exporter))
+    observability_options = dict(
+        tracer_provider=tracer_provider,
+        enable_extended_tracing=True,
+    )
+
+    client = Client(
+        project=PROJECT,
+        observability_options=observability_options,
+        credentials=AnonymousCredentials(),
+    )
+
+    instance = client.instance(
+        INSTANCE_ID,
+        CONFIGURATION_NAME,
+        display_name=DISPLAY_NAME,
+        node_count=NODE_COUNT,
+        labels=LABELS,
+    )
+
+    try:
+        instance.create()
+    except Exception:
+        pass
+
+    db = instance.database(DATABASE_ID)
+    try:
+        db._ddl_statements = [
+            """CREATE TABLE Singers (
+            SingerId     INT64 NOT NULL,
+            FirstName    STRING(1024),
+            LastName     STRING(1024),
+            SingerInfo   BYTES(MAX),
+            FullName   STRING(2048) AS (
+                ARRAY_TO_STRING([FirstName, LastName], " ")
+            ) STORED
+            ) PRIMARY KEY (SingerId)""",
+            """CREATE TABLE Albums (
+                SingerId     INT64 NOT NULL,
+                AlbumId      INT64 NOT NULL,
+                AlbumTitle   STRING(MAX),
+                MarketingBudget INT64,
+            ) PRIMARY KEY (SingerId, AlbumId),
+            INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
+        ]
+        db.create()
+    except Exception:
+        pass
+
+    try:
+        db.run_in_transaction(tx_update)
+    except Exception:
+        pass
+
+    span_list = trace_exporter.get_finished_spans()
+    # Sort the spans by their start time in the hierarchy.
+    span_list = sorted(span_list, key=lambda span: span.start_time)
+    got_span_names = [span.name for span in span_list]
+    want_span_names = [
+        "CloudSpanner.Database.run_in_transaction",
+        "CloudSpanner.CreateSession",
+        "CloudSpanner.Session.run_in_transaction",
+        "CloudSpanner.Transaction.commit",
+        "CloudSpanner.Transaction.begin",
+    ]
+
+    assert got_span_names == want_span_names
+
+    # Our object is to ensure that .begin() is a child of .commit()
+    span_tx_begin = span_list[-1]
+    span_tx_commit = span_list[-2]
+    assert span_tx_begin.parent.span_id == span_tx_commit.context.span_id
 
 
 @pytest.mark.skipif(
