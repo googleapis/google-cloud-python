@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.20.0](https://github.com/googleapis/python-firestore/compare/v2.19.0...v2.20.0) (2025-01-13)
+
+
+### Features
+
+* Support not_equal queries for none and nan ([#988](https://github.com/googleapis/python-firestore/issues/988)) ([cbaf4ae](https://github.com/googleapis/python-firestore/commit/cbaf4ae479a4ac3a0174d0f8b6f326e218e6eacb))
+
+
+### Bug Fixes
+
+* Clean up resources on Watch close ([#1004](https://github.com/googleapis/python-firestore/issues/1004)) ([6d68dcd](https://github.com/googleapis/python-firestore/commit/6d68dcd44ad5f8be1c555deb0efa0d644a4a7e9d))
+* Populate transaction attributes after commit ([#977](https://github.com/googleapis/python-firestore/issues/977)) ([aa3c0a3](https://github.com/googleapis/python-firestore/commit/aa3c0a384efceed6bb4b368559bd8875593bccc1))
+
 ## [2.19.0](https://github.com/googleapis/python-firestore/compare/v2.18.0...v2.19.0) (2024-09-20)
 
 
