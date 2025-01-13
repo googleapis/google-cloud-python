@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.23.0...google-cloud-network-management-v1.24.0) (2025-01-13)
+
+
+### Features
+
+* [google-cloud-network-management] expose the new v1 vpcflowlogs api proto ([#13432](https://github.com/googleapis/google-cloud-python/issues/13432)) ([aaea7ae](https://github.com/googleapis/google-cloud-python/commit/aaea7aed76e25020cc085be8f3dbc0f3642d6912))
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.22.0...google-cloud-network-management-v1.23.0) (2024-12-12)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-catalog-v0.9.14...google-cloud-private-catalog-v0.9.15) (2025-01-13)
+
+
+### Documentation
+
+* [google-cloud-private-catalog] fixed format string formatting ([#13401](https://github.com/googleapis/google-cloud-python/issues/13401)) ([fbd1b6a](https://github.com/googleapis/google-cloud-python/commit/fbd1b6a6920e0b1009922dc7b89f457306bd3c44))
+
 ## [0.9.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-catalog-v0.9.13...google-cloud-private-catalog-v0.9.14) (2024-12-12)
 
 

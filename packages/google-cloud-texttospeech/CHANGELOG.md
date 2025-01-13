@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.23.0...google-cloud-texttospeech-v2.24.0) (2025-01-13)
+
+
+### Features
+
+* [google-cloud-texttospeech] StreamingSynthesize now supports opus ([#13406](https://github.com/googleapis/google-cloud-python/issues/13406)) ([9f278d6](https://github.com/googleapis/google-cloud-python/commit/9f278d60dd3bd0ce4a34d1b3492f71372350aa28))
+
 ## [2.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.22.0...google-cloud-texttospeech-v2.23.0) (2024-12-18)
 
 

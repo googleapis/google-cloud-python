@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.14...google-cloud-quotas-v0.1.15) (2025-01-13)
+
+
+### Features
+
+* Add v1beta client libraries for cloudquotas API ([#13408](https://github.com/googleapis/google-cloud-python/issues/13408)) ([c757c44](https://github.com/googleapis/google-cloud-python/commit/c757c441cd4f2c830062717d35595840d111a977))
+
 ## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.13...google-cloud-quotas-v0.1.14) (2024-12-12)
 
 
