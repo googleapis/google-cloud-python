@@ -17,8 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -34,6 +37,8 @@ __protobuf__ = proto.module(
         "NetworkConfig",
         "ServiceAccount",
         "Node",
+        "QueuedResource",
+        "QueuedResourceState",
         "ListNodesRequest",
         "ListNodesResponse",
         "GetNodeRequest",
@@ -42,6 +47,12 @@ __protobuf__ = proto.module(
         "StopNodeRequest",
         "StartNodeRequest",
         "UpdateNodeRequest",
+        "ListQueuedResourcesRequest",
+        "ListQueuedResourcesResponse",
+        "GetQueuedResourceRequest",
+        "CreateQueuedResourceRequest",
+        "DeleteQueuedResourceRequest",
+        "ResetQueuedResourceRequest",
         "ServiceIdentity",
         "GenerateServiceIdentityRequest",
         "GenerateServiceIdentityResponse",
@@ -181,6 +192,9 @@ class SchedulingConfig(proto.Message):
         reserved (bool):
             Whether the node is created under a
             reservation.
+        spot (bool):
+            Optional. Defines whether the node is Spot
+            VM.
     """
 
     preemptible: bool = proto.Field(
@@ -190,6 +204,10 @@ class SchedulingConfig(proto.Message):
     reserved: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    spot: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -260,6 +278,9 @@ class NetworkConfig(proto.Message):
             packets with non-matching destination or source
             IPs. This is required if you plan to use the TPU
             workers to forward routes.
+        queue_count (int):
+            Optional. Specifies networking queue count
+            for TPU VM instance's network interface.
     """
 
     network: str = proto.Field(
@@ -277,6 +298,10 @@ class NetworkConfig(proto.Message):
     can_ip_forward: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    queue_count: int = proto.Field(
+        proto.INT32,
+        number=6,
     )
 
 
@@ -327,7 +352,16 @@ class Node(proto.Message):
             Required. The runtime version running in the
             Node.
         network_config (google.cloud.tpu_v2.types.NetworkConfig):
-            Network configurations for the TPU node.
+            Network configurations for the TPU node. network_config and
+            network_configs are mutually exclusive, you can only specify
+            one of them. If both are specified, an error will be
+            returned.
+        network_configs (MutableSequence[google.cloud.tpu_v2.types.NetworkConfig]):
+            Optional. Repeated network configurations for the TPU node.
+            This field is used to specify multiple networks configs for
+            the TPU node. network_config and network_configs are
+            mutually exclusive, you can only specify one of them. If
+            both are specified, an error will be returned.
         cidr_block (str):
             The CIDR block that the TPU node will use
             when selecting an IP address. This CIDR block
@@ -429,6 +463,9 @@ class Node(proto.Message):
                 TPU node has been hidden.
             UNHIDING (15):
                 TPU node is currently unhiding.
+            UNKNOWN (16):
+                TPU node has unknown state after a failed
+                repair.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -445,6 +482,7 @@ class Node(proto.Message):
         HIDING = 13
         HIDDEN = 14
         UNHIDING = 15
+        UNKNOWN = 16
 
     class Health(proto.Enum):
         r"""Health defines the status of a TPU node as reported by
@@ -520,6 +558,11 @@ class Node(proto.Message):
     network_config: "NetworkConfig" = proto.Field(
         proto.MESSAGE,
         number=36,
+        message="NetworkConfig",
+    )
+    network_configs: MutableSequence["NetworkConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=49,
         message="NetworkConfig",
     )
     cidr_block: str = proto.Field(
@@ -601,6 +644,522 @@ class Node(proto.Message):
     multislice_node: bool = proto.Field(
         proto.BOOL,
         number=48,
+    )
+
+
+class QueuedResource(proto.Message):
+    r"""A QueuedResource represents a request for resources that will
+    be placed in a queue and fulfilled when the necessary resources
+    are available.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Output only. Immutable. The name of the
+            QueuedResource.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the QueuedResource
+            was created.
+        tpu (google.cloud.tpu_v2.types.QueuedResource.Tpu):
+            Optional. Defines a TPU resource.
+
+            This field is a member of `oneof`_ ``resource``.
+        spot (google.cloud.tpu_v2.types.QueuedResource.Spot):
+            Optional. The Spot tier.
+
+            This field is a member of `oneof`_ ``tier``.
+        guaranteed (google.cloud.tpu_v2.types.QueuedResource.Guaranteed):
+            Optional. The Guaranteed tier
+
+            This field is a member of `oneof`_ ``tier``.
+        queueing_policy (google.cloud.tpu_v2.types.QueuedResource.QueueingPolicy):
+            Optional. The queueing policy of the
+            QueuedRequest.
+        state (google.cloud.tpu_v2.types.QueuedResourceState):
+            Output only. State of the QueuedResource
+            request.
+        reservation_name (str):
+            Optional. Name of the reservation in which
+            the resource should be provisioned. Format:
+
+            projects/{project}/locations/{zone}/reservations/{reservation}
+    """
+
+    class Tpu(proto.Message):
+        r"""Details of the TPU resource(s) being requested.
+
+        Attributes:
+            node_spec (MutableSequence[google.cloud.tpu_v2.types.QueuedResource.Tpu.NodeSpec]):
+                Optional. The TPU node(s) being requested.
+        """
+
+        class NodeSpec(proto.Message):
+            r"""Details of the TPU node(s) being requested. Users can request
+            either a single node or multiple nodes.
+            NodeSpec provides the specification for node(s) to be created.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                parent (str):
+                    Required. The parent resource name.
+                node_id (str):
+                    Optional. The unqualified resource name. Should follow the
+                    ``^[A-Za-z0-9_.~+%-]+$`` regex format. This is only
+                    specified when requesting a single node. In case of
+                    multislice requests, multislice_params must be populated
+                    instead.
+
+                    This field is a member of `oneof`_ ``name_strategy``.
+                multislice_params (google.cloud.tpu_v2.types.QueuedResource.Tpu.NodeSpec.MultisliceParams):
+                    Optional. Fields to specify in case of
+                    multislice request.
+
+                    This field is a member of `oneof`_ ``name_strategy``.
+                node (google.cloud.tpu_v2.types.Node):
+                    Required. The node.
+            """
+
+            class MultisliceParams(proto.Message):
+                r"""Parameters to specify for multislice QueuedResource requests. This
+                message must be populated in case of multislice requests instead of
+                node_id.
+
+                Attributes:
+                    node_count (int):
+                        Required. Number of nodes with this spec. The system will
+                        attempt to provision "node_count" nodes as part of the
+                        request. This needs to be > 1.
+                    node_id_prefix (str):
+                        Optional. Prefix of node_ids in case of multislice request.
+                        Should follow the ``^[A-Za-z0-9_.~+%-]+$`` regex format. If
+                        node_count = 3 and node_id_prefix = "np", node ids of nodes
+                        created will be "np-0", "np-1", "np-2". If this field is not
+                        provided we use queued_resource_id as the node_id_prefix.
+                """
+
+                node_count: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+                node_id_prefix: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+
+            parent: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            node_id: str = proto.Field(
+                proto.STRING,
+                number=2,
+                oneof="name_strategy",
+            )
+            multislice_params: "QueuedResource.Tpu.NodeSpec.MultisliceParams" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    oneof="name_strategy",
+                    message="QueuedResource.Tpu.NodeSpec.MultisliceParams",
+                )
+            )
+            node: "Node" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="Node",
+            )
+
+        node_spec: MutableSequence["QueuedResource.Tpu.NodeSpec"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="QueuedResource.Tpu.NodeSpec",
+        )
+
+    class Spot(proto.Message):
+        r"""Spot tier definition."""
+
+    class Guaranteed(proto.Message):
+        r"""Guaranteed tier definition.
+
+        Attributes:
+            min_duration (google.protobuf.duration_pb2.Duration):
+                Optional. Defines the minimum duration of the
+                guarantee. If specified, the requested resources
+                will only be provisioned if they can be
+                allocated for at least the given duration.
+        """
+
+        min_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+
+    class QueueingPolicy(proto.Message):
+        r"""Defines the policy of the QueuedRequest.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            valid_until_duration (google.protobuf.duration_pb2.Duration):
+                Optional. A relative time after which
+                resources should not be created. If the request
+                cannot be fulfilled by this time the request
+                will be failed.
+
+                This field is a member of `oneof`_ ``start_timing_constraints``.
+            valid_until_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. An absolute time after which
+                resources should not be created. If the request
+                cannot be fulfilled by this time the request
+                will be failed.
+
+                This field is a member of `oneof`_ ``start_timing_constraints``.
+            valid_after_duration (google.protobuf.duration_pb2.Duration):
+                Optional. A relative time after which
+                resources may be created.
+
+                This field is a member of `oneof`_ ``start_timing_constraints``.
+            valid_after_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. An absolute time after which
+                resources may be created.
+
+                This field is a member of `oneof`_ ``start_timing_constraints``.
+            valid_interval (google.type.interval_pb2.Interval):
+                Optional. An absolute time interval within
+                which resources may be created.
+
+                This field is a member of `oneof`_ ``start_timing_constraints``.
+        """
+
+        valid_until_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="start_timing_constraints",
+            message=duration_pb2.Duration,
+        )
+        valid_until_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="start_timing_constraints",
+            message=timestamp_pb2.Timestamp,
+        )
+        valid_after_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="start_timing_constraints",
+            message=duration_pb2.Duration,
+        )
+        valid_after_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="start_timing_constraints",
+            message=timestamp_pb2.Timestamp,
+        )
+        valid_interval: interval_pb2.Interval = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="start_timing_constraints",
+            message=interval_pb2.Interval,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
+    tpu: Tpu = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="resource",
+        message=Tpu,
+    )
+    spot: Spot = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="tier",
+        message=Spot,
+    )
+    guaranteed: Guaranteed = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="tier",
+        message=Guaranteed,
+    )
+    queueing_policy: QueueingPolicy = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=QueueingPolicy,
+    )
+    state: "QueuedResourceState" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="QueuedResourceState",
+    )
+    reservation_name: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+
+
+class QueuedResourceState(proto.Message):
+    r"""QueuedResourceState defines the details of the QueuedResource
+    request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        state (google.cloud.tpu_v2.types.QueuedResourceState.State):
+            Output only. State of the QueuedResource
+            request.
+        creating_data (google.cloud.tpu_v2.types.QueuedResourceState.CreatingData):
+            Output only. Further data for the creating
+            state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        accepted_data (google.cloud.tpu_v2.types.QueuedResourceState.AcceptedData):
+            Output only. Further data for the accepted
+            state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        provisioning_data (google.cloud.tpu_v2.types.QueuedResourceState.ProvisioningData):
+            Output only. Further data for the
+            provisioning state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        failed_data (google.cloud.tpu_v2.types.QueuedResourceState.FailedData):
+            Output only. Further data for the failed
+            state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        deleting_data (google.cloud.tpu_v2.types.QueuedResourceState.DeletingData):
+            Output only. Further data for the deleting
+            state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        active_data (google.cloud.tpu_v2.types.QueuedResourceState.ActiveData):
+            Output only. Further data for the active
+            state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        suspending_data (google.cloud.tpu_v2.types.QueuedResourceState.SuspendingData):
+            Output only. Further data for the suspending
+            state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        suspended_data (google.cloud.tpu_v2.types.QueuedResourceState.SuspendedData):
+            Output only. Further data for the suspended
+            state.
+
+            This field is a member of `oneof`_ ``state_data``.
+        state_initiator (google.cloud.tpu_v2.types.QueuedResourceState.StateInitiator):
+            Output only. The initiator of the
+            QueuedResources's current state. Used to
+            indicate whether the SUSPENDING/SUSPENDED state
+            was initiated by the user or the service.
+    """
+
+    class State(proto.Enum):
+        r"""Output only state of the request
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State of the QueuedResource request is not
+                known/set.
+            CREATING (1):
+                The QueuedResource request has been received.
+                We're still working on determining if we will be
+                able to honor this request.
+            ACCEPTED (2):
+                The QueuedResource request has passed initial
+                validation/admission control and has been
+                persisted in the queue.
+            PROVISIONING (3):
+                The QueuedResource request has been selected.
+                The associated resources are currently being
+                provisioned (or very soon will begin
+                provisioning).
+            FAILED (4):
+                The request could not be completed. This may
+                be due to some late-discovered problem with the
+                request itself, or due to unavailability of
+                resources within the constraints of the request
+                (e.g., the 'valid until' start timing constraint
+                expired).
+            DELETING (5):
+                The QueuedResource is being deleted.
+            ACTIVE (6):
+                The resources specified in the QueuedResource
+                request have been provisioned and are ready for
+                use by the end-user/consumer.
+            SUSPENDING (7):
+                The resources specified in the QueuedResource
+                request are being deleted. This may have been
+                initiated by the user, or the Cloud TPU service.
+                Inspect the state data for more details.
+            SUSPENDED (8):
+                The resources specified in the QueuedResource
+                request have been deleted.
+            WAITING_FOR_RESOURCES (9):
+                The QueuedResource request has passed initial validation and
+                has been persisted in the queue. It will remain in this
+                state until there are sufficient free resources to begin
+                provisioning your request. Wait times will vary
+                significantly depending on demand levels. When demand is
+                high, not all requests can be immediately provisioned. If
+                you need more reliable obtainability of TPUs consider
+                purchasing a reservation. To put a limit on how long you are
+                willing to wait, use `timing
+                constraints <https://cloud.google.com/tpu/docs/queued-resources#request_a_queued_resource_before_a_specified_time>`__.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        ACCEPTED = 2
+        PROVISIONING = 3
+        FAILED = 4
+        DELETING = 5
+        ACTIVE = 6
+        SUSPENDING = 7
+        SUSPENDED = 8
+        WAITING_FOR_RESOURCES = 9
+
+    class StateInitiator(proto.Enum):
+        r"""The initiator of the QueuedResource's SUSPENDING/SUSPENDED
+        state.
+
+        Values:
+            STATE_INITIATOR_UNSPECIFIED (0):
+                The state initiator is unspecified.
+            USER (1):
+                The current QueuedResource state was
+                initiated by the user.
+            SERVICE (2):
+                The current QueuedResource state was
+                initiated by the service.
+        """
+        STATE_INITIATOR_UNSPECIFIED = 0
+        USER = 1
+        SERVICE = 2
+
+    class CreatingData(proto.Message):
+        r"""Further data for the creating state."""
+
+    class AcceptedData(proto.Message):
+        r"""Further data for the accepted state."""
+
+    class ProvisioningData(proto.Message):
+        r"""Further data for the provisioning state."""
+
+    class FailedData(proto.Message):
+        r"""Further data for the failed state.
+
+        Attributes:
+            error (google.rpc.status_pb2.Status):
+                Output only. The error that caused the queued
+                resource to enter the FAILED state.
+        """
+
+        error: status_pb2.Status = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=status_pb2.Status,
+        )
+
+    class DeletingData(proto.Message):
+        r"""Further data for the deleting state."""
+
+    class ActiveData(proto.Message):
+        r"""Further data for the active state."""
+
+    class SuspendingData(proto.Message):
+        r"""Further data for the suspending state."""
+
+    class SuspendedData(proto.Message):
+        r"""Further data for the suspended state."""
+
+    state: State = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    creating_data: CreatingData = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="state_data",
+        message=CreatingData,
+    )
+    accepted_data: AcceptedData = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="state_data",
+        message=AcceptedData,
+    )
+    provisioning_data: ProvisioningData = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="state_data",
+        message=ProvisioningData,
+    )
+    failed_data: FailedData = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="state_data",
+        message=FailedData,
+    )
+    deleting_data: DeletingData = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="state_data",
+        message=DeletingData,
+    )
+    active_data: ActiveData = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="state_data",
+        message=ActiveData,
+    )
+    suspending_data: SuspendingData = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="state_data",
+        message=SuspendingData,
+    )
+    suspended_data: SuspendedData = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="state_data",
+        message=SuspendedData,
+    )
+    state_initiator: StateInitiator = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=StateInitiator,
     )
 
 
@@ -767,6 +1326,166 @@ class UpdateNodeRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="Node",
+    )
+
+
+class ListQueuedResourcesRequest(proto.Message):
+    r"""Request for
+    [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name.
+        page_size (int):
+            Optional. The maximum number of items to
+            return.
+        page_token (str):
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListQueuedResourcesResponse(proto.Message):
+    r"""Response for
+    [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
+
+    Attributes:
+        queued_resources (MutableSequence[google.cloud.tpu_v2.types.QueuedResource]):
+            The listed queued resources.
+        next_page_token (str):
+            The next page token or empty if none.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    queued_resources: MutableSequence["QueuedResource"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="QueuedResource",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetQueuedResourceRequest(proto.Message):
+    r"""Request for
+    [GetQueuedResource][google.cloud.tpu.v2.Tpu.GetQueuedResource]
+
+    Attributes:
+        name (str):
+            Required. The resource name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateQueuedResourceRequest(proto.Message):
+    r"""Request for
+    [CreateQueuedResource][google.cloud.tpu.v2.Tpu.CreateQueuedResource].
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name.
+        queued_resource_id (str):
+            Optional. The unqualified resource name. Should follow the
+            ``^[A-Za-z0-9_.~+%-]+$`` regex format.
+        queued_resource (google.cloud.tpu_v2.types.QueuedResource):
+            Required. The queued resource.
+        request_id (str):
+            Optional. Idempotent request UUID.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    queued_resource_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    queued_resource: "QueuedResource" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QueuedResource",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteQueuedResourceRequest(proto.Message):
+    r"""Request for
+    [DeleteQueuedResource][google.cloud.tpu.v2.Tpu.DeleteQueuedResource].
+
+    Attributes:
+        name (str):
+            Required. The resource name.
+        request_id (str):
+            Optional. Idempotent request UUID.
+        force (bool):
+            Optional. If set to true, all running nodes
+            belonging to this queued resource will be
+            deleted first and then the queued resource will
+            be deleted. Otherwise (i.e. force=false), the
+            queued resource will only be deleted if its
+            nodes have already been deleted or the queued
+            resource is in the ACCEPTED, FAILED, or
+            SUSPENDED state.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class ResetQueuedResourceRequest(proto.Message):
+    r"""Request for
+    [ResetQueuedResource][google.cloud.tpu.v2.Tpu.ResetQueuedResource].
+
+    Attributes:
+        name (str):
+            Required. The name of the queued resource.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1224,11 +1943,20 @@ class AcceleratorConfig(proto.Message):
                 TPU v3.
             V4 (7):
                 TPU v4.
+            V5LITE_POD (9):
+                TPU v5lite pod.
+            V5P (10):
+                TPU v5p.
+            V6E (11):
+                TPU v6e.
         """
         TYPE_UNSPECIFIED = 0
         V2 = 2
         V3 = 4
         V4 = 7
+        V5LITE_POD = 9
+        V5P = 10
+        V6E = 11
 
     type_: Type = proto.Field(
         proto.ENUM,
