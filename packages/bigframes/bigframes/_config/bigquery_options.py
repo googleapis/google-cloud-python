@@ -91,7 +91,7 @@ class BigQueryOptions:
         skip_bq_connection_check: bool = False,
         *,
         ordering_mode: Literal["strict", "partial"] = "strict",
-        client_endpoints_override: dict = {},
+        client_endpoints_override: Optional[dict] = None,
     ):
         self._credentials = credentials
         self._project = project
@@ -104,6 +104,10 @@ class BigQueryOptions:
         self._session_started = False
         # Determines the ordering strictness for the session.
         self._ordering_mode = _validate_ordering_mode(ordering_mode)
+
+        if client_endpoints_override is None:
+            client_endpoints_override = {}
+
         self._client_endpoints_override = client_endpoints_override
 
     @property
