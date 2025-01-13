@@ -113,6 +113,100 @@
           }
         }
       }
+    },
+    "VpcFlowLogsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "VpcFlowLogsServiceClient",
+          "rpcs": {
+            "CreateVpcFlowLogsConfig": {
+              "methods": [
+                "create_vpc_flow_logs_config"
+              ]
+            },
+            "DeleteVpcFlowLogsConfig": {
+              "methods": [
+                "delete_vpc_flow_logs_config"
+              ]
+            },
+            "GetVpcFlowLogsConfig": {
+              "methods": [
+                "get_vpc_flow_logs_config"
+              ]
+            },
+            "ListVpcFlowLogsConfigs": {
+              "methods": [
+                "list_vpc_flow_logs_configs"
+              ]
+            },
+            "UpdateVpcFlowLogsConfig": {
+              "methods": [
+                "update_vpc_flow_logs_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "VpcFlowLogsServiceAsyncClient",
+          "rpcs": {
+            "CreateVpcFlowLogsConfig": {
+              "methods": [
+                "create_vpc_flow_logs_config"
+              ]
+            },
+            "DeleteVpcFlowLogsConfig": {
+              "methods": [
+                "delete_vpc_flow_logs_config"
+              ]
+            },
+            "GetVpcFlowLogsConfig": {
+              "methods": [
+                "get_vpc_flow_logs_config"
+              ]
+            },
+            "ListVpcFlowLogsConfigs": {
+              "methods": [
+                "list_vpc_flow_logs_configs"
+              ]
+            },
+            "UpdateVpcFlowLogsConfig": {
+              "methods": [
+                "update_vpc_flow_logs_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "VpcFlowLogsServiceClient",
+          "rpcs": {
+            "CreateVpcFlowLogsConfig": {
+              "methods": [
+                "create_vpc_flow_logs_config"
+              ]
+            },
+            "DeleteVpcFlowLogsConfig": {
+              "methods": [
+                "delete_vpc_flow_logs_config"
+              ]
+            },
+            "GetVpcFlowLogsConfig": {
+              "methods": [
+                "get_vpc_flow_logs_config"
+              ]
+            },
+            "ListVpcFlowLogsConfigs": {
+              "methods": [
+                "list_vpc_flow_logs_configs"
+              ]
+            },
+            "UpdateVpcFlowLogsConfig": {
+              "methods": [
+                "update_vpc_flow_logs_config"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -24,6 +24,12 @@ from google.cloud.network_management_v1.services.reachability_service.async_clie
 from google.cloud.network_management_v1.services.reachability_service.client import (
     ReachabilityServiceClient,
 )
+from google.cloud.network_management_v1.services.vpc_flow_logs_service.async_client import (
+    VpcFlowLogsServiceAsyncClient,
+)
+from google.cloud.network_management_v1.services.vpc_flow_logs_service.client import (
+    VpcFlowLogsServiceClient,
+)
 from google.cloud.network_management_v1.types.connectivity_test import (
     ConnectivityTest,
     Endpoint,
@@ -75,10 +81,23 @@ from google.cloud.network_management_v1.types.trace import (
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
+from google.cloud.network_management_v1.types.vpc_flow_logs import (
+    CreateVpcFlowLogsConfigRequest,
+    DeleteVpcFlowLogsConfigRequest,
+    GetVpcFlowLogsConfigRequest,
+    ListVpcFlowLogsConfigsRequest,
+    ListVpcFlowLogsConfigsResponse,
+    UpdateVpcFlowLogsConfigRequest,
+)
+from google.cloud.network_management_v1.types.vpc_flow_logs_config import (
+    VpcFlowLogsConfig,
+)
 
 __all__ = (
     "ReachabilityServiceClient",
     "ReachabilityServiceAsyncClient",
+    "VpcFlowLogsServiceClient",
+    "VpcFlowLogsServiceAsyncClient",
     "ConnectivityTest",
     "Endpoint",
     "LatencyDistribution",
@@ -124,4 +143,11 @@ __all__ = (
     "VpnGatewayInfo",
     "VpnTunnelInfo",
     "LoadBalancerType",
+    "CreateVpcFlowLogsConfigRequest",
+    "DeleteVpcFlowLogsConfigRequest",
+    "GetVpcFlowLogsConfigRequest",
+    "ListVpcFlowLogsConfigsRequest",
+    "ListVpcFlowLogsConfigsResponse",
+    "UpdateVpcFlowLogsConfigRequest",
+    "VpcFlowLogsConfig",
 )
