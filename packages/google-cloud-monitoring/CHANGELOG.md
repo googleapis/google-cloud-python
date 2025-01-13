@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.25.0...google-cloud-monitoring-v2.26.0) (2025-01-13)
+
+
+### Features
+
+* [google-cloud-monitoring] add active_only field to ListMetricDescriptorsRequest ([#13421](https://github.com/googleapis/google-cloud-python/issues/13421)) ([5777b06](https://github.com/googleapis/google-cloud-python/commit/5777b0623e305b8757218d546534e20f0321afe8))
+
 ## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.24.0...google-cloud-monitoring-v2.25.0) (2025-01-02)
 
 

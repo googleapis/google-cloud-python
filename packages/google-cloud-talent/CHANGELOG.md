@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.15.0...google-cloud-talent-v2.16.0) (2025-01-13)
+
+
+### Features
+
+* [google-cloud-talent] A new enum `RelevanceThreshold` is added ([#13399](https://github.com/googleapis/google-cloud-python/issues/13399)) ([d2a6625](https://github.com/googleapis/google-cloud-python/commit/d2a6625b85a9f51fd496b992081453df11832102))
+* A new field `relevance_threshold` is added to message ([d2a6625](https://github.com/googleapis/google-cloud-python/commit/d2a6625b85a9f51fd496b992081453df11832102))
+* **v4:** A new enum `RelevanceThreshold` is added ([d0fee2c](https://github.com/googleapis/google-cloud-python/commit/d0fee2c1854cdcc30523f060834874ca3d31593c))
+* **v4:** A new field `relevance_threshold` is added to message `.google.cloud.talent.v4.SearchJobsRequest` ([d0fee2c](https://github.com/googleapis/google-cloud-python/commit/d0fee2c1854cdcc30523f060834874ca3d31593c))
+
+
+### Documentation
+
+* **v4:** multiple fixes for links in documentation ([d0fee2c](https://github.com/googleapis/google-cloud-python/commit/d0fee2c1854cdcc30523f060834874ca3d31593c))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.14.1...google-cloud-talent-v2.15.0) (2024-12-12)
 
 

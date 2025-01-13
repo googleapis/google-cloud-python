@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.2.1...google-cloud-kms-v3.2.2) (2025-01-13)
+
+
+### Documentation
+
+* [google-cloud-kms] modify enum comment ([#13410](https://github.com/googleapis/google-cloud-python/issues/13410)) ([129140e](https://github.com/googleapis/google-cloud-python/commit/129140eeb51c96459b22d9e8fedb26a432d36ff6))
+
 ## [3.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.2.0...google-cloud-kms-v3.2.1) (2024-12-18)
 
 
