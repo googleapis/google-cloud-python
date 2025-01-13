@@ -1503,6 +1503,10 @@ def test_query_unary(client, cleanup, database):
     # Add to clean-up.
     cleanup(document1.delete)
 
+    _, document2 = collection.add({field_name: 123})
+    # Add to clean-up.
+    cleanup(document2.delete)
+
     # 0. Query for null.
     query0 = collection.where(filter=FieldFilter(field_name, "==", None))
     values0 = list(query0.stream())
@@ -1520,6 +1524,23 @@ def test_query_unary(client, cleanup, database):
     data1 = snapshot1.to_dict()
     assert len(data1) == 1
     assert math.isnan(data1[field_name])
+
+    # 2. Query for not null
+    query2 = collection.where(filter=FieldFilter(field_name, "!=", None))
+    values2 = list(query2.stream())
+    assert len(values2) == 2
+    # should fetch documents 1 (NaN) and 2 (int)
+    assert any(snapshot.reference._path == document1._path for snapshot in values2)
+    assert any(snapshot.reference._path == document2._path for snapshot in values2)
+
+    # 3. Query for not NAN.
+    query3 = collection.where(filter=FieldFilter(field_name, "!=", nan_val))
+    values3 = list(query3.stream())
+    assert len(values3) == 1
+    snapshot3 = values3[0]
+    assert snapshot3.reference._path == document2._path
+    # only document2 is not NaN
+    assert snapshot3.to_dict() == {field_name: 123}
 
 
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)

@@ -67,10 +67,12 @@ if TYPE_CHECKING:  # pragma: NO COVER
 
 
 _BAD_DIR_STRING: str
-_BAD_OP_NAN_NULL: str
+_BAD_OP_NAN: str
+_BAD_OP_NULL: str
 _BAD_OP_STRING: str
 _COMPARISON_OPERATORS: Dict[str, Any]
 _EQ_OP: str
+_NEQ_OP: str
 _INVALID_CURSOR_TRANSFORM: str
 _INVALID_WHERE_TRANSFORM: str
 _MISMATCH_CURSOR_W_ORDER_BY: str
@@ -80,12 +82,13 @@ _operator_enum: Any
 
 
 _EQ_OP = "=="
+_NEQ_OP = "!="
 _operator_enum = StructuredQuery.FieldFilter.Operator
 _COMPARISON_OPERATORS = {
     "<": _operator_enum.LESS_THAN,
     "<=": _operator_enum.LESS_THAN_OR_EQUAL,
     _EQ_OP: _operator_enum.EQUAL,
-    "!=": _operator_enum.NOT_EQUAL,
+    _NEQ_OP: _operator_enum.NOT_EQUAL,
     ">=": _operator_enum.GREATER_THAN_OR_EQUAL,
     ">": _operator_enum.GREATER_THAN,
     "array_contains": _operator_enum.ARRAY_CONTAINS,
@@ -104,7 +107,7 @@ _INEQUALITY_OPERATORS = (
     _operator_enum.NOT_IN,
 )
 _BAD_OP_STRING = "Operator string {!r} is invalid. Valid choices are: {}."
-_BAD_OP_NAN_NULL = 'Only an equality filter ("==") can be used with None or NaN values'
+_BAD_OP_NAN_NULL = 'Only equality ("==") or not-equal ("!=") filters can be used with None or NaN values'
 _INVALID_WHERE_TRANSFORM = "Transforms cannot be used as where values."
 _BAD_DIR_STRING = "Invalid direction {!r}. Must be one of {!r} or {!r}."
 _INVALID_CURSOR_TRANSFORM = "Transforms cannot be used as cursor values."
@@ -136,26 +139,49 @@ class BaseFilter(abc.ABC):
         """Build the protobuf representation based on values in the filter"""
 
 
+def _validate_opation(op_string, value):
+    """
+    Given an input operator string (e.g, '!='), and a value (e.g. None),
+    ensure that the operator and value combination is valid, and return
+    an approproate new operator value. A new operator will be used if
+    the operaion is a comparison against Null or NaN
+
+    Args:
+        op_string (Optional[str]): the requested operator
+        value (Any): the value the operator is acting on
+    Returns:
+        str | StructuredQuery.UnaryFilter.Operator: operator to use in requests
+    Raises:
+        ValueError: if the operator and value combination is invalid
+    """
+    if value is None:
+        if op_string == _EQ_OP:
+            return StructuredQuery.UnaryFilter.Operator.IS_NULL
+        elif op_string == _NEQ_OP:
+            return StructuredQuery.UnaryFilter.Operator.IS_NOT_NULL
+        else:
+            raise ValueError(_BAD_OP_NAN_NULL)
+
+    elif _isnan(value):
+        if op_string == _EQ_OP:
+            return StructuredQuery.UnaryFilter.Operator.IS_NAN
+        elif op_string == _NEQ_OP:
+            return StructuredQuery.UnaryFilter.Operator.IS_NOT_NAN
+        else:
+            raise ValueError(_BAD_OP_NAN_NULL)
+    elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
+        raise ValueError(_INVALID_WHERE_TRANSFORM)
+    else:
+        return op_string
+
+
 class FieldFilter(BaseFilter):
     """Class representation of a Field Filter."""
 
     def __init__(self, field_path, op_string, value=None):
         self.field_path = field_path
         self.value = value
-
-        if value is None:
-            if op_string != _EQ_OP:
-                raise ValueError(_BAD_OP_NAN_NULL)
-            self.op_string = StructuredQuery.UnaryFilter.Operator.IS_NULL
-
-        elif _isnan(value):
-            if op_string != _EQ_OP:
-                raise ValueError(_BAD_OP_NAN_NULL)
-            self.op_string = StructuredQuery.UnaryFilter.Operator.IS_NAN
-        elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
-            raise ValueError(_INVALID_WHERE_TRANSFORM)
-        else:
-            self.op_string = op_string
+        self.op_string = _validate_opation(op_string, value)
 
     def _to_pb(self):
         """Returns the protobuf representation, either a StructuredQuery.UnaryFilter or a StructuredQuery.FieldFilter"""
@@ -478,22 +504,12 @@ class BaseQuery(object):
                 UserWarning,
                 stacklevel=2,
             )
-            if value is None:
-                if op_string != _EQ_OP:
-                    raise ValueError(_BAD_OP_NAN_NULL)
+            op = _validate_opation(op_string, value)
+            if isinstance(op, StructuredQuery.UnaryFilter.Operator):
                 filter_pb = query.StructuredQuery.UnaryFilter(
                     field=query.StructuredQuery.FieldReference(field_path=field_path),
-                    op=StructuredQuery.UnaryFilter.Operator.IS_NULL,
+                    op=op,
                 )
-            elif _isnan(value):
-                if op_string != _EQ_OP:
-                    raise ValueError(_BAD_OP_NAN_NULL)
-                filter_pb = query.StructuredQuery.UnaryFilter(
-                    field=query.StructuredQuery.FieldReference(field_path=field_path),
-                    op=StructuredQuery.UnaryFilter.Operator.IS_NAN,
-                )
-            elif isinstance(value, (transforms.Sentinel, transforms._ValueList)):
-                raise ValueError(_INVALID_WHERE_TRANSFORM)
             else:
                 filter_pb = query.StructuredQuery.FieldFilter(
                     field=query.StructuredQuery.FieldReference(field_path=field_path),
