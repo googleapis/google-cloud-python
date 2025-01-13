@@ -374,7 +374,8 @@ class BigQueryCachingExecutor(Executor):
         """
         plan = self.replace_cached_subtrees(array_value.node)
         if not tree_properties.can_fast_peek(plan):
-            warnings.warn("Peeking this value cannot be done efficiently.")
+            msg = "Peeking this value cannot be done efficiently."
+            warnings.warn(msg)
 
         sql = self.compiler.compile_peek(plan, n_rows)
 

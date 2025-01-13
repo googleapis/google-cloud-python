@@ -241,9 +241,8 @@ class RetriableRemotePredictor(BaseEstimator):
 
             if df_succ.empty:
                 if max_retries > 0:
-                    warnings.warn(
-                        "Can't make any progress, stop retrying.", RuntimeWarning
-                    )
+                    msg = "Can't make any progress, stop retrying."
+                    warnings.warn(msg, category=RuntimeWarning)
                 break
 
             df_result = (
@@ -254,10 +253,11 @@ class RetriableRemotePredictor(BaseEstimator):
                 break
 
         if not df_fail.empty:
-            warnings.warn(
-                f"Some predictions failed. Check column {self._status_col} for detailed status. You may want to filter the failed rows and retry.",
-                RuntimeWarning,
+            msg = (
+                f"Some predictions failed. Check column {self._status_col} for detailed "
+                "status. You may want to filter the failed rows and retry."
             )
+            warnings.warn(msg, category=RuntimeWarning)
 
         df_result = cast(
             bpd.DataFrame,

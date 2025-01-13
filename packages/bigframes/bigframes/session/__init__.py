@@ -66,6 +66,7 @@ import bigframes.core.pruning
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions
+import bigframes.exceptions as bfe
 import bigframes.functions._remote_function_session as bigframes_rf_session
 import bigframes.functions.remote_function as bigframes_rf
 import bigframes.session._io.bigquery as bf_io_bigquery
@@ -150,25 +151,22 @@ class Session(
 
         if context.location is None:
             self._location = "US"
-            warnings.warn(
-                f"No explicit location is set, so using location {self._location} for the session.",
-                # User's code
-                # -> get_global_session()
-                # -> connect()
-                # -> Session()
-                #
-                # Note: We could also have:
-                # User's code
-                # -> read_gbq()
-                # -> with_default_session()
-                # -> get_global_session()
-                # -> connect()
-                # -> Session()
-                # but we currently have no way to disambiguate these
-                # situations.
-                stacklevel=4,
-                category=bigframes.exceptions.DefaultLocationWarning,
-            )
+            msg = f"No explicit location is set, so using location {self._location} for the session."
+            # User's code
+            # -> get_global_session()
+            # -> connect()
+            # -> Session()
+            #
+            # Note: We could also have:
+            # User's code
+            # -> read_gbq()
+            # -> with_default_session()
+            # -> get_global_session()
+            # -> connect()
+            # -> Session()
+            # but we currently have no way to disambiguate these
+            # situations.
+            warnings.warn(msg, stacklevel=4, category=bfe.DefaultLocationWarning)
         else:
             self._location = context.location
 
@@ -236,10 +234,8 @@ class Session(
         # Will expose as feature later, only False for internal testing
         self._strictly_ordered: bool = context.ordering_mode != "partial"
         if not self._strictly_ordered:
-            warnings.warn(
-                "Partial ordering mode is a preview feature and is subject to change.",
-                bigframes.exceptions.OrderingModePartialPreviewWarning,
-            )
+            msg = "Partial ordering mode is a preview feature and is subject to change."
+            warnings.warn(msg, bfe.OrderingModePartialPreviewWarning)
 
         self._allow_ambiguity = not self._strictly_ordered
         self._default_index_type = (
@@ -604,11 +600,8 @@ class Session(
             bigframes.streaming.dataframe.StreamingDataFrame:
                A StreamingDataFrame representing results of the table.
         """
-        warnings.warn(
-            "The bigframes.streaming module is a preview feature, and subject to change.",
-            stacklevel=1,
-            category=bigframes.exceptions.PreviewWarning,
-        )
+        msg = "The bigframes.streaming module is a preview feature, and subject to change."
+        warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
         import bigframes.streaming.dataframe as streaming_dataframe
 

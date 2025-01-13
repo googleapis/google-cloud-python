@@ -14,6 +14,8 @@
 
 import warnings
 
+import bigframes.exceptions as bfe
+
 
 class ExperimentOptions:
     """
@@ -31,9 +33,11 @@ class ExperimentOptions:
     @semantic_operators.setter
     def semantic_operators(self, value: bool):
         if value is True:
-            warnings.warn(
-                "Semantic operators are still under experiments, and are subject to change in the future."
+            msg = (
+                "Semantic operators are still under experiments, and are subject "
+                "to change in the future."
             )
+            warnings.warn(msg, category=bfe.PreviewWarning)
         self._semantic_operators = value
 
     @property
@@ -43,7 +47,9 @@ class ExperimentOptions:
     @blob.setter
     def blob(self, value: bool):
         if value is True:
-            warnings.warn(
-                "BigFrames Blob is still under experiments. It may not work and subject to change in the future."
+            msg = (
+                "BigFrames Blob is still under experiments. It may not work and "
+                "subject to change in the future."
             )
+            warnings.warn(msg, category=bfe.PreviewWarning)
         self._blob = value

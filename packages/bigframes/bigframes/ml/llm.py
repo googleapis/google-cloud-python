@@ -180,12 +180,11 @@ class PaLM2TextGenerator(base.BaseEstimator):
             )
 
         if self.model_name not in _TEXT_GENERATOR_ENDPOINTS:
-            warnings.warn(
-                _MODEL_NOT_SUPPORTED_WARNING.format(
-                    model_name=self.model_name,
-                    known_models=", ".join(_TEXT_GENERATOR_ENDPOINTS),
-                )
+            msg = _MODEL_NOT_SUPPORTED_WARNING.format(
+                model_name=self.model_name,
+                known_models=", ".join(_TEXT_GENERATOR_ENDPOINTS),
             )
+            warnings.warn(msg)
 
         options = {
             "endpoint": self.model_name,
@@ -360,10 +359,11 @@ class PaLM2TextGenerator(base.BaseEstimator):
         df = self._bqml_model.generate_text(X, options)
 
         if (df[_ML_GENERATE_TEXT_STATUS] != "").any():
-            warnings.warn(
-                f"Some predictions failed. Check column {_ML_GENERATE_TEXT_STATUS} for detailed status. You may want to filter the failed rows and retry.",
-                RuntimeWarning,
+            msg = (
+                f"Some predictions failed. Check column {_ML_GENERATE_TEXT_STATUS} for "
+                "detailed status. You may want to filter the failed rows and retry."
             )
+            warnings.warn(msg, category=RuntimeWarning)
 
         return df
 
@@ -513,12 +513,11 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
             )
 
         if self.model_name not in _PALM2_EMBEDDING_GENERATOR_ENDPOINTS:
-            warnings.warn(
-                _MODEL_NOT_SUPPORTED_WARNING.format(
-                    model_name=self.model_name,
-                    known_models=", ".join(_PALM2_EMBEDDING_GENERATOR_ENDPOINTS),
-                )
+            msg = _MODEL_NOT_SUPPORTED_WARNING.format(
+                model_name=self.model_name,
+                known_models=", ".join(_PALM2_EMBEDDING_GENERATOR_ENDPOINTS),
             )
+            warnings.warn(msg)
 
         endpoint = (
             self.model_name + "@" + self.version if self.version else self.model_name
@@ -590,10 +589,11 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
         )
 
         if (df[_ML_EMBED_TEXT_STATUS] != "").any():
-            warnings.warn(
-                f"Some predictions failed. Check column {_ML_EMBED_TEXT_STATUS} for detailed status. You may want to filter the failed rows and retry.",
-                RuntimeWarning,
+            msg = (
+                f"Some predictions failed. Check column {_ML_EMBED_TEXT_STATUS} for "
+                "detailed status. You may want to filter the failed rows and retry."
             )
+            warnings.warn(msg, category=RuntimeWarning)
 
         return df
 
@@ -678,12 +678,11 @@ class TextEmbeddingGenerator(base.RetriableRemotePredictor):
             )
 
         if self.model_name not in _TEXT_EMBEDDING_ENDPOINTS:
-            warnings.warn(
-                _MODEL_NOT_SUPPORTED_WARNING.format(
-                    model_name=self.model_name,
-                    known_models=", ".join(_TEXT_EMBEDDING_ENDPOINTS),
-                )
+            msg = _MODEL_NOT_SUPPORTED_WARNING.format(
+                model_name=self.model_name,
+                known_models=", ".join(_TEXT_EMBEDDING_ENDPOINTS),
             )
+            warnings.warn(msg)
 
         options = {
             "endpoint": self.model_name,
@@ -813,13 +812,15 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         max_iterations: int = 300,
     ):
         if model_name in _GEMINI_PREVIEW_ENDPOINTS:
-            warnings.warn(
-                f"""Model {model_name} is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
-            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
-            and might have limited support. For more information, see the launch stage descriptions
-            (https://cloud.google.com/products#product-launch-stages).""",
-                category=exceptions.PreviewWarning,
+            msg = (
+                f'Model {model_name} is subject to the "Pre-GA Offerings Terms" in '
+                "the General Service Terms section of the Service Specific Terms"
+                "(https://cloud.google.com/terms/service-terms#1). Pre-GA products and "
+                'features are available "as is" and might have limited support. For '
+                "more information, see the launch stage descriptions "
+                "(https://cloud.google.com/products#product-launch-stages)."
             )
+            warnings.warn(msg, category=exceptions.PreviewWarning)
         self.model_name = model_name
         self.session = session or bpd.get_global_session()
         self.max_iterations = max_iterations
@@ -856,12 +857,11 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             )
 
         if self.model_name not in _GEMINI_ENDPOINTS:
-            warnings.warn(
-                _MODEL_NOT_SUPPORTED_WARNING.format(
-                    model_name=self.model_name,
-                    known_models=", ".join(_GEMINI_ENDPOINTS),
-                )
+            msg = _MODEL_NOT_SUPPORTED_WARNING.format(
+                model_name=self.model_name,
+                known_models=", ".join(_GEMINI_ENDPOINTS),
             )
+            warnings.warn(msg)
 
         options = {"endpoint": self.model_name}
 
@@ -1204,13 +1204,11 @@ class Claude3TextGenerator(base.RetriableRemotePredictor):
             )
 
         if self.model_name not in _CLAUDE_3_ENDPOINTS:
-            warnings.warn(
-                _MODEL_NOT_SUPPORTED_WARNING.format(
-                    model_name=self.model_name,
-                    known_models=", ".join(_CLAUDE_3_ENDPOINTS),
-                )
+            msg = _MODEL_NOT_SUPPORTED_WARNING.format(
+                model_name=self.model_name,
+                known_models=", ".join(_CLAUDE_3_ENDPOINTS),
             )
-
+            warnings.warn(msg)
         options = {
             "endpoint": self.model_name,
         }

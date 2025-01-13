@@ -300,7 +300,7 @@ class RemoteFunctionSession:
                 https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings.
         """
         # Some defaults may be used from the session if not provided otherwise
-        import bigframes.exceptions as bf_exceptions
+        import bigframes.exceptions as bfe
         import bigframes.pandas as bpd
         import bigframes.series as bf_series
         import bigframes.session
@@ -445,11 +445,8 @@ class RemoteFunctionSession:
                 (input_type := input_types[0]) == bf_series.Series
                 or input_type == pandas.Series
             ):
-                warnings.warn(
-                    "input_types=Series is in preview.",
-                    stacklevel=1,
-                    category=bf_exceptions.PreviewWarning,
-                )
+                msg = "input_types=Series is in preview."
+                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
                 # we will model the row as a json serialized string containing the data
                 # and the metadata representing the row

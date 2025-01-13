@@ -22,6 +22,7 @@ import warnings
 import google.auth.exceptions
 
 import bigframes._config
+import bigframes.exceptions as bfe
 import bigframes.session
 
 _global_session: Optional[bigframes.session.Session] = None
@@ -38,11 +39,11 @@ def _try_close_session(session: bigframes.session.Session):
         session_id = session.session_id
         location = session._location
         project_id = session._project
-        warnings.warn(
+        msg = (
             f"Session cleanup failed for session with id: {session_id}, "
-            f"location: {location}, project: {project_id}",
-            category=bigframes.exceptions.CleanupFailedWarning,
+            f"location: {location}, project: {project_id}"
         )
+        warnings.warn(msg, category=bfe.CleanupFailedWarning)
         traceback.print_tb(e.__traceback__)
 
 

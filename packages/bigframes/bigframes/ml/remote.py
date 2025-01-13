@@ -139,9 +139,10 @@ class VertexAIModel(base.BaseEstimator):
 
         # unlike LLM models, the general remote model status is null for successful runs.
         if (df[_REMOTE_MODEL_STATUS].notna()).any():
-            warnings.warn(
-                f"Some predictions failed. Check column {_REMOTE_MODEL_STATUS} for detailed status. You may want to filter the failed rows and retry.",
-                RuntimeWarning,
+            msg = (
+                f"Some predictions failed. Check column {_REMOTE_MODEL_STATUS} for "
+                "detailed status. You may want to filter the failed rows and retry."
             )
+            warnings.warn(msg, category=RuntimeWarning)
 
         return df

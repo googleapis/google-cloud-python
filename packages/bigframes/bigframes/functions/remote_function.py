@@ -32,6 +32,7 @@ import google.iam.v1
 
 import bigframes.core.compile.ibis_types
 import bigframes.dtypes
+import bigframes.exceptions as bfe
 import bigframes.functions.remote_function_template
 
 from . import _remote_function_session as rf_session
@@ -197,11 +198,11 @@ def read_gbq_function(
             )
         function_input_dtypes.append(input_dtype)
     if has_unknown_dtypes:
-        warnings.warn(
-            "The function has one or more missing input data types."
-            f" BigQuery DataFrames will assume default data type {bigframes.dtypes.DEFAULT_DTYPE} for them.",
-            category=bigframes.exceptions.UnknownDataTypeWarning,
+        msg = (
+            "The function has one or more missing input data types. BigQuery DataFrames "
+            f"will assume default data type {bigframes.dtypes.DEFAULT_DTYPE} for them."
         )
+        warnings.warn(msg, category=bfe.UnknownDataTypeWarning)
     func.input_dtypes = tuple(function_input_dtypes)  # type: ignore
 
     func.output_dtype = bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(  # type: ignore

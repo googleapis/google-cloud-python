@@ -22,4 +22,5 @@ try:
 
     __all__ = ["PolarsCompiler"]
 except Exception:
-    warnings.warn("Polars compiler not available as polars is not installed.")
+    msg = "Polars compiler not available as polars is not installed."
+    warnings.warn(msg)

@@ -170,11 +170,11 @@ def install_unittest_dependencies(session, install_test_extra, *constraints):
     session.install(*standard_deps, *constraints)
 
     if UNIT_TEST_EXTERNAL_DEPENDENCIES:
-        warnings.warn(
+        msg = (
             "'unit_test_external_dependencies' is deprecated. Instead, please "
             "use 'unit_test_dependencies' or 'unit_test_local_dependencies'.",
-            DeprecationWarning,
         )
+        warnings.warn(msg, DeprecationWarning)
         session.install(*UNIT_TEST_EXTERNAL_DEPENDENCIES, *constraints)
 
     if UNIT_TEST_LOCAL_DEPENDENCIES:

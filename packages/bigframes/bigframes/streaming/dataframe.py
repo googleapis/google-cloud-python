@@ -26,6 +26,7 @@ from google.cloud import bigquery
 import bigframes
 from bigframes import dataframe
 from bigframes.core import log_adapter
+import bigframes.exceptions as bfe
 
 
 def _return_type_wrapper(method, cls):
@@ -347,11 +348,8 @@ def _to_bigtable(
             For example, the job can be cancelled or its error status
             can be examined.
     """
-    warnings.warn(
-        "The bigframes.streaming module is a preview feature, and subject to change.",
-        stacklevel=1,
-        category=bigframes.exceptions.PreviewWarning,
-    )
+    msg = "The bigframes.streaming module is a preview feature, and subject to change."
+    warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
     # get default client if not passed
     if session is None:
@@ -462,11 +460,8 @@ def _to_pubsub(
             For example, the job can be cancelled or its error status
             can be examined.
     """
-    warnings.warn(
-        "The bigframes.streaming module is a preview feature, and subject to change.",
-        stacklevel=1,
-        category=bigframes.exceptions.PreviewWarning,
-    )
+    msg = "The bigframes.streaming module is a preview feature, and subject to change."
+    warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
 
     # get default client if not passed
     if session is None:

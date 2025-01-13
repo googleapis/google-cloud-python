@@ -39,6 +39,7 @@ import bigframes.core.tree_properties
 import bigframes.core.utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
+import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
@@ -106,10 +107,11 @@ class ArrayValue:
         if offsets_col and primary_key:
             raise ValueError("must set at most one of 'offests', 'primary_key'")
         if any(i.field_type == "JSON" for i in table.schema if i.name in schema.names):
-            warnings.warn(
-                "Interpreting JSON column(s) as StringDtype and pyarrow.large_string. This behavior may change in future versions.",
-                bigframes.exceptions.PreviewWarning,
+            msg = (
+                "Interpreting JSON column(s) as pyarrow.large_string. "
+                "This behavior may change in future versions."
             )
+            warnings.warn(msg, bfe.PreviewWarning)
         # define data source only for needed columns, this makes row-hashing cheaper
         table_def = nodes.GbqTable.from_table(table, columns=schema.names)
 
@@ -228,10 +230,8 @@ class ArrayValue:
         self, start: Optional[int], stop: Optional[int], step: Optional[int]
     ) -> ArrayValue:
         if self.node.order_ambiguous and not (self.session._strictly_ordered):
-            warnings.warn(
-                "Window ordering may be ambiguous, this can cause unstable results.",
-                bigframes.exceptions.AmbiguousWindowWarning,
-            )
+            msg = "Window ordering may be ambiguous, this can cause unstable results."
+            warnings.warn(msg, bfe.AmbiguousWindowWarning)
         return ArrayValue(
             nodes.SliceNode(
                 self.node,
@@ -252,10 +252,10 @@ class ArrayValue:
                     "Generating offsets not supported in partial ordering mode"
                 )
             else:
-                warnings.warn(
-                    "Window ordering may be ambiguous, this can cause unstable results.",
-                    bigframes.exceptions.AmbiguousWindowWarning,
+                msg = (
+                    "Window ordering may be ambiguous, this can cause unstable results."
                 )
+                warnings.warn(msg, category=bfe.AmbiguousWindowWarning)
 
         return (
             ArrayValue(
@@ -391,10 +391,8 @@ class ArrayValue:
                         "Generating offsets not supported in partial ordering mode"
                     )
                 else:
-                    warnings.warn(
-                        "Window ordering may be ambiguous, this can cause unstable results.",
-                        bigframes.exceptions.AmbiguousWindowWarning,
-                    )
+                    msg = "Window ordering may be ambiguous, this can cause unstable results."
+                    warnings.warn(msg, category=bfe.AmbiguousWindowWarning)
 
         output_name = self._gen_namespaced_uid()
         return (

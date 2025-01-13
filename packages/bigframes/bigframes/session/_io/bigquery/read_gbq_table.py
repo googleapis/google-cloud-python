@@ -33,6 +33,7 @@ import bigframes.core.compile
 import bigframes.core.compile.default_ordering
 import bigframes.core.sql
 import bigframes.dtypes
+import bigframes.exceptions as bfe
 import bigframes.session._io.bigquery
 import bigframes.session.clients
 import bigframes.version
@@ -59,21 +60,21 @@ def get_table_metadata(
         # Cache hit could be unexpected. See internal issue 329545805.
         # Raise a warning with more information about how to avoid the
         # problems with the cache.
-        warnings.warn(
+        msg = (
             f"Reading cached table from {snapshot_timestamp} to avoid "
             "incompatibilies with previous reads of this table. To read "
             "the latest version, set `use_cache=False` or close the "
             "current session with Session.close() or "
-            "bigframes.pandas.close_session().",
-            # There are many layers before we get to (possibly) the user's code:
-            # pandas.read_gbq_table
-            # -> with_default_session
-            # -> Session.read_gbq_table
-            # -> _read_gbq_table
-            # -> _get_snapshot_sql_and_primary_key
-            # -> get_snapshot_datetime_and_table_metadata
-            stacklevel=7,
+            "bigframes.pandas.close_session()."
         )
+        # There are many layers before we get to (possibly) the user's code:
+        # pandas.read_gbq_table
+        # -> with_default_session
+        # -> Session.read_gbq_table
+        # -> _read_gbq_table
+        # -> _get_snapshot_sql_and_primary_key
+        # -> get_snapshot_datetime_and_table_metadata
+        warnings.warn(msg, stacklevel=7)
         return cached_table
 
     table = bqclient.get_table(table_ref)
@@ -104,13 +105,13 @@ def validate_table(
     # Only true tables support time travel
     elif table.table_type != "TABLE":
         if table.table_type == "MATERIALIZED_VIEW":
-            warnings.warn(
+            msg = (
                 "Materialized views do not support FOR SYSTEM_TIME AS OF queries. "
                 "Attempting query without time travel. Be aware that as materialized views "
                 "are updated periodically, modifications to the underlying data in the view may "
-                "result in errors or unexpected behavior.",
-                category=bigframes.exceptions.TimeTravelDisabledWarning,
+                "result in errors or unexpected behavior."
             )
+            warnings.warn(msg, category=bfe.TimeTravelDisabledWarning)
     else:
         # table might support time travel, lets do a dry-run query with time travel
         snapshot_sql = bigframes.session._io.bigquery.to_query(
@@ -142,13 +143,13 @@ def validate_table(
         snapshot_sql, job_config=bigquery.QueryJobConfig(dry_run=True)
     )
     if time_travel_not_found:
-        warnings.warn(
+        msg = (
             "NotFound error when reading table with time travel."
             " Attempting query without time travel. Warning: Without"
             " time travel, modifications to the underlying table may"
-            " result in errors or unexpected behavior.",
-            category=bigframes.exceptions.TimeTravelDisabledWarning,
+            " result in errors or unexpected behavior."
         )
+        warnings.warn(msg, category=bfe.TimeTravelDisabledWarning)
     return False
 
 
@@ -263,15 +264,15 @@ def get_index_cols(
         # resource utilization because of the default sequential index. See
         # internal issue 335727141.
         if _is_table_clustered_or_partitioned(table) and not primary_keys:
-            warnings.warn(
+            msg = (
                 f"Table '{str(table.reference)}' is clustered and/or "
                 "partitioned, but BigQuery DataFrames was not able to find a "
                 "suitable index. To avoid this warning, set at least one of: "
                 # TODO(b/338037499): Allow max_results to override this too,
                 # once we make it more efficient.
-                "`index_col` or `filters`.",
-                category=bigframes.exceptions.DefaultIndexWarning,
+                "`index_col` or `filters`."
             )
+            warnings.warn(msg, category=bfe.DefaultIndexWarning)
 
         # If there are primary keys defined, the query engine assumes these
         # columns are unique, even if the constraint is not enforced. We make
@@ -296,21 +297,21 @@ def get_time_travel_datetime_and_table_metadata(
         # Cache hit could be unexpected. See internal issue 329545805.
         # Raise a warning with more information about how to avoid the
         # problems with the cache.
-        warnings.warn(
+        msg = (
             f"Reading cached table from {snapshot_timestamp} to avoid "
             "incompatibilies with previous reads of this table. To read "
             "the latest version, set `use_cache=False` or close the "
             "current session with Session.close() or "
-            "bigframes.pandas.close_session().",
-            # There are many layers before we get to (possibly) the user's code:
-            # pandas.read_gbq_table
-            # -> with_default_session
-            # -> Session.read_gbq_table
-            # -> _read_gbq_table
-            # -> _get_snapshot_sql_and_primary_key
-            # -> get_snapshot_datetime_and_table_metadata
-            stacklevel=7,
+            "bigframes.pandas.close_session()."
         )
+        # There are many layers before we get to (possibly) the user's code:
+        # pandas.read_gbq_table
+        # -> with_default_session
+        # -> Session.read_gbq_table
+        # -> _read_gbq_table
+        # -> _get_snapshot_sql_and_primary_key
+        # -> get_snapshot_datetime_and_table_metadata
+        warnings.warn(msg, stacklevel=7)
         return cached_table
 
     # TODO(swast): It's possible that the table metadata is changed between now

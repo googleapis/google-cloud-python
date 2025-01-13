@@ -63,7 +63,7 @@ import bigframes.core.sql as sql
 import bigframes.core.utils as utils
 import bigframes.core.window_spec as windows
 import bigframes.dtypes
-import bigframes.exceptions
+import bigframes.exceptions as bfe
 import bigframes.features
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -137,10 +137,8 @@ class Block:
                 )
 
         if len(index_columns) == 0:
-            warnings.warn(
-                "Creating object with Null Index. Null Index is a preview feature.",
-                category=bigframes.exceptions.NullIndexPreviewWarning,
-            )
+            msg = "Creating object with Null Index. Null Index is a preview feature."
+            warnings.warn(msg, category=bfe.NullIndexPreviewWarning)
         self._index_columns = tuple(index_columns)
         # Index labels don't need complicated hierarchical access so can store as tuple
         self._index_labels = (
@@ -616,13 +614,13 @@ class Block:
                     " # Setting it to None will download all the data\n"
                     f"{constants.FEEDBACK_LINK}"
                 )
-
-            warnings.warn(
+            msg = (
                 f"The data size ({table_mb:.2f} MB) exceeds the maximum download limit of"
-                f"({max_download_size} MB). It will be downsampled to {max_download_size} MB for download."
-                "\nPlease refer to the documentation for configuring the downloading limit.",
-                UserWarning,
+                f"({max_download_size} MB). It will be downsampled to {max_download_size} "
+                "MB for download.\nPlease refer to the documentation for configuring "
+                "the downloading limit."
             )
+            warnings.warn(msg, category=UserWarning)
             total_rows = execute_result.total_rows
             # Remove downsampling config from subsequent invocations, as otherwise could result in many
             # iterations if downsampling undershoots

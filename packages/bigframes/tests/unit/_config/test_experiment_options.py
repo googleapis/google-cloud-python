@@ -15,6 +15,7 @@
 import pytest
 
 import bigframes._config.experiment_options as experiment_options
+import bigframes.exceptions as bfe
 
 
 def test_semantic_operators_default_false():
@@ -26,7 +27,7 @@ def test_semantic_operators_default_false():
 def test_semantic_operators_set_true_shows_warning():
     options = experiment_options.ExperimentOptions()
 
-    with pytest.warns(UserWarning):
+    with pytest.warns(bfe.PreviewWarning):
         options.semantic_operators = True
 
     assert options.semantic_operators is True
@@ -41,7 +42,7 @@ def test_blob_default_false():
 def test_blob_set_true_shows_warning():
     options = experiment_options.ExperimentOptions()
 
-    with pytest.warns(UserWarning):
+    with pytest.warns(bfe.PreviewWarning):
         options.blob = True
 
     assert options.blob is True

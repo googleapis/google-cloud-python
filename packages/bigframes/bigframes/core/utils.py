@@ -21,7 +21,7 @@ import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import pandas as pd
 import typing_extensions
 
-import bigframes.exceptions as exc
+import bigframes.exceptions as bfe
 
 UNNAMED_COLUMN_ID = "bigframes_unnamed_column"
 UNNAMED_INDEX_ID = "bigframes_unnamed_index"
@@ -170,11 +170,6 @@ def merge_column_labels(
     return pd.Index(result_labels)
 
 
-def warn_preview(msg=""):
-    """Warn a preview API."""
-    warnings.warn(msg, exc.PreviewWarning)
-
-
 def preview(*, name: str):
     """Decorate to warn of a preview API."""
 
@@ -183,7 +178,7 @@ def preview(*, name: str):
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            warn_preview(msg=msg)
+            warnings.warn(msg, category=bfe.PreviewWarning)
             return func(*args, **kwargs)
 
         return wrapper
