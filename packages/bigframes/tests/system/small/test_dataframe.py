@@ -2581,6 +2581,11 @@ def test_dataframe_sort_values(
     )
 
 
+def test_dataframe_sort_values_invalid_input(scalars_df_index):
+    with pytest.raises(KeyError):
+        scalars_df_index.sort_values(by=scalars_df_index["int64_col"])
+
+
 def test_dataframe_sort_values_stable(scalars_df_index, scalars_pandas_df_index):
     bf_result = (
         scalars_df_index.sort_values("int64_col", kind="stable")
