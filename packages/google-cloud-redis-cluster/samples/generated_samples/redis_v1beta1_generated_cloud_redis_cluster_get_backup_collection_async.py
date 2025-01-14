@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateCluster
+# Snippet for GetBackupCollection
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-redis-cluster
 
 
-# [START redis_v1beta1_generated_CloudRedisCluster_UpdateCluster_sync]
+# [START redis_v1beta1_generated_CloudRedisCluster_GetBackupCollection_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,26 +34,19 @@
 from google.cloud import redis_cluster_v1beta1
 
 
-def sample_update_cluster():
+async def sample_get_backup_collection():
     # Create a client
-    client = redis_cluster_v1beta1.CloudRedisClusterClient()
+    client = redis_cluster_v1beta1.CloudRedisClusterAsyncClient()
 
     # Initialize request argument(s)
-    cluster = redis_cluster_v1beta1.Cluster()
-    cluster.name = "name_value"
-
-    request = redis_cluster_v1beta1.UpdateClusterRequest(
-        cluster=cluster,
+    request = redis_cluster_v1beta1.GetBackupCollectionRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.update_cluster(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = await client.get_backup_collection(request=request)
 
     # Handle the response
     print(response)
 
-# [END redis_v1beta1_generated_CloudRedisCluster_UpdateCluster_sync]
+# [END redis_v1beta1_generated_CloudRedisCluster_GetBackupCollection_async]
