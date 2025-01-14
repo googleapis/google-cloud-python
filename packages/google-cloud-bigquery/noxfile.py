@@ -219,6 +219,9 @@ def system(session):
     # Data Catalog needed for the column ACL test with a real Policy Tag.
     session.install("google-cloud-datacatalog", "-c", constraints_path)
 
+    # Resource Manager needed for test with a real Resource Tag.
+    session.install("google-cloud-resource-manager", "-c", constraints_path)
+
     if session.python in ["3.11", "3.12"]:
         extras = "[bqstorage,ipywidgets,pandas,tqdm,opentelemetry]"
     else:
@@ -366,6 +369,7 @@ def prerelease_deps(session):
     session.install(
         "freezegun",
         "google-cloud-datacatalog",
+        "google-cloud-resource-manager",
         "google-cloud-storage",
         "google-cloud-testutils",
         "psutil",

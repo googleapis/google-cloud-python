@@ -2028,6 +2028,7 @@ class TestClient(unittest.TestCase):
         LABELS = {"priority": "high"}
         ACCESS = [{"role": "OWNER", "userByEmail": "phred@example.com"}]
         EXP = 17
+        RESOURCE_TAGS = {"123456789012/key": "value"}
         RESOURCE = {
             "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
             "etag": "etag",
@@ -2037,6 +2038,7 @@ class TestClient(unittest.TestCase):
             "defaultTableExpirationMs": EXP,
             "labels": LABELS,
             "access": ACCESS,
+            "resourceTags": RESOURCE_TAGS,
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
@@ -2048,12 +2050,14 @@ class TestClient(unittest.TestCase):
         ds.default_table_expiration_ms = EXP
         ds.labels = LABELS
         ds.access_entries = [AccessEntry("OWNER", "userByEmail", "phred@example.com")]
+        ds.resource_tags = RESOURCE_TAGS
         fields = [
             "description",
             "friendly_name",
             "location",
             "labels",
             "access_entries",
+            "resource_tags",
         ]
 
         with mock.patch(
@@ -2077,6 +2081,7 @@ class TestClient(unittest.TestCase):
                 "location": LOCATION,
                 "labels": LABELS,
                 "access": ACCESS,
+                "resourceTags": RESOURCE_TAGS,
             },
             path="/" + PATH,
             timeout=7.5,
@@ -2086,6 +2091,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds2.location, ds.location)
         self.assertEqual(ds2.labels, ds.labels)
         self.assertEqual(ds2.access_entries, ds.access_entries)
+        self.assertEqual(ds2.resource_tags, ds.resource_tags)
 
         # ETag becomes If-Match header.
         ds._properties["etag"] = "etag"

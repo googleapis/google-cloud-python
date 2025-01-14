@@ -894,6 +894,28 @@ class TestDataset(unittest.TestCase):
         dataset.location = "LOCATION"
         self.assertEqual(dataset.location, "LOCATION")
 
+    def test_resource_tags_update_in_place(self):
+        dataset = self._make_one(self.DS_REF)
+        tags = dataset.resource_tags
+        tags["123456789012/foo"] = "bar"  # update in place
+        self.assertEqual(dataset.resource_tags, {"123456789012/foo": "bar"})
+
+    def test_resource_tags_setter(self):
+        dataset = self._make_one(self.DS_REF)
+        dataset.resource_tags = {"123456789012/foo": "bar"}
+        self.assertEqual(dataset.resource_tags, {"123456789012/foo": "bar"})
+
+    def test_resource_tags_setter_bad_value(self):
+        dataset = self._make_one(self.DS_REF)
+        with self.assertRaises(ValueError):
+            dataset.resource_tags = "invalid"
+        with self.assertRaises(ValueError):
+            dataset.resource_tags = 123
+
+    def test_resource_tags_getter_missing_value(self):
+        dataset = self._make_one(self.DS_REF)
+        self.assertEqual(dataset.resource_tags, {})
+
     def test_labels_update_in_place(self):
         dataset = self._make_one(self.DS_REF)
         del dataset._properties["labels"]  # don't start w/ existing dict

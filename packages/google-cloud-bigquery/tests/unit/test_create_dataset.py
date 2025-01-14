@@ -65,6 +65,7 @@ def test_create_dataset_w_attrs(client, PROJECT, DS_ID):
         "tableId": "northern-hemisphere",
     }
     DEFAULT_ROUNDING_MODE = "ROUND_HALF_EVEN"
+    RESOURCE_TAGS = {"123456789012/foo": "bar"}
     RESOURCE = {
         "datasetReference": {"projectId": PROJECT, "datasetId": DS_ID},
         "etag": "etag",
@@ -76,6 +77,7 @@ def test_create_dataset_w_attrs(client, PROJECT, DS_ID):
         "labels": LABELS,
         "access": [{"role": "OWNER", "userByEmail": USER_EMAIL}, {"view": VIEW}],
         "defaultRoundingMode": DEFAULT_ROUNDING_MODE,
+        "resourceTags": RESOURCE_TAGS,
     }
     conn = client._connection = make_connection(RESOURCE)
     entries = [
@@ -91,6 +93,7 @@ def test_create_dataset_w_attrs(client, PROJECT, DS_ID):
     before.default_table_expiration_ms = 3600
     before.location = LOCATION
     before.labels = LABELS
+    before.resource_tags = RESOURCE_TAGS
     before.default_rounding_mode = DEFAULT_ROUNDING_MODE
     after = client.create_dataset(before)
     assert after.dataset_id == DS_ID
@@ -103,6 +106,7 @@ def test_create_dataset_w_attrs(client, PROJECT, DS_ID):
     assert after.default_table_expiration_ms == 3600
     assert after.labels == LABELS
     assert after.default_rounding_mode == DEFAULT_ROUNDING_MODE
+    assert after.resource_tags == RESOURCE_TAGS
 
     conn.api_request.assert_called_once_with(
         method="POST",
@@ -119,6 +123,7 @@ def test_create_dataset_w_attrs(client, PROJECT, DS_ID):
                 {"view": VIEW, "role": None},
             ],
             "labels": LABELS,
+            "resourceTags": RESOURCE_TAGS,
         },
         timeout=DEFAULT_TIMEOUT,
     )

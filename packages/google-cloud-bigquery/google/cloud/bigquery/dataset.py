@@ -530,6 +530,7 @@ class Dataset(object):
         "storage_billing_model": "storageBillingModel",
         "max_time_travel_hours": "maxTimeTravelHours",
         "default_rounding_mode": "defaultRoundingMode",
+        "resource_tags": "resourceTags",
     }
 
     def __init__(self, dataset_ref) -> None:
@@ -800,6 +801,28 @@ class Dataset(object):
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
         self._properties["labels"] = value
+
+    @property
+    def resource_tags(self):
+        """Dict[str, str]: Resource tags of the dataset.
+
+        Optional. The tags attached to this dataset. Tag keys are globally
+        unique. Tag key is expected to be in the namespaced format, for
+        example "123456789012/environment" where 123456789012 is
+        the ID of the parent organization or project resource for this tag
+        key. Tag value is expected to be the short name, for example
+        "Production".
+
+        Raises:
+            ValueError: for invalid value types.
+        """
+        return self._properties.setdefault("resourceTags", {})
+
+    @resource_tags.setter
+    def resource_tags(self, value):
+        if not isinstance(value, dict) and value is not None:
+            raise ValueError("Pass a dict")
+        self._properties["resourceTags"] = value
 
     @property
     def default_encryption_configuration(self):

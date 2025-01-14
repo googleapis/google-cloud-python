@@ -25,6 +25,8 @@ import pathlib
 import time
 import unittest
 import uuid
+import random
+import string
 from typing import Optional
 
 from google.api_core.exceptions import PreconditionFailed
@@ -45,6 +47,8 @@ from google.cloud.bigquery import dbapi, enums
 from google.cloud import storage
 from google.cloud.datacatalog_v1 import types as datacatalog_types
 from google.cloud.datacatalog_v1 import PolicyTagManagerClient
+from google.cloud.resourcemanager_v3 import types as resourcemanager_types
+from google.cloud.resourcemanager_v3 import TagKeysClient, TagValuesClient
 import psutil
 import pytest
 from test_utils.retry import RetryErrors
@@ -156,9 +160,12 @@ def setUpModule():
 class TestBigQuery(unittest.TestCase):
     def setUp(self):
         self.to_delete = []
+        self.to_delete_tag_keys_values = []
 
     def tearDown(self):
         policy_tag_client = PolicyTagManagerClient()
+        tag_keys_client = TagKeysClient()
+        tag_values_client = TagValuesClient()
 
         def _still_in_use(bad_request):
             return any(
@@ -180,6 +187,18 @@ class TestBigQuery(unittest.TestCase):
                 policy_tag_client.delete_taxonomy(name=doomed.name)
             else:
                 doomed.delete()
+
+        # The TagKey cannot be deleted if it has any child TagValues.
+        for key_values in self.to_delete_tag_keys_values:
+            tag_key = key_values.pop()
+
+            # Delete tag values first
+            [
+                tag_values_client.delete_tag_value(name=tag_value.name).result()
+                for tag_value in key_values
+            ]
+
+            tag_keys_client.delete_tag_key(name=tag_key.name).result()
 
     def test_get_service_account_email(self):
         client = Config.CLIENT
@@ -278,24 +297,74 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_dataset_exists(dataset))
         self.assertEqual(dataset.default_rounding_mode, "ROUND_HALF_EVEN")
 
+    def _create_resource_tag_key_and_values(self, key, values):
+        tag_key_client = TagKeysClient()
+        tag_value_client = TagValuesClient()
+
+        tag_key_parent = f"projects/{Config.CLIENT.project}"
+        new_tag_key = resourcemanager_types.TagKey(
+            short_name=key, parent=tag_key_parent
+        )
+        tag_key = tag_key_client.create_tag_key(tag_key=new_tag_key).result()
+        self.to_delete_tag_keys_values.insert(0, [tag_key])
+
+        for value in values:
+            new_tag_value = resourcemanager_types.TagValue(
+                short_name=value, parent=tag_key.name
+            )
+            tag_value = tag_value_client.create_tag_value(
+                tag_value=new_tag_value
+            ).result()
+            self.to_delete_tag_keys_values[0].insert(0, tag_value)
+
     def test_update_dataset(self):
         dataset = self.temp_dataset(_make_dataset_id("update_dataset"))
         self.assertTrue(_dataset_exists(dataset))
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.description)
         self.assertEqual(dataset.labels, {})
+        self.assertEqual(dataset.resource_tags, {})
         self.assertIs(dataset.is_case_insensitive, False)
+
+        # This creates unique tag keys for each of test runnings for different Python versions
+        tag_postfix = "".join(random.choices(string.ascii_letters + string.digits, k=4))
+        tag_1 = f"env_{tag_postfix}"
+        tag_2 = f"component_{tag_postfix}"
+        tag_3 = f"project_{tag_postfix}"
+
+        # Tags need to be created before they can be used in a dataset.
+        self._create_resource_tag_key_and_values(tag_1, ["prod", "dev"])
+        self._create_resource_tag_key_and_values(tag_2, ["batch"])
+        self._create_resource_tag_key_and_values(tag_3, ["atlas"])
 
         dataset.friendly_name = "Friendly"
         dataset.description = "Description"
         dataset.labels = {"priority": "high", "color": "blue"}
+        dataset.resource_tags = {
+            f"{Config.CLIENT.project}/{tag_1}": "prod",
+            f"{Config.CLIENT.project}/{tag_2}": "batch",
+        }
         dataset.is_case_insensitive = True
         ds2 = Config.CLIENT.update_dataset(
-            dataset, ("friendly_name", "description", "labels", "is_case_insensitive")
+            dataset,
+            (
+                "friendly_name",
+                "description",
+                "labels",
+                "resource_tags",
+                "is_case_insensitive",
+            ),
         )
         self.assertEqual(ds2.friendly_name, "Friendly")
         self.assertEqual(ds2.description, "Description")
         self.assertEqual(ds2.labels, {"priority": "high", "color": "blue"})
+        self.assertEqual(
+            ds2.resource_tags,
+            {
+                f"{Config.CLIENT.project}/{tag_1}": "prod",
+                f"{Config.CLIENT.project}/{tag_2}": "batch",
+            },
+        )
         self.assertIs(ds2.is_case_insensitive, True)
 
         ds2.labels = {
@@ -303,8 +372,25 @@ class TestBigQuery(unittest.TestCase):
             "shape": "circle",  # add
             "priority": None,  # delete
         }
-        ds3 = Config.CLIENT.update_dataset(ds2, ["labels"])
+        ds2.resource_tags = {
+            f"{Config.CLIENT.project}/{tag_1}": "dev",  # change
+            f"{Config.CLIENT.project}/{tag_3}": "atlas",  # add
+            f"{Config.CLIENT.project}/{tag_2}": None,  # delete
+        }
+        ds3 = Config.CLIENT.update_dataset(ds2, ["labels", "resource_tags"])
         self.assertEqual(ds3.labels, {"color": "green", "shape": "circle"})
+        self.assertEqual(
+            ds3.resource_tags,
+            {
+                f"{Config.CLIENT.project}/{tag_1}": "dev",
+                f"{Config.CLIENT.project}/{tag_3}": "atlas",
+            },
+        )
+
+        # Remove all tags
+        ds3.resource_tags = None
+        ds4 = Config.CLIENT.update_dataset(ds3, ["resource_tags"])
+        self.assertEqual(ds4.resource_tags, {})
 
         # If we try to update using d2 again, it will fail because the
         # previous update changed the ETag.
