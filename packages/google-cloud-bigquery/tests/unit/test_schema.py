@@ -1213,3 +1213,131 @@ class TestSerDeInfo:
         # We convert both to dict format because these classes do not have a
         # __eq__() method to facilitate direct equality comparisons.
         assert result.to_api_repr() == expected.to_api_repr()
+
+
+class TestStorageDescriptor:
+    """Tests for the StorageDescriptor class."""
+
+    @staticmethod
+    def _get_target_class():
+        return schema.StorageDescriptor
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    serdeinfo_resource = {
+        "serialization_library": "testpath.to.LazySimpleSerDe",
+        "name": "serde_lib_name",
+        "parameters": {"key": "value"},
+    }
+
+    SERDEINFO = schema.SerDeInfo("PLACEHOLDER").from_api_repr(serdeinfo_resource)
+
+    STORAGEDESCRIPTOR = {
+        "inputFormat": "testpath.to.OrcInputFormat",
+        "locationUri": "gs://test/path/",
+        "outputFormat": "testpath.to.OrcOutputFormat",
+        "serDeInfo": SERDEINFO.to_api_repr(),
+    }
+
+    @pytest.mark.parametrize(
+        "input_format,location_uri,output_format,serde_info",
+        [
+            (None, None, None, None),
+            ("testpath.to.OrcInputFormat", None, None, None),
+            (None, "gs://test/path/", None, None),
+            (None, None, "testpath.to.OrcOutputFormat", None),
+            (None, None, None, SERDEINFO),
+            (
+                "testpath.to.OrcInputFormat",
+                "gs://test/path/",
+                "testpath.to.OrcOutputFormat",
+                SERDEINFO,  # uses SERDEINFO class format
+            ),
+            (
+                "testpath.to.OrcInputFormat",
+                "gs://test/path/",
+                "testpath.to.OrcOutputFormat",
+                serdeinfo_resource,  # uses api resource format (dict)
+            ),
+        ],
+    )
+    def test_ctor_valid_input(
+        self, input_format, location_uri, output_format, serde_info
+    ):
+        storage_descriptor = self._make_one(
+            input_format=input_format,
+            location_uri=location_uri,
+            output_format=output_format,
+            serde_info=serde_info,
+        )
+        assert storage_descriptor.input_format == input_format
+        assert storage_descriptor.location_uri == location_uri
+        assert storage_descriptor.output_format == output_format
+        if isinstance(serde_info, schema.SerDeInfo):
+            assert (
+                storage_descriptor.serde_info.to_api_repr() == serde_info.to_api_repr()
+            )
+        elif isinstance(serde_info, dict):
+            assert storage_descriptor.serde_info.to_api_repr() == serde_info
+        else:
+            assert storage_descriptor.serde_info is None
+
+    @pytest.mark.parametrize(
+        "input_format,location_uri,output_format,serde_info",
+        [
+            (123, None, None, None),
+            (None, 123, None, None),
+            (None, None, 123, None),
+            (None, None, None, 123),
+        ],
+    )
+    def test_ctor_invalid_input(
+        self, input_format, location_uri, output_format, serde_info
+    ):
+        with pytest.raises(TypeError) as e:
+            self._make_one(
+                input_format=input_format,
+                location_uri=location_uri,
+                output_format=output_format,
+                serde_info=serde_info,
+            )
+
+        # Looking for the first word from the string "Pass <variable> as..."
+        assert "Pass " in str(e.value)
+
+    def test_to_api_repr(self):
+        storage_descriptor = self._make_one(
+            input_format="input_format",
+            location_uri="location_uri",
+            output_format="output_format",
+            serde_info=self.SERDEINFO,
+        )
+        expected_repr = {
+            "inputFormat": "input_format",
+            "locationUri": "location_uri",
+            "outputFormat": "output_format",
+            "serDeInfo": self.SERDEINFO.to_api_repr(),
+        }
+        assert storage_descriptor.to_api_repr() == expected_repr
+
+    def test_from_api_repr(self):
+        """GIVEN an api representation of a StorageDescriptor (i.e. STORAGEDESCRIPTOR)
+        WHEN converted into a StorageDescriptor using from_api_repr() and
+        displayed as a dict
+        THEN it will have the same representation a StorageDescriptor created
+        directly (via the _make_one() func) and displayed as a dict.
+        """
+
+        # generate via STORAGEDESCRIPTOR
+        resource = self.STORAGEDESCRIPTOR
+        result = self._get_target_class().from_api_repr(resource)
+        # result = klass.from_api_repr(resource)
+
+        expected = self._make_one(
+            input_format="testpath.to.OrcInputFormat",
+            location_uri="gs://test/path/",
+            output_format="testpath.to.OrcOutputFormat",
+            serde_info=self.SERDEINFO,
+        )
+        assert result.to_api_repr() == expected.to_api_repr()

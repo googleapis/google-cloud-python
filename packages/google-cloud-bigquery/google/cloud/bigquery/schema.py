@@ -644,3 +644,121 @@ class SerDeInfo:
         config = cls("PLACEHOLDER")
         config._properties = api_repr
         return config
+
+
+class StorageDescriptor:
+    """Contains information about how a table's data is stored and accessed by open
+    source query engines.
+
+    Args:
+        input_format (Optional[str]): Specifies the fully qualified class name of
+            the InputFormat (e.g.
+            "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat"). The maximum
+            length is 128 characters.
+        location_uri (Optional[str]): The physical location of the table (e.g.
+            'gs://spark-dataproc-data/pangea-data/case_sensitive/' or
+            'gs://spark-dataproc-data/pangea-data/'). The maximum length is
+            2056 bytes.
+        output_format (Optional[str]): Specifies the fully qualified class name
+            of the OutputFormat (e.g.
+            "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat"). The maximum
+            length is 128 characters.
+        serde_info (Union[SerDeInfo, dict, None]): Serializer and deserializer information.
+    """
+
+    def __init__(
+        self,
+        input_format: Optional[str] = None,
+        location_uri: Optional[str] = None,
+        output_format: Optional[str] = None,
+        serde_info: Union[SerDeInfo, dict, None] = None,
+    ):
+        self._properties: Dict[str, Any] = {}
+        self.input_format = input_format
+        self.location_uri = location_uri
+        self.output_format = output_format
+        # Using typing.cast() because mypy cannot wrap it's head around the fact that:
+        # the setter can accept Union[SerDeInfo, dict, None]
+        # but the getter will only ever return Optional[SerDeInfo].
+        self.serde_info = typing.cast(Optional[SerDeInfo], serde_info)
+
+    @property
+    def input_format(self) -> Optional[str]:
+        """Optional. Specifies the fully qualified class name of the InputFormat
+        (e.g. "org.apache.hadoop.hive.ql.io.orc.OrcInputFormat"). The maximum
+        length is 128 characters."""
+
+        return self._properties.get("inputFormat")
+
+    @input_format.setter
+    def input_format(self, value: Optional[str]):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=True)
+        self._properties["inputFormat"] = value
+
+    @property
+    def location_uri(self) -> Optional[str]:
+        """Optional. The physical location of the table (e.g. 'gs://spark-
+        dataproc-data/pangea-data/case_sensitive/' or 'gs://spark-dataproc-
+        data/pangea-data/'). The maximum length is 2056 bytes."""
+
+        return self._properties.get("locationUri")
+
+    @location_uri.setter
+    def location_uri(self, value: Optional[str]):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=True)
+        self._properties["locationUri"] = value
+
+    @property
+    def output_format(self) -> Optional[str]:
+        """Optional. Specifies the fully qualified class name of the
+        OutputFormat (e.g. "org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat").
+        The maximum length is 128 characters."""
+
+        return self._properties.get("outputFormat")
+
+    @output_format.setter
+    def output_format(self, value: Optional[str]):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=True)
+        self._properties["outputFormat"] = value
+
+    @property
+    def serde_info(self) -> Optional[SerDeInfo]:
+        """Optional. Serializer and deserializer information."""
+
+        prop = _helpers._get_sub_prop(self._properties, ["serDeInfo"])
+        if prop is not None:
+            return typing.cast(SerDeInfo, SerDeInfo.from_api_repr(prop))
+        return None
+
+    @serde_info.setter
+    def serde_info(self, value: Union[SerDeInfo, dict, None]):
+        value = _helpers._isinstance_or_raise(
+            value, (SerDeInfo, dict), none_allowed=True
+        )
+
+        if isinstance(value, SerDeInfo):
+            self._properties["serDeInfo"] = value.to_api_repr()
+        else:
+            self._properties["serDeInfo"] = value
+
+    def to_api_repr(self) -> dict:
+        """Build an API representation of this object.
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
+        """
+        return self._properties
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> StorageDescriptor:
+        """Factory: constructs an instance of the class (cls)
+        given its API representation.
+        Args:
+            resource (Dict[str, Any]):
+                API representation of the object to be instantiated.
+        Returns:
+            An instance of the class initialized with data from 'resource'.
+        """
+        config = cls()
+        config._properties = resource
+        return config
