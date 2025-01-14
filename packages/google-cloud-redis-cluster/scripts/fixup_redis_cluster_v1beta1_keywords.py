@@ -39,11 +39,19 @@ def partition(
 class redis_clusterCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'backup_cluster': ('name', 'ttl', 'backup_id', ),
         'create_cluster': ('parent', 'cluster_id', 'cluster', 'request_id', ),
+        'delete_backup': ('name', 'request_id', ),
         'delete_cluster': ('name', 'request_id', ),
+        'export_backup': ('name', 'gcs_bucket', ),
+        'get_backup': ('name', ),
+        'get_backup_collection': ('name', ),
         'get_cluster': ('name', ),
         'get_cluster_certificate_authority': ('name', ),
+        'list_backup_collections': ('parent', 'page_size', 'page_token', ),
+        'list_backups': ('parent', 'page_size', 'page_token', ),
         'list_clusters': ('parent', 'page_size', 'page_token', ),
+        'reschedule_cluster_maintenance': ('name', 'reschedule_type', 'schedule_time', ),
         'update_cluster': ('update_mask', 'cluster', 'request_id', ),
     }
 

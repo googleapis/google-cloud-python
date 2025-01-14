@@ -160,6 +160,46 @@ class CloudRedisClusterTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.reschedule_cluster_maintenance: gapic_v1.method.wrap_method(
+                self.reschedule_cluster_maintenance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.list_backup_collections: gapic_v1.method.wrap_method(
+                self.list_backup_collections,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_backup_collection: gapic_v1.method.wrap_method(
+                self.get_backup_collection,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method.wrap_method(
+                self.list_backups,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.get_backup: gapic_v1.method.wrap_method(
+                self.get_backup,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method.wrap_method(
+                self.delete_backup,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.export_backup: gapic_v1.method.wrap_method(
+                self.export_backup,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.backup_cluster: gapic_v1.method.wrap_method(
+                self.backup_cluster,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -263,6 +303,87 @@ class CloudRedisClusterTransport(abc.ABC):
             cloud_redis_cluster.CertificateAuthority,
             Awaitable[cloud_redis_cluster.CertificateAuthority],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reschedule_cluster_maintenance(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.RescheduleClusterMaintenanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_collections(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListBackupCollectionsRequest],
+        Union[
+            cloud_redis_cluster.ListBackupCollectionsResponse,
+            Awaitable[cloud_redis_cluster.ListBackupCollectionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_collection(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetBackupCollectionRequest],
+        Union[
+            cloud_redis_cluster.BackupCollection,
+            Awaitable[cloud_redis_cluster.BackupCollection],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListBackupsRequest],
+        Union[
+            cloud_redis_cluster.ListBackupsResponse,
+            Awaitable[cloud_redis_cluster.ListBackupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetBackupRequest],
+        Union[cloud_redis_cluster.Backup, Awaitable[cloud_redis_cluster.Backup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.DeleteBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_backup(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ExportBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def backup_cluster(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.BackupClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
