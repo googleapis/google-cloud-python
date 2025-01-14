@@ -866,13 +866,10 @@ class UserWorkloadsSecret(proto.Message):
 
             Example:
 
-            .. code-block:: json
-
-                {
-                    "example": "ZXhhbXBsZV92YWx1ZQ==",
-                    "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
-                }
-
+            {
+              "example": "ZXhhbXBsZV92YWx1ZQ==",
+              "another-example":
+            "YW5vdGhlcl9leGFtcGxlX3ZhbHVl" }
     """
 
     name: str = proto.Field(
