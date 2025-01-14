@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.32.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.31.0...v1.32.0) (2025-01-13)
+
+
+### Features
+
+* Add max_retries to TextEmbeddingGenerator and Claude3TextGenerator ([#1259](https://github.com/googleapis/python-bigquery-dataframes/issues/1259)) ([8077ff4](https://github.com/googleapis/python-bigquery-dataframes/commit/8077ff49426b103dc5a52eeb86a2c6a869c99825))
+* Bigframes.bigquery.parse_json ([#1265](https://github.com/googleapis/python-bigquery-dataframes/issues/1265)) ([27bbd80](https://github.com/googleapis/python-bigquery-dataframes/commit/27bbd8085ccac175f113afbd6c94b52c034a3d97))
+* Support DataFrame.astype(dict) ([#1262](https://github.com/googleapis/python-bigquery-dataframes/issues/1262)) ([5934f8e](https://github.com/googleapis/python-bigquery-dataframes/commit/5934f8ee0a1c950a820d1911d73a46f6891a40bb))
+
+
+### Bug Fixes
+
+* Avoid global mutation in `BigQueryOptions.client_endpoints_override` ([#1280](https://github.com/googleapis/python-bigquery-dataframes/issues/1280)) ([788f6e9](https://github.com/googleapis/python-bigquery-dataframes/commit/788f6e94a1e80f0ba8741a53a05a467e7b18e902))
+* Fix erroneous window bounds removal during compilation ([#1163](https://github.com/googleapis/python-bigquery-dataframes/issues/1163)) ([f91756a](https://github.com/googleapis/python-bigquery-dataframes/commit/f91756a4413b10f1072c0ae96301fe854bb1ba4e))
+
+
+### Dependencies
+
+* Relax sqlglot upper bound ([#1278](https://github.com/googleapis/python-bigquery-dataframes/issues/1278)) ([c71ec09](https://github.com/googleapis/python-bigquery-dataframes/commit/c71ec093314409cd4c7a52a713dbd6164fbbd792))
+
+
+### Documentation
+
+* Add bq studio links that allows users to generate Jupiter notebooks in bq studio with github contents ([#1266](https://github.com/googleapis/python-bigquery-dataframes/issues/1266)) ([58f13cb](https://github.com/googleapis/python-bigquery-dataframes/commit/58f13cb9ef8bac3222e5013d8ae77dd20f886e30))
+* Add snippet to evaluate ARIMA plus model in the Forecast a single time series with a univariate model tutorial ([#1267](https://github.com/googleapis/python-bigquery-dataframes/issues/1267)) ([3dcae2d](https://github.com/googleapis/python-bigquery-dataframes/commit/3dcae2dca45efdd4493cf3f367bf025ea291f4df))
+* Add snippet to see the ARIMA coefficients in the Forecast a single time series with a univariate model tutorial ([#1268](https://github.com/googleapis/python-bigquery-dataframes/issues/1268)) ([059a564](https://github.com/googleapis/python-bigquery-dataframes/commit/059a564095dfea0518982f13c8118d3807861ccf))
+* Update `bigframes.pandas.pandas` docstrings ([#1247](https://github.com/googleapis/python-bigquery-dataframes/issues/1247)) ([c4bffc3](https://github.com/googleapis/python-bigquery-dataframes/commit/c4bffc3e8ec630a362c94f9d269a66073a14ad04))
+* Use 002 model for better scalability in text generation ([#1270](https://github.com/googleapis/python-bigquery-dataframes/issues/1270)) ([bb7a850](https://github.com/googleapis/python-bigquery-dataframes/commit/bb7a85005ebebfbcb0d2a4d5c4c27b354f38d3d1))
+
 ## [1.31.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.30.0...v1.31.0) (2025-01-05)
 
 
