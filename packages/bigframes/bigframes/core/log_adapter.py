@@ -109,7 +109,13 @@ def class_logger(decorated_cls):
     """Decorator that adds logging functionality to each method of the class."""
     for attr_name, attr_value in decorated_cls.__dict__.items():
         if callable(attr_value) and (attr_name not in _excluded_methods):
-            setattr(decorated_cls, attr_name, method_logger(attr_value, decorated_cls))
+            if isinstance(attr_value, staticmethod):
+                # TODO(b/390244171) support for staticmethod
+                pass
+            else:
+                setattr(
+                    decorated_cls, attr_name, method_logger(attr_value, decorated_cls)
+                )
         elif isinstance(attr_value, property):
             setattr(
                 decorated_cls, attr_name, property_logger(attr_value, decorated_cls)

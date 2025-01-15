@@ -21,9 +21,10 @@ import warnings
 import numpy as np
 
 from bigframes import dtypes, exceptions
-from bigframes.core import guid
+from bigframes.core import guid, log_adapter
 
 
+@log_adapter.class_logger
 class Semantics:
     def __init__(self, df) -> None:
         import bigframes
