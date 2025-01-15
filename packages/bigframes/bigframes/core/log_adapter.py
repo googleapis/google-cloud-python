@@ -13,8 +13,12 @@
 # limitations under the License.
 
 import functools
+import inspect
 import threading
 from typing import List
+
+from google.cloud import bigquery
+import pandas
 
 _lock = threading.Lock()
 
@@ -22,12 +26,83 @@ _lock = threading.Lock()
 # but leave a few spare for internal labels to be added.
 # See internal issue 386825477.
 MAX_LABELS_COUNT = 64 - 8
+PANDAS_API_TRACKING_TASK = "pandas_api_tracking"
+PANDAS_PARAM_TRACKING_TASK = "pandas_param_tracking"
 
 _api_methods: List = []
 _excluded_methods = ["__setattr__", "__getattr__"]
 
 # Stack to track method calls
 _call_stack: List = []
+
+
+def submit_pandas_labels(
+    bq_client: bigquery.Client,
+    class_name: str,
+    method_name: str,
+    args=(),
+    kwargs={},
+    task: str = PANDAS_API_TRACKING_TASK,
+):
+    """
+    Submits usage of API to BigQuery using a simulated failed query.
+
+    This function is designed to capture and log details about the usage of pandas methods,
+    including class and method names, the count of positional arguments, and any keyword
+    arguments that match the method's signature. To avoid incurring costs, it simulates a
+    query execution using a query with syntax errors.
+
+    Args:
+        bq_client (bigquery.Client): The client used to interact with BigQuery.
+        class_name (str): The name of the pandas class being used.
+        method_name (str): The name of the method being invoked.
+        args (tuple): The positional arguments passed to the method.
+        kwargs (dict): The keyword arguments passed to the method.
+        task (str): The specific task type for the logging event:
+                    - 'PANDAS_API_TRACKING_TASK': Indicates that the unimplemented feature is a method.
+                    - 'PANDAS_PARAM_TRACKING_TASK': Indicates that the unimplemented feature is a
+                      parameter of a method.
+    """
+    labels_dict = {
+        "task": task,
+        "class_name": class_name.lower(),
+        "method_name": method_name.lower(),
+        "args_count": len(args),
+    }
+
+    if hasattr(pandas, class_name):
+        cls = getattr(pandas, class_name)
+    else:
+        return
+
+    if hasattr(cls, method_name):
+        method = getattr(cls, method_name)
+    else:
+        return
+
+    if kwargs:
+        # Iterate through the keyword arguments and add them to the labels dictionary if they
+        # are parameters that are implemented in pandas and the maximum label count has not been reached.
+        signature = inspect.signature(method)
+        param_names = [param.name for param in signature.parameters.values()]
+
+        idx = 0
+        for key in kwargs.keys():
+            if len(labels_dict) >= MAX_LABELS_COUNT:
+                break
+            if key in param_names:
+                labels_dict[f"kwargs_{idx}"] = key.lower()
+                idx += 1
+
+    # If this log is for tracking unimplemented parameters and no keyword arguments were
+    # provided, skip logging.
+    if len(labels_dict) == 4 and task == PANDAS_PARAM_TRACKING_TASK:
+        return
+
+    # Run a query with syntax error to avoid cost.
+    query = "SELECT COUNT(x FROM data_table—"
+    job_config = bigquery.QueryJobConfig(labels=labels_dict)
+    bq_client.query(query, job_config=job_config)
 
 
 def class_logger(decorated_cls):
@@ -46,7 +121,7 @@ def method_logger(method, decorated_cls):
     """Decorator that adds logging functionality to a method."""
 
     @functools.wraps(method)
-    def wrapper(*args, **kwargs):
+    def wrapper(self, *args, **kwargs):
         class_name = decorated_cls.__name__  # Access decorated class name
         api_method_name = str(method.__name__)
         full_method_name = f"{class_name.lower()}-{api_method_name}"
@@ -58,7 +133,23 @@ def method_logger(method, decorated_cls):
         _call_stack.append(full_method_name)
 
         try:
-            return method(*args, **kwargs)
+            return method(self, *args, **kwargs)
+        except (NotImplementedError, TypeError) as e:
+            # Log method parameters that are implemented in pandas but either missing (TypeError)
+            # or not fully supported (NotImplementedError) in BigFrames.
+            # Logging is currently supported only when we can access the bqclient through
+            # self._block.expr.session.bqclient. Also, to avoid generating multiple queries
+            # because of internal calls, we log only when the method is directly invoked.
+            if hasattr(self, "_block") and len(_call_stack) == 1:
+                submit_pandas_labels(
+                    self._block.expr.session.bqclient,
+                    class_name,
+                    api_method_name,
+                    args,
+                    kwargs,
+                    task=PANDAS_PARAM_TRACKING_TASK,
+                )
+            raise e
         finally:
             _call_stack.pop()
 

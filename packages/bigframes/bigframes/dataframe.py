@@ -645,6 +645,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             return self.__getitem__(key)
 
         if hasattr(pandas.DataFrame, key):
+            log_adapter.submit_pandas_labels(
+                self._block.expr.session.bqclient, self.__class__.__name__, key
+            )
             raise AttributeError(
                 textwrap.dedent(
                     f"""
