@@ -560,6 +560,63 @@ class PolicyTagList(object):
         return answer
 
 
+class ForeignTypeInfo:
+    """Metadata about the foreign data type definition such as the system in which the
+    type is defined.
+
+    Args:
+        type_system (str): Required. Specifies the system which defines the
+            foreign data type.
+
+            TypeSystem enum currently includes:
+            * "TYPE_SYSTEM_UNSPECIFIED"
+            * "HIVE"
+    """
+
+    def __init__(self, type_system: Optional[str] = None):
+        self._properties: Dict[str, Any] = {}
+        self.type_system = type_system
+
+    @property
+    def type_system(self) -> Optional[str]:
+        """Required. Specifies the system which defines the foreign data
+        type."""
+
+        return self._properties.get("typeSystem")
+
+    @type_system.setter
+    def type_system(self, value: Optional[str]):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=True)
+        self._properties["typeSystem"] = value
+
+    def to_api_repr(self) -> dict:
+        """Build an API representation of this object.
+
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
+        """
+
+        return self._properties
+
+    @classmethod
+    def from_api_repr(cls, api_repr: Dict[str, Any]) -> "ForeignTypeInfo":
+        """Factory: constructs an instance of the class (cls)
+        given its API representation.
+
+        Args:
+            api_repr (Dict[str, Any]):
+                API representation of the object to be instantiated.
+
+        Returns:
+            An instance of the class initialized with data from 'api_repr'.
+        """
+
+        config = cls()
+        config._properties = api_repr
+        return config
+
+
 class SerDeInfo:
     """Serializer and deserializer information.
 
@@ -625,6 +682,7 @@ class SerDeInfo:
 
     def to_api_repr(self) -> dict:
         """Build an API representation of this object.
+
         Returns:
             Dict[str, Any]:
                 A dictionary in the format used by the BigQuery API.
@@ -635,11 +693,13 @@ class SerDeInfo:
     def from_api_repr(cls, api_repr: dict) -> SerDeInfo:
         """Factory: constructs an instance of the class (cls)
         given its API representation.
+
         Args:
-            resource (Dict[str, Any]):
+            api_repr (Dict[str, Any]):
                 API representation of the object to be instantiated.
+
         Returns:
-            An instance of the class initialized with data from 'resource'.
+            An instance of the class initialized with data from 'api_repr'.
         """
         config = cls("PLACEHOLDER")
         config._properties = api_repr

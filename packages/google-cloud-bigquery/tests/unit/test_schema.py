@@ -1128,6 +1128,73 @@ def test_to_api_repr_parameterized(field, api):
     assert SchemaField(**field).to_api_repr() == api
 
 
+class TestForeignTypeInfo:
+    """Tests for ForeignTypeInfo objects."""
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.schema import ForeignTypeInfo
+
+        return ForeignTypeInfo
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    @pytest.mark.parametrize(
+        "type_system,expected",
+        [
+            (None, None),
+            ("TYPE_SYSTEM_UNSPECIFIED", "TYPE_SYSTEM_UNSPECIFIED"),
+            ("HIVE", "HIVE"),
+        ],
+    )
+    def test_ctor_valid_input(self, type_system, expected):
+        result = self._make_one(type_system=type_system)
+
+        assert result.type_system == expected
+
+    def test_ctor_invalid_input(self):
+        with pytest.raises(TypeError) as e:
+            self._make_one(type_system=123)
+
+        # Looking for the first word from the string "Pass <variable> as..."
+        assert "Pass " in str(e.value)
+
+    @pytest.mark.parametrize(
+        "type_system,expected",
+        [
+            ("TYPE_SYSTEM_UNSPECIFIED", {"typeSystem": "TYPE_SYSTEM_UNSPECIFIED"}),
+            ("HIVE", {"typeSystem": "HIVE"}),
+            (None, {"typeSystem": None}),
+        ],
+    )
+    def test_to_api_repr(self, type_system, expected):
+        result = self._make_one(type_system=type_system)
+
+        assert result.to_api_repr() == expected
+
+    def test_from_api_repr(self):
+        """GIVEN an api representation of a ForeignTypeInfo object (i.e. api_repr)
+        WHEN converted into a ForeignTypeInfo object using from_api_repr()
+        THEN it will have the same representation in dict format as a ForeignTypeInfo
+        object made directly (via _make_one()) and represented in dict format.
+        """
+        api_repr = {
+            "typeSystem": "TYPE_SYSTEM_UNSPECIFIED",
+        }
+
+        expected = self._make_one(
+            type_system="TYPE_SYSTEM_UNSPECIFIED",
+        )
+
+        klass = self._get_target_class()
+        result = klass.from_api_repr(api_repr)
+
+        # We convert both to dict format because these classes do not have a
+        # __eq__() method to facilitate direct equality comparisons.
+        assert result.to_api_repr() == expected.to_api_repr()
+
+
 class TestSerDeInfo:
     """Tests for the SerDeInfo class."""
 
@@ -1190,9 +1257,9 @@ class TestSerDeInfo:
         assert serde_info.to_api_repr() == expected_repr
 
     def test_from_api_repr(self):
-        """GIVEN an api representation of a SerDeInfo object (i.e. resource)
+        """GIVEN an api representation of a SerDeInfo object (i.e. api_repr)
         WHEN converted into a SerDeInfo object using from_api_repr()
-        THEN it will have the representation in dict format as a SerDeInfo
+        THEN it will have the same representation in dict format as a SerDeInfo
         object made directly (via _make_one()) and represented in dict format.
         """
         api_repr = {
