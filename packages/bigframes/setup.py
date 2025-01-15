@@ -68,7 +68,7 @@ dependencies = [
     "python-dateutil>=2.8.2,<3",
     "pytz>=2022.7",
     "toolz>=0.11,<2",
-    "typing-extensions>=4.3.0,<5",
+    "typing-extensions>=4.5.0,<5",
     "rich>=12.4.4,<14",
 ]
 extras = {

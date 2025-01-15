@@ -26,3 +26,11 @@ tabulate==0.9
 ipywidgets==7.7.1
 humanize==4.6.0
 matplotlib==3.7.1
+# For vendored ibis-framework.
+atpublic==2.3
+parsy==2.0
+python-dateutil==2.8.2
+pytz==2022.7
+toolz==0.11
+typing-extensions==4.5.0
+rich==12.4.4
