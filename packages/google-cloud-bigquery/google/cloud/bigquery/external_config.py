@@ -18,7 +18,7 @@
    Job.configuration.query.tableDefinitions.
 """
 
-from __future__ import absolute_import
+from __future__ import absolute_import, annotations
 
 import base64
 import copy
@@ -28,6 +28,7 @@ from google.cloud.bigquery._helpers import _to_bytes
 from google.cloud.bigquery._helpers import _bytes_to_json
 from google.cloud.bigquery._helpers import _int_or_none
 from google.cloud.bigquery._helpers import _str_or_none
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.format_options import AvroOptions, ParquetOptions
 from google.cloud.bigquery.schema import SchemaField
 
@@ -1002,4 +1003,77 @@ class ExternalConfig(object):
         """
         config = cls(resource["sourceFormat"])
         config._properties = copy.deepcopy(resource)
+        return config
+
+
+class ExternalCatalogDatasetOptions:
+    """Options defining open source compatible datasets living in the BigQuery catalog.
+    Contains metadata of open source database, schema or namespace represented
+    by the current dataset.
+
+    Args:
+        default_storage_location_uri (Optional[str]): The storage location URI for all
+            tables in the dataset. Equivalent to hive metastore's database
+            locationUri. Maximum length of 1024 characters. (str)
+        parameters (Optional[dict[str, Any]]): A map of key value pairs defining the parameters
+            and properties of the open source schema. Maximum size of 2Mib.
+    """
+
+    def __init__(
+        self,
+        default_storage_location_uri: Optional[str] = None,
+        parameters: Optional[Dict[str, Any]] = None,
+    ):
+        self._properties: Dict[str, Any] = {}
+        self.default_storage_location_uri = default_storage_location_uri
+        self.parameters = parameters
+
+    @property
+    def default_storage_location_uri(self) -> Optional[str]:
+        """Optional. The storage location URI for all tables in the dataset.
+        Equivalent to hive metastore's database locationUri. Maximum length of
+        1024 characters."""
+
+        return self._properties.get("defaultStorageLocationUri")
+
+    @default_storage_location_uri.setter
+    def default_storage_location_uri(self, value: Optional[str]):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=True)
+        self._properties["defaultStorageLocationUri"] = value
+
+    @property
+    def parameters(self) -> Optional[Dict[str, Any]]:
+        """Optional. A map of key value pairs defining the parameters and
+        properties of the open source schema. Maximum size of 2Mib."""
+
+        return self._properties.get("parameters")
+
+    @parameters.setter
+    def parameters(self, value: Optional[Dict[str, Any]]):
+        value = _helpers._isinstance_or_raise(value, dict, none_allowed=True)
+        self._properties["parameters"] = value
+
+    def to_api_repr(self) -> dict:
+        """Build an API representation of this object.
+
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
+        """
+        return self._properties
+
+    @classmethod
+    def from_api_repr(cls, api_repr: dict) -> ExternalCatalogDatasetOptions:
+        """Factory: constructs an instance of the class (cls)
+        given its API representation.
+
+        Args:
+            api_repr (Dict[str, Any]):
+                API representation of the object to be instantiated.
+
+        Returns:
+            An instance of the class initialized with data from 'resource'.
+        """
+        config = cls()
+        config._properties = api_repr
         return config
