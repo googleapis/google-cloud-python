@@ -63,7 +63,7 @@ GCF_CLIENT = functions_v2.FunctionServiceClient()
 
 
 def get_bigframes_functions(project, region):
-    parent = f"projects/{args.project_id}/locations/{region}"
+    parent = f"projects/{project}/locations/{region}"
     functions = GCF_CLIENT.list_functions(
         functions_v2.ListFunctionsRequest(parent=parent)
     )
@@ -72,7 +72,7 @@ def get_bigframes_functions(project, region):
         function
         for function in functions
         if function.name.startswith(
-            f"projects/{args.project_id}/locations/{region}/functions/bigframes-"
+            f"projects/{project}/locations/{region}/functions/bigframes-"
         )
     ]
 

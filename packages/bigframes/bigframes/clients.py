@@ -21,6 +21,7 @@ import time
 from typing import cast, Optional
 
 import google.api_core.exceptions
+import google.api_core.retry
 from google.cloud import bigquery_connection_v1, resourcemanager_v3
 from google.iam.v1 import iam_policy_pb2, policy_pb2
 

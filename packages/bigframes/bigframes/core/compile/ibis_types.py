@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import textwrap
+import typing
 from typing import Any, cast, Dict, Iterable, Optional, Tuple, Union
 import warnings
 
@@ -22,7 +23,7 @@ import bigframes_vendored.ibis
 import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 from bigframes_vendored.ibis.expr.datatypes.core import (
-    dtype as python_type_to_bigquery_type,
+    dtype as python_type_to_ibis_type,
 )
 import bigframes_vendored.ibis.expr.types as ibis_types
 import geopandas as gpd  # type: ignore
@@ -472,12 +473,24 @@ class UnsupportedTypeError(ValueError):
     def __init__(self, type_, supported_types):
         self.type = type_
         self.supported_types = supported_types
+        super().__init__(
+            f"'{type_}' is not one of the supported types {supported_types}"
+        )
 
 
 def ibis_type_from_python_type(t: type) -> ibis_dtypes.DataType:
     if t not in bigframes.dtypes.RF_SUPPORTED_IO_PYTHON_TYPES:
         raise UnsupportedTypeError(t, bigframes.dtypes.RF_SUPPORTED_IO_PYTHON_TYPES)
-    return python_type_to_bigquery_type(t)
+    return python_type_to_ibis_type(t)
+
+
+def ibis_array_output_type_from_python_type(t: type) -> ibis_dtypes.DataType:
+    array_of = typing.get_args(t)[0]
+    if array_of not in bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
+        raise UnsupportedTypeError(
+            array_of, bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES
+        )
+    return python_type_to_ibis_type(t)
 
 
 def ibis_type_from_type_kind(tk: bigquery.StandardSqlTypeNames) -> ibis_dtypes.DataType:

@@ -169,6 +169,10 @@ def udf_http(request):
             reply = convert_to_bq_json(
                 output_type, udf(*convert_call(input_types, call))
             )
+            if type(reply) is list:
+                # Since the BQ remote function does not support array yet,
+                # return a json serialized version of the reply
+                reply = json.dumps(reply)
             replies.append(reply)
         return_json = json.dumps({"replies": replies})
         return return_json
@@ -191,8 +195,15 @@ def udf_http_row_processor(request):
         replies = []
         for call in calls:
             reply = convert_to_bq_json(output_type, udf(get_pd_series(call[0])))
-            if isinstance(reply, float) and (math.isnan(reply) or math.isinf(reply)):
-                # json serialization of the special float values (nan, inf, -inf)
+            if type(reply) is list:
+                # Since the BQ remote function does not support array yet,
+                # return a json serialized version of the reply.
+                # Numpy types are not json serializable, so use their Python
+                # values instead.
+                reply = [val.item() if hasattr(val, "item") else val for val in reply]
+                reply = json.dumps(reply)
+            elif isinstance(reply, float) and (math.isnan(reply) or math.isinf(reply)):
+                # Json serialization of the special float values (nan, inf, -inf)
                 # is not in strict compliance of the JSON specification
                 # https://docs.python.org/3/library/json.html#basic-usage.
                 # Let's convert them to a quoted string representation ("NaN",
@@ -242,14 +253,7 @@ def generate_cloud_function_main_code(
     output_type: str,
     is_row_processor=False,
 ):
-    """Get main.py code for the cloud function for the given user defined function.
-
-    Args:
-        input_types (tuple[str]):
-            Types of the input arguments in BigQuery SQL data type names.
-        output_type (str):
-            Types of the output scalar as a BigQuery SQL data type name.
-    """
+    """Get main.py code for the cloud function for the given user defined function."""
 
     # Pickle the udf with all its dependencies
     udf_code_file, udf_pickle_file = generate_udf_code(def_, directory)

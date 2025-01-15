@@ -4626,6 +4626,33 @@ class DataFrame(generic.NDFrame):
             1    19
             dtype: Int64
 
+        You could return an array output for every input row from the remote
+        function.
+
+            >>> @bpd.remote_function(reuse=False)
+            ... def marks_analyzer(marks: pd.Series) -> list[float]:
+            ...     import statistics
+            ...     average = marks.mean()
+            ...     median = marks.median()
+            ...     gemetric_mean = statistics.geometric_mean(marks.values)
+            ...     harmonic_mean = statistics.harmonic_mean(marks.values)
+            ...     return [
+            ...         round(stat, 2) for stat in
+            ...         (average, median, gemetric_mean, harmonic_mean)
+            ...     ]
+
+            >>> df = bpd.DataFrame({
+            ...     "physics": [67, 80, 75],
+            ...     "chemistry": [88, 56, 72],
+            ...     "algebra": [78, 91, 79]
+            ... }, index=["Alice", "Bob", "Charlie"])
+            >>> stats = df.apply(marks_analyzer, axis=1)
+            >>> stats
+            Alice      [77.67 78.   77.19 76.71]
+            Bob        [75.67 80.   74.15 72.56]
+            Charlie    [75.33 75.   75.28 75.22]
+            dtype: list<item: double>[pyarrow]
+
         You could also apply a remote function which accepts multiple parameters
         to every row of a DataFrame by using it with `axis=1` if the DataFrame
         has matching number of columns and data types. Note: This feature is

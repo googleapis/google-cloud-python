@@ -20,6 +20,7 @@ from google.cloud import bigquery
 import pandas as pd
 import pyarrow
 import pytest
+import test_utils.prefixer
 
 import bigframes
 import bigframes.dtypes
@@ -27,6 +28,8 @@ import bigframes.exceptions
 from bigframes.functions import _utils as rf_utils
 from bigframes.functions import remote_function as rf
 from tests.system.utils import assert_pandas_df_equal
+
+_prefixer = test_utils.prefixer.Prefixer("bigframes", "")
 
 
 @pytest.fixture(scope="module")
@@ -770,7 +773,7 @@ def test_read_gbq_function_reads_udfs(session, bigquery_client, dataset_id):
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_read_gbq_function_enforces_explicit_types(
+def test_read_gbq_function_requires_explicit_types(
     session, bigquery_client, dataset_id
 ):
     dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
@@ -837,6 +840,132 @@ def test_read_gbq_function_enforces_explicit_types(
             str(neither_type_specified.reference),
             session=session,
         )
+
+
+@pytest.mark.parametrize(
+    ("session_fixture",),
+    [
+        pytest.param("session"),
+        pytest.param("unordered_session"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("array_type", "expected_data"),
+    [
+        pytest.param(None, ["[1,2,3]", "[10,11,12]", "[100,101,102]"], id="None"),
+        pytest.param(
+            list[str],
+            [["1", "2", "3"], ["10", "11", "12"], ["100", "101", "102"]],
+            id="list-str",
+        ),
+        pytest.param(
+            list[int], [[1, 2, 3], [10, 11, 12], [100, 101, 102]], id="list-int"
+        ),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_respects_python_output_type(
+    request, session_fixture, bigquery_client, dataset_id, array_type, expected_data
+):
+    session = request.getfixturevalue(session_fixture)
+    dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
+    arg = bigquery.RoutineArgument(
+        name="x",
+        data_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+    )
+    sql_routine = bigquery.Routine(
+        dataset_ref.routine(_prefixer.create_prefix()),
+        body="TO_JSON_STRING([x, x+1, x+2])",
+        arguments=[arg],
+        return_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.STRING),
+        description=rf_utils.get_bigframes_metadata(python_output_type=array_type),
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+
+    # Create the routine in BigQuery and read it back using read_gbq_function.
+    bigquery_client.create_routine(sql_routine, exists_ok=True)
+    func = rf.read_gbq_function(str(sql_routine.reference), session=session)
+
+    # test that the function works as expected
+    s = bigframes.series.Series([1, 10, 100])
+    expected = pd.Series(expected_data)
+    actual = s.apply(func).to_pandas()
+
+    # ignore type disparities, e.g. "int64" in pandas v/s "Int64" in bigframes
+    pd.testing.assert_series_equal(
+        expected, actual, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    ("array_type",),
+    [
+        pytest.param(list[bool], id="list-bool"),
+        pytest.param(list[float], id="list-float"),
+        pytest.param(list[int], id="list-int"),
+        pytest.param(list[str], id="list-str"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_supports_python_output_type_only_for_string_outputs(
+    session, bigquery_client, dataset_id, array_type
+):
+    dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
+    arg = bigquery.RoutineArgument(
+        name="x",
+        data_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+    )
+    sql_routine = bigquery.Routine(
+        dataset_ref.routine(_prefixer.create_prefix()),
+        body="x+1",
+        arguments=[arg],
+        return_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+        description=rf_utils.get_bigframes_metadata(python_output_type=array_type),
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+
+    # Create the routine in BigQuery and read it back using read_gbq_function.
+    bigquery_client.create_routine(sql_routine, exists_ok=True)
+
+    # reading back will fail because we currently allow specifying an explicit
+    # output_type for BQ functions with STRING output
+    with pytest.raises(
+        TypeError,
+        match="An explicit output_type should be provided only for a BigQuery function with STRING output.",
+    ):
+        rf.read_gbq_function(str(sql_routine.reference), session=session)
+
+
+@pytest.mark.parametrize(
+    ("array_type",),
+    [
+        pytest.param(list[bool], id="list-bool"),
+        pytest.param(list[float], id="list-float"),
+        pytest.param(list[int], id="list-int"),
+        pytest.param(list[str], id="list-str"),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_supported_python_output_type(
+    session, bigquery_client, dataset_id, array_type
+):
+    dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
+    arg = bigquery.RoutineArgument(
+        name="x",
+        data_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+    )
+    sql_routine = bigquery.Routine(
+        dataset_ref.routine(_prefixer.create_prefix()),
+        body="CAST(x AS STRING)",
+        arguments=[arg],
+        return_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.STRING),
+        description=rf_utils.get_bigframes_metadata(python_output_type=array_type),
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+
+    # Create the routine in BigQuery and read it back using read_gbq_function.
+    bigquery_client.create_routine(sql_routine, exists_ok=True)
+    rf.read_gbq_function(str(sql_routine.reference), session=session)
 
 
 @pytest.mark.flaky(retries=2, delay=120)

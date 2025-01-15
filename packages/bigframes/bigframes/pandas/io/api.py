@@ -325,7 +325,10 @@ def read_parquet(
 read_parquet.__doc__ = inspect.getdoc(bigframes.session.Session.read_parquet)
 
 
-def read_gbq_function(function_name: str, is_row_processor: bool = False):
+def read_gbq_function(
+    function_name: str,
+    is_row_processor: bool = False,
+):
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq_function,
         function_name=function_name,

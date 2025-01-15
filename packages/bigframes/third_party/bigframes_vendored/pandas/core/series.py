@@ -1241,6 +1241,28 @@ class Series(NDFrame):  # type: ignore[misc]
             >>> names = bpd.Series(["Alice", "Bob"])
             >>> hashes = names.apply(get_hash)
 
+        You could return an array output from the remote function.
+
+            >>> @bpd.remote_function(reuse=False)
+            ... def text_analyzer(text: str) -> list[int]:
+            ...     words = text.count(" ") + 1
+            ...     periods = text.count(".")
+            ...     exclamations = text.count("!")
+            ...     questions = text.count("?")
+            ...     return [words, periods, exclamations, questions]
+
+            >>> texts = bpd.Series([
+            ...     "The quick brown fox jumps over the lazy dog.",
+            ...     "I love this product! It's amazing.",
+            ...     "Hungry? Wanna eat? Lets go!"
+            ... ])
+            >>> features = texts.apply(text_analyzer)
+            >>> features
+            0    [9 1 0 0]
+            1    [6 1 1 0]
+            2    [5 0 1 2]
+            dtype: list<item: int64>[pyarrow]
+
         Simple vectorized functions, lambdas or ufuncs can be applied directly
         with `by_row=False`.
 

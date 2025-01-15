@@ -1516,6 +1516,18 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
         )
 
+        # if the output is an array, reconstruct it from the json serialized
+        # string form
+        if bigframes.dtypes.is_array_like(func.output_dtype):
+            import bigframes.bigquery as bbq
+
+            result_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
+                func.output_dtype.pyarrow_dtype.value_type
+            )
+            result_series = bbq.json_extract_string_array(
+                result_series, value_dtype=result_dtype
+            )
+
         return result_series
 
     def combine(
@@ -1543,6 +1555,18 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         result_series = self._apply_binary_op(
             other, ops.BinaryRemoteFunctionOp(func=func)
         )
+
+        # if the output is an array, reconstruct it from the json serialized
+        # string form
+        if bigframes.dtypes.is_array_like(func.output_dtype):
+            import bigframes.bigquery as bbq
+
+            result_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
+                func.output_dtype.pyarrow_dtype.value_type
+            )
+            result_series = bbq.json_extract_string_array(
+                result_series, value_dtype=result_dtype
+            )
 
         return result_series
 

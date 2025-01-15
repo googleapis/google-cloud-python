@@ -15,6 +15,8 @@
 
 import hashlib
 import inspect
+import json
+import typing
 from typing import cast, List, NamedTuple, Optional, Sequence, Set
 
 import bigframes_vendored.ibis.expr.datatypes.core as ibis_dtypes
@@ -26,6 +28,7 @@ import pandas
 import pyarrow
 
 import bigframes.core.compile.ibis_types
+import bigframes.dtypes
 
 # Naming convention for the remote function artifacts
 _BIGFRAMES_REMOTE_FUNCTION_PREFIX = "bigframes"
@@ -194,6 +197,7 @@ class IbisSignature(NamedTuple):
     parameter_names: List[str]
     input_types: List[Optional[ibis_dtypes.DataType]]
     output_type: ibis_dtypes.DataType
+    output_type_override: Optional[ibis_dtypes.DataType] = None
 
 
 def ibis_signature_from_python_signature(
@@ -202,13 +206,77 @@ def ibis_signature_from_python_signature(
     output_type: type,
 ) -> IbisSignature:
 
+    ibis_input_types: List[Optional[ibis_dtypes.DataType]] = [
+        bigframes.core.compile.ibis_types.ibis_type_from_python_type(t)
+        for t in input_types
+    ]
+
+    if typing.get_origin(output_type) is list:
+        ibis_output_type = (
+            bigframes.core.compile.ibis_types.ibis_array_output_type_from_python_type(
+                output_type
+            )
+        )
+    else:
+        ibis_output_type = bigframes.core.compile.ibis_types.ibis_type_from_python_type(
+            output_type
+        )
+
     return IbisSignature(
         parameter_names=list(signature.parameters.keys()),
-        input_types=[
-            bigframes.core.compile.ibis_types.ibis_type_from_python_type(t)
-            for t in input_types
-        ],
-        output_type=bigframes.core.compile.ibis_types.ibis_type_from_python_type(
-            output_type
-        ),
+        input_types=ibis_input_types,
+        output_type=ibis_output_type,
     )
+
+
+def get_python_output_type_from_bigframes_metadata(
+    metadata_text: str,
+) -> Optional[type]:
+    try:
+        metadata_dict = json.loads(metadata_text)
+    except (TypeError, json.decoder.JSONDecodeError):
+        return None
+
+    try:
+        output_type = metadata_dict["value"]["python_array_output_type"]
+    except KeyError:
+        return None
+
+    for (
+        python_output_array_type
+    ) in bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
+        if python_output_array_type.__name__ == output_type:
+            return list[python_output_array_type]  # type: ignore
+
+    return None
+
+
+def get_bigframes_metadata(*, python_output_type: Optional[type] = None) -> str:
+    # Let's keep the actual metadata inside one level of nesting so that in
+    # future we can use a top level key "version" (parallel to "value"), based
+    # on which "value" can be interpreted according to the "version". The
+    # absence of "version" should be interpreted as default version.
+    inner_metadata = {}
+    if typing.get_origin(python_output_type) is list:
+        python_output_array_type = typing.get_args(python_output_type)[0]
+        if (
+            python_output_array_type
+            in bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES
+        ):
+            inner_metadata[
+                "python_array_output_type"
+            ] = python_output_array_type.__name__
+
+    metadata = {"value": inner_metadata}
+    metadata_ser = json.dumps(metadata)
+
+    # let's make sure the serialized value is deserializable
+    if (
+        get_python_output_type_from_bigframes_metadata(metadata_ser)
+        != python_output_type
+    ):
+        raise ValueError(
+            f"python_output_type {python_output_type} is not serializable."
+        )
+
+    return metadata_ser
