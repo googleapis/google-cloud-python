@@ -145,7 +145,7 @@ class Secret(proto.Message):
             TTL expires.
         customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryption):
             Optional. The customer-managed encryption configuration of
-            the Regionalised Secrets. If no configuration is provided,
+            the regionalized secrets. If no configuration is provided,
             Google-managed default encryption is used.
 
             Updates to the
@@ -268,16 +268,15 @@ class SecretVersion(proto.Message):
             Optional. Output only. Scheduled destroy time for secret
             version. This is a part of the Delayed secret version
             destroy feature. For a Secret with a valid version destroy
-            TTL, when a secert version is destroyed, the version is
-            moved to disabled state and it is scheduled for destruction.
-            The version is destroyed only after the
-            ``scheduled_destroy_time``.
+            TTL, when a secert version is destroyed, version is moved to
+            disabled state and it is scheduled for destruction Version
+            is destroyed only after the scheduled_destroy_time.
         customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryptionStatus):
             Output only. The customer-managed encryption status of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
             Only populated if customer-managed encryption is used and
             [Secret][google.cloud.secretmanager.v1.Secret] is a
-            Regionalised Secret.
+            regionalized secret.
     """
 
     class State(proto.Enum):
@@ -409,7 +408,8 @@ class Replication(proto.Message):
     class UserManaged(proto.Message):
         r"""A replication policy that replicates the
         [Secret][google.cloud.secretmanager.v1.Secret] payload into the
-        locations specified in [Secret.replication.user_managed.replicas][]
+        locations specified in
+        [Replication.UserManaged.replicas][google.cloud.secretmanager.v1.Replication.UserManaged.replicas]
 
         Attributes:
             replicas (MutableSequence[google.cloud.secretmanager_v1.types.Replication.UserManaged.Replica]):
@@ -646,7 +646,7 @@ class Topic(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Pub/Sub topic that will
+            Identifier. The resource name of the Pub/Sub topic that will
             be published to, in the following format:
             ``projects/*/topics/*``. For publication to succeed, the
             Secret Manager service agent must have the
