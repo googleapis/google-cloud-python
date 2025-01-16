@@ -1514,6 +1514,7 @@ def test_get_node(request_type, transport: str = "grpc"):
             api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
             queued_resource="queued_resource_value",
             multislice_node=True,
+            autocheckpoint_enabled=True,
         )
         response = client.get_node(request)
 
@@ -1538,6 +1539,7 @@ def test_get_node(request_type, transport: str = "grpc"):
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
     assert response.queued_resource == "queued_resource_value"
     assert response.multislice_node is True
+    assert response.autocheckpoint_enabled is True
 
 
 def test_get_node_non_empty_request_with_auto_populated_field():
@@ -1674,6 +1676,7 @@ async def test_get_node_async(
                 api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
                 queued_resource="queued_resource_value",
                 multislice_node=True,
+                autocheckpoint_enabled=True,
             )
         )
         response = await client.get_node(request)
@@ -1699,6 +1702,7 @@ async def test_get_node_async(
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
     assert response.queued_resource == "queued_resource_value"
     assert response.multislice_node is True
+    assert response.autocheckpoint_enabled is True
 
 
 @pytest.mark.asyncio
@@ -3342,6 +3346,265 @@ async def test_update_node_flattened_error_async():
             node=cloud_tpu.Node(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.PerformMaintenanceRequest,
+        dict,
+    ],
+)
+def test_perform_maintenance(request_type, transport: str = "grpc"):
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.perform_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_tpu.PerformMaintenanceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_perform_maintenance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.PerformMaintenanceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.perform_maintenance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.PerformMaintenanceRequest(
+            name="name_value",
+        )
+
+
+def test_perform_maintenance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TpuClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.perform_maintenance in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.perform_maintenance
+        ] = mock_rpc
+        request = {}
+        client.perform_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.perform_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = TpuAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.perform_maintenance
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.perform_maintenance
+        ] = mock_rpc
+
+        request = {}
+        await client.perform_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.perform_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_tpu.PerformMaintenanceRequest
+):
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.perform_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_tpu.PerformMaintenanceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_async_from_dict():
+    await test_perform_maintenance_async(request_type=dict)
+
+
+def test_perform_maintenance_field_headers():
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tpu.PerformMaintenanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.perform_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_field_headers_async():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tpu.PerformMaintenanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.perform_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -5301,6 +5564,267 @@ async def test_reset_queued_resource_flattened_error_async():
             cloud_tpu.ResetQueuedResourceRequest(),
             name="name_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.PerformMaintenanceQueuedResourceRequest,
+        dict,
+    ],
+)
+def test_perform_maintenance_queued_resource(request_type, transport: str = "grpc"):
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance_queued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.perform_maintenance_queued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_tpu.PerformMaintenanceQueuedResourceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_perform_maintenance_queued_resource_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.PerformMaintenanceQueuedResourceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance_queued_resource), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.perform_maintenance_queued_resource(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.PerformMaintenanceQueuedResourceRequest(
+            name="name_value",
+        )
+
+
+def test_perform_maintenance_queued_resource_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TpuClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.perform_maintenance_queued_resource
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.perform_maintenance_queued_resource
+        ] = mock_rpc
+        request = {}
+        client.perform_maintenance_queued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.perform_maintenance_queued_resource(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_queued_resource_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = TpuAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.perform_maintenance_queued_resource
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.perform_maintenance_queued_resource
+        ] = mock_rpc
+
+        request = {}
+        await client.perform_maintenance_queued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.perform_maintenance_queued_resource(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_queued_resource_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_tpu.PerformMaintenanceQueuedResourceRequest,
+):
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance_queued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.perform_maintenance_queued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_tpu.PerformMaintenanceQueuedResourceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_queued_resource_async_from_dict():
+    await test_perform_maintenance_queued_resource_async(request_type=dict)
+
+
+def test_perform_maintenance_queued_resource_field_headers():
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tpu.PerformMaintenanceQueuedResourceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance_queued_resource), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.perform_maintenance_queued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_perform_maintenance_queued_resource_field_headers_async():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tpu.PerformMaintenanceQueuedResourceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance_queued_resource), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.perform_maintenance_queued_resource(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -7606,6 +8130,463 @@ async def test_get_guest_attributes_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloud_tpu.ListReservationsRequest,
+        dict,
+    ],
+)
+def test_list_reservations(request_type, transport: str = "grpc"):
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_tpu.ListReservationsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_reservations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_tpu.ListReservationsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReservationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_reservations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_tpu.ListReservationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_reservations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_tpu.ListReservationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_reservations_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TpuClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_reservations in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_reservations
+        ] = mock_rpc
+        request = {}
+        client.list_reservations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_reservations(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_reservations_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = TpuAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_reservations
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_reservations
+        ] = mock_rpc
+
+        request = {}
+        await client.list_reservations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_reservations(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_reservations_async(
+    transport: str = "grpc_asyncio", request_type=cloud_tpu.ListReservationsRequest
+):
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.ListReservationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_reservations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_tpu.ListReservationsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListReservationsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_reservations_async_from_dict():
+    await test_list_reservations_async(request_type=dict)
+
+
+def test_list_reservations_field_headers():
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tpu.ListReservationsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        call.return_value = cloud_tpu.ListReservationsResponse()
+        client.list_reservations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_reservations_field_headers_async():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_tpu.ListReservationsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.ListReservationsResponse()
+        )
+        await client.list_reservations(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_reservations_pager(transport_name: str = "grpc"):
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[],
+                next_page_token="def",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_reservations(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_tpu.Reservation) for i in results)
+
+
+def test_list_reservations_pages(transport_name: str = "grpc"):
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[],
+                next_page_token="def",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_reservations(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_reservations_async_pager():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[],
+                next_page_token="def",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_reservations(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, cloud_tpu.Reservation) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_reservations_async_pages():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[],
+                next_page_token="def",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListReservationsResponse(
+                reservations=[
+                    cloud_tpu.Reservation(),
+                    cloud_tpu.Reservation(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_reservations(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloud_tpu.SimulateMaintenanceEventRequest,
         dict,
     ],
@@ -8118,6 +9099,29 @@ def test_update_node_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_perform_maintenance_empty_call_grpc():
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.perform_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_tpu.PerformMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_list_queued_resources_empty_call_grpc():
     client = TpuClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8227,6 +9231,29 @@ def test_reset_queued_resource_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ResetQueuedResourceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_perform_maintenance_queued_resource_empty_call_grpc():
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance_queued_resource), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.perform_maintenance_queued_resource(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_tpu.PerformMaintenanceQueuedResourceRequest()
 
         assert args[0] == request_msg
 
@@ -8371,6 +9398,29 @@ def test_get_guest_attributes_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_list_reservations_empty_call_grpc():
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        call.return_value = cloud_tpu.ListReservationsResponse()
+        client.list_reservations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_tpu.ListReservationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_simulate_maintenance_event_empty_call_grpc():
     client = TpuClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8461,6 +9511,7 @@ async def test_get_node_empty_call_grpc_asyncio():
                 api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
                 queued_resource="queued_resource_value",
                 multislice_node=True,
+                autocheckpoint_enabled=True,
             )
         )
         await client.get_node(request=None)
@@ -8594,6 +9645,33 @@ async def test_update_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.UpdateNodeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_perform_maintenance_empty_call_grpc_asyncio():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.perform_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_tpu.PerformMaintenanceRequest()
 
         assert args[0] == request_msg
 
@@ -8735,6 +9813,33 @@ async def test_reset_queued_resource_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_tpu.ResetQueuedResourceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_perform_maintenance_queued_resource_empty_call_grpc_asyncio():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.perform_maintenance_queued_resource), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.perform_maintenance_queued_resource(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_tpu.PerformMaintenanceQueuedResourceRequest()
 
         assert args[0] == request_msg
 
@@ -8916,6 +10021,35 @@ async def test_get_guest_attributes_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_list_reservations_empty_call_grpc_asyncio():
+    client = TpuAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_tpu.ListReservationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_reservations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_tpu.ListReservationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_simulate_maintenance_event_empty_call_grpc_asyncio():
     client = TpuAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8980,17 +10114,20 @@ def test_tpu_base_transport():
         "stop_node",
         "start_node",
         "update_node",
+        "perform_maintenance",
         "list_queued_resources",
         "get_queued_resource",
         "create_queued_resource",
         "delete_queued_resource",
         "reset_queued_resource",
+        "perform_maintenance_queued_resource",
         "generate_service_identity",
         "list_accelerator_types",
         "get_accelerator_type",
         "list_runtime_versions",
         "get_runtime_version",
         "get_guest_attributes",
+        "list_reservations",
         "simulate_maintenance_event",
         "get_location",
         "list_locations",
@@ -9444,10 +10581,38 @@ def test_parse_queued_resource_path():
     assert expected == actual
 
 
-def test_runtime_version_path():
+def test_reservation_path():
     project = "cuttlefish"
     location = "mussel"
-    runtime_version = "winkle"
+    reservation = "winkle"
+    expected = (
+        "projects/{project}/locations/{location}/reservations/{reservation}".format(
+            project=project,
+            location=location,
+            reservation=reservation,
+        )
+    )
+    actual = TpuClient.reservation_path(project, location, reservation)
+    assert expected == actual
+
+
+def test_parse_reservation_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "reservation": "abalone",
+    }
+    path = TpuClient.reservation_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TpuClient.parse_reservation_path(path)
+    assert expected == actual
+
+
+def test_runtime_version_path():
+    project = "squid"
+    location = "clam"
+    runtime_version = "whelk"
     expected = "projects/{project}/locations/{location}/runtimeVersions/{runtime_version}".format(
         project=project,
         location=location,
@@ -9459,9 +10624,9 @@ def test_runtime_version_path():
 
 def test_parse_runtime_version_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "runtime_version": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "runtime_version": "nudibranch",
     }
     path = TpuClient.runtime_version_path(**expected)
 
@@ -9471,7 +10636,7 @@ def test_parse_runtime_version_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9481,7 +10646,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = TpuClient.common_billing_account_path(**expected)
 
@@ -9491,7 +10656,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9501,7 +10666,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = TpuClient.common_folder_path(**expected)
 
@@ -9511,7 +10676,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9521,7 +10686,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = TpuClient.common_organization_path(**expected)
 
@@ -9531,7 +10696,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9541,7 +10706,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = TpuClient.common_project_path(**expected)
 
@@ -9551,8 +10716,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9563,8 +10728,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = TpuClient.common_location_path(**expected)
 
