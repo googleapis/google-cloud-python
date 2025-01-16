@@ -1347,6 +1347,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def sort_values(
         self, *, axis=0, ascending=True, kind: str = "quicksort", na_position="last"
     ) -> Series:
+        if axis != 0 and axis != "index":
+            raise ValueError(f"No axis named {axis} for object type Series")
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
         block = self._block.order_by(
@@ -1361,6 +1363,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     @validations.requires_index
     def sort_index(self, *, axis=0, ascending=True, na_position="last") -> Series:
         # TODO(tbergeron): Support level parameter once multi-index introduced.
+        if axis != 0 and axis != "index":
+            raise ValueError(f"No axis named {axis} for object type Series")
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
         block = self._block
