@@ -84,9 +84,9 @@ class TestTimeToDeadlineTimeout(object):
         wrapped()
         target.assert_called_with(timeout=3.0)
         wrapped()
-        target.assert_called_with(timeout=0.0)
+        target.assert_called_with(timeout=42.0)
         wrapped()
-        target.assert_called_with(timeout=0.0)
+        target.assert_called_with(timeout=42.0)
 
     def test_apply_no_timeout(self):
         target = mock.Mock(spec=["__call__", "__name__"], __name__="target")

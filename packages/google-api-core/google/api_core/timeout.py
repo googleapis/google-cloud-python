@@ -102,8 +102,7 @@ class TimeToDeadlineTimeout(object):
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
 
-            remaining_timeout = self._timeout
-            if remaining_timeout is not None:
+            if self._timeout is not None:
                 # All calculations are in seconds
                 now_timestamp = self._clock().timestamp()
 
@@ -114,8 +113,19 @@ class TimeToDeadlineTimeout(object):
                     now_timestamp = first_attempt_timestamp
 
                 time_since_first_attempt = now_timestamp - first_attempt_timestamp
-                # Avoid setting negative timeout
-                kwargs["timeout"] = max(0, self._timeout - time_since_first_attempt)
+                remaining_timeout = self._timeout - time_since_first_attempt
+
+                # Although the `deadline` parameter in `google.api_core.retry.Retry`
+                # is deprecated, and should be treated the same as the `timeout`,
+                # it is still possible for the `deadline` argument in
+                # `google.api_core.retry.Retry` to be larger than the `timeout`.
+                # See https://github.com/googleapis/python-api-core/issues/654
+                # Only positive non-zero timeouts are supported.
+                # Revert back to the initial timeout for negative or 0 timeout values.
+                if remaining_timeout < 1:
+                    remaining_timeout = self._timeout
+
+                kwargs["timeout"] = remaining_timeout
 
             return func(*args, **kwargs)
 
