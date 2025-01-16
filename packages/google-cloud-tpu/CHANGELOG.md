@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.21.0...google-cloud-tpu-v1.22.0) (2025-01-16)
+
+
+### Features
+
+* **v2alpha1:** A new enum `State` is added ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** add creation timestamp to queued resources ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** add repeated networks ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** Add reservation_name field ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** Add UNKNOWN to TPU node state, This state will be used to prevent a node from being marked as READY during diagnose after it has failed repair ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** add Usage to CLH getreservations API ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** add workload_type field ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** Introduce PerformMaintenance API ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** Make V5Litepod accelerator config available ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** Make v6e available for public preview ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** Promote `spot` to v2alpha1 API ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** provide WAITING_FOR_CAPACITY state for queued resource, when the session is waiting to be provisioned ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** publish boot_disk_config to support CHD with KMS ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** v5p available for public review ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+
+
+### Documentation
+
+* **v2alpha1:** A comment for field `network_config` in message `.google.cloud.tpu.v2alpha1.Node` is changed ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+* **v2alpha1:** A comment for field `state_initiator` in message `.google.cloud.tpu.v2alpha1.QueuedResourceState` is changed ([c7e1d21](https://github.com/googleapis/google-cloud-python/commit/c7e1d21b96965d8879105874f82c55f23e993adc))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.20.0...google-cloud-tpu-v1.21.0) (2025-01-13)
 
 
