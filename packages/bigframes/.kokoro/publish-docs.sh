@@ -20,10 +20,6 @@ export PYTHONUNBUFFERED=1
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-# Install nox
-python3.10 -m pip install --require-hashes -r .kokoro/requirements.txt
-python3.10 -m nox --version
-
 # build docs
 nox -s docs
 
