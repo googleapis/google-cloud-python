@@ -50,6 +50,12 @@ def join_by_column_ordered(
         first the coalesced join keys, then, all the left columns, and
         finally, all the right columns.
     """
+    if type == "right":
+        if left.order_non_deterministic:
+            right = right._bake_ordering()
+    else:
+        if left.order_non_deterministic:
+            left = left._bake_ordering()
 
     # Do not reset the generator
     l_value_mapping = dict(zip(left.column_ids, left.column_ids))

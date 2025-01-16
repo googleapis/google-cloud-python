@@ -407,9 +407,12 @@ def test_read_gbq_w_ambigous_name(
     session: bigframes.Session,
 ):
     # Ensure read_gbq works when table and column share a name
-    df = session.read_gbq(
-        "bigframes-dev.bigframes_tests_sys.ambiguous_name"
-    ).to_pandas()
+    df = (
+        session.read_gbq("bigframes-dev.bigframes_tests_sys.ambiguous_name")
+        .sort_values("x", ascending=False)
+        .reset_index(drop=True)
+        .to_pandas()
+    )
     pd_df = pd.DataFrame({"x": [2, 1], "ambiguous_name": [20, 10]})
     pd.testing.assert_frame_equal(df, pd_df, check_dtype=False, check_index_type=False)
 

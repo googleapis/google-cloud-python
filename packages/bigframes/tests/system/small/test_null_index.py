@@ -247,6 +247,7 @@ def test_null_index_stack(scalars_df_null_index, scalars_pandas_df_default_index
         .droplevel(level=0, axis=0)
     )
     pd_result.index = pd_result.index.astype(bf_result.index.dtype)
+
     pd.testing.assert_series_equal(
         bf_result,
         pd_result,

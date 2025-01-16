@@ -220,8 +220,14 @@ class ArrayValue:
     def filter(self, predicate: ex.Expression):
         return ArrayValue(nodes.FilterNode(child=self.node, predicate=predicate))
 
-    def order_by(self, by: Sequence[OrderingExpression]) -> ArrayValue:
-        return ArrayValue(nodes.OrderByNode(child=self.node, by=tuple(by)))
+    def order_by(
+        self, by: Sequence[OrderingExpression], is_total_order: bool = False
+    ) -> ArrayValue:
+        return ArrayValue(
+            nodes.OrderByNode(
+                child=self.node, by=tuple(by), is_total_order=is_total_order
+            )
+        )
 
     def reversed(self) -> ArrayValue:
         return ArrayValue(nodes.ReversedNode(child=self.node))

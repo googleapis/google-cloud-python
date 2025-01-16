@@ -206,6 +206,10 @@ class Expression(abc.ABC):
         return False
 
     @property
+    def deterministic(self) -> bool:
+        return True
+
+    @property
     def is_identity(self) -> bool:
         """True for identity operation that does not transform input."""
         return False
@@ -409,4 +413,10 @@ class OpExpression(Expression):
     @property
     def is_bijective(self) -> bool:
         # TODO: Mark individual functions as bijective?
-        return False
+        return all(input.is_bijective for input in self.inputs) and self.op.is_bijective
+
+    @property
+    def deterministic(self) -> bool:
+        return (
+            all(input.deterministic for input in self.inputs) and self.op.deterministic
+        )

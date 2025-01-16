@@ -25,6 +25,7 @@ import pandas as pd
 from pandas.tseries.offsets import DateOffset
 import pyarrow as pa
 
+import bigframes.dtypes
 import bigframes.dtypes as dtypes
 import bigframes.operations.type as op_typing
 
@@ -42,8 +43,18 @@ class RowOp(typing.Protocol):
         ...
 
     @property
-    def order_preserving(self) -> bool:
+    def is_monotonic(self) -> bool:
         """Whether the row operation preserves total ordering. Can be pruned from ordering expressions."""
+        ...
+
+    @property
+    def is_bijective(self) -> bool:
+        """Whether the operation has a 1:1 mapping between inputs and outputs"""
+        ...
+
+    @property
+    def deterministic(self) -> bool:
+        """Whether the operation is deterministic" (given deterministic inputs)"""
         ...
 
 
@@ -57,9 +68,19 @@ class ScalarOp:
         raise NotImplementedError("Abstract operation has no output type")
 
     @property
-    def order_preserving(self) -> bool:
+    def is_monotonic(self) -> bool:
         """Whether the row operation preserves total ordering. Can be pruned from ordering expressions."""
         return False
+
+    @property
+    def is_bijective(self) -> bool:
+        """Whether the operation has a 1:1 mapping between inputs and outputs"""
+        return False
+
+    @property
+    def deterministic(self) -> bool:
+        """Whether the operation is deterministic" (given deterministic inputs)"""
+        return True
 
 
 @dataclasses.dataclass(frozen=True)
@@ -1028,6 +1049,24 @@ class StructOp(NaryOp):
         return pd.ArrowDtype(
             pa.struct(fields)
         )  # [(name1, value1), (name2, value2), ...]
+
+
+# Really doesn't need to be its own op, but allows us to try to get the most compact representation
+@dataclasses.dataclass(frozen=True)
+class RowKey(NaryOp):
+    name: typing.ClassVar[str] = "rowkey"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return bigframes.dtypes.STRING_DTYPE
+
+    @property
+    def is_bijective(self) -> bool:
+        """Whether the operation has a 1:1 mapping between inputs and outputs"""
+        return True
+
+    @property
+    def deterministic(self) -> bool:
+        return False
 
 
 # Just parameterless unary ops for now

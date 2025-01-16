@@ -43,12 +43,14 @@ import bigframes.core.blocks as blocks
 import bigframes.core.compile
 import bigframes.core.expression as expression
 import bigframes.core.guid
+import bigframes.core.ordering
 import bigframes.core.pruning
 import bigframes.core.schema as schemata
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions
 import bigframes.formatting_helpers as formatting_helpers
+import bigframes.operations
 import bigframes.operations.aggregations as agg_ops
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
@@ -116,12 +118,14 @@ class GbqDataLoader:
         storage_manager: bigframes.session.temp_storage.TemporaryGbqStorageManager,
         default_index_type: bigframes.enums.DefaultIndexKind,
         scan_index_uniqueness: bool,
+        force_total_order: bool,
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
     ):
         self._bqclient = bqclient
         self._storage_manager = storage_manager
         self._default_index_type = default_index_type
         self._scan_index_uniqueness = scan_index_uniqueness
+        self._force_total_order = force_total_order
         self._df_snapshot: Dict[
             bigquery.TableReference, Tuple[datetime.datetime, bigquery.Table]
         ] = {}
@@ -439,6 +443,21 @@ class GbqDataLoader:
             primary_key=index_cols if is_index_unique else (),
             session=self._session,
         )
+        # if we don't have a unique index, we order by row hash if we are in strict mode
+        if self._force_total_order:
+            if not is_index_unique:
+                array_value = array_value.order_by(
+                    [
+                        bigframes.core.ordering.OrderingExpression(
+                            bigframes.operations.RowKey().as_expr(
+                                *(id for id in array_value.column_ids)
+                            ),
+                            # More concise SQL this way.
+                            na_last=False,
+                        )
+                    ],
+                    is_total_order=True,
+                )
 
         # ----------------------------------------------------
         # Create Default Sequential Index if still have no index

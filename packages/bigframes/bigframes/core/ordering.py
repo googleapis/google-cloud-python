@@ -59,6 +59,10 @@ class OrderingExpression:
     def referenced_columns(self) -> Set[ids.ColumnId]:
         return set(self.scalar_expression.column_references)
 
+    @property
+    def deterministic(self) -> bool:
+        return self.scalar_expression.deterministic
+
     def remap_column_refs(
         self,
         mapping: Mapping[ids.ColumnId, ids.ColumnId],

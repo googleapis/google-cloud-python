@@ -122,12 +122,12 @@ def vector_search(
         ...             base_table="bigframes-dev.bigframes_tests_sys.base_table",
         ...             column_to_search="my_embedding",
         ...             query=search_query,
-        ...             top_k=2)
+        ...             top_k=2).sort_values("id")
           query_id  embedding  id my_embedding  distance
-        1      cat  [3.  5.2]   5    [5.  5.4]  2.009975
         0      dog    [1. 2.]   1      [1. 2.]       0.0
-        0      dog    [1. 2.]   4    [1.  3.2]       1.2
         1      cat  [3.  5.2]   2      [2. 4.]   1.56205
+        0      dog    [1. 2.]   4    [1.  3.2]       1.2
+        1      cat  [3.  5.2]   5    [5.  5.4]  2.009975
         <BLANKLINE>
         [4 rows x 5 columns]
 
@@ -141,12 +141,12 @@ def vector_search(
         ...             column_to_search="my_embedding",
         ...             query=search_query,
         ...             top_k=2,
-        ...             use_brute_force=True)
+        ...             use_brute_force=True).sort_values("id")
              embedding  id my_embedding  distance
         dog    [1. 2.]   1      [1. 2.]       0.0
-        cat  [3.  5.2]   5    [5.  5.4]  2.009975
-        dog    [1. 2.]   4    [1.  3.2]       1.2
         cat  [3.  5.2]   2      [2. 4.]   1.56205
+        dog    [1. 2.]   4    [1.  3.2]       1.2
+        cat  [3.  5.2]   5    [5.  5.4]  2.009975
         <BLANKLINE>
         [4 rows x 4 columns]
 

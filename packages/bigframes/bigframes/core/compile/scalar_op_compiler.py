@@ -26,6 +26,7 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 import numpy as np
 import pandas as pd
 
+import bigframes.core.compile.default_ordering
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
 import bigframes.dtypes
@@ -1848,6 +1849,11 @@ def struct_op_impl(
         data[op.column_names[i]] = value
 
     return ibis_types.struct(data)
+
+
+@scalar_op_compiler.register_nary_op(ops.RowKey, pass_op=True)
+def rowkey_op_impl(*values: ibis_types.Value, op: ops.RowKey) -> ibis_types.Value:
+    return bigframes.core.compile.default_ordering.gen_row_key(values)
 
 
 # Helpers

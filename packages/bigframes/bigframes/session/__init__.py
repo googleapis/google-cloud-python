@@ -269,6 +269,7 @@ class Session(
             storage_manager=self._temp_storage_manager,
             default_index_type=self._default_index_type,
             scan_index_uniqueness=self._strictly_ordered,
+            force_total_order=self._strictly_ordered,
             metrics=self._metrics,
         )
 

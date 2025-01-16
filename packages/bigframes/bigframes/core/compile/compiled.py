@@ -278,6 +278,24 @@ class UnorderedIR(BaseIbisIR):
         sql = ibis_bigquery.Backend().compile(self._to_ibis_expr())
         return typing.cast(str, sql)
 
+    def with_total_order(self, by: Sequence[OrderingExpression]) -> OrderedIR:
+        return OrderedIR(
+            table=self._table,
+            columns=self._columns,
+            predicates=self._predicates,
+            ordering=TotalOrdering(
+                ordering_value_columns=tuple(by),
+                total_ordering_columns=frozenset(
+                    map(
+                        ex.DerefOp,
+                        itertools.chain.from_iterable(
+                            col.referenced_columns for col in by
+                        ),
+                    )
+                ),
+            ),
+        )
+
     def row_count(self, name: str) -> OrderedIR:
         original_table = self._to_ibis_expr()
         ibis_table = original_table.agg(
@@ -577,6 +595,13 @@ class OrderedIR(BaseIbisIR):
         return True
 
     @property
+    def order_non_deterministic(self) -> bool:
+        # ordering suffix non-determinism is ok, as rand() is used as suffix for auto-generated order keys.
+        # but must be resolved before or explode, otherwise the engine might pull the rand() evaluation above the join,
+        # creating inconsistencies
+        return not all(col.deterministic for col in self._ordering.all_ordering_columns)
+
+    @property
     def has_total_order(self) -> bool:
         return isinstance(self._ordering, TotalOrdering)
 
@@ -722,6 +747,9 @@ class OrderedIR(BaseIbisIR):
         )
 
     def explode(self, columns: typing.Sequence[ex.DerefOp]) -> OrderedIR:
+        if self.order_non_deterministic:
+            id = bigframes.core.guid.generate_guid()
+            return self.promote_offsets(id)
         table = self._to_ibis_expr(ordering_mode="unordered", expose_hidden_cols=True)
         column_ids = tuple(ref.id.sql for ref in columns)
 
@@ -1229,7 +1257,14 @@ class OrderedIR(BaseIbisIR):
                 tuple(new_exprs),
                 self._ordering.integer_encoding,
                 self._ordering.string_encoding,
-                self._ordering.total_ordering_columns,
+                total_ordering_columns=frozenset(
+                    map(
+                        ex.DerefOp,
+                        itertools.chain.from_iterable(
+                            col.referenced_columns for col in new_exprs
+                        ),
+                    )
+                ),
             )
         else:
             new_ordering = RowOrdering(

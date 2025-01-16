@@ -18,7 +18,7 @@ Private helpers for loading a BigQuery table as a BigQuery DataFrames DataFrame.
 
 from __future__ import annotations
 
-from typing import cast
+from typing import cast, Sequence
 
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
@@ -28,7 +28,7 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 import bigframes.core.guid as guid
 
 
-def _convert_to_nonnull_string(column: ibis_types.Column) -> ibis_types.StringValue:
+def _convert_to_nonnull_string(column: ibis_types.Value) -> ibis_types.StringValue:
     col_type = column.type()
     if (
         col_type.is_numeric()
@@ -60,29 +60,35 @@ def _convert_to_nonnull_string(column: ibis_types.Column) -> ibis_types.StringVa
     )
 
 
-def gen_default_ordering(
-    table: ibis_types.Table, use_double_hash: bool = True
-) -> list[bigframes_vendored.ibis.Value]:
+def gen_row_key(
+    columns: Sequence[ibis_types.Value],
+) -> bigframes_vendored.ibis.Value:
     ordering_hash_part = guid.generate_guid("bigframes_ordering_")
     ordering_hash_part2 = guid.generate_guid("bigframes_ordering_")
     ordering_rand_part = guid.generate_guid("bigframes_ordering_")
 
     # All inputs into hash must be non-null or resulting hash will be null
-    str_values = list(
-        map(lambda col: _convert_to_nonnull_string(table[col]), table.columns)
-    )
+    str_values = list(map(_convert_to_nonnull_string, columns))
     full_row_str = (
         str_values[0].concat(*str_values[1:]) if len(str_values) > 1 else str_values[0]
     )
-    full_row_hash = full_row_str.hash().name(ordering_hash_part)
-    # By modifying value slightly, we get another hash uncorrelated with the first
-    full_row_hash_p2 = (full_row_str + "_").hash().name(ordering_hash_part2)
-    # Used to disambiguate between identical rows (which will have identical hash)
-    random_value = bigframes_vendored.ibis.random().name(ordering_rand_part)
-
-    order_values = (
-        [full_row_hash, full_row_hash_p2, random_value]
-        if use_double_hash
-        else [full_row_hash, random_value]
+    full_row_hash = (
+        full_row_str.hash()
+        .name(ordering_hash_part)
+        .cast(ibis_dtypes.String(nullable=True))
     )
-    return order_values
+    # By modifying value slightly, we get another hash uncorrelated with the first
+    full_row_hash_p2 = (
+        (full_row_str + "_")
+        .hash()
+        .name(ordering_hash_part2)
+        .cast(ibis_dtypes.String(nullable=True))
+    )
+    # Used to disambiguate between identical rows (which will have identical hash)
+    random_value = (
+        bigframes_vendored.ibis.random()
+        .name(ordering_rand_part)
+        .cast(ibis_dtypes.String(nullable=True))
+    )
+
+    return full_row_hash.concat(full_row_hash_p2, random_value)
