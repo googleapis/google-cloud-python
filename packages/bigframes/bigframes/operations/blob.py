@@ -49,7 +49,21 @@ class BlobAccessor(base.SeriesMethods):
 
         return bbq.json_extract(details_json, "$.gcs_metadata")
 
-    def display(self, n: int = 3):
+    def content_type(self) -> bigframes.series.Series:
+        """Retrive the content type of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: json-string of the content type."""
+        import bigframes.bigquery as bbq
+
+        metadata = self.metadata()
+
+        return bbq.json_extract(metadata, "$.content_type")
+
+    def display(self, n: int = 3, *, content_type: str = ""):
         """Display the blob content in the IPython Notebook environment. Only works for image type now.
 
         .. note::
@@ -57,20 +71,44 @@ class BlobAccessor(base.SeriesMethods):
 
         Args:
             n (int, default 3): number of sample blob objects to display.
+            content_type (str, default ""): content type of the blob. If unset, use the blob metadata of the storage. Possible values are "image", "audio" and "video".
         """
         import bigframes.bigquery as bbq
 
-        s = bigframes.series.Series(self._block).head(n)
+        # col name doesn't matter here. Rename to avoid column name conflicts
+        df = bigframes.series.Series(self._block).rename("blob_col").head(n).to_frame()
 
-        obj_ref_runtime = s._apply_unary_op(ops.ObjGetAccessUrl(mode="R"))
-        read_urls = bbq.json_extract(
+        obj_ref_runtime = df["blob_col"]._apply_unary_op(ops.ObjGetAccessUrl(mode="R"))
+        df["read_url"] = bbq.json_extract(
             obj_ref_runtime, json_path="$.access_urls.read_url"
         )
 
-        for read_url in read_urls:
-            read_url = str(read_url).strip('"')
-            response = requests.get(read_url)
-            ipy_display.display(ipy_display.Image(response.content))
+        if content_type:
+            df["content_type"] = content_type
+        else:
+            df["content_type"] = df["blob_col"].blob.content_type()
+
+        def display_single_url(read_url: str, content_type: str):
+            content_type = content_type.casefold()
+
+            if content_type.startswith("image"):
+                ipy_display.display(ipy_display.Image(url=read_url))
+            elif content_type.startswith("audio"):
+                # using url somehow doesn't work with audios
+                response = requests.get(read_url)
+                ipy_display.display(ipy_display.Audio(response.content))
+            elif content_type.startswith("video"):
+                ipy_display.display(ipy_display.Video(url=read_url))
+            else:  # display as raw data
+                response = requests.get(read_url)
+                ipy_display.display(response.content, raw=True)
+
+        for _, row in df.iterrows():
+            # both are JSON-formated strings
+            read_url = str(row["read_url"]).strip('"')
+            content_type = str(row["content_type"]).strip('"')
+
+            display_single_url(read_url, content_type)
 
     def image_blur(
         self,
