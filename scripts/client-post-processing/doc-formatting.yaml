@@ -485,3 +485,19 @@ replacements:
                     type. The returned descriptor will not
                     enumerate any monitored resource types.
     count: 1
+  - paths: [
+      packages/google-cloud-orchestration-airflow/google/cloud/orchestration/airflow/service_v1/types/environments.py,
+      packages/google-cloud-orchestration-airflow/google/cloud/orchestration/airflow/service_v1beta1/types/environments.py,
+    ]
+    before: |
+      \{
+                    "example": "ZXhhbXBsZV92YWx1ZQ==",
+                    "another-example":
+                  "YW5vdGhlcl9leGFtcGxlX3ZhbHVl" \}
+    after: |
+        .. code-block:: json\n
+                      {
+                        "example": "ZXhhbXBsZV92YWx1ZQ==",
+                        "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
+                      }\n
+    count: 2

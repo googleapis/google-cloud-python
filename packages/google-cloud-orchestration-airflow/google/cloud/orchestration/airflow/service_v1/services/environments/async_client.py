@@ -1383,7 +1383,7 @@ class EnvironmentsAsyncClient:
         unit that runs a single Composer component.
 
         This method is supported for Cloud Composer environments in
-        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        versions composer-2.\ *.*-airflow-*.*.\* and newer.
 
         .. code-block:: python
 
