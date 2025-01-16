@@ -23,10 +23,10 @@ import bigframes_vendored.sklearn.ensemble._forest
 import bigframes_vendored.xgboost.sklearn
 from google.cloud import bigquery
 
-import bigframes
 from bigframes.core import log_adapter
+import bigframes.dataframe
 from bigframes.ml import base, core, globals, utils
-import bigframes.pandas as bpd
+import bigframes.session
 
 _BQML_PARAMS_MAPPING = {
     "booster": "boosterType",
@@ -102,7 +102,7 @@ class XGBRegressor(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> XGBRegressor:
         assert bq_model.model_type == "BOOSTED_TREE_REGRESSOR"
 
@@ -169,7 +169,7 @@ class XGBRegressor(
     def predict(
         self,
         X: utils.ArrayType,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
@@ -261,7 +261,7 @@ class XGBClassifier(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> XGBClassifier:
         assert bq_model.model_type == "BOOSTED_TREE_CLASSIFIER"
 
@@ -325,7 +325,7 @@ class XGBClassifier(
         )
         return self
 
-    def predict(self, X: utils.ArrayType) -> bpd.DataFrame:
+    def predict(self, X: utils.ArrayType) -> bigframes.dataframe.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
@@ -410,7 +410,7 @@ class RandomForestRegressor(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> RandomForestRegressor:
         assert bq_model.model_type == "RANDOM_FOREST_REGRESSOR"
 
@@ -474,7 +474,7 @@ class RandomForestRegressor(
     def predict(
         self,
         X: utils.ArrayType,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
@@ -576,7 +576,7 @@ class RandomForestClassifier(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> RandomForestClassifier:
         assert bq_model.model_type == "RANDOM_FOREST_CLASSIFIER"
 
@@ -640,7 +640,7 @@ class RandomForestClassifier(
     def predict(
         self,
         X: utils.ArrayType,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)

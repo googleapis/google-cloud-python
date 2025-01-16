@@ -24,8 +24,8 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.sklearn.pipeline
 from google.cloud import bigquery
 
-import bigframes
 from bigframes.core import log_adapter
+import bigframes.dataframe
 from bigframes.ml import (
     base,
     compose,
@@ -35,7 +35,7 @@ from bigframes.ml import (
     preprocessing,
     utils,
 )
-import bigframes.pandas as bpd
+import bigframes.session
 
 
 @log_adapter.class_logger
@@ -92,7 +92,9 @@ class Pipeline(
         self._estimator = estimator
 
     @classmethod
-    def _from_bq(cls, session: bigframes.Session, bq_model: bigquery.Model) -> Pipeline:
+    def _from_bq(
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
+    ) -> Pipeline:
         col_transformer = compose.ColumnTransformer._extract_from_bq_model(bq_model)
         transform = col_transformer._merge(bq_model)
 
@@ -115,14 +117,14 @@ class Pipeline(
         self._estimator._fit(X=X, y=y, transforms=transform_sqls)
         return self
 
-    def predict(self, X: utils.ArrayType) -> bpd.DataFrame:
+    def predict(self, X: utils.ArrayType) -> bigframes.dataframe.DataFrame:
         return self._estimator.predict(X)
 
     def score(
         self,
         X: utils.BigFramesArrayType,
         y: Optional[utils.BigFramesArrayType] = None,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         (X,) = utils.batch_convert_to_dataframe(X)
         if y is not None:
             (y,) = utils.batch_convert_to_dataframe(y)

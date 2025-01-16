@@ -24,10 +24,10 @@ import bigframes_vendored.sklearn.linear_model._base
 import bigframes_vendored.sklearn.linear_model._logistic
 from google.cloud import bigquery
 
-import bigframes
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
+import bigframes.session
 
 _BQML_PARAMS_MAPPING = {
     "optimize_strategy": "optimizationStrategy",
@@ -87,7 +87,7 @@ class LinearRegression(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> LinearRegression:
         assert bq_model.model_type == "LINEAR_REGRESSION"
 
@@ -282,7 +282,7 @@ class LogisticRegression(
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> LogisticRegression:
         assert bq_model.model_type == "LOGISTIC_REGRESSION"
 

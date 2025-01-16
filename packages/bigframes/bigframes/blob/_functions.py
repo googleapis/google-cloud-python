@@ -18,7 +18,7 @@ from typing import Callable, Iterable
 
 import google.cloud.bigquery as bigquery
 
-import bigframes
+import bigframes.session
 import bigframes.session._io.bigquery as bf_io_bigquery
 
 _PYTHON_TO_BQ_TYPES = {int: "INT64", float: "FLOAT64", str: "STRING", bytes: "BYTES"}
@@ -37,7 +37,7 @@ class TransformFunction:
     """Simple transform function class to deal with Python UDF."""
 
     def __init__(
-        self, func_def: FunctionDef, session: bigframes.Session, connection: str
+        self, func_def: FunctionDef, session: bigframes.session.Session, connection: str
     ):
         self._func = func_def.func
         self._requirements = func_def.requirements

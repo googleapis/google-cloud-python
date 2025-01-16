@@ -22,17 +22,17 @@ import uuid
 
 from google.cloud import bigquery
 
-import bigframes
 import bigframes.constants as constants
 import bigframes.formatting_helpers as formatting_helpers
 from bigframes.ml import sql as ml_sql
 import bigframes.pandas as bpd
+import bigframes.session
 
 
 class BaseBqml:
     """Base class for BQML functionalities."""
 
-    def __init__(self, session: bigframes.Session):
+    def __init__(self, session: bigframes.session.Session):
         self._session = session
         self._base_sql_generator = ml_sql.BaseSqlGenerator()
 

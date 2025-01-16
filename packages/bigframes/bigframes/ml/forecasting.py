@@ -20,10 +20,10 @@ from typing import List, Optional
 
 from google.cloud import bigquery
 
-import bigframes
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
+import bigframes.session
 
 _BQML_PARAMS_MAPPING = {
     "horizon": "horizon",
@@ -133,7 +133,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> ARIMAPlus:
         assert bq_model.model_type == "ARIMA_PLUS"
 

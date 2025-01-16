@@ -27,7 +27,6 @@ import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 
-import bigframes
 import bigframes.clients
 import bigframes.core.compile
 import bigframes.core.compile.default_ordering

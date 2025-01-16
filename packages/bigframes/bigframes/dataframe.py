@@ -48,7 +48,6 @@ import pandas.io.formats.format
 import pyarrow
 import tabulate
 
-import bigframes
 import bigframes._config.display_options as display_options
 import bigframes.constants
 import bigframes.core

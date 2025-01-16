@@ -20,10 +20,10 @@ from typing import cast, Mapping, Optional
 
 from google.cloud import bigquery
 
-import bigframes
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
+import bigframes.session
 
 
 @log_adapter.class_logger
@@ -41,7 +41,7 @@ class TensorFlowModel(base.Predictor):
         self,
         model_path: str,
         *,
-        session: Optional[bigframes.Session] = None,
+        session: Optional[bigframes.session.Session] = None,
     ):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
@@ -56,7 +56,7 @@ class TensorFlowModel(base.Predictor):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> TensorFlowModel:
         assert bq_model.model_type == "TENSORFLOW"
 
@@ -120,7 +120,7 @@ class ONNXModel(base.Predictor):
         self,
         model_path: str,
         *,
-        session: Optional[bigframes.Session] = None,
+        session: Optional[bigframes.session.Session] = None,
     ):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
@@ -135,7 +135,7 @@ class ONNXModel(base.Predictor):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> ONNXModel:
         assert bq_model.model_type == "ONNX"
 
@@ -218,7 +218,7 @@ class XGBoostModel(base.Predictor):
         *,
         input: Mapping[str, str] = {},
         output: Mapping[str, str] = {},
-        session: Optional[bigframes.Session] = None,
+        session: Optional[bigframes.session.Session] = None,
     ):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
@@ -251,7 +251,7 @@ class XGBoostModel(base.Predictor):
 
     @classmethod
     def _from_bq(
-        cls, session: bigframes.Session, bq_model: bigquery.Model
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
     ) -> XGBoostModel:
         assert bq_model.model_type == "XGBOOST"
 

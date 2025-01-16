@@ -23,12 +23,10 @@ import bigframes_vendored.constants as constants
 from google.cloud import bigquery
 import typing_extensions
 
-import bigframes
 from bigframes import clients, exceptions
-from bigframes.core import blocks, log_adapter
+from bigframes.core import blocks, global_session, log_adapter
 import bigframes.dataframe
 from bigframes.ml import base, core, globals, utils
-import bigframes.pandas as bpd
 
 _BQML_PARAMS_MAPPING = {
     "max_iterations": "maxIterations",
@@ -145,7 +143,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
         max_iterations: int = 300,
     ):
         self.model_name = model_name
-        self.session = session or bpd.get_global_session()
+        self.session = session or global_session.get_global_session()
         self.max_iterations = max_iterations
         self._bq_connection_manager = self.session.bqconnectionmanager
 
@@ -275,7 +273,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
         max_output_tokens: int = 128,
         top_k: int = 40,
         top_p: float = 0.95,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         """Predict the result from input DataFrame.
 
         Args:
@@ -374,7 +372,7 @@ class PaLM2TextGenerator(base.BaseEstimator):
         task_type: Literal[
             "text_generation", "classification", "summarization", "question_answering"
         ] = "text_generation",
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         """Calculate evaluation metrics of the model.
 
         .. note::
@@ -479,7 +477,7 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
     ):
         self.model_name = model_name
         self.version = version
-        self.session = session or bpd.get_global_session()
+        self.session = session or global_session.get_global_session()
         self._bq_connection_manager = self.session.bqconnectionmanager
 
         connection_name = connection_name or self.session._bq_connection
@@ -556,7 +554,7 @@ class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
         model._bqml_model = core.BqmlModel(session, bq_model)
         return model
 
-    def predict(self, X: utils.ArrayType) -> bpd.DataFrame:
+    def predict(self, X: utils.ArrayType) -> bigframes.dataframe.DataFrame:
         """Predict the result from input DataFrame.
 
         Args:
@@ -644,7 +642,7 @@ class TextEmbeddingGenerator(base.RetriableRemotePredictor):
         connection_name: Optional[str] = None,
     ):
         self.model_name = model_name
-        self.session = session or bpd.get_global_session()
+        self.session = session or global_session.get_global_session()
         self._bq_connection_manager = self.session.bqconnectionmanager
 
         connection_name = connection_name or self.session._bq_connection
@@ -715,14 +713,20 @@ class TextEmbeddingGenerator(base.RetriableRemotePredictor):
         return model
 
     @property
-    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
+    def _predict_func(
+        self,
+    ) -> Callable[
+        [bigframes.dataframe.DataFrame, Mapping], bigframes.dataframe.DataFrame
+    ]:
         return self._bqml_model.generate_embedding
 
     @property
     def _status_col(self) -> str:
         return _ML_GENERATE_EMBEDDING_STATUS
 
-    def predict(self, X: utils.ArrayType, *, max_retries: int = 0) -> bpd.DataFrame:
+    def predict(
+        self, X: utils.ArrayType, *, max_retries: int = 0
+    ) -> bigframes.dataframe.DataFrame:
         """Predict the result from input DataFrame.
 
         Args:
@@ -822,7 +826,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             )
             warnings.warn(msg, category=exceptions.PreviewWarning)
         self.model_name = model_name
-        self.session = session or bpd.get_global_session()
+        self.session = session or global_session.get_global_session()
         self.max_iterations = max_iterations
         self._bq_connection_manager = self.session.bqconnectionmanager
 
@@ -899,7 +903,11 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         return options
 
     @property
-    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
+    def _predict_func(
+        self,
+    ) -> Callable[
+        [bigframes.dataframe.DataFrame, Mapping], bigframes.dataframe.DataFrame
+    ]:
         return self._bqml_model.generate_text
 
     @property
@@ -962,7 +970,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         top_p: float = 1.0,
         ground_with_google_search: bool = False,
         max_retries: int = 0,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         """Predict the result from input DataFrame.
 
         Args:
@@ -1052,7 +1060,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         task_type: Literal[
             "text_generation", "classification", "summarization", "question_answering"
         ] = "text_generation",
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         """Calculate evaluation metrics of the model. Only support "gemini-pro" and "gemini-1.5-pro-002", and "gemini-1.5-flash-002".
 
         .. note::
@@ -1170,7 +1178,7 @@ class Claude3TextGenerator(base.RetriableRemotePredictor):
         connection_name: Optional[str] = None,
     ):
         self.model_name = model_name
-        self.session = session or bpd.get_global_session()
+        self.session = session or global_session.get_global_session()
         self._bq_connection_manager = self.session.bqconnectionmanager
 
         connection_name = connection_name or self.session._bq_connection
@@ -1253,7 +1261,11 @@ class Claude3TextGenerator(base.RetriableRemotePredictor):
         return options
 
     @property
-    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
+    def _predict_func(
+        self,
+    ) -> Callable[
+        [bigframes.dataframe.DataFrame, Mapping], bigframes.dataframe.DataFrame
+    ]:
         return self._bqml_model.generate_text
 
     @property
@@ -1268,7 +1280,7 @@ class Claude3TextGenerator(base.RetriableRemotePredictor):
         top_k: int = 40,
         top_p: float = 0.95,
         max_retries: int = 0,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         """Predict the result from input DataFrame.
 
         Args:

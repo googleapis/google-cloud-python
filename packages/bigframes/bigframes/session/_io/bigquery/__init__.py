@@ -29,7 +29,6 @@ import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery.table
 
-import bigframes
 from bigframes.core import log_adapter
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.sql

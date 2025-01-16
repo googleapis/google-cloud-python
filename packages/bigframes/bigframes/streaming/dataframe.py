@@ -23,10 +23,10 @@ import warnings
 
 from google.cloud import bigquery
 
-import bigframes
 from bigframes import dataframe
 from bigframes.core import log_adapter
 import bigframes.exceptions as bfe
+import bigframes.session
 
 
 def _return_type_wrapper(method, cls):
@@ -55,7 +55,7 @@ def _curate_df_doc(doc: Optional[str]):
 
 class StreamingBase:
     sql: str
-    _session: bigframes.Session
+    _session: bigframes.session.Session
 
     def to_bigtable(
         self,
@@ -209,7 +209,7 @@ class StreamingDataFrame(StreamingBase):
     def __init__(self, df: dataframe.DataFrame, *, create_key=0):
         if create_key is not StreamingDataFrame._create_key:
             raise ValueError(
-                "StreamingDataFrame class shouldn't be created through constructor. Call bigframes.Session.read_gbq_table_streaming method to create."
+                "StreamingDataFrame class shouldn't be created through constructor. Call bigframes.pandas.read_gbq_table_streaming method to create."
             )
         self._df = df
         self._df._disable_cache_override = True
@@ -279,7 +279,7 @@ def _to_bigtable(
     instance: str,
     table: str,
     service_account_email: Optional[str] = None,
-    session: Optional[bigframes.Session] = None,
+    session: Optional[bigframes.session.Session] = None,
     app_profile: Optional[str] = None,
     truncate: bool = False,
     overwrite: bool = False,
@@ -311,7 +311,7 @@ def _to_bigtable(
             Example: accountname@projectname.gserviceaccounts.com
             If not provided, the user account will be used, but this
             limits the lifetime of the continuous query.
-        session (bigframes.Session, default None):
+        session (bigframes.session.Session, default None):
             The session object to use for the query. This determines
             the project id and location of the query. If None, will
             default to the bigframes global session.
@@ -414,7 +414,7 @@ def _to_pubsub(
     *,
     topic: str,
     service_account_email: str,
-    session: Optional[bigframes.Session] = None,
+    session: Optional[bigframes.session.Session] = None,
     job_id: Optional[str] = None,
     job_id_prefix: Optional[str] = None,
 ) -> bigquery.QueryJob:
@@ -440,7 +440,7 @@ def _to_pubsub(
         service_account_email (str):
             Full name of the service account to run the continuous query.
             Example: accountname@projectname.gserviceaccounts.com
-        session (bigframes.Session, default None):
+        session (bigframes.session.Session, default None):
             The session object to use for the query. This determines
             the project id and location of the query. If None, will
             default to the bigframes global session.

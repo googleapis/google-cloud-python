@@ -19,11 +19,11 @@ from __future__ import annotations
 from typing import Mapping, Optional
 import warnings
 
-import bigframes
 from bigframes import clients
-from bigframes.core import log_adapter
+from bigframes.core import global_session, log_adapter
+import bigframes.dataframe
 from bigframes.ml import base, core, globals, utils
-import bigframes.pandas as bpd
+import bigframes.session
 
 _REMOTE_MODEL_STATUS = "remote_model_status"
 
@@ -54,13 +54,13 @@ class VertexAIModel(base.BaseEstimator):
         input: Mapping[str, str],
         output: Mapping[str, str],
         *,
-        session: Optional[bigframes.Session] = None,
+        session: Optional[bigframes.session.Session] = None,
         connection_name: Optional[str] = None,
     ):
         self.endpoint = endpoint
         self.input = input
         self.output = output
-        self.session = session or bpd.get_global_session()
+        self.session = session or global_session.get_global_session()
 
         self._bq_connection_manager = self.session.bqconnectionmanager
         connection_name = connection_name or self.session._bq_connection
@@ -122,15 +122,15 @@ class VertexAIModel(base.BaseEstimator):
     def predict(
         self,
         X: utils.ArrayType,
-    ) -> bpd.DataFrame:
+    ) -> bigframes.dataframe.DataFrame:
         """Predict the result from the input DataFrame.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
+            X (bigframes.pandas.DataFrame or bigframes.pandas.Series or pandas.DataFrame or pandas.Series):
                 Input DataFrame or Series, which needs to comply with the input parameter of the model.
 
         Returns:
-            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
+            bigframes.pandas.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
 
         (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)

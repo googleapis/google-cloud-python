@@ -27,7 +27,7 @@ from bigframes.core import guid, log_adapter
 @log_adapter.class_logger
 class Semantics:
     def __init__(self, df) -> None:
-        import bigframes
+        import bigframes  # Import in the function body to avoid circular imports.
         import bigframes.dataframe
 
         if not bigframes.options.experiments.semantic_operators:
@@ -1100,7 +1100,7 @@ class Semantics:
     @staticmethod
     def _confirm_operation(row_count: int):
         """Raises OperationAbortedError when the confirmation fails"""
-        import bigframes
+        import bigframes  # Import in the function body to avoid circular imports.
 
         threshold = bigframes.options.compute.semantic_ops_confirmation_threshold
 

@@ -22,10 +22,10 @@ from typing import List, Literal, Optional, Union
 import bigframes_vendored.sklearn.decomposition._pca
 from google.cloud import bigquery
 
-import bigframes
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
+import bigframes.session
 
 _BQML_PARAMS_MAPPING = {"svd_solver": "pcaSolver"}
 
@@ -49,7 +49,9 @@ class PCA(
         self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
-    def _from_bq(cls, session: bigframes.Session, bq_model: bigquery.Model) -> PCA:
+    def _from_bq(
+        cls, session: bigframes.session.Session, bq_model: bigquery.Model
+    ) -> PCA:
         assert bq_model.model_type == "PCA"
 
         kwargs = utils.retrieve_params_from_bq_model(
