@@ -918,10 +918,13 @@ class UserWorkloadsSecret(proto.Message):
 
             Example:
 
-            {
-              "example": "ZXhhbXBsZV92YWx1ZQ==",
-              "another-example":
-            "YW5vdGhlcl9leGFtcGxlX3ZhbHVl" }
+            .. code-block:: json
+
+              {
+                "example": "ZXhhbXBsZV92YWx1ZQ==",
+                "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
+              }
+
     """
 
     name: str = proto.Field(
