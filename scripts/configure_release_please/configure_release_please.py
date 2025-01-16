@@ -76,14 +76,15 @@ def configure_release_please_manifest(
     with open(release_please_manifest, "r") as f:
         manifest_json = json.load(f)
         for package_dir in package_dirs:
-            if not package_supports_gapic_version(package_dir):
-                continue
             if f"packages/{package_dir.name}" not in manifest_json:
                 manifest_json[f"packages/{package_dir.name}"] = "0.0.0"
 
             gapic_version_file = next(package_dir.rglob("**/gapic_version.py"), None)
             if gapic_version_file is None:
-                raise Exception("Failed to find gapic_version.py")
+                if package_supports_gapic_version(package_dir):
+                    raise Exception("Failed to find gapic_version.py")
+                else:
+                    continue
             version = get_version_for_package(gapic_version_file)
             # check the version in gapic_version.py and update if newer than the default which is
             # 0.0.0 or 0.1.0.
