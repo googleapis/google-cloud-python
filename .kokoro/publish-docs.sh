@@ -35,10 +35,6 @@ RETVAL=0
 
 export PROJECT_ROOT=$(realpath $(dirname "${BASH_SOURCE[0]}")/..)
 
-# Install nox
-python3.10 -m pip install --require-hashes -r "$PROJECT_ROOT/.kokoro/requirements.txt"
-python3.10 -m nox --version
-
 # A file for publishing docs
 publish_docs_script="${PROJECT_ROOT}/.kokoro/publish-docs-single.sh"
 

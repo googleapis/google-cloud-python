@@ -69,10 +69,16 @@ __protobuf__ = proto.module(
         "GetGuestAttributesRequest",
         "GetGuestAttributesResponse",
         "SimulateMaintenanceEventRequest",
+        "PerformMaintenanceRequest",
+        "PerformMaintenanceQueuedResourceRequest",
+        "Reservation",
+        "ListReservationsRequest",
+        "ListReservationsResponse",
         "AcceleratorConfig",
         "ShieldedInstanceConfig",
         "BootDiskConfig",
         "CustomerEncryptionKey",
+        "UpcomingMaintenance",
     },
 )
 
@@ -195,6 +201,9 @@ class SchedulingConfig(proto.Message):
         reserved (bool):
             Whether the node is created under a
             reservation.
+        spot (bool):
+            Optional. Defines whether the node is Spot
+            VM.
     """
 
     preemptible: bool = proto.Field(
@@ -204,6 +213,10 @@ class SchedulingConfig(proto.Message):
     reserved: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    spot: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -274,6 +287,9 @@ class NetworkConfig(proto.Message):
             packets with non-matching destination or source
             IPs. This is required if you plan to use the TPU
             workers to forward routes.
+        queue_count (int):
+            Optional. Specifies networking queue count
+            for TPU VM instance's network interface.
     """
 
     network: str = proto.Field(
@@ -291,6 +307,10 @@ class NetworkConfig(proto.Message):
     can_ip_forward: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    queue_count: int = proto.Field(
+        proto.INT32,
+        number=6,
     )
 
 
@@ -341,7 +361,16 @@ class Node(proto.Message):
             Required. The runtime version running in the
             Node.
         network_config (google.cloud.tpu_v2alpha1.types.NetworkConfig):
-            Network configurations for the TPU node.
+            Network configurations for the TPU node. network_config and
+            network_configs are mutually exclusive, you can only specify
+            one of them. If both are specified, an error will be
+            returned.
+        network_configs (MutableSequence[google.cloud.tpu_v2alpha1.types.NetworkConfig]):
+            Optional. Repeated network configurations for the TPU node.
+            This field is used to specify multiple networks configs for
+            the TPU node. network_config and network_configs are
+            mutually exclusive, you can only specify one of them. If
+            both are specified, an error will be returned.
         cidr_block (str):
             The CIDR block that the TPU node will use
             when selecting an IP address. This CIDR block
@@ -402,8 +431,13 @@ class Node(proto.Message):
         multislice_node (bool):
             Output only. Whether the Node belongs to a
             Multislice group.
+        autocheckpoint_enabled (bool):
+            Optional. Whether Autocheckpoint is enabled.
         boot_disk_config (google.cloud.tpu_v2alpha1.types.BootDiskConfig):
             Optional. Boot disk configuration.
+        upcoming_maintenance (google.cloud.tpu_v2alpha1.types.UpcomingMaintenance):
+            Output only. Upcoming maintenance on this TPU
+            node.
     """
 
     class State(proto.Enum):
@@ -445,6 +479,9 @@ class Node(proto.Message):
                 TPU node has been hidden.
             UNHIDING (15):
                 TPU node is currently unhiding.
+            UNKNOWN (16):
+                TPU node has unknown state after a failed
+                repair.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -461,6 +498,7 @@ class Node(proto.Message):
         HIDING = 13
         HIDDEN = 14
         UNHIDING = 15
+        UNKNOWN = 16
 
     class Health(proto.Enum):
         r"""Health defines the status of a TPU node as reported by
@@ -533,6 +571,11 @@ class Node(proto.Message):
     network_config: "NetworkConfig" = proto.Field(
         proto.MESSAGE,
         number=36,
+        message="NetworkConfig",
+    )
+    network_configs: MutableSequence["NetworkConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=50,
         message="NetworkConfig",
     )
     cidr_block: str = proto.Field(
@@ -615,10 +658,19 @@ class Node(proto.Message):
         proto.BOOL,
         number=47,
     )
+    autocheckpoint_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=48,
+    )
     boot_disk_config: "BootDiskConfig" = proto.Field(
         proto.MESSAGE,
         number=49,
         message="BootDiskConfig",
+    )
+    upcoming_maintenance: "UpcomingMaintenance" = proto.Field(
+        proto.MESSAGE,
+        number=51,
+        message="UpcomingMaintenance",
     )
 
 
@@ -638,6 +690,9 @@ class QueuedResource(proto.Message):
         name (str):
             Output only. Immutable. The name of the
             QueuedResource.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the QueuedResource
+            was created.
         tpu (google.cloud.tpu_v2alpha1.types.QueuedResource.Tpu):
             Defines a TPU resource.
 
@@ -712,7 +767,27 @@ class QueuedResource(proto.Message):
                         node_count = 3 and node_id_prefix = "np", node ids of nodes
                         created will be "np-0", "np-1", "np-2". If this field is not
                         provided we use queued_resource_id as the node_id_prefix.
+                    workload_type (google.cloud.tpu_v2alpha1.types.QueuedResource.Tpu.NodeSpec.MultiNodeParams.WorkloadType):
+                        Optional. The workload type for the
+                        multi-node request.
                 """
+
+                class WorkloadType(proto.Enum):
+                    r"""The workload type for the multi-node request.
+
+                    Values:
+                        WORKLOAD_TYPE_UNSPECIFIED (0):
+                            Not specified.
+                        THROUGHPUT_OPTIMIZED (1):
+                            All of the nodes are available most of the
+                            time. Recommended for training workloads.
+                        AVAILABILITY_OPTIMIZED (2):
+                            Most of the nodes are available all of the
+                            time. Recommended for serving workloads.
+                    """
+                    WORKLOAD_TYPE_UNSPECIFIED = 0
+                    THROUGHPUT_OPTIMIZED = 1
+                    AVAILABILITY_OPTIMIZED = 2
 
                 node_count: int = proto.Field(
                     proto.INT32,
@@ -721,6 +796,11 @@ class QueuedResource(proto.Message):
                 node_id_prefix: str = proto.Field(
                     proto.STRING,
                     number=2,
+                )
+                workload_type: "QueuedResource.Tpu.NodeSpec.MultiNodeParams.WorkloadType" = proto.Field(
+                    proto.ENUM,
+                    number=4,
+                    enum="QueuedResource.Tpu.NodeSpec.MultiNodeParams.WorkloadType",
                 )
 
             parent: str = proto.Field(
@@ -857,6 +937,11 @@ class QueuedResource(proto.Message):
         proto.STRING,
         number=1,
     )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
     tpu: Tpu = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -945,7 +1030,9 @@ class QueuedResourceState(proto.Message):
             This field is a member of `oneof`_ ``state_data``.
         state_initiator (google.cloud.tpu_v2alpha1.types.QueuedResourceState.StateInitiator):
             Output only. The initiator of the
-            QueuedResources's current state.
+            QueuedResources's current state. Used to
+            indicate whether the SUSPENDING/SUSPENDED state
+            was initiated by the user or the service.
     """
 
     class State(proto.Enum):
@@ -1920,6 +2007,236 @@ class SimulateMaintenanceEventRequest(proto.Message):
     )
 
 
+class PerformMaintenanceRequest(proto.Message):
+    r"""Request for
+    [PerformMaintenance][google.cloud.tpu.v2alpha1.Tpu.PerformMaintenance].
+
+    Attributes:
+        name (str):
+            Required. The resource name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PerformMaintenanceQueuedResourceRequest(proto.Message):
+    r"""Request for
+    [PerformMaintenanceQueuedResource][google.cloud.tpu.v2alpha1.Tpu.PerformMaintenanceQueuedResource].
+
+    Attributes:
+        name (str):
+            Required. The name of the QueuedResource
+            which holds the nodes to perform maintenance on.
+        node_names (MutableSequence[str]):
+            The names of the nodes to perform maintenance
+            on.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    node_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class Reservation(proto.Message):
+    r"""A reservation describes the amount of a resource 'allotted'
+    for a defined period of time.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            The reservation name with the format:
+
+            projects/{projectID}/locations/{location}/reservations/{reservationID}
+        standard (google.cloud.tpu_v2alpha1.types.Reservation.Standard):
+            A standard reservation.
+
+            This field is a member of `oneof`_ ``kind``.
+        state (google.cloud.tpu_v2alpha1.types.Reservation.State):
+            Output only. The state of the Reservation.
+    """
+
+    class State(proto.Enum):
+        r"""State of the Reservation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The Reservation state is unspecified.
+            APPROVED (3):
+                The Reservation has been approved.
+            PROVISIONING (4):
+                The Reservation is being provisioned.
+            ACTIVE (5):
+                The Reservation is active.
+            DEPROVISIONING (6):
+                The Reservation is being deprovisioned.
+            EXPIRED (7):
+                The Reservation is past its end date.
+            FAILED (8):
+                The Reservation encountered a failure during
+                mutation.
+        """
+        STATE_UNSPECIFIED = 0
+        APPROVED = 3
+        PROVISIONING = 4
+        ACTIVE = 5
+        DEPROVISIONING = 6
+        EXPIRED = 7
+        FAILED = 8
+
+    class Standard(proto.Message):
+        r"""Details of a standard reservation.
+
+        Attributes:
+            size (int):
+                The size of the reservation, in the units specified in the
+                'capacity_units' field.
+            capacity_units (google.cloud.tpu_v2alpha1.types.Reservation.Standard.CapacityUnits):
+                Capacity units this reservation is measured
+                in.
+            resource_type (str):
+                The resource type of the reservation.
+            interval (google.type.interval_pb2.Interval):
+                The start and end time of the reservation.
+            usage (google.cloud.tpu_v2alpha1.types.Reservation.Standard.Usage):
+                The current usage of the reservation.
+        """
+
+        class CapacityUnits(proto.Enum):
+            r"""Units in which capacity for a reservation is measured.
+
+            Values:
+                CAPACITY_UNITS_UNSPECIFIED (0):
+                    The capacity units is not known/set.
+                CORES (1):
+                    The capacity unit is set to CORES.
+                CHIPS (2):
+                    The capacity unit is set to CHIPS.
+            """
+            CAPACITY_UNITS_UNSPECIFIED = 0
+            CORES = 1
+            CHIPS = 2
+
+        class Usage(proto.Message):
+            r"""Usage details of a reservation.
+
+            Attributes:
+                total (int):
+                    The real-time value of usage within the reservation, with
+                    the unit specified in field capacity_units.
+            """
+
+            total: int = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+
+        size: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        capacity_units: "Reservation.Standard.CapacityUnits" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Reservation.Standard.CapacityUnits",
+        )
+        resource_type: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        interval: interval_pb2.Interval = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=interval_pb2.Interval,
+        )
+        usage: "Reservation.Standard.Usage" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="Reservation.Standard.Usage",
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    standard: Standard = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="kind",
+        message=Standard,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+
+
+class ListReservationsRequest(proto.Message):
+    r"""Request for
+    [ListReservations][google.cloud.tpu.v2alpha1.Tpu.ListReservations].
+
+    Attributes:
+        parent (str):
+            Required. The parent for reservations.
+        page_size (int):
+            The maximum number of items to return.
+            Defaults to 0 if not specified, which means no
+            limit.
+        page_token (str):
+            The next_page_token value returned from a previous List
+            request, if any.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListReservationsResponse(proto.Message):
+    r"""Response for
+    [ListReservations][google.cloud.tpu.v2alpha1.Tpu.ListReservations].
+
+    Attributes:
+        reservations (MutableSequence[google.cloud.tpu_v2alpha1.types.Reservation]):
+            The listed reservations.
+        next_page_token (str):
+            The next page token or empty if none.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    reservations: MutableSequence["Reservation"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Reservation",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class AcceleratorConfig(proto.Message):
     r"""A TPU accelerator configuration.
 
@@ -1942,11 +2259,20 @@ class AcceleratorConfig(proto.Message):
                 TPU v3.
             V4 (7):
                 TPU v4.
+            V5LITE_POD (9):
+                TPU v5lite pod.
+            V5P (10):
+                TPU v5.
+            V6E (11):
+                TPU v6e.
         """
         TYPE_UNSPECIFIED = 0
         V2 = 2
         V3 = 4
         V4 = 7
+        V5LITE_POD = 9
+        V5P = 10
+        V6E = 11
 
     type_: Type = proto.Field(
         proto.ENUM,
@@ -2033,6 +2359,112 @@ class CustomerEncryptionKey(proto.Message):
         proto.STRING,
         number=7,
         oneof="key",
+    )
+
+
+class UpcomingMaintenance(proto.Message):
+    r"""Upcoming Maintenance notification information.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        type_ (google.cloud.tpu_v2alpha1.types.UpcomingMaintenance.MaintenanceType):
+            Defines the type of maintenance.
+
+            This field is a member of `oneof`_ ``_type``.
+        can_reschedule (bool):
+            Indicates if the maintenance can be customer
+            triggered.
+
+            This field is a member of `oneof`_ ``_can_reschedule``.
+        window_start_time (str):
+            The current start time of the maintenance
+            window. This timestamp value is in RFC3339 text
+            format.
+
+            This field is a member of `oneof`_ ``_window_start_time``.
+        window_end_time (str):
+            The time by which the maintenance disruption
+            will be completed. This timestamp value is in
+            RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_window_end_time``.
+        latest_window_start_time (str):
+            The latest time for the planned maintenance
+            window to start. This timestamp value is in
+            RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_latest_window_start_time``.
+        maintenance_status (google.cloud.tpu_v2alpha1.types.UpcomingMaintenance.MaintenanceStatus):
+            The status of the maintenance.
+
+            This field is a member of `oneof`_ ``_maintenance_status``.
+    """
+
+    class MaintenanceType(proto.Enum):
+        r"""The type of maintenance for this notification.
+
+        Values:
+            UNKNOWN_TYPE (0):
+                No type specified. Do not use this value.
+            SCHEDULED (1):
+                Scheduled maintenance (e.g. maintenance after
+                uptime guarantee is complete).
+            UNSCHEDULED (2):
+                Unscheduled maintenance (e.g. emergency
+                maintenance during uptime guarantee).
+        """
+        UNKNOWN_TYPE = 0
+        SCHEDULED = 1
+        UNSCHEDULED = 2
+
+    class MaintenanceStatus(proto.Enum):
+        r"""The status of the maintenance for this notification.
+
+        Values:
+            UNKNOWN (0):
+                Unknown maintenance status. Do not use this
+                value.
+            PENDING (1):
+                There is pending maintenance.
+            ONGOING (2):
+                There is ongoing maintenance on this VM.
+        """
+        UNKNOWN = 0
+        PENDING = 1
+        ONGOING = 2
+
+    type_: MaintenanceType = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=MaintenanceType,
+    )
+    can_reschedule: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+        optional=True,
+    )
+    window_start_time: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
+    )
+    window_end_time: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
+    latest_window_start_time: str = proto.Field(
+        proto.STRING,
+        number=8,
+        optional=True,
+    )
+    maintenance_status: MaintenanceStatus = proto.Field(
+        proto.ENUM,
+        number=9,
+        optional=True,
+        enum=MaintenanceStatus,
     )
 
 
