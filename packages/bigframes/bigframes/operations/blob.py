@@ -34,6 +34,41 @@ class BlobAccessor(base.SeriesMethods):
 
         super().__init__(*args, **kwargs)
 
+    def uri(self) -> bigframes.series.Series:
+        """URIs of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: URIs as string."""
+        s = bigframes.series.Series(self._block)
+
+        return s.struct.field("uri")
+
+    def authorizer(self) -> bigframes.series.Series:
+        """Authorizers of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: Autorithers(connection) as string."""
+        s = bigframes.series.Series(self._block)
+
+        return s.struct.field("authorizer")
+
+    def version(self) -> bigframes.series.Series:
+        """Versions of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: Version as string."""
+        # version must be retrived after fetching metadata
+        return self._apply_unary_op(ops.obj_fetch_metadata_op).struct.field("version")
+
     def metadata(self) -> bigframes.series.Series:
         """Retrive the metadata of the Blob.
 
@@ -41,7 +76,7 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            JSON: metadata of the Blob. Contains fields: content_type, md5_hash, size and updated(time)."""
+            BigFrames Series: JSON metadata of the Blob. Contains fields: content_type, md5_hash, size and updated(time)."""
         details_json = self._apply_unary_op(ops.obj_fetch_metadata_op).struct.field(
             "details"
         )
@@ -56,12 +91,60 @@ class BlobAccessor(base.SeriesMethods):
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
 
         Returns:
-            BigFrames Series: json-string of the content type."""
-        metadata = self.metadata()
+            BigFrames Series: string of the content type."""
+        return (
+            self.metadata()
+            ._apply_unary_op(ops.JSONValue(json_path="$.content_type"))
+            .rename("content_type")
+        )
 
-        return metadata._apply_unary_op(
-            ops.JSONValue(json_path="$.content_type")
-        ).rename("content_type")
+    def md5_hash(self) -> bigframes.series.Series:
+        """Retrive the md5 hash of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: string of the md5 hash."""
+        return (
+            self.metadata()
+            ._apply_unary_op(ops.JSONValue(json_path="$.md5_hash"))
+            .rename("md5_hash")
+        )
+
+    def size(self) -> bigframes.series.Series:
+        """Retrive the file size of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: file size in bytes."""
+        return (
+            self.metadata()
+            ._apply_unary_op(ops.JSONValue(json_path="$.size"))
+            .rename("size")
+            .astype("Int64")
+        )
+
+    def updated(self) -> bigframes.series.Series:
+        """Retrive the updated time of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: updated time as UTC datetime."""
+        import bigframes.pandas as bpd
+
+        updated = (
+            self.metadata()
+            ._apply_unary_op(ops.JSONValue(json_path="$.updated"))
+            .rename("updated")
+            .astype("Int64")
+        )
+
+        return bpd.to_datetime(updated, unit="us", utc=True)
 
     def display(self, n: int = 3, *, content_type: str = ""):
         """Display the blob content in the IPython Notebook environment. Only works for image type now.
