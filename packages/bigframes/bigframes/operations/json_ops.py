@@ -120,3 +120,18 @@ class JSONSet(base_ops.BinaryOp):
 
         # After JSON type implementation, ONLY return JSON data.
         return left_type
+
+
+@dataclasses.dataclass(frozen=True)
+class JSONValue(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "json_value"
+    json_path: str
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if not dtypes.is_json_like(input_type):
+            raise TypeError(
+                "Input type must be an valid JSON object or JSON-formatted string type."
+                + f" Received type: {input_type}"
+            )
+        return dtypes.STRING_DTYPE

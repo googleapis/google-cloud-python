@@ -1220,6 +1220,11 @@ def to_json_string_op_impl(json_obj: ibis_types.Value):
     return to_json_string(json_obj=json_obj)
 
 
+@scalar_op_compiler.register_unary_op(ops.JSONValue, pass_op=True)
+def json_value_op_impl(x: ibis_types.Value, op: ops.JSONValue):
+    return json_value(json_obj=x, json_path=op.json_path)
+
+
 # Blob Ops
 @scalar_op_compiler.register_unary_op(ops.obj_fetch_metadata_op)
 def obj_fetch_metadata_op_impl(obj_ref: ibis_types.Value):
@@ -1929,6 +1934,13 @@ def to_json_string(  # type: ignore[empty-body]
     json_obj: ibis_dtypes.JSON,
 ) -> ibis_dtypes.String:
     """Convert JSON to STRING."""
+
+
+@ibis_udf.scalar.builtin(name="json_value")
+def json_value(  # type: ignore[empty-body]
+    json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.String
+) -> ibis_dtypes.String:
+    """Retrieve value of a JSON field as plain STRING."""
 
 
 @ibis_udf.scalar.builtin(name="ML.DISTANCE")

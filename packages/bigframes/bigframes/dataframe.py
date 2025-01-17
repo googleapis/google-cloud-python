@@ -743,8 +743,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         df = self.copy()
         if bigframes.options.experiments.blob:
-            import bigframes.bigquery as bbq
-
             blob_cols = [
                 col
                 for col in df.columns
@@ -752,7 +750,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ]
             for col in blob_cols:
                 df[col] = df[col]._apply_unary_op(ops.ObjGetAccessUrl(mode="R"))
-                df[col] = bbq.json_extract(df[col], "$.access_urls.read_url")
+                df[col] = df[col]._apply_unary_op(
+                    ops.JSONValue(json_path="$.access_urls.read_url")
+                )
 
         # TODO(swast): pass max_columns and get the true column count back. Maybe
         # get 1 more column than we have requested so that pandas can add the
@@ -770,8 +770,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             if bigframes.options.experiments.blob:
 
                 def url_to_image_html(url: str) -> str:
-                    # url is a json string, which already contains double-quotes ""
-                    return f"<img src={url}>"
+                    return f'<img src="{url}">'
 
                 formatters = {blob_col: url_to_image_html for blob_col in blob_cols}
 
