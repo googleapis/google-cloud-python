@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.28.1](https://github.com/googleapis/python-bigtable/compare/v2.28.0...v2.28.1) (2025-01-17)
+
+
+### Bug Fixes
+
+* Allow empty headers for btql routing ([#1072](https://github.com/googleapis/python-bigtable/issues/1072)) ([e7ecfeb](https://github.com/googleapis/python-bigtable/commit/e7ecfeb8984a45c880d9483305964fff347eb4b8))
+
 ## [2.28.0](https://github.com/googleapis/python-bigtable/compare/v2.27.0...v2.28.0) (2025-01-08)
 
 
