@@ -228,6 +228,12 @@ class SchemaField(object):
         # fields. See https://github.com/googleapis/python-bigquery/issues/6
         placeholder._properties = api_repr
 
+        # Add the field `mode` with default value if it does not exist. Fixes
+        # an incompatibility issue with pandas-gbq:
+        # https://github.com/googleapis/python-bigquery-pandas/issues/854
+        if "mode" not in placeholder._properties:
+            placeholder._properties["mode"] = "NULLABLE"
+
         return placeholder
 
     @property
