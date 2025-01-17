@@ -15,7 +15,7 @@ Python Client for Access Context Manager
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-access-context-manager.svg
    :target: https://pypi.org/project/google-cloud-access-context-manager/
 .. _Access Context Manager: https://cloud.google.com/access-context-manager/docs/overview
-.. _Client Library Documentation: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager
+.. _Client Library Documentation: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager/summary_overview
 .. _Product Documentation:  https://cloud.google.com/access-context-manager/docs/overview
 
 Quick Start

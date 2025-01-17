@@ -23,6 +23,10 @@ deep-copy-regex:
     dest: /owl-bot-staging/google-cloud-access-context-manager/$1/google/identity/accesscontextmanager/v1/$2
   - source: /google/identity/accesscontextmanager/v1/(identity-accesscontextmanager-v1-py)/(service_perimeter.*)
     dest: /owl-bot-staging/google-cloud-access-context-manager/$1/google/identity/accesscontextmanager/v1/$2
+  - source: /google/identity/accesscontextmanager/type/(accesscontextmanager-type-gapic-py)
+    dest: /owl-bot-staging/google-cloud-access-context-manager/$1
+  - source: /google/identity/accesscontextmanager/v1/(identity-accesscontextmanager-gapic-v1-py)
+    dest: /owl-bot-staging/google-cloud-access-context-manager/$1
 
 begin-after-commit-hash: d7c95df3ab1ea1b4c22a4542bad4924cc46d1388
 

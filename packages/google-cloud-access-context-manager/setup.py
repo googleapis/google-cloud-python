@@ -1,44 +1,69 @@
-# Copyright 2018 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
 import io
 import os
+import re
 
-import setuptools
-from setuptools import find_namespace_packages
+import setuptools  # type: ignore
 
-# Package metadata.
+package_root = os.path.abspath(os.path.dirname(__file__))
 
 name = "google-cloud-access-context-manager"
-description = "Google Cloud Access Context Manager Protobufs"
-version = "0.2.1"
-# Should be one of:
-# 'Development Status :: 3 - Alpha'
-# 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 4 - Beta"
+
+
+description = "Google Cloud Access Context Manager API client library"
+
+version = None
+
+with open(
+    os.path.join(package_root, "google/cloud/accesscontextmanager/gapic_version.py")
+) as fp:
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert len(version_candidates) == 1
+    version = version_candidates[0]
+
+if version[0] == "0":
+    release_status = "Development Status :: 4 - Beta"
+else:
+    release_status = "Development Status :: 5 - Production/Stable"
+
 dependencies = [
     "google-api-core[grpc] >= 1.34.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "protobuf>=3.20.2,<6.0.0dev,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    # Exclude incompatible versions of `google-auth`
+    # See https://github.com/googleapis/google-cloud-python/issues/12364
+    "google-auth >= 2.14.1, <3.0.0dev,!=2.24.0,!=2.25.0",
+    "proto-plus >= 1.22.3, <2.0.0dev",
+    "proto-plus >= 1.25.0, <2.0.0dev; python_version >= '3.13'",
+    "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
 ]
+extras = {}
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager"
 
-# Setup boilerplate below this line.
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
+
+packages = [
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("google")
+]
 
 setuptools.setup(
     name=name,
@@ -48,7 +73,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-access-context-manager",
+    url=url,
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
@@ -66,9 +91,10 @@ setuptools.setup(
         "Topic :: Internet",
     ],
     platforms="Posix; MacOS X; Windows",
-    packages=find_namespace_packages(exclude=("tests*", "testing*")),
-    install_requires=dependencies,
+    packages=packages,
     python_requires=">=3.7",
+    install_requires=dependencies,
+    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )

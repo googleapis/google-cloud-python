@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Generated code. DO NOT EDIT!
+#
+# Snippet for CreateGcpUserAccessBinding
+# NOTE: This snippet has been automatically generated for illustrative purposes only.
+# It may require modifications to work in your environment.
+
+# To install the latest published package dependency, execute the following:
+#   python3 -m pip install google-cloud-access-context-manager
+
+
+# [START accesscontextmanager_v1_generated_AccessContextManager_CreateGcpUserAccessBinding_async]
+# This snippet has been automatically generated and should be regarded as a
+# code template only.
+# It will require modifications to work:
+# - It may require correct/in-range values for request initialization.
+# - It may require specifying regional endpoints when creating the service
+#   client as shown in:
+#   https://googleapis.dev/python/google-api-core/latest/client_options.html
+from google.cloud import accesscontextmanager_v1
+
+
+async def sample_create_gcp_user_access_binding():
+    # Create a client
+    client = accesscontextmanager_v1.AccessContextManagerAsyncClient()
+
+    # Initialize request argument(s)
+    gcp_user_access_binding = accesscontextmanager_v1.GcpUserAccessBinding()
+    gcp_user_access_binding.group_key = "group_key_value"
+    gcp_user_access_binding.access_levels = ['access_levels_value1', 'access_levels_value2']
+
+    request = accesscontextmanager_v1.CreateGcpUserAccessBindingRequest(
+        parent="parent_value",
+        gcp_user_access_binding=gcp_user_access_binding,
+    )
+
+    # Make the request
+    operation = client.create_gcp_user_access_binding(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = (await operation).result()
+
+    # Handle the response
+    print(response)
+
+# [END accesscontextmanager_v1_generated_AccessContextManager_CreateGcpUserAccessBinding_async]

@@ -1,0 +1,4193 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.identity.accesscontextmanager.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-access-context-manager",
+    "version": "0.1.0"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.commit_service_perimeters",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CommitServicePerimeters",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CommitServicePerimeters"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CommitServicePerimetersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "commit_service_perimeters"
+      },
+      "description": "Sample for CommitServicePerimeters",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_commit_service_perimeters_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CommitServicePerimeters_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_commit_service_perimeters_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.commit_service_perimeters",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CommitServicePerimeters",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CommitServicePerimeters"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CommitServicePerimetersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "commit_service_perimeters"
+      },
+      "description": "Sample for CommitServicePerimeters",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_commit_service_perimeters_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CommitServicePerimeters_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_commit_service_perimeters_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.create_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CreateAccessLevelRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "access_level",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessLevel"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_access_level"
+      },
+      "description": "Sample for CreateAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_access_level_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateAccessLevel_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_access_level_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.create_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CreateAccessLevelRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "access_level",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessLevel"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_access_level"
+      },
+      "description": "Sample for CreateAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_access_level_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateAccessLevel_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_access_level_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.create_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_access_policy"
+      },
+      "description": "Sample for CreateAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_access_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateAccessPolicy_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_access_policy_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.create_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_access_policy"
+      },
+      "description": "Sample for CreateAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_access_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateAccessPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_access_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.create_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CreateGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "gcp_user_access_binding",
+            "type": "google.cloud.accesscontextmanager_v1.types.GcpUserAccessBinding"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_gcp_user_access_binding"
+      },
+      "description": "Sample for CreateGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_gcp_user_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateGcpUserAccessBinding_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_gcp_user_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.create_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CreateGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "gcp_user_access_binding",
+            "type": "google.cloud.accesscontextmanager_v1.types.GcpUserAccessBinding"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_gcp_user_access_binding"
+      },
+      "description": "Sample for CreateGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_gcp_user_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateGcpUserAccessBinding_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_gcp_user_access_binding_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.create_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CreateServicePerimeterRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "service_perimeter",
+            "type": "google.cloud.accesscontextmanager_v1.types.ServicePerimeter"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_service_perimeter"
+      },
+      "description": "Sample for CreateServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_service_perimeter_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateServicePerimeter_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_service_perimeter_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.create_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.CreateServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "CreateServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.CreateServicePerimeterRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "service_perimeter",
+            "type": "google.cloud.accesscontextmanager_v1.types.ServicePerimeter"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_service_perimeter"
+      },
+      "description": "Sample for CreateServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_create_service_perimeter_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_CreateServicePerimeter_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_create_service_perimeter_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.delete_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteAccessLevelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_access_level"
+      },
+      "description": "Sample for DeleteAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_access_level_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteAccessLevel_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_access_level_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.delete_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteAccessLevelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_access_level"
+      },
+      "description": "Sample for DeleteAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_access_level_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteAccessLevel_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_access_level_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.delete_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteAccessPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_access_policy"
+      },
+      "description": "Sample for DeleteAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_access_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteAccessPolicy_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_access_policy_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.delete_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteAccessPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_access_policy"
+      },
+      "description": "Sample for DeleteAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_access_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteAccessPolicy_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_access_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.delete_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_gcp_user_access_binding"
+      },
+      "description": "Sample for DeleteGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_gcp_user_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteGcpUserAccessBinding_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_gcp_user_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.delete_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_gcp_user_access_binding"
+      },
+      "description": "Sample for DeleteGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_gcp_user_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteGcpUserAccessBinding_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_gcp_user_access_binding_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.delete_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteServicePerimeterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_service_perimeter"
+      },
+      "description": "Sample for DeleteServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_service_perimeter_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteServicePerimeter_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_service_perimeter_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.delete_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.DeleteServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "DeleteServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.DeleteServicePerimeterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_service_perimeter"
+      },
+      "description": "Sample for DeleteServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_delete_service_perimeter_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_DeleteServicePerimeter_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_delete_service_perimeter_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.get_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetAccessLevelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.AccessLevel",
+        "shortName": "get_access_level"
+      },
+      "description": "Sample for GetAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_access_level_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetAccessLevel_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_access_level_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.get_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetAccessLevelRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.AccessLevel",
+        "shortName": "get_access_level"
+      },
+      "description": "Sample for GetAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_access_level_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetAccessLevel_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_access_level_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.get_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetAccessPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.AccessPolicy",
+        "shortName": "get_access_policy"
+      },
+      "description": "Sample for GetAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_access_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetAccessPolicy_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_access_policy_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.get_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetAccessPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.AccessPolicy",
+        "shortName": "get_access_policy"
+      },
+      "description": "Sample for GetAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_access_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetAccessPolicy_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_access_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.get_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.GcpUserAccessBinding",
+        "shortName": "get_gcp_user_access_binding"
+      },
+      "description": "Sample for GetGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_gcp_user_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetGcpUserAccessBinding_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_gcp_user_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.get_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.GcpUserAccessBinding",
+        "shortName": "get_gcp_user_access_binding"
+      },
+      "description": "Sample for GetGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_gcp_user_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetGcpUserAccessBinding_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_gcp_user_access_binding_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.get_iam_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetIamPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_iam_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetIamPolicy_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_iam_policy_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.get_iam_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetIamPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.get_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetServicePerimeterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.ServicePerimeter",
+        "shortName": "get_service_perimeter"
+      },
+      "description": "Sample for GetServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_service_perimeter_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetServicePerimeter_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_service_perimeter_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.get_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.GetServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "GetServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.GetServicePerimeterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.types.ServicePerimeter",
+        "shortName": "get_service_perimeter"
+      },
+      "description": "Sample for GetServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_get_service_perimeter_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_GetServicePerimeter_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_get_service_perimeter_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.list_access_levels",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListAccessLevels",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListAccessLevels"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListAccessLevelsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListAccessLevelsAsyncPager",
+        "shortName": "list_access_levels"
+      },
+      "description": "Sample for ListAccessLevels",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_access_levels_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListAccessLevels_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_access_levels_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.list_access_levels",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListAccessLevels",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListAccessLevels"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListAccessLevelsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListAccessLevelsPager",
+        "shortName": "list_access_levels"
+      },
+      "description": "Sample for ListAccessLevels",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_access_levels_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListAccessLevels_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_access_levels_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.list_access_policies",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListAccessPolicies",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListAccessPolicies"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListAccessPoliciesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListAccessPoliciesAsyncPager",
+        "shortName": "list_access_policies"
+      },
+      "description": "Sample for ListAccessPolicies",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_access_policies_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListAccessPolicies_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_access_policies_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.list_access_policies",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListAccessPolicies",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListAccessPolicies"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListAccessPoliciesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListAccessPoliciesPager",
+        "shortName": "list_access_policies"
+      },
+      "description": "Sample for ListAccessPolicies",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_access_policies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListAccessPolicies_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_access_policies_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.list_gcp_user_access_bindings",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListGcpUserAccessBindings",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListGcpUserAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListGcpUserAccessBindingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListGcpUserAccessBindingsAsyncPager",
+        "shortName": "list_gcp_user_access_bindings"
+      },
+      "description": "Sample for ListGcpUserAccessBindings",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_gcp_user_access_bindings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListGcpUserAccessBindings_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_gcp_user_access_bindings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.list_gcp_user_access_bindings",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListGcpUserAccessBindings",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListGcpUserAccessBindings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListGcpUserAccessBindingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListGcpUserAccessBindingsPager",
+        "shortName": "list_gcp_user_access_bindings"
+      },
+      "description": "Sample for ListGcpUserAccessBindings",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_gcp_user_access_bindings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListGcpUserAccessBindings_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_gcp_user_access_bindings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.list_service_perimeters",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListServicePerimeters",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListServicePerimeters"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListServicePerimetersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListServicePerimetersAsyncPager",
+        "shortName": "list_service_perimeters"
+      },
+      "description": "Sample for ListServicePerimeters",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_service_perimeters_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListServicePerimeters_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_service_perimeters_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.list_service_perimeters",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ListServicePerimeters",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ListServicePerimeters"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ListServicePerimetersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.accesscontextmanager_v1.services.access_context_manager.pagers.ListServicePerimetersPager",
+        "shortName": "list_service_perimeters"
+      },
+      "description": "Sample for ListServicePerimeters",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_list_service_perimeters_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ListServicePerimeters_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_list_service_perimeters_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.replace_access_levels",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ReplaceAccessLevels",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ReplaceAccessLevels"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ReplaceAccessLevelsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "replace_access_levels"
+      },
+      "description": "Sample for ReplaceAccessLevels",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_replace_access_levels_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ReplaceAccessLevels_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_replace_access_levels_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.replace_access_levels",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ReplaceAccessLevels",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ReplaceAccessLevels"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ReplaceAccessLevelsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "replace_access_levels"
+      },
+      "description": "Sample for ReplaceAccessLevels",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_replace_access_levels_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ReplaceAccessLevels_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_replace_access_levels_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.replace_service_perimeters",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ReplaceServicePerimeters",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ReplaceServicePerimeters"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ReplaceServicePerimetersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "replace_service_perimeters"
+      },
+      "description": "Sample for ReplaceServicePerimeters",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_replace_service_perimeters_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ReplaceServicePerimeters_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_replace_service_perimeters_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.replace_service_perimeters",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.ReplaceServicePerimeters",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "ReplaceServicePerimeters"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.ReplaceServicePerimetersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "replace_service_perimeters"
+      },
+      "description": "Sample for ReplaceServicePerimeters",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_replace_service_perimeters_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_ReplaceServicePerimeters_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_replace_service_perimeters_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.set_iam_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.SetIamPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.SetIamPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_set_iam_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_SetIamPolicy_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_set_iam_policy_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.set_iam_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.SetIamPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.SetIamPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_set_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.TestIamPermissions",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_test_iam_permissions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_TestIamPermissions_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 42,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_test_iam_permissions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.TestIamPermissions",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 42,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.update_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateAccessLevelRequest"
+          },
+          {
+            "name": "access_level",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessLevel"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_access_level"
+      },
+      "description": "Sample for UpdateAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_access_level_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateAccessLevel_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_access_level_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.update_access_level",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateAccessLevel",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateAccessLevel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateAccessLevelRequest"
+          },
+          {
+            "name": "access_level",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessLevel"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_access_level"
+      },
+      "description": "Sample for UpdateAccessLevel",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_access_level_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateAccessLevel_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_access_level_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.update_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateAccessPolicyRequest"
+          },
+          {
+            "name": "policy",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_access_policy"
+      },
+      "description": "Sample for UpdateAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_access_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateAccessPolicy_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_access_policy_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.update_access_policy",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateAccessPolicy",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateAccessPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateAccessPolicyRequest"
+          },
+          {
+            "name": "policy",
+            "type": "google.cloud.accesscontextmanager_v1.types.AccessPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_access_policy"
+      },
+      "description": "Sample for UpdateAccessPolicy",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_access_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateAccessPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_access_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.update_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "gcp_user_access_binding",
+            "type": "google.cloud.accesscontextmanager_v1.types.GcpUserAccessBinding"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_gcp_user_access_binding"
+      },
+      "description": "Sample for UpdateGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_gcp_user_access_binding_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateGcpUserAccessBinding_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_gcp_user_access_binding_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.update_gcp_user_access_binding",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateGcpUserAccessBinding",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateGcpUserAccessBinding"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateGcpUserAccessBindingRequest"
+          },
+          {
+            "name": "gcp_user_access_binding",
+            "type": "google.cloud.accesscontextmanager_v1.types.GcpUserAccessBinding"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_gcp_user_access_binding"
+      },
+      "description": "Sample for UpdateGcpUserAccessBinding",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_gcp_user_access_binding_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateGcpUserAccessBinding_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_gcp_user_access_binding_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient",
+          "shortName": "AccessContextManagerAsyncClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerAsyncClient.update_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateServicePerimeterRequest"
+          },
+          {
+            "name": "service_perimeter",
+            "type": "google.cloud.accesscontextmanager_v1.types.ServicePerimeter"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_service_perimeter"
+      },
+      "description": "Sample for UpdateServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_service_perimeter_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateServicePerimeter_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_service_perimeter_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient",
+          "shortName": "AccessContextManagerClient"
+        },
+        "fullName": "google.cloud.accesscontextmanager_v1.AccessContextManagerClient.update_service_perimeter",
+        "method": {
+          "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager.UpdateServicePerimeter",
+          "service": {
+            "fullName": "google.identity.accesscontextmanager.v1.AccessContextManager",
+            "shortName": "AccessContextManager"
+          },
+          "shortName": "UpdateServicePerimeter"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.accesscontextmanager_v1.types.UpdateServicePerimeterRequest"
+          },
+          {
+            "name": "service_perimeter",
+            "type": "google.cloud.accesscontextmanager_v1.types.ServicePerimeter"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_service_perimeter"
+      },
+      "description": "Sample for UpdateServicePerimeter",
+      "file": "accesscontextmanager_v1_generated_access_context_manager_update_service_perimeter_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "accesscontextmanager_v1_generated_AccessContextManager_UpdateServicePerimeter_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "accesscontextmanager_v1_generated_access_context_manager_update_service_perimeter_sync.py"
+    }
+  ]
+}
