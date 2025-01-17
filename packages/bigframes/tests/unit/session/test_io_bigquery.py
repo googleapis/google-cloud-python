@@ -341,10 +341,12 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
                 (("string_col", "in", ["Hello, World!", "こんにちは"]),),
             ],
             123,  # max_results,
-            datetime.datetime(2024, 5, 14, 12, 42, 36, 125125),
+            datetime.datetime(
+                2024, 5, 14, 12, 42, 36, 125125, tzinfo=datetime.timezone.utc
+            ),
             (
                 "SELECT `row_index`, `string_col` FROM `test_table` "
-                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125') "
+                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125+00:00') "
                 "WHERE `rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
                 "'こんにちは') LIMIT 123"
             ),
@@ -364,14 +366,16 @@ def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str)
                 ("string_col", "==", "Hello, World!"),
             ],
             123,  # max_results,
-            datetime.datetime(2024, 5, 14, 12, 42, 36, 125125),
+            datetime.datetime(
+                2024, 5, 14, 12, 42, 36, 125125, tzinfo=datetime.timezone.utc
+            ),
             (
                 """SELECT `rowindex`, `string_col` FROM (SELECT
                     rowindex,
                     string_col,
                 FROM `test_table` AS t
                 ) """
-                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125') "
+                "FOR SYSTEM_TIME AS OF TIMESTAMP('2024-05-14T12:42:36.125125+00:00') "
                 "WHERE `rowindex` < 4 AND `string_col` = 'Hello, World!' "
                 "LIMIT 123"
             ),

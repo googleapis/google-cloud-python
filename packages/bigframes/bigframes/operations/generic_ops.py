@@ -160,3 +160,15 @@ class RowKey(base_ops.NaryOp):
     @property
     def deterministic(self) -> bool:
         return False
+
+
+@dataclasses.dataclass(frozen=True)
+class SqlScalarOp(base_ops.NaryOp):
+    """An escape to SQL, representing a single column."""
+
+    name: typing.ClassVar[str] = "sql_scalar"
+    _output_type: dtypes.ExpressionType
+    sql_template: str
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return self._output_type

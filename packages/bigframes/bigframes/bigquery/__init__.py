@@ -30,6 +30,7 @@ from bigframes.bigquery._operations.json import (
     parse_json,
 )
 from bigframes.bigquery._operations.search import create_vector_index, vector_search
+from bigframes.bigquery._operations.sql import sql_scalar
 from bigframes.bigquery._operations.struct import struct
 
 __all__ = [
@@ -48,6 +49,8 @@ __all__ = [
     # search ops
     "create_vector_index",
     "vector_search",
+    # sql ops
+    "sql_scalar",
     # struct ops
     "struct",
 ]

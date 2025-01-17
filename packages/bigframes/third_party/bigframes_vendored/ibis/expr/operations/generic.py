@@ -330,4 +330,19 @@ class SearchedCase(Value):
         return rlz.highest_precedence_dtype(exprs)
 
 
+@public
+class SqlScalar(Value):
+    """Inject a SQL string as a scalar value."""
+
+    sql_template: str
+    values: VarTuple[Value]
+    output_type: dt.DataType
+
+    shape = ds.scalar
+
+    @property
+    def dtype(self):
+        return self.output_type
+
+
 public(NULL=NULL)

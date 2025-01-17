@@ -18,9 +18,12 @@ Utility functions for SQL construction.
 """
 
 import datetime
+import decimal
 import json
 import math
 from typing import cast, Collection, Iterable, Mapping, Optional, TYPE_CHECKING, Union
+
+import shapely  # type: ignore
 
 import bigframes.core.compile.googlesql as googlesql
 
@@ -31,12 +34,16 @@ if TYPE_CHECKING:
 
 
 ### Writing SQL Values (literals, column references, table references, etc.)
-def simple_literal(value: str | int | bool | float | datetime.datetime):
+def simple_literal(value: bytes | str | int | bool | float | datetime.datetime | None):
     """Return quoted input string."""
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#literals
-    if isinstance(value, str):
+    if value is None:
+        return "NULL"
+    elif isinstance(value, str):
         # Single quoting seems to work nicer with ibis than double quoting
         return f"'{googlesql._escape_chars(value)}'"
+    elif isinstance(value, bytes):
+        return repr(value)
     elif isinstance(value, (bool, int)):
         return str(value)
     elif isinstance(value, float):
@@ -48,8 +55,21 @@ def simple_literal(value: str | int | bool | float | datetime.datetime):
         if value == -math.inf:
             return 'CAST("-inf" as FLOAT)'
         return str(value)
-    if isinstance(value, datetime.datetime):
-        return f"TIMESTAMP('{value.isoformat()}')"
+    # Check datetime first as it is a subclass of date
+    elif isinstance(value, datetime.datetime):
+        if value.tzinfo is None:
+            return f"DATETIME('{value.isoformat()}')"
+        else:
+            return f"TIMESTAMP('{value.isoformat()}')"
+    elif isinstance(value, datetime.date):
+        return f"DATE('{value.isoformat()}')"
+    elif isinstance(value, datetime.time):
+        return f"TIME(DATETIME('1970-01-01 {value.isoformat()}'))"
+    elif isinstance(value, shapely.Geometry):
+        return f"ST_GEOGFROMTEXT({simple_literal(shapely.to_wkt(value))})"
+    elif isinstance(value, decimal.Decimal):
+        # TODO: disambiguate BIGNUMERIC based on scale and/or precision
+        return f"CAST('{str(value)}' AS NUMERIC)"
     else:
         raise ValueError(f"Cannot produce literal for {value}")
 

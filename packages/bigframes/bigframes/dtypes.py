@@ -18,7 +18,7 @@ from dataclasses import dataclass
 import datetime
 import decimal
 import typing
-from typing import Dict, List, Literal, Union
+from typing import Any, Dict, List, Literal, Union
 
 import bigframes_vendored.constants as constants
 import geopandas as gpd  # type: ignore
@@ -26,6 +26,7 @@ import google.cloud.bigquery
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+import shapely  # type: ignore
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
 Dtype = Union[
@@ -448,6 +449,74 @@ def bigframes_dtype_to_arrow_dtype(
         raise ValueError(
             f"No arrow conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
         )
+
+
+def bigframes_dtype_to_literal(
+    bigframes_dtype: Dtype,
+) -> Any:
+    """Create a representative literal value for a bigframes dtype.
+
+    The inverse of infer_literal_type().
+    """
+    if isinstance(bigframes_dtype, pd.ArrowDtype):
+        arrow_type = bigframes_dtype.pyarrow_dtype
+        return arrow_type_to_literal(arrow_type)
+
+    if isinstance(bigframes_dtype, pd.Float64Dtype):
+        return 1.0
+    if isinstance(bigframes_dtype, pd.Int64Dtype):
+        return 1
+    if isinstance(bigframes_dtype, pd.BooleanDtype):
+        return True
+    if isinstance(bigframes_dtype, pd.StringDtype):
+        return "string"
+    if isinstance(bigframes_dtype, gpd.array.GeometryDtype):
+        return shapely.Point((0, 0))
+
+    raise ValueError(
+        f"No literal  conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
+    )
+
+
+def arrow_type_to_literal(
+    arrow_type: pa.DataType,
+) -> Any:
+    """Create a representative literal value for an arrow type."""
+    if pa.types.is_list(arrow_type):
+        return [arrow_type_to_literal(arrow_type.value_type)]
+    if pa.types.is_struct(arrow_type):
+        return {
+            field.name: arrow_type_to_literal(field.type) for field in arrow_type.fields
+        }
+    if pa.types.is_string(arrow_type):
+        return "string"
+    if pa.types.is_binary(arrow_type):
+        return b"bytes"
+    if pa.types.is_floating(arrow_type):
+        return 1.0
+    if pa.types.is_integer(arrow_type):
+        return 1
+    if pa.types.is_boolean(arrow_type):
+        return True
+    if pa.types.is_date(arrow_type):
+        return datetime.date(2025, 1, 1)
+    if pa.types.is_timestamp(arrow_type):
+        return datetime.datetime(
+            2025,
+            1,
+            1,
+            1,
+            1,
+            tzinfo=datetime.timezone.utc if arrow_type.tz is not None else None,
+        )
+    if pa.types.is_decimal(arrow_type):
+        return decimal.Decimal("1.0")
+    if pa.types.is_time(arrow_type):
+        return datetime.time(1, 1, 1)
+
+    raise ValueError(
+        f"No literal  conversion for {arrow_type}. {constants.FEEDBACK_LINK}"
+    )
 
 
 def infer_literal_type(literal) -> typing.Optional[Dtype]:

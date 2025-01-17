@@ -1089,6 +1089,13 @@ class SQLGlotCompiler(abc.ABC):
 
     visit_SearchedCase = visit_SimpleCase
 
+    def visit_SqlScalar(self, op, *, sql_template, values, output_type):
+        # TODO: can we include a string in the sqlglot expression without parsing?
+        return sg.parse_one(
+            sql_template.format(*[value.sql(dialect="bigquery") for value in values]),
+            dialect="bigquery",
+        )
+
     def visit_ExistsSubquery(self, op, *, rel):
         select = rel.this.select(1, append=False)
         return self.f.exists(select)
