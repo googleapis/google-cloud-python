@@ -1496,7 +1496,8 @@ class BigtableAsyncClient:
         if regex_match and regex_match.group("name"):
             header_params["name"] = regex_match.group("name")
 
-        if request.app_profile_id:
+        if request.app_profile_id is not None:
+            # execute_query currently requires empty header support. TODO: remove after support is added
             header_params["app_profile_id"] = request.app_profile_id
 
         if header_params:

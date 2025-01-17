@@ -1014,3 +1014,16 @@ class TestSystemAsync:
         assert len(row_list) == bool(
             expect_match
         ), f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+
+    @CrossSync.pytest
+    @pytest.mark.usefixtures("client")
+    @CrossSync.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    async def test_execute_query_simple(self, client, table_id, instance_id):
+        result = await client.execute_query("SELECT 1 AS a, 'foo' AS b", instance_id)
+        rows = [r async for r in result]
+        assert len(rows) == 1
+        row = rows[0]
+        assert row["a"] == 1
+        assert row["b"] == "foo"

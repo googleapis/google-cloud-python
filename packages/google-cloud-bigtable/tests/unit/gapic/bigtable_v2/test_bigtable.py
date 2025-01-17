@@ -6868,7 +6868,11 @@ def test_execute_query_routing_parameters_request_1_grpc():
 
         assert args[0] == request_msg
 
-        expected_headers = {"name": "projects/sample1/instances/sample2"}
+        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
+        expected_headers = {
+            "name": "projects/sample1/instances/sample2",
+            "app_profile_id": "",
+        }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -7894,7 +7898,11 @@ async def test_execute_query_routing_parameters_request_1_grpc_asyncio():
 
         assert args[0] == request_msg
 
-        expected_headers = {"name": "projects/sample1/instances/sample2"}
+        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
+        expected_headers = {
+            "name": "projects/sample1/instances/sample2",
+            "app_profile_id": "",
+        }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -9915,7 +9923,11 @@ def test_execute_query_routing_parameters_request_1_rest():
 
         assert args[0] == request_msg
 
-        expected_headers = {"name": "projects/sample1/instances/sample2"}
+        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
+        expected_headers = {
+            "name": "projects/sample1/instances/sample2",
+            "app_profile_id": "",
+        }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
