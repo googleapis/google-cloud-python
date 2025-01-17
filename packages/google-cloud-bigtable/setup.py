@@ -42,6 +42,7 @@ dependencies = [
     "google-auth >= 2.14.1, <3.0.0dev,!=2.24.0,!=2.25.0",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
     "proto-plus >= 1.22.3, <2.0.0dev",
+    "proto-plus >= 1.25.0, <2.0.0dev; python_version>='3.13'",
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 extras = {"libcst": "libcst >= 0.2.5"}
