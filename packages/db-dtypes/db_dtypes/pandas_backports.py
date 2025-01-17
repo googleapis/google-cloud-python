@@ -19,7 +19,6 @@ These backported versions are simpler and, in some cases, less featureful than
 the versions in the later versions of pandas.
 """
 
-import operator
 from typing import Any
 
 import numpy
@@ -63,10 +62,7 @@ def import_default(module_name, force=False, default=None):
         return default
 
     name = default.__name__
-    try:
-        module = __import__(module_name, {}, {}, [name])
-    except ModuleNotFoundError:
-        return default
+    module = __import__(module_name, {}, {}, [name])
 
     return getattr(module, name, default)
 
@@ -79,26 +75,6 @@ def import_default(module_name, force=False, default=None):
 class OpsMixin:
     def _cmp_method(self, other, op):  # pragma: NO COVER
         return NotImplemented
-
-    def __eq__(self, other):
-        return self._cmp_method(other, operator.eq)
-
-    def __ne__(self, other):
-        return self._cmp_method(other, operator.ne)
-
-    def __lt__(self, other):
-        return self._cmp_method(other, operator.lt)
-
-    def __le__(self, other):
-        return self._cmp_method(other, operator.le)
-
-    def __gt__(self, other):
-        return self._cmp_method(other, operator.gt)
-
-    def __ge__(self, other):
-        return self._cmp_method(other, operator.ge)
-
-    __add__ = __radd__ = __sub__ = lambda self, other: NotImplemented
 
 
 # TODO: use public API once pandas 1.5 / 2.x is released.

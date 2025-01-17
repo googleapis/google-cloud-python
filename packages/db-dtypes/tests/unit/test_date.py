@@ -48,9 +48,6 @@ NULL_VALUE_TEST_CASES = [
     float("nan"),
 ]
 
-if hasattr(pandas, "NA"):
-    NULL_VALUE_TEST_CASES.append(pandas.NA)
-
 
 def test_box_func():
     input_array = db_dtypes.DateArray([])

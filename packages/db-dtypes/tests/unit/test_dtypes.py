@@ -584,8 +584,7 @@ def test_date_add():
     do = pd.DateOffset(days=1)
     expect = dates.astype("object") + do
     np.testing.assert_array_equal(dates + do, expect)
-    if pandas_release >= (1, 1):
-        np.testing.assert_array_equal(do + dates, expect)
+    np.testing.assert_array_equal(do + dates, expect)
 
     with pytest.raises(TypeError):
         dates + times.astype("timedelta64")
