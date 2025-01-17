@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import json
+import math
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 import db_dtypes
@@ -36,7 +38,7 @@ JSON_DATA = {
         "null_field": None,
         "order": {
             "items": ["book", "pen", "computer"],
-            "total": 15.99,
+            "total": 15,
             "address": {"street": "123 Main St", "city": "Anytown"},
         },
     },
@@ -114,3 +116,122 @@ def test_as_numpy_array():
         ]
     )
     pd._testing.assert_equal(result, expected)
+
+
+def test_json_arrow_array():
+    data = db_dtypes.JSONArray._from_sequence(JSON_DATA.values())
+    assert isinstance(data.__arrow_array__(), pa.ExtensionArray)
+
+
+def test_json_arrow_storage_type():
+    arrow_json_type = db_dtypes.JSONArrowType()
+    assert arrow_json_type.extension_name == "dbjson"
+    assert pa.types.is_string(arrow_json_type.storage_type)
+
+
+def test_json_arrow_constructors():
+    data = [
+        json.dumps(value, sort_keys=True, separators=(",", ":"))
+        for value in JSON_DATA.values()
+    ]
+    storage_array = pa.array(data, type=pa.string())
+
+    arr_1 = db_dtypes.JSONArrowType().wrap_array(storage_array)
+    assert isinstance(arr_1, pa.ExtensionArray)
+
+    arr_2 = pa.ExtensionArray.from_storage(db_dtypes.JSONArrowType(), storage_array)
+    assert isinstance(arr_2, pa.ExtensionArray)
+
+    assert arr_1 == arr_2
+
+
+def test_json_arrow_to_pandas():
+    data = [
+        json.dumps(value, sort_keys=True, separators=(",", ":"))
+        for value in JSON_DATA.values()
+    ]
+    arr = pa.array(data, type=db_dtypes.JSONArrowType())
+
+    s = arr.to_pandas()
+    assert isinstance(s.dtypes, db_dtypes.JSONDtype)
+    assert s[0]
+    assert s[1] == 100
+    assert math.isclose(s[2], 0.98)
+    assert s[3] == "hello world"
+    assert math.isclose(s[4][0], 0.1)
+    assert math.isclose(s[4][1], 0.2)
+    assert s[5] == {
+        "null_field": None,
+        "order": {
+            "items": ["book", "pen", "computer"],
+            "total": 15,
+            "address": {"street": "123 Main St", "city": "Anytown"},
+        },
+    }
+    assert pd.isna(s[6])
+
+
+def test_json_arrow_to_pylist():
+    data = [
+        json.dumps(value, sort_keys=True, separators=(",", ":"))
+        for value in JSON_DATA.values()
+    ]
+    arr = pa.array(data, type=db_dtypes.JSONArrowType())
+
+    s = arr.to_pylist()
+    assert isinstance(s, list)
+    assert s[0]
+    assert s[1] == 100
+    assert math.isclose(s[2], 0.98)
+    assert s[3] == "hello world"
+    assert math.isclose(s[4][0], 0.1)
+    assert math.isclose(s[4][1], 0.2)
+    assert s[5] == {
+        "null_field": None,
+        "order": {
+            "items": ["book", "pen", "computer"],
+            "total": 15,
+            "address": {"street": "123 Main St", "city": "Anytown"},
+        },
+    }
+    assert s[6] is None
+
+
+def test_json_arrow_record_batch():
+    data = [
+        json.dumps(value, sort_keys=True, separators=(",", ":"))
+        for value in JSON_DATA.values()
+    ]
+    arr = pa.array(data, type=db_dtypes.JSONArrowType())
+    batch = pa.RecordBatch.from_arrays([arr], ["json_col"])
+    sink = pa.BufferOutputStream()
+
+    with pa.RecordBatchStreamWriter(sink, batch.schema) as writer:
+        writer.write_batch(batch)
+
+    buf = sink.getvalue()
+
+    with pa.ipc.open_stream(buf) as reader:
+        result = reader.read_all()
+
+    json_col = result.column("json_col")
+    assert isinstance(json_col.type, db_dtypes.JSONArrowType)
+
+    s = json_col.to_pylist()
+
+    assert isinstance(s, list)
+    assert s[0]
+    assert s[1] == 100
+    assert math.isclose(s[2], 0.98)
+    assert s[3] == "hello world"
+    assert math.isclose(s[4][0], 0.1)
+    assert math.isclose(s[4][1], 0.2)
+    assert s[5] == {
+        "null_field": None,
+        "order": {
+            "items": ["book", "pen", "computer"],
+            "total": 15,
+            "address": {"street": "123 Main St", "city": "Anytown"},
+        },
+    }
+    assert s[6] is None

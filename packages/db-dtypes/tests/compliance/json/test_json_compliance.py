@@ -22,10 +22,6 @@ import pandas.tests.extension.base as base
 import pytest
 
 
-class TestJSONArrayAccumulate(base.BaseAccumulateTests):
-    pass
-
-
 class TestJSONArrayCasting(base.BaseCastingTests):
     def test_astype_str(self, data):
         # Use `json.dumps(str)` instead of passing `str(obj)` directly to the super method.

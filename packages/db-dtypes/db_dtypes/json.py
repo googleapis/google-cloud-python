@@ -64,6 +64,10 @@ class JSONDtype(pd.api.extensions.ExtensionDtype):
         """Return the array type associated with this dtype."""
         return JSONArray
 
+    def __from_arrow__(self, array: pa.Array | pa.ChunkedArray) -> JSONArray:
+        """Convert the pyarrow array to the extension array."""
+        return JSONArray(array)
+
 
 class JSONArray(arrays.ArrowExtensionArray):
     """Extension array that handles BigQuery JSON data, leveraging a string-based
@@ -91,6 +95,10 @@ class JSONArray(arrays.ArrowExtensionArray):
             self._pa_array = pa_data
         else:
             raise NotImplementedError(f"Unsupported pandas version: {pd.__version__}")
+
+    def __arrow_array__(self, type=None):
+        """Convert to an arrow array. This is required for pyarrow extension."""
+        return pa.array(self.pa_data, type=JSONArrowType())
 
     @classmethod
     def _box_pa(
@@ -208,6 +216,8 @@ class JSONArray(arrays.ArrowExtensionArray):
         value = self.pa_data[item]
         if isinstance(value, pa.ChunkedArray):
             return type(self)(value)
+        elif isinstance(value, pa.ExtensionScalar):
+            return value.as_py()
         else:
             scalar = JSONArray._deserialize_json(value.as_py())
             if scalar is None:
@@ -244,3 +254,33 @@ class JSONArray(arrays.ArrowExtensionArray):
         result[mask] = self._dtype.na_value
         result[~mask] = data[~mask].pa_data.to_numpy()
         return result
+
+
+class JSONArrowScalar(pa.ExtensionScalar):
+    def as_py(self):
+        return JSONArray._deserialize_json(self.value.as_py() if self.value else None)
+
+
+class JSONArrowType(pa.ExtensionType):
+    """Arrow extension type for the `dbjson` Pandas extension type."""
+
+    def __init__(self) -> None:
+        super().__init__(pa.string(), "dbjson")
+
+    def __arrow_ext_serialize__(self) -> bytes:
+        return b""
+
+    @classmethod
+    def __arrow_ext_deserialize__(cls, storage_type, serialized) -> JSONArrowType:
+        return JSONArrowType()
+
+    def to_pandas_dtype(self):
+        return JSONDtype()
+
+    def __arrow_ext_scalar_class__(self):
+        return JSONArrowScalar
+
+
+# Register the type to be included in RecordBatches, sent over IPC and received in
+# another Python process.
+pa.register_extension_type(JSONArrowType())
