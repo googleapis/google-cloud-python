@@ -38,11 +38,14 @@ from google.auth import exceptions
 from google.auth import iam
 from google.auth import jwt
 from google.auth import metrics
+from google.oauth2 import _client
 
 
 _REFRESH_ERROR = "Unable to acquire impersonated credentials"
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
+
+_GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
 def _make_iam_token_request(
@@ -177,6 +180,7 @@ class Credentials(
         target_principal,
         target_scopes,
         delegates=None,
+        subject=None,
         lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
         quota_project_id=None,
         iam_endpoint_override=None,
@@ -204,9 +208,12 @@ class Credentials(
             quota_project_id (Optional[str]): The project ID used for quota and billing.
                 This project may be different from the project used to
                 create the credentials.
-            iam_endpoint_override (Optiona[str]): The full IAM endpoint override
+            iam_endpoint_override (Optional[str]): The full IAM endpoint override
                 with the target_principal embedded. This is useful when supporting
                 impersonation with regional endpoints.
+            subject (Optional[str]): sub field of a JWT. This field should only be set
+                if you wish to impersonate as a user. This feature is useful when
+                using domain wide delegation.
         """
 
         super(Credentials, self).__init__()
@@ -231,6 +238,7 @@ class Credentials(
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates
+        self._subject = subject
         self._lifetime = lifetime or _DEFAULT_TOKEN_LIFETIME_SECS
         self.token = None
         self.expiry = _helpers.utcnow()
@@ -274,6 +282,39 @@ class Credentials(
 
         # Apply the source credentials authentication info.
         self._source_credentials.apply(headers)
+
+        #  If a subject is specified a domain-wide delegation auth-flow is initiated
+        #  to impersonate as the provided subject (user).
+        if self._subject:
+            if self.universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
+                raise exceptions.GoogleAuthError(
+                    "Domain-wide delegation is not supported in universes other "
+                    + "than googleapis.com"
+                )
+
+            now = _helpers.utcnow()
+            payload = {
+                "iss": self._target_principal,
+                "scope": _helpers.scopes_to_string(self._target_scopes or ()),
+                "sub": self._subject,
+                "aud": _GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+                "iat": _helpers.datetime_to_secs(now),
+                "exp": _helpers.datetime_to_secs(now) + _DEFAULT_TOKEN_LIFETIME_SECS,
+            }
+
+            assertion = _sign_jwt_request(
+                request=request,
+                principal=self._target_principal,
+                headers=headers,
+                payload=payload,
+                delegates=self._delegates,
+            )
+
+            self.token, self.expiry, _ = _client.jwt_grant(
+                request, _GOOGLE_OAUTH2_TOKEN_ENDPOINT, assertion
+            )
+
+            return
 
         self.token, self.expiry = _make_iam_token_request(
             request=request,
@@ -478,3 +519,61 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         self.expiry = datetime.utcfromtimestamp(
             jwt.decode(id_token, verify=False)["exp"]
         )
+
+
+def _sign_jwt_request(request, principal, headers, payload, delegates=[]):
+    """Makes a request to the Google Cloud IAM service to sign a JWT using a
+    service account's system-managed private key.
+    Args:
+        request (Request): The Request object to use.
+        principal (str): The principal to request an access token for.
+        headers (Mapping[str, str]): Map of headers to transmit.
+        payload (Mapping[str, str]): The JWT payload to sign. Must be a
+            serialized JSON object that contains a JWT Claims Set.
+        delegates (Sequence[str]): The chained list of delegates required
+            to grant the final access_token.  If set, the sequence of
+            identities must have "Service Account Token Creator" capability
+            granted to the prceeding identity.  For example, if set to
+            [serviceAccountB, serviceAccountC], the source_credential
+            must have the Token Creator role on serviceAccountB.
+            serviceAccountB must have the Token Creator on
+            serviceAccountC.
+            Finally, C must have Token Creator on target_principal.
+            If left unset, source_credential must have that role on
+            target_principal.
+
+    Raises:
+        google.auth.exceptions.TransportError: Raised if there is an underlying
+            HTTP connection error
+        google.auth.exceptions.RefreshError: Raised if the impersonated
+            credentials are not available.  Common reasons are
+            `iamcredentials.googleapis.com` is not enabled or the
+            `Service Account Token Creator` is not assigned
+    """
+    iam_endpoint = iam._IAM_SIGNJWT_ENDPOINT.format(principal)
+
+    body = {"delegates": delegates, "payload": json.dumps(payload)}
+    body = json.dumps(body).encode("utf-8")
+
+    response = request(url=iam_endpoint, method="POST", headers=headers, body=body)
+
+    # support both string and bytes type response.data
+    response_body = (
+        response.data.decode("utf-8")
+        if hasattr(response.data, "decode")
+        else response.data
+    )
+
+    if response.status != http_client.OK:
+        raise exceptions.RefreshError(_REFRESH_ERROR, response_body)
+
+    try:
+        jwt_response = json.loads(response_body)
+        signed_jwt = jwt_response["signedJwt"]
+        return signed_jwt
+
+    except (KeyError, ValueError) as caught_exc:
+        new_exc = exceptions.RefreshError(
+            "{}: No signed JWT in response.".format(_REFRESH_ERROR), response_body
+        )
+        raise new_exc from caught_exc

@@ -48,6 +48,11 @@ _IAM_SIGN_ENDPOINT = (
     + "/serviceAccounts/{}:signBlob"
 )
 
+_IAM_SIGNJWT_ENDPOINT = (
+    "https://iamcredentials.googleapis.com/v1/projects/-"
+    + "/serviceAccounts/{}:signJwt"
+)
+
 _IAM_IDTOKEN_ENDPOINT = (
     "https://iamcredentials.googleapis.com/v1/"
     + "projects/-/serviceAccounts/{}:generateIdToken"
