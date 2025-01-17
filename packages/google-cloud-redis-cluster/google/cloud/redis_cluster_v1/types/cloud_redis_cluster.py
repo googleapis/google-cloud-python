@@ -17,16 +17,21 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.redis.cluster.v1",
     manifest={
+        "PscConnectionStatus",
         "AuthorizationMode",
         "NodeType",
         "TransitEncryptionMode",
+        "ConnectionType",
         "CreateClusterRequest",
         "ListClustersRequest",
         "ListClustersResponse",
@@ -34,16 +39,55 @@ __protobuf__ = proto.module(
         "GetClusterRequest",
         "DeleteClusterRequest",
         "GetClusterCertificateAuthorityRequest",
+        "ListBackupCollectionsRequest",
+        "ListBackupCollectionsResponse",
+        "GetBackupCollectionRequest",
+        "ListBackupsRequest",
+        "ListBackupsResponse",
+        "GetBackupRequest",
+        "DeleteBackupRequest",
+        "ExportBackupRequest",
+        "BackupClusterRequest",
         "Cluster",
+        "AutomatedBackupConfig",
+        "BackupCollection",
+        "Backup",
+        "BackupFile",
+        "PscServiceAttachment",
+        "CrossClusterReplicationConfig",
+        "ClusterMaintenancePolicy",
+        "ClusterWeeklyMaintenanceWindow",
+        "ClusterMaintenanceSchedule",
         "PscConfig",
         "DiscoveryEndpoint",
         "PscConnection",
+        "ClusterEndpoint",
+        "ConnectionDetail",
+        "PscAutoConnection",
         "OperationMetadata",
         "CertificateAuthority",
         "ClusterPersistenceConfig",
         "ZoneDistributionConfig",
+        "RescheduleClusterMaintenanceRequest",
+        "EncryptionInfo",
     },
 )
+
+
+class PscConnectionStatus(proto.Enum):
+    r"""Status of the PSC connection.
+
+    Values:
+        PSC_CONNECTION_STATUS_UNSPECIFIED (0):
+            PSC connection status is not specified.
+        PSC_CONNECTION_STATUS_ACTIVE (1):
+            The connection is active
+        PSC_CONNECTION_STATUS_NOT_FOUND (2):
+            Connection not found
+    """
+    PSC_CONNECTION_STATUS_UNSPECIFIED = 0
+    PSC_CONNECTION_STATUS_ACTIVE = 1
+    PSC_CONNECTION_STATUS_NOT_FOUND = 2
 
 
 class AuthorizationMode(proto.Enum):
@@ -67,7 +111,7 @@ class NodeType(proto.Enum):
 
     Values:
         NODE_TYPE_UNSPECIFIED (0):
-            No description available.
+            Node type unspecified
         REDIS_SHARED_CORE_NANO (1):
             Redis shared core nano node_type.
         REDIS_HIGHMEM_MEDIUM (2):
@@ -99,6 +143,28 @@ class TransitEncryptionMode(proto.Enum):
     TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
     TRANSIT_ENCRYPTION_MODE_DISABLED = 1
     TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION = 2
+
+
+class ConnectionType(proto.Enum):
+    r"""Type of a PSC connection, for cluster access purpose.
+
+    Values:
+        CONNECTION_TYPE_UNSPECIFIED (0):
+            Cluster endpoint Type is not set
+        CONNECTION_TYPE_DISCOVERY (1):
+            Cluster endpoint that will be used as for
+            cluster topology discovery.
+        CONNECTION_TYPE_PRIMARY (2):
+            Cluster endpoint that will be used as primary
+            endpoint to access primary.
+        CONNECTION_TYPE_READER (3):
+            Cluster endpoint that will be used as reader
+            endpoint to access replicas.
+    """
+    CONNECTION_TYPE_UNSPECIFIED = 0
+    CONNECTION_TYPE_DISCOVERY = 1
+    CONNECTION_TYPE_PRIMARY = 2
+    CONNECTION_TYPE_READER = 3
 
 
 class CreateClusterRequest(proto.Message):
@@ -315,15 +381,301 @@ class GetClusterCertificateAuthorityRequest(proto.Message):
     )
 
 
-class Cluster(proto.Message):
-    r"""A cluster instance.
+class ListBackupCollectionsRequest(proto.Message):
+    r"""Request for [ListBackupCollections]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the backupCollection location
+            using the form:
+            ``projects/{project_id}/locations/{location_id}`` where
+            ``location_id`` refers to a GCP region.
+        page_size (int):
+            Optional. The maximum number of items to return.
+
+            If not specified, a default value of 1000 will be used by
+            the service. Regardless of the page_size value, the response
+            may include a partial list and a caller should only rely on
+            response's
+            [``next_page_token``][google.cloud.redis.cluster.v1.ListBackupCollectionsResponse.next_page_token]
+            to determine if there are more clusters left to be queried.
+        page_token (str):
+            Optional. The ``next_page_token`` value returned from a
+            previous [ListBackupCollections] request, if any.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListBackupCollectionsResponse(proto.Message):
+    r"""Response for [ListBackupCollections].
+
+    Attributes:
+        backup_collections (MutableSequence[google.cloud.redis_cluster_v1.types.BackupCollection]):
+            A list of backupCollections in the project.
+
+            If the ``location_id`` in the parent field of the request is
+            "-", all regions available to the project are queried, and
+            the results aggregated. If in such an aggregated query a
+            location is unavailable, a placeholder backupCollection
+            entry is included in the response with the ``name`` field
+            set to a value of the form
+            ``projects/{project_id}/locations/{location_id}/backupCollections/``-
+            and the ``status`` field set to ERROR and ``status_message``
+            field set to "location not available for
+            ListBackupCollections".
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    backup_collections: MutableSequence["BackupCollection"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BackupCollection",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetBackupCollectionRequest(proto.Message):
+    r"""Request for [GetBackupCollection].
+
+    Attributes:
+        name (str):
+            Required. Redis backupCollection resource name using the
+            form:
+            ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}``
+            where ``location_id`` refers to a GCP region.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListBackupsRequest(proto.Message):
+    r"""Request for [ListBackups].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the backupCollection using
+            the form:
+            ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}``
+        page_size (int):
+            Optional. The maximum number of items to return.
+
+            If not specified, a default value of 1000 will be used by
+            the service. Regardless of the page_size value, the response
+            may include a partial list and a caller should only rely on
+            response's
+            [``next_page_token``][google.cloud.redis.cluster.v1.ListBackupsResponse.next_page_token]
+            to determine if there are more clusters left to be queried.
+        page_token (str):
+            Optional. The ``next_page_token`` value returned from a
+            previous [ListBackupCollections] request, if any.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListBackupsResponse(proto.Message):
+    r"""Response for [ListBackups].
+
+    Attributes:
+        backups (MutableSequence[google.cloud.redis_cluster_v1.types.Backup]):
+            A list of backups in the project.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+        unreachable (MutableSequence[str]):
+            Backups that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    backups: MutableSequence["Backup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Backup",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetBackupRequest(proto.Message):
+    r"""Request for [GetBackup].
+
+    Attributes:
+        name (str):
+            Required. Redis backup resource name using the form:
+            ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteBackupRequest(proto.Message):
+    r"""Request for [DeleteBackup].
+
+    Attributes:
+        name (str):
+            Required. Redis backup resource name using the form:
+            ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
+        request_id (str):
+            Optional. Idempotent request UUID.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ExportBackupRequest(proto.Message):
+    r"""Request for [ExportBackup].
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_bucket (str):
+            Google Cloud Storage bucket, like
+            "my-bucket".
+
+            This field is a member of `oneof`_ ``destination``.
+        name (str):
+            Required. Redis backup resource name using the form:
+            ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
+    """
+
+    gcs_bucket: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="destination",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class BackupClusterRequest(proto.Message):
+    r"""Request for [BackupCluster].
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
-            Required. Unique name of the resource in this scope
-            including project and location using the form:
+            Required. Redis cluster resource name using the form:
+            ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``
+            where ``location_id`` refers to a GCP region.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Optional. TTL for the backup to expire. Value
+            range is 1 day to 100 years. If not specified,
+            the default value is 100 years.
+        backup_id (str):
+            Optional. The id of the backup to be created. If not
+            specified, the default value ([YYYYMMDDHHMMSS]_[Shortened
+            Cluster UID] is used.
+
+            This field is a member of `oneof`_ ``_backup_id``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    backup_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+
+
+class Cluster(proto.Message):
+    r"""A cluster instance.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_source (google.cloud.redis_cluster_v1.types.Cluster.GcsBackupSource):
+            Optional. Backups stored in Cloud Storage
+            buckets. The Cloud Storage buckets need to be
+            the same region as the clusters. Read permission
+            is required to import from the provided Cloud
+            Storage objects.
+
+            This field is a member of `oneof`_ ``import_sources``.
+        managed_backup_source (google.cloud.redis_cluster_v1.types.Cluster.ManagedBackupSource):
+            Optional. Backups generated and managed by
+            memorystore service.
+
+            This field is a member of `oneof`_ ``import_sources``.
+        name (str):
+            Required. Identifier. Unique name of the resource in this
+            scope including project and location using the form:
             ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp associated with
@@ -354,12 +706,12 @@ class Cluster(proto.Message):
 
             This field is a member of `oneof`_ ``_size_gb``.
         shard_count (int):
-            Required. Number of shards for the Redis
+            Optional. Number of shards for the Redis
             cluster.
 
             This field is a member of `oneof`_ ``_shard_count``.
         psc_configs (MutableSequence[google.cloud.redis_cluster_v1.types.PscConfig]):
-            Required. Each PscConfig configures the
+            Optional. Each PscConfig configures the
             consumer network where IPs will be designated to
             the cluster for client access through Private
             Service Connect Automation. Currently, only one
@@ -370,8 +722,9 @@ class Cluster(proto.Message):
             cluster. Currently only one discovery endpoint
             is supported.
         psc_connections (MutableSequence[google.cloud.redis_cluster_v1.types.PscConnection]):
-            Output only. PSC connections for discovery of
-            the cluster topology and accessing the cluster.
+            Output only. The list of PSC connections that
+            are auto-created through service connectivity
+            automation.
         state_info (google.cloud.redis_cluster_v1.types.Cluster.StateInfo):
             Output only. Additional information about the
             current state of the cluster.
@@ -394,11 +747,45 @@ class Cluster(proto.Message):
             Optional. This config will be used to
             determine how the customer wants us to
             distribute cluster resources within the region.
+        cross_cluster_replication_config (google.cloud.redis_cluster_v1.types.CrossClusterReplicationConfig):
+            Optional. Cross cluster replication config.
         deletion_protection_enabled (bool):
             Optional. The delete operation will fail when
             the value is set to true.
 
             This field is a member of `oneof`_ ``_deletion_protection_enabled``.
+        maintenance_policy (google.cloud.redis_cluster_v1.types.ClusterMaintenancePolicy):
+            Optional. ClusterMaintenancePolicy determines
+            when to allow or deny updates.
+
+            This field is a member of `oneof`_ ``_maintenance_policy``.
+        maintenance_schedule (google.cloud.redis_cluster_v1.types.ClusterMaintenanceSchedule):
+            Output only. ClusterMaintenanceSchedule
+            Output only Published maintenance schedule.
+
+            This field is a member of `oneof`_ ``_maintenance_schedule``.
+        psc_service_attachments (MutableSequence[google.cloud.redis_cluster_v1.types.PscServiceAttachment]):
+            Output only. Service attachment details to
+            configure Psc connections
+        cluster_endpoints (MutableSequence[google.cloud.redis_cluster_v1.types.ClusterEndpoint]):
+            Optional. A list of cluster enpoints.
+        backup_collection (str):
+            Optional. Output only. The backup collection
+            full resource name. Example:
+            projects/{project}/locations/{location}/backupCollections/{collection}
+
+            This field is a member of `oneof`_ ``_backup_collection``.
+        kms_key (str):
+            Optional. The KMS key used to encrypt the
+            at-rest data of the cluster.
+
+            This field is a member of `oneof`_ ``_kms_key``.
+        automated_backup_config (google.cloud.redis_cluster_v1.types.AutomatedBackupConfig):
+            Optional. The automated backup config for the
+            cluster.
+        encryption_info (google.cloud.redis_cluster_v1.types.EncryptionInfo):
+            Output only. Encryption information of the
+            data at rest of the cluster.
     """
 
     class State(proto.Enum):
@@ -472,6 +859,54 @@ class Cluster(proto.Message):
             message="Cluster.StateInfo.UpdateInfo",
         )
 
+    class GcsBackupSource(proto.Message):
+        r"""Backups stored in Cloud Storage buckets.
+        The Cloud Storage buckets need to be the same region as the
+        clusters.
+
+        Attributes:
+            uris (MutableSequence[str]):
+                Optional. URIs of the GCS objects to import.
+                Example: gs://bucket1/object1,
+                gs://bucket2/folder2/object2
+        """
+
+        uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class ManagedBackupSource(proto.Message):
+        r"""Backups that generated and managed by memorystore.
+
+        Attributes:
+            backup (str):
+                Optional. Example:
+                //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+                A shorter version (without the prefix) of the backup name is
+                also supported, like
+                projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+                In this case, it assumes the backup is under
+                redis.googleapis.com.
+        """
+
+        backup: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    gcs_source: GcsBackupSource = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        oneof="import_sources",
+        message=GcsBackupSource,
+    )
+    managed_backup_source: ManagedBackupSource = proto.Field(
+        proto.MESSAGE,
+        number=35,
+        oneof="import_sources",
+        message=ManagedBackupSource,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -560,10 +995,622 @@ class Cluster(proto.Message):
         number=23,
         message="ZoneDistributionConfig",
     )
+    cross_cluster_replication_config: "CrossClusterReplicationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message="CrossClusterReplicationConfig",
+    )
     deletion_protection_enabled: bool = proto.Field(
         proto.BOOL,
         number=25,
         optional=True,
+    )
+    maintenance_policy: "ClusterMaintenancePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        optional=True,
+        message="ClusterMaintenancePolicy",
+    )
+    maintenance_schedule: "ClusterMaintenanceSchedule" = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        optional=True,
+        message="ClusterMaintenanceSchedule",
+    )
+    psc_service_attachments: MutableSequence[
+        "PscServiceAttachment"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=30,
+        message="PscServiceAttachment",
+    )
+    cluster_endpoints: MutableSequence["ClusterEndpoint"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=36,
+        message="ClusterEndpoint",
+    )
+    backup_collection: str = proto.Field(
+        proto.STRING,
+        number=39,
+        optional=True,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=40,
+        optional=True,
+    )
+    automated_backup_config: "AutomatedBackupConfig" = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message="AutomatedBackupConfig",
+    )
+    encryption_info: "EncryptionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=43,
+        message="EncryptionInfo",
+    )
+
+
+class AutomatedBackupConfig(proto.Message):
+    r"""The automated backup config for a cluster.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        fixed_frequency_schedule (google.cloud.redis_cluster_v1.types.AutomatedBackupConfig.FixedFrequencySchedule):
+            Optional. Trigger automated backups at a
+            fixed frequency.
+
+            This field is a member of `oneof`_ ``schedule``.
+        automated_backup_mode (google.cloud.redis_cluster_v1.types.AutomatedBackupConfig.AutomatedBackupMode):
+            Optional. The automated backup mode. If the
+            mode is disabled, the other fields will be
+            ignored.
+        retention (google.protobuf.duration_pb2.Duration):
+            Optional. How long to keep automated backups
+            before the backups are deleted. The value should
+            be between 1 day and 365 days. If not specified,
+            the default value is 35 days.
+
+            This field is a member of `oneof`_ ``_retention``.
+    """
+
+    class AutomatedBackupMode(proto.Enum):
+        r"""The automated backup mode.
+
+        Values:
+            AUTOMATED_BACKUP_MODE_UNSPECIFIED (0):
+                Default value. Automated backup config is not
+                specified.
+            DISABLED (1):
+                Automated backup config disabled.
+            ENABLED (2):
+                Automated backup config enabled.
+        """
+        AUTOMATED_BACKUP_MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        ENABLED = 2
+
+    class FixedFrequencySchedule(proto.Message):
+        r"""This schedule allows the backup to be triggered at a fixed
+        frequency (currently only daily is supported).
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            start_time (google.type.timeofday_pb2.TimeOfDay):
+                Required. The start time of every automated
+                backup in UTC. It must be set to the start of an
+                hour. This field is required.
+
+                This field is a member of `oneof`_ ``_start_time``.
+        """
+
+        start_time: timeofday_pb2.TimeOfDay = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message=timeofday_pb2.TimeOfDay,
+        )
+
+    fixed_frequency_schedule: FixedFrequencySchedule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="schedule",
+        message=FixedFrequencySchedule,
+    )
+    automated_backup_mode: AutomatedBackupMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AutomatedBackupMode,
+    )
+    retention: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+
+
+class BackupCollection(proto.Message):
+    r"""BackupCollection of a cluster.
+
+    Attributes:
+        name (str):
+            Identifier. Full resource path of the backup
+            collection.
+        cluster_uid (str):
+            Output only. The cluster uid of the backup
+            collection.
+        cluster (str):
+            Output only. The full resource path of the
+            cluster the backup collection belongs to.
+            Example:
+
+            projects/{project}/locations/{location}/clusters/{cluster}
+        kms_key (str):
+            Output only. The KMS key used to encrypt the
+            backups under this backup collection.
+        uid (str):
+            Output only. System assigned unique
+            identifier of the backup collection.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cluster_uid: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    cluster: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class Backup(proto.Message):
+    r"""Backup of a cluster.
+
+    Attributes:
+        name (str):
+            Identifier. Full resource path of the backup. the last part
+            of the name is the backup id with the following format:
+            [YYYYMMDDHHMMSS]_[Shorted Cluster UID] OR customer specified
+            while backup cluster. Example: 20240515123000_1234
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the backup was
+            created.
+        cluster (str):
+            Output only. Cluster resource path of this
+            backup.
+        cluster_uid (str):
+            Output only. Cluster uid of this backup.
+        total_size_bytes (int):
+            Output only. Total size of the backup in
+            bytes.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the backup will
+            expire.
+        engine_version (str):
+            Output only. redis-7.2, valkey-7.5
+        backup_files (MutableSequence[google.cloud.redis_cluster_v1.types.BackupFile]):
+            Output only. List of backup files of the
+            backup.
+        node_type (google.cloud.redis_cluster_v1.types.NodeType):
+            Output only. Node type of the cluster.
+        replica_count (int):
+            Output only. Number of replicas for the
+            cluster.
+        shard_count (int):
+            Output only. Number of shards for the
+            cluster.
+        backup_type (google.cloud.redis_cluster_v1.types.Backup.BackupType):
+            Output only. Type of the backup.
+        state (google.cloud.redis_cluster_v1.types.Backup.State):
+            Output only. State of the backup.
+        encryption_info (google.cloud.redis_cluster_v1.types.EncryptionInfo):
+            Output only. Encryption information of the
+            backup.
+        uid (str):
+            Output only. System assigned unique
+            identifier of the backup.
+    """
+
+    class BackupType(proto.Enum):
+        r"""Type of the backup.
+
+        Values:
+            BACKUP_TYPE_UNSPECIFIED (0):
+                The default value, not set.
+            ON_DEMAND (1):
+                On-demand backup.
+            AUTOMATED (2):
+                Automated backup.
+        """
+        BACKUP_TYPE_UNSPECIFIED = 0
+        ON_DEMAND = 1
+        AUTOMATED = 2
+
+    class State(proto.Enum):
+        r"""State of the backup.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value, not set.
+            CREATING (1):
+                The backup is being created.
+            ACTIVE (2):
+                The backup is active to be used.
+            DELETING (3):
+                The backup is being deleted.
+            SUSPENDED (4):
+                The backup is currently suspended due to
+                reasons like project deletion, billing account
+                closure, etc.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        ACTIVE = 2
+        DELETING = 3
+        SUSPENDED = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    cluster: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    cluster_uid: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    total_size_bytes: int = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    engine_version: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    backup_files: MutableSequence["BackupFile"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="BackupFile",
+    )
+    node_type: "NodeType" = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="NodeType",
+    )
+    replica_count: int = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    shard_count: int = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    backup_type: BackupType = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=BackupType,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=State,
+    )
+    encryption_info: "EncryptionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="EncryptionInfo",
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+
+
+class BackupFile(proto.Message):
+    r"""Backup is consisted of multiple backup files.
+
+    Attributes:
+        file_name (str):
+            Output only. e.g: <shard-id>.rdb
+        size_bytes (int):
+            Output only. Size of the backup file in
+            bytes.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the backup file
+            was created.
+    """
+
+    file_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    size_bytes: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class PscServiceAttachment(proto.Message):
+    r"""Configuration of a service attachment of the cluster, for
+    creating PSC connections.
+
+    Attributes:
+        service_attachment (str):
+            Output only. Service attachment URI which
+            your self-created PscConnection should use as
+            target
+        connection_type (google.cloud.redis_cluster_v1.types.ConnectionType):
+            Output only. Type of a PSC connection
+            targeting this service attachment.
+    """
+
+    service_attachment: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connection_type: "ConnectionType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="ConnectionType",
+    )
+
+
+class CrossClusterReplicationConfig(proto.Message):
+    r"""Cross cluster replication config.
+
+    Attributes:
+        cluster_role (google.cloud.redis_cluster_v1.types.CrossClusterReplicationConfig.ClusterRole):
+            The role of the cluster in cross cluster
+            replication.
+        primary_cluster (google.cloud.redis_cluster_v1.types.CrossClusterReplicationConfig.RemoteCluster):
+            Details of the primary cluster that is used
+            as the replication source for this secondary
+            cluster.
+
+            This field is only set for a secondary cluster.
+        secondary_clusters (MutableSequence[google.cloud.redis_cluster_v1.types.CrossClusterReplicationConfig.RemoteCluster]):
+            List of secondary clusters that are
+            replicating from this primary cluster.
+            This field is only set for a primary cluster.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time cross cluster
+            replication config was updated.
+        membership (google.cloud.redis_cluster_v1.types.CrossClusterReplicationConfig.Membership):
+            Output only. An output only view of all the
+            member clusters participating in the cross
+            cluster replication. This view will be provided
+            by every member cluster irrespective of its
+            cluster role(primary or secondary).
+
+            A primary cluster can provide information about
+            all the secondary clusters replicating from it.
+            However, a secondary cluster only knows about
+            the primary cluster from which it is
+            replicating. However, for scenarios, where the
+            primary cluster is unavailable(e.g. regional
+            outage), a GetCluster request can be sent to any
+            other member cluster and this field will list
+            all the member clusters participating in cross
+            cluster replication.
+    """
+
+    class ClusterRole(proto.Enum):
+        r"""The role of the cluster in cross cluster replication.
+
+        Values:
+            CLUSTER_ROLE_UNSPECIFIED (0):
+                Cluster role is not set.
+                The behavior is equivalent to NONE.
+            NONE (1):
+                This cluster does not participate in cross
+                cluster replication. It is an independent
+                cluster and does not replicate to or from any
+                other clusters.
+            PRIMARY (2):
+                A cluster that allows both reads and writes.
+                Any data written to this cluster is also
+                replicated to the attached secondary clusters.
+            SECONDARY (3):
+                A cluster that allows only reads and
+                replicates data from a primary cluster.
+        """
+        CLUSTER_ROLE_UNSPECIFIED = 0
+        NONE = 1
+        PRIMARY = 2
+        SECONDARY = 3
+
+    class RemoteCluster(proto.Message):
+        r"""Details of the remote cluster associated with this cluster in
+        a cross cluster replication setup.
+
+        Attributes:
+            cluster (str):
+                The full resource path of the remote cluster
+                in the format:
+                projects/<project>/locations/<region>/clusters/<cluster-id>
+            uid (str):
+                Output only. The unique identifier of the
+                remote cluster.
+        """
+
+        cluster: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        uid: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class Membership(proto.Message):
+        r"""An output only view of all the member clusters participating
+        in the cross cluster replication.
+
+        Attributes:
+            primary_cluster (google.cloud.redis_cluster_v1.types.CrossClusterReplicationConfig.RemoteCluster):
+                Output only. The primary cluster that acts as
+                the source of replication for the secondary
+                clusters.
+            secondary_clusters (MutableSequence[google.cloud.redis_cluster_v1.types.CrossClusterReplicationConfig.RemoteCluster]):
+                Output only. The list of secondary clusters
+                replicating from the primary cluster.
+        """
+
+        primary_cluster: "CrossClusterReplicationConfig.RemoteCluster" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="CrossClusterReplicationConfig.RemoteCluster",
+        )
+        secondary_clusters: MutableSequence[
+            "CrossClusterReplicationConfig.RemoteCluster"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="CrossClusterReplicationConfig.RemoteCluster",
+        )
+
+    cluster_role: ClusterRole = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ClusterRole,
+    )
+    primary_cluster: RemoteCluster = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=RemoteCluster,
+    )
+    secondary_clusters: MutableSequence[RemoteCluster] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=RemoteCluster,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    membership: Membership = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=Membership,
+    )
+
+
+class ClusterMaintenancePolicy(proto.Message):
+    r"""Maintenance policy per cluster.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the policy was
+            created i.e. Maintenance Window or Deny Period
+            was assigned.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the policy was
+            updated i.e. Maintenance Window or Deny Period
+            was updated.
+        weekly_maintenance_window (MutableSequence[google.cloud.redis_cluster_v1.types.ClusterWeeklyMaintenanceWindow]):
+            Optional. Maintenance window that is applied to resources
+            covered by this policy. Minimum 1. For the current version,
+            the maximum number of weekly_maintenance_window is expected
+            to be one.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    weekly_maintenance_window: MutableSequence[
+        "ClusterWeeklyMaintenanceWindow"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="ClusterWeeklyMaintenanceWindow",
+    )
+
+
+class ClusterWeeklyMaintenanceWindow(proto.Message):
+    r"""Time window specified for weekly operations.
+
+    Attributes:
+        day (google.type.dayofweek_pb2.DayOfWeek):
+            Allows to define schedule that runs specified
+            day of the week.
+        start_time (google.type.timeofday_pb2.TimeOfDay):
+            Start time of the window in UTC.
+    """
+
+    day: dayofweek_pb2.DayOfWeek = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=dayofweek_pb2.DayOfWeek,
+    )
+    start_time: timeofday_pb2.TimeOfDay = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timeofday_pb2.TimeOfDay,
+    )
+
+
+class ClusterMaintenanceSchedule(proto.Message):
+    r"""Upcoming maitenance schedule.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The start time of any upcoming
+            scheduled maintenance for this instance.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The end time of any upcoming
+            scheduled maintenance for this instance.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -621,23 +1668,36 @@ class PscConnection(proto.Message):
 
     Attributes:
         psc_connection_id (str):
-            Output only. The PSC connection id of the
+            Required. The PSC connection id of the
             forwarding rule connected to the service
             attachment.
         address (str):
-            Output only. The IP allocated on the consumer
+            Required. The IP allocated on the consumer
             network for the PSC forwarding rule.
         forwarding_rule (str):
-            Output only. The URI of the consumer side
+            Required. The URI of the consumer side
             forwarding rule. Example:
 
             projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
         project_id (str):
-            Output only. The consumer project_id where the forwarding
-            rule is created from.
+            Optional. Project ID of the consumer project
+            where the forwarding rule is created in.
         network (str):
-            The consumer network where the IP address resides, in the
-            form of projects/{project_id}/global/networks/{network_id}.
+            Required. The consumer network where the IP address resides,
+            in the form of
+            projects/{project_id}/global/networks/{network_id}.
+        service_attachment (str):
+            Required. The service attachment which is the
+            target of the PSC connection, in the form of
+            projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+        psc_connection_status (google.cloud.redis_cluster_v1.types.PscConnectionStatus):
+            Output only. The status of the PSC
+            connection. Please note that this value is
+            updated periodically. To get the latest status
+            of a PSC connection, follow
+            https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details.
+        connection_type (google.cloud.redis_cluster_v1.types.ConnectionType):
+            Output only. Type of the PSC connection.
     """
 
     psc_connection_id: str = proto.Field(
@@ -659,6 +1719,151 @@ class PscConnection(proto.Message):
     network: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    service_attachment: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    psc_connection_status: "PscConnectionStatus" = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="PscConnectionStatus",
+    )
+    connection_type: "ConnectionType" = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum="ConnectionType",
+    )
+
+
+class ClusterEndpoint(proto.Message):
+    r"""ClusterEndpoint consists of PSC connections that are created
+    as a group in each VPC network for accessing the cluster. In
+    each group, there shall be one connection for each service
+    attachment in the cluster.
+
+    Attributes:
+        connections (MutableSequence[google.cloud.redis_cluster_v1.types.ConnectionDetail]):
+            A group of PSC connections. They are created
+            in the same VPC network, one for each service
+            attachment in the cluster.
+    """
+
+    connections: MutableSequence["ConnectionDetail"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ConnectionDetail",
+    )
+
+
+class ConnectionDetail(proto.Message):
+    r"""Detailed information of each PSC connection.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        psc_auto_connection (google.cloud.redis_cluster_v1.types.PscAutoConnection):
+            Detailed information of a PSC connection that
+            is created through service connectivity
+            automation.
+
+            This field is a member of `oneof`_ ``connection``.
+        psc_connection (google.cloud.redis_cluster_v1.types.PscConnection):
+            Detailed information of a PSC connection that
+            is created by the customer who owns the cluster.
+
+            This field is a member of `oneof`_ ``connection``.
+    """
+
+    psc_auto_connection: "PscAutoConnection" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="connection",
+        message="PscAutoConnection",
+    )
+    psc_connection: "PscConnection" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="connection",
+        message="PscConnection",
+    )
+
+
+class PscAutoConnection(proto.Message):
+    r"""Details of consumer resources in a PSC connection that is
+    created through Service Connectivity Automation.
+
+    Attributes:
+        psc_connection_id (str):
+            Output only. The PSC connection id of the
+            forwarding rule connected to the service
+            attachment.
+        address (str):
+            Output only. The IP allocated on the consumer
+            network for the PSC forwarding rule.
+        forwarding_rule (str):
+            Output only. The URI of the consumer side
+            forwarding rule. Example:
+
+            projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
+        project_id (str):
+            Required. The consumer project_id where the forwarding rule
+            is created from.
+        network (str):
+            Required. The consumer network where the IP address resides,
+            in the form of
+            projects/{project_id}/global/networks/{network_id}.
+        service_attachment (str):
+            Output only. The service attachment which is
+            the target of the PSC connection, in the form of
+            projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+        psc_connection_status (google.cloud.redis_cluster_v1.types.PscConnectionStatus):
+            Output only. The status of the PSC
+            connection. Please note that this value is
+            updated periodically. Please use Private Service
+            Connect APIs for the latest status.
+        connection_type (google.cloud.redis_cluster_v1.types.ConnectionType):
+            Output only. Type of the PSC connection.
+    """
+
+    psc_connection_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    address: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    forwarding_rule: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    network: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    service_attachment: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    psc_connection_status: "PscConnectionStatus" = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="PscConnectionStatus",
+    )
+    connection_type: "ConnectionType" = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="ConnectionType",
     )
 
 
@@ -884,9 +2089,9 @@ class ClusterPersistenceConfig(proto.Message):
                     fsync every second. Fast enough, and you may
                     lose 1 second of data if there is a disaster
                 ALWAYS (3):
-                    fsync every time new commands are appended to
-                    the AOF. It has the best data loss protection at
-                    the cost of performance
+                    fsync every time new write commands are
+                    appended to the AOF. It has the best data loss
+                    protection at the cost of performance
             """
             APPEND_FSYNC_UNSPECIFIED = 0
             NO = 1
@@ -932,9 +2137,6 @@ class ZoneDistributionConfig(proto.Message):
 
     class ZoneDistributionMode(proto.Enum):
         r"""Defines various modes of zone distribution.
-        Currently supports two modes, can be expanded in future to
-        support more types of distribution modes.
-        design doc: go/same-zone-cluster
 
         Values:
             ZONE_DISTRIBUTION_MODE_UNSPECIFIED (0):
@@ -959,6 +2161,152 @@ class ZoneDistributionConfig(proto.Message):
     zone: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class RescheduleClusterMaintenanceRequest(proto.Message):
+    r"""Request for rescheduling a cluster maintenance.
+
+    Attributes:
+        name (str):
+            Required. Redis Cluster instance resource name using the
+            form:
+            ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``
+            where ``location_id`` refers to a GCP region.
+        reschedule_type (google.cloud.redis_cluster_v1.types.RescheduleClusterMaintenanceRequest.RescheduleType):
+            Required. If reschedule type is SPECIFIC_TIME, must set up
+            schedule_time as well.
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Timestamp when the maintenance shall be
+            rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC 3339
+            format, for example ``2012-11-15T16:19:00.094Z``.
+    """
+
+    class RescheduleType(proto.Enum):
+        r"""Reschedule options.
+
+        Values:
+            RESCHEDULE_TYPE_UNSPECIFIED (0):
+                Not set.
+            IMMEDIATE (1):
+                If the user wants to schedule the maintenance
+                to happen now.
+            SPECIFIC_TIME (3):
+                If the user wants to reschedule the
+                maintenance to a specific time.
+        """
+        RESCHEDULE_TYPE_UNSPECIFIED = 0
+        IMMEDIATE = 1
+        SPECIFIC_TIME = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reschedule_type: RescheduleType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RescheduleType,
+    )
+    schedule_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class EncryptionInfo(proto.Message):
+    r"""EncryptionInfo describes the encryption information of a
+    cluster or a backup.
+
+    Attributes:
+        encryption_type (google.cloud.redis_cluster_v1.types.EncryptionInfo.Type):
+            Output only. Type of encryption.
+        kms_key_versions (MutableSequence[str]):
+            Output only. KMS key versions that are being
+            used to protect the data at-rest.
+        kms_key_primary_state (google.cloud.redis_cluster_v1.types.EncryptionInfo.KmsKeyState):
+            Output only. The state of the primary version
+            of the KMS key perceived by the system. This
+            field is not populated in backups.
+        last_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time when the
+            encryption info was updated.
+    """
+
+    class Type(proto.Enum):
+        r"""Possible encryption types.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Encryption type not specified. Defaults to
+                GOOGLE_DEFAULT_ENCRYPTION.
+            GOOGLE_DEFAULT_ENCRYPTION (1):
+                The data is encrypted at rest with a key that
+                is fully managed by Google. No key version will
+                be populated. This is the default state.
+            CUSTOMER_MANAGED_ENCRYPTION (2):
+                The data is encrypted at rest with a key that
+                is managed by the customer. KMS key versions
+                will be populated.
+        """
+        TYPE_UNSPECIFIED = 0
+        GOOGLE_DEFAULT_ENCRYPTION = 1
+        CUSTOMER_MANAGED_ENCRYPTION = 2
+
+    class KmsKeyState(proto.Enum):
+        r"""The state of the KMS key perceived by the system. Refer to
+        the public documentation for the impact of each state.
+
+        Values:
+            KMS_KEY_STATE_UNSPECIFIED (0):
+                The default value. This value is unused.
+            ENABLED (1):
+                The KMS key is enabled and correctly
+                configured.
+            PERMISSION_DENIED (2):
+                Permission denied on the KMS key.
+            DISABLED (3):
+                The KMS key is disabled.
+            DESTROYED (4):
+                The KMS key is destroyed.
+            DESTROY_SCHEDULED (5):
+                The KMS key is scheduled to be destroyed.
+            EKM_KEY_UNREACHABLE_DETECTED (6):
+                The EKM key is unreachable.
+            BILLING_DISABLED (7):
+                Billing is disabled for the project.
+            UNKNOWN_FAILURE (8):
+                All other unknown failures.
+        """
+        KMS_KEY_STATE_UNSPECIFIED = 0
+        ENABLED = 1
+        PERMISSION_DENIED = 2
+        DISABLED = 3
+        DESTROYED = 4
+        DESTROY_SCHEDULED = 5
+        EKM_KEY_UNREACHABLE_DETECTED = 6
+        BILLING_DISABLED = 7
+        UNKNOWN_FAILURE = 8
+
+    encryption_type: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    kms_key_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    kms_key_primary_state: KmsKeyState = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=KmsKeyState,
+    )
+    last_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 
