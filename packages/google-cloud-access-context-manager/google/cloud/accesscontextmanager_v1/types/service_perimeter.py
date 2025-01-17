@@ -21,7 +21,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package="google.identity.accesscontextmanager.v1",
+    package="google.cloud.accesscontextmanager.v1",
     manifest={
         "ServicePerimeter",
         "ServicePerimeterConfig",

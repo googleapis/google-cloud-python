@@ -30,7 +30,7 @@ from google.cloud.accesscontextmanager_v1.types import (
 from google.cloud.accesscontextmanager_v1.types import access_policy
 
 __protobuf__ = proto.module(
-    package="google.identity.accesscontextmanager.v1",
+    package="google.cloud.accesscontextmanager.v1",
     manifest={
         "LevelFormat",
         "ListAccessPoliciesRequest",

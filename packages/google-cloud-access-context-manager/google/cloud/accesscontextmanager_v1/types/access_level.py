@@ -21,12 +21,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.identity.accesscontextmanager.type import (
-    device_resources_pb2,
-)  # type: ignore
+from google.cloud.accesscontextmanager.type.types import device_resources
 
 __protobuf__ = proto.module(
-    package="google.identity.accesscontextmanager.v1",
+    package="google.cloud.accesscontextmanager.v1",
     manifest={
         "AccessLevel",
         "BasicLevel",
@@ -271,13 +269,13 @@ class DevicePolicy(proto.Message):
         require_screenlock (bool):
             Whether or not screenlock is required for the DevicePolicy
             to be true. Defaults to ``false``.
-        allowed_encryption_statuses (MutableSequence[google.identity.accesscontextmanager.type.device_resources_pb2.DeviceEncryptionStatus]):
+        allowed_encryption_statuses (MutableSequence[google.identity.accesscontextmanager.type.types.DeviceEncryptionStatus]):
             Allowed encryptions statuses, an empty list
             allows all statuses.
         os_constraints (MutableSequence[google.cloud.accesscontextmanager_v1.types.OsConstraint]):
             Allowed OS versions, an empty list allows all
             types and all versions.
-        allowed_device_management_levels (MutableSequence[google.identity.accesscontextmanager.type.device_resources_pb2.DeviceManagementLevel]):
+        allowed_device_management_levels (MutableSequence[google.identity.accesscontextmanager.type.types.DeviceManagementLevel]):
             Allowed device management levels, an empty
             list allows all management levels.
         require_admin_approval (bool):
@@ -292,11 +290,11 @@ class DevicePolicy(proto.Message):
         number=1,
     )
     allowed_encryption_statuses: MutableSequence[
-        device_resources_pb2.DeviceEncryptionStatus
+        device_resources.DeviceEncryptionStatus
     ] = proto.RepeatedField(
         proto.ENUM,
         number=2,
-        enum=device_resources_pb2.DeviceEncryptionStatus,
+        enum=device_resources.DeviceEncryptionStatus,
     )
     os_constraints: MutableSequence["OsConstraint"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -304,11 +302,11 @@ class DevicePolicy(proto.Message):
         message="OsConstraint",
     )
     allowed_device_management_levels: MutableSequence[
-        device_resources_pb2.DeviceManagementLevel
+        device_resources.DeviceManagementLevel
     ] = proto.RepeatedField(
         proto.ENUM,
         number=6,
-        enum=device_resources_pb2.DeviceManagementLevel,
+        enum=device_resources.DeviceManagementLevel,
     )
     require_admin_approval: bool = proto.Field(
         proto.BOOL,
@@ -325,7 +323,7 @@ class OsConstraint(proto.Message):
     requests.
 
     Attributes:
-        os_type (google.identity.accesscontextmanager.type.device_resources_pb2.OsType):
+        os_type (google.identity.accesscontextmanager.type.types.OsType):
             Required. The allowed OS type.
         minimum_version (str):
             The minimum allowed OS version. If not set, any version of
@@ -341,10 +339,10 @@ class OsConstraint(proto.Message):
             the API targeted by the request.
     """
 
-    os_type: device_resources_pb2.OsType = proto.Field(
+    os_type: device_resources.OsType = proto.Field(
         proto.ENUM,
         number=1,
-        enum=device_resources_pb2.OsType,
+        enum=device_resources.OsType,
     )
     minimum_version: str = proto.Field(
         proto.STRING,

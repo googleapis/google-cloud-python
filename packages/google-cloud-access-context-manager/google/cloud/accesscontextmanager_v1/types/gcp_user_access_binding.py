@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package="google.identity.accesscontextmanager.v1",
+    package="google.cloud.accesscontextmanager.v1",
     manifest={
         "GcpUserAccessBinding",
     },

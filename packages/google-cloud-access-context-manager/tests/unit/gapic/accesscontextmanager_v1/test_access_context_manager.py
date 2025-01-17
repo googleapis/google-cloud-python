@@ -87,9 +87,7 @@ from google.cloud.accesscontextmanager_v1.types import access_level
 from google.cloud.accesscontextmanager_v1.types import access_policy
 from google.cloud.accesscontextmanager_v1.types import gcp_user_access_binding
 from google.cloud.accesscontextmanager_v1.types import service_perimeter
-from google.identity.accesscontextmanager.type import (
-    device_resources_pb2,
-)  # type: ignore
+from google.cloud.accesscontextmanager.type.types import device_resources
 
 
 async def mock_async_gen(data, chunk_size=1):

@@ -29,7 +29,7 @@ description = "Google Cloud Access Context Manager API client library"
 version = None
 
 with open(
-    os.path.join(package_root, "google/cloud/accesscontextmanager/gapic_version.py")
+    os.path.join(package_root, "google/cloud/accesscontextmanager_v1/gapic_version.py")
 ) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1

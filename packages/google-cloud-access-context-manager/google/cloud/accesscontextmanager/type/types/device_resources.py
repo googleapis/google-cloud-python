@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package="google.identity.accesscontextmanager.type",
+    package="google.cloud.accesscontextmanager.type",
     manifest={
         "DeviceEncryptionStatus",
         "OsType",
