@@ -969,6 +969,30 @@ def test_read_gbq_function_supported_python_output_type(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
+def test_df_apply_scalar_func(session, scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    bdf = bigframes.pandas.DataFrame(
+        {
+            "Column1": scalars_df["string_col"],
+            "Column2": scalars_df["string_col"],
+        }
+    )
+
+    # The "cw_lower_case_ascii_only" is a scalar function.
+    func_ref = session.read_gbq_function("bqutil.fn.cw_lower_case_ascii_only")
+
+    # DataFrame '.apply()' only supports series level application.
+    with pytest.raises(NotImplementedError) as context:
+        bdf.apply(func_ref)
+    assert str(context.value) == (
+        "BigFrames DataFrame '.apply()' does not support remote function for "
+        "column-wise (i.e. with axis=0) operations, please use a regular python "
+        "function instead. For element-wise operations of the remote function, "
+        "please use '.map()'."
+    )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_multiple_inputs_not_a_row_processor(session):
     with pytest.raises(ValueError) as context:
         # The remote function has two args, which cannot be row processed. Throw

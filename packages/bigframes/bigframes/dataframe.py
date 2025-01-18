@@ -3923,6 +3923,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
+        # In Bigframes remote function, DataFrame '.apply' method is specifically
+        # designed to work with row-wise or column-wise operations, where the input
+        # to the applied function should be a Series, not a scalar.
+
         if utils.get_axis_number(axis) == 1:
             msg = "axis=1 scenario is in preview."
             warnings.warn(msg, category=bfe.PreviewWarning)
@@ -4030,8 +4034,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
             return result_series
 
+        # At this point column-wise or element-wise remote function operation will
+        # be performed (not supported).
+        if hasattr(func, "bigframes_remote_function"):
+            raise NotImplementedError(
+                "BigFrames DataFrame '.apply()' does not support remote function "
+                "for column-wise (i.e. with axis=0) operations, please use a "
+                "regular python function instead. For element-wise operations of "
+                "the remote function, please use '.map()'."
+            )
+
         # Per-column apply
         results = {name: func(col, *args, **kwargs) for name, col in self.items()}
+
         if all(
             [
                 isinstance(val, bigframes.series.Series) or utils.is_list_like(val)
