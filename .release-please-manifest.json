@@ -71,7 +71,7 @@
     "packages/google-cloud-dataplex": "2.6.0",
     "packages/google-cloud-dataproc": "5.16.0",
     "packages/google-cloud-dataproc-metastore": "1.17.0",
-    "packages/google-cloud-datastream": "1.11.0",
+    "packages/google-cloud-datastream": "1.12.0",
     "packages/google-cloud-deploy": "2.5.0",
     "packages/google-cloud-developerconnect": "0.1.6",
     "packages/google-cloud-dialogflow": "2.38.0",
