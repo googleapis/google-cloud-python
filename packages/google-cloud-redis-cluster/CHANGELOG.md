@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.12...google-cloud-redis-cluster-v0.1.13) (2025-01-20)
+
+
+### Features
+
+* [Memorystore for Redis Cluster] Added support for Backups and Backup Collections ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* [Memorystore for Redis Cluster] Added support for CMEK ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* [Memorystore for Redis Cluster] Added support for Cross Cluster Replication ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* [Memorystore for Redis Cluster] Added support for maintenance window and rescheduling maintenance ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* [Memorystore for Redis Cluster] Added support for Multiple VPCs ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* New REQUIRED field `service_attachment` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+
+
+### Bug Fixes
+
+* Changed field behavior for an existing field `address` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* Changed field behavior for an existing field `forwarding_rule` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* Changed field behavior for an existing field `network` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* Changed field behavior for an existing field `psc_connection_id` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+
+
+### Documentation
+
+* A comment for enum value `ALWAYS` in enum `AppendFsync` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for enum value `NODE_TYPE_UNSPECIFIED` in enum `NodeType` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `address` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `forwarding_rule` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `name` in message `.google.cloud.redis.cluster.v1beta1.Cluster` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `network` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `project_id` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `psc_configs` in message `.google.cloud.redis.cluster.v1beta1.Cluster` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `psc_connection_id` in message `.google.cloud.redis.cluster.v1beta1.PscConnection` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `psc_connections` in message `.google.cloud.redis.cluster.v1beta1.Cluster` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+* A comment for field `shard_count` in message `.google.cloud.redis.cluster.v1beta1.Cluster` is changed ([2d3d9c9](https://github.com/googleapis/google-cloud-python/commit/2d3d9c9fe375a1280c6ac9e4eb253eefe7d73d75))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-cluster-v0.1.11...google-cloud-redis-cluster-v0.1.12) (2025-01-14)
 
 
