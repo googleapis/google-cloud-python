@@ -125,6 +125,7 @@
     "packages/google-cloud-os-config": "1.19.0",
     "packages/google-cloud-os-login": "2.16.0",
     "packages/google-cloud-parallelstore": "0.2.9",
+    "packages/google-cloud-parametermanager": "0.0.0",
     "packages/google-cloud-phishing-protection": "1.13.0",
     "packages/google-cloud-policy-troubleshooter": "1.13.0",
     "packages/google-cloud-policysimulator": "0.1.11",
