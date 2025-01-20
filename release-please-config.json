@@ -3600,17 +3600,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-parametermanager": {
-            "extra-files": [
-                "google/cloud/parametermanager_v1/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.parametermanager.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-            "release-type": "python"
-        },
         "packages/grpc-google-iam-v1": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
