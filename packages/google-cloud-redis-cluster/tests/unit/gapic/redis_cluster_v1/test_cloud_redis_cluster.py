@@ -63,9 +63,12 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 
 from google.cloud.redis_cluster_v1.services.cloud_redis_cluster import (
     CloudRedisClusterAsyncClient,
@@ -1669,6 +1672,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
             precise_size_gb=0.15810000000000002,
             deletion_protection_enabled=True,
+            backup_collection="backup_collection_value",
+            kms_key="kms_key_value",
         )
         response = client.get_cluster(request)
 
@@ -1697,6 +1702,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.node_type == cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO
     assert math.isclose(response.precise_size_gb, 0.15810000000000002, rel_tol=1e-6)
     assert response.deletion_protection_enabled is True
+    assert response.backup_collection == "backup_collection_value"
+    assert response.kms_key == "kms_key_value"
 
 
 def test_get_cluster_non_empty_request_with_auto_populated_field():
@@ -1833,6 +1840,8 @@ async def test_get_cluster_async(
                 node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
                 precise_size_gb=0.15810000000000002,
                 deletion_protection_enabled=True,
+                backup_collection="backup_collection_value",
+                kms_key="kms_key_value",
             )
         )
         response = await client.get_cluster(request)
@@ -1862,6 +1871,8 @@ async def test_get_cluster_async(
     assert response.node_type == cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO
     assert math.isclose(response.precise_size_gb, 0.15810000000000002, rel_tol=1e-6)
     assert response.deletion_protection_enabled is True
+    assert response.backup_collection == "backup_collection_value"
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.asyncio
@@ -2270,7 +2281,11 @@ def test_update_cluster_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_cluster(
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2279,7 +2294,9 @@ def test_update_cluster_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].cluster
-        mock_val = cloud_redis_cluster.Cluster(name="name_value")
+        mock_val = cloud_redis_cluster.Cluster(
+            gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(uris=["uris_value"])
+        )
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2296,7 +2313,11 @@ def test_update_cluster_flattened_error():
     with pytest.raises(ValueError):
         client.update_cluster(
             cloud_redis_cluster.UpdateClusterRequest(),
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2318,7 +2339,11 @@ async def test_update_cluster_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_cluster(
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2327,7 +2352,9 @@ async def test_update_cluster_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].cluster
-        mock_val = cloud_redis_cluster.Cluster(name="name_value")
+        mock_val = cloud_redis_cluster.Cluster(
+            gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(uris=["uris_value"])
+        )
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2345,7 +2372,11 @@ async def test_update_cluster_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_cluster(
             cloud_redis_cluster.UpdateClusterRequest(),
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2943,7 +2974,11 @@ def test_create_cluster_flattened():
         # using the keyword arguments to the method.
         client.create_cluster(
             parent="parent_value",
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             cluster_id="cluster_id_value",
         )
 
@@ -2955,7 +2990,9 @@ def test_create_cluster_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].cluster
-        mock_val = cloud_redis_cluster.Cluster(name="name_value")
+        mock_val = cloud_redis_cluster.Cluster(
+            gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(uris=["uris_value"])
+        )
         assert arg == mock_val
         arg = args[0].cluster_id
         mock_val = "cluster_id_value"
@@ -2973,7 +3010,11 @@ def test_create_cluster_flattened_error():
         client.create_cluster(
             cloud_redis_cluster.CreateClusterRequest(),
             parent="parent_value",
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             cluster_id="cluster_id_value",
         )
 
@@ -2996,7 +3037,11 @@ async def test_create_cluster_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_cluster(
             parent="parent_value",
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             cluster_id="cluster_id_value",
         )
 
@@ -3008,7 +3053,9 @@ async def test_create_cluster_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].cluster
-        mock_val = cloud_redis_cluster.Cluster(name="name_value")
+        mock_val = cloud_redis_cluster.Cluster(
+            gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(uris=["uris_value"])
+        )
         assert arg == mock_val
         arg = args[0].cluster_id
         mock_val = "cluster_id_value"
@@ -3027,7 +3074,11 @@ async def test_create_cluster_flattened_error_async():
         await client.create_cluster(
             cloud_redis_cluster.CreateClusterRequest(),
             parent="parent_value",
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             cluster_id="cluster_id_value",
         )
 
@@ -3371,6 +3422,3079 @@ async def test_get_cluster_certificate_authority_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_cluster_certificate_authority(
             cloud_redis_cluster.GetClusterCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+        dict,
+    ],
+)
+def test_reschedule_cluster_maintenance(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.reschedule_cluster_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_reschedule_cluster_maintenance_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.RescheduleClusterMaintenanceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.reschedule_cluster_maintenance(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.RescheduleClusterMaintenanceRequest(
+            name="name_value",
+        )
+
+
+def test_reschedule_cluster_maintenance_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.reschedule_cluster_maintenance
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.reschedule_cluster_maintenance
+        ] = mock_rpc
+        request = {}
+        client.reschedule_cluster_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.reschedule_cluster_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_reschedule_cluster_maintenance_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.reschedule_cluster_maintenance
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.reschedule_cluster_maintenance
+        ] = mock_rpc
+
+        request = {}
+        await client.reschedule_cluster_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.reschedule_cluster_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_reschedule_cluster_maintenance_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reschedule_cluster_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_reschedule_cluster_maintenance_async_from_dict():
+    await test_reschedule_cluster_maintenance_async(request_type=dict)
+
+
+def test_reschedule_cluster_maintenance_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.reschedule_cluster_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_reschedule_cluster_maintenance_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.reschedule_cluster_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_reschedule_cluster_maintenance_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.reschedule_cluster_maintenance(
+            name="name_value",
+            reschedule_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].reschedule_type
+        mock_val = (
+            cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE
+        )
+        assert arg == mock_val
+        assert TimestampRule().to_proto(
+            args[0].schedule_time
+        ) == timestamp_pb2.Timestamp(seconds=751)
+
+
+def test_reschedule_cluster_maintenance_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.reschedule_cluster_maintenance(
+            cloud_redis_cluster.RescheduleClusterMaintenanceRequest(),
+            name="name_value",
+            reschedule_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+@pytest.mark.asyncio
+async def test_reschedule_cluster_maintenance_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.reschedule_cluster_maintenance(
+            name="name_value",
+            reschedule_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].reschedule_type
+        mock_val = (
+            cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE
+        )
+        assert arg == mock_val
+        assert TimestampRule().to_proto(
+            args[0].schedule_time
+        ) == timestamp_pb2.Timestamp(seconds=751)
+
+
+@pytest.mark.asyncio
+async def test_reschedule_cluster_maintenance_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.reschedule_cluster_maintenance(
+            cloud_redis_cluster.RescheduleClusterMaintenanceRequest(),
+            name="name_value",
+            reschedule_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListBackupCollectionsRequest,
+        dict,
+    ],
+)
+def test_list_backup_collections(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListBackupCollectionsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_backup_collections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListBackupCollectionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupCollectionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_backup_collections_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.ListBackupCollectionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_backup_collections(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.ListBackupCollectionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_backup_collections_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_backup_collections
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_backup_collections
+        ] = mock_rpc
+        request = {}
+        client.list_backup_collections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_backup_collections(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_backup_collections
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_backup_collections
+        ] = mock_rpc
+
+        request = {}
+        await client.list_backup_collections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_backup_collections(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis_cluster.ListBackupCollectionsRequest,
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_backup_collections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListBackupCollectionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupCollectionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_async_from_dict():
+    await test_list_backup_collections_async(request_type=dict)
+
+
+def test_list_backup_collections_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListBackupCollectionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+        client.list_backup_collections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListBackupCollectionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupCollectionsResponse()
+        )
+        await client.list_backup_collections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_backup_collections_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_backup_collections(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_backup_collections_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_backup_collections(
+            cloud_redis_cluster.ListBackupCollectionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupCollectionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_backup_collections(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_backup_collections(
+            cloud_redis_cluster.ListBackupCollectionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_backup_collections_pager(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_backup_collections(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_redis_cluster.BackupCollection) for i in results)
+
+
+def test_list_backup_collections_pages(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_backup_collections(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_async_pager():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_backup_collections(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, cloud_redis_cluster.BackupCollection) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backup_collections_async_pages():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_backup_collections(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetBackupCollectionRequest,
+        dict,
+    ],
+)
+def test_get_backup_collection(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.BackupCollection(
+            name="name_value",
+            cluster_uid="cluster_uid_value",
+            cluster="cluster_value",
+            kms_key="kms_key_value",
+            uid="uid_value",
+        )
+        response = client.get_backup_collection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetBackupCollectionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.BackupCollection)
+    assert response.name == "name_value"
+    assert response.cluster_uid == "cluster_uid_value"
+    assert response.cluster == "cluster_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.uid == "uid_value"
+
+
+def test_get_backup_collection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.GetBackupCollectionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_backup_collection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.GetBackupCollectionRequest(
+            name="name_value",
+        )
+
+
+def test_get_backup_collection_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_backup_collection
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_backup_collection
+        ] = mock_rpc
+        request = {}
+        client.get_backup_collection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_backup_collection(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_backup_collection_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_backup_collection
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_backup_collection
+        ] = mock_rpc
+
+        request = {}
+        await client.get_backup_collection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_backup_collection(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_backup_collection_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis_cluster.GetBackupCollectionRequest,
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.BackupCollection(
+                name="name_value",
+                cluster_uid="cluster_uid_value",
+                cluster="cluster_value",
+                kms_key="kms_key_value",
+                uid="uid_value",
+            )
+        )
+        response = await client.get_backup_collection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetBackupCollectionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.BackupCollection)
+    assert response.name == "name_value"
+    assert response.cluster_uid == "cluster_uid_value"
+    assert response.cluster == "cluster_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.uid == "uid_value"
+
+
+@pytest.mark.asyncio
+async def test_get_backup_collection_async_from_dict():
+    await test_get_backup_collection_async(request_type=dict)
+
+
+def test_get_backup_collection_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetBackupCollectionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.BackupCollection()
+        client.get_backup_collection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_backup_collection_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetBackupCollectionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.BackupCollection()
+        )
+        await client.get_backup_collection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_backup_collection_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.BackupCollection()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_backup_collection(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_backup_collection_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup_collection(
+            cloud_redis_cluster.GetBackupCollectionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_collection_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.BackupCollection()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.BackupCollection()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_backup_collection(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_backup_collection_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_backup_collection(
+            cloud_redis_cluster.GetBackupCollectionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListBackupsRequest,
+        dict,
+    ],
+)
+def test_list_backups(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListBackupsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListBackupsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_backups_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.ListBackupsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_backups(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.ListBackupsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+def test_list_backups_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_backups in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_backups] = mock_rpc
+        request = {}
+        client.list_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_backups(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_backups_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_backups
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_backups
+        ] = mock_rpc
+
+        request = {}
+        await client.list_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_backups(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_backups_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis_cluster.ListBackupsRequest
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ListBackupsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_backups_async_from_dict():
+    await test_list_backups_async(request_type=dict)
+
+
+def test_list_backups_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListBackupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        call.return_value = cloud_redis_cluster.ListBackupsResponse()
+        client.list_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_backups_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ListBackupsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupsResponse()
+        )
+        await client.list_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_backups_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListBackupsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_backups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_backups_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_backups(
+            cloud_redis_cluster.ListBackupsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_backups_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.ListBackupsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_backups(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_backups_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_backups(
+            cloud_redis_cluster.ListBackupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_backups_pager(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_backups(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_redis_cluster.Backup) for i in results)
+
+
+def test_list_backups_pages(transport_name: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_backups(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_backups_async_pager():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backups), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_backups(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, cloud_redis_cluster.Backup) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_backups_async_pages():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backups), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_backups(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetBackupRequest,
+        dict,
+    ],
+)
+def test_get_backup(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.Backup(
+            name="name_value",
+            cluster="cluster_value",
+            cluster_uid="cluster_uid_value",
+            total_size_bytes=1732,
+            engine_version="engine_version_value",
+            node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
+            replica_count=1384,
+            shard_count=1178,
+            backup_type=cloud_redis_cluster.Backup.BackupType.ON_DEMAND,
+            state=cloud_redis_cluster.Backup.State.CREATING,
+            uid="uid_value",
+        )
+        response = client.get_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetBackupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.Backup)
+    assert response.name == "name_value"
+    assert response.cluster == "cluster_value"
+    assert response.cluster_uid == "cluster_uid_value"
+    assert response.total_size_bytes == 1732
+    assert response.engine_version == "engine_version_value"
+    assert response.node_type == cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO
+    assert response.replica_count == 1384
+    assert response.shard_count == 1178
+    assert response.backup_type == cloud_redis_cluster.Backup.BackupType.ON_DEMAND
+    assert response.state == cloud_redis_cluster.Backup.State.CREATING
+    assert response.uid == "uid_value"
+
+
+def test_get_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.GetBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.GetBackupRequest(
+            name="name_value",
+        )
+
+
+def test_get_backup_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_backup] = mock_rpc
+        request = {}
+        client.get_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_backup
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_backup
+        ] = mock_rpc
+
+        request = {}
+        await client.get_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_backup_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis_cluster.GetBackupRequest
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.Backup(
+                name="name_value",
+                cluster="cluster_value",
+                cluster_uid="cluster_uid_value",
+                total_size_bytes=1732,
+                engine_version="engine_version_value",
+                node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
+                replica_count=1384,
+                shard_count=1178,
+                backup_type=cloud_redis_cluster.Backup.BackupType.ON_DEMAND,
+                state=cloud_redis_cluster.Backup.State.CREATING,
+                uid="uid_value",
+            )
+        )
+        response = await client.get_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.GetBackupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.Backup)
+    assert response.name == "name_value"
+    assert response.cluster == "cluster_value"
+    assert response.cluster_uid == "cluster_uid_value"
+    assert response.total_size_bytes == 1732
+    assert response.engine_version == "engine_version_value"
+    assert response.node_type == cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO
+    assert response.replica_count == 1384
+    assert response.shard_count == 1178
+    assert response.backup_type == cloud_redis_cluster.Backup.BackupType.ON_DEMAND
+    assert response.state == cloud_redis_cluster.Backup.State.CREATING
+    assert response.uid == "uid_value"
+
+
+@pytest.mark.asyncio
+async def test_get_backup_async_from_dict():
+    await test_get_backup_async(request_type=dict)
+
+
+def test_get_backup_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetBackupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        call.return_value = cloud_redis_cluster.Backup()
+        client.get_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_backup_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.GetBackupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.Backup()
+        )
+        await client.get_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_backup_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.Backup()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_backup(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_backup_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup(
+            cloud_redis_cluster.GetBackupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_backup_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis_cluster.Backup()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.Backup()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_backup(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_backup_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_backup(
+            cloud_redis_cluster.GetBackupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.DeleteBackupRequest,
+        dict,
+    ],
+)
+def test_delete_backup(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.DeleteBackupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.DeleteBackupRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.DeleteBackupRequest(
+            name="name_value",
+        )
+
+
+def test_delete_backup_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_backup] = mock_rpc
+        request = {}
+        client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_backup
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_backup
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.delete_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis_cluster.DeleteBackupRequest,
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.DeleteBackupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_async_from_dict():
+    await test_delete_backup_async(request_type=dict)
+
+
+def test_delete_backup_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.DeleteBackupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.DeleteBackupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_backup_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_backup(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_backup_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_backup(
+            cloud_redis_cluster.DeleteBackupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_backup(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_backup_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_backup(
+            cloud_redis_cluster.DeleteBackupRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ExportBackupRequest,
+        dict,
+    ],
+)
+def test_export_backup(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.export_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ExportBackupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_export_backup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.ExportBackupRequest(
+        gcs_bucket="gcs_bucket_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.export_backup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.ExportBackupRequest(
+            gcs_bucket="gcs_bucket_value",
+            name="name_value",
+        )
+
+
+def test_export_backup_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.export_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.export_backup] = mock_rpc
+        request = {}
+        client.export_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_export_backup_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.export_backup
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.export_backup
+        ] = mock_rpc
+
+        request = {}
+        await client.export_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.export_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_export_backup_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis_cluster.ExportBackupRequest,
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.ExportBackupRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_export_backup_async_from_dict():
+    await test_export_backup_async(request_type=dict)
+
+
+def test_export_backup_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ExportBackupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_export_backup_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.ExportBackupRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.export_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.BackupClusterRequest,
+        dict,
+    ],
+)
+def test_backup_cluster(request_type, transport: str = "grpc"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.backup_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.BackupClusterRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_backup_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_redis_cluster.BackupClusterRequest(
+        name="name_value",
+        backup_id="backup_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.backup_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis_cluster.BackupClusterRequest(
+            name="name_value",
+            backup_id="backup_id_value",
+        )
+
+
+def test_backup_cluster_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.backup_cluster in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.backup_cluster] = mock_rpc
+        request = {}
+        client.backup_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.backup_cluster(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_backup_cluster_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.backup_cluster
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.backup_cluster
+        ] = mock_rpc
+
+        request = {}
+        await client.backup_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.backup_cluster(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_backup_cluster_async(
+    transport: str = "grpc_asyncio",
+    request_type=cloud_redis_cluster.BackupClusterRequest,
+):
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.backup_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cloud_redis_cluster.BackupClusterRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_backup_cluster_async_from_dict():
+    await test_backup_cluster_async(request_type=dict)
+
+
+def test_backup_cluster_field_headers():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.BackupClusterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.backup_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_backup_cluster_field_headers_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis_cluster.BackupClusterRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.backup_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_backup_cluster_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.backup_cluster(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_backup_cluster_flattened_error():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.backup_cluster(
+            cloud_redis_cluster.BackupClusterRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_backup_cluster_flattened_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.backup_cluster(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_backup_cluster_flattened_error_async():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.backup_cluster(
+            cloud_redis_cluster.BackupClusterRequest(),
             name="name_value",
         )
 
@@ -3962,7 +7086,11 @@ def test_update_cluster_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -3999,7 +7127,11 @@ def test_update_cluster_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.update_cluster(
             cloud_redis_cluster.UpdateClusterRequest(),
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -4355,7 +7487,11 @@ def test_create_cluster_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             cluster_id="cluster_id_value",
         )
         mock_args.update(sample_request)
@@ -4392,7 +7528,11 @@ def test_create_cluster_rest_flattened_error(transport: str = "rest"):
         client.create_cluster(
             cloud_redis_cluster.CreateClusterRequest(),
             parent="parent_value",
-            cluster=cloud_redis_cluster.Cluster(name="name_value"),
+            cluster=cloud_redis_cluster.Cluster(
+                gcs_source=cloud_redis_cluster.Cluster.GcsBackupSource(
+                    uris=["uris_value"]
+                )
+            ),
             cluster_id="cluster_id_value",
         )
 
@@ -4582,6 +7722,1575 @@ def test_get_cluster_certificate_authority_rest_flattened_error(
     with pytest.raises(ValueError):
         client.get_cluster_certificate_authority(
             cloud_redis_cluster.GetClusterCertificateAuthorityRequest(),
+            name="name_value",
+        )
+
+
+def test_reschedule_cluster_maintenance_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.reschedule_cluster_maintenance
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.reschedule_cluster_maintenance
+        ] = mock_rpc
+
+        request = {}
+        client.reschedule_cluster_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.reschedule_cluster_maintenance(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_reschedule_cluster_maintenance_rest_required_fields(
+    request_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).reschedule_cluster_maintenance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).reschedule_cluster_maintenance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.reschedule_cluster_maintenance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_reschedule_cluster_maintenance_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.reschedule_cluster_maintenance._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "rescheduleType",
+            )
+        )
+    )
+
+
+def test_reschedule_cluster_maintenance_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            reschedule_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.reschedule_cluster_maintenance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/clusters/*}:rescheduleClusterMaintenance"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_reschedule_cluster_maintenance_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.reschedule_cluster_maintenance(
+            cloud_redis_cluster.RescheduleClusterMaintenanceRequest(),
+            name="name_value",
+            reschedule_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+def test_list_backup_collections_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_backup_collections
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_backup_collections
+        ] = mock_rpc
+
+        request = {}
+        client.list_backup_collections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_backup_collections(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_backup_collections_rest_required_fields(
+    request_type=cloud_redis_cluster.ListBackupCollectionsRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backup_collections._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backup_collections._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.ListBackupCollectionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_backup_collections(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_backup_collections_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_backup_collections._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_backup_collections_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListBackupCollectionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_backup_collections(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/backupCollections"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_backup_collections_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_backup_collections(
+            cloud_redis_cluster.ListBackupCollectionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_backup_collections_rest_pager(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                backup_collections=[
+                    cloud_redis_cluster.BackupCollection(),
+                    cloud_redis_cluster.BackupCollection(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_redis_cluster.ListBackupCollectionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_backup_collections(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_redis_cluster.BackupCollection) for i in results)
+
+        pages = list(client.list_backup_collections(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_backup_collection_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_backup_collection
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_backup_collection
+        ] = mock_rpc
+
+        request = {}
+        client.get_backup_collection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_backup_collection(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_backup_collection_rest_required_fields(
+    request_type=cloud_redis_cluster.GetBackupCollectionRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup_collection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup_collection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.BackupCollection()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.BackupCollection.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_backup_collection(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_backup_collection_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_backup_collection._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_backup_collection_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.BackupCollection()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupCollections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.BackupCollection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_backup_collection(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupCollections/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_backup_collection_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup_collection(
+            cloud_redis_cluster.GetBackupCollectionRequest(),
+            name="name_value",
+        )
+
+
+def test_list_backups_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_backups in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_backups] = mock_rpc
+
+        request = {}
+        client.list_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_backups(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_backups_rest_required_fields(
+    request_type=cloud_redis_cluster.ListBackupsRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backups._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_backups._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.ListBackupsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.ListBackupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_backups(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_backups_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_backups._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_backups_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListBackupsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/backupCollections/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_backups(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/backupCollections/*}/backups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_backups_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_backups(
+            cloud_redis_cluster.ListBackupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_backups_rest_pager(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="abc",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[],
+                next_page_token="def",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_redis_cluster.ListBackupsResponse(
+                backups=[
+                    cloud_redis_cluster.Backup(),
+                    cloud_redis_cluster.Backup(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            cloud_redis_cluster.ListBackupsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/backupCollections/sample3"
+        }
+
+        pager = client.list_backups(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, cloud_redis_cluster.Backup) for i in results)
+
+        pages = list(client.list_backups(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_backup_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_backup] = mock_rpc
+
+        request = {}
+        client.get_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_backup_rest_required_fields(
+    request_type=cloud_redis_cluster.GetBackupRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis_cluster.Backup()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cloud_redis_cluster.Backup.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_backup(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_backup_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_backup_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.Backup()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupCollections/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_backup_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_backup(
+            cloud_redis_cluster.GetBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_backup_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_backup] = mock_rpc
+
+        request = {}
+        client.delete_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_backup_rest_required_fields(
+    request_type=cloud_redis_cluster.DeleteBackupRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_backup._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_backup(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_backup_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+def test_delete_backup_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_backup(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/backupCollections/*/backups/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_backup_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_backup(
+            cloud_redis_cluster.DeleteBackupRequest(),
+            name="name_value",
+        )
+
+
+def test_export_backup_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.export_backup in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.export_backup] = mock_rpc
+
+        request = {}
+        client.export_backup(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.export_backup(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_export_backup_rest_required_fields(
+    request_type=cloud_redis_cluster.ExportBackupRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_backup._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.export_backup(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_export_backup_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.export_backup._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_backup_cluster_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudRedisClusterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.backup_cluster in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.backup_cluster] = mock_rpc
+
+        request = {}
+        client.backup_cluster(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.backup_cluster(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_backup_cluster_rest_required_fields(
+    request_type=cloud_redis_cluster.BackupClusterRequest,
+):
+    transport_class = transports.CloudRedisClusterRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).backup_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).backup_cluster._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.backup_cluster(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_backup_cluster_rest_unset_required_fields():
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.backup_cluster._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_backup_cluster_rest_flattened():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.backup_cluster(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/clusters/*}:backup"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_backup_cluster_rest_flattened_error(transport: str = "rest"):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.backup_cluster(
+            cloud_redis_cluster.BackupClusterRequest(),
             name="name_value",
         )
 
@@ -4820,6 +9529,180 @@ def test_get_cluster_certificate_authority_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reschedule_cluster_maintenance_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.reschedule_cluster_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backup_collections_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+        client.list_backup_collections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListBackupCollectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_collection_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        call.return_value = cloud_redis_cluster.BackupCollection()
+        client.get_backup_collection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetBackupCollectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        call.return_value = cloud_redis_cluster.ListBackupsResponse()
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        call.return_value = cloud_redis_cluster.Backup()
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_backup_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ExportBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_backup_cluster_empty_call_grpc():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.backup_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.BackupClusterRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = CloudRedisClusterAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -4887,6 +9770,8 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
                 precise_size_gb=0.15810000000000002,
                 deletion_protection_enabled=True,
+                backup_collection="backup_collection_value",
+                kms_key="kms_key_value",
             )
         )
         await client.get_cluster(request=None)
@@ -4999,6 +9884,236 @@ async def test_get_cluster_certificate_authority_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterCertificateAuthorityRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_reschedule_cluster_maintenance_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.reschedule_cluster_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_backup_collections_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupCollectionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_backup_collections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListBackupCollectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_backup_collection_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.BackupCollection(
+                name="name_value",
+                cluster_uid="cluster_uid_value",
+                cluster="cluster_value",
+                kms_key="kms_key_value",
+                uid="uid_value",
+            )
+        )
+        await client.get_backup_collection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetBackupCollectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_backups_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.ListBackupsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_backup_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_redis_cluster.Backup(
+                name="name_value",
+                cluster="cluster_value",
+                cluster_uid="cluster_uid_value",
+                total_size_bytes=1732,
+                engine_version="engine_version_value",
+                node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
+                replica_count=1384,
+                shard_count=1178,
+                backup_type=cloud_redis_cluster.Backup.BackupType.ON_DEMAND,
+                state=cloud_redis_cluster.Backup.State.CREATING,
+                uid="uid_value",
+            )
+        )
+        await client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_backup_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_backup_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ExportBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_backup_cluster_empty_call_grpc_asyncio():
+    client = CloudRedisClusterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.backup_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.BackupClusterRequest()
 
         assert args[0] == request_msg
 
@@ -5192,6 +10307,8 @@ def test_get_cluster_rest_call_success(request_type):
             node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
             precise_size_gb=0.15810000000000002,
             deletion_protection_enabled=True,
+            backup_collection="backup_collection_value",
+            kms_key="kms_key_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5225,6 +10342,8 @@ def test_get_cluster_rest_call_success(request_type):
     assert response.node_type == cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO
     assert math.isclose(response.precise_size_gb, 0.15810000000000002, rel_tol=1e-6)
     assert response.deletion_protection_enabled is True
+    assert response.backup_collection == "backup_collection_value"
+    assert response.kms_key == "kms_key_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5330,6 +10449,8 @@ def test_update_cluster_rest_call_success(request_type):
         "cluster": {"name": "projects/sample1/locations/sample2/clusters/sample3"}
     }
     request_init["cluster"] = {
+        "gcs_source": {"uris": ["uris_value1", "uris_value2"]},
+        "managed_backup_source": {"backup": "backup_value"},
         "name": "projects/sample1/locations/sample2/clusters/sample3",
         "create_time": {"seconds": 751, "nanos": 543},
         "state": 1,
@@ -5350,6 +10471,9 @@ def test_update_cluster_rest_call_success(request_type):
                 "forwarding_rule": "forwarding_rule_value",
                 "project_id": "project_id_value",
                 "network": "network_value",
+                "service_attachment": "service_attachment_value",
+                "psc_connection_status": 1,
+                "connection_type": 1,
             }
         ],
         "state_info": {
@@ -5364,7 +10488,65 @@ def test_update_cluster_rest_call_success(request_type):
         "redis_configs": {},
         "precise_size_gb": 0.15810000000000002,
         "zone_distribution_config": {"mode": 1, "zone": "zone_value"},
+        "cross_cluster_replication_config": {
+            "cluster_role": 1,
+            "primary_cluster": {"cluster": "cluster_value", "uid": "uid_value"},
+            "secondary_clusters": {},
+            "update_time": {},
+            "membership": {"primary_cluster": {}, "secondary_clusters": {}},
+        },
         "deletion_protection_enabled": True,
+        "maintenance_policy": {
+            "create_time": {},
+            "update_time": {},
+            "weekly_maintenance_window": [
+                {
+                    "day": 1,
+                    "start_time": {
+                        "hours": 561,
+                        "minutes": 773,
+                        "seconds": 751,
+                        "nanos": 543,
+                    },
+                }
+            ],
+        },
+        "maintenance_schedule": {"start_time": {}, "end_time": {}},
+        "psc_service_attachments": [
+            {"service_attachment": "service_attachment_value", "connection_type": 1}
+        ],
+        "cluster_endpoints": [
+            {
+                "connections": [
+                    {
+                        "psc_auto_connection": {
+                            "psc_connection_id": "psc_connection_id_value",
+                            "address": "address_value",
+                            "forwarding_rule": "forwarding_rule_value",
+                            "project_id": "project_id_value",
+                            "network": "network_value",
+                            "service_attachment": "service_attachment_value",
+                            "psc_connection_status": 1,
+                            "connection_type": 1,
+                        },
+                        "psc_connection": {},
+                    }
+                ]
+            }
+        ],
+        "backup_collection": "backup_collection_value",
+        "kms_key": "kms_key_value",
+        "automated_backup_config": {
+            "fixed_frequency_schedule": {"start_time": {}},
+            "automated_backup_mode": 1,
+            "retention": {"seconds": 751, "nanos": 543},
+        },
+        "encryption_info": {
+            "encryption_type": 1,
+            "kms_key_versions": ["kms_key_versions_value1", "kms_key_versions_value2"],
+            "kms_key_primary_state": 1,
+            "last_update_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5670,6 +10852,8 @@ def test_create_cluster_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["cluster"] = {
+        "gcs_source": {"uris": ["uris_value1", "uris_value2"]},
+        "managed_backup_source": {"backup": "backup_value"},
         "name": "name_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "state": 1,
@@ -5690,6 +10874,9 @@ def test_create_cluster_rest_call_success(request_type):
                 "forwarding_rule": "forwarding_rule_value",
                 "project_id": "project_id_value",
                 "network": "network_value",
+                "service_attachment": "service_attachment_value",
+                "psc_connection_status": 1,
+                "connection_type": 1,
             }
         ],
         "state_info": {
@@ -5704,7 +10891,65 @@ def test_create_cluster_rest_call_success(request_type):
         "redis_configs": {},
         "precise_size_gb": 0.15810000000000002,
         "zone_distribution_config": {"mode": 1, "zone": "zone_value"},
+        "cross_cluster_replication_config": {
+            "cluster_role": 1,
+            "primary_cluster": {"cluster": "cluster_value", "uid": "uid_value"},
+            "secondary_clusters": {},
+            "update_time": {},
+            "membership": {"primary_cluster": {}, "secondary_clusters": {}},
+        },
         "deletion_protection_enabled": True,
+        "maintenance_policy": {
+            "create_time": {},
+            "update_time": {},
+            "weekly_maintenance_window": [
+                {
+                    "day": 1,
+                    "start_time": {
+                        "hours": 561,
+                        "minutes": 773,
+                        "seconds": 751,
+                        "nanos": 543,
+                    },
+                }
+            ],
+        },
+        "maintenance_schedule": {"start_time": {}, "end_time": {}},
+        "psc_service_attachments": [
+            {"service_attachment": "service_attachment_value", "connection_type": 1}
+        ],
+        "cluster_endpoints": [
+            {
+                "connections": [
+                    {
+                        "psc_auto_connection": {
+                            "psc_connection_id": "psc_connection_id_value",
+                            "address": "address_value",
+                            "forwarding_rule": "forwarding_rule_value",
+                            "project_id": "project_id_value",
+                            "network": "network_value",
+                            "service_attachment": "service_attachment_value",
+                            "psc_connection_status": 1,
+                            "connection_type": 1,
+                        },
+                        "psc_connection": {},
+                    }
+                ]
+            }
+        ],
+        "backup_collection": "backup_collection_value",
+        "kms_key": "kms_key_value",
+        "automated_backup_config": {
+            "fixed_frequency_schedule": {"start_time": {}},
+            "automated_backup_mode": 1,
+            "retention": {"seconds": 751, "nanos": 543},
+        },
+        "encryption_info": {
+            "encryption_type": 1,
+            "kms_key_versions": ["kms_key_versions_value1", "kms_key_versions_value2"],
+            "kms_key_primary_state": 1,
+            "last_update_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5971,6 +11216,1026 @@ def test_get_cluster_certificate_authority_rest_interceptors(null_interceptor):
         post.return_value = cloud_redis_cluster.CertificateAuthority()
 
         client.get_cluster_certificate_authority(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_reschedule_cluster_maintenance_rest_bad_request(
+    request_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.reschedule_cluster_maintenance(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+        dict,
+    ],
+)
+def test_reschedule_cluster_maintenance_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.reschedule_cluster_maintenance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reschedule_cluster_maintenance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor,
+        "post_reschedule_cluster_maintenance",
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor,
+        "pre_reschedule_cluster_maintenance",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.RescheduleClusterMaintenanceRequest.pb(
+            cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.reschedule_cluster_maintenance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_backup_collections_rest_bad_request(
+    request_type=cloud_redis_cluster.ListBackupCollectionsRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_backup_collections(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListBackupCollectionsRequest,
+        dict,
+    ],
+)
+def test_list_backup_collections_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListBackupCollectionsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListBackupCollectionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_backup_collections(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupCollectionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backup_collections_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_list_backup_collections"
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "pre_list_backup_collections"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.ListBackupCollectionsRequest.pb(
+            cloud_redis_cluster.ListBackupCollectionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.ListBackupCollectionsResponse.to_json(
+            cloud_redis_cluster.ListBackupCollectionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.ListBackupCollectionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.ListBackupCollectionsResponse()
+
+        client.list_backup_collections(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_collection_rest_bad_request(
+    request_type=cloud_redis_cluster.GetBackupCollectionRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_backup_collection(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetBackupCollectionRequest,
+        dict,
+    ],
+)
+def test_get_backup_collection_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.BackupCollection(
+            name="name_value",
+            cluster_uid="cluster_uid_value",
+            cluster="cluster_value",
+            kms_key="kms_key_value",
+            uid="uid_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.BackupCollection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_backup_collection(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.BackupCollection)
+    assert response.name == "name_value"
+    assert response.cluster_uid == "cluster_uid_value"
+    assert response.cluster == "cluster_value"
+    assert response.kms_key == "kms_key_value"
+    assert response.uid == "uid_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_collection_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_get_backup_collection"
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "pre_get_backup_collection"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.GetBackupCollectionRequest.pb(
+            cloud_redis_cluster.GetBackupCollectionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.BackupCollection.to_json(
+            cloud_redis_cluster.BackupCollection()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.GetBackupCollectionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.BackupCollection()
+
+        client.get_backup_collection(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_backups_rest_bad_request(
+    request_type=cloud_redis_cluster.ListBackupsRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/backupCollections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_backups(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListBackupsRequest,
+        dict,
+    ],
+)
+def test_list_backups_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/backupCollections/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.ListBackupsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_backups(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBackupsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_backups_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_list_backups"
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "pre_list_backups"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.ListBackupsRequest.pb(
+            cloud_redis_cluster.ListBackupsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.ListBackupsResponse.to_json(
+            cloud_redis_cluster.ListBackupsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.ListBackupsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.ListBackupsResponse()
+
+        client.list_backups(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_backup_rest_bad_request(request_type=cloud_redis_cluster.GetBackupRequest):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetBackupRequest,
+        dict,
+    ],
+)
+def test_get_backup_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis_cluster.Backup(
+            name="name_value",
+            cluster="cluster_value",
+            cluster_uid="cluster_uid_value",
+            total_size_bytes=1732,
+            engine_version="engine_version_value",
+            node_type=cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO,
+            replica_count=1384,
+            shard_count=1178,
+            backup_type=cloud_redis_cluster.Backup.BackupType.ON_DEMAND,
+            state=cloud_redis_cluster.Backup.State.CREATING,
+            uid="uid_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis_cluster.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_backup(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis_cluster.Backup)
+    assert response.name == "name_value"
+    assert response.cluster == "cluster_value"
+    assert response.cluster_uid == "cluster_uid_value"
+    assert response.total_size_bytes == 1732
+    assert response.engine_version == "engine_version_value"
+    assert response.node_type == cloud_redis_cluster.NodeType.REDIS_SHARED_CORE_NANO
+    assert response.replica_count == 1384
+    assert response.shard_count == 1178
+    assert response.backup_type == cloud_redis_cluster.Backup.BackupType.ON_DEMAND
+    assert response.state == cloud_redis_cluster.Backup.State.CREATING
+    assert response.uid == "uid_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_backup_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_get_backup"
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "pre_get_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.GetBackupRequest.pb(
+            cloud_redis_cluster.GetBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = cloud_redis_cluster.Backup.to_json(cloud_redis_cluster.Backup())
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.GetBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis_cluster.Backup()
+
+        client.get_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_backup_rest_bad_request(
+    request_type=cloud_redis_cluster.DeleteBackupRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.DeleteBackupRequest,
+        dict,
+    ],
+)
+def test_delete_backup_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_backup(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_backup_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_delete_backup"
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "pre_delete_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.DeleteBackupRequest.pb(
+            cloud_redis_cluster.DeleteBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.DeleteBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_backup_rest_bad_request(
+    request_type=cloud_redis_cluster.ExportBackupRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.export_backup(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ExportBackupRequest,
+        dict,
+    ],
+)
+def test_export_backup_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/backupCollections/sample3/backups/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.export_backup(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_backup_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_export_backup"
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "pre_export_backup"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.ExportBackupRequest.pb(
+            cloud_redis_cluster.ExportBackupRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.ExportBackupRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_backup(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_backup_cluster_rest_bad_request(
+    request_type=cloud_redis_cluster.BackupClusterRequest,
+):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.backup_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.BackupClusterRequest,
+        dict,
+    ],
+)
+def test_backup_cluster_rest_call_success(request_type):
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/clusters/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.backup_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_backup_cluster_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisClusterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudRedisClusterRestInterceptor(),
+    )
+    client = CloudRedisClusterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "post_backup_cluster"
+    ) as post, mock.patch.object(
+        transports.CloudRedisClusterRestInterceptor, "pre_backup_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis_cluster.BackupClusterRequest.pb(
+            cloud_redis_cluster.BackupClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis_cluster.BackupClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.backup_cluster(
             request,
             metadata=[
                 ("key", "val"),
@@ -6479,6 +12744,172 @@ def test_get_cluster_certificate_authority_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reschedule_cluster_maintenance_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reschedule_cluster_maintenance), "__call__"
+    ) as call:
+        client.reschedule_cluster_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backup_collections_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_collections), "__call__"
+    ) as call:
+        client.list_backup_collections(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListBackupCollectionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_collection_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_backup_collection), "__call__"
+    ) as call:
+        client.get_backup_collection(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetBackupCollectionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_backups_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ListBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_backup_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.GetBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_backup_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.DeleteBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_backup_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
+        client.export_backup(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.ExportBackupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_backup_cluster_empty_call_rest():
+    client = CloudRedisClusterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
+        client.backup_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis_cluster.BackupClusterRequest()
+
+        assert args[0] == request_msg
+
+
 def test_cloud_redis_cluster_rest_lro_client():
     client = CloudRedisClusterClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6535,6 +12966,14 @@ def test_cloud_redis_cluster_base_transport():
         "delete_cluster",
         "create_cluster",
         "get_cluster_certificate_authority",
+        "reschedule_cluster_maintenance",
+        "list_backup_collections",
+        "get_backup_collection",
+        "list_backups",
+        "get_backup",
+        "delete_backup",
+        "export_backup",
+        "backup_cluster",
         "get_location",
         "list_locations",
         "get_operation",
@@ -6824,6 +13263,30 @@ def test_cloud_redis_cluster_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_cluster_certificate_authority._session
     session2 = client2.transport.get_cluster_certificate_authority._session
     assert session1 != session2
+    session1 = client1.transport.reschedule_cluster_maintenance._session
+    session2 = client2.transport.reschedule_cluster_maintenance._session
+    assert session1 != session2
+    session1 = client1.transport.list_backup_collections._session
+    session2 = client2.transport.list_backup_collections._session
+    assert session1 != session2
+    session1 = client1.transport.get_backup_collection._session
+    session2 = client2.transport.get_backup_collection._session
+    assert session1 != session2
+    session1 = client1.transport.list_backups._session
+    session2 = client2.transport.list_backups._session
+    assert session1 != session2
+    session1 = client1.transport.get_backup._session
+    session2 = client2.transport.get_backup._session
+    assert session1 != session2
+    session1 = client1.transport.delete_backup._session
+    session2 = client2.transport.delete_backup._session
+    assert session1 != session2
+    session1 = client1.transport.export_backup._session
+    session2 = client2.transport.export_backup._session
+    assert session1 != session2
+    session1 = client1.transport.backup_cluster._session
+    session2 = client2.transport.backup_cluster._session
+    assert session1 != session2
 
 
 def test_cloud_redis_cluster_grpc_transport_channel():
@@ -6986,10 +13449,69 @@ def test_cloud_redis_cluster_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_certificate_authority_path():
+def test_backup_path():
     project = "squid"
     location = "clam"
-    cluster = "whelk"
+    backup_collection = "whelk"
+    backup = "octopus"
+    expected = "projects/{project}/locations/{location}/backupCollections/{backup_collection}/backups/{backup}".format(
+        project=project,
+        location=location,
+        backup_collection=backup_collection,
+        backup=backup,
+    )
+    actual = CloudRedisClusterClient.backup_path(
+        project, location, backup_collection, backup
+    )
+    assert expected == actual
+
+
+def test_parse_backup_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "backup_collection": "cuttlefish",
+        "backup": "mussel",
+    }
+    path = CloudRedisClusterClient.backup_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_backup_path(path)
+    assert expected == actual
+
+
+def test_backup_collection_path():
+    project = "winkle"
+    location = "nautilus"
+    backup_collection = "scallop"
+    expected = "projects/{project}/locations/{location}/backupCollections/{backup_collection}".format(
+        project=project,
+        location=location,
+        backup_collection=backup_collection,
+    )
+    actual = CloudRedisClusterClient.backup_collection_path(
+        project, location, backup_collection
+    )
+    assert expected == actual
+
+
+def test_parse_backup_collection_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "backup_collection": "clam",
+    }
+    path = CloudRedisClusterClient.backup_collection_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_backup_collection_path(path)
+    assert expected == actual
+
+
+def test_certificate_authority_path():
+    project = "whelk"
+    location = "octopus"
+    cluster = "oyster"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/certificateAuthority".format(
         project=project,
         location=location,
@@ -7003,9 +13525,9 @@ def test_certificate_authority_path():
 
 def test_parse_certificate_authority_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "cluster": "nudibranch",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "cluster": "mussel",
     }
     path = CloudRedisClusterClient.certificate_authority_path(**expected)
 
@@ -7015,9 +13537,9 @@ def test_parse_certificate_authority_path():
 
 
 def test_cluster_path():
-    project = "cuttlefish"
-    location = "mussel"
-    cluster = "winkle"
+    project = "winkle"
+    location = "nautilus"
+    cluster = "scallop"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
         project=project,
         location=location,
@@ -7029,14 +13551,160 @@ def test_cluster_path():
 
 def test_parse_cluster_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "cluster": "abalone",
+        "project": "abalone",
+        "location": "squid",
+        "cluster": "clam",
     }
     path = CloudRedisClusterClient.cluster_path(**expected)
 
     # Check that the path construction is reversible.
     actual = CloudRedisClusterClient.parse_cluster_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_path():
+    project = "whelk"
+    location = "octopus"
+    key_ring = "oyster"
+    crypto_key = "nudibranch"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = CloudRedisClusterClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "key_ring": "winkle",
+        "crypto_key": "nautilus",
+    }
+    path = CloudRedisClusterClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_version_path():
+    project = "scallop"
+    location = "abalone"
+    key_ring = "squid"
+    crypto_key = "clam"
+    crypto_key_version = "whelk"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = CloudRedisClusterClient.crypto_key_version_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_version_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "key_ring": "nudibranch",
+        "crypto_key": "cuttlefish",
+        "crypto_key_version": "mussel",
+    }
+    path = CloudRedisClusterClient.crypto_key_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_crypto_key_version_path(path)
+    assert expected == actual
+
+
+def test_forwarding_rule_path():
+    project = "winkle"
+    region = "nautilus"
+    forwarding_rule = "scallop"
+    expected = (
+        "projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}".format(
+            project=project,
+            region=region,
+            forwarding_rule=forwarding_rule,
+        )
+    )
+    actual = CloudRedisClusterClient.forwarding_rule_path(
+        project, region, forwarding_rule
+    )
+    assert expected == actual
+
+
+def test_parse_forwarding_rule_path():
+    expected = {
+        "project": "abalone",
+        "region": "squid",
+        "forwarding_rule": "clam",
+    }
+    path = CloudRedisClusterClient.forwarding_rule_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_forwarding_rule_path(path)
+    assert expected == actual
+
+
+def test_network_path():
+    project = "whelk"
+    network = "octopus"
+    expected = "projects/{project}/global/networks/{network}".format(
+        project=project,
+        network=network,
+    )
+    actual = CloudRedisClusterClient.network_path(project, network)
+    assert expected == actual
+
+
+def test_parse_network_path():
+    expected = {
+        "project": "oyster",
+        "network": "nudibranch",
+    }
+    path = CloudRedisClusterClient.network_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_network_path(path)
+    assert expected == actual
+
+
+def test_service_attachment_path():
+    project = "cuttlefish"
+    region = "mussel"
+    service_attachment = "winkle"
+    expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
+        project=project,
+        region=region,
+        service_attachment=service_attachment,
+    )
+    actual = CloudRedisClusterClient.service_attachment_path(
+        project, region, service_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_service_attachment_path():
+    expected = {
+        "project": "nautilus",
+        "region": "scallop",
+        "service_attachment": "abalone",
+    }
+    path = CloudRedisClusterClient.service_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClusterClient.parse_service_attachment_path(path)
     assert expected == actual
 
 

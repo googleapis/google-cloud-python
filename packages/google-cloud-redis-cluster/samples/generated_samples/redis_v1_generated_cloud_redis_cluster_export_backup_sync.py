@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateCluster
+# Snippet for ExportBackup
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-redis-cluster
 
 
-# [START redis_v1_generated_CloudRedisCluster_UpdateCluster_async]
+# [START redis_v1_generated_CloudRedisCluster_ExportBackup_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,26 +34,24 @@
 from google.cloud import redis_cluster_v1
 
 
-async def sample_update_cluster():
+def sample_export_backup():
     # Create a client
-    client = redis_cluster_v1.CloudRedisClusterAsyncClient()
+    client = redis_cluster_v1.CloudRedisClusterClient()
 
     # Initialize request argument(s)
-    cluster = redis_cluster_v1.Cluster()
-    cluster.name = "name_value"
-
-    request = redis_cluster_v1.UpdateClusterRequest(
-        cluster=cluster,
+    request = redis_cluster_v1.ExportBackupRequest(
+        gcs_bucket="gcs_bucket_value",
+        name="name_value",
     )
 
     # Make the request
-    operation = client.update_cluster(request=request)
+    operation = client.export_backup(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END redis_v1_generated_CloudRedisCluster_UpdateCluster_async]
+# [END redis_v1_generated_CloudRedisCluster_ExportBackup_sync]
