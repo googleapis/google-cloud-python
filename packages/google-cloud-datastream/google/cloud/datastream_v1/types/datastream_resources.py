@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "Route",
         "MysqlSslConfig",
         "OracleSslConfig",
+        "PostgresqlSslConfig",
         "ConnectionProfile",
         "OracleColumn",
         "OracleTable",
@@ -158,7 +159,7 @@ class OracleProfile(proto.Message):
 
 class OracleAsmConfig(proto.Message):
     r"""Configuration for Oracle Automatic Storage Management (ASM)
-    connection.
+    connection. .
 
     Attributes:
         hostname (str):
@@ -170,7 +171,7 @@ class OracleAsmConfig(proto.Message):
             Required. Username for the Oracle ASM
             connection.
         password (str):
-            Required. Password for the Oracle ASM
+            Optional. Password for the Oracle ASM
             connection.
         asm_service (str):
             Required. ASM service name for the Oracle ASM
@@ -276,6 +277,12 @@ class PostgresqlProfile(proto.Message):
         database (str):
             Required. Database for the PostgreSQL
             connection.
+        ssl_config (google.cloud.datastream_v1.types.PostgresqlSslConfig):
+            Optional. SSL configuration for the PostgreSQL connection.
+            In case PostgresqlSslConfig is not set, the connection will
+            use the default SSL mode, which is ``prefer`` (i.e. this
+            mode will only use encryption if enabled from database side,
+            otherwise will use unencrypted communication)
     """
 
     hostname: str = proto.Field(
@@ -297,6 +304,11 @@ class PostgresqlProfile(proto.Message):
     database: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    ssl_config: "PostgresqlSslConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="PostgresqlSslConfig",
     )
 
 
@@ -459,7 +471,7 @@ class PrivateConnection(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource's name.
+            Output only. Identifier. The resource's name.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -567,7 +579,7 @@ class Route(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource's name.
+            Output only. Identifier. The resource's name.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -692,6 +704,104 @@ class OracleSslConfig(proto.Message):
     )
 
 
+class PostgresqlSslConfig(proto.Message):
+    r"""PostgreSQL SSL configuration information.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        server_verification (google.cloud.datastream_v1.types.PostgresqlSslConfig.ServerVerification):
+            If this field is set, the communication will
+            be encrypted with TLS  encryption and the server
+            identity will be authenticated.
+
+            This field is a member of `oneof`_ ``encryption_setting``.
+        server_and_client_verification (google.cloud.datastream_v1.types.PostgresqlSslConfig.ServerAndClientVerification):
+            If this field is set, the communication will
+            be encrypted with TLS encryption and both the
+            server identity and the client identity will be
+            authenticated.
+
+            This field is a member of `oneof`_ ``encryption_setting``.
+    """
+
+    class ServerVerification(proto.Message):
+        r"""Message represents the option where Datastream will enforce the
+        encryption and authenticate the server identity. ca_certificate must
+        be set if user selects this option.
+
+        Attributes:
+            ca_certificate (str):
+                Required. Input only. PEM-encoded server root
+                CA certificate.
+        """
+
+        ca_certificate: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class ServerAndClientVerification(proto.Message):
+        r"""Message represents the option where Datastream will enforce the
+        encryption and authenticate the server identity as well as the
+        client identity. ca_certificate, client_certificate and client_key
+        must be set if user selects this option.
+
+        Attributes:
+            client_certificate (str):
+                Required. Input only. PEM-encoded certificate
+                used by the source database to authenticate the
+                client identity (i.e., the Datastream's
+                identity). This certificate is signed by either
+                a root certificate trusted by the server or one
+                or more intermediate certificates (which is
+                stored with the leaf certificate) to link the
+                this certificate to the trusted root
+                certificate.
+            client_key (str):
+                Required. Input only. PEM-encoded private key
+                associated with the client certificate. This
+                value will be used during the SSL/TLS handshake,
+                allowing the PostgreSQL server to authenticate
+                the client's identity, i.e. identity of the
+                Datastream.
+            ca_certificate (str):
+                Required. Input only. PEM-encoded server root
+                CA certificate.
+        """
+
+        client_certificate: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        client_key: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        ca_certificate: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    server_verification: ServerVerification = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="encryption_setting",
+        message=ServerVerification,
+    )
+    server_and_client_verification: ServerAndClientVerification = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="encryption_setting",
+        message=ServerAndClientVerification,
+    )
+
+
 class ConnectionProfile(proto.Message):
     r"""A set of reusable connection configurations to be used as a
     source or destination for a stream.
@@ -705,7 +815,7 @@ class ConnectionProfile(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource's name.
+            Output only. Identifier. The resource's name.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2043,7 +2153,7 @@ class Stream(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The stream's name.
+            Output only. Identifier. The stream's name.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the stream.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2264,7 +2374,8 @@ class StreamObject(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The object resource's name.
+            Output only. Identifier. The object
+            resource's name.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the object.
         update_time (google.protobuf.timestamp_pb2.Timestamp):

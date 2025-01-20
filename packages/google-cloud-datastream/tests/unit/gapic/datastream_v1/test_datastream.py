@@ -17966,6 +17966,14 @@ def test_create_connection_profile_rest_call_success(request_type):
             "username": "username_value",
             "password": "password_value",
             "database": "database_value",
+            "ssl_config": {
+                "server_verification": {"ca_certificate": "ca_certificate_value"},
+                "server_and_client_verification": {
+                    "client_certificate": "client_certificate_value",
+                    "client_key": "client_key_value",
+                    "ca_certificate": "ca_certificate_value",
+                },
+            },
         },
         "sql_server_profile": {
             "hostname": "hostname_value",
@@ -18229,6 +18237,14 @@ def test_update_connection_profile_rest_call_success(request_type):
             "username": "username_value",
             "password": "password_value",
             "database": "database_value",
+            "ssl_config": {
+                "server_verification": {"ca_certificate": "ca_certificate_value"},
+                "server_and_client_verification": {
+                    "client_certificate": "client_certificate_value",
+                    "client_key": "client_key_value",
+                    "ca_certificate": "ca_certificate_value",
+                },
+            },
         },
         "sql_server_profile": {
             "hostname": "hostname_value",
