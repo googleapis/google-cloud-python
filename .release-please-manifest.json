@@ -11,7 +11,7 @@
     "packages/google-apps-script-type": "0.3.11",
     "packages/google-area120-tables": "0.11.14",
     "packages/google-cloud-access-approval": "1.15.0",
-    "packages/google-cloud-access-context-manager": "0.2.1",
+    "packages/google-cloud-access-context-manager": "0.2.2",
     "packages/google-cloud-advisorynotifications": "0.3.13",
     "packages/google-cloud-alloydb": "0.4.1",
     "packages/google-cloud-alloydb-connectors": "0.1.7",
@@ -26,7 +26,7 @@
     "packages/google-cloud-artifact-registry": "1.14.0",
     "packages/google-cloud-asset": "3.28.0",
     "packages/google-cloud-assured-workloads": "1.14.0",
-    "packages/google-cloud-audit-log": "0.3.0",
+    "packages/google-cloud-audit-log": "0.3.1",
     "packages/google-cloud-automl": "2.15.0",
     "packages/google-cloud-backupdr": "0.2.0",
     "packages/google-cloud-bare-metal-solution": "1.9.0",
@@ -121,7 +121,7 @@
     "packages/google-cloud-optimization": "1.10.0",
     "packages/google-cloud-oracledatabase": "0.1.4",
     "packages/google-cloud-orchestration-airflow": "1.16.1",
-    "packages/google-cloud-org-policy": "1.12.0",
+    "packages/google-cloud-org-policy": "1.13.0",
     "packages/google-cloud-os-config": "1.19.0",
     "packages/google-cloud-os-login": "2.16.0",
     "packages/google-cloud-parallelstore": "0.2.9",
@@ -204,7 +204,7 @@
     "packages/google-shopping-merchant-reports": "0.1.12",
     "packages/google-shopping-merchant-reviews": "0.1.0",
     "packages/google-shopping-type": "0.1.9",
-    "packages/googleapis-common-protos": "1.66.0",
+    "packages/googleapis-common-protos": "1.67.0",
     "packages/grafeas": "1.13.0",
-    "packages/grpc-google-iam-v1": "0.14.0"
+    "packages/grpc-google-iam-v1": "0.14.1"
 }

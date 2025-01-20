@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.3.0...google-cloud-audit-log-v0.3.1) (2025-01-20)
+
+
+### Features
+
+* Introduce compatibility with native namespace packages ([#117](https://github.com/googleapis/google-cloud-python/issues/117)) ([a845791](https://github.com/googleapis/google-cloud-python/commit/a845791106a8b624a71159c15402aabe574bd7cf))
+
+
+### Bug Fixes
+
+* allow protobuf 5.x ([#147](https://github.com/googleapis/google-cloud-python/issues/147)) ([76c5b49](https://github.com/googleapis/google-cloud-python/commit/76c5b4916c689c0db23074dcd5dbbe3810834c6e))
+
 ## [0.3.0](https://github.com/googleapis/python-audit-log/compare/v0.2.5...v0.3.0) (2024-08-15)
 
 

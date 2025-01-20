@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.2.1...google-cloud-access-context-manager-v0.2.2) (2025-01-20)
+
+
+### Bug Fixes
+
+* regenerate pb2 files for compatibility with protobuf 5.x ([#223](https://github.com/googleapis/google-cloud-python/issues/223)) ([739dc17](https://github.com/googleapis/google-cloud-python/commit/739dc17a6e7fe19c02d76084da0231b24eaafeb2))
+
 ## [0.2.1](https://github.com/googleapis/python-access-context-manager/compare/v0.2.0...v0.2.1) (2024-08-14)
 
 

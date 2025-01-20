@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-org-policy-v1.12.0...google-cloud-org-policy-v1.13.0) (2025-01-20)
+
+
+### Features
+
+* Add support for opt-in debug logging ([#323](https://github.com/googleapis/google-cloud-python/issues/323)) ([c896824](https://github.com/googleapis/google-cloud-python/commit/c896824329a709f8f8b139d0320e85ec049505f6))
+* Add support for Python 3.13 ([#315](https://github.com/googleapis/google-cloud-python/issues/315)) ([d7172c4](https://github.com/googleapis/google-cloud-python/commit/d7172c495de1e36bb4977ffb3d89fb035029d091))
+* **spanner:** Add support for Cloud Spanner Scheduled Backups ([771faf4](https://github.com/googleapis/google-cloud-python/commit/771faf463199fbcd8839857bec92263ec4fe872a))
+
+
+### Bug Fixes
+
+* regenerate pb2 files for compatibility with protobuf 5.x ([#304](https://github.com/googleapis/google-cloud-python/issues/304)) ([7384c4d](https://github.com/googleapis/google-cloud-python/commit/7384c4d4f24ddc60ea1a0aec154ecfa9d4218ffc))
+
 ## [1.12.0](https://github.com/googleapis/python-org-policy/compare/v1.11.1...v1.12.0) (2024-12-27)
 
 

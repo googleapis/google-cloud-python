@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/googleapis/google-cloud-python/compare/grpc-google-iam-v1-v0.14.0...grpc-google-iam-v1-v0.14.1) (2025-01-20)
+
+
+### Features
+
+* add `google.iam.v1.resource_policy_member_pb2` ([#118](https://github.com/googleapis/google-cloud-python/issues/118)) ([f5d3aca](https://github.com/googleapis/google-cloud-python/commit/f5d3aca5e62dcd6ac257ada1b8fd90685c743565))
+
 ## [0.14.0](https://github.com/googleapis/python-grpc-google-iam-v1/compare/v0.13.1...v0.14.0) (2024-12-27)
 
 

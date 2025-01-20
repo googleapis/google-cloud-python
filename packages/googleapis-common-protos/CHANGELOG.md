@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.67.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.66.0...googleapis-common-protos-v1.67.0) (2025-01-20)
+
+
+### Features
+
+* Add field `experimental_features` to message `PythonSettings` ([#249](https://github.com/googleapis/google-cloud-python/issues/249)) ([ba8d36e](https://github.com/googleapis/google-cloud-python/commit/ba8d36e4a288c57be235c8597e11208359b072b5))
+* add FieldInfo.referenced_types for generics ([#247](https://github.com/googleapis/google-cloud-python/issues/247)) ([c91900a](https://github.com/googleapis/google-cloud-python/commit/c91900ab232e542905cd4f3cf282677bc6bcaab3))
+
 ## [1.66.0](https://github.com/googleapis/python-api-common-protos/compare/v1.65.0...v1.66.0) (2024-11-12)
 
 
