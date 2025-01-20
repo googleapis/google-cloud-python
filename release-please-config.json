@@ -2151,6 +2151,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-parametermanager": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-parametermanager",
+            "extra-files": [
+                "google/cloud/parametermanager/gapic_version.py",
+                "google/cloud/parametermanager_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.parametermanager.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-phishing-protection": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
