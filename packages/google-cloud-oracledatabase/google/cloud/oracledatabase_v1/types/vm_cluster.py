@@ -184,7 +184,7 @@ class CloudVmClusterProperties(proto.Message):
         cpu_core_count (int):
             Required. Number of enabled CPU cores.
         system_version (str):
-            Output only. Operating system version of the
+            Optional. Operating system version of the
             image.
         scan_ip_ids (MutableSequence[str]):
             Output only. OCIDs of scan IPs.

@@ -40,11 +40,16 @@ class network_managementCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_connectivity_test': ('parent', 'test_id', 'resource', ),
+        'create_vpc_flow_logs_config': ('parent', 'vpc_flow_logs_config_id', 'vpc_flow_logs_config', ),
         'delete_connectivity_test': ('name', ),
+        'delete_vpc_flow_logs_config': ('name', ),
         'get_connectivity_test': ('name', ),
+        'get_vpc_flow_logs_config': ('name', ),
         'list_connectivity_tests': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_vpc_flow_logs_configs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'rerun_connectivity_test': ('name', ),
         'update_connectivity_test': ('update_mask', 'resource', ),
+        'update_vpc_flow_logs_config': ('update_mask', 'vpc_flow_logs_config', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

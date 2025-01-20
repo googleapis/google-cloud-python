@@ -269,7 +269,7 @@ class Catalog(proto.Message):
     Attributes:
         name (str):
             Output only. The resource name of the target catalog, in the
-            format of \`catalogs/{catalog}'.
+            format of ``catalogs/{catalog}``.
         display_name (str):
             Output only. The descriptive name of the
             catalog as it appears in UIs.
@@ -776,7 +776,7 @@ class Version(proto.Message):
     Attributes:
         name (str):
             Output only. The resource name of the version, in the format
-            \`catalogs/{catalog}/products/{product}/versions/[a-z][-a-z0-9]*[a-z0-9]'.
+            ``catalogs/{catalog}/products/{product}/versions/[a-z][-a-z0-9]*[a-z0-9]``.
 
             A unique identifier for the version under a product.
         description (str):

@@ -13,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.6.14"  # {x-release-please-version}
+__version__ = "0.6.15"  # {x-release-please-version}

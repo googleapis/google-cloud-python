@@ -75,9 +75,24 @@
                 "list_queued_resources"
               ]
             },
+            "ListReservations": {
+              "methods": [
+                "list_reservations"
+              ]
+            },
             "ListRuntimeVersions": {
               "methods": [
                 "list_runtime_versions"
+              ]
+            },
+            "PerformMaintenance": {
+              "methods": [
+                "perform_maintenance"
+              ]
+            },
+            "PerformMaintenanceQueuedResource": {
+              "methods": [
+                "perform_maintenance_queued_resource"
               ]
             },
             "ResetQueuedResource": {
@@ -175,9 +190,24 @@
                 "list_queued_resources"
               ]
             },
+            "ListReservations": {
+              "methods": [
+                "list_reservations"
+              ]
+            },
             "ListRuntimeVersions": {
               "methods": [
                 "list_runtime_versions"
+              ]
+            },
+            "PerformMaintenance": {
+              "methods": [
+                "perform_maintenance"
+              ]
+            },
+            "PerformMaintenanceQueuedResource": {
+              "methods": [
+                "perform_maintenance_queued_resource"
               ]
             },
             "ResetQueuedResource": {

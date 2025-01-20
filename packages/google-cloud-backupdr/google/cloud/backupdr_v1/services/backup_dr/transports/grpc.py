@@ -1089,6 +1089,32 @@ class BackupDRGrpcTransport(BackupDRTransport):
             )
         return self._stubs["trigger_backup"]
 
+    @property
+    def initialize_service(
+        self,
+    ) -> Callable[[backupdr.InitializeServiceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the initialize service method over gRPC.
+
+        Initializes the service related config for a project.
+
+        Returns:
+            Callable[[~.InitializeServiceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "initialize_service" not in self._stubs:
+            self._stubs["initialize_service"] = self._logged_channel.unary_unary(
+                "/google.cloud.backupdr.v1.BackupDR/InitializeService",
+                request_serializer=backupdr.InitializeServiceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["initialize_service"]
+
     def close(self):
         self._logged_channel.close()
 

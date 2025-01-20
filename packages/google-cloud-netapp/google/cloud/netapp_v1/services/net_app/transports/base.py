@@ -189,6 +189,11 @@ class NetAppTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.validate_directory_service: gapic_v1.method.wrap_method(
+                self.validate_directory_service,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.switch_active_replica_zone: gapic_v1.method.wrap_method(
                 self.switch_active_replica_zone,
                 default_timeout=None,
@@ -668,6 +673,15 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_pool.DeleteStoragePoolRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def validate_directory_service(
+        self,
+    ) -> Callable[
+        [storage_pool.ValidateDirectoryServiceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -165,6 +165,31 @@ class TpuTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_queued_resources: gapic_v1.method.wrap_method(
+                self.list_queued_resources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_queued_resource: gapic_v1.method.wrap_method(
+                self.get_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_queued_resource: gapic_v1.method.wrap_method(
+                self.create_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_queued_resource: gapic_v1.method.wrap_method(
+                self.delete_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.reset_queued_resource: gapic_v1.method.wrap_method(
+                self.reset_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.generate_service_identity: gapic_v1.method.wrap_method(
                 self.generate_service_identity,
                 default_timeout=None,
@@ -299,6 +324,54 @@ class TpuTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_tpu.UpdateNodeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_queued_resources(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ListQueuedResourcesRequest],
+        Union[
+            cloud_tpu.ListQueuedResourcesResponse,
+            Awaitable[cloud_tpu.ListQueuedResourcesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.GetQueuedResourceRequest],
+        Union[cloud_tpu.QueuedResource, Awaitable[cloud_tpu.QueuedResource]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.CreateQueuedResourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.DeleteQueuedResourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reset_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ResetQueuedResourceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

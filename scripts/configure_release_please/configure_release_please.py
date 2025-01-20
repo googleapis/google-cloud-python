@@ -6,6 +6,12 @@ import re
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT_DIR = Path(SCRIPT_DIR / ".." / "..").resolve()
 PACKAGES_DIR = ROOT_DIR / "packages"
+PACKAGES_WITHOUT_GAPIC_VERSION = [
+    "google-cloud-access-context-manager",
+    "google-cloud-audit-log",
+    "googleapis-common-protos",
+    "grpc-google-iam-v1",
+]
 
 
 def get_version_for_package(version_path: Path) -> Tuple[int]:
@@ -73,6 +79,8 @@ def configure_release_please_manifest(
             if f"packages/{package_dir.name}" not in manifest_json:
                 manifest_json[f"packages/{package_dir.name}"] = "0.0.0"
 
+            if not package_supports_gapic_version(package_dir):
+                continue
             gapic_version_file = next(package_dir.rglob("**/gapic_version.py"), None)
             if gapic_version_file is None:
                 raise Exception("Failed to find gapic_version.py")
@@ -87,6 +95,16 @@ def configure_release_please_manifest(
     with open(release_please_manifest, "w") as f:
         json.dump(manifest_json, f, indent=4, sort_keys=True)
         f.write("\n")
+
+
+def package_supports_gapic_version(package_dir: str) -> bool:
+    """Returns True if the given package directory is expected to have gapic_version.py """            
+    
+    for package in PACKAGES_WITHOUT_GAPIC_VERSION:
+        if package_dir == Path(PACKAGES_DIR / package):
+            return False
+
+    return True
 
 
 def configure_release_please_config(
@@ -111,7 +129,7 @@ def configure_release_please_config(
             str(file.relative_to(package_dir))
             for file in sorted(package_dir.rglob("**/gapic_version.py"))
         ]
-        if len(extra_files) < 1:
+        if len(extra_files) < 1 and package_supports_gapic_version(package_dir):
             raise Exception("Failed to find gapic_version.py")
         for json_file in sorted(package_dir.glob("samples/**/*.json")):
             sample_json = {}

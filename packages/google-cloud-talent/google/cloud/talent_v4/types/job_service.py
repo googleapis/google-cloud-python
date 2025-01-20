@@ -600,6 +600,13 @@ class SearchJobsRequest(proto.Message):
             Defaults to
             [KeywordMatchMode.KEYWORD_MATCH_ALL][google.cloud.talent.v4.SearchJobsRequest.KeywordMatchMode.KEYWORD_MATCH_ALL]
             if no value is specified.
+        relevance_threshold (google.cloud.talent_v4.types.SearchJobsRequest.RelevanceThreshold):
+            Optional. The relevance threshold of the
+            search results.
+            Default to Google defined threshold, leveraging
+            a balance of precision and recall to deliver
+            both highly accurate results and comprehensive
+            coverage of relevant information.
     """
 
     class SearchMode(proto.Enum):
@@ -729,6 +736,30 @@ class SearchJobsRequest(proto.Message):
         KEYWORD_MATCH_DISABLED = 1
         KEYWORD_MATCH_ALL = 2
         KEYWORD_MATCH_TITLE_ONLY = 3
+
+    class RelevanceThreshold(proto.Enum):
+        r"""The relevance threshold of the search results. The higher
+        relevance threshold is, the higher relevant results are shown
+        and the less number of results are returned.
+
+        Values:
+            RELEVANCE_THRESHOLD_UNSPECIFIED (0):
+                Default value. In this case, server behavior
+                defaults to Google defined threshold.
+            LOWEST (1):
+                Lowest relevance threshold.
+            LOW (2):
+                Low relevance threshold.
+            MEDIUM (3):
+                Medium relevance threshold.
+            HIGH (4):
+                High relevance threshold.
+        """
+        RELEVANCE_THRESHOLD_UNSPECIFIED = 0
+        LOWEST = 1
+        LOW = 2
+        MEDIUM = 3
+        HIGH = 4
 
     class CustomRankingInfo(proto.Message):
         r"""Custom ranking information for
@@ -895,6 +926,11 @@ class SearchJobsRequest(proto.Message):
         proto.ENUM,
         number=18,
         enum=KeywordMatchMode,
+    )
+    relevance_threshold: RelevanceThreshold = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=RelevanceThreshold,
     )
 
 
@@ -1122,10 +1158,10 @@ class BatchUpdateJobsRequest(proto.Message):
             If
             [update_mask][google.cloud.talent.v4.BatchUpdateJobsRequest.update_mask]
             is provided, The [Job][google.cloud.talent.v4.Job] inside
-            [JobResult][JobOperationResult.JobResult] will only contains
-            fields that is updated, plus the Id of the Job. Otherwise,
-            [Job][google.cloud.talent.v4.Job] will include all fields,
-            which can yield a very large response.
+            [JobResult][google.cloud.talent.v4.JobResult] will only
+            contains fields that is updated, plus the Id of the Job.
+            Otherwise, [Job][google.cloud.talent.v4.Job] will include
+            all fields, which can yield a very large response.
     """
 
     parent: str = proto.Field(

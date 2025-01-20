@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.22.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.22.0...google-cloud-secret-manager-v2.22.1) (2025-01-16)
+
+
+### Documentation
+
+* fix link in Markdown comments ([aae987b](https://github.com/googleapis/google-cloud-python/commit/aae987bccb4b6914524f963d3487f61919b0fb84))
+* updated comment for `customer_managed_encryption` in message `.google.cloud.secretmanager.v1.Secret` ([aae987b](https://github.com/googleapis/google-cloud-python/commit/aae987bccb4b6914524f963d3487f61919b0fb84))
+* updated comment for `customer_managed_encryption` in message `.google.cloud.secretmanager.v1.SecretVersion` ([aae987b](https://github.com/googleapis/google-cloud-python/commit/aae987bccb4b6914524f963d3487f61919b0fb84))
+* updated comment for `name` in message `.google.cloud.secretmanager.v1.Topic` ([aae987b](https://github.com/googleapis/google-cloud-python/commit/aae987bccb4b6914524f963d3487f61919b0fb84))
+* updated comment for `Replication` ([aae987b](https://github.com/googleapis/google-cloud-python/commit/aae987bccb4b6914524f963d3487f61919b0fb84))
+* updated comment for `scheduled_destroy_time` in message `.google.cloud.secretmanager.v1.SecretVersion` ([aae987b](https://github.com/googleapis/google-cloud-python/commit/aae987bccb4b6914524f963d3487f61919b0fb84))
+
 ## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.21.1...google-cloud-secret-manager-v2.22.0) (2024-12-12)
 
 

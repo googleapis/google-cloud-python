@@ -54,32 +54,44 @@ class DataSource(proto.Message):
 
     Attributes:
         primary_product_data_source (google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource):
-            Required. The `primary data
+            The `primary data
             source <https://support.google.com/merchants/answer/7439058>`__
             for local and online products.
 
             This field is a member of `oneof`_ ``Type``.
         supplemental_product_data_source (google.shopping.merchant_datasources_v1beta.types.SupplementalProductDataSource):
-            Required. The `supplemental data
+            The `supplemental data
             source <https://support.google.com/merchants/answer/7439058>`__
             for local and online products.
 
             This field is a member of `oneof`_ ``Type``.
         local_inventory_data_source (google.shopping.merchant_datasources_v1beta.types.LocalInventoryDataSource):
-            Required. The `local
+            The `local
             inventory <https://support.google.com/merchants/answer/7023001>`__
             data source.
 
             This field is a member of `oneof`_ ``Type``.
         regional_inventory_data_source (google.shopping.merchant_datasources_v1beta.types.RegionalInventoryDataSource):
-            Required. The `regional
+            The `regional
             inventory <https://support.google.com/merchants/answer/7439058>`__
             data source.
 
             This field is a member of `oneof`_ ``Type``.
         promotion_data_source (google.shopping.merchant_datasources_v1beta.types.PromotionDataSource):
-            Required. The
+            The
             `promotion <https://support.google.com/merchants/answer/2906014>`__
+            data source.
+
+            This field is a member of `oneof`_ ``Type``.
+        product_review_data_source (google.shopping.merchant_datasources_v1beta.types.ProductReviewDataSource):
+            The `product
+            review <https://support.google.com/merchants/answer/7045996>`__
+            data source.
+
+            This field is a member of `oneof`_ ``Type``.
+        merchant_review_data_source (google.shopping.merchant_datasources_v1beta.types.MerchantReviewDataSource):
+            The `merchant
+            review <https://support.google.com/merchants/answer/7045996>`__
             data source.
 
             This field is a member of `oneof`_ ``Type``.
@@ -169,6 +181,18 @@ class DataSource(proto.Message):
         number=8,
         oneof="Type",
         message=datasourcetypes.PromotionDataSource,
+    )
+    product_review_data_source: datasourcetypes.ProductReviewDataSource = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="Type",
+        message=datasourcetypes.ProductReviewDataSource,
+    )
+    merchant_review_data_source: datasourcetypes.MerchantReviewDataSource = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="Type",
+        message=datasourcetypes.MerchantReviewDataSource,
     )
     name: str = proto.Field(
         proto.STRING,

@@ -151,7 +151,7 @@ class AttachedCluster(proto.Message):
             slashes (/).
 
             See
-            `Tags <http://cloud/resource-manager/docs/tags/tags-overview>`__
+            `Tags <https://cloud.google.com/resource-manager/docs/tags/tags-overview>`__
             for more details on Google Cloud Platform tags.
     """
 

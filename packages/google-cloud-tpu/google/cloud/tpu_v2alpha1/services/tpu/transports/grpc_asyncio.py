@@ -532,6 +532,34 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["update_node"]
 
     @property
+    def perform_maintenance(
+        self,
+    ) -> Callable[
+        [cloud_tpu.PerformMaintenanceRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the perform maintenance method over gRPC.
+
+        Perform manual maintenance on a node.
+
+        Returns:
+            Callable[[~.PerformMaintenanceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "perform_maintenance" not in self._stubs:
+            self._stubs["perform_maintenance"] = self._logged_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/PerformMaintenance",
+                request_serializer=cloud_tpu.PerformMaintenanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["perform_maintenance"]
+
+    @property
     def list_queued_resources(
         self,
     ) -> Callable[
@@ -671,6 +699,39 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["reset_queued_resource"]
+
+    @property
+    def perform_maintenance_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.PerformMaintenanceQueuedResourceRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the perform maintenance queued
+        resource method over gRPC.
+
+        Perform manual maintenance on specific nodes of a
+        QueuedResource.
+
+        Returns:
+            Callable[[~.PerformMaintenanceQueuedResourceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "perform_maintenance_queued_resource" not in self._stubs:
+            self._stubs[
+                "perform_maintenance_queued_resource"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/PerformMaintenanceQueuedResource",
+                request_serializer=cloud_tpu.PerformMaintenanceQueuedResourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["perform_maintenance_queued_resource"]
 
     @property
     def generate_service_identity(
@@ -846,6 +907,36 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
         return self._stubs["get_guest_attributes"]
 
     @property
+    def list_reservations(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ListReservationsRequest],
+        Awaitable[cloud_tpu.ListReservationsResponse],
+    ]:
+        r"""Return a callable for the list reservations method over gRPC.
+
+        Retrieves the reservations for the given project in
+        the given location.
+
+        Returns:
+            Callable[[~.ListReservationsRequest],
+                    Awaitable[~.ListReservationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_reservations" not in self._stubs:
+            self._stubs["list_reservations"] = self._logged_channel.unary_unary(
+                "/google.cloud.tpu.v2alpha1.Tpu/ListReservations",
+                request_serializer=cloud_tpu.ListReservationsRequest.serialize,
+                response_deserializer=cloud_tpu.ListReservationsResponse.deserialize,
+            )
+        return self._stubs["list_reservations"]
+
+    @property
     def simulate_maintenance_event(
         self,
     ) -> Callable[
@@ -913,6 +1004,11 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.perform_maintenance: self._wrap_method(
+                self.perform_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_queued_resources: self._wrap_method(
                 self.list_queued_resources,
                 default_timeout=None,
@@ -935,6 +1031,11 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
             ),
             self.reset_queued_resource: self._wrap_method(
                 self.reset_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.perform_maintenance_queued_resource: self._wrap_method(
+                self.perform_maintenance_queued_resource,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -965,6 +1066,11 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
             ),
             self.get_guest_attributes: self._wrap_method(
                 self.get_guest_attributes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_reservations: self._wrap_method(
+                self.list_reservations,
                 default_timeout=None,
                 client_info=client_info,
             ),

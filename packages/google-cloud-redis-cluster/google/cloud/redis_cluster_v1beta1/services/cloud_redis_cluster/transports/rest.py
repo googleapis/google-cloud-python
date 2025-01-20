@@ -70,6 +70,14 @@ class CloudRedisClusterRestInterceptor:
 
     .. code-block:: python
         class MyCustomCloudRedisClusterInterceptor(CloudRedisClusterRestInterceptor):
+            def pre_backup_cluster(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_backup_cluster(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -78,11 +86,43 @@ class CloudRedisClusterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_delete_cluster(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_export_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup_collection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup_collection(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -102,11 +142,35 @@ class CloudRedisClusterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_backup_collections(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backup_collections(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backups(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backups(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_clusters(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_clusters(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_reschedule_cluster_maintenance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_reschedule_cluster_maintenance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -123,6 +187,32 @@ class CloudRedisClusterRestInterceptor:
 
 
     """
+
+    def pre_backup_cluster(
+        self,
+        request: cloud_redis_cluster.BackupClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.BackupClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for backup_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_backup_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for backup_cluster
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_cluster(
         self,
@@ -150,6 +240,31 @@ class CloudRedisClusterRestInterceptor:
         """
         return response
 
+    def pre_delete_backup(
+        self,
+        request: cloud_redis_cluster.DeleteBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_delete_backup(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_cluster(
         self,
         request: cloud_redis_cluster.DeleteClusterRequest,
@@ -169,6 +284,82 @@ class CloudRedisClusterRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_export_backup(
+        self,
+        request: cloud_redis_cluster.ExportBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ExportBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for export_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_export_backup(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_backup(
+        self,
+        request: cloud_redis_cluster.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_get_backup(
+        self, response: cloud_redis_cluster.Backup
+    ) -> cloud_redis_cluster.Backup:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_backup_collection(
+        self,
+        request: cloud_redis_cluster.GetBackupCollectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.GetBackupCollectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_backup_collection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_get_backup_collection(
+        self, response: cloud_redis_cluster.BackupCollection
+    ) -> cloud_redis_cluster.BackupCollection:
+        """Post-rpc interceptor for get_backup_collection
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedisCluster server but before
@@ -227,6 +418,57 @@ class CloudRedisClusterRestInterceptor:
         """
         return response
 
+    def pre_list_backup_collections(
+        self,
+        request: cloud_redis_cluster.ListBackupCollectionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListBackupCollectionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_backup_collections
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_list_backup_collections(
+        self, response: cloud_redis_cluster.ListBackupCollectionsResponse
+    ) -> cloud_redis_cluster.ListBackupCollectionsResponse:
+        """Post-rpc interceptor for list_backup_collections
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_backups(
+        self,
+        request: cloud_redis_cluster.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_list_backups(
+        self, response: cloud_redis_cluster.ListBackupsResponse
+    ) -> cloud_redis_cluster.ListBackupsResponse:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_clusters(
         self,
         request: cloud_redis_cluster.ListClustersRequest,
@@ -245,6 +487,32 @@ class CloudRedisClusterRestInterceptor:
         self, response: cloud_redis_cluster.ListClustersResponse
     ) -> cloud_redis_cluster.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedisCluster server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_reschedule_cluster_maintenance(
+        self,
+        request: cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for reschedule_cluster_maintenance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedisCluster server.
+        """
+        return request, metadata
+
+    def post_reschedule_cluster_maintenance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for reschedule_cluster_maintenance
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedisCluster server but before
@@ -456,14 +724,6 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
     -  ``projects/redpepper-1290/locations/us-central1/clusters/my-redis``
 
-    We use API version selector for Flex APIs
-
-    -  The versioning strategy is release-based versioning
-    -  Our backend CLH only deals with the superset version (called
-       v1main)
-    -  Existing backend for Redis Gen1 and MRR is not touched.
-    -  More details in go/redis-flex-api-versioning
-
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
     and call it.
@@ -590,6 +850,154 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    class _BackupCluster(
+        _BaseCloudRedisClusterRestTransport._BaseBackupCluster,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.BackupCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.BackupClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the backup cluster method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.BackupClusterRequest):
+                    The request object. Request for [BackupCluster].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseBackupCluster._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_backup_cluster(request, metadata)
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseBackupCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCloudRedisClusterRestTransport._BaseBackupCluster._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseBackupCluster._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.BackupCluster",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "BackupCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._BackupCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_backup_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.backup_cluster",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "BackupCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CreateCluster(
         _BaseCloudRedisClusterRestTransport._BaseCreateCluster,
@@ -739,6 +1147,147 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 )
             return resp
 
+    class _DeleteBackup(
+        _BaseCloudRedisClusterRestTransport._BaseDeleteBackup, CloudRedisClusterRestStub
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.DeleteBackup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.DeleteBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete backup method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.DeleteBackupRequest):
+                    The request object. Request for [DeleteBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseDeleteBackup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_backup(request, metadata)
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseDeleteBackup._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseDeleteBackup._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._DeleteBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteCluster(
         _BaseCloudRedisClusterRestTransport._BaseDeleteCluster,
         CloudRedisClusterRestStub,
@@ -875,6 +1424,440 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     extra={
                         "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
                         "rpcName": "DeleteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ExportBackup(
+        _BaseCloudRedisClusterRestTransport._BaseExportBackup, CloudRedisClusterRestStub
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.ExportBackup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.ExportBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export backup method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.ExportBackupRequest):
+                    The request object. Request for [ExportBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseExportBackup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_export_backup(request, metadata)
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseExportBackup._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCloudRedisClusterRestTransport._BaseExportBackup._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseExportBackup._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.ExportBackup",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ExportBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._ExportBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.export_backup",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ExportBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetBackup(
+        _BaseCloudRedisClusterRestTransport._BaseGetBackup, CloudRedisClusterRestStub
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.GetBackup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.GetBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.Backup:
+            r"""Call the get backup method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.GetBackupRequest):
+                    The request object. Request for [GetBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.Backup:
+                    Backup of a cluster.
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseGetBackup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_backup(request, metadata)
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseGetBackup._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseGetBackup._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._GetBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.Backup()
+            pb_resp = cloud_redis_cluster.Backup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis_cluster.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetBackupCollection(
+        _BaseCloudRedisClusterRestTransport._BaseGetBackupCollection,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.GetBackupCollection")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.GetBackupCollectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.BackupCollection:
+            r"""Call the get backup collection method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.GetBackupCollectionRequest):
+                    The request object. Request for [GetBackupCollection].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.BackupCollection:
+                    BackupCollection of a cluster.
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseGetBackupCollection._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_backup_collection(
+                request, metadata
+            )
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseGetBackupCollection._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseGetBackupCollection._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.GetBackupCollection",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetBackupCollection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CloudRedisClusterRestTransport._GetBackupCollection._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.BackupCollection()
+            pb_resp = cloud_redis_cluster.BackupCollection.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_backup_collection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis_cluster.BackupCollection.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.get_backup_collection",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "GetBackupCollection",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1168,6 +2151,297 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 )
             return resp
 
+    class _ListBackupCollections(
+        _BaseCloudRedisClusterRestTransport._BaseListBackupCollections,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.ListBackupCollections")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.ListBackupCollectionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.ListBackupCollectionsResponse:
+            r"""Call the list backup collections method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.ListBackupCollectionsRequest):
+                    The request object. Request for [ListBackupCollections]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.ListBackupCollectionsResponse:
+                    Response for [ListBackupCollections].
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseListBackupCollections._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_backup_collections(
+                request, metadata
+            )
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseListBackupCollections._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseListBackupCollections._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.ListBackupCollections",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListBackupCollections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                CloudRedisClusterRestTransport._ListBackupCollections._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.ListBackupCollectionsResponse()
+            pb_resp = cloud_redis_cluster.ListBackupCollectionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_backup_collections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_redis_cluster.ListBackupCollectionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.list_backup_collections",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListBackupCollections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListBackups(
+        _BaseCloudRedisClusterRestTransport._BaseListBackups, CloudRedisClusterRestStub
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.ListBackups")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.ListBackupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cloud_redis_cluster.ListBackupsResponse:
+            r"""Call the list backups method over HTTP.
+
+            Args:
+                request (~.cloud_redis_cluster.ListBackupsRequest):
+                    The request object. Request for [ListBackups].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.cloud_redis_cluster.ListBackupsResponse:
+                    Response for [ListBackups].
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseListBackups._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_backups(request, metadata)
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseListBackups._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseListBackups._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._ListBackups._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis_cluster.ListBackupsResponse()
+            pb_resp = cloud_redis_cluster.ListBackupsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_redis_cluster.ListBackupsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListClusters(
         _BaseCloudRedisClusterRestTransport._BaseListClusters, CloudRedisClusterRestStub
     ):
@@ -1304,6 +2578,158 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     extra={
                         "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
                         "rpcName": "ListClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _RescheduleClusterMaintenance(
+        _BaseCloudRedisClusterRestTransport._BaseRescheduleClusterMaintenance,
+        CloudRedisClusterRestStub,
+    ):
+        def __hash__(self):
+            return hash("CloudRedisClusterRestTransport.RescheduleClusterMaintenance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the reschedule cluster
+            maintenance method over HTTP.
+
+                Args:
+                    request (~.cloud_redis_cluster.RescheduleClusterMaintenanceRequest):
+                        The request object. Request for rescheduling a cluster
+                    maintenance.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseCloudRedisClusterRestTransport._BaseRescheduleClusterMaintenance._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_reschedule_cluster_maintenance(
+                request, metadata
+            )
+            transcoded_request = _BaseCloudRedisClusterRestTransport._BaseRescheduleClusterMaintenance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCloudRedisClusterRestTransport._BaseRescheduleClusterMaintenance._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCloudRedisClusterRestTransport._BaseRescheduleClusterMaintenance._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.RescheduleClusterMaintenance",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "RescheduleClusterMaintenance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CloudRedisClusterRestTransport._RescheduleClusterMaintenance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_reschedule_cluster_maintenance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis.cluster_v1beta1.CloudRedisClusterClient.reschedule_cluster_maintenance",
+                    extra={
+                        "serviceName": "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "rpcName": "RescheduleClusterMaintenance",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1459,6 +2885,14 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
             return resp
 
     @property
+    def backup_cluster(
+        self,
+    ) -> Callable[[cloud_redis_cluster.BackupClusterRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BackupCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_cluster(
         self,
     ) -> Callable[[cloud_redis_cluster.CreateClusterRequest], operations_pb2.Operation]:
@@ -1467,12 +2901,47 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
         return self._CreateCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_backup(
+        self,
+    ) -> Callable[[cloud_redis_cluster.DeleteBackupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_cluster(
         self,
     ) -> Callable[[cloud_redis_cluster.DeleteClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def export_backup(
+        self,
+    ) -> Callable[[cloud_redis_cluster.ExportBackupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[[cloud_redis_cluster.GetBackupRequest], cloud_redis_cluster.Backup]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup_collection(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetBackupCollectionRequest],
+        cloud_redis_cluster.BackupCollection,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackupCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_cluster(
@@ -1494,6 +2963,28 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
         return self._GetClusterCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_backup_collections(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListBackupCollectionsRequest],
+        cloud_redis_cluster.ListBackupCollectionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackupCollections(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListBackupsRequest],
+        cloud_redis_cluster.ListBackupsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_clusters(
         self,
     ) -> Callable[
@@ -1503,6 +2994,17 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListClusters(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def reschedule_cluster_maintenance(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.RescheduleClusterMaintenanceRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RescheduleClusterMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_cluster(

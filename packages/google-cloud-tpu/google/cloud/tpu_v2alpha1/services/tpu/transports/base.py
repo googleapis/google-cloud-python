@@ -165,6 +165,11 @@ class TpuTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.perform_maintenance: gapic_v1.method.wrap_method(
+                self.perform_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_queued_resources: gapic_v1.method.wrap_method(
                 self.list_queued_resources,
                 default_timeout=None,
@@ -187,6 +192,11 @@ class TpuTransport(abc.ABC):
             ),
             self.reset_queued_resource: gapic_v1.method.wrap_method(
                 self.reset_queued_resource,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.perform_maintenance_queued_resource: gapic_v1.method.wrap_method(
+                self.perform_maintenance_queued_resource,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -217,6 +227,11 @@ class TpuTransport(abc.ABC):
             ),
             self.get_guest_attributes: gapic_v1.method.wrap_method(
                 self.get_guest_attributes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_reservations: gapic_v1.method.wrap_method(
+                self.list_reservations,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -334,6 +349,15 @@ class TpuTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def perform_maintenance(
+        self,
+    ) -> Callable[
+        [cloud_tpu.PerformMaintenanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_queued_resources(
         self,
     ) -> Callable[
@@ -377,6 +401,15 @@ class TpuTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_tpu.ResetQueuedResourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def perform_maintenance_queued_resource(
+        self,
+    ) -> Callable[
+        [cloud_tpu.PerformMaintenanceQueuedResourceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -443,6 +476,18 @@ class TpuTransport(abc.ABC):
         Union[
             cloud_tpu.GetGuestAttributesResponse,
             Awaitable[cloud_tpu.GetGuestAttributesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_reservations(
+        self,
+    ) -> Callable[
+        [cloud_tpu.ListReservationsRequest],
+        Union[
+            cloud_tpu.ListReservationsResponse,
+            Awaitable[cloud_tpu.ListReservationsResponse],
         ],
     ]:
         raise NotImplementedError()
