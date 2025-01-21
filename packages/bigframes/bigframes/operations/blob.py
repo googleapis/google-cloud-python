@@ -182,7 +182,7 @@ class BlobAccessor(base.SeriesMethods):
                 ipy_display.display(ipy_display.Video(url=read_url))
             else:  # display as raw data
                 response = requests.get(read_url)
-                ipy_display.display(response.content, raw=True)
+                ipy_display.display(response.content)
 
         for _, row in df.iterrows():
             display_single_url(row["read_url"], row["content_type"])
