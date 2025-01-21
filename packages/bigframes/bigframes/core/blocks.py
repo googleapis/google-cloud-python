@@ -897,7 +897,6 @@ class Block:
 
     def multi_apply_unary_op(
         self,
-        columns: typing.Sequence[str],
         op: Union[ops.UnaryOp, ex.Expression],
     ) -> Block:
         if isinstance(op, ops.UnaryOp):
@@ -911,26 +910,36 @@ class Block:
 
         block = self
 
-        result_ids = []
-        for col_id in columns:
-            label = self.col_id_to_label[col_id]
-            block, result_id = block.project_expr(
-                expr.bind_variables({input_varname: ex.deref(col_id)}),
-                label=label,
-            )
-            block = block.copy_values(result_id, col_id)
-            result_ids.append(result_id)
-        block = block.drop_columns(result_ids)
+        exprs = [
+            expr.bind_variables({input_varname: ex.deref(col_id)})
+            for col_id in self.value_columns
+        ]
+        block = self.project_exprs(exprs, labels=self.column_labels, drop=True)
+
         # Special case, we can preserve transpose cache for full-frame unary ops
-        if (self._transpose_cache is not None) and set(self.value_columns) == set(
-            columns
-        ):
-            transpose_columns = self._transpose_cache.value_columns
-            new_transpose_cache = self._transpose_cache.multi_apply_unary_op(
-                transpose_columns, op
-            )
+        if self._transpose_cache is not None:
+            new_transpose_cache = self._transpose_cache.multi_apply_unary_op(op)
             block = block.with_transpose_cache(new_transpose_cache)
         return block
+
+    def project_exprs(
+        self,
+        exprs: Sequence[ex.Expression],
+        labels: Union[Sequence[Label], pd.Index],
+        drop=False,
+    ) -> Block:
+        new_array, _ = self.expr.compute_values(exprs)
+        if drop:
+            new_array = new_array.drop_columns(self.value_columns)
+
+        return Block(
+            new_array,
+            index_columns=self.index_columns,
+            column_labels=labels
+            if drop
+            else self.column_labels.append(pd.Index(labels)),
+            index_labels=self._index_labels,
+        )
 
     def apply_window_op(
         self,
@@ -2279,18 +2288,15 @@ class Block:
         labels: pd.Index,
         reverse: bool = False,
     ) -> Block:
-        block = self
-        binop_result_ids = []
+        exprs = []
         for left_input, right_input in inputs:
-            expr = (
+            exprs.append(
                 op.as_expr(right_input, left_input)
                 if reverse
                 else op.as_expr(left_input, right_input)
             )
-            block, result_col_id = block.project_expr(expr)
-            binop_result_ids.append(result_col_id)
 
-        return block.select_columns(binop_result_ids).with_column_labels(labels)
+        return self.project_exprs(exprs, labels=labels, drop=True)
 
     def join(
         self,

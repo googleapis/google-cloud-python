@@ -179,9 +179,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             if columns:
                 block = block.select_columns(list(columns))  # type:ignore
             if dtype:
-                block = block.multi_apply_unary_op(
-                    block.value_columns, ops.AsTypeOp(to_type=dtype)
-                )
+                block = block.multi_apply_unary_op(ops.AsTypeOp(to_type=dtype))
             self._block = block
 
         else:
@@ -845,9 +843,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 left_input=ex.free_var("var1"),
                 right_input=ex.const(other),
             )
-        return DataFrame(
-            self._block.multi_apply_unary_op(self._block.value_columns, expr)
-        )
+        return DataFrame(self._block.multi_apply_unary_op(expr))
 
     def _apply_series_binop_axis_0(
         self,
@@ -2400,9 +2396,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 result = result.reset_index()
             return DataFrame(result)
         else:
-            isnull_block = self._block.multi_apply_unary_op(
-                self._block.value_columns, ops.isnull_op
-            )
+            isnull_block = self._block.multi_apply_unary_op(ops.isnull_op)
             if how == "any":
                 null_locations = DataFrame(isnull_block).any().to_pandas()
             else:  # 'all'
@@ -3828,7 +3822,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return as_pandas_default_index.to_orc(path, **kwargs)
 
     def _apply_unary_op(self, operation: ops.UnaryOp) -> DataFrame:
-        block = self._block.multi_apply_unary_op(self._block.value_columns, operation)
+        block = self._block.multi_apply_unary_op(operation)
         return DataFrame(block)
 
     def _map_clustering_columns(
