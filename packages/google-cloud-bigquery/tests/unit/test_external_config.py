@@ -14,6 +14,7 @@
 
 import base64
 import copy
+from typing import Any, Dict, Optional
 import unittest
 
 from google.cloud.bigquery import external_config
@@ -978,4 +979,140 @@ class TestExternalCatalogDatasetOptions:
         result = instance.from_api_repr(api_repr)
 
         assert isinstance(result, external_config.ExternalCatalogDatasetOptions)
+        assert result._properties == api_repr
+
+
+class TestExternalCatalogTableOptions:
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.external_config import ExternalCatalogTableOptions
+
+        return ExternalCatalogTableOptions
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    storage_descriptor_repr = {
+        "inputFormat": "testpath.to.OrcInputFormat",
+        "locationUri": "gs://test/path/",
+        "outputFormat": "testpath.to.OrcOutputFormat",
+        "serDeInfo": {
+            "serializationLibrary": "testpath.to.LazySimpleSerDe",
+            "name": "serde_lib_name",
+            "parameters": {"key": "value"},
+        },
+    }
+
+    CONNECTIONID = "connection123"
+    PARAMETERS = {"key": "value"}
+    STORAGEDESCRIPTOR = schema.StorageDescriptor.from_api_repr(storage_descriptor_repr)
+    EXTERNALCATALOGTABLEOPTIONS = {
+        "connectionId": "connection123",
+        "parameters": {"key": "value"},
+        "storageDescriptor": STORAGEDESCRIPTOR.to_api_repr(),
+    }
+
+    @pytest.mark.parametrize(
+        "connection_id,parameters,storage_descriptor",
+        [
+            (
+                CONNECTIONID,
+                PARAMETERS,
+                STORAGEDESCRIPTOR,
+            ),  # set all parameters at once
+            (CONNECTIONID, None, None),  # set only one parameter at a time
+            (None, PARAMETERS, None),
+            (None, None, STORAGEDESCRIPTOR),  # set storage descriptor using obj
+            (None, None, storage_descriptor_repr),  # set storage descriptor using dict
+            (None, None, None),  # use default parameters
+        ],
+    )
+    def test_ctor_initialization(
+        self,
+        connection_id,
+        parameters,
+        storage_descriptor,
+    ):
+        instance = self._make_one(
+            connection_id=connection_id,
+            parameters=parameters,
+            storage_descriptor=storage_descriptor,
+        )
+
+        assert instance.connection_id == connection_id
+        assert instance.parameters == parameters
+
+        if isinstance(storage_descriptor, schema.StorageDescriptor):
+            assert (
+                instance.storage_descriptor.to_api_repr()
+                == storage_descriptor.to_api_repr()
+            )
+        elif isinstance(storage_descriptor, dict):
+            assert instance.storage_descriptor.to_api_repr() == storage_descriptor
+        else:
+            assert instance.storage_descriptor is None
+
+    @pytest.mark.parametrize(
+        "connection_id,parameters,storage_descriptor",
+        [
+            pytest.param(
+                123,
+                PARAMETERS,
+                STORAGEDESCRIPTOR,
+                id="connection_id-invalid-type",
+            ),
+            pytest.param(
+                CONNECTIONID,
+                123,
+                STORAGEDESCRIPTOR,
+                id="parameters-invalid-type",
+            ),
+            pytest.param(
+                CONNECTIONID,
+                PARAMETERS,
+                123,
+                id="storage_descriptor-invalid-type",
+            ),
+        ],
+    )
+    def test_ctor_invalid_input(
+        self,
+        connection_id: str,
+        parameters: Dict[str, Any],
+        storage_descriptor: Optional[schema.StorageDescriptor],
+    ):
+        with pytest.raises(TypeError) as e:
+            external_config.ExternalCatalogTableOptions(
+                connection_id=connection_id,
+                parameters=parameters,
+                storage_descriptor=storage_descriptor,
+            )
+
+        # Looking for the first word from the string "Pass <variable> as..."
+        assert "Pass " in str(e.value)
+
+    def test_to_api_repr(self):
+        instance = self._make_one(
+            connection_id=self.CONNECTIONID,
+            parameters=self.PARAMETERS,
+            storage_descriptor=self.STORAGEDESCRIPTOR,
+        )
+
+        result = instance.to_api_repr()
+        expected = self.EXTERNALCATALOGTABLEOPTIONS
+
+        assert result == expected
+
+    def test_from_api_repr(self):
+        result = self._make_one(
+            connection_id=self.CONNECTIONID,
+            parameters=self.PARAMETERS,
+            storage_descriptor=self.STORAGEDESCRIPTOR,
+        )
+
+        instance = self._make_one()
+        api_repr = self.EXTERNALCATALOGTABLEOPTIONS
+        result = instance.from_api_repr(api_repr)
+
+        assert isinstance(result, external_config.ExternalCatalogTableOptions)
         assert result._properties == api_repr

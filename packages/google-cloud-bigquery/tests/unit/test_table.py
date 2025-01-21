@@ -30,6 +30,7 @@ from test_utils.imports import maybe_fail_import
 
 from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import exceptions
+from google.cloud.bigquery import external_config
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -5877,6 +5878,92 @@ class TestTableConstraint(unittest.TestCase):
 
         self.assertIsNone(instance.primary_key)
         self.assertIsNotNone(instance.foreign_keys)
+
+
+class TestExternalCatalogTableOptions:
+    PROJECT = "test-project"
+    DATASET_ID = "test_dataset"
+    TABLE_ID = "coffee_table"
+    DATASET = DatasetReference(PROJECT, DATASET_ID)
+    TABLEREF = DATASET.table(TABLE_ID)
+
+    @staticmethod
+    def _get_target_class(self):
+        from google.cloud.bigquery.table import Table
+
+        return Table
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class(self)(*args, **kw)
+
+    EXTERNALCATALOGTABLEOPTIONS = {
+        "connection_id": "connection123",
+        "parameters": {"key": "value"},
+        "storage_descriptor": {
+            "input_format": "testpath.to.OrcInputFormat",
+            "location_uri": "gs://test/path/",
+            "output_format": "testpath.to.OrcOutputFormat",
+            "serde_info": {
+                "serialization_library": "testpath.to.LazySimpleSerDe",
+                "name": "serde_lib_name",
+                "parameters": {"key": "value"},
+            },
+        },
+    }
+
+    def test_external_catalog_table_options_default_initialization(self):
+        table = self._make_one(self.TABLEREF)
+
+        assert table.external_catalog_table_options is None
+
+    def test_external_catalog_table_options_valid_inputs(self):
+        table = self._make_one(self.TABLEREF)
+
+        # supplied in api_repr format
+        table.external_catalog_table_options = self.EXTERNALCATALOGTABLEOPTIONS
+        result = table.external_catalog_table_options.to_api_repr()
+        expected = self.EXTERNALCATALOGTABLEOPTIONS
+        assert result == expected
+
+        # supplied in obj format
+        ecto = external_config.ExternalCatalogTableOptions.from_api_repr(
+            self.EXTERNALCATALOGTABLEOPTIONS
+        )
+        assert isinstance(ecto, external_config.ExternalCatalogTableOptions)
+
+        table.external_catalog_table_options = ecto
+        result = table.external_catalog_table_options.to_api_repr()
+        expected = self.EXTERNALCATALOGTABLEOPTIONS
+        assert result == expected
+
+    def test_external_catalog_table_options_invalid_input(self):
+        table = self._make_one(self.TABLEREF)
+
+        # invalid on the whole
+        with pytest.raises(TypeError) as e:
+            table.external_catalog_table_options = 123
+
+        # Looking for the first word from the string "Pass <variable> as..."
+        assert "Pass " in str(e.value)
+
+    def test_external_catalog_table_options_to_api_repr(self):
+        table = self._make_one(self.TABLEREF)
+
+        table.external_catalog_table_options = self.EXTERNALCATALOGTABLEOPTIONS
+        result = table.external_catalog_table_options.to_api_repr()
+        expected = self.EXTERNALCATALOGTABLEOPTIONS
+        assert result == expected
+
+    def test_external_catalog_table_options_from_api_repr(self):
+        table = self._make_one(self.TABLEREF)
+
+        table.external_catalog_table_options = self.EXTERNALCATALOGTABLEOPTIONS
+        ecto = external_config.ExternalCatalogTableOptions.from_api_repr(
+            self.EXTERNALCATALOGTABLEOPTIONS
+        )
+        result = ecto.to_api_repr()
+        expected = self.EXTERNALCATALOGTABLEOPTIONS
+        assert result == expected
 
 
 @pytest.mark.parametrize(

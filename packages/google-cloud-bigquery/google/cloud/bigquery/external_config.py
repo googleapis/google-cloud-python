@@ -30,6 +30,7 @@ from google.cloud.bigquery._helpers import _int_or_none
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.format_options import AvroOptions, ParquetOptions
+from google.cloud.bigquery import schema
 from google.cloud.bigquery.schema import SchemaField
 
 
@@ -1073,6 +1074,112 @@ class ExternalCatalogDatasetOptions:
 
         Returns:
             An instance of the class initialized with data from 'resource'.
+        """
+        config = cls()
+        config._properties = api_repr
+        return config
+
+
+class ExternalCatalogTableOptions:
+    """Metadata about open source compatible table. The fields contained in these
+    options correspond to hive metastore's table level properties.
+
+    Args:
+        connection_id  (Optional[str]): The connection specifying the credentials to be
+            used to read external storage, such as Azure Blob, Cloud Storage, or
+            S3. The connection is needed to read the open source table from
+            BigQuery Engine. The connection_id can have the form `..` or
+            `projects//locations//connections/`.
+        parameters (Union[Dict[str, Any], None]): A map of key value pairs defining the parameters
+            and properties of the open source table. Corresponds with hive meta
+            store table parameters. Maximum size of 4Mib.
+        storage_descriptor (Optional[StorageDescriptor]): A storage descriptor containing information
+            about the physical storage of this table.
+    """
+
+    def __init__(
+        self,
+        connection_id: Optional[str] = None,
+        parameters: Union[Dict[str, Any], None] = None,
+        storage_descriptor: Optional[schema.StorageDescriptor] = None,
+    ):
+        self._properties: Dict[str, Any] = {}
+        self.connection_id = connection_id
+        self.parameters = parameters
+        self.storage_descriptor = storage_descriptor
+
+    @property
+    def connection_id(self) -> Optional[str]:
+        """Optional. The connection specifying the credentials to be
+        used to read external storage, such as Azure Blob, Cloud Storage, or
+        S3. The connection is needed to read the open source table from
+        BigQuery Engine. The connection_id can have the form `..` or
+        `projects//locations//connections/`.
+        """
+
+        return self._properties.get("connectionId")
+
+    @connection_id.setter
+    def connection_id(self, value: Optional[str]):
+        value = _helpers._isinstance_or_raise(value, str, none_allowed=True)
+        self._properties["connectionId"] = value
+
+    @property
+    def parameters(self) -> Union[Dict[str, Any], None]:
+        """Optional. A map of key value pairs defining the parameters and
+        properties of the open source table. Corresponds with hive meta
+        store table parameters. Maximum size of 4Mib.
+        """
+
+        return self._properties.get("parameters")
+
+    @parameters.setter
+    def parameters(self, value: Union[Dict[str, Any], None]):
+        value = _helpers._isinstance_or_raise(value, dict, none_allowed=True)
+        self._properties["parameters"] = value
+
+    @property
+    def storage_descriptor(self) -> Any:
+        """Optional. A storage descriptor containing information about the
+        physical storage of this table."""
+
+        prop = _helpers._get_sub_prop(self._properties, ["storageDescriptor"])
+
+        if prop is not None:
+            return schema.StorageDescriptor.from_api_repr(prop)
+        return None
+
+    @storage_descriptor.setter
+    def storage_descriptor(self, value: Union[schema.StorageDescriptor, dict, None]):
+        value = _helpers._isinstance_or_raise(
+            value, (schema.StorageDescriptor, dict), none_allowed=True
+        )
+        if isinstance(value, schema.StorageDescriptor):
+            self._properties["storageDescriptor"] = value.to_api_repr()
+        else:
+            self._properties["storageDescriptor"] = value
+
+    def to_api_repr(self) -> dict:
+        """Build an API representation of this object.
+
+        Returns:
+            Dict[str, Any]:
+                A dictionary in the format used by the BigQuery API.
+        """
+
+        return self._properties
+
+    @classmethod
+    def from_api_repr(cls, api_repr: dict) -> ExternalCatalogTableOptions:
+        """Factory: constructs an instance of the class (cls)
+        given its API representation.
+
+        Args:
+            api_repr (Dict[str, Any]):
+                API representation of the object to be instantiated.
+
+        Returns:
+            An instance of the class initialized with data from 'api_repr'.
         """
         config = cls()
         config._properties = api_repr

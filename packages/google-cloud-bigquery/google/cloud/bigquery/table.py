@@ -69,6 +69,7 @@ from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.schema import _to_schema_fields
+from google.cloud.bigquery import external_config
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Unconditionally import optional dependencies again to tell pytype that
@@ -408,6 +409,7 @@ class Table(_TableBase):
         "require_partition_filter": "requirePartitionFilter",
         "table_constraints": "tableConstraints",
         "max_staleness": "maxStaleness",
+        "external_catalog_table_options": "externalCatalogTableOptions",
     }
 
     def __init__(self, table_ref, schema=None) -> None:
@@ -1022,6 +1024,39 @@ class Table(_TableBase):
         if table_constraints is not None:
             table_constraints = TableConstraints.from_api_repr(table_constraints)
         return table_constraints
+
+    @property
+    def external_catalog_table_options(
+        self,
+    ) -> Optional[external_config.ExternalCatalogTableOptions]:
+        """Options defining open source compatible datasets living in the
+        BigQuery catalog. Contains metadata of open source database, schema
+        or namespace represented by the current dataset."""
+
+        prop = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["external_catalog_table_options"]
+        )
+        if prop is not None:
+            return external_config.ExternalCatalogTableOptions.from_api_repr(prop)
+        return None
+
+    @external_catalog_table_options.setter
+    def external_catalog_table_options(
+        self, value: Union[external_config.ExternalCatalogTableOptions, dict, None]
+    ):
+        value = _helpers._isinstance_or_raise(
+            value,
+            (external_config.ExternalCatalogTableOptions, dict),
+            none_allowed=True,
+        )
+        if isinstance(value, external_config.ExternalCatalogTableOptions):
+            self._properties[
+                self._PROPERTY_TO_API_FIELD["external_catalog_table_options"]
+            ] = value.to_api_repr()
+        else:
+            self._properties[
+                self._PROPERTY_TO_API_FIELD["external_catalog_table_options"]
+            ] = value
 
     @classmethod
     def from_string(cls, full_table_id: str) -> "Table":
