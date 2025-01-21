@@ -324,8 +324,6 @@ def prerelease(session):
         "--pre",
         "--upgrade",
         "google-api-core",
-        "google-cloud-bigquery",
-        "google-cloud-bigquery-storage",
         "google-cloud-core",
         "google-resumable-media",
         # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
@@ -342,6 +340,14 @@ def prerelease(session):
         "psutil",
         "pytest",
         "pytest-cov",
+    )
+
+    # Install python-bigquery and python-bigquery-storage from main to detect
+    # any potential breaking changes. For context, see:
+    # https://github.com/googleapis/python-bigquery-pandas/issues/854
+    session.install(
+        "https://github.com/googleapis/python-bigquery/archive/main.zip",
+        "https://github.com/googleapis/python-bigquery-storage/archive/main.zip",
     )
 
     # Because we test minimum dependency versions on the minimum Python
