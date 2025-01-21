@@ -22,6 +22,11 @@ from bigframes.bigquery._operations.array import (
     array_length,
     array_to_string,
 )
+from bigframes.bigquery._operations.datetime import (
+    unix_micros,
+    unix_millis,
+    unix_seconds,
+)
 from bigframes.bigquery._operations.json import (
     json_extract,
     json_extract_array,
@@ -53,4 +58,8 @@ __all__ = [
     "sql_scalar",
     # struct ops
     "struct",
+    # datetime ops
+    "unix_micros",
+    "unix_millis",
+    "unix_seconds",
 ]

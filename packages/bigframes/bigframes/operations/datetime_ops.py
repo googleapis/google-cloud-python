@@ -77,3 +77,27 @@ class StrftimeOp(base_ops.UnaryOp):
 
     def output_type(self, *input_types):
         return dtypes.STRING_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class UnixSeconds(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "unix_seconds"
+
+    def output_type(self, *input_types):
+        return dtypes.INT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class UnixMillis(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "unix_millis"
+
+    def output_type(self, *input_types):
+        return dtypes.INT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class UnixMicros(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "unix_micros"
+
+    def output_type(self, *input_types):
+        return dtypes.INT_DTYPE

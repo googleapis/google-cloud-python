@@ -722,6 +722,21 @@ def strftime_op_impl(x: ibis_types.Value, op: ops.StrftimeOp):
     )
 
 
+@scalar_op_compiler.register_unary_op(ops.UnixSeconds)
+def unix_seconds_op_impl(x: ibis_types.TimestampValue):
+    return x.epoch_seconds()
+
+
+@scalar_op_compiler.register_unary_op(ops.UnixMicros)
+def unix_micros_op_impl(x: ibis_types.TimestampValue):
+    return unix_micros(x)
+
+
+@scalar_op_compiler.register_unary_op(ops.UnixMillis)
+def unix_millis_op_impl(x: ibis_types.TimestampValue):
+    return unix_millis(x)
+
+
 @scalar_op_compiler.register_unary_op(ops.FloorDtOp, pass_op=True)
 def floor_dt_op_impl(x: ibis_types.Value, op: ops.FloorDtOp):
     supported_freqs = ["Y", "Q", "M", "W", "D", "h", "min", "s", "ms", "us", "ns"]
@@ -1885,6 +1900,16 @@ def _ibis_num(number: float):
 @ibis_udf.scalar.builtin
 def timestamp(a: str) -> ibis_dtypes.timestamp:  # type: ignore
     """Convert string to timestamp."""
+
+
+@ibis_udf.scalar.builtin
+def unix_millis(a: ibis_dtypes.timestamp) -> int:  # type: ignore
+    """Convert a timestamp to milliseconds"""
+
+
+@ibis_udf.scalar.builtin
+def unix_micros(a: ibis_dtypes.timestamp) -> int:  # type: ignore
+    """Convert a timestamp to microseconds"""
 
 
 # Need these because ibis otherwise tries to do casts to int that can fail
