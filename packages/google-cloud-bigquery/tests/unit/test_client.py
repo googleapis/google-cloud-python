@@ -2320,6 +2320,7 @@ class TestClient(unittest.TestCase):
                 "description": description,
                 "friendlyName": title,
                 "labels": {"x": "y"},
+                "resourceTags": {"123456789012/key": "value"},
             }
         )
         schema = [
@@ -2343,7 +2344,8 @@ class TestClient(unittest.TestCase):
         table.description = description
         table.friendly_name = title
         table.labels = {"x": "y"}
-        fields = ["schema", "description", "friendly_name", "labels"]
+        table.resource_tags = {"123456789012/key": "value"}
+        fields = ["schema", "description", "friendly_name", "labels", "resource_tags"]
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
@@ -2375,6 +2377,7 @@ class TestClient(unittest.TestCase):
             "description": description,
             "friendlyName": title,
             "labels": {"x": "y"},
+            "resourceTags": {"123456789012/key": "value"},
         }
         conn.api_request.assert_called_once_with(
             method="PATCH", data=sent, path="/" + path, timeout=7.5
@@ -2383,6 +2386,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(updated_table.friendly_name, table.friendly_name)
         self.assertEqual(updated_table.schema, table.schema)
         self.assertEqual(updated_table.labels, table.labels)
+        self.assertEqual(updated_table.resource_tags, table.resource_tags)
 
         # ETag becomes If-Match header.
         table._properties["etag"] = "etag"

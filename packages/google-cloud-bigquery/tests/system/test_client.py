@@ -732,6 +732,16 @@ class TestBigQuery(unittest.TestCase):
     def test_update_table(self):
         dataset = self.temp_dataset(_make_dataset_id("update_table"))
 
+        # This creates unique tag keys for each of test runnings for different Python versions
+        tag_postfix = "".join(random.choices(string.ascii_letters + string.digits, k=4))
+        tag_1 = f"owner_{tag_postfix}"
+        tag_2 = f"classification_{tag_postfix}"
+        tag_3 = f"env_{tag_postfix}"
+
+        self._create_resource_tag_key_and_values(tag_1, ["Alice", "Bob"])
+        self._create_resource_tag_key_and_values(tag_2, ["public"])
+        self._create_resource_tag_key_and_values(tag_3, ["dev"])
+
         TABLE_NAME = "test_table"
         table_arg = Table(dataset.table(TABLE_NAME), schema=SCHEMA)
         self.assertFalse(_table_exists(table_arg))
@@ -744,14 +754,25 @@ class TestBigQuery(unittest.TestCase):
         table.friendly_name = "Friendly"
         table.description = "Description"
         table.labels = {"priority": "high", "color": "blue"}
+        table.resource_tags = {
+            f"{Config.CLIENT.project}/{tag_1}": "Alice",
+            f"{Config.CLIENT.project}/{tag_3}": "dev",
+        }
 
         table2 = Config.CLIENT.update_table(
-            table, ["friendly_name", "description", "labels"]
+            table, ["friendly_name", "description", "labels", "resource_tags"]
         )
 
         self.assertEqual(table2.friendly_name, "Friendly")
         self.assertEqual(table2.description, "Description")
         self.assertEqual(table2.labels, {"priority": "high", "color": "blue"})
+        self.assertEqual(
+            table2.resource_tags,
+            {
+                f"{Config.CLIENT.project}/{tag_1}": "Alice",
+                f"{Config.CLIENT.project}/{tag_3}": "dev",
+            },
+        )
 
         table2.description = None
         table2.labels = {
@@ -759,9 +780,28 @@ class TestBigQuery(unittest.TestCase):
             "shape": "circle",  # add
             "priority": None,  # delete
         }
-        table3 = Config.CLIENT.update_table(table2, ["description", "labels"])
+        table2.resource_tags = {
+            f"{Config.CLIENT.project}/{tag_1}": "Bob",  # change
+            f"{Config.CLIENT.project}/{tag_2}": "public",  # add
+            f"{Config.CLIENT.project}/{tag_3}": None,  # delete
+        }
+        table3 = Config.CLIENT.update_table(
+            table2, ["description", "labels", "resource_tags"]
+        )
         self.assertIsNone(table3.description)
         self.assertEqual(table3.labels, {"color": "green", "shape": "circle"})
+        self.assertEqual(
+            table3.resource_tags,
+            {
+                f"{Config.CLIENT.project}/{tag_1}": "Bob",
+                f"{Config.CLIENT.project}/{tag_2}": "public",
+            },
+        )
+
+        # Delete resource tag bindings.
+        table3.resource_tags = None
+        table4 = Config.CLIENT.update_table(table3, ["resource_tags"])
+        self.assertEqual(table4.resource_tags, {})
 
         # If we try to update using table2 again, it will fail because the
         # previous update changed the ETag.

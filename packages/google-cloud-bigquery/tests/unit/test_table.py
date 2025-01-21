@@ -1481,6 +1481,33 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.encryption_configuration = None
         self.assertIsNone(table.encryption_configuration)
 
+    def test_resource_tags_getter_empty(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        self.assertEqual(table.resource_tags, {})
+
+    def test_resource_tags_update_in_place(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table.resource_tags["123456789012/key"] = "value"
+        self.assertEqual(table.resource_tags, {"123456789012/key": "value"})
+
+    def test_resource_tags_setter(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table.resource_tags = {"123456789012/key": "value"}
+        self.assertEqual(table.resource_tags, {"123456789012/key": "value"})
+
+    def test_resource_tags_setter_bad_value(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        with self.assertRaises(ValueError):
+            table.resource_tags = 12345
+
     def test___repr__(self):
         from google.cloud.bigquery.table import TableReference
 

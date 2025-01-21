@@ -409,6 +409,7 @@ class Table(_TableBase):
         "require_partition_filter": "requirePartitionFilter",
         "table_constraints": "tableConstraints",
         "max_staleness": "maxStaleness",
+        "resource_tags": "resourceTags",
         "external_catalog_table_options": "externalCatalogTableOptions",
     }
 
@@ -1024,6 +1025,22 @@ class Table(_TableBase):
         if table_constraints is not None:
             table_constraints = TableConstraints.from_api_repr(table_constraints)
         return table_constraints
+
+    @property
+    def resource_tags(self):
+        """Dict[str, str]: Resource tags for the table.
+
+        See: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table.FIELDS.resource_tags
+        """
+        return self._properties.setdefault(
+            self._PROPERTY_TO_API_FIELD["resource_tags"], {}
+        )
+
+    @resource_tags.setter
+    def resource_tags(self, value):
+        if not isinstance(value, dict) and value is not None:
+            raise ValueError("resource_tags must be a dict or None")
+        self._properties[self._PROPERTY_TO_API_FIELD["resource_tags"]] = value
 
     @property
     def external_catalog_table_options(
