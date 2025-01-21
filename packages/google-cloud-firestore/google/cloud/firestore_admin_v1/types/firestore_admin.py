@@ -780,11 +780,30 @@ class ListBackupsRequest(proto.Message):
             ``{location} = '-'`` to list backups from all locations for
             the given project. This allows listing backups from a single
             location or from all locations.
+        filter (str):
+            An expression that filters the list of returned backups.
+
+            A filter expression consists of a field name, a comparison
+            operator, and a value for filtering. The value must be a
+            string, a number, or a boolean. The comparison operator must
+            be one of: ``<``, ``>``, ``<=``, ``>=``, ``!=``, ``=``, or
+            ``:``. Colon ``:`` is the contains operator. Filter rules
+            are not case sensitive.
+
+            The following fields in the
+            [Backup][google.firestore.admin.v1.Backup] are eligible for
+            filtering:
+
+            -  ``database_uid`` (supports ``=`` only)
     """
 
     parent: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

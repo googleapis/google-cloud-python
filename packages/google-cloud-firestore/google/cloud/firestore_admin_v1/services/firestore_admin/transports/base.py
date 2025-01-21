@@ -248,7 +248,7 @@ class FirestoreAdminTransport(abc.ABC):
             ),
             self.create_database: gapic_v1.method.wrap_method(
                 self.create_database,
-                default_timeout=None,
+                default_timeout=120.0,
                 client_info=client_info,
             ),
             self.get_database: gapic_v1.method.wrap_method(
@@ -288,7 +288,7 @@ class FirestoreAdminTransport(abc.ABC):
             ),
             self.restore_database: gapic_v1.method.wrap_method(
                 self.restore_database,
-                default_timeout=None,
+                default_timeout=120.0,
                 client_info=client_info,
             ),
             self.create_backup_schedule: gapic_v1.method.wrap_method(
@@ -313,6 +313,26 @@ class FirestoreAdminTransport(abc.ABC):
             ),
             self.delete_backup_schedule: gapic_v1.method.wrap_method(
                 self.delete_backup_schedule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: gapic_v1.method.wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: gapic_v1.method.wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),

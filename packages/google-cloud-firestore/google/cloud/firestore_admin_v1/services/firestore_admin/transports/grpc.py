@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -22,8 +25,11 @@ from google.api_core import gapic_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.firestore_admin_v1.types import backup
 from google.cloud.firestore_admin_v1.types import database
@@ -35,6 +41,81 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import FirestoreAdminTransport, DEFAULT_CLIENT_INFO
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
@@ -220,7 +301,12 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -284,7 +370,9 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -312,7 +400,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_index" not in self._stubs:
-            self._stubs["create_index"] = self.grpc_channel.unary_unary(
+            self._stubs["create_index"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/CreateIndex",
                 request_serializer=firestore_admin.CreateIndexRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -340,7 +428,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_indexes" not in self._stubs:
-            self._stubs["list_indexes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_indexes"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/ListIndexes",
                 request_serializer=firestore_admin.ListIndexesRequest.serialize,
                 response_deserializer=firestore_admin.ListIndexesResponse.deserialize,
@@ -364,7 +452,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_index" not in self._stubs:
-            self._stubs["get_index"] = self.grpc_channel.unary_unary(
+            self._stubs["get_index"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/GetIndex",
                 request_serializer=firestore_admin.GetIndexRequest.serialize,
                 response_deserializer=index.Index.deserialize,
@@ -390,7 +478,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_index" not in self._stubs:
-            self._stubs["delete_index"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_index"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/DeleteIndex",
                 request_serializer=firestore_admin.DeleteIndexRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -414,7 +502,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_field" not in self._stubs:
-            self._stubs["get_field"] = self.grpc_channel.unary_unary(
+            self._stubs["get_field"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/GetField",
                 request_serializer=firestore_admin.GetFieldRequest.serialize,
                 response_deserializer=field.Field.deserialize,
@@ -455,7 +543,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_field" not in self._stubs:
-            self._stubs["update_field"] = self.grpc_channel.unary_unary(
+            self._stubs["update_field"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/UpdateField",
                 request_serializer=firestore_admin.UpdateFieldRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -491,7 +579,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_fields" not in self._stubs:
-            self._stubs["list_fields"] = self.grpc_channel.unary_unary(
+            self._stubs["list_fields"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/ListFields",
                 request_serializer=firestore_admin.ListFieldsRequest.serialize,
                 response_deserializer=firestore_admin.ListFieldsResponse.deserialize,
@@ -531,7 +619,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_documents" not in self._stubs:
-            self._stubs["export_documents"] = self.grpc_channel.unary_unary(
+            self._stubs["export_documents"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/ExportDocuments",
                 request_serializer=firestore_admin.ExportDocumentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -563,7 +651,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_documents" not in self._stubs:
-            self._stubs["import_documents"] = self.grpc_channel.unary_unary(
+            self._stubs["import_documents"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/ImportDocuments",
                 request_serializer=firestore_admin.ImportDocumentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -600,7 +688,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "bulk_delete_documents" not in self._stubs:
-            self._stubs["bulk_delete_documents"] = self.grpc_channel.unary_unary(
+            self._stubs["bulk_delete_documents"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/BulkDeleteDocuments",
                 request_serializer=firestore_admin.BulkDeleteDocumentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -626,7 +714,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_database" not in self._stubs:
-            self._stubs["create_database"] = self.grpc_channel.unary_unary(
+            self._stubs["create_database"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/CreateDatabase",
                 request_serializer=firestore_admin.CreateDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -652,7 +740,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_database" not in self._stubs:
-            self._stubs["get_database"] = self.grpc_channel.unary_unary(
+            self._stubs["get_database"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/GetDatabase",
                 request_serializer=firestore_admin.GetDatabaseRequest.serialize,
                 response_deserializer=database.Database.deserialize,
@@ -680,7 +768,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_databases" not in self._stubs:
-            self._stubs["list_databases"] = self.grpc_channel.unary_unary(
+            self._stubs["list_databases"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/ListDatabases",
                 request_serializer=firestore_admin.ListDatabasesRequest.serialize,
                 response_deserializer=firestore_admin.ListDatabasesResponse.deserialize,
@@ -706,7 +794,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_database" not in self._stubs:
-            self._stubs["update_database"] = self.grpc_channel.unary_unary(
+            self._stubs["update_database"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/UpdateDatabase",
                 request_serializer=firestore_admin.UpdateDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -732,7 +820,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_database" not in self._stubs:
-            self._stubs["delete_database"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_database"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/DeleteDatabase",
                 request_serializer=firestore_admin.DeleteDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -756,7 +844,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup" not in self._stubs:
-            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["get_backup"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/GetBackup",
                 request_serializer=firestore_admin.GetBackupRequest.serialize,
                 response_deserializer=backup.Backup.deserialize,
@@ -784,7 +872,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backups" not in self._stubs:
-            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
+            self._stubs["list_backups"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/ListBackups",
                 request_serializer=firestore_admin.ListBackupsRequest.serialize,
                 response_deserializer=firestore_admin.ListBackupsResponse.deserialize,
@@ -810,7 +898,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup" not in self._stubs:
-            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_backup"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/DeleteBackup",
                 request_serializer=firestore_admin.DeleteBackupRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -854,7 +942,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_database" not in self._stubs:
-            self._stubs["restore_database"] = self.grpc_channel.unary_unary(
+            self._stubs["restore_database"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/RestoreDatabase",
                 request_serializer=firestore_admin.RestoreDatabaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -885,7 +973,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_backup_schedule" not in self._stubs:
-            self._stubs["create_backup_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["create_backup_schedule"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/CreateBackupSchedule",
                 request_serializer=firestore_admin.CreateBackupScheduleRequest.serialize,
                 response_deserializer=schedule.BackupSchedule.deserialize,
@@ -911,7 +999,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_schedule" not in self._stubs:
-            self._stubs["get_backup_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["get_backup_schedule"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/GetBackupSchedule",
                 request_serializer=firestore_admin.GetBackupScheduleRequest.serialize,
                 response_deserializer=schedule.BackupSchedule.deserialize,
@@ -940,7 +1028,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backup_schedules" not in self._stubs:
-            self._stubs["list_backup_schedules"] = self.grpc_channel.unary_unary(
+            self._stubs["list_backup_schedules"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/ListBackupSchedules",
                 request_serializer=firestore_admin.ListBackupSchedulesRequest.serialize,
                 response_deserializer=firestore_admin.ListBackupSchedulesResponse.deserialize,
@@ -968,7 +1056,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_backup_schedule" not in self._stubs:
-            self._stubs["update_backup_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["update_backup_schedule"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/UpdateBackupSchedule",
                 request_serializer=firestore_admin.UpdateBackupScheduleRequest.serialize,
                 response_deserializer=schedule.BackupSchedule.deserialize,
@@ -994,7 +1082,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup_schedule" not in self._stubs:
-            self._stubs["delete_backup_schedule"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_backup_schedule"] = self._logged_channel.unary_unary(
                 "/google.firestore.admin.v1.FirestoreAdmin/DeleteBackupSchedule",
                 request_serializer=firestore_admin.DeleteBackupScheduleRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1002,7 +1090,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         return self._stubs["delete_backup_schedule"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1014,7 +1102,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1031,7 +1119,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1048,7 +1136,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1067,7 +1155,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,

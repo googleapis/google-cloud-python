@@ -60,7 +60,7 @@ class firestore_adminCallTransformer(cst.CSTTransformer):
         'get_field': ('name', ),
         'get_index': ('name', ),
         'import_documents': ('name', 'collection_ids', 'input_uri_prefix', 'namespace_ids', ),
-        'list_backups': ('parent', ),
+        'list_backups': ('parent', 'filter', ),
         'list_backup_schedules': ('parent', ),
         'list_databases': ('parent', 'show_deleted', ),
         'list_fields': ('parent', 'filter', 'page_size', 'page_token', ),
