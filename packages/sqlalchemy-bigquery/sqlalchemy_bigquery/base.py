@@ -343,10 +343,8 @@ class BigQueryCompiler(_struct.SQLCompiler, vendored_postgresql.PGCompiler):
         if within_group_by:
             column_label = args[0]
             sql_keywords = {"GROUPING SETS", "ROLLUP", "CUBE"}
-            for keyword in sql_keywords:
-                if keyword in str(column_label):
-                    break
-            else:  # for/else always happens unless break gets called
+            label_str = column_label.compile(dialect=self.dialect).string
+            if not any(keyword in label_str for keyword in sql_keywords):
                 kwargs["render_label_as_label"] = column_label
 
         return super(BigQueryCompiler, self).visit_label(*args, **kwargs)

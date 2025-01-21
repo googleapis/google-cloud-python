@@ -417,3 +417,42 @@ def test_complex_grouping_ops_vs_nested_grouping_ops(
     )
 
     assert found_sql == expected_sql
+
+
+def test_label_compiler(faux_conn, metadata):
+    class CustomLower(sqlalchemy.sql.functions.FunctionElement):
+        name = "custom_lower"
+
+    @sqlalchemy.ext.compiler.compiles(CustomLower)
+    def compile_custom_intersect(element, compiler, **kwargs):
+        if compiler.dialect.name != "bigquery":
+            # We only test with the BigQuery dialect, so this should never happen.
+            raise sqlalchemy.exc.CompileError(  # pragma: NO COVER
+                f"custom_lower is not supported for dialect {compiler.dialect.name}"
+            )
+
+        clauses = list(element.clauses)
+        field = compiler.process(clauses[0], **kwargs)
+        return f"LOWER({field})"
+
+    table1 = setup_table(
+        faux_conn,
+        "table1",
+        metadata,
+        sqlalchemy.Column("foo", sqlalchemy.String),
+        sqlalchemy.Column("bar", sqlalchemy.Integer),
+    )
+
+    lower_foo = CustomLower(table1.c.foo).label("some_label")
+    q = (
+        sqlalchemy.select(lower_foo, sqlalchemy.func.max(table1.c.bar))
+        .select_from(table1)
+        .group_by(lower_foo)
+    )
+    expected_sql = (
+        "SELECT LOWER(`table1`.`foo`) AS `some_label`, max(`table1`.`bar`) AS `max_1` \n"
+        "FROM `table1` GROUP BY `some_label`"
+    )
+
+    found_sql = q.compile(faux_conn).string
+    assert found_sql == expected_sql
