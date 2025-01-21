@@ -3033,8 +3033,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return DataFrame(block)
 
     def join(
-        self, other: DataFrame, *, on: Optional[str] = None, how: str = "left"
+        self,
+        other: Union[DataFrame, bigframes.series.Series],
+        *,
+        on: Optional[str] = None,
+        how: str = "left",
     ) -> DataFrame:
+        if isinstance(other, bigframes.series.Series):
+            other = other.to_frame()
+
         left, right = self, other
 
         if not left.columns.intersection(right.columns).empty:

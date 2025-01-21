@@ -2554,6 +2554,27 @@ def test_join_param_on(scalars_dfs, how):
         assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
+@all_joins
+def test_df_join_series(scalars_dfs, how):
+    bf_df, pd_df = scalars_dfs
+
+    bf_df_a = bf_df[["string_col", "int64_col", "rowindex_2"]]
+    bf_df_a = bf_df_a.assign(rowindex_2=bf_df_a["rowindex_2"] + 2)
+    bf_series_b = bf_df["float64_col"]
+
+    if how == "cross":
+        with pytest.raises(ValueError):
+            bf_df_a.join(bf_series_b, on="rowindex_2", how=how)
+    else:
+        bf_result = bf_df_a.join(bf_series_b, on="rowindex_2", how=how).to_pandas()
+
+        pd_df_a = pd_df[["string_col", "int64_col", "rowindex_2"]]
+        pd_df_a = pd_df_a.assign(rowindex_2=pd_df_a["rowindex_2"] + 2)
+        pd_series_b = pd_df["float64_col"]
+        pd_result = pd_df_a.join(pd_series_b, on="rowindex_2", how=how)
+        assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
+
+
 @pytest.mark.parametrize(
     ("by", "ascending", "na_position"),
     [

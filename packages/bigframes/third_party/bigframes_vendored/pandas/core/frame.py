@@ -4384,7 +4384,7 @@ class DataFrame(generic.NDFrame):
 
         Args:
             other:
-                DataFrame with an Index similar to the Index of this one.
+                DataFrame or Series with an Index similar to the Index of this one.
             on:
                 Column in the caller to join on the index in other, otherwise
                 joins index-on-index. Like an Excel VLOOKUP operation.
