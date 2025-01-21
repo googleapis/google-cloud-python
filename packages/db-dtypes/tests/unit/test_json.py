@@ -129,6 +129,11 @@ def test_json_arrow_storage_type():
     assert pa.types.is_string(arrow_json_type.storage_type)
 
 
+def test_json_arrow_hash():
+    arr = pa.array([], type=db_dtypes.JSONArrowType())
+    assert hash(arr.type) == hash(db_dtypes.JSONArrowType())
+
+
 def test_json_arrow_constructors():
     data = [
         json.dumps(value, sort_keys=True, separators=(",", ":"))

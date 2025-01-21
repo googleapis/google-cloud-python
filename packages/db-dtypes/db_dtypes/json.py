@@ -274,6 +274,9 @@ class JSONArrowType(pa.ExtensionType):
     def __arrow_ext_deserialize__(cls, storage_type, serialized) -> JSONArrowType:
         return JSONArrowType()
 
+    def __hash__(self) -> int:
+        return hash(str(self))
+
     def to_pandas_dtype(self):
         return JSONDtype()
 
