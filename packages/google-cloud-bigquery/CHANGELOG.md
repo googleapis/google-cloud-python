@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.29.0](https://github.com/googleapis/python-bigquery/compare/v3.28.0...v3.29.0) (2025-01-21)
+
+
+### Features
+
+* Add ExternalCatalogTableOptions class and tests ([#2116](https://github.com/googleapis/python-bigquery/issues/2116)) ([cdc1a6e](https://github.com/googleapis/python-bigquery/commit/cdc1a6e1623b8305c6a6a1a481b3365e866a073d))
+
+
+### Bug Fixes
+
+* Add default value in SchemaField.from_api_repr() ([#2115](https://github.com/googleapis/python-bigquery/issues/2115)) ([7de6822](https://github.com/googleapis/python-bigquery/commit/7de6822e1c556a68cb8d50e90664c094697cca1d))
+
 ## [3.28.0](https://github.com/googleapis/python-bigquery/compare/v3.27.0...v3.28.0) (2025-01-15)
 
 
