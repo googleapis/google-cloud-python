@@ -16,7 +16,7 @@ import collections
 import collections.abc
 import copy
 import re
-from typing import List, Optional, Type
+from typing import Any, Dict, List, Optional, Type
 import warnings
 
 import google.protobuf
@@ -558,7 +558,7 @@ class MessageMeta(type):
         including_default_value_fields=None,
         float_precision=None,
         always_print_fields_with_no_presence=None,
-    ) -> "Message":
+    ) -> Dict[str, Any]:
         """Given a message instance, return its representation as a python dict.
 
         Args:
