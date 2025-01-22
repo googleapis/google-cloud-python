@@ -29,6 +29,17 @@ that supports OpenID Connect (OIDC).
 Obtaining credentials
 ---------------------
 
+.. warning::
+    Important: If you accept a credential configuration (credential JSON/File/Stream)
+    from an external source for authentication to Google Cloud Platform, you must
+    validate it before providing it to any Google API or client library. Providing an
+    unvalidated credential configuration to Google APIs or libraries can compromise
+    the security of your systems and data. For more information, refer to
+    `Validate credential configurations from external sources`_.
+
+.. _Validate credential configurations from external sources:
+    https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
+
 .. _application-default:
 
 Application default credentials
