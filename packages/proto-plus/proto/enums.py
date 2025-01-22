@@ -61,6 +61,8 @@ class ProtoEnumMeta(enum.EnumMeta):
             if isinstance(attrs._member_names, list):
                 idx = attrs._member_names.index(pb_options)
                 attrs._member_names.pop(idx)
+            elif isinstance(attrs._member_names, set):  # PyPy
+                attrs._member_names.discard(pb_options)
             else:  # Python 3.11.0b3
                 del attrs._member_names[pb_options]
 

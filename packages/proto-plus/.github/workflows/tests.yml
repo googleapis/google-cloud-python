@@ -42,7 +42,10 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+        # See https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage
+        # for the format of the entries in 'python'.
+        # See https://downloads.python.org/pypy/ for the current supported versions of PyPy.
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', 'pypy3.10']
         variant: ['cpp', 'python', 'upb']
         # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
         # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
@@ -56,6 +59,14 @@ jobs:
             python: 3.12
           - variant: "cpp"
             python: 3.13
+            # In PyPy 3.10, we see the following warning
+            # UserWarning: Selected implementation upb is not available. Falling back to the python implementation.
+          - variant: "upb"
+            python: 'pypy3.10'
+            # In PyPy 3.10, we see the following warning
+            # UserWarning: PyPy does not work yet with cpp protocol buffers. Falling back to the python implementation.
+          - variant: "cpp"
+            python: 'pypy3.10'
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
@@ -66,22 +77,16 @@ jobs:
       - name: Install nox
         run: |
           pip install nox
-        # Trim the Python version string
-      - name: Trim python version
-        run: |
-          PYTHON_VERSION_TRIMMED=${{ matrix.python }}
-          PYTHON_VERSION_TRIMMED=$(echo $PYTHON_VERSION_TRIMMED | cut -c1-4)
-          echo "PYTHON_VERSION_TRIMMED=$PYTHON_VERSION_TRIMMED" >> $GITHUB_ENV
       - name: Run unit tests
         env:
-          COVERAGE_FILE: .coverage-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
+          COVERAGE_FILE: .coverage-${{ matrix.variant }}-${{ matrix.python }}
         run: |
-          nox -s "unit-${{ env.PYTHON_VERSION_TRIMMED }}(implementation='${{ matrix.variant }}')"
+          nox -s "unit-${{ matrix.python }}(implementation='${{ matrix.variant }}')"
       - name: Upload coverage results
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-artifact-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
-          path: .coverage-${{ matrix.variant }}-${{ env.PYTHON_VERSION_TRIMMED }}
+          name: coverage-artifact-${{ matrix.variant }}-${{ matrix.python }}
+          path: .coverage-${{ matrix.variant }}-${{ matrix.python }}
           include-hidden-files: true
   prerelease:
     runs-on: ubuntu-22.04
