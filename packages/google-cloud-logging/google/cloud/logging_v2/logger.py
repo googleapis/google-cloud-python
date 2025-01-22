@@ -162,6 +162,7 @@ class Logger(object):
 
         api_repr = entry.to_api_repr()
         entries = [api_repr]
+
         if google.cloud.logging_v2._instrumentation_emitted is False:
             entries = _add_instrumentation(entries, **kw)
             google.cloud.logging_v2._instrumentation_emitted = True
@@ -200,18 +201,38 @@ class Logger(object):
         self._do_log(client, TextEntry, text, **kw)
 
     def log_struct(self, info, *, client=None, **kw):
-        """Log a dictionary message
+        """Logs a dictionary message.
 
         See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
 
+        The message must be able to be serializable to a Protobuf Struct.
+        It must be a dictionary of strings to one of the following:
+
+            - :class:`str`
+            - :class:`int`
+            - :class:`float`
+            - :class:`bool`
+            - :class:`list[str|float|int|bool|list|dict|None]`
+            - :class:`dict[str, str|float|int|bool|list|dict|None]`
+
+        For more details on Protobuf structs, see https://protobuf.dev/reference/protobuf/google.protobuf/#value.
+        If the provided dictionary cannot be serialized into a Protobuf struct,
+        it will not be logged, and a :class:`ValueError` will be raised.
+
         Args:
-            info (dict): the log entry information
+            info (dict[str, str|float|int|bool|list|dict|None]):
+                the log entry information.
             client (Optional[~logging_v2.client.Client]):
                 The client to use.  If not passed, falls back to the
                 ``client`` stored on the current sink.
             kw (Optional[dict]): additional keyword arguments for the entry.
                 See :class:`~logging_v2.entries.LogEntry`.
+
+        Raises:
+            ValueError:
+                if the dictionary message provided cannot be serialized into a Protobuf
+                struct.
         """
         for field in _STRUCT_EXTRACTABLE_FIELDS:
             # attempt to copy relevant fields from the payload into the LogEntry body
@@ -405,8 +426,22 @@ class Batch(object):
     def log_struct(self, info, **kw):
         """Add a struct entry to be logged during :meth:`commit`.
 
+        The message must be able to be serializable to a Protobuf Struct.
+        It must be a dictionary of strings to one of the following:
+
+            - :class:`str`
+            - :class:`int`
+            - :class:`float`
+            - :class:`bool`
+            - :class:`list[str|float|int|bool|list|dict|None]`
+            - :class:`dict[str, str|float|int|bool|list|dict|None]`
+
+        For more details on Protobuf structs, see https://protobuf.dev/reference/protobuf/google.protobuf/#value.
+        If the provided dictionary cannot be serialized into a Protobuf struct,
+        it will not be logged, and a :class:`ValueError` will be raised during :meth:`commit`.
+
         Args:
-            info (dict): The struct entry,
+            info (dict[str, str|float|int|bool|list|dict|None]): The struct entry,
             kw (Optional[dict]): Additional keyword arguments for the entry.
                 See :class:`~logging_v2.entries.LogEntry`.
         """
@@ -451,6 +486,10 @@ class Batch(object):
                 Whether a batch's valid entries should be written even
                 if some other entry failed due to a permanent error such
                 as INVALID_ARGUMENT or PERMISSION_DENIED.
+
+        Raises:
+            ValueError:
+                if one of the messages in the batch cannot be successfully parsed.
         """
         if client is None:
             client = self.client
