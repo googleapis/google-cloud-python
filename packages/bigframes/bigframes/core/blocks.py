@@ -1174,37 +1174,30 @@ class Block:
     def aggregate(
         self,
         by_column_ids: typing.Sequence[str] = (),
-        aggregations: typing.Sequence[
-            typing.Tuple[
-                str, typing.Union[agg_ops.UnaryAggregateOp, agg_ops.NullaryAggregateOp]
-            ]
-        ] = (),
+        aggregations: typing.Sequence[ex.Aggregation] = (),
+        column_labels: Optional[pd.Index] = None,
         *,
         dropna: bool = True,
     ) -> typing.Tuple[Block, typing.Sequence[str]]:
         """
-        Apply aggregations to the block. Callers responsible for setting index column(s) after.
+        Apply aggregations to the block.
         Arguments:
             by_column_id: column id of the aggregation key, this is preserved through the transform and used as index.
             aggregations: input_column_id, operation tuples
-            as_index: if True, grouping keys will be index columns in result, otherwise they will be non-index columns.
             dropna: whether null keys should be dropped
         """
+        if column_labels is None:
+            column_labels = pd.Index(range(len(aggregations)))
+
         agg_specs = [
             (
-                ex.UnaryAggregation(operation, ex.deref(input_id))
-                if isinstance(operation, agg_ops.UnaryAggregateOp)
-                else ex.NullaryAggregation(operation),
+                aggregation,
                 guid.generate_guid(),
             )
-            for input_id, operation in aggregations
+            for aggregation in aggregations
         ]
         output_col_ids = [agg_spec[1] for agg_spec in agg_specs]
         result_expr = self.expr.aggregate(agg_specs, by_column_ids, dropna=dropna)
-
-        aggregate_labels = self._get_labels_for_columns(
-            [agg[0] for agg in aggregations]
-        )
 
         names: typing.List[Label] = []
         if len(by_column_ids) == 0:
@@ -1223,7 +1216,7 @@ class Block:
             Block(
                 result_expr,
                 index_columns=index_columns,
-                column_labels=aggregate_labels,
+                column_labels=column_labels,
                 index_labels=names,
             ),
             output_col_ids,
@@ -1561,7 +1554,10 @@ class Block:
                 column_ids.append(masked_id)
 
         block = block.select_columns(column_ids)
-        aggregations = [(col_id, agg_ops.AnyValueOp()) for col_id in column_ids]
+        aggregations = [
+            ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(col_id))
+            for col_id in column_ids
+        ]
         result_block, _ = block.aggregate(
             by_column_ids=self.index_columns,
             aggregations=aggregations,

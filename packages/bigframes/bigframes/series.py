@@ -1062,7 +1062,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         # Approach: Count each value, return each value for which count(x) == max(counts))
         block, agg_ids = block.aggregate(
             by_column_ids=[self._value_column],
-            aggregations=((self._value_column, agg_ops.count_op),),
+            aggregations=(
+                ex.UnaryAggregation(agg_ops.count_op, ex.deref(self._value_column)),
+            ),
         )
         value_count_col_id = agg_ids[0]
         block, max_value_count_col_id = block.apply_window_op(
@@ -1675,7 +1677,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             return self.drop_duplicates()
         block, result = self._block.aggregate(
             [self._value_column],
-            [(self._value_column, agg_ops.AnyValueOp())],
+            [ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.deref(self._value_column))],
+            column_labels=self._block.column_labels,
             dropna=False,
         )
         return Series(block.select_columns(result).reset_index())
