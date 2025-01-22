@@ -1,7 +1,7 @@
 Proto Plus for Python
 =====================
 
-|pypi| |release level| |docs|
+|pypi| |release level|
 
     Beautiful, Pythonic protocol buffers.
 
