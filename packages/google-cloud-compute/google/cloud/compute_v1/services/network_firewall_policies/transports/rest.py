@@ -84,6 +84,14 @@ class NetworkFirewallPoliciesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_aggregated_list(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_aggregated_list(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_clone_rules(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -243,6 +251,32 @@ class NetworkFirewallPoliciesRestInterceptor:
 
     def post_add_rule(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for add_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetworkFirewallPolicies server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_aggregated_list(
+        self,
+        request: compute.AggregatedListNetworkFirewallPoliciesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AggregatedListNetworkFirewallPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for aggregated_list
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkFirewallPolicies server.
+        """
+        return request, metadata
+
+    def post_aggregated_list(
+        self, response: compute.NetworkFirewallPolicyAggregatedList
+    ) -> compute.NetworkFirewallPolicyAggregatedList:
+        """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the response
         after it is returned by the NetworkFirewallPolicies server but before
@@ -1012,6 +1046,153 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
                     extra={
                         "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
                         "rpcName": "AddRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _AggregatedList(
+        _BaseNetworkFirewallPoliciesRestTransport._BaseAggregatedList,
+        NetworkFirewallPoliciesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkFirewallPoliciesRestTransport.AggregatedList")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.AggregatedListNetworkFirewallPoliciesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.NetworkFirewallPolicyAggregatedList:
+            r"""Call the aggregated list method over HTTP.
+
+            Args:
+                request (~.compute.AggregatedListNetworkFirewallPoliciesRequest):
+                    The request object. A request message for
+                NetworkFirewallPolicies.AggregatedList.
+                See the method description for details.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.compute.NetworkFirewallPolicyAggregatedList:
+
+            """
+
+            http_options = (
+                _BaseNetworkFirewallPoliciesRestTransport._BaseAggregatedList._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
+            transcoded_request = _BaseNetworkFirewallPoliciesRestTransport._BaseAggregatedList._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkFirewallPoliciesRestTransport._BaseAggregatedList._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.NetworkFirewallPoliciesClient.AggregatedList",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "AggregatedList",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                NetworkFirewallPoliciesRestTransport._AggregatedList._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = compute.NetworkFirewallPolicyAggregatedList()
+            pb_resp = compute.NetworkFirewallPolicyAggregatedList.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_aggregated_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        compute.NetworkFirewallPolicyAggregatedList.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.NetworkFirewallPoliciesClient.aggregated_list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkFirewallPolicies",
+                        "rpcName": "AggregatedList",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3250,6 +3431,17 @@ class NetworkFirewallPoliciesRestTransport(_BaseNetworkFirewallPoliciesRestTrans
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListNetworkFirewallPoliciesRequest],
+        compute.NetworkFirewallPolicyAggregatedList,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def clone_rules(

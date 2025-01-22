@@ -143,6 +143,11 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.aggregated_list: gapic_v1.method.wrap_method(
+                self.aggregated_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.clone_rules: gapic_v1.method.wrap_method(
                 self.clone_rules,
                 default_timeout=None,
@@ -239,6 +244,18 @@ class NetworkFirewallPoliciesTransport(abc.ABC):
     ) -> Callable[
         [compute.AddRuleNetworkFirewallPolicyRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListNetworkFirewallPoliciesRequest],
+        Union[
+            compute.NetworkFirewallPolicyAggregatedList,
+            Awaitable[compute.NetworkFirewallPolicyAggregatedList],
+        ],
     ]:
         raise NotImplementedError()
 
