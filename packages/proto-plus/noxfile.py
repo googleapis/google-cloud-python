@@ -161,3 +161,11 @@ def docs(session):
         "docs/",
         "docs/_build/html/",
     )
+
+
+@nox.session(python="3.10")
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+
+    session.install("docutils", "Pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")

@@ -16,9 +16,9 @@ largely behave like native Python types.
 Documentation
 -------------
 
-`Documentation`_ is available on Read the Docs.
+`API Documentation`_ is available on Read the Docs.
 
-.. _documentation: https://googleapis.dev/python/proto-plus/latest/
+.. _API Documentation: https://googleapis.dev/python/proto-plus/latest/
 
 .. |pypi| image:: https://img.shields.io/pypi/v/proto-plus.svg
    :target: https://pypi.org/project/proto-plus
