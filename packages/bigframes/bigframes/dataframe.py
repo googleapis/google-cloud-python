@@ -2365,6 +2365,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         result.columns.names = self.columns.names
         return result
 
+    def mask(self, cond, other=None):
+        return self.where(~cond, other=other)
+
     def dropna(
         self,
         *,
