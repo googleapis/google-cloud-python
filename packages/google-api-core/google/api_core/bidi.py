@@ -306,6 +306,8 @@ class BidiRpc(object):
         self._request_queue.put(None)
         self.call.cancel()
         self._request_generator = None
+        self._initial_request = None
+        self._callbacks = []
         # Don't set self.call to None. Keep it around so that send/recv can
         # raise the error.
 
@@ -717,6 +719,7 @@ class BackgroundConsumer(object):
                     _LOGGER.warning("Background thread did not exit.")
 
             self._thread = None
+            self._on_response = None
 
     @property
     def is_active(self):

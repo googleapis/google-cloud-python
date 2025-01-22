@@ -296,6 +296,9 @@ class TestBidiRpc(object):
         # ensure the request queue was signaled to stop.
         assert bidi_rpc.pending_requests == 1
         assert bidi_rpc._request_queue.get() is None
+        # ensure request and callbacks are cleaned up
+        assert bidi_rpc._initial_request is None
+        assert not bidi_rpc._callbacks
 
     def test_close_no_rpc(self):
         bidi_rpc = bidi.BidiRpc(None)
@@ -623,6 +626,8 @@ class TestResumableBidiRpc(object):
         assert bidi_rpc.pending_requests == 1
         assert bidi_rpc._request_queue.get() is None
         assert bidi_rpc._finalized
+        assert bidi_rpc._initial_request is None
+        assert not bidi_rpc._callbacks
 
     def test_reopen_failure_on_rpc_restart(self):
         error1 = ValueError("1")
@@ -777,6 +782,7 @@ class TestBackgroundConsumer(object):
         consumer.stop()
 
         assert consumer.is_active is False
+        assert consumer._on_response is None
 
     def test_wake_on_error(self):
         should_continue = threading.Event()
@@ -884,6 +890,7 @@ class TestBackgroundConsumer(object):
 
         consumer.stop()
         assert consumer.is_active is False
+        assert consumer._on_response is None
 
         # calling stop twice should not result in an error.
         consumer.stop()
