@@ -17,6 +17,8 @@ import unittest
 import google.auth.credentials
 import mock
 
+from datetime import datetime
+
 import google.cloud.logging
 from google.cloud import logging_v2
 from google.cloud.logging_v2 import _gapic
@@ -172,6 +174,21 @@ class Test_LoggingAPI(unittest.TestCase):
         assert request.entries[0].log_name == entry["logName"]
         assert request.entries[0].resource.type == entry["resource"]["type"]
         assert request.entries[0].text_payload == "text"
+
+    def test_write_entries_parse_error(self):
+        client = self.make_logging_api()
+        with self.assertRaises(ValueError):
+            with mock.patch.object(
+                type(client._gapic_api.transport.write_log_entries), "__call__"
+            ) as call:
+                entry = {
+                    "logName": self.LOG_PATH,
+                    "resource": {"type": "global"},
+                    "jsonPayload": {"time": datetime.now()},
+                }
+                client.write_entries([entry])
+
+        call.assert_not_called()
 
     def test_logger_delete(self):
         client = self.make_logging_api()
