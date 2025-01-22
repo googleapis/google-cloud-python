@@ -116,3 +116,26 @@ def test_blobwriter_exit(
     blobs_to_delete.append(blob)
     # blob should have been uploaded
     assert blob.exists()
+
+
+def test_blobreader_w_raw_download(
+    shared_bucket,
+    blobs_to_delete,
+    file_data,
+):
+    blob = shared_bucket.blob("LargeFile")
+    info = file_data["big"]
+    with open(info["path"], "rb") as file_obj:
+        with blob.open("wb", chunk_size=256 * 1024, if_generation_match=0) as writer:
+            writer.write(file_obj.read())
+        blobs_to_delete.append(blob)
+
+    # Test BlobReader read and seek handles raw downloads.
+    with open(info["path"], "rb") as file_obj:
+        with blob.open("rb", chunk_size=256 * 1024, raw_download=True) as reader:
+            reader.seek(0)
+            file_obj.seek(0)
+            assert file_obj.read() == reader.read()
+            # End of file reached; further reads should be blank but not
+            # raise an error.
+            assert reader.read() == b""
