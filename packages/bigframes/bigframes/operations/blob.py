@@ -66,11 +66,11 @@ class BlobAccessor(base.SeriesMethods):
 
         Returns:
             BigFrames Series: Version as string."""
-        # version must be retrived after fetching metadata
+        # version must be retrieved after fetching metadata
         return self._apply_unary_op(ops.obj_fetch_metadata_op).struct.field("version")
 
     def metadata(self) -> bigframes.series.Series:
-        """Retrive the metadata of the Blob.
+        """Retrieve the metadata of the Blob.
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
@@ -85,7 +85,7 @@ class BlobAccessor(base.SeriesMethods):
         return bbq.json_extract(details_json, "$.gcs_metadata").rename("metadata")
 
     def content_type(self) -> bigframes.series.Series:
-        """Retrive the content type of the Blob.
+        """Retrieve the content type of the Blob.
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
@@ -99,7 +99,7 @@ class BlobAccessor(base.SeriesMethods):
         )
 
     def md5_hash(self) -> bigframes.series.Series:
-        """Retrive the md5 hash of the Blob.
+        """Retrieve the md5 hash of the Blob.
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
@@ -113,7 +113,7 @@ class BlobAccessor(base.SeriesMethods):
         )
 
     def size(self) -> bigframes.series.Series:
-        """Retrive the file size of the Blob.
+        """Retrieve the file size of the Blob.
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
@@ -128,7 +128,7 @@ class BlobAccessor(base.SeriesMethods):
         )
 
     def updated(self) -> bigframes.series.Series:
-        """Retrive the updated time of the Blob.
+        """Retrieve the updated time of the Blob.
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
@@ -146,6 +146,46 @@ class BlobAccessor(base.SeriesMethods):
 
         return bpd.to_datetime(updated, unit="us", utc=True)
 
+    def _get_runtime(
+        self, mode: str, with_metadata: bool = False
+    ) -> bigframes.series.Series:
+        """Retrieve the ObjectRefRuntime as JSON.
+
+        Args:
+            mode (str): mode for the URLs, "R" for read, "RW" for read & write.
+            metadata (bool, default False): whether to fetch the metadata in the ObjectRefRuntime.
+
+        Returns:
+            bigframes Series: ObjectRefRuntime JSON.
+        """
+        s = self._apply_unary_op(ops.obj_fetch_metadata_op) if with_metadata else self
+
+        return s._apply_unary_op(ops.ObjGetAccessUrl(mode=mode))
+
+    def read_url(self) -> bigframes.series.Series:
+        """Retrieve the read URL of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: Read only URLs."""
+        return self._get_runtime(mode="R")._apply_unary_op(
+            ops.JSONValue(json_path="$.access_urls.read_url")
+        )
+
+    def write_url(self) -> bigframes.series.Series:
+        """Retrieve the write URL of the Blob.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+        Returns:
+            BigFrames Series: Writable URLs."""
+        return self._get_runtime(mode="RW")._apply_unary_op(
+            ops.JSONValue(json_path="$.access_urls.write_url")
+        )
+
     def display(self, n: int = 3, *, content_type: str = ""):
         """Display the blob content in the IPython Notebook environment. Only works for image type now.
 
@@ -159,10 +199,7 @@ class BlobAccessor(base.SeriesMethods):
         # col name doesn't matter here. Rename to avoid column name conflicts
         df = bigframes.series.Series(self._block).rename("blob_col").head(n).to_frame()
 
-        obj_ref_runtime = df["blob_col"]._apply_unary_op(ops.ObjGetAccessUrl(mode="R"))
-        df["read_url"] = obj_ref_runtime._apply_unary_op(
-            ops.JSONValue(json_path="$.access_urls.read_url")
-        )
+        df["read_url"] = df["blob_col"].blob.read_url()
 
         if content_type:
             df["content_type"] = content_type
@@ -231,10 +268,8 @@ class BlobAccessor(base.SeriesMethods):
             connection=connection,
         ).udf()
 
-        src_rt = bigframes.series.Series(self._block)._apply_unary_op(
-            ops.ObjGetAccessUrl(mode="R")
-        )
-        dst_rt = dst._apply_unary_op(ops.ObjGetAccessUrl(mode="RW"))
+        src_rt = self._get_runtime(mode="R")
+        dst_rt = dst.blob._get_runtime(mode="RW")
 
         src_rt = src_rt._apply_unary_op(ops.ToJSONString())
         dst_rt = dst_rt._apply_unary_op(ops.ToJSONString())
