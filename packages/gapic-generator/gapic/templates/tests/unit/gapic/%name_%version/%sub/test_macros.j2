@@ -2173,7 +2173,8 @@ def test_initialize_client_w_{{transport_name}}():
 
 {% macro routing_parameter_test(service, api, transport, is_async) %}
 {% for method in service.methods.values() %}{# method #}
-{% if method.explicit_routing %}
+{# See existing proposal b/330610501 to add support for explicit routing in BIDI/client side streaming #}
+{% if method.explicit_routing and not method.client_streaming %}
 {# Any value that is part of the HTTP/1.1 URI should be sent as #}
 {# a field header. Set these to a non-empty value. #}
 {% for routing_param in method.routing_rule.routing_parameters %}
