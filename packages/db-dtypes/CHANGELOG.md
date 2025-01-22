@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.3.1...v1.4.0) (2025-01-21)
+
+
+### Features
+
+* Add __hash__ property for JSONArrowType ([#316](https://github.com/googleapis/python-db-dtypes-pandas/issues/316)) ([7073e37](https://github.com/googleapis/python-db-dtypes-pandas/commit/7073e37d1fe76c2078550a8c7f0e45e3fad26809))
+* Add Arrow types for efficient JSON data representation in pyarrow ([#312](https://github.com/googleapis/python-db-dtypes-pandas/issues/312)) ([d9992fc](https://github.com/googleapis/python-db-dtypes-pandas/commit/d9992fc6120351cb8ccb2dd86bd57e8097004285))
+
 ## [1.3.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.3.0...v1.3.1) (2024-11-12)
 
 
