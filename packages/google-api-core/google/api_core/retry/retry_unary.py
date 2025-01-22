@@ -83,7 +83,7 @@ _ASYNC_RETRY_WARNING = "Using the synchronous google.api_core.retry.Retry with a
 
 
 def retry_target(
-    target: Callable[_P, _R],
+    target: Callable[[], _R],
     predicate: Callable[[Exception], bool],
     sleep_generator: Iterable[float],
     timeout: float | None = None,

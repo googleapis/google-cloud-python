@@ -319,7 +319,7 @@ def test_awaitable_grpc_call():
     """
     AwaitableGrpcCall type should be an Awaitable and a grpc.aio.Call.
     """
-    instance = grpc_helpers_async.AwaitableGrpcCall[int]()
+    instance = grpc_helpers_async.AwaitableGrpcCall()
     assert isinstance(instance, grpc.aio.Call)
     # should implement __await__
     assert hasattr(instance, "__await__")

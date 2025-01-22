@@ -517,14 +517,14 @@ def format_http_response_error(
     errors = payload.get("error", {}).get("errors", ())
     # In JSON, details are already formatted in developer-friendly way.
     details = payload.get("error", {}).get("details", ())
-    error_info = list(
+    error_info_list = list(
         filter(
             lambda detail: detail.get("@type", "")
             == "type.googleapis.com/google.rpc.ErrorInfo",
             details,
         )
     )
-    error_info = error_info[0] if error_info else None
+    error_info = error_info_list[0] if error_info_list else None
     message = _format_rest_error_message(error_message, method, url)
 
     exception = from_http_status(

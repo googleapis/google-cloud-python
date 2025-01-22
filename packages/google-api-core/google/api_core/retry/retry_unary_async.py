@@ -94,7 +94,7 @@ _DEFAULT_TIMEOUT = 60.0 * 2.0  # seconds
 
 
 async def retry_target(
-    target: Callable[_P, Awaitable[_R]],
+    target: Callable[[], Awaitable[_R]],
     predicate: Callable[[Exception], bool],
     sleep_generator: Iterable[float],
     timeout: float | None = None,
