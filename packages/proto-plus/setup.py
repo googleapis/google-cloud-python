@@ -37,7 +37,7 @@ setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     url="https://github.com/googleapis/proto-plus-python.git",
-    packages=find_namespace_packages(exclude=["docs", "tests"]),
+    packages=find_namespace_packages(include=["proto", "proto.*"]),
     description="Beautiful, Pythonic protocol buffers.",
     long_description=README,
     platforms="Posix; MacOS X",
