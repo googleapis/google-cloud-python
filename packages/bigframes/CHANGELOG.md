@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.33.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.32.0...v1.33.0) (2025-01-22)
+
+
+### Features
+
+* Add `bigframes.bigquery.sql_scalar()` to apply SQL syntax on Series objects ([#1293](https://github.com/googleapis/python-bigquery-dataframes/issues/1293)) ([aa2f73a](https://github.com/googleapis/python-bigquery-dataframes/commit/aa2f73ad86e42c37d85ac867a3702eb6f2724b11))
+* Add unix_seconds, unix_millis and unix_micros for timestamp series. ([#1297](https://github.com/googleapis/python-bigquery-dataframes/issues/1297)) ([e4b0c8d](https://github.com/googleapis/python-bigquery-dataframes/commit/e4b0c8dd9edda48e07c433b99f44db82e1ea2054))
+* DataFrame.join supports Series other ([#1303](https://github.com/googleapis/python-bigquery-dataframes/issues/1303)) ([ee37a0a](https://github.com/googleapis/python-bigquery-dataframes/commit/ee37a0ab84e9415046e0e15955c14a1965b3a904))
+* Support array output in `remote_function` ([#1057](https://github.com/googleapis/python-bigquery-dataframes/issues/1057)) ([bdee173](https://github.com/googleapis/python-bigquery-dataframes/commit/bdee1734809589e5a7a3c23ee9cd2f967adf346f))
+
+
+### Bug Fixes
+
+* Dataframe sort_values Series input keyerror. ([#1285](https://github.com/googleapis/python-bigquery-dataframes/issues/1285)) ([5a2731b](https://github.com/googleapis/python-bigquery-dataframes/commit/5a2731bda8b2e9ea54bf582f823acdb6153dbb8f))
+* Fix read_gbq_function issue in dataframe apply method ([#1174](https://github.com/googleapis/python-bigquery-dataframes/issues/1174)) ([0318764](https://github.com/googleapis/python-bigquery-dataframes/commit/0318764030f6753a4e925c62612aabbb8e192fdf))
+* Series sort_index and sort_values now raises when axis!=0 ([#1294](https://github.com/googleapis/python-bigquery-dataframes/issues/1294)) ([94bc2f2](https://github.com/googleapis/python-bigquery-dataframes/commit/94bc2f2dc3514fffeac625592ec4b28c32957723))
+
+
+### Documentation
+
+* Add snippet to forecast future time series in the Forecast a single time series with a univariate model tutorial ([#1271](https://github.com/googleapis/python-bigquery-dataframes/issues/1271)) ([a687050](https://github.com/googleapis/python-bigquery-dataframes/commit/a687050b2a92bed1af9cb86a812b62f9a69cf959))
+* Update `bigframes.pandas.Series` docs ([#1273](https://github.com/googleapis/python-bigquery-dataframes/issues/1273)) ([0cac64f](https://github.com/googleapis/python-bigquery-dataframes/commit/0cac64f5ba3f3c9e8495fc5acb09d81c39d36de0))
+
 ## [1.32.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.31.0...v1.32.0) (2025-01-13)
 
 
