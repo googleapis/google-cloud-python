@@ -50,7 +50,7 @@ class JSONExtractArray(base_ops.UnaryOp):
                 + f" Received type: {input_type}"
             )
         return pd.ArrowDtype(
-            pa.list_(dtypes.bigframes_dtype_to_arrow_dtype(dtypes.STRING_DTYPE))
+            pa.list_(dtypes.bigframes_dtype_to_arrow_dtype(input_type))
         )
 
 
@@ -118,8 +118,7 @@ class JSONSet(base_ops.BinaryOp):
                 + f"Received type: {right_type}"
             )
 
-        # After JSON type implementation, ONLY return JSON data.
-        return left_type
+        return dtypes.JSON_DTYPE
 
 
 @dataclasses.dataclass(frozen=True)

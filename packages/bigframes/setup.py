@@ -62,6 +62,7 @@ dependencies = [
     "ipywidgets >=7.7.1",
     "humanize >=4.6.0",
     "matplotlib >=3.7.1",
+    "db-dtypes >=1.4.0",
     # For vendored ibis-framework.
     "atpublic>=2.3,<6",
     "parsy>=2,<3",

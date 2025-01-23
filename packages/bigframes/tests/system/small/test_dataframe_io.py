@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import math
 from typing import Tuple
 
+import db_dtypes  # type:ignore
 import google.api_core.exceptions
 import pandas as pd
 import pandas.testing
@@ -247,23 +249,146 @@ def test_to_pandas_array_struct_correct_result(session):
     )
 
 
-def test_load_json(session):
-    df = session.read_gbq(
-        """SELECT
-        JSON_OBJECT('foo', 10, 'bar', TRUE) AS json_column
-        """
-    )
+def test_load_json_w_unboxed_py_value(session):
+    sql = """
+        SELECT 0 AS id, JSON_OBJECT('boolean', True) AS json_col,
+        UNION ALL
+        SELECT 1, JSON_OBJECT('int', 100),
+        UNION ALL
+        SELECT 2, JSON_OBJECT('float', 0.98),
+        UNION ALL
+        SELECT 3, JSON_OBJECT('string', 'hello world'),
+        UNION ALL
+        SELECT 4, JSON_OBJECT('array', [8, 9, 10]),
+        UNION ALL
+        SELECT 5, JSON_OBJECT('null', null),
+        UNION ALL
+        SELECT
+            6,
+            JSON_OBJECT(
+                'dict',
+                JSON_OBJECT(
+                    'int', 1,
+                    'array', [JSON_OBJECT('bar', 'hello'), JSON_OBJECT('foo', 1)]
+                )
+            ),
+    """
+    df = session.read_gbq(sql, index_col="id")
 
+    assert df.dtypes["json_col"] == db_dtypes.JSONDtype()
+    assert isinstance(df["json_col"][0], dict)
+
+    assert df["json_col"][0]["boolean"]
+    assert df["json_col"][1]["int"] == 100
+    assert math.isclose(df["json_col"][2]["float"], 0.98)
+    assert df["json_col"][3]["string"] == "hello world"
+    assert df["json_col"][4]["array"] == [8, 9, 10]
+    assert df["json_col"][5]["null"] is None
+    assert df["json_col"][6]["dict"] == {
+        "int": 1,
+        "array": [{"bar": "hello"}, {"foo": 1}],
+    }
+
+
+def test_load_json_to_pandas_has_correct_result(session):
+    df = session.read_gbq("SELECT JSON_OBJECT('foo', 10, 'bar', TRUE) AS json_col")
+    assert df.dtypes["json_col"] == db_dtypes.JSONDtype()
     result = df.to_pandas()
-    expected = pd.DataFrame(
-        {
-            "json_column": ['{"bar":true,"foo":10}'],
-        },
-        dtype=pd.ArrowDtype(pa.large_string()),
+
+    # The order of keys within the JSON object shouldn't matter for equality checks.
+    pd_df = pd.DataFrame(
+        {"json_col": [{"bar": True, "foo": 10}]},
+        dtype=db_dtypes.JSONDtype(),
     )
-    expected.index = expected.index.astype("Int64")
-    pd.testing.assert_series_equal(result.dtypes, expected.dtypes)
-    pd.testing.assert_series_equal(result["json_column"], expected["json_column"])
+    pd_df.index = pd_df.index.astype("Int64")
+    pd.testing.assert_series_equal(result.dtypes, pd_df.dtypes)
+    pd.testing.assert_series_equal(result["json_col"], pd_df["json_col"])
+
+
+def test_load_json_in_struct(session):
+    """Avoid regressions for internal issue 381148539."""
+    sql = """
+        SELECT 0 AS id, STRUCT(JSON_OBJECT('boolean', True) AS data, 1 AS number) AS struct_col
+        UNION ALL
+        SELECT 1, STRUCT(JSON_OBJECT('int', 100), 2),
+        UNION ALL
+        SELECT 2, STRUCT(JSON_OBJECT('float', 0.98), 3),
+        UNION ALL
+        SELECT 3, STRUCT(JSON_OBJECT('string', 'hello world'), 4),
+        UNION ALL
+        SELECT 4, STRUCT(JSON_OBJECT('array', [8, 9, 10]), 5),
+        UNION ALL
+        SELECT 5, STRUCT(JSON_OBJECT('null', null), 6),
+        UNION ALL
+        SELECT
+            6,
+            STRUCT(JSON_OBJECT(
+                'dict',
+                JSON_OBJECT(
+                    'int', 1,
+                    'array', [JSON_OBJECT('bar', 'hello'), JSON_OBJECT('foo', 1)]
+                )
+            ), 7),
+    """
+    df = session.read_gbq(sql, index_col="id")
+
+    assert isinstance(df.dtypes["struct_col"], pd.ArrowDtype)
+    assert isinstance(df.dtypes["struct_col"].pyarrow_dtype, pa.StructType)
+
+    data = df["struct_col"].struct.field("data")
+    assert data.dtype == db_dtypes.JSONDtype()
+
+    assert data[0]["boolean"]
+    assert data[1]["int"] == 100
+    assert math.isclose(data[2]["float"], 0.98)
+    assert data[3]["string"] == "hello world"
+    assert data[4]["array"] == [8, 9, 10]
+    assert data[5]["null"] is None
+    assert data[6]["dict"] == {
+        "int": 1,
+        "array": [{"bar": "hello"}, {"foo": 1}],
+    }
+
+
+def test_load_json_in_array(session):
+    sql = """
+        SELECT
+            0 AS id,
+            [
+                JSON_OBJECT('boolean', True),
+                JSON_OBJECT('int', 100),
+                JSON_OBJECT('float', 0.98),
+                JSON_OBJECT('string', 'hello world'),
+                JSON_OBJECT('array', [8, 9, 10]),
+                JSON_OBJECT('null', null),
+                JSON_OBJECT(
+                    'dict',
+                    JSON_OBJECT(
+                        'int', 1,
+                        'array', [JSON_OBJECT('bar', 'hello'), JSON_OBJECT('foo', 1)]
+                    )
+                )
+            ] AS array_col,
+    """
+    df = session.read_gbq(sql, index_col="id")
+
+    assert isinstance(df.dtypes["array_col"], pd.ArrowDtype)
+    assert isinstance(df.dtypes["array_col"].pyarrow_dtype, pa.ListType)
+
+    data = df["array_col"].list
+    assert data.len()[0] == 7
+    assert data[0].dtype == db_dtypes.JSONDtype()
+
+    assert data[0][0]["boolean"]
+    assert data[1][0]["int"] == 100
+    assert math.isclose(data[2][0]["float"], 0.98)
+    assert data[3][0]["string"] == "hello world"
+    assert data[4][0]["array"] == [8, 9, 10]
+    assert data[5][0]["null"] is None
+    assert data[6][0]["dict"] == {
+        "int": 1,
+        "array": [{"bar": "hello"}, {"foo": 1}],
+    }
 
 
 def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):

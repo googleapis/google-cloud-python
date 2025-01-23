@@ -118,7 +118,6 @@ def test_json_set_w_invalid_series_type():
 def test_json_extract_from_json():
     s = _get_series_from_json([{"a": {"b": [1, 2]}}, {"a": {"c": 1}}, {"a": {"b": 0}}])
     actual = bbq.json_extract(s, "$.a.b").to_pandas()
-    # After the introduction of the JSON type, the output should be a JSON-formatted series.
     expected = _get_series_from_json([[1, 2], None, 0]).to_pandas()
     pd.testing.assert_series_equal(
         actual,
@@ -129,12 +128,10 @@ def test_json_extract_from_json():
 def test_json_extract_from_string():
     s = bpd.Series(['{"a": {"b": [1, 2]}}', '{"a": {"c": 1}}', '{"a": {"b": 0}}'])
     actual = bbq.json_extract(s, "$.a.b")
-    expected = _get_series_from_json([[1, 2], None, 0])
+    expected = bpd.Series(["[1,2]", None, "0"])
     pd.testing.assert_series_equal(
         actual.to_pandas(),
         expected.to_pandas(),
-        check_names=False,
-        check_dtype=False,  # json_extract returns string type. While _get_series_from_json gives a JSON series (pa.large_string).
     )
 
 
@@ -143,20 +140,58 @@ def test_json_extract_w_invalid_series_type():
         bbq.json_extract(bpd.Series([1, 2]), "$.a")
 
 
-def test_json_extract_array_from_json_strings():
-    s = bpd.Series(['{"a": ["ab", "2", "3 xy"]}', '{"a": []}', '{"a": ["4","5"]}'])
+def test_json_extract_array_from_json():
+    s = _get_series_from_json(
+        [{"a": ["ab", "2", "3 xy"]}, {"a": []}, {"a": ["4", "5"]}, {}]
+    )
     actual = bbq.json_extract_array(s, "$.a")
-    expected = bpd.Series([['"ab"', '"2"', '"3 xy"'], [], ['"4"', '"5"']])
+
+    # This code provides a workaround for issue https://github.com/apache/arrow/issues/45262,
+    # which currently prevents constructing a series using the pa.list_(db_types.JSONArrrowType())
+    sql = """
+        SELECT 0 AS id, [JSON '"ab"', JSON '"2"', JSON '"3 xy"'] AS data,
+        UNION ALL
+        SELECT 1, [],
+        UNION ALL
+        SELECT 2, [JSON '"4"', JSON '"5"'],
+        UNION ALL
+        SELECT 3, null,
+    """
+    df = bpd.read_gbq(sql).set_index("id").sort_index()
+    expected = df["data"]
+
     pd.testing.assert_series_equal(
         actual.to_pandas(),
         expected.to_pandas(),
     )
 
 
-def test_json_extract_array_from_array_strings():
-    s = bpd.Series(["[1, 2, 3]", "[]", "[4,5]"])
+def test_json_extract_array_from_json_strings():
+    s = bpd.Series(
+        ['{"a": ["ab", "2", "3 xy"]}', '{"a": []}', '{"a": ["4","5"]}', "{}"],
+        dtype=pd.StringDtype(storage="pyarrow"),
+    )
+    actual = bbq.json_extract_array(s, "$.a")
+    expected = bpd.Series(
+        [['"ab"', '"2"', '"3 xy"'], [], ['"4"', '"5"'], None],
+        dtype=pd.StringDtype(storage="pyarrow"),
+    )
+    pd.testing.assert_series_equal(
+        actual.to_pandas(),
+        expected.to_pandas(),
+    )
+
+
+def test_json_extract_array_from_json_array_strings():
+    s = bpd.Series(
+        ["[1, 2, 3]", "[]", "[4,5]"],
+        dtype=pd.StringDtype(storage="pyarrow"),
+    )
     actual = bbq.json_extract_array(s)
-    expected = bpd.Series([["1", "2", "3"], [], ["4", "5"]])
+    expected = bpd.Series(
+        [["1", "2", "3"], [], ["4", "5"]],
+        dtype=pd.StringDtype(storage="pyarrow"),
+    )
     pd.testing.assert_series_equal(
         actual.to_pandas(),
         expected.to_pandas(),
@@ -164,8 +199,9 @@ def test_json_extract_array_from_array_strings():
 
 
 def test_json_extract_array_w_invalid_series_type():
+    s = bpd.Series([1, 2])
     with pytest.raises(TypeError):
-        bbq.json_extract_array(bpd.Series([1, 2]))
+        bbq.json_extract_array(s)
 
 
 def test_json_extract_string_array_from_json_strings():
@@ -201,14 +237,6 @@ def test_json_extract_string_array_as_float_array_from_array_strings():
 def test_json_extract_string_array_w_invalid_series_type():
     with pytest.raises(TypeError):
         bbq.json_extract_string_array(bpd.Series([1, 2]))
-
-
-# b/381148539
-def test_json_in_struct():
-    df = bpd.read_gbq(
-        "SELECT STRUCT(JSON '{\\\"a\\\": 1}' AS data, 1 AS number) as struct_col"
-    )
-    assert df["struct_col"].struct.field("data")[0] == '{"a":1}'
 
 
 def test_parse_json_w_invalid_series_type():

@@ -21,6 +21,7 @@ import typing
 from typing import Any, Dict, List, Literal, Union
 
 import bigframes_vendored.constants as constants
+import db_dtypes  # type: ignore
 import geopandas as gpd  # type: ignore
 import google.cloud.bigquery
 import numpy as np
@@ -59,7 +60,7 @@ BIGNUMERIC_DTYPE = pd.ArrowDtype(pa.decimal256(76, 38))
 # No arrow equivalent
 GEO_DTYPE = gpd.array.GeometryDtype()
 # JSON
-JSON_DTYPE = pd.ArrowDtype(pa.large_string())
+JSON_DTYPE = db_dtypes.JSONDtype()
 OBJ_REF_DTYPE = pd.ArrowDtype(
     pa.struct(
         (
@@ -161,7 +162,7 @@ SIMPLE_TYPES = (
     ),
     SimpleDtypeInfo(
         dtype=JSON_DTYPE,
-        arrow_dtype=pa.large_string(),
+        arrow_dtype=db_dtypes.JSONArrowType(),
         type_kind=("JSON",),
         orderable=False,
         clusterable=False,
@@ -320,7 +321,6 @@ def is_struct_like(type_: ExpressionType) -> bool:
 
 
 def is_json_like(type_: ExpressionType) -> bool:
-    # TODO: Add JSON type support
     return type_ == JSON_DTYPE or type_ == STRING_DTYPE  # Including JSON string
 
 

@@ -17,6 +17,7 @@ import math
 import re
 import tempfile
 
+import db_dtypes  # type: ignore
 import geopandas as gpd  # type: ignore
 import numpy
 from packaging.version import Version
@@ -281,7 +282,7 @@ def test_get_column(scalars_dfs, col_name, expected_dtype):
 def test_get_column_w_json(json_df, json_pandas_df):
     series = json_df["json_col"]
     series_pandas = series.to_pandas()
-    assert series.dtype == pd.ArrowDtype(pa.large_string())
+    assert series.dtype == db_dtypes.JSONDtype()
     assert series_pandas.shape[0] == json_pandas_df.shape[0]
 
 
