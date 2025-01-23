@@ -405,8 +405,7 @@ class ArrayValue:
             ArrayValue(
                 nodes.WindowOpNode(
                     child=self.node,
-                    column_name=ex.deref(column_name),
-                    op=op,
+                    expression=ex.UnaryAggregation(op, ex.deref(column_name)),
                     window_spec=window_spec,
                     output_name=ids.ColumnId(output_name),
                     never_skip_nulls=never_skip_nulls,

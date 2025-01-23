@@ -381,7 +381,7 @@ class AnyValueOp(UnaryAggregateOp):
 
 # This should really by a NullaryWindowOp, but APIs don't support that yet.
 @dataclasses.dataclass(frozen=True)
-class RowNumberOp(UnaryWindowOp):
+class RowNumberOp(NullaryWindowOp):
     name: ClassVar[str] = "rownumber"
 
     @property

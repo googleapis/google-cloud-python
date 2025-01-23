@@ -33,7 +33,6 @@ import bigframes.core.schema as schemata
 import bigframes.core.slices as slices
 import bigframes.core.window_spec as window
 import bigframes.dtypes
-import bigframes.operations.aggregations as agg_ops
 
 if typing.TYPE_CHECKING:
     import bigframes.core.ordering as orderings
@@ -1325,8 +1324,7 @@ class AggregateNode(UnaryNode):
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class WindowOpNode(UnaryNode):
-    column_name: ex.DerefOp
-    op: agg_ops.UnaryWindowOp
+    expression: ex.Aggregation
     window_spec: window.WindowSpec
     output_name: bigframes.core.identifiers.ColumnId
     never_skip_nulls: bool = False
@@ -1334,7 +1332,7 @@ class WindowOpNode(UnaryNode):
 
     def _validate(self):
         """Validate the local data in the node."""
-        assert self.column_name.id in self.child.ids
+        assert all(ref in self.child.ids for ref in self.expression.column_references)
 
     @property
     def non_local(self) -> bool:
@@ -1363,9 +1361,11 @@ class WindowOpNode(UnaryNode):
 
     @functools.cached_property
     def added_field(self) -> Field:
-        input_type = self.child.get_type(self.column_name.id)
-        new_item_dtype = self.op.output_type(input_type)
-        return Field(self.output_name, new_item_dtype)
+        input_types = self.child._dtype_lookup
+        return Field(
+            self.output_name,
+            bigframes.dtypes.dtype_for_etype(self.expression.output_type(input_types)),
+        )
 
     @property
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
@@ -1376,7 +1376,7 @@ class WindowOpNode(UnaryNode):
             return self.child.prune(used_cols)
         consumed_ids = (
             used_cols.difference([self.output_name])
-            .union([self.column_name.id])
+            .union(self.expression.column_references)
             .union(self.window_spec.all_referenced_columns)
         )
         return self.transform_children(lambda x: x.prune(consumed_ids))
@@ -1391,7 +1391,7 @@ class WindowOpNode(UnaryNode):
     def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
         return dataclasses.replace(
             self,
-            column_name=self.column_name.remap_column_refs(
+            expression=self.expression.remap_column_refs(
                 mappings, allow_partial_bindings=True
             ),
             window_spec=self.window_spec.remap_column_refs(

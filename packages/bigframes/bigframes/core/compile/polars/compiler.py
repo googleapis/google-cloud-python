@@ -16,7 +16,7 @@ from __future__ import annotations
 import dataclasses
 import functools
 import itertools
-from typing import cast, Sequence, TYPE_CHECKING
+from typing import cast, Sequence, Tuple, TYPE_CHECKING
 
 import bigframes.core
 import bigframes.core.expression as ex
@@ -124,6 +124,24 @@ if polars_installed:
             raise NotImplementedError(
                 f"Aggregation {agg} not yet supported in polars engine."
             )
+
+        def compile_agg_expr(self, expr: ex.Aggregation):
+            if isinstance(expr, ex.NullaryAggregation):
+                inputs: Tuple = ()
+            elif isinstance(expr, ex.UnaryAggregation):
+                assert isinstance(expr.arg, ex.DerefOp)
+                inputs = (expr.arg.id.sql,)
+            elif isinstance(expr, ex.BinaryAggregation):
+                assert isinstance(expr.left, ex.DerefOp)
+                assert isinstance(expr.right, ex.DerefOp)
+                inputs = (
+                    expr.left.id.sql,
+                    expr.right.id.sql,
+                )
+            else:
+                raise ValueError(f"Unexpected aggregation: {expr.op}")
+
+            return self.compile_agg_op(expr.op, inputs)
 
         def compile_agg_op(self, op: agg_ops.WindowOp, inputs: Sequence[str] = []):
             if isinstance(op, agg_ops.ProductOp):
@@ -320,9 +338,9 @@ class PolarsCompiler:
     @compile_node.register
     def compile_window(self, node: nodes.WindowOpNode):
         df = self.compile_node(node.child)
-        agg_expr = self.agg_compiler.compile_agg_op(
-            node.op, [node.column_name.id.sql]
-        ).alias(node.output_name.sql)
+        agg_expr = self.agg_compiler.compile_agg_expr(node.expression).alias(
+            node.output_name.sql
+        )
         # Three window types: completely unbound, grouped and row bounded
 
         window = node.window_spec

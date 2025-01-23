@@ -861,8 +861,7 @@ class OrderedIR(BaseIbisIR):
     ## Methods that only work with ordering
     def project_window_op(
         self,
-        column_name: ex.DerefOp,
-        op: agg_ops.UnaryWindowOp,
+        expression: ex.Aggregation,
         window_spec: WindowSpec,
         output_name: str,
         *,
@@ -881,8 +880,11 @@ class OrderedIR(BaseIbisIR):
         # See: https://github.com/ibis-project/ibis/issues/9773
         used_exprs = map(
             self._compile_expression,
-            itertools.chain(
-                (column_name,), map(ex.DerefOp, window_spec.all_referenced_columns)
+            map(
+                ex.DerefOp,
+                itertools.chain(
+                    expression.column_references, window_spec.all_referenced_columns
+                ),
             ),
         )
         can_directly_window = not any(
@@ -890,44 +892,54 @@ class OrderedIR(BaseIbisIR):
         )
         if not can_directly_window:
             return self._reproject_to_table().project_window_op(
-                column_name,
-                op,
+                expression,
                 window_spec,
                 output_name,
                 never_skip_nulls=never_skip_nulls,
             )
 
-        column = typing.cast(ibis_types.Column, self._compile_expression(column_name))
         window = self._ibis_window_from_spec(
-            window_spec, require_total_order=op.uses_total_row_ordering
+            window_spec, require_total_order=expression.op.uses_total_row_ordering
         )
         bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
 
         window_op = agg_compiler.compile_analytic(
-            ex.UnaryAggregation(op, column_name),
+            expression,
             window,
             bindings=bindings,
         )
 
+        inputs = tuple(
+            typing.cast(ibis_types.Column, self._compile_expression(ex.DerefOp(column)))
+            for column in expression.column_references
+        )
         clauses = []
-        if op.skips_nulls and not never_skip_nulls:
-            clauses.append((column.isnull(), ibis_types.null()))
-        if window_spec.min_periods:
-            if op.skips_nulls:
+        if expression.op.skips_nulls and not never_skip_nulls:
+            for column in inputs:
+                clauses.append((column.isnull(), ibis_types.null()))
+        if window_spec.min_periods and len(inputs) > 0:
+            if expression.op.skips_nulls:
                 # Most operations do not count NULL values towards min_periods
+                per_col_does_count = (column.notnull() for column in inputs)
+                # All inputs must be non-null for observation to count
+                is_observation = functools.reduce(
+                    lambda x, y: x & y, per_col_does_count
+                ).cast(int)
                 observation_count = agg_compiler.compile_analytic(
-                    ex.UnaryAggregation(agg_ops.count_op, column_name),
+                    ex.UnaryAggregation(agg_ops.sum_op, ex.deref("_observation_count")),
                     window,
-                    bindings=bindings,
+                    bindings={"_observation_count": is_observation},
                 )
             else:
                 # Operations like count treat even NULLs as valid observations for the sake of min_periods
                 # notnull is just used to convert null values to non-null (FALSE) values to be counted
-                denulled_value = typing.cast(ibis_types.BooleanColumn, column.notnull())
+                is_observation = inputs[0].notnull()
                 observation_count = agg_compiler.compile_analytic(
-                    ex.UnaryAggregation(agg_ops.count_op, ex.deref("_denulled")),
+                    ex.UnaryAggregation(
+                        agg_ops.count_op, ex.deref("_observation_count")
+                    ),
                     window,
-                    bindings={**bindings, "_denulled": denulled_value},
+                    bindings={"_observation_count": is_observation},
                 )
             clauses.append(
                 (
