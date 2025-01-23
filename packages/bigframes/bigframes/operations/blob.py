@@ -216,7 +216,7 @@ class BlobAccessor(base.SeriesMethods):
                 response = requests.get(read_url)
                 ipy_display.display(ipy_display.Audio(response.content))
             elif content_type.startswith("video"):
-                ipy_display.display(ipy_display.Video(url=read_url))
+                ipy_display.display(ipy_display.Video(read_url))
             else:  # display as raw data
                 response = requests.get(read_url)
                 ipy_display.display(response.content)
