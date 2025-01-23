@@ -40,7 +40,6 @@ import bigframes.core.identifiers as ids
 from bigframes.core.ordering import (
     ascending_over,
     encode_order_string,
-    join_orderings,
     OrderingExpression,
     RowOrdering,
     TotalOrdering,
@@ -420,50 +419,6 @@ class UnorderedIR(BaseIbisIR):
             columns=columns,
         )
 
-    def explode(self, columns: typing.Sequence[ex.DerefOp]) -> UnorderedIR:
-        table = self._to_ibis_expr()
-        column_ids = tuple(ref.id.sql for ref in columns)
-
-        # The offset array ensures null represents empty arrays after unnesting.
-        offset_array_id = bigframes.core.guid.generate_guid("offset_array_")
-        offset_array = bigframes_vendored.ibis.range(
-            0,
-            bigframes_vendored.ibis.greatest(
-                1,  # We always want at least 1 element to fill in NULLs for empty arrays.
-                bigframes_vendored.ibis.least(
-                    *[table[column_id].length() for column_id in column_ids]
-                ),
-            ),
-            1,
-        ).name(offset_array_id)
-        table_w_offset_array = table.select(
-            offset_array,
-            *self._column_names,
-        )
-
-        unnest_offset_id = bigframes.core.guid.generate_guid("unnest_offset_")
-        unnest_offset = (
-            table_w_offset_array[offset_array_id].unnest().name(unnest_offset_id)
-        )
-        table_w_offset = table_w_offset_array.select(
-            unnest_offset,
-            *self._column_names,
-        )
-
-        unnested_columns = [
-            table_w_offset[column_id][table_w_offset[unnest_offset_id]].name(column_id)
-            if column_id in column_ids
-            else table_w_offset[column_id]
-            for column_id in self._column_names
-        ]
-        table_w_unnest = table_w_offset.select(*unnested_columns)
-
-        columns = [table_w_unnest[column_name] for column_name in self._column_names]
-        return UnorderedIR(
-            table_w_unnest,
-            columns=columns,  # type: ignore
-        )
-
     def as_ordered_ir(self) -> OrderedIR:
         """Convert to OrderedIr, but without any definite ordering."""
         return OrderedIR(self._table, self._columns, predicates=self._predicates)
@@ -744,77 +699,6 @@ class OrderedIR(BaseIbisIR):
             columns=columns,
             hidden_ordering_columns=hidden_ordering_columns,
             ordering=self._ordering,
-        )
-
-    def explode(self, columns: typing.Sequence[ex.DerefOp]) -> OrderedIR:
-        if self.order_non_deterministic:
-            id = bigframes.core.guid.generate_guid()
-            return self.promote_offsets(id)
-        table = self._to_ibis_expr(ordering_mode="unordered", expose_hidden_cols=True)
-        column_ids = tuple(ref.id.sql for ref in columns)
-
-        offset_array_id = bigframes.core.guid.generate_guid("offset_array_")
-        offset_array = bigframes_vendored.ibis.range(
-            0,
-            bigframes_vendored.ibis.greatest(
-                1,  # We always want at least 1 element to fill in NULLs for empty arrays.
-                bigframes_vendored.ibis.least(
-                    *[table[column_id].length() for column_id in column_ids]
-                ),
-            ),
-            1,
-        ).name(offset_array_id)
-        table_w_offset_array = table.select(
-            offset_array,
-            *self._column_names,
-            *self._hidden_ordering_column_names,
-        )
-
-        unnest_offset_id = bigframes.core.guid.generate_guid("unnest_offset_")
-        unnest_offset = (
-            table_w_offset_array[offset_array_id].unnest().name(unnest_offset_id)
-        )
-        table_w_offset = table_w_offset_array.select(
-            unnest_offset,
-            *self._column_names,
-            *self._hidden_ordering_column_names,
-        )
-
-        unnested_columns = [
-            table_w_offset[column_id][table_w_offset[unnest_offset_id]].name(column_id)
-            if column_id in column_ids
-            else table_w_offset[column_id]
-            for column_id in self._column_names
-        ]
-
-        table_w_unnest = table_w_offset.select(
-            table_w_offset[unnest_offset_id],
-            *unnested_columns,
-            *self._hidden_ordering_column_names,
-        )
-
-        columns = [table_w_unnest[column_name] for column_name in self._column_names]
-        hidden_ordering_columns = [
-            *[
-                table_w_unnest[column_name]
-                for column_name in self._hidden_ordering_column_names
-            ],
-            table_w_unnest[unnest_offset_id],
-        ]
-        l_mappings = {id: id for id in self._ordering.referenced_columns}
-        r_mappings = {ids.ColumnId(unnest_offset_id): ids.ColumnId(unnest_offset_id)}
-        ordering = join_orderings(
-            self._ordering,
-            TotalOrdering.from_offset_col(unnest_offset_id),
-            l_mappings,
-            r_mappings,
-        )
-
-        return OrderedIR(
-            table_w_unnest,
-            columns=columns,  # type: ignore
-            hidden_ordering_columns=hidden_ordering_columns,
-            ordering=ordering,
         )
 
     def promote_offsets(self, col_id: str) -> OrderedIR:
