@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.38.0](https://github.com/googleapis/google-auth-library-python/compare/v2.37.0...v2.38.0) (2025-01-23)
+
+
+### Features
+
+* Adding domain-wide delegation flow in impersonated credential ([#1624](https://github.com/googleapis/google-auth-library-python/issues/1624)) ([34ee3fe](https://github.com/googleapis/google-auth-library-python/commit/34ee3fef8cba6a1bbaa46fa16b43af0d89b60b0f))
+
+
+### Documentation
+
+* Add warnings regarding consuming externally sourced credentials ([d049370](https://github.com/googleapis/google-auth-library-python/commit/d049370d266b50db0e09d7b292dbf33052b27853))
+
 ## [2.37.0](https://github.com/googleapis/google-auth-library-python/compare/v2.36.1...v2.37.0) (2024-12-11)
 
 
