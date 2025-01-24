@@ -19,6 +19,7 @@ import inspect
 import sys
 
 import grpc
+import math
 
 # special case python < 3.8
 if sys.version_info.major == 3 and sys.version_info.minor < 8:
@@ -35,6 +36,7 @@ from opentelemetry import trace
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
+from google.api_core.timeout import ConstantTimeout
 
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
@@ -652,6 +654,8 @@ def test_publish_new_batch_needed(creds):
     future = client.publish(topic, b"foo", bar=b"baz")
     assert future is mock.sentinel.future
 
+    call_args = batch_class.call_args
+
     # Check the mocks.
     batch_class.assert_called_once_with(
         client=mock.ANY,
@@ -660,8 +664,12 @@ def test_publish_new_batch_needed(creds):
         batch_done_callback=None,
         commit_when_full=True,
         commit_retry=gapic_v1.method.DEFAULT,
-        commit_timeout=gapic_v1.method.DEFAULT,
+        commit_timeout=mock.ANY,
     )
+    commit_timeout_arg = call_args[1]["commit_timeout"]
+    assert isinstance(commit_timeout_arg, ConstantTimeout)
+    assert math.isclose(commit_timeout_arg._timeout, 60) is True
+
     message_pb = gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
     wrapper = PublishMessageWrapper(message=message_pb)
     batch1.publish.assert_called_once_with(wrapper)
