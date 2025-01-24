@@ -774,6 +774,11 @@ method_mapping = {
         blobreader_read,
     ],
     "storage.objects.list": [client_list_blobs, bucket_list_blobs, bucket_delete],
+    "storage.objects.delete": [
+        bucket_delete_blob,
+        bucket_delete_blobs,
+        blob_delete,
+    ],
     "storage.serviceaccount.get": [client_get_service_account_email],  # S1 end
     "storage.buckets.patch": [
         bucket_patch,
@@ -791,12 +796,6 @@ method_mapping = {
     "storage.hmacKey.update": [hmac_key_update],
     "storage.objects.compose": [blob_compose],
     "storage.objects.copy": [bucket_copy_blob, bucket_rename_blob],
-    "storage.objects.delete": [
-        bucket_delete_blob,
-        bucket_delete_blobs,
-        blob_delete,
-        bucket_rename_blob,
-    ],
     "storage.objects.insert": [
         blob_upload_from_string_multipart,
         blobwriter_write_multipart,

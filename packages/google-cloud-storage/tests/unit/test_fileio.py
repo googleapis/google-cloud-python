@@ -23,6 +23,7 @@ import mock
 from google.api_core.exceptions import RequestRangeNotSatisfiable
 from google.cloud.storage.fileio import CHUNK_SIZE_MULTIPLE
 from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
 
 TEST_TEXT_DATA = string.ascii_lowercase + "\n" + string.ascii_uppercase + "\n"
 TEST_BINARY_DATA = TEST_TEXT_DATA.encode("utf-8")
@@ -378,7 +379,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
             PLAIN_CONTENT_TYPE,
             None,
             chunk_size=chunk_size,
-            retry=None,
+            retry=DEFAULT_RETRY,
             **upload_kwargs
         )
         upload.transmit_next_chunk.assert_called_with(transport, timeout=timeout)
@@ -469,57 +470,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         with self.assertRaises(io.UnsupportedOperation):
             writer.seek(0)
 
-    def test_conditional_retry_failure(self):
-        blob = mock.Mock()
-
-        upload = mock.Mock()
-        transport = mock.Mock()
-
-        blob._initiate_resumable_upload.return_value = (upload, transport)
-
-        with mock.patch("google.cloud.storage.fileio.CHUNK_SIZE_MULTIPLE", 1):
-            # Create a writer.
-            # It would be normal to use a context manager here, but not doing so
-            # gives us more control over close() for test purposes.
-            chunk_size = 8  # Note: Real upload requires a multiple of 256KiB.
-            writer = self._make_blob_writer(
-                blob,
-                chunk_size=chunk_size,
-                content_type=PLAIN_CONTENT_TYPE,
-            )
-
-        # The transmit_next_chunk method must actually consume bytes from the
-        # sliding buffer for the flush() feature to work properly.
-        upload.transmit_next_chunk.side_effect = lambda _: writer._buffer.read(
-            chunk_size
-        )
-
-        # Write under chunk_size. This should be buffered and the upload not
-        # initiated.
-        writer.write(TEST_BINARY_DATA[0:4])
-        blob._initiate_resumable_upload.assert_not_called()
-
-        # Write over chunk_size. This should result in upload initialization
-        # and multiple chunks uploaded.
-        # Due to the condition not being fulfilled, retry should be None.
-        writer.write(TEST_BINARY_DATA[4:32])
-        blob._initiate_resumable_upload.assert_called_once_with(
-            blob.bucket.client,
-            writer._buffer,
-            PLAIN_CONTENT_TYPE,
-            None,  # size
-            chunk_size=chunk_size,
-            retry=None,
-        )
-        upload.transmit_next_chunk.assert_called_with(transport)
-        self.assertEqual(upload.transmit_next_chunk.call_count, 4)
-
-        # Write another byte, finalize and close.
-        writer.write(TEST_BINARY_DATA[32:33])
-        writer.close()
-        self.assertEqual(upload.transmit_next_chunk.call_count, 5)
-
-    def test_conditional_retry_pass(self):
+    def test_retry_enabled(self):
         blob = mock.Mock()
 
         upload = mock.Mock()
@@ -552,7 +503,7 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
 
         # Write over chunk_size. This should result in upload initialization
         # and multiple chunks uploaded.
-        # Due to the condition being fulfilled, retry should be DEFAULT_RETRY.
+        # Retry should be DEFAULT_RETRY.
         writer.write(TEST_BINARY_DATA[4:32])
         blob._initiate_resumable_upload.assert_called_once_with(
             blob.bucket.client,
@@ -625,6 +576,96 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         blob = mock.Mock()
         with self.assertRaises(ValueError):
             self._make_blob_writer(blob, invalid_kwarg=1)
+
+    def test_conditional_retry_w_condition(self):
+        # Not the default, but still supported in the signature for compatibility.
+        blob = mock.Mock()
+
+        upload = mock.Mock()
+        transport = mock.Mock()
+
+        blob._initiate_resumable_upload.return_value = (upload, transport)
+
+        with mock.patch("google.cloud.storage.fileio.CHUNK_SIZE_MULTIPLE", 1):
+            # Create a writer.
+            # It would be normal to use a context manager here, but not doing so
+            # gives us more control over close() for test purposes.
+            chunk_size = 8  # Note: Real upload requires a multiple of 256KiB.
+            writer = self._make_blob_writer(
+                blob,
+                chunk_size=chunk_size,
+                content_type=PLAIN_CONTENT_TYPE,
+                retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+                if_generation_match=100,
+            )
+
+        # The transmit_next_chunk method must actually consume bytes from the
+        # sliding buffer for the flush() feature to work properly.
+        upload.transmit_next_chunk.side_effect = lambda _: writer._buffer.read(
+            chunk_size
+        )
+
+        # Write under chunk_size. This should be buffered and the upload not
+        # initiated.
+        writer.write(TEST_BINARY_DATA[0:4])
+        blob._initiate_resumable_upload.assert_not_called()
+
+        # Write over chunk_size. This should result in upload initialization
+        # and multiple chunks uploaded.
+        writer.write(TEST_BINARY_DATA[4:32])
+        blob._initiate_resumable_upload.assert_called_once_with(
+            blob.bucket.client,
+            writer._buffer,
+            PLAIN_CONTENT_TYPE,
+            None,  # size
+            chunk_size=chunk_size,
+            retry=DEFAULT_RETRY,
+            if_generation_match=100,
+        )
+
+    def test_conditional_retry_wo_condition(self):
+        # Not the default, but still supported in the signature for compatibility.
+        blob = mock.Mock()
+
+        upload = mock.Mock()
+        transport = mock.Mock()
+
+        blob._initiate_resumable_upload.return_value = (upload, transport)
+
+        with mock.patch("google.cloud.storage.fileio.CHUNK_SIZE_MULTIPLE", 1):
+            # Create a writer.
+            # It would be normal to use a context manager here, but not doing so
+            # gives us more control over close() for test purposes.
+            chunk_size = 8  # Note: Real upload requires a multiple of 256KiB.
+            writer = self._make_blob_writer(
+                blob,
+                chunk_size=chunk_size,
+                content_type=PLAIN_CONTENT_TYPE,
+                retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            )
+
+        # The transmit_next_chunk method must actually consume bytes from the
+        # sliding buffer for the flush() feature to work properly.
+        upload.transmit_next_chunk.side_effect = lambda _: writer._buffer.read(
+            chunk_size
+        )
+
+        # Write under chunk_size. This should be buffered and the upload not
+        # initiated.
+        writer.write(TEST_BINARY_DATA[0:4])
+        blob._initiate_resumable_upload.assert_not_called()
+
+        # Write over chunk_size. This should result in upload initialization
+        # and multiple chunks uploaded.
+        writer.write(TEST_BINARY_DATA[4:32])
+        blob._initiate_resumable_upload.assert_called_once_with(
+            blob.bucket.client,
+            writer._buffer,
+            PLAIN_CONTENT_TYPE,
+            None,  # size
+            chunk_size=chunk_size,
+            retry=None,
+        )
 
 
 class Test_SlidingBuffer(unittest.TestCase):
@@ -896,6 +937,6 @@ class TestBlobWriterText(unittest.TestCase, _BlobWriterBase):
             PLAIN_CONTENT_TYPE,
             None,
             chunk_size=chunk_size,
-            retry=None,
+            retry=DEFAULT_RETRY,
         )
         upload.transmit_next_chunk.assert_called_with(transport)

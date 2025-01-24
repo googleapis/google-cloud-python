@@ -359,7 +359,7 @@ class Test_PropertyMixin(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
             _target_object=derived,
         )
 
@@ -437,7 +437,7 @@ class Test_PropertyMixin(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
             _target_object=derived,
         )
 

@@ -1641,7 +1641,7 @@ class Test_Bucket(unittest.TestCase):
             expected_path,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
             _target_object=None,
         )
 
@@ -1664,7 +1664,7 @@ class Test_Bucket(unittest.TestCase):
             expected_path,
             query_params=expected_query_params,
             timeout=timeout,
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
             _target_object=None,
         )
 
@@ -1717,7 +1717,7 @@ class Test_Bucket(unittest.TestCase):
             expected_path,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
             _target_object=None,
         )
 
@@ -1749,7 +1749,7 @@ class Test_Bucket(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=timeout,
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
 
     def test_delete_blobs_w_generation_match_wrong_len(self):
@@ -1833,7 +1833,7 @@ class Test_Bucket(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
         call_2 = mock.call(
             blob_name2,
@@ -1844,7 +1844,7 @@ class Test_Bucket(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
         bucket.delete_blob.assert_has_calls([call_1, call_2])
 
@@ -1917,7 +1917,7 @@ class Test_Bucket(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
         call_2 = mock.call(
             blob_name2,
@@ -1928,7 +1928,7 @@ class Test_Bucket(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
         bucket.delete_blob.assert_has_calls([call_1, call_2])
 
@@ -1957,7 +1957,7 @@ class Test_Bucket(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
         call_2 = mock.call(
             blob_name2,
@@ -1968,7 +1968,7 @@ class Test_Bucket(unittest.TestCase):
             if_metageneration_match=None,
             if_metageneration_not_match=None,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
         bucket.delete_blob.assert_has_calls([call_1, call_2])
 
@@ -2252,7 +2252,7 @@ class Test_Bucket(unittest.TestCase):
             expected_patch_data,
             query_params=expected_patch_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            retry=DEFAULT_RETRY,
         )
 
     def test_copy_blob_w_name_and_user_project(self):

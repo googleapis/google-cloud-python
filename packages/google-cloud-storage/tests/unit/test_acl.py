@@ -1070,6 +1070,59 @@ class Test_ObjectACL(unittest.TestCase):
         blob.user_project = USER_PROJECT
         self.assertEqual(acl.user_project, USER_PROJECT)
 
+    def test_passthrough_methods(self):
+        NAME = "name"
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket(NAME)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._make_one(blob)
+
+        client = mock.Mock()
+
+        with mock.patch("google.cloud.storage.acl.ACL.clear") as m:
+            kwargs = {
+                "client": client,
+                "if_generation_match": 1,
+                "if_generation_not_match": 2,
+                "if_metageneration_match": 3,
+                "if_metageneration_not_match": 4,
+                "timeout": 60,
+                "retry": None,
+            }
+
+            acl.clear(**kwargs)
+            m.assert_called_once_with(**kwargs)
+
+        with mock.patch("google.cloud.storage.acl.ACL.save") as m:
+            kwargs = {
+                "acl": [],
+                "client": client,
+                "if_generation_match": 1,
+                "if_generation_not_match": 2,
+                "if_metageneration_match": 3,
+                "if_metageneration_not_match": 4,
+                "timeout": 60,
+                "retry": None,
+            }
+
+            acl.save(**kwargs)
+            m.assert_called_once_with(**kwargs)
+
+        with mock.patch("google.cloud.storage.acl.ACL.save_predefined") as m:
+            kwargs = {
+                "predefined": "predef",
+                "client": client,
+                "if_generation_match": 1,
+                "if_generation_not_match": 2,
+                "if_metageneration_match": 3,
+                "if_metageneration_not_match": 4,
+                "timeout": 60,
+                "retry": None,
+            }
+
+            acl.save_predefined(**kwargs)
+            m.assert_called_once_with(**kwargs)
+
 
 class _Blob(object):
     user_project = None

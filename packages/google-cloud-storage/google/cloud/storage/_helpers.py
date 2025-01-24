@@ -339,7 +339,7 @@ class _PropertyMixin(object):
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        retry=DEFAULT_RETRY,
         override_unlocked_retention=False,
     ):
         """Sends all changed properties in a PATCH request.
