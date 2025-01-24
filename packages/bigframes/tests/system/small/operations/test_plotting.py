@@ -34,10 +34,20 @@ def _check_legend_labels(ax, labels):
         assert label == e
 
 
-def test_series_hist_bins(scalars_dfs):
+@pytest.mark.parametrize(
+    ("alias"),
+    [
+        pytest.param(True),
+        pytest.param(False),
+    ],
+)
+def test_series_hist_bins(scalars_dfs, alias):
     scalars_df, scalars_pandas_df = scalars_dfs
     bins = 5
-    ax = scalars_df["int64_col"].plot.hist(bins=bins)
+    if alias:
+        ax = scalars_df["int64_col"].hist(bins=bins)
+    else:
+        ax = scalars_df["int64_col"].plot.hist(bins=bins)
     pd_ax = scalars_pandas_df["int64_col"].plot.hist(bins=bins)
 
     # Compares axis values and height between bigframes and pandas histograms.
@@ -49,11 +59,21 @@ def test_series_hist_bins(scalars_dfs):
         assert ax.patches[i]._height == pd_ax.patches[i]._height
 
 
-def test_dataframes_hist_bins(scalars_dfs):
+@pytest.mark.parametrize(
+    ("alias"),
+    [
+        pytest.param(True),
+        pytest.param(False),
+    ],
+)
+def test_dataframes_hist_bins(scalars_dfs, alias):
     scalars_df, scalars_pandas_df = scalars_dfs
     bins = 7
     columns = ["int64_col", "int64_too", "float64_col"]
-    ax = scalars_df[columns].plot.hist(bins=bins)
+    if alias:
+        ax = scalars_df[columns].hist(bins=bins)
+    else:
+        ax = scalars_df[columns].plot.hist(bins=bins)
     pd_ax = scalars_pandas_df[columns].plot.hist(bins=bins)
 
     # Compares axis values and height between bigframes and pandas histograms.
@@ -171,10 +191,25 @@ def test_hist_kwargs_ticks_props(scalars_dfs):
         tm.assert_almost_equal(ylabels[i].get_rotation(), pd_ylables[i].get_rotation())
 
 
-def test_line(scalars_dfs):
+@pytest.mark.parametrize(
+    ("col_names", "alias"),
+    [
+        pytest.param(
+            ["int64_col", "float64_col", "int64_too", "bool_col"], True, id="df_alias"
+        ),
+        pytest.param(
+            ["int64_col", "float64_col", "int64_too", "bool_col"], False, id="df"
+        ),
+        pytest.param(["int64_col"], True, id="series_alias"),
+        pytest.param(["int64_col"], False, id="series"),
+    ],
+)
+def test_line(scalars_dfs, col_names, alias):
     scalars_df, scalars_pandas_df = scalars_dfs
-    col_names = ["int64_col", "float64_col", "int64_too", "bool_col"]
-    ax = scalars_df[col_names].plot.line()
+    if alias:
+        ax = scalars_df[col_names].line()
+    else:
+        ax = scalars_df[col_names].plot.line()
     pd_ax = scalars_pandas_df[col_names].plot.line()
     tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
     tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
@@ -183,10 +218,21 @@ def test_line(scalars_dfs):
         tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
 
 
-def test_area(scalars_dfs):
+@pytest.mark.parametrize(
+    ("col_names", "alias"),
+    [
+        pytest.param(["int64_col", "float64_col", "int64_too"], True, id="df_alias"),
+        pytest.param(["int64_col", "float64_col", "int64_too"], False, id="df"),
+        pytest.param(["int64_col"], True, id="series_alias"),
+        pytest.param(["int64_col"], False, id="series"),
+    ],
+)
+def test_area(scalars_dfs, col_names, alias):
     scalars_df, scalars_pandas_df = scalars_dfs
-    col_names = ["int64_col", "float64_col", "int64_too"]
-    ax = scalars_df[col_names].plot.area(stacked=False)
+    if alias:
+        ax = scalars_df[col_names].area(stacked=False)
+    else:
+        ax = scalars_df[col_names].plot.area(stacked=False)
     pd_ax = scalars_pandas_df[col_names].plot.area(stacked=False)
     tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
     tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
@@ -195,10 +241,21 @@ def test_area(scalars_dfs):
         tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
 
 
-def test_bar(scalars_dfs):
+@pytest.mark.parametrize(
+    ("col_names", "alias"),
+    [
+        pytest.param(["int64_col", "float64_col", "int64_too"], True, id="df_alias"),
+        pytest.param(["int64_col", "float64_col", "int64_too"], False, id="df"),
+        pytest.param(["int64_col"], True, id="series_alias"),
+        pytest.param(["int64_col"], False, id="series"),
+    ],
+)
+def test_bar(scalars_dfs, col_names, alias):
     scalars_df, scalars_pandas_df = scalars_dfs
-    col_names = ["int64_col", "float64_col", "int64_too"]
-    ax = scalars_df[col_names].plot.bar()
+    if alias:
+        ax = scalars_df[col_names].bar()
+    else:
+        ax = scalars_df[col_names].plot.bar()
     pd_ax = scalars_pandas_df[col_names].plot.bar()
     tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
     tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
@@ -207,10 +264,23 @@ def test_bar(scalars_dfs):
         tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
 
 
-def test_scatter(scalars_dfs):
+@pytest.mark.parametrize(
+    ("col_names", "alias"),
+    [
+        pytest.param(
+            ["int64_col", "float64_col", "int64_too", "bool_col"], True, id="df_alias"
+        ),
+        pytest.param(
+            ["int64_col", "float64_col", "int64_too", "bool_col"], False, id="df"
+        ),
+    ],
+)
+def test_scatter(scalars_dfs, col_names, alias):
     scalars_df, scalars_pandas_df = scalars_dfs
-    col_names = ["int64_col", "float64_col", "int64_too", "bool_col"]
-    ax = scalars_df[col_names].plot.scatter(x="int64_col", y="float64_col")
+    if alias:
+        ax = scalars_df[col_names].scatter(x="int64_col", y="float64_col")
+    else:
+        ax = scalars_df[col_names].plot.scatter(x="int64_col", y="float64_col")
     pd_ax = scalars_pandas_df[col_names].plot.scatter(x="int64_col", y="float64_col")
     tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
     tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())

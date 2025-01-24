@@ -1984,15 +1984,47 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
         return NotImplemented
 
-    # Keep this at the bottom of the Series class to avoid
-    # confusing type checker by overriding str
-    @property
-    def str(self) -> strings.StringMethods:
-        return strings.StringMethods(self._block)
-
     @property
     def plot(self):
         return plotting.PlotAccessor(self)
+
+    def hist(
+        self, by: typing.Optional[typing.Sequence[str]] = None, bins: int = 10, **kwargs
+    ):
+        return self.plot.hist(by=by, bins=bins, **kwargs)
+
+    hist.__doc__ = inspect.getdoc(plotting.PlotAccessor.hist)
+
+    def line(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return self.plot.line(x=x, y=y, **kwargs)
+
+    line.__doc__ = inspect.getdoc(plotting.PlotAccessor.line)
+
+    def area(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        stacked: bool = True,
+        **kwargs,
+    ):
+        return self.plot.area(x=x, y=y, stacked=stacked, **kwargs)
+
+    area.__doc__ = inspect.getdoc(plotting.PlotAccessor.area)
+
+    def bar(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return self.plot.bar(x=x, y=y, **kwargs)
+
+    bar.__doc__ = inspect.getdoc(plotting.PlotAccessor.bar)
 
     def _slice(
         self,
@@ -2021,6 +2053,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def _cached(self, *, force: bool = True, session_aware: bool = True) -> Series:
         self._block.cached(force=force, session_aware=session_aware)
         return self
+
+    # Keep this at the bottom of the Series class to avoid
+    # confusing type checker by overriding str
+    @property
+    def str(self) -> strings.StringMethods:
+        return strings.StringMethods(self._block)
 
 
 def _is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:

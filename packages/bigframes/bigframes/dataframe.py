@@ -4313,6 +4313,56 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def plot(self):
         return plotting.PlotAccessor(self)
 
+    def hist(
+        self, by: typing.Optional[typing.Sequence[str]] = None, bins: int = 10, **kwargs
+    ):
+        return self.plot.hist(by=by, bins=bins, **kwargs)
+
+    hist.__doc__ = inspect.getdoc(plotting.PlotAccessor.hist)
+
+    def line(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return self.plot.line(x=x, y=y, **kwargs)
+
+    line.__doc__ = inspect.getdoc(plotting.PlotAccessor.line)
+
+    def area(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        stacked: bool = True,
+        **kwargs,
+    ):
+        return self.plot.area(x=x, y=y, stacked=stacked, **kwargs)
+
+    area.__doc__ = inspect.getdoc(plotting.PlotAccessor.area)
+
+    def bar(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return self.plot.bar(x=x, y=y, **kwargs)
+
+    bar.__doc__ = inspect.getdoc(plotting.PlotAccessor.bar)
+
+    def scatter(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        s: typing.Union[typing.Hashable, typing.Sequence[typing.Hashable]] = None,
+        c: typing.Union[typing.Hashable, typing.Sequence[typing.Hashable]] = None,
+        **kwargs,
+    ):
+        return self.plot.scatter(x=x, y=y, s=s, c=c, **kwargs)
+
+    scatter.__doc__ = inspect.getdoc(plotting.PlotAccessor.scatter)
+
     def __matmul__(self, other) -> DataFrame:
         return self.dot(other)
 
