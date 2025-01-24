@@ -62,7 +62,7 @@ try:
     from opentelemetry.sdk.resources import Resource
 
     HAS_OPENTELEMETRY_INSTALLED = True
-except ImportError:
+except ImportError:  # pragma: NO COVER
     HAS_OPENTELEMETRY_INSTALLED = False
 
 try:
