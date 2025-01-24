@@ -25,6 +25,7 @@ from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
@@ -562,6 +563,84 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
             )
         return self._stubs["get_partner"]
 
+    @property
+    def create_customer(
+        self,
+    ) -> Callable[[customers.CreateCustomerRequest], Awaitable[customers.Customer]]:
+        r"""Return a callable for the create customer method over gRPC.
+
+        Creates a new customer.
+
+        Returns:
+            Callable[[~.CreateCustomerRequest],
+                    Awaitable[~.Customer]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_customer" not in self._stubs:
+            self._stubs["create_customer"] = self._logged_channel.unary_unary(
+                "/google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore/CreateCustomer",
+                request_serializer=customers.CreateCustomerRequest.serialize,
+                response_deserializer=customers.Customer.deserialize,
+            )
+        return self._stubs["create_customer"]
+
+    @property
+    def update_customer(
+        self,
+    ) -> Callable[[customers.UpdateCustomerRequest], Awaitable[customers.Customer]]:
+        r"""Return a callable for the update customer method over gRPC.
+
+        Update details of a single customer
+
+        Returns:
+            Callable[[~.UpdateCustomerRequest],
+                    Awaitable[~.Customer]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_customer" not in self._stubs:
+            self._stubs["update_customer"] = self._logged_channel.unary_unary(
+                "/google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore/UpdateCustomer",
+                request_serializer=customers.UpdateCustomerRequest.serialize,
+                response_deserializer=customers.Customer.deserialize,
+            )
+        return self._stubs["update_customer"]
+
+    @property
+    def delete_customer(
+        self,
+    ) -> Callable[[customers.DeleteCustomerRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete customer method over gRPC.
+
+        Delete details of a single customer
+
+        Returns:
+            Callable[[~.DeleteCustomerRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_customer" not in self._stubs:
+            self._stubs["delete_customer"] = self._logged_channel.unary_unary(
+                "/google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore/DeleteCustomer",
+                request_serializer=customers.DeleteCustomerRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_customer"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -665,6 +744,21 @@ class CloudControlsPartnerCoreGrpcAsyncIOTransport(CloudControlsPartnerCoreTrans
             ),
             self.get_partner: self._wrap_method(
                 self.get_partner,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_customer: self._wrap_method(
+                self.create_customer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_customer: self._wrap_method(
+                self.update_customer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_customer: self._wrap_method(
+                self.delete_customer,
                 default_timeout=None,
                 client_info=client_info,
             ),

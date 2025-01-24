@@ -10,6 +10,16 @@
         "grpc": {
           "libraryClient": "CloudControlsPartnerCoreClient",
           "rpcs": {
+            "CreateCustomer": {
+              "methods": [
+                "create_customer"
+              ]
+            },
+            "DeleteCustomer": {
+              "methods": [
+                "delete_customer"
+              ]
+            },
             "GetCustomer": {
               "methods": [
                 "get_customer"
@@ -48,6 +58,11 @@
             "ListWorkloads": {
               "methods": [
                 "list_workloads"
+              ]
+            },
+            "UpdateCustomer": {
+              "methods": [
+                "update_customer"
               ]
             }
           }
@@ -55,6 +70,16 @@
         "grpc-async": {
           "libraryClient": "CloudControlsPartnerCoreAsyncClient",
           "rpcs": {
+            "CreateCustomer": {
+              "methods": [
+                "create_customer"
+              ]
+            },
+            "DeleteCustomer": {
+              "methods": [
+                "delete_customer"
+              ]
+            },
             "GetCustomer": {
               "methods": [
                 "get_customer"
@@ -93,6 +118,11 @@
             "ListWorkloads": {
               "methods": [
                 "list_workloads"
+              ]
+            },
+            "UpdateCustomer": {
+              "methods": [
+                "update_customer"
               ]
             }
           }
@@ -100,6 +130,16 @@
         "rest": {
           "libraryClient": "CloudControlsPartnerCoreClient",
           "rpcs": {
+            "CreateCustomer": {
+              "methods": [
+                "create_customer"
+              ]
+            },
+            "DeleteCustomer": {
+              "methods": [
+                "delete_customer"
+              ]
+            },
             "GetCustomer": {
               "methods": [
                 "get_customer"
@@ -138,6 +178,11 @@
             "ListWorkloads": {
               "methods": [
                 "list_workloads"
+              ]
+            },
+            "UpdateCustomer": {
+              "methods": [
+                "update_customer"
               ]
             }
           }

@@ -51,6 +51,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.cloudcontrolspartner_v1beta.services.cloud_controls_partner_core import (
@@ -61,6 +62,7 @@ from google.cloud.cloudcontrolspartner_v1beta.services.cloud_controls_partner_co
 )
 from google.cloud.cloudcontrolspartner_v1beta.types import (
     access_approval_requests,
+    completion_state,
     customer_workloads,
     customers,
     ekm_connections,
@@ -2043,6 +2045,7 @@ def test_get_customer(request_type, transport: str = "grpc"):
             name="name_value",
             display_name="display_name_value",
             is_onboarded=True,
+            organization_domain="organization_domain_value",
         )
         response = client.get_customer(request)
 
@@ -2057,6 +2060,7 @@ def test_get_customer(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
 
 
 def test_get_customer_non_empty_request_with_auto_populated_field():
@@ -2185,6 +2189,7 @@ async def test_get_customer_async(
                 name="name_value",
                 display_name="display_name_value",
                 is_onboarded=True,
+                organization_domain="organization_domain_value",
             )
         )
         response = await client.get_customer(request)
@@ -2200,6 +2205,7 @@ async def test_get_customer_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
 
 
 @pytest.mark.asyncio
@@ -4466,6 +4472,1007 @@ async def test_get_partner_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.CreateCustomerRequest,
+        dict,
+    ],
+)
+def test_create_customer(request_type, transport: str = "grpc"):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = customers.Customer(
+            name="name_value",
+            display_name="display_name_value",
+            is_onboarded=True,
+            organization_domain="organization_domain_value",
+        )
+        response = client.create_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = customers.CreateCustomerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
+
+
+def test_create_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = customers.CreateCustomerRequest(
+        parent="parent_value",
+        customer_id="customer_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == customers.CreateCustomerRequest(
+            parent="parent_value",
+            customer_id="customer_id_value",
+        )
+
+
+def test_create_customer_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_customer in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_customer] = mock_rpc
+        request = {}
+        client.create_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_customer_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_customer
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_customer
+        ] = mock_rpc
+
+        request = {}
+        await client.create_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_customer_async(
+    transport: str = "grpc_asyncio", request_type=customers.CreateCustomerRequest
+):
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                display_name="display_name_value",
+                is_onboarded=True,
+                organization_domain="organization_domain_value",
+            )
+        )
+        response = await client.create_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = customers.CreateCustomerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
+
+
+@pytest.mark.asyncio
+async def test_create_customer_async_from_dict():
+    await test_create_customer_async(request_type=dict)
+
+
+def test_create_customer_field_headers():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = customers.CreateCustomerRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        call.return_value = customers.Customer()
+        client.create_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_customer_field_headers_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = customers.CreateCustomerRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(customers.Customer())
+        await client.create_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_customer_flattened():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = customers.Customer()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_customer(
+            parent="parent_value",
+            customer=customers.Customer(name="name_value"),
+            customer_id="customer_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].customer
+        mock_val = customers.Customer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].customer_id
+        mock_val = "customer_id_value"
+        assert arg == mock_val
+
+
+def test_create_customer_flattened_error():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_customer(
+            customers.CreateCustomerRequest(),
+            parent="parent_value",
+            customer=customers.Customer(name="name_value"),
+            customer_id="customer_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_customer_flattened_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = customers.Customer()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(customers.Customer())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_customer(
+            parent="parent_value",
+            customer=customers.Customer(name="name_value"),
+            customer_id="customer_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].customer
+        mock_val = customers.Customer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].customer_id
+        mock_val = "customer_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_customer_flattened_error_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_customer(
+            customers.CreateCustomerRequest(),
+            parent="parent_value",
+            customer=customers.Customer(name="name_value"),
+            customer_id="customer_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.UpdateCustomerRequest,
+        dict,
+    ],
+)
+def test_update_customer(request_type, transport: str = "grpc"):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = customers.Customer(
+            name="name_value",
+            display_name="display_name_value",
+            is_onboarded=True,
+            organization_domain="organization_domain_value",
+        )
+        response = client.update_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = customers.UpdateCustomerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
+
+
+def test_update_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = customers.UpdateCustomerRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == customers.UpdateCustomerRequest()
+
+
+def test_update_customer_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_customer in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_customer] = mock_rpc
+        request = {}
+        client.update_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_customer_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_customer
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_customer
+        ] = mock_rpc
+
+        request = {}
+        await client.update_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_customer_async(
+    transport: str = "grpc_asyncio", request_type=customers.UpdateCustomerRequest
+):
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                display_name="display_name_value",
+                is_onboarded=True,
+                organization_domain="organization_domain_value",
+            )
+        )
+        response = await client.update_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = customers.UpdateCustomerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
+
+
+@pytest.mark.asyncio
+async def test_update_customer_async_from_dict():
+    await test_update_customer_async(request_type=dict)
+
+
+def test_update_customer_field_headers():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = customers.UpdateCustomerRequest()
+
+    request.customer.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        call.return_value = customers.Customer()
+        client.update_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "customer.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_customer_field_headers_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = customers.UpdateCustomerRequest()
+
+    request.customer.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(customers.Customer())
+        await client.update_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "customer.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_customer_flattened():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = customers.Customer()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_customer(
+            customer=customers.Customer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].customer
+        mock_val = customers.Customer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_customer_flattened_error():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_customer(
+            customers.UpdateCustomerRequest(),
+            customer=customers.Customer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_customer_flattened_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = customers.Customer()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(customers.Customer())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_customer(
+            customer=customers.Customer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].customer
+        mock_val = customers.Customer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_customer_flattened_error_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_customer(
+            customers.UpdateCustomerRequest(),
+            customer=customers.Customer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.DeleteCustomerRequest,
+        dict,
+    ],
+)
+def test_delete_customer(request_type, transport: str = "grpc"):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = customers.DeleteCustomerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_customer_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = customers.DeleteCustomerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_customer(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == customers.DeleteCustomerRequest(
+            name="name_value",
+        )
+
+
+def test_delete_customer_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_customer in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_customer] = mock_rpc
+        request = {}
+        client.delete_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_customer
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_customer
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_async(
+    transport: str = "grpc_asyncio", request_type=customers.DeleteCustomerRequest
+):
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = customers.DeleteCustomerRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_async_from_dict():
+    await test_delete_customer_async(request_type=dict)
+
+
+def test_delete_customer_field_headers():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = customers.DeleteCustomerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        call.return_value = None
+        client.delete_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_field_headers_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = customers.DeleteCustomerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_customer_flattened():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_customer(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_customer_flattened_error():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_customer(
+            customers.DeleteCustomerRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_flattened_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_customer(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_flattened_error_async():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_customer(
+            customers.DeleteCustomerRequest(),
+            name="name_value",
+        )
+
+
 def test_get_workload_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -6172,6 +7179,570 @@ def test_get_partner_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_create_customer_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_customer in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_customer] = mock_rpc
+
+        request = {}
+        client.create_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_customer_rest_required_fields(
+    request_type=customers.CreateCustomerRequest,
+):
+    transport_class = transports.CloudControlsPartnerCoreRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["customer_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "customerId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_customer._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "customerId" in jsonified_request
+    assert jsonified_request["customerId"] == request_init["customer_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["customerId"] = "customer_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_customer._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("customer_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "customerId" in jsonified_request
+    assert jsonified_request["customerId"] == "customer_id_value"
+
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = customers.Customer()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = customers.Customer.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_customer(request)
+
+            expected_params = [
+                (
+                    "customerId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_customer_rest_unset_required_fields():
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_customer._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("customerId",))
+        & set(
+            (
+                "parent",
+                "customer",
+                "customerId",
+            )
+        )
+    )
+
+
+def test_create_customer_rest_flattened():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customers.Customer()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "organizations/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            customer=customers.Customer(name="name_value"),
+            customer_id="customer_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = customers.Customer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_customer(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{parent=organizations/*/locations/*}/customers"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_customer_rest_flattened_error(transport: str = "rest"):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_customer(
+            customers.CreateCustomerRequest(),
+            parent="parent_value",
+            customer=customers.Customer(name="name_value"),
+            customer_id="customer_id_value",
+        )
+
+
+def test_update_customer_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.update_customer in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_customer] = mock_rpc
+
+        request = {}
+        client.update_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_customer_rest_required_fields(
+    request_type=customers.UpdateCustomerRequest,
+):
+    transport_class = transports.CloudControlsPartnerCoreRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_customer._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_customer._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = customers.Customer()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = customers.Customer.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_customer(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_customer_rest_unset_required_fields():
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_customer._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("customer",)))
+
+
+def test_update_customer_rest_flattened():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customers.Customer()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "customer": {
+                "name": "organizations/sample1/locations/sample2/customers/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            customer=customers.Customer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = customers.Customer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_customer(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{customer.name=organizations/*/locations/*/customers/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_customer_rest_flattened_error(transport: str = "rest"):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_customer(
+            customers.UpdateCustomerRequest(),
+            customer=customers.Customer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_customer_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CloudControlsPartnerCoreClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_customer in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_customer] = mock_rpc
+
+        request = {}
+        client.delete_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_customer(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_customer_rest_required_fields(
+    request_type=customers.DeleteCustomerRequest,
+):
+    transport_class = transports.CloudControlsPartnerCoreRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_customer._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_customer._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_customer(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_customer_rest_unset_required_fields():
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_customer._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_customer_rest_flattened():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "organizations/sample1/locations/sample2/customers/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_customer(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=organizations/*/locations/*/customers/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_customer_rest_flattened_error(transport: str = "rest"):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_customer(
+            customers.DeleteCustomerRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudControlsPartnerCoreGrpcTransport(
@@ -6454,6 +8025,69 @@ def test_get_partner_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_customer_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        call.return_value = customers.Customer()
+        client.create_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.CreateCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_customer_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        call.return_value = customers.Customer()
+        client.update_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.UpdateCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_customer_empty_call_grpc():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        call.return_value = None
+        client.delete_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.DeleteCustomerRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = CloudControlsPartnerCoreAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -6546,6 +8180,7 @@ async def test_get_customer_empty_call_grpc_asyncio():
                 name="name_value",
                 display_name="display_name_value",
                 is_onboarded=True,
+                organization_domain="organization_domain_value",
             )
         )
         await client.get_customer(request=None)
@@ -6702,6 +8337,89 @@ async def test_get_partner_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = partners.GetPartnerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_customer_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                display_name="display_name_value",
+                is_onboarded=True,
+                organization_domain="organization_domain_value",
+            )
+        )
+        await client.create_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.CreateCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_customer_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                display_name="display_name_value",
+                is_onboarded=True,
+                organization_domain="organization_domain_value",
+            )
+        )
+        await client.update_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.UpdateCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_customer_empty_call_grpc_asyncio():
+    client = CloudControlsPartnerCoreAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.DeleteCustomerRequest()
 
         assert args[0] == request_msg
 
@@ -7032,6 +8750,7 @@ def test_get_customer_rest_call_success(request_type):
             name="name_value",
             display_name="display_name_value",
             is_onboarded=True,
+            organization_domain="organization_domain_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -7051,6 +8770,7 @@ def test_get_customer_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7754,6 +9474,539 @@ def test_get_partner_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
+def test_create_customer_rest_bad_request(request_type=customers.CreateCustomerRequest):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_customer(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.CreateCustomerRequest,
+        dict,
+    ],
+)
+def test_create_customer_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request_init["customer"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "customer_onboarding_state": {
+            "onboarding_steps": [
+                {
+                    "step": 1,
+                    "start_time": {"seconds": 751, "nanos": 543},
+                    "completion_time": {},
+                    "completion_state": 1,
+                }
+            ]
+        },
+        "is_onboarded": True,
+        "organization_domain": "organization_domain_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = customers.CreateCustomerRequest.meta.fields["customer"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["customer"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["customer"][field])):
+                    del request_init["customer"][field][i][subfield]
+            else:
+                del request_init["customer"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customers.Customer(
+            name="name_value",
+            display_name="display_name_value",
+            is_onboarded=True,
+            organization_domain="organization_domain_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = customers.Customer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_customer(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_customer_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_create_customer"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_create_customer"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = customers.CreateCustomerRequest.pb(
+            customers.CreateCustomerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = customers.Customer.to_json(customers.Customer())
+        req.return_value.content = return_value
+
+        request = customers.CreateCustomerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = customers.Customer()
+
+        client.create_customer(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_customer_rest_bad_request(request_type=customers.UpdateCustomerRequest):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "customer": {
+            "name": "organizations/sample1/locations/sample2/customers/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_customer(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.UpdateCustomerRequest,
+        dict,
+    ],
+)
+def test_update_customer_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "customer": {
+            "name": "organizations/sample1/locations/sample2/customers/sample3"
+        }
+    }
+    request_init["customer"] = {
+        "name": "organizations/sample1/locations/sample2/customers/sample3",
+        "display_name": "display_name_value",
+        "customer_onboarding_state": {
+            "onboarding_steps": [
+                {
+                    "step": 1,
+                    "start_time": {"seconds": 751, "nanos": 543},
+                    "completion_time": {},
+                    "completion_state": 1,
+                }
+            ]
+        },
+        "is_onboarded": True,
+        "organization_domain": "organization_domain_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = customers.UpdateCustomerRequest.meta.fields["customer"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["customer"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["customer"][field])):
+                    del request_init["customer"][field][i][subfield]
+            else:
+                del request_init["customer"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = customers.Customer(
+            name="name_value",
+            display_name="display_name_value",
+            is_onboarded=True,
+            organization_domain="organization_domain_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = customers.Customer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_customer(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_onboarded is True
+    assert response.organization_domain == "organization_domain_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_customer_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "post_update_customer"
+    ) as post, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_update_customer"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = customers.UpdateCustomerRequest.pb(
+            customers.UpdateCustomerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = customers.Customer.to_json(customers.Customer())
+        req.return_value.content = return_value
+
+        request = customers.UpdateCustomerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = customers.Customer()
+
+        client.update_customer(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_customer_rest_bad_request(request_type=customers.DeleteCustomerRequest):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/customers/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_customer(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.DeleteCustomerRequest,
+        dict,
+    ],
+)
+def test_delete_customer_rest_call_success(request_type):
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/customers/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_customer(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_customer_rest_interceptors(null_interceptor):
+    transport = transports.CloudControlsPartnerCoreRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudControlsPartnerCoreRestInterceptor(),
+    )
+    client = CloudControlsPartnerCoreClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudControlsPartnerCoreRestInterceptor, "pre_delete_customer"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = customers.DeleteCustomerRequest.pb(
+            customers.DeleteCustomerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        request = customers.DeleteCustomerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_customer(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
 def test_initialize_client_w_rest():
     client = CloudControlsPartnerCoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -7927,6 +10180,66 @@ def test_get_partner_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_customer_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
+        client.create_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.CreateCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_customer_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
+        client.update_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.UpdateCustomerRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_customer_empty_call_rest():
+    client = CloudControlsPartnerCoreClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
+        client.delete_customer(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = customers.DeleteCustomerRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CloudControlsPartnerCoreClient(
@@ -7968,6 +10281,9 @@ def test_cloud_controls_partner_core_base_transport():
         "get_partner_permissions",
         "list_access_approval_requests",
         "get_partner",
+        "create_customer",
+        "update_customer",
+        "delete_customer",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -8253,6 +10569,15 @@ def test_cloud_controls_partner_core_client_transport_session_collision(transpor
     assert session1 != session2
     session1 = client1.transport.get_partner._session
     session2 = client2.transport.get_partner._session
+    assert session1 != session2
+    session1 = client1.transport.create_customer._session
+    session2 = client2.transport.create_customer._session
+    assert session1 != session2
+    session1 = client1.transport.update_customer._session
+    session2 = client2.transport.update_customer._session
+    assert session1 != session2
+    session1 = client1.transport.delete_customer._session
+    session2 = client2.transport.delete_customer._session
     assert session1 != session2
 
 
