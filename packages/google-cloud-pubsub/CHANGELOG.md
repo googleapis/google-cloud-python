@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.27.3](https://github.com/googleapis/python-pubsub/compare/v2.27.2...v2.27.3) (2025-01-24)
+
+
+### Bug Fixes
+
+* Stop using api_core default timeouts in publish since they are broken ([#1326](https://github.com/googleapis/python-pubsub/issues/1326)) ([ba2c2ee](https://github.com/googleapis/python-pubsub/commit/ba2c2eef7da89a3c14c14d9b6191cd8738c30341))
+
 ## [2.27.2](https://github.com/googleapis/python-pubsub/compare/v2.27.1...v2.27.2) (2025-01-06)
 
 
