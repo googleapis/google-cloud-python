@@ -94,6 +94,18 @@ class OperationsRestTransport(OperationsTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
+
+                .. warning::
+                    Important: If you accept a credential configuration (credential JSON/File/Stream)
+                    from an external source for authentication to Google Cloud Platform, you must
+                    validate it before providing it to any Google API or client library. Providing an
+                    unvalidated credential configuration to Google APIs or libraries can compromise
+                    the security of your systems and data. For more information, refer to
+                    `Validate credential configurations from external sources`_.
+
+                .. _Validate credential configurations from external sources:
+
+                https://cloud.google.com/docs/authentication/external/externally-sourced-credentials
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
             client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
