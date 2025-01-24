@@ -4146,6 +4146,47 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def corrwith(
+        self,
+        other,
+        *,
+        numeric_only: bool = False,
+    ):
+        """
+        Compute pairwise correlation.
+
+        Pairwise correlation is computed between rows or columns of
+        DataFrame with rows or columns of Series or DataFrame. DataFrames
+        are first aligned along both axes before computing the
+        correlations.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> index = ["a", "b", "c", "d", "e"]
+            >>> columns = ["one", "two", "three", "four"]
+            >>> df1 = bpd.DataFrame(np.arange(20).reshape(5, 4), index=index, columns=columns)
+            >>> df2 = bpd.DataFrame(np.arange(16).reshape(4, 4), index=index[:4], columns=columns)
+            >>> df1.corrwith(df2)
+            one      1.0
+            two      1.0
+            three    1.0
+            four     1.0
+            dtype: Float64
+
+        Args:
+            other (DataFrame, Series):
+                Object with which to compute correlations.
+
+            numeric_only (bool, default False):
+                Include only `float`, `int` or `boolean` data.
+
+        Returns:
+            bigframes.pandas.Series: Pairwise correlations.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def update(
         self, other, join: str = "left", overwrite: bool = True, filter_func=None
     ) -> DataFrame:

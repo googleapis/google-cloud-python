@@ -1473,6 +1473,48 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         return result
 
+    def corrwith(
+        self,
+        other: typing.Union[DataFrame, bigframes.series.Series],
+        *,
+        numeric_only: bool = False,
+    ):
+        other_frame = other if isinstance(other, DataFrame) else other.to_frame()
+        if numeric_only:
+            l_frame = self._drop_non_numeric()
+            r_frame = other_frame._drop_non_numeric()
+        else:
+            l_frame = self._raise_on_non_numeric("corrwith")
+            r_frame = other_frame._raise_on_non_numeric("corrwith")
+
+        l_block = l_frame.astype(bigframes.dtypes.FLOAT_DTYPE)._block
+        r_block = r_frame.astype(bigframes.dtypes.FLOAT_DTYPE)._block
+
+        if isinstance(other, DataFrame):
+            block, labels, expr_pairs = l_block._align_both_axes(r_block, how="inner")
+        else:
+            assert isinstance(other, bigframes.series.Series)
+            block, labels, expr_pairs = l_block._align_axis_0(r_block, how="inner")
+
+        na_cols = l_block.column_labels.join(
+            r_block.column_labels, how="outer"
+        ).difference(labels)
+
+        block, _ = block.aggregate(
+            aggregations=tuple(
+                ex.BinaryAggregation(agg_ops.CorrOp(), left_ex, right_ex)
+                for left_ex, right_ex in expr_pairs
+            ),
+            column_labels=labels,
+        )
+        block = block.project_exprs(
+            (ex.const(float("nan")),) * len(na_cols), labels=na_cols
+        )
+        block = block.transpose(
+            original_row_index=pandas.Index([None]), single_row_mode=True
+        )
+        return bigframes.pandas.Series(block)
+
     def to_arrow(
         self,
         *,

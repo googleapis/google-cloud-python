@@ -2246,6 +2246,72 @@ def test_cov_w_numeric_only(scalars_dfs_maybe_ordered, columns, numeric_only):
     )
 
 
+def test_df_corrwith_df(scalars_dfs_maybe_ordered):
+    scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
+
+    l_cols = ["int64_col", "float64_col", "int64_too"]
+    r_cols = ["int64_too", "float64_col"]
+
+    bf_result = scalars_df[l_cols].corrwith(scalars_df[r_cols]).to_pandas()
+    pd_result = scalars_pandas_df[l_cols].corrwith(scalars_pandas_df[r_cols])
+
+    # BigFrames and Pandas differ in their data type handling:
+    # - Column types: BigFrames uses Float64, Pandas uses float64.
+    # - Index types: BigFrames uses strign, Pandas uses object.
+    pd.testing.assert_series_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
+def test_df_corrwith_df_numeric_only(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    l_cols = ["int64_col", "float64_col", "int64_too", "string_col"]
+    r_cols = ["int64_too", "float64_col", "bool_col"]
+
+    bf_result = (
+        scalars_df[l_cols].corrwith(scalars_df[r_cols], numeric_only=True).to_pandas()
+    )
+    pd_result = scalars_pandas_df[l_cols].corrwith(
+        scalars_pandas_df[r_cols], numeric_only=True
+    )
+
+    # BigFrames and Pandas differ in their data type handling:
+    # - Column types: BigFrames uses Float64, Pandas uses float64.
+    # - Index types: BigFrames uses strign, Pandas uses object.
+    pd.testing.assert_series_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
+def test_df_corrwith_df_non_numeric_error(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+
+    l_cols = ["int64_col", "float64_col", "int64_too", "string_col"]
+    r_cols = ["int64_too", "float64_col", "bool_col"]
+
+    with pytest.raises(NotImplementedError):
+        scalars_df[l_cols].corrwith(scalars_df[r_cols], numeric_only=False)
+
+
+@skip_legacy_pandas
+def test_df_corrwith_series(scalars_dfs_maybe_ordered):
+    scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
+
+    l_cols = ["int64_col", "float64_col", "int64_too"]
+    r_col = "float64_col"
+
+    bf_result = scalars_df[l_cols].corrwith(scalars_df[r_col]).to_pandas()
+    pd_result = scalars_pandas_df[l_cols].corrwith(scalars_pandas_df[r_col])
+
+    # BigFrames and Pandas differ in their data type handling:
+    # - Column types: BigFrames uses Float64, Pandas uses float64.
+    # - Index types: BigFrames uses strign, Pandas uses object.
+    pd.testing.assert_series_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
 @pytest.mark.parametrize(
     ("op"),
     [

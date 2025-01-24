@@ -420,3 +420,6 @@ class OpExpression(Expression):
         return (
             all(input.deterministic for input in self.inputs) and self.op.deterministic
         )
+
+
+RefOrConstant = Union[DerefOp, ScalarConstantExpression]
