@@ -3996,7 +3996,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 # Early check whether the dataframe dtypes are currently supported
                 # in the remote function
                 # NOTE: Keep in sync with the value converters used in the gcf code
-                # generated in remote_function_template.py
+                # generated in function_template.py
                 remote_function_supported_dtypes = (
                     bigframes.dtypes.INT_DTYPE,
                     bigframes.dtypes.FLOAT_DTYPE,

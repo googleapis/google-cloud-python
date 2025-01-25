@@ -20,7 +20,7 @@ import pyarrow
 import pytest
 
 import bigframes.dtypes
-import bigframes.functions.remote_function_template as remote_function_template
+import bigframes.functions.function_template as bff_template
 
 HELLO_WORLD_BASE64_BYTES = b"SGVsbG8sIFdvcmxkIQ=="
 HELLO_WORLD_BASE64_STR = "SGVsbG8sIFdvcmxkIQ=="
@@ -59,7 +59,7 @@ HELLO_WORLD_BASE64_STR = "SGVsbG8sIFdvcmxkIQ=="
     ),
 )
 def test_convert_from_bq_json(type_, json_value, expected):
-    got = remote_function_template.convert_from_bq_json(type_, json_value)
+    got = bff_template.convert_from_bq_json(type_, json_value)
     assert got == expected
 
 
@@ -76,7 +76,7 @@ def test_convert_from_bq_json(type_, json_value, expected):
     ],
 )
 def test_convert_from_bq_json_none(type_):
-    got = remote_function_template.convert_from_bq_json(type_, None)
+    got = bff_template.convert_from_bq_json(type_, None)
     assert got is None
 
 
@@ -113,7 +113,7 @@ def test_convert_from_bq_json_none(type_):
     ),
 )
 def test_convert_to_bq_json(type_, value, expected):
-    got = remote_function_template.convert_to_bq_json(type_, value)
+    got = bff_template.convert_to_bq_json(type_, value)
     assert got == expected
 
 
@@ -130,7 +130,7 @@ def test_convert_to_bq_json(type_, value, expected):
     ],
 )
 def test_convert_to_bq_json_none(type_):
-    got = remote_function_template.convert_to_bq_json(type_, None)
+    got = bff_template.convert_to_bq_json(type_, None)
     assert got is None
 
 
@@ -176,7 +176,7 @@ def test_convert_to_bq_json_none(type_):
     ),
 )
 def test_get_pd_series(row_json, expected):
-    got = remote_function_template.get_pd_series(row_json)
+    got = bff_template.get_pd_series(row_json)
     pandas.testing.assert_series_equal(got, expected)
 
 

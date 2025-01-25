@@ -82,7 +82,7 @@ class TestSession(bigframes.session.Session):
         self._allow_ambiguity = False  # type: ignore
         self._default_index_type = bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
         self._metrics = bigframes.session.metrics.ExecutionMetrics()
-        self._remote_function_session = None  # type: ignore
+        self._function_session = None  # type: ignore
         self._temp_storage_manager = None  # type: ignore
         self._executor = TestExecutor()
         self._loader = None  # type: ignore

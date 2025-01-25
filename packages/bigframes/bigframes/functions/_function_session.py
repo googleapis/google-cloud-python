@@ -52,8 +52,7 @@ if TYPE_CHECKING:
 
 import pandas
 
-from . import _remote_function_client as rf_client
-from . import _utils
+from . import _function_client, _utils
 
 
 class RemoteFunctionSession:
@@ -468,7 +467,7 @@ class RemoteFunctionSession:
                 signature, input_types, output_type  # type: ignore
             )
 
-            remote_function_client = rf_client.RemoteFunctionClient(
+            remote_function_client = _function_client.RemoteFunctionClient(
                 dataset_ref.project,
                 cloud_function_region,
                 cloud_functions_client,

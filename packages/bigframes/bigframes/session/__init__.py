@@ -67,8 +67,8 @@ import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions
 import bigframes.exceptions as bfe
-import bigframes.functions._remote_function_session as bigframes_rf_session
-import bigframes.functions.remote_function as bigframes_rf
+import bigframes.functions._function_session as bff_session
+import bigframes.functions.function as bff
 import bigframes.session._io.bigquery as bf_io_bigquery
 import bigframes.session.clients
 import bigframes.session.executor
@@ -245,7 +245,7 @@ class Session(
         )
 
         self._metrics = bigframes.session.metrics.ExecutionMetrics()
-        self._remote_function_session = bigframes_rf_session.RemoteFunctionSession()
+        self._function_session = bff_session.RemoteFunctionSession()
         self._temp_storage_manager = (
             bigframes.session.temp_storage.TemporaryGbqStorageManager(
                 self._clients_provider.bqclient,
@@ -377,9 +377,9 @@ class Session(
         if temp_storage_manager:
             self._temp_storage_manager.clean_up_tables()
 
-        remote_function_session = getattr(self, "_remote_function_session", None)
+        remote_function_session = getattr(self, "_function_session", None)
         if remote_function_session:
-            self._remote_function_session.clean_up(
+            self._function_session.clean_up(
                 self.bqclient, self.cloudfunctionsclient, self.session_id
             )
 
@@ -1380,7 +1380,7 @@ class Session(
 
                 `bigframes_remote_function` - The bigquery remote function capable of calling into `bigframes_cloud_function`.
         """
-        return self._remote_function_session.remote_function(
+        return self._function_session.remote_function(
             input_types,
             output_type,
             session=self,
@@ -1556,7 +1556,7 @@ class Session(
                 not including the `bigframes_cloud_function` property.
         """
 
-        return bigframes_rf.read_gbq_function(
+        return bff.read_gbq_function(
             function_name=function_name,
             session=self,
             is_row_processor=is_row_processor,

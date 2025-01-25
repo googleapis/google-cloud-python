@@ -21,7 +21,7 @@ import pytest
 
 import bigframes.core.compile.ibis_types
 import bigframes.dtypes
-import bigframes.functions.remote_function
+import bigframes.functions.function as bff
 import bigframes.series
 from tests.unit import resources
 
@@ -42,9 +42,7 @@ from tests.unit import resources
 def test_series_input_types_to_str(series_type):
     """Check that is_row_processor=True uses str as the input type to serialize a row."""
     session = resources.create_bigquery_session()
-    remote_function_decorator = bigframes.functions.remote_function.remote_function(
-        session=session
-    )
+    remote_function_decorator = bff.remote_function(session=session)
 
     with pytest.warns(
         bigframes.exceptions.PreviewWarning,
@@ -75,9 +73,7 @@ def test_supported_types_correspond():
 
 def test_missing_input_types():
     session = resources.create_bigquery_session()
-    remote_function_decorator = bigframes.functions.remote_function.remote_function(
-        session=session
-    )
+    remote_function_decorator = bff.remote_function(session=session)
 
     def function_without_parameter_annotations(myparam) -> str:
         return str(myparam)
@@ -93,9 +89,7 @@ def test_missing_input_types():
 
 def test_missing_output_type():
     session = resources.create_bigquery_session()
-    remote_function_decorator = bigframes.functions.remote_function.remote_function(
-        session=session
-    )
+    remote_function_decorator = bff.remote_function(session=session)
 
     def function_without_return_annotation(myparam: int):
         return str(myparam)

@@ -32,7 +32,7 @@ import bigframes
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions
-import bigframes.functions._utils as functions_utils
+import bigframes.functions._utils as bff_utils
 import bigframes.pandas as bpd
 import bigframes.series
 from tests.system.utils import (
@@ -633,11 +633,9 @@ def test_remote_function_restore_with_bigframes_series(
         add_one_uniq, add_one_uniq_dir = make_uniq_udf(add_one)
 
         # Expected cloud function name for the unique udf
-        package_requirements = functions_utils._get_updated_package_requirements()
-        add_one_uniq_hash = functions_utils._get_hash(
-            add_one_uniq, package_requirements
-        )
-        add_one_uniq_cf_name = functions_utils.get_cloud_function_name(
+        package_requirements = bff_utils._get_updated_package_requirements()
+        add_one_uniq_hash = bff_utils._get_hash(add_one_uniq, package_requirements)
+        add_one_uniq_cf_name = bff_utils.get_cloud_function_name(
             add_one_uniq_hash, session.session_id
         )
 
