@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.26.0](https://github.com/googleapis/proto-plus-python/compare/v1.25.0...v1.26.0) (2025-01-22)
+
+
+### Features
+
+* Migrate to pyproject.toml ([#496](https://github.com/googleapis/proto-plus-python/issues/496)) ([82ed3b9](https://github.com/googleapis/proto-plus-python/commit/82ed3b91ae0cebd6f89ce6661590a1bc6b7fce31))
+
+
+### Bug Fixes
+
+* Construct messages with nested duration in protobuf 5.28+ ([#519](https://github.com/googleapis/proto-plus-python/issues/519)) ([197ddf8](https://github.com/googleapis/proto-plus-python/commit/197ddf8a3ae9ab21b0136f27692d0f1ecd727d5b))
+* Fix enums initialization in PyPy ([#507](https://github.com/googleapis/proto-plus-python/issues/507)) ([b8b68f2](https://github.com/googleapis/proto-plus-python/commit/b8b68f207a00129e91551ef6725f5021f821e0a9))
+* Incorrect return type annotation for Message.to_dict ([#516](https://github.com/googleapis/proto-plus-python/issues/516)) ([72990f3](https://github.com/googleapis/proto-plus-python/commit/72990f3859d77732d40db5b82c310da265e72cac))
+* Use include rather than exclude to find_namespace_packages in setup.py ([#502](https://github.com/googleapis/proto-plus-python/issues/502)) ([77e252e](https://github.com/googleapis/proto-plus-python/commit/77e252e614f6434c2c47ab6168d08f87e004be43))
+
+
+### Documentation
+
+* Update docs link in README ([#524](https://github.com/googleapis/proto-plus-python/issues/524)) ([a85be75](https://github.com/googleapis/proto-plus-python/commit/a85be75f8fb811f5345cea2786b9b7a688085a7e))
+
 ## [1.25.0](https://github.com/googleapis/proto-plus-python/compare/v1.24.0...v1.25.0) (2024-10-15)
 
 
