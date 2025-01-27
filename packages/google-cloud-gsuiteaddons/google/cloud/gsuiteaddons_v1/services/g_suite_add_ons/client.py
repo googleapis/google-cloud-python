@@ -105,36 +105,36 @@ class GSuiteAddOnsClientMeta(type):
 
 
 class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
-    """A service for managing Google Workspace Add-ons deployments.
+    """A service for managing Google Workspace add-ons deployments.
 
-    A Google Workspace Add-on is a third-party embedded component
+    A Google Workspace add-on is a third-party embedded component
     that can be installed in Google Workspace Applications like
     Gmail, Calendar, Drive, and the Google Docs, Sheets, and Slides
-    editors. Google Workspace Add-ons can display UI cards, receive
+    editors. Google Workspace add-ons can display UI cards, receive
     contextual information from the host application, and perform
     actions in the host application (See:
 
     https://developers.google.com/gsuite/add-ons/overview for more
     information).
 
-    A Google Workspace Add-on deployment resource specifies metadata
+    A Google Workspace add-on deployment resource specifies metadata
     about the add-on, including a specification of the entry points
     in the host application that trigger add-on executions (see:
 
     https://developers.google.com/gsuite/add-ons/concepts/gsuite-manifests).
-    Add-on deployments defined via the Google Workspace Add-ons API
+    Add-on deployments defined via the Google Workspace add-ons API
     define their entrypoints using HTTPS URLs (See:
 
     https://developers.google.com/gsuite/add-ons/guides/alternate-runtimes),
 
-    A Google Workspace Add-on deployment can be installed in
+    A Google Workspace add-on deployment can be installed in
     developer mode, which allows an add-on developer to test the
     experience an end-user would see when installing and running the
     add-on in their G Suite applications.  When running in developer
     mode, more detailed error messages are exposed in the add-on UI
     to aid in debugging.
 
-    A Google Workspace Add-on deployment can be published to Google
+    A Google Workspace add-on deployment can be published to Google
     Workspace Marketplace, which allows other Google Workspace users
     to discover and install the add-on.  See:
 
@@ -785,11 +785,11 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
         Args:
             request (Union[google.cloud.gsuiteaddons_v1.types.GetAuthorizationRequest, dict]):
                 The request object. Request message to get Google
-                Workspace Add-ons authorization
+                Workspace add-ons authorization
                 information.
             name (str):
                 Required. Name of the project for which to get the
-                Google Workspace Add-ons authorization information.
+                Google Workspace add-ons authorization information.
 
                 Example: ``projects/my_project/authorization``.
 
@@ -932,7 +932,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
         Returns:
             google.cloud.gsuiteaddons_v1.types.Deployment:
-                A Google Workspace Add-on deployment
+                A Google Workspace add-on deployment
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1039,7 +1039,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
         Returns:
             google.cloud.gsuiteaddons_v1.types.Deployment:
-                A Google Workspace Add-on deployment
+                A Google Workspace add-on deployment
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1146,7 +1146,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
 
         Returns:
             google.cloud.gsuiteaddons_v1.types.Deployment:
-                A Google Workspace Add-on deployment
+                A Google Workspace add-on deployment
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
