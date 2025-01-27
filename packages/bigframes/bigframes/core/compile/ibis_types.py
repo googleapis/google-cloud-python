@@ -81,6 +81,7 @@ BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, bigframes.dtypes.Dtype]] = (
 BIGFRAMES_TO_IBIS: Dict[bigframes.dtypes.Dtype, ibis_dtypes.DataType] = {
     pandas: ibis for ibis, pandas in BIDIRECTIONAL_MAPPINGS
 }
+BIGFRAMES_TO_IBIS.update({bigframes.dtypes.TIMEDETLA_DTYPE: ibis_dtypes.int64})
 IBIS_TO_BIGFRAMES: Dict[ibis_dtypes.DataType, bigframes.dtypes.Dtype] = {
     ibis: pandas for ibis, pandas in BIDIRECTIONAL_MAPPINGS
 }

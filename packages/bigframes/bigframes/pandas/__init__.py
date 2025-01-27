@@ -35,6 +35,7 @@ import bigframes.core.tools
 import bigframes.dataframe
 import bigframes.enums
 import bigframes.functions._utils as bff_utils
+from bigframes.pandas.core.api import to_timedelta
 from bigframes.pandas.io.api import (
     from_glob_path,
     read_csv,
@@ -313,6 +314,7 @@ __all__ = [
     "read_pickle",
     "remote_function",
     "to_datetime",
+    "to_timedelta",
     "from_glob_path",
     # pandas dtype attributes
     "NA",

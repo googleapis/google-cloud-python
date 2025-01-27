@@ -55,6 +55,7 @@ DATE_DTYPE = pd.ArrowDtype(pa.date32())
 TIME_DTYPE = pd.ArrowDtype(pa.time64("us"))
 DATETIME_DTYPE = pd.ArrowDtype(pa.timestamp("us"))
 TIMESTAMP_DTYPE = pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+TIMEDETLA_DTYPE = pd.ArrowDtype(pa.duration("us"))
 NUMERIC_DTYPE = pd.ArrowDtype(pa.decimal128(38, 9))
 BIGNUMERIC_DTYPE = pd.ArrowDtype(pa.decimal256(76, 38))
 # No arrow equivalent
@@ -632,6 +633,9 @@ def convert_to_schema_field(
             return google.cloud.bigquery.SchemaField(
                 name, "RECORD", fields=inner_fields
             )
+        if bigframes_dtype.pyarrow_dtype == pa.duration("us"):
+            # Timedeltas are represented as integers in microseconds.
+            return google.cloud.bigquery.SchemaField(name, "INTEGER")
     raise ValueError(
         f"No arrow conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
     )

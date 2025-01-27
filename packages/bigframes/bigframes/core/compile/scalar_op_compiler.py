@@ -1140,6 +1140,13 @@ def to_timestamp_op_impl(x: ibis_types.Value, op: ops.ToTimestampOp):
     return x.cast(ibis_dtypes.Timestamp(timezone="UTC"))
 
 
+@scalar_op_compiler.register_unary_op(ops.ToTimedeltaOp, pass_op=True)
+def to_timedelta_op_impl(x: ibis_types.Value, op: ops.ToTimedeltaOp):
+    return (
+        typing.cast(ibis_types.NumericValue, x) * UNIT_TO_US_CONVERSION_FACTORS[op.unit]  # type: ignore
+    ).floor()
+
+
 @scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
 def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
     ibis_node = getattr(op.func, "ibis_node", None)
