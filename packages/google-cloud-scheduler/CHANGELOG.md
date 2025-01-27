@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.15.0...google-cloud-scheduler-v2.15.1) (2025-01-27)
+
+
+### Documentation
+
+* annotate output-only fields as such ([6707477](https://github.com/googleapis/google-cloud-python/commit/6707477f8b97de7163303f6bdd56e191b0037a38))
+* update comments ([6707477](https://github.com/googleapis/google-cloud-python/commit/6707477f8b97de7163303f6bdd56e191b0037a38))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.14.1...google-cloud-scheduler-v2.15.0) (2024-12-12)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.12](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.11...google-apps-script-type-v0.3.12) (2025-01-27)
+
+
+### Documentation
+
+* [google-apps-script-type] Minor documentation edits ([#13464](https://github.com/googleapis/google-cloud-python/issues/13464)) ([c45e8e9](https://github.com/googleapis/google-cloud-python/commit/c45e8e9bb4efbeeb2e1ffb1b4e9847364c33d76a))
+
 ## [0.3.11](https://github.com/googleapis/google-cloud-python/compare/google-apps-script-type-v0.3.10...google-apps-script-type-v0.3.11) (2024-10-24)
 
 
