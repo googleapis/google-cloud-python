@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.3.13...google-cloud-gsuiteaddons-v0.3.14) (2025-01-27)
+
+
+### Documentation
+
+* [google-cloud-gsuiteaddons] Minor documentation edits ([#13463](https://github.com/googleapis/google-cloud-python/issues/13463)) ([a2b6d21](https://github.com/googleapis/google-cloud-python/commit/a2b6d219070f85878ad0eac626cca565789d0764))
+
 ## [0.3.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.3.12...google-cloud-gsuiteaddons-v0.3.13) (2024-12-12)
 
 

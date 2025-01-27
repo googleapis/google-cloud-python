@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.22](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.21...google-maps-places-v0.1.22) (2025-01-27)
+
+
+### Features
+
+* add more fuel type enum values ([254b142](https://github.com/googleapis/google-cloud-python/commit/254b14252f7f22f0d47aa4038fc77252ca138ba6))
+
+
+### Documentation
+
+* A comment for enum value `LPG` in enum `FuelType` is changed to be clearer. ([254b142](https://github.com/googleapis/google-cloud-python/commit/254b14252f7f22f0d47aa4038fc77252ca138ba6))
+
 ## [0.1.21](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.20...google-maps-places-v0.1.21) (2024-12-12)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.23.0...google-cloud-compute-v1.24.0) (2025-01-27)
+
+
+### Features
+
+* [google-cloud-compute] Update Compute Engine API to revision 20250107 ([#975](https://github.com/googleapis/google-cloud-python/issues/975)) ([#13461](https://github.com/googleapis/google-cloud-python/issues/13461)) ([4c7730f](https://github.com/googleapis/google-cloud-python/commit/4c7730f600a64bd459d5645c992798c1ddb3b408))
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.22.0...google-cloud-compute-v1.23.0) (2024-12-12)
 
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.3...google-cloud-cloudcontrolspartner-v0.2.4) (2025-01-27)
+
+
+### Features
+
+* A new field `organization_domain` is added to message `.google.cloud.cloudcontrolspartner.v1beta.Customer` ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+* A new message `CreateCustomerRequest` is added ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+* A new message `DeleteCustomerRequest` is added ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+* A new message `UpdateCustomerRequest` is added ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+* A new method `CreateCustomer` is added to service `CloudControlsPartnerCore` ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+* A new method `DeleteCustomer` is added to service `CloudControlsPartnerCore` ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+* A new method `UpdateCustomer` is added to service `CloudControlsPartnerCore` ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+
+
+### Documentation
+
+* A comment for enum value `VIRTRU` in enum `EkmSolution` is changed ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+* A comment for field `requested_cancellation` in message `.google.cloud.cloudcontrolspartner.v1beta.OperationMetadata` is changed ([1913b6c](https://github.com/googleapis/google-cloud-python/commit/1913b6cc099c50650b2a35c2f05b7e0da1157791))
+
 ## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.2...google-cloud-cloudcontrolspartner-v0.2.3) (2024-12-12)
 
 
