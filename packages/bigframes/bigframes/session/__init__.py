@@ -1624,6 +1624,8 @@ class Session(
         self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None
     ) -> dataframe.DataFrame:
         r"""Create a BigFrames DataFrame that contains a BigFrames Blob column from a global wildcard path.
+        This operation creates a temporary BQ Object Table under the hood and requires bigquery.connections.delegate permission or BigQuery Connection Admin role.
+        If you have an existing BQ Object Table, use read_gbq_object_table().
 
         .. note::
             BigFrames Blob is still under experiments. It may not work and subject to change in the future.
