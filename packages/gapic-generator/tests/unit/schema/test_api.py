@@ -14,7 +14,7 @@
 
 import collections
 import re
-from typing import Sequence
+from typing import Any, Dict, Sequence
 from unittest import mock
 import yaml
 
@@ -2745,11 +2745,820 @@ def test_read_empty_python_settings_from_service_yaml():
         == client_pb2.PythonSettings()
 
 
-def test_incorrect_library_settings_version():
-    # NOTE: This test case ensures that the generator is able to read
-    # from the default library settings if the version specified against the
-    # library settings in the service yaml of an API differs from the version
-    # of the API.
+def test_python_settings_selective_gapic_nonexistent_method_raises_error():
+    """
+    Test that `ClientLibrarySettingsError` is raised when there are nonexistent methods in
+    `client_pb2.ClientLibrarySettings.PythonSettings.CommonSettings.SelectiveGapicGeneration`.
+    """
+    client_library_settings = [
+        client_pb2.ClientLibrarySettings(
+            version="google.example.v1beta1",
+            python_settings=client_pb2.PythonSettings(
+                common=client_pb2.CommonLanguageSettings(
+                    selective_gapic_generation=client_pb2.SelectiveGapicGeneration(
+                        methods=[
+                            "google.example.v1beta1.ServiceOne.DoesNotExist"]
+                    )
+                )
+            )
+        )
+    ]
+    fd = get_file_descriptor_proto_for_tests(fields=[])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    with pytest.raises(
+        api.ClientLibrarySettingsError, match="(?i)google.example.v1beta1.ServiceOne.DoesNotExist: Method does not exist"
+    ):
+        api_schema.enforce_valid_library_settings(client_library_settings)
+
+
+def test_python_settings_selective_gapic_version_mismatch_method_raises_error():
+    """
+    Test that `ClientLibrarySettingsError` is raised when a method listed for selective generation
+    exists only in a different version of the library.
+    """
+    client_library_settings = [
+        client_pb2.ClientLibrarySettings(
+            version="google.example.v2beta2",
+            python_settings=client_pb2.PythonSettings(
+                common=client_pb2.CommonLanguageSettings(
+                    selective_gapic_generation=client_pb2.SelectiveGapicGeneration(
+                        methods=["google.example.v1beta1.ServiceOne.Example1"]
+                    )
+                )
+            )
+        )
+    ]
+    fd = get_file_descriptor_proto_for_tests(fields=[])
+    api_schema = api.API.build(fd, "google.example.v1beta1")
+    with pytest.raises(
+        api.ClientLibrarySettingsError, match="(?i)google.example.v1beta1.ServiceOne.Example1: Mismatched version for method."
+    ):
+        api_schema.enforce_valid_library_settings(client_library_settings)
+
+
+def get_service_yaml_for_selective_gapic_tests(
+        apis: Sequence[str] = ["google.example.v1.FooService"],
+        methods=["google.example.v1.FooService.GetFoo"],
+) -> Dict[str, Any]:
+    return {
+        "apis": [
+            {"name": api} for api in apis
+        ],
+        "publishing": {
+            "library_settings": [
+                {
+                    "version": "google.example.v1",
+                    "python_settings": {
+                        "experimental_features": {"rest_async_io_enabled": True},
+                        "common": {
+                            "selective_gapic_generation": {
+                                "methods": methods
+                            }
+                        }
+                    },
+                }
+            ]
+        },
+    }
+
+
+def test_selective_gapic_api_build():
+    # Put together a couple of minimal protos.
+    fd = (
+        make_file_pb2(
+            name='dep.proto',
+            package='google.dep',
+            messages=(make_message_pb2(name='ImportedMessage', fields=()),),
+        ),
+        make_file_pb2(
+            name='common.proto',
+            package='google.example.v1.common',
+            messages=(
+                make_message_pb2(name='Bar'),
+                make_message_pb2(name='Baz'),
+            ),
+        ),
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name='GetFooRequest', fields=(
+                    make_field_pb2(name='imported_message', number=1,
+                                   type_name='.google.dep.ImportedMessage'),
+                    make_field_pb2(name='primitive', number=2, type=1),
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.common.Bar')
+                )),
+                make_message_pb2(name='GetFooResponse', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                )),
+                make_message_pb2(name='DeleteFooRequest', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                    make_field_pb2(name='baz', number=2,
+                                   type_name='.google.example.v1.common.Baz'),
+                )),
+                make_message_pb2(name='DeleteFooResponse', fields=(
+                    make_field_pb2(name='success', number=1, type=8),
+                )),
+            ),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='GetFoo',
+                        input_type='google.example.v1.GetFooRequest',
+                        output_type='google.example.v1.GetFooResponse',
+                    ),
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='DeleteFoo',
+                        input_type='google.example.v1.DeleteFooRequest',
+                        output_type='google.example.v1.DeleteFooResponse',
+                    ),
+                ),
+            ),),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        methods=["google.example.v1.FooService.GetFoo"]
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    # Create an API with those protos.
+    api_schema = api.API.build(fd, package='google.example.v1', opts=opts)
+
+    # Establish that the API has the data expected.
+    assert isinstance(api_schema, api.API)
+
+    # foo.proto, common.proto, dep.proto
+    assert len(api_schema.all_protos) == 3
+    assert len(api_schema.protos) == 2  # foo.proto, common.proto
+
+    assert 'google.dep.ImportedMessage' not in api_schema.messages
+    assert 'google.example.v1.Foo' in api_schema.messages
+    assert 'google.example.v1.GetFooRequest' in api_schema.messages
+    assert 'google.example.v1.GetFooResponse' in api_schema.messages
+    assert 'google.example.v1.DeleteFooRequest' not in api_schema.messages
+    assert 'google.example.v1.DeleteFooResponse' not in api_schema.messages
+    assert 'google.example.v1.FooService' in api_schema.services
+    assert len(api_schema.enums) == 0
+    assert api_schema.protos['foo.proto'].python_modules == (
+        imp.Import(package=('google', 'dep'), module='dep_pb2'),
+        imp.Import(package=('google', 'example_v1',
+                   'common', 'types'), module='common'),
+    )
+
+    assert api_schema.requires_package(('google', 'example', 'v1'))
+
+    assert not api_schema.requires_package(('elgoog', 'example', 'v1'))
+
+    # Establish that the subpackages still work even when they are transitively
+    # partially pruned.
+    assert 'common' in api_schema.subpackages
+    sub = api_schema.subpackages['common']
+    assert len(sub.protos) == 1
+    assert 'google.example.v1.common.Bar' in sub.messages
+    assert 'google.example.v1.common.Baz' not in sub.messages
+
+    # Establish that methods have been truncated
+    assert 'google.example.v1.FooService.GetFoo' in api_schema.all_methods
+    assert 'google.example.v1.FooService.DeleteFoo' not in api_schema.all_methods
+
+    foo_service = api_schema.protos['foo.proto'].services['google.example.v1.FooService']
+    assert 'DeleteFoo' not in foo_service.methods
+    assert 'GetFoo' in foo_service.methods
+
+
+def test_selective_gapic_api_build_with_lro():
+    # Set up a prior proto that mimics google/protobuf/empty.proto
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False, naming=make_naming())
+
+    # Set up methods with LRO annotations.
+    create_foo_method_pb2 = descriptor_pb2.MethodDescriptorProto(
+        name='AsyncCreateFoo',
+        input_type='google.example.v1.AsyncCreateFooRequest',
+        output_type='google.longrunning.Operation',
+    )
+    create_foo_method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
+            response_type='google.example.v1.AsyncCreateFooResponse',
+            metadata_type='google.example.v1.AsyncCreateFooMetadata',
+        ),
+    )
+
+    create_bar_method_pb2 = descriptor_pb2.MethodDescriptorProto(
+        name='AsyncCreateBar',
+        input_type='google.example.v1.AsyncCreateBarRequest',
+        output_type='google.longrunning.Operation',
+    )
+    create_bar_method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
+            response_type='google.example.v1.AsyncCreateBarResponse',
+            metadata_type='google.example.v1.AsyncCreateBarMetadata',
+        ),
+    )
+
+    # Set up the service with an RPC.
+    fd = (
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name='Bar', fields=()),
+                make_message_pb2(name='AsyncCreateFooRequest', fields=()),
+                make_message_pb2(name='AsyncCreateFooResponse', fields=()),
+                make_message_pb2(name='AsyncCreateFooMetadata', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                )),
+                make_message_pb2(name='AsyncCreateBarRequest', fields=()),
+                make_message_pb2(name='AsyncCreateBarResponse', fields=()),
+                make_message_pb2(name='AsyncCreateBarMetadata', fields=(
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.Bar'),
+                )),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='FooService',
+                    method=(
+                        create_foo_method_pb2,
+                        create_bar_method_pb2,
+                    ),
+                ),
+            )
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=['google.example.v1.FooService'],
+        methods=['google.example.v1.FooService.AsyncCreateFoo']
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd,
+                               'google.example.v1',
+                               opts=opts,
+                               prior_protos={
+                                   'google/longrunning/operations.proto': lro_proto,
+                                   })
+
+    assert 'google.example.v1.Foo' in api_schema.messages
+    assert 'google.example.v1.AsyncCreateFooRequest' in api_schema.messages
+    assert 'google.example.v1.AsyncCreateFooResponse' in api_schema.messages
+    assert 'google.example.v1.AsyncCreateFooMetadata' in api_schema.messages
+
+    assert 'google.example.v1.Bar' not in api_schema.messages
+    assert 'google.example.v1.AsyncCreateBarRequest' not in api_schema.messages
+    assert 'google.example.v1.AsyncCreateBarResponse' not in api_schema.messages
+    assert 'google.example.v1.AsyncCreateBarMetadata' not in api_schema.messages
+
+
+def test_selective_gapic_api_build_remove_unnecessary_services():
+    # Put together a couple of minimal protos.
+    fd = (
+        make_file_pb2(
+            name='foobar.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name='Bar', fields=()),
+                make_message_pb2(name='GetFooRequest', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                )),
+                make_message_pb2(name='GetFooResponse', fields=()),
+                make_message_pb2(name='GetBarRequest', fields=(
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.Bar'),
+                )),
+                make_message_pb2(name='GetBarResponse', fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='FooService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetFoo',
+                            input_type='google.example.v1.GetFooRequest',
+                            output_type='google.example.v1.GetFooResponse',
+                        ),
+                    ),
+                ),
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='BarService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetBar',
+                            input_type='google.example.v1.GetBarRequest',
+                            output_type='google.example.v1.GetBarResponse',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=['google.example.v1.FooService', 'google.example.v1.BarService'],
+        methods=['google.example.v1.FooService.GetFoo']
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+
+    assert 'google.example.v1.Foo' in api_schema.messages
+    assert 'google.example.v1.GetFooRequest' in api_schema.messages
+    assert 'google.example.v1.GetFooResponse' in api_schema.messages
+
+    assert 'google.example.v1.Bar' not in api_schema.messages
+    assert 'google.example.v1.GetBarRequest' not in api_schema.messages
+    assert 'google.example.v1.GetBarResponse' not in api_schema.messages
+
+    assert 'google.example.v1.FooService' in api_schema.services
+    assert 'google.example.v1.BarService' not in api_schema.services
+
+
+def test_selective_gapic_api_build_remove_unnecessary_proto_files():
+    fd = (
+        make_file_pb2(
+            name='foo_common.proto',
+            package='google.example.v1.foo_common',
+            messages=(
+                make_message_pb2(name='Foo'),
+            ),
+        ),
+        make_file_pb2(
+            name='bar_common.proto',
+            package='google.example.v1.bar_common',
+            messages=(
+                make_message_pb2(name='Bar'),
+            ),
+        ),
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=()),
+                make_message_pb2(name='GetFooRequest', fields=(
+                    make_field_pb2(
+                        name='foo', number=1, type_name='.google.example.v1.foo_common.Foo'),
+                )),
+                make_message_pb2(name='GetFooResponse', fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='FooService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetFoo',
+                            input_type='google.example.v1.GetFooRequest',
+                            output_type='google.example.v1.GetFooResponse',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        make_file_pb2(
+            name='bar.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Bar', fields=()),
+                make_message_pb2(name='GetBarRequest', fields=(
+                    make_field_pb2(
+                        name='bar', number=1, type_name='.google.example.v1.bar_common.Bar'),
+                )),
+                make_message_pb2(name='GetBarResponse', fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='BarService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetBar',
+                            input_type='google.example.v1.GetBarRequest',
+                            output_type='google.example.v1.GetBarResponse',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=['google.example.v1.FooService', 'google.example.v1.BarService'],
+        methods=['google.example.v1.FooService.GetFoo']
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+
+    assert 'google.example.v1.foo_common.Foo' in api_schema.messages
+    assert 'google.example.v1.GetFooRequest' in api_schema.messages
+    assert 'google.example.v1.GetFooResponse' in api_schema.messages
+
+    assert 'google.example.v1.bar_common.Bar' not in api_schema.messages
+    assert 'google.example.v1.GetBarRequest' not in api_schema.messages
+    assert 'google.example.v1.GetBarResponse' not in api_schema.messages
+
+    assert 'google.example.v1.FooService' in api_schema.services
+    assert 'google.example.v1.BarService' not in api_schema.services
+
+    assert 'foo.proto' in api_schema.protos
+    assert 'foo_common.proto' in api_schema.protos
+    assert 'bar.proto' not in api_schema.protos
+    assert 'bar_common.proto' not in api_schema.protos
+
+    # Check that the sub-packages that have been completely pruned are excluded from generation,
+    # but the ones that have only been partially pruned will still be appropriately included.
+    assert 'foo_common' in api_schema.subpackages
+    sub = api_schema.subpackages['foo_common']
+    assert len(sub.protos) == 1
+    assert 'google.example.v1.foo_common.Foo' in sub.messages
+    assert 'bar_common' not in api_schema.subpackages
+
+
+def test_selective_gapic_api_build_with_enums():
+    fd = (
+        make_file_pb2(
+            name='foobar.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Foo', fields=(
+                    make_field_pb2(name='status', number=1, type=14,
+                                   type_name='.google.example.v1.FooStatus'),
+                )),
+                make_message_pb2(name='Bar', fields=(
+                    make_field_pb2(name='status', number=1, type=14,
+                                   type_name='.google.example.v1.BarStatus'),
+                )),
+                make_message_pb2(name='GetFooRequest', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                )),
+                make_message_pb2(name='GetFooResponse', fields=()),
+                make_message_pb2(name='GetBarRequest', fields=(
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.Bar'),
+                )),
+                make_message_pb2(name='GetBarResponse', fields=()),
+            ),
+            enums=(
+                make_enum_pb2(
+                    'FooStatus',
+                    'YES',
+                    'NO'
+                ),
+                make_enum_pb2(
+                    'BarStatus',
+                    'YES',
+                    'NO'
+                ),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='FooService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetFoo',
+                            input_type='google.example.v1.GetFooRequest',
+                            output_type='google.example.v1.GetFooResponse',
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetBar',
+                            input_type='google.example.v1.GetBarRequest',
+                            output_type='google.example.v1.GetBarResponse',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=['google.example.v1.FooService'],
+        methods=['google.example.v1.FooService.GetFoo']
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+
+    assert 'google.example.v1.FooStatus' in api_schema.enums
+    assert 'google.example.v1.BarStatus' not in api_schema.enums
+    assert 'google.example.v1.FooStatus' in api_schema.top_level_enums
+
+
+def test_selective_gapic_api_build_with_nested_fields():
+    # Test that, when including or excluding messages for selective GAPIC generation,
+    # any nested messages they may contain are included or excluded appropriately.
+    fd = (
+        make_file_pb2(
+            name='foobar.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(
+                    name='Foo',
+                    nested_type=(
+                        make_message_pb2(
+                            name='Bar',
+                            fields=(
+                                make_field_pb2(
+                                    name='baz', number=1, type_name='.google.example.v1.Baz'),
+                            )
+                        ),
+                    ),
+                    enum_type=(
+                        make_enum_pb2(
+                            'FooStatus',
+                            'YES',
+                            'NO'
+                        ),
+                    )
+                ),
+                make_message_pb2(
+                    name='Spam',
+                    nested_type=(
+                        make_message_pb2(
+                            name='Ham',
+                            fields=(
+                                make_field_pb2(
+                                    name='eggs', number=1, type_name='.google.example.v1.Eggs'),
+                            )
+                        ),
+                    ),
+                    enum_type=(
+                        make_enum_pb2(
+                            'SpamStatus',
+                            'YES',
+                            'NO'
+                        ),
+                    )
+                ),
+                make_message_pb2(name='Baz'),
+                make_message_pb2(name='Eggs'),
+                make_message_pb2(name='GetFooRequest', fields=(
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
+                )),
+                make_message_pb2(name='GetFooResponse', fields=()),
+                make_message_pb2(name='GetBarRequest', fields=(
+                    make_field_pb2(name='spam', number=1,
+                                   type_name='.google.example.v1.Spam'),
+                )),
+                make_message_pb2(name='GetBarResponse', fields=()),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='FooService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetFoo',
+                            input_type='google.example.v1.GetFooRequest',
+                            output_type='google.example.v1.GetFooResponse',
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='GetBar',
+                            input_type='google.example.v1.GetBarRequest',
+                            output_type='google.example.v1.GetBarResponse',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=['google.example.v1.FooService'],
+        methods=['google.example.v1.FooService.GetFoo']
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+
+    assert 'google.example.v1.Baz' in api_schema.messages
+    assert 'google.example.v1.Foo.FooStatus' in api_schema.enums
+    assert 'google.example.v1.Foo.Bar' in api_schema.messages
+
+    # Check that we can exclude nested types as well
+    assert 'google.example.v1.Spam' not in api_schema.messages
+    assert 'google.example.v1.Spam.SpamStatus' not in api_schema.enums
+    assert 'google.example.v1.Spam.Ham' not in api_schema.messages
+
+
+@pytest.mark.parametrize("reference_attr", ["type", "child_type"])
+def test_selective_gapic_api_build_with_resources(reference_attr):
+    test_input_names = [
+        ('foo.bar/Foo', 'Foo', 'FooDep', 'GetFooRequest', 'GetFooResponse'),
+        ('foo.bar/Bar', 'Bar', 'BarDep', 'GetBarRequest', 'GetBarResponse'),
+    ]
+
+    messages = []
+
+    for (
+        resource_type,
+        message_name,
+        message_dep_name,
+        request_message_name,
+        response_message_name,
+    ) in test_input_names:
+        resource_message_dep = make_message_pb2(name=message_dep_name)
+
+        # Make sure that we traverse down the fields in the referenced message type.
+        resource_message = make_message_pb2(
+            name=message_name,
+            fields=(
+                make_field_pb2(
+                    name="dep", number=1, type_name=f".google.example.v1.{message_dep_name}"),
+            ),
+        )
+        request_message = make_message_pb2(
+            name=request_message_name,
+            fields=(
+                make_field_pb2(name="thing", number=1, type=9),
+            ),
+        )
+        response_message = make_message_pb2(name=response_message_name)
+
+        # Set up the resource
+        resource_message_opts = resource_message.options.Extensions[resource_pb2.resource]
+        resource_message_opts.type = resource_type
+        resource_message_opts.pattern.append(
+            "octopus/{octopus}/squid/{squid}")
+
+        # Set up the reference
+        request_message_thing_field_opts = \
+            request_message.field[0].options.Extensions[resource_pb2.resource_reference]
+        setattr(request_message_thing_field_opts,
+                reference_attr, resource_type)
+
+        # Add to messages
+        messages.append(resource_message_dep)
+        messages.append(resource_message)
+        messages.append(request_message)
+        messages.append(response_message)
+
+    fds = (
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=messages,
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='GetFoo',
+                        input_type='google.example.v1.GetFooRequest',
+                        output_type='google.example.v1.GetFooResponse',
+                    ),
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='GetBar',
+                        input_type='google.example.v1.GetBarRequest',
+                        output_type='google.example.v1.GetBarResponse',
+                    ),
+                ),
+            ),),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        methods=['google.example.v1.FooService.GetFoo']
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fds, package='google.example.v1', opts=opts)
+
+    assert 'google.example.v1.Foo' in api_schema.messages
+    assert 'google.example.v1.FooDep' in api_schema.messages
+    assert 'google.example.v1.GetFooRequest' in api_schema.messages
+    assert 'google.example.v1.GetFooResponse' in api_schema.messages
+
+    assert 'google.example.v1.Bar' not in api_schema.messages
+    assert 'google.example.v1.BarDep' not in api_schema.messages
+    assert 'google.example.v1.GetBarRequest' not in api_schema.messages
+    assert 'google.example.v1.GetBarResponse' not in api_schema.messages
+
+    # Ensure we're also pruning resource messages for the files
+    resource_messages = api_schema.protos['foo.proto'].resource_messages
+    assert 'foo.bar/Foo' in resource_messages
+    assert 'foo.bar/Bar' not in resource_messages
+
+
+def test_selective_gapic_api_build_extended_lro():
+    def make_initiate_options(service_name):
+        options = descriptor_pb2.MethodOptions()
+        options.Extensions[ex_ops_pb2.operation_service] = service_name
+        return options
+
+    polling_method_options = descriptor_pb2.MethodOptions()
+    polling_method_options.Extensions[ex_ops_pb2.operation_polling_method] = True
+
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    operation_fields = tuple(
+        make_field_pb2(name=name, type=T.Value("TYPE_STRING"), number=i)
+        for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+    )
+    for f in operation_fields:
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    fds = (
+        make_file_pb2(
+            name='foo.proto',
+            package='google.example.v1',
+            messages=(
+                make_message_pb2(name='Operation', fields=operation_fields),
+                make_message_pb2(name='CreateFooRequest'),
+                make_message_pb2(name='GetFooOperationRequest'),
+                make_message_pb2(name='CreateBarRequest'),
+                make_message_pb2(name='GetBarOperationRequest'),
+                make_message_pb2(name='PoorlyOrganizedMethodRequest'),
+                make_message_pb2(name='PoorlyOrganizedMethodReponse')
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='FooOpsService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='Get',
+                            input_type='google.example.v1.GetFooOperationRequest',
+                            output_type='google.example.v1.Operation',
+                            options=polling_method_options,
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='PoorlyOrganizedMethod',
+                            input_type='google.example.v1.PoorlyOrganizedMethodRequest',
+                            output_type='google.example.v1.PoorlyOrganizedMethodReponse',
+                        ),
+                    ),
+                ),
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='BarOpsService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='Get',
+                            input_type='google.example.v1.GetBarOperationRequest',
+                            output_type='google.example.v1.Operation',
+                            options=polling_method_options,
+                        ),
+                    ),
+                ),
+                descriptor_pb2.ServiceDescriptorProto(
+                    name='BasicService',
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='CreateFoo',
+                            input_type='google.example.v1.CreateFooRequest',
+                            output_type='google.example.v1.Operation',
+                            options=make_initiate_options('FooOpsService'),
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name='CreateBar',
+                            input_type='google.example.v1.CreateBarRequest',
+                            output_type='google.example.v1.Operation',
+                            options=make_initiate_options('BarOpsService'),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=[
+            'google.example.v1.FooOpsService',
+            'google.example.v1.BarOpsService',
+            'google.example.v1.BasicService'
+        ],
+        methods=[
+            'google.example.v1.BasicService.CreateFoo',
+        ]
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fds, 'google.example.v1', opts=opts)
+
+    assert 'google.example.v1.BasicService' in api_schema.services
+    assert 'google.example.v1.FooOpsService' in api_schema.services
+    assert 'google.example.v1.FooOpsService.Get' in api_schema.all_methods
+    assert 'google.example.v1.Operation' in api_schema.messages
+    assert 'google.example.v1.CreateFooRequest' in api_schema.messages
+    assert 'google.example.v1.GetFooOperationRequest' in api_schema.messages
+
+    assert 'google.example.v1.BarOpsService' not in api_schema.services
+    assert 'google.example.v1.GetBarOperationRequest' not in api_schema.messages
+    assert 'google.example.v1.CreateBarRequest' not in api_schema.messages
+    assert 'google.example.v1.FooOpsService.PoorlyOrganizedMethod' not in api_schema.all_methods
+
+
+def test_read_empty_python_settings_from_service_yaml():
     service_yaml_config = {
         "apis": [
             {"name": "google.example.v1beta1.ServiceOne.Example1"},

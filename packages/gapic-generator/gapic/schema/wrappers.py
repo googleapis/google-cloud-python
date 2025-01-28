@@ -389,6 +389,46 @@ class Field:
             meta=self.meta.with_context(collisions=collisions),
         )
 
+    def add_to_address_allowlist(self, *,
+                                 address_allowlist: Set['metadata.Address'],
+                                 resource_messages: Dict[str, 'MessageType']
+                                 ) -> None:
+        """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+        Returns:
+            None
+        """
+        if self.message:
+            self.message.add_to_address_allowlist(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+            )
+
+        if self.enum:
+            self.enum.add_to_address_allowlist(
+                address_allowlist=address_allowlist,
+            )
+
+        if self.resource_reference and self.resource_reference in resource_messages:
+            # The message types in resource_message are different objects, but should be
+            # defined the same as the MessageTypes we're traversing here.
+            resource_messages[self.resource_reference].add_to_address_allowlist(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+            )
+
 
 @dataclasses.dataclass(frozen=True)
 class FieldHeader:
@@ -760,6 +800,47 @@ class MessageType:
             meta=self.meta.with_context(collisions=collisions),
         )
 
+    def add_to_address_allowlist(self, *,
+                                 address_allowlist: Set['metadata.Address'],
+                                 resource_messages: Dict[str, 'MessageType']
+                                 ) -> None:
+        """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+        Returns:
+            None
+        """
+        if self.ident not in address_allowlist:
+            address_allowlist.add(self.ident)
+
+            for field in self.fields.values():
+                field.add_to_address_allowlist(
+                    address_allowlist=address_allowlist,
+                    resource_messages=resource_messages
+                )
+
+            for enum in self.nested_enums.values():
+                enum.add_to_address_allowlist(
+                    address_allowlist=address_allowlist,
+                )
+
+            for message in self.nested_messages.values():
+                message.add_to_address_allowlist(
+                    address_allowlist=address_allowlist,
+                    resource_messages=resource_messages,
+                )
+
 
 @dataclasses.dataclass(frozen=True)
 class EnumValueType:
@@ -812,6 +893,15 @@ class EnumType:
             self,
             meta=self.meta.with_context(collisions=collisions),
         ) if collisions else self
+
+    def add_to_address_allowlist(self, *,
+                                 address_allowlist: Set['metadata.Address']) -> None:
+        """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
+        address_allowlist.add(self.ident)
 
     @property
     def options_dict(self) -> Dict:
@@ -917,6 +1007,24 @@ class ExtendedOperationInfo:
             ),
         )
 
+    def add_to_address_allowlist(self, *,
+                                 address_allowlist: Set['metadata.Address'],
+                                 resource_messages: Dict[str, 'MessageType']) -> None:
+        """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
+
+        self.request_type.add_to_address_allowlist(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+        self.operation_type.add_to_address_allowlist(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class OperationInfo:
@@ -944,6 +1052,24 @@ class OperationInfo:
                 collisions=collisions,
                 visited_messages=visited_messages,
             ),
+        )
+
+    def add_to_address_allowlist(self, *,
+                                 address_allowlist: Set['metadata.Address'],
+                                 resource_messages: Dict[str, 'MessageType']) -> None:
+        """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
+        self.response_type.add_to_address_allowlist(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+
+        self.metadata_type.add_to_address_allowlist(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages
         )
 
 
@@ -1679,6 +1805,52 @@ class Method:
             meta=self.meta.with_context(collisions=collisions),
         )
 
+    def add_to_address_allowlist(self, *,
+                                 address_allowlist: Set['metadata.Address'],
+                                 resource_messages: Dict[str, 'MessageType'],
+                                 services_in_proto: Dict[str, 'Service'],
+                                 ) -> None:
+        """Adds to the allowlist of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
+
+        address_allowlist.add(self.ident)
+
+        if self.lro:
+            self.lro.add_to_address_allowlist(address_allowlist=address_allowlist,
+                                              resource_messages=resource_messages)
+
+        if self.extended_lro:
+            # We need to add the service/method pointed to by self.operation_service to
+            # the allowlist, as it might not have been specified by
+            # the methods under selective_gapic_generation.
+            # We assume that the operation service lives in the same proto file as this one.
+            operation_service = services_in_proto[
+                self.operation_service]  # type: ignore
+            address_allowlist.add(operation_service.meta.address)
+            operation_service.operation_polling_method.add_to_address_allowlist(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+                services_in_proto=services_in_proto,
+            )
+
+            self.extended_lro.add_to_address_allowlist(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+            )
+
+        self.input.add_to_address_allowlist(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+
+        self.output.add_to_address_allowlist(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class CommonResource:
@@ -1993,4 +2165,62 @@ class Service:
                 for k, v in self.methods.items()
             },
             meta=self.meta.with_context(collisions=collisions),
+        )
+
+    def add_to_address_allowlist(self, *,
+                                 address_allowlist: Set['metadata.Address'],
+                                 method_allowlist: Set[str],
+                                 resource_messages: Dict[str, 'MessageType'],
+                                 services_in_proto: Dict[str, 'Service'],
+                                 ) -> None:
+        """Adds to the allowlist of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            method_allowlist (Set[str]): An allowlist of fully-qualified method names.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+            services_in_proto (Dict[str, Service]): 
+        Returns:
+            None
+        """
+
+        for method in self.methods.values():
+            if method.ident.proto in method_allowlist:
+                # Include this service if there are any types/methods in selective gapic for this service.
+                address_allowlist.add(self.meta.address)
+                method.add_to_address_allowlist(
+                    address_allowlist=address_allowlist,
+                    resource_messages=resource_messages,
+                    services_in_proto=services_in_proto,
+                )
+
+    def prune_messages_for_selective_generation(self, *,
+                                                address_allowlist: Set['metadata.Address']) -> 'Service':
+        """Returns a truncated version of this Service.
+
+        Only the methods, messages, and enums contained in the address allowlist
+        are included in the returned object.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to filter against. Objects with addresses not the allowlist will be
+                removed from the returned Proto.
+        Returns:
+            Service: A truncated version of this proto.
+        """
+        return dataclasses.replace(
+            self,
+            methods={
+                k: v
+                for k, v in self.methods.items() if v.ident in address_allowlist
+            }
         )
