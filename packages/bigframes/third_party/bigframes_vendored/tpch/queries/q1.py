@@ -39,4 +39,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         ["L_RETURNFLAG", "L_LINESTATUS"]
     )
 
-    result.to_gbq()
+    next(result.to_pandas_batches())

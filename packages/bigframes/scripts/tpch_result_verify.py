@@ -772,7 +772,9 @@ def verify(query_num=None):
                 file_content = file.read()
 
                 file_content = re.sub(
-                    r"(\w+)\.to_gbq\(\)", r"return \1.to_pandas()", file_content
+                    r"next\((\w+)\.to_pandas_batches\(\)\)",
+                    r"return \1.to_pandas()",
+                    file_content,
                 )
                 file_content = re.sub(r"_\s*=\s*(\w+)", r"return \1", file_content)
                 sql_result = _execute_query(sql_query)

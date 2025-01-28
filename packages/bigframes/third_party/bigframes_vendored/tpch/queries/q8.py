@@ -69,4 +69,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     sums["MKT_SHARE"] = (sums["numerator"] / sums["denominator"]).round(2)
 
     result_df = sums["MKT_SHARE"].sort_index().rename("MKT_SHARE").reset_index()
-    result_df.to_gbq()
+    next(result_df.to_pandas_batches())

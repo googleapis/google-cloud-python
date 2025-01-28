@@ -34,4 +34,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         ["CUSTDIST", "C_COUNT"], ascending=[False, False]
     )
 
-    q_final.to_gbq()
+    next(q_final.to_pandas_batches())

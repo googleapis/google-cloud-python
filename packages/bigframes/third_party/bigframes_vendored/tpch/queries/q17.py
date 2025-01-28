@@ -37,4 +37,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         (q_final[["L_EXTENDEDPRICE"]].sum() / 7.0).round(2).to_frame(name="AVG_YEARLY")
     )
 
-    q_final.to_gbq()
+    next(q_final.to_pandas_batches())

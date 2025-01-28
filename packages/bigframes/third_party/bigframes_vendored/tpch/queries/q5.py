@@ -52,4 +52,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     gb = jn5.groupby("N_NAME", as_index=False)["REVENUE"].sum()
     result_df = gb.sort_values("REVENUE", ascending=False)
 
-    result_df.to_gbq()
+    next(result_df.to_pandas_batches())

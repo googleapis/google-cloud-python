@@ -42,4 +42,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         .to_frame(name="PROMO_REVENUE")
     )
 
-    promo_revenue_percent.to_gbq()
+    next(promo_revenue_percent.to_pandas_batches())

@@ -27,4 +27,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         .to_frame()
     )
 
-    result_df.to_gbq()
+    next(result_df.to_pandas_batches())

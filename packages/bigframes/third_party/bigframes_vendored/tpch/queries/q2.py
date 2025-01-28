@@ -59,4 +59,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     )
 
     result_df = sort.head(100)
-    result_df.to_gbq()
+    next(result_df.to_pandas_batches())
