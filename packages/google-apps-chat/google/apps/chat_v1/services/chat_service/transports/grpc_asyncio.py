@@ -1304,8 +1304,8 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
     ) -> Callable[[gc_reaction.CreateReactionRequest], Awaitable[gc_reaction.Reaction]]:
         r"""Return a callable for the create reaction method over gRPC.
 
-        Creates a reaction and adds it to a message. Only unicode emojis
-        are supported. For an example, see `Add a reaction to a
+        Creates a reaction and adds it to a message. For an example, see
+        `Add a reaction to a
         message <https://developers.google.com/workspace/chat/create-reactions>`__.
 
         Requires `user
@@ -1368,8 +1368,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
     ) -> Callable[[reaction.DeleteReactionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete reaction method over gRPC.
 
-        Deletes a reaction to a message. Only unicode emojis are
-        supported. For an example, see `Delete a
+        Deletes a reaction to a message. For an example, see `Delete a
         reaction <https://developers.google.com/workspace/chat/delete-reactions>`__.
 
         Requires `user
