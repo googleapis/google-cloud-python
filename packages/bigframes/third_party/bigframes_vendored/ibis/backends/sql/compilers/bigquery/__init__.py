@@ -1039,7 +1039,7 @@ class BigQueryCompiler(SQLGlotCompiler):
             nested=True,
         )
         array_values = [
-            sge.Tuple(
+            sge.Struct(
                 expressions=tuple(
                     self.visit_Literal(None, value=value, dtype=type_)
                     for value, type_ in zip(row, schema.types)

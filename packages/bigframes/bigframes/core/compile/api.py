@@ -24,9 +24,7 @@ if TYPE_CHECKING:
     import bigframes.core.ordering
     import bigframes.core.schema
 
-_STRICT_COMPILER = compiler.Compiler(
-    strict=True, enable_pruning=True, enable_densify_ids=True
-)
+_STRICT_COMPILER = compiler.Compiler(strict=True)
 
 
 class SQLCompiler:
@@ -72,9 +70,7 @@ class SQLCompiler:
 def test_only_try_evaluate(node: bigframes.core.nodes.BigFrameNode):
     """Use only for unit testing paths - not fully featured. Will throw exception if fails."""
     node = _STRICT_COMPILER._preprocess(node)
-    ibis = _STRICT_COMPILER.compile_ordered_ir(node)._to_ibis_expr(
-        ordering_mode="unordered"
-    )
+    ibis = _STRICT_COMPILER.compile_node(node)._to_ibis_expr()
     return ibis.pandas.connect({}).execute(ibis)
 
 
@@ -83,7 +79,7 @@ def test_only_ibis_inferred_schema(node: bigframes.core.nodes.BigFrameNode):
     import bigframes.core.schema
 
     node = _STRICT_COMPILER._preprocess(node)
-    compiled = _STRICT_COMPILER.compile_unordered_ir(node)
+    compiled = _STRICT_COMPILER.compile_node(node)
     items = tuple(
         bigframes.core.schema.SchemaItem(name, compiled.get_column_type(ibis_id))
         for name, ibis_id in zip(node.schema.names, compiled.column_ids)

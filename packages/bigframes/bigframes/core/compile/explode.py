@@ -20,9 +20,7 @@ import bigframes_vendored.ibis
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.expression as ex
 import bigframes.core.guid
-import bigframes.core.identifiers as ids
 import bigframes.core.ordering
-from bigframes.core.ordering import TotalOrdering
 
 
 def explode_unordered(
@@ -72,80 +70,4 @@ def explode_unordered(
     return compiled.UnorderedIR(
         table_w_unnest,
         columns=columns,  # type: ignore
-    )
-
-
-def explode_ordered(
-    input: compiled.OrderedIR,
-    columns: typing.Sequence[ex.DerefOp],
-    offsets_id: typing.Optional[str],
-) -> compiled.OrderedIR:
-    if input.order_non_deterministic:
-        id = bigframes.core.guid.generate_guid()
-        return input.promote_offsets(id)
-    table = input._to_ibis_expr(ordering_mode="unordered", expose_hidden_cols=True)
-    column_ids = tuple(ref.id.sql for ref in columns)
-
-    offset_array_id = bigframes.core.guid.generate_guid("offset_array_")
-    offset_array = bigframes_vendored.ibis.range(
-        0,
-        bigframes_vendored.ibis.greatest(
-            1,  # We always want at least 1 element to fill in NULLs for empty arrays.
-            bigframes_vendored.ibis.least(
-                *[table[column_id].length() for column_id in column_ids]
-            ),
-        ),
-        1,
-    ).name(offset_array_id)
-    table_w_offset_array = table.select(
-        offset_array,
-        *input._column_names,
-        *input._hidden_ordering_column_names,
-    )
-
-    unnest_offset_id = offsets_id or bigframes.core.guid.generate_guid("unnest_offset_")
-    unnest_offset = (
-        table_w_offset_array[offset_array_id].unnest().name(unnest_offset_id)
-    )
-    table_w_offset = table_w_offset_array.select(
-        unnest_offset,
-        *input._column_names,
-        *input._hidden_ordering_column_names,
-    )
-
-    unnested_columns = [
-        table_w_offset[column_id][table_w_offset[unnest_offset_id]].name(column_id)
-        if column_id in column_ids
-        else table_w_offset[column_id]
-        for column_id in input._column_names
-    ]
-
-    table_w_unnest = table_w_offset.select(
-        table_w_offset[unnest_offset_id],
-        *unnested_columns,
-        *input._hidden_ordering_column_names,
-    )
-
-    output_cols = tuple(input.column_ids) + ((offsets_id,) if offsets_id else ())
-    columns = [table_w_unnest[column_name] for column_name in output_cols]
-    hidden_ordering_columns = [
-        table_w_unnest[column_name]
-        for column_name in input._hidden_ordering_column_names
-    ]
-    if offsets_id is None:
-        hidden_ordering_columns.append(table_w_unnest[unnest_offset_id])
-    l_mappings = {id: id for id in input._ordering.referenced_columns}
-    r_mappings = {ids.ColumnId(unnest_offset_id): ids.ColumnId(unnest_offset_id)}
-    ordering = bigframes.core.ordering.join_orderings(
-        input._ordering,
-        TotalOrdering.from_offset_col(unnest_offset_id),
-        l_mappings,
-        r_mappings,
-    )
-
-    return compiled.OrderedIR(
-        table_w_unnest,
-        columns=columns,  # type: ignore
-        hidden_ordering_columns=hidden_ordering_columns,
-        ordering=ordering,
     )

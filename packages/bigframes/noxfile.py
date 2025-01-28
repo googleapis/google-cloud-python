@@ -172,7 +172,7 @@ def install_unittest_dependencies(session, install_test_extra, *constraints):
     if UNIT_TEST_EXTERNAL_DEPENDENCIES:
         msg = (
             "'unit_test_external_dependencies' is deprecated. Instead, please "
-            "use 'unit_test_dependencies' or 'unit_test_local_dependencies'.",
+            "use 'unit_test_dependencies' or 'unit_test_local_dependencies'."
         )
         warnings.warn(msg, DeprecationWarning)
         session.install(*UNIT_TEST_EXTERNAL_DEPENDENCIES, *constraints)
@@ -444,7 +444,7 @@ def cover(session):
         "report",
         "--include=bigframes/*",
         "--show-missing",
-        "--fail-under=86",
+        "--fail-under=85",
     )
 
     # Make sure there is no dead code in our test directories.

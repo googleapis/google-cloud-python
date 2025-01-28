@@ -16,20 +16,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-import math
 import typing
-from typing import Mapping, Optional, Sequence, Set
-
-import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
-import bigframes_vendored.ibis.expr.types as ibis_types
+from typing import Mapping, Optional, Sequence, Set, Union
 
 import bigframes.core.expression as expression
 import bigframes.core.identifiers as ids
-
-# TODO(tbergeron): Encode more efficiently
-ORDERING_ID_STRING_BASE: int = 10
-# Sufficient to store any value up to 2^63
-DEFAULT_ORDERING_ID_LENGTH: int = math.ceil(63 * math.log(2, ORDERING_ID_STRING_BASE))
 
 
 class OrderingDirection(Enum):
@@ -94,16 +85,6 @@ class OrderingExpression:
 
 # Encoding classes specify additional properties for some ordering representations
 @dataclass(frozen=True)
-class StringEncoding:
-    """String encoded order ids are fixed length and can be concat together in joins."""
-
-    is_encoded: bool = False
-    # Encoding size must be tracked in order to know what how to combine ordering ids across tables (eg how much to pad when combining different length).
-    # Also will be needed to determine when length is too large and need to compact ordering id with a ROW_NUMBER operation.
-    length: int = DEFAULT_ORDERING_ID_LENGTH
-
-
-@dataclass(frozen=True)
 class IntegerEncoding:
     """Integer encoded order ids are guaranteed non-negative."""
 
@@ -117,7 +98,6 @@ class RowOrdering:
 
     ordering_value_columns: typing.Tuple[OrderingExpression, ...] = ()
     integer_encoding: IntegerEncoding = IntegerEncoding(False)
-    string_encoding: StringEncoding = StringEncoding(False)
 
     @property
     def all_ordering_columns(self) -> Sequence[OrderingExpression]:
@@ -130,11 +110,6 @@ class RowOrdering:
             for part in self.ordering_value_columns
             for col in part.referenced_columns
         )
-
-    @property
-    def is_string_encoded(self) -> bool:
-        """True if ordering is fully defined by a fixed length string column."""
-        return self.string_encoding.is_encoded
 
     @property
     def is_sequential(self) -> bool:
@@ -207,6 +182,13 @@ class RowOrdering:
             new_ordering,
         )
 
+    def join(
+        self,
+        other: RowOrdering,
+    ) -> RowOrdering:
+        joined_refs = [*self.all_ordering_columns, *other.all_ordering_columns]
+        return RowOrdering(tuple(joined_refs))
+
     def _truncate_ordering(
         self, order_refs: tuple[OrderingExpression, ...]
     ) -> tuple[OrderingExpression, ...]:
@@ -239,19 +221,20 @@ class TotalOrdering(RowOrdering):
     )
 
     @classmethod
-    def from_offset_col(cls, col: str) -> TotalOrdering:
+    def from_offset_col(cls, col: Union[ids.ColumnId, str]) -> TotalOrdering:
+        col_id = ids.ColumnId(col) if isinstance(col, str) else col
         return TotalOrdering(
             (ascending_over(col),),
             integer_encoding=IntegerEncoding(True, is_sequential=True),
-            total_ordering_columns=frozenset({expression.deref(col)}),
+            total_ordering_columns=frozenset({expression.DerefOp(col_id)}),
         )
 
     @classmethod
-    def from_primary_key(cls, primary_key: Sequence[str]) -> TotalOrdering:
+    def from_primary_key(cls, primary_key: Sequence[ids.ColumnId]) -> TotalOrdering:
         return TotalOrdering(
             tuple(ascending_over(col) for col in primary_key),
             total_ordering_columns=frozenset(
-                {expression.deref(col) for col in primary_key}
+                {expression.DerefOp(col) for col in primary_key}
             ),
         )
 
@@ -342,9 +325,37 @@ class TotalOrdering(RowOrdering):
         return TotalOrdering(
             tuple(new_value_columns),
             integer_encoding=self.integer_encoding,
-            string_encoding=self.string_encoding,
             total_ordering_columns=new_total_order,
         )
+
+    @typing.overload
+    def join(
+        self,
+        other: TotalOrdering,
+    ) -> TotalOrdering:
+        ...
+
+    @typing.overload
+    def join(
+        self,
+        other: RowOrdering,
+    ) -> RowOrdering:
+        ...
+
+    def join(
+        self,
+        other: RowOrdering,
+    ) -> RowOrdering:
+        joined_refs = [*self.all_ordering_columns, *other.all_ordering_columns]
+        if isinstance(other, TotalOrdering):
+            left_total_order_cols = frozenset(self.total_ordering_columns)
+            right_total_order_cols = frozenset(other.total_ordering_columns)
+            return TotalOrdering(
+                ordering_value_columns=tuple(joined_refs),
+                total_ordering_columns=left_total_order_cols | right_total_order_cols,
+            )
+        else:
+            return RowOrdering(tuple(joined_refs))
 
     @property
     def total_order_col(self) -> Optional[OrderingExpression]:
@@ -357,93 +368,18 @@ class TotalOrdering(RowOrdering):
         return order_ref
 
 
-def encode_order_string(
-    order_id: ibis_types.IntegerColumn, length: int = DEFAULT_ORDERING_ID_LENGTH
-) -> ibis_types.StringColumn:
-    """Converts an order id value to string if it is not already a string. MUST produced fixed-length strings."""
-    # This is very inefficient encoding base-10 string uses only 10 characters per byte(out of 256 bit combinations)
-    # Furthermore, if know tighter bounds on order id are known, can produce smaller strings.
-    # 19 characters chosen as it can represent any positive Int64 in base-10
-    # For missing values, ":" * 19 is used as it is larger than any other value this function produces, so null values will be last.
-    string_order_id = typing.cast(
-        ibis_types.StringValue,
-        order_id.cast(ibis_dtypes.string),
-    ).lpad(length, "0")
-    return typing.cast(ibis_types.StringColumn, string_order_id)
-
-
-def reencode_order_string(
-    order_id: ibis_types.StringColumn, length: int
-) -> ibis_types.StringColumn:
-    return typing.cast(
-        ibis_types.StringColumn,
-        (typing.cast(ibis_types.StringValue, order_id).lpad(length, "0")),
-    )
-
-
 # Convenience functions
-def ascending_over(id: str, nulls_last: bool = True) -> OrderingExpression:
-    return OrderingExpression(expression.deref(id), na_last=nulls_last)
+def ascending_over(
+    id: Union[ids.ColumnId, str], nulls_last: bool = True
+) -> OrderingExpression:
+    col_id = ids.ColumnId(id) if isinstance(id, str) else id
+    return OrderingExpression(expression.DerefOp(col_id), na_last=nulls_last)
 
 
-def descending_over(id: str, nulls_last: bool = True) -> OrderingExpression:
+def descending_over(
+    id: Union[ids.ColumnId, str], nulls_last: bool = True
+) -> OrderingExpression:
+    col_id = ids.ColumnId(id) if isinstance(id, str) else id
     return OrderingExpression(
-        expression.deref(id), direction=OrderingDirection.DESC, na_last=nulls_last
+        expression.DerefOp(col_id), direction=OrderingDirection.DESC, na_last=nulls_last
     )
-
-
-@typing.overload
-def join_orderings(
-    left: TotalOrdering,
-    right: TotalOrdering,
-    left_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-    right_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-    left_order_dominates: bool = True,
-) -> TotalOrdering:
-    ...
-
-
-@typing.overload
-def join_orderings(
-    left: RowOrdering,
-    right: RowOrdering,
-    left_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-    right_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-    left_order_dominates: bool = True,
-) -> RowOrdering:
-    ...
-
-
-def join_orderings(
-    left: RowOrdering,
-    right: RowOrdering,
-    left_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-    right_id_mapping: Mapping[ids.ColumnId, ids.ColumnId],
-    left_order_dominates: bool = True,
-) -> RowOrdering:
-    left_ordering_refs = [
-        ref.remap_column_refs(left_id_mapping) for ref in left.all_ordering_columns
-    ]
-    right_ordering_refs = [
-        ref.remap_column_refs(right_id_mapping) for ref in right.all_ordering_columns
-    ]
-    if left_order_dominates:
-        joined_refs = [*left_ordering_refs, *right_ordering_refs]
-    else:
-        joined_refs = [*right_ordering_refs, *left_ordering_refs]
-
-    if isinstance(left, TotalOrdering) and isinstance(right, TotalOrdering):
-        left_total_order_cols = frozenset(
-            [left_id_mapping[ref.id] for ref in left.total_ordering_columns]
-        )
-        right_total_order_cols = frozenset(
-            [right_id_mapping[ref.id] for ref in right.total_ordering_columns]
-        )
-        return TotalOrdering(
-            ordering_value_columns=tuple(joined_refs),
-            total_ordering_columns=frozenset(
-                map(expression.DerefOp, left_total_order_cols | right_total_order_cols)
-            ),
-        )
-    else:
-        return RowOrdering(tuple(joined_refs))

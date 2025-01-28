@@ -33,7 +33,6 @@ import bigframes.core.compile.scalar_op_compiler as compile_scalar
 import bigframes.core.compile.schema_translator
 import bigframes.core.compile.single_column
 import bigframes.core.expression as ex
-import bigframes.core.guid as guids
 import bigframes.core.identifiers as ids
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
@@ -50,23 +49,40 @@ class Compiler:
     # In unstrict mode, ordering from ReadTable or after joins may be ambiguous to improve query performance.
     strict: bool = True
     scalar_op_compiler = compile_scalar.ScalarOpCompiler()
-    enable_pruning: bool = False
-    enable_densify_ids: bool = False
 
     def compile_sql(
         self, node: nodes.BigFrameNode, ordered: bool, output_ids: typing.Sequence[str]
     ) -> str:
-        node = self.set_output_names(node, output_ids)
+        # TODO: get rid of output_ids arg
+        assert len(output_ids) == len(list(node.fields))
+        node = set_output_names(node, output_ids)
         if ordered:
             node, limit = rewrites.pullup_limit_from_slice(node)
-            ir = self.compile_ordered_ir(self._preprocess(node))
-            return ir.to_sql(ordered=True, limit=limit)
+            node = nodes.bottom_up(node, rewrites.rewrite_slice)
+            node, ordering = rewrites.pull_up_order(
+                node, order_root=True, ordered_joins=self.strict
+            )
+            ir = self.compile_node(node)
+            return ir.to_sql(
+                order_by=ordering.all_ordering_columns,
+                limit=limit,
+                selections=output_ids,
+            )
         else:
-            ir = self.compile_unordered_ir(self._preprocess(node))  # type: ignore
-            return ir.to_sql()
+            node = nodes.bottom_up(node, rewrites.rewrite_slice)
+            node, _ = rewrites.pull_up_order(
+                node, order_root=False, ordered_joins=self.strict
+            )
+            ir = self.compile_node(node)
+            return ir.to_sql(selections=output_ids)
 
     def compile_peek_sql(self, node: nodes.BigFrameNode, n_rows: int) -> str:
-        return self.compile_unordered_ir(self._preprocess(node)).peek_sql(n_rows)
+        ids = [id.sql for id in node.ids]
+        node = nodes.bottom_up(node, rewrites.rewrite_slice)
+        node, _ = rewrites.pull_up_order(
+            node, order_root=False, ordered_joins=self.strict
+        )
+        return self.compile_node(node).to_sql(limit=n_rows, selections=ids)
 
     def compile_raw(
         self,
@@ -74,98 +90,49 @@ class Compiler:
     ) -> typing.Tuple[
         str, typing.Sequence[google.cloud.bigquery.SchemaField], bf_ordering.RowOrdering
     ]:
-        ir = self.compile_ordered_ir(self._preprocess(node))
-        sql, schema = ir.raw_sql_and_schema(column_ids=node.schema.names)
-        return sql, schema, ir._ordering
+        node = nodes.bottom_up(node, rewrites.rewrite_slice)
+        node, ordering = rewrites.pull_up_order(node, ordered_joins=self.strict)
+        ir = self.compile_node(node)
+        sql = ir.to_sql()
+        return sql, node.schema.to_bigquery(), ordering
 
     def _preprocess(self, node: nodes.BigFrameNode):
-        if self.enable_pruning:
-            used_fields = frozenset(field.id for field in node.fields)
-            node = node.prune(used_fields)
         node = nodes.bottom_up(node, rewrites.rewrite_slice)
-        if self.enable_densify_ids:
-            original_names = [id.name for id in node.ids]
-            node, _ = rewrites.remap_variables(
-                node, id_generator=ids.anonymous_serial_ids()
-            )
-            node = self.set_output_names(node, original_names)
-        return node
-
-    def set_output_names(
-        self, node: bigframes.core.nodes.BigFrameNode, output_ids: typing.Sequence[str]
-    ):
-        # TODO: Create specialized output operators that will handle final names
-        return nodes.SelectionNode(
-            node,
-            tuple(
-                (ex.DerefOp(old_id), ids.ColumnId(out_id))
-                for old_id, out_id in zip(node.ids, output_ids)
-            ),
+        node, _ = rewrites.pull_up_order(
+            node, order_root=False, ordered_joins=self.strict
         )
-
-    def compile_ordered_ir(self, node: nodes.BigFrameNode) -> compiled.OrderedIR:
-        return typing.cast(compiled.OrderedIR, self.compile_node(node, True))
-
-    def compile_unordered_ir(self, node: nodes.BigFrameNode) -> compiled.UnorderedIR:
-        return typing.cast(compiled.UnorderedIR, self.compile_node(node, False))
+        return node
 
     # TODO: Remove cache when schema no longer requires compilation to derive schema (and therefor only compiles for execution)
     @functools.lru_cache(maxsize=5000)
-    def compile_node(
-        self, node: nodes.BigFrameNode, ordered: bool = True
-    ) -> compiled.UnorderedIR | compiled.OrderedIR:
+    def compile_node(self, node: nodes.BigFrameNode) -> compiled.UnorderedIR:
         """Compile node into CompileArrayValue. Caches result."""
-        return self._compile_node(node, ordered)
+        return self._compile_node(node)
 
     @functools.singledispatchmethod
-    def _compile_node(
-        self, node: nodes.BigFrameNode, ordered: bool = True
-    ) -> compiled.UnorderedIR:
+    def _compile_node(self, node: nodes.BigFrameNode) -> compiled.UnorderedIR:
         """Defines transformation but isn't cached, always use compile_node instead"""
         raise ValueError(f"Can't compile unrecognized node: {node}")
 
     @_compile_node.register
-    def compile_join(self, node: nodes.JoinNode, ordered: bool = True):
+    def compile_join(self, node: nodes.JoinNode):
         condition_pairs = tuple(
             (left.id.sql, right.id.sql) for left, right in node.conditions
         )
-        if ordered:
-            # In general, joins are an ordering destroying operation.
-            # With ordering_mode = "partial", make this explicit. In
-            # this case, we don't need to provide a deterministic ordering.
-            if self.strict:
-                left_ordered = self.compile_ordered_ir(node.left_child)
-                right_ordered = self.compile_ordered_ir(node.right_child)
-                return bigframes.core.compile.single_column.join_by_column_ordered(
-                    left=left_ordered,
-                    right=right_ordered,
-                    type=node.type,
-                    conditions=condition_pairs,
-                )
-            else:
-                left_unordered = self.compile_unordered_ir(node.left_child)
-                right_unordered = self.compile_unordered_ir(node.right_child)
-                return bigframes.core.compile.single_column.join_by_column_unordered(
-                    left=left_unordered,
-                    right=right_unordered,
-                    type=node.type,
-                    conditions=condition_pairs,
-                ).as_ordered_ir()
-        else:
-            left_unordered = self.compile_unordered_ir(node.left_child)
-            right_unordered = self.compile_unordered_ir(node.right_child)
-            return bigframes.core.compile.single_column.join_by_column_unordered(
-                left=left_unordered,
-                right=right_unordered,
-                type=node.type,
-                conditions=condition_pairs,
-            )
+        left_unordered = self.compile_node(node.left_child)
+        right_unordered = self.compile_node(node.right_child)
+        return bigframes.core.compile.single_column.join_by_column_unordered(
+            left=left_unordered,
+            right=right_unordered,
+            type=node.type,
+            conditions=condition_pairs,
+        )
 
     @_compile_node.register
-    def compile_fromrange(self, node: nodes.FromRangeNode, ordered: bool = True):
+    def compile_fromrange(self, node: nodes.FromRangeNode):
         # Both start and end are single elements and do not inherently have an order
-        start = self.compile_unordered_ir(node.start)
-        end = self.compile_unordered_ir(node.end)
+        start = self.compile_node(node.start)
+        end = self.compile_node(node.end)
         start_table = start._to_ibis_expr()
         end_table = end._to_ibis_expr()
 
@@ -183,36 +150,25 @@ class Compiler:
             .as_table()
             .unnest([node.output_id.sql])
         )
-        if ordered:
-            return compiled.OrderedIR(
-                labels,
-                columns=[labels[labels.columns[0]]],
-                ordering=bf_ordering.TotalOrdering().from_offset_col(labels.columns[0]),
-            )
-        else:
-            return compiled.UnorderedIR(
-                labels,
-                columns=[labels[labels.columns[0]]],
-            )
+        return compiled.UnorderedIR(
+            labels,
+            columns=[labels[labels.columns[0]]],
+        )
 
     @_compile_node.register
-    def compile_readlocal(self, node: nodes.ReadLocalNode, ordered: bool = True):
+    def compile_readlocal(self, node: nodes.ReadLocalNode):
         array_as_pd = pd.read_feather(
             io.BytesIO(node.feather_bytes),
             columns=[item.source_id for item in node.scan_list.items],
         )
-        ordered_ir = compiled.OrderedIR.from_pandas(array_as_pd, node.scan_list)
-        if ordered:
-            return ordered_ir
-        else:
-            return ordered_ir.to_unordered()
+        offsets = node.offsets_col.sql if node.offsets_col else None
+        return compiled.UnorderedIR.from_pandas(
+            array_as_pd, node.scan_list, offsets=offsets
+        )
 
     @_compile_node.register
-    def compile_readtable(self, node: nodes.ReadTableNode, ordered: bool = True):
-        if ordered:
-            return self.compile_read_table_ordered(node.source, node.scan_list)
-        else:
-            return self.compile_read_table_unordered(node.source, node.scan_list)
+    def compile_readtable(self, node: nodes.ReadTableNode):
+        return self.compile_read_table_unordered(node.source, node.scan_list)
 
     def read_table_as_unordered_ibis(
         self, source: nodes.BigqueryDataSource
@@ -250,140 +206,71 @@ class Compiler:
             ),
         )
 
-    def compile_read_table_ordered(
-        self, source: nodes.BigqueryDataSource, scan_list: nodes.ScanList
-    ):
-        ibis_table = self.read_table_as_unordered_ibis(source)
-        if source.ordering is not None:
-            visible_column_mapping = {
-                ids.ColumnId(scan_item.source_id): scan_item.id
-                for scan_item in scan_list.items
-            }
-            full_mapping = {
-                ids.ColumnId(col.name): ids.ColumnId(guids.generate_guid())
-                for col in source.ordering.referenced_columns
-            }
-            full_mapping.update(visible_column_mapping)
-
-            ordering = source.ordering.remap_column_refs(full_mapping)
-            hidden_columns = tuple(
-                ibis_table[source_id.sql].name(out_id.sql)
-                for source_id, out_id in full_mapping.items()
-                if source_id not in visible_column_mapping
-            )
-        else:
-            # In unstrict mode, don't generate total ordering from hashing as this is
-            # expensive (prevent removing any columns from table scan)
-            ordering, hidden_columns = bf_ordering.RowOrdering(), ()
-
-        return compiled.OrderedIR(
-            ibis_table,
-            columns=tuple(
-                bigframes.core.compile.ibis_types.ibis_value_to_canonical_type(
-                    ibis_table[scan_item.source_id].name(scan_item.id.sql)
-                )
-                for scan_item in scan_list.items
-            ),
-            ordering=ordering,
-            hidden_ordering_columns=hidden_columns,
-        )
+    @_compile_node.register
+    def compile_filter(self, node: nodes.FilterNode):
+        return self.compile_node(node.child).filter(node.predicate)
 
     @_compile_node.register
-    def compile_promote_offsets(
-        self, node: nodes.PromoteOffsetsNode, ordered: bool = True
-    ):
-        result = self.compile_ordered_ir(node.child).promote_offsets(node.col_id.sql)
-        return result if ordered else result.to_unordered()
-
-    @_compile_node.register
-    def compile_filter(self, node: nodes.FilterNode, ordered: bool = True):
-        return self.compile_node(node.child, ordered).filter(node.predicate)
-
-    @_compile_node.register
-    def compile_orderby(self, node: nodes.OrderByNode, ordered: bool = True):
-        if ordered:
-            if node.is_total_order:
-                # more efficient, can just discard any previous ordering and get same result
-                return self.compile_unordered_ir(node.child).with_total_order(node.by)
-            else:
-                return self.compile_ordered_ir(node.child).order_by(node.by)
-        else:
-            return self.compile_unordered_ir(node.child)
-
-    @_compile_node.register
-    def compile_reversed(self, node: nodes.ReversedNode, ordered: bool = True):
-        if ordered:
-            return self.compile_ordered_ir(node.child).reversed()
-        else:
-            return self.compile_unordered_ir(node.child)
-
-    @_compile_node.register
-    def compile_selection(self, node: nodes.SelectionNode, ordered: bool = True):
-        result = self.compile_node(node.child, ordered)
+    def compile_selection(self, node: nodes.SelectionNode):
+        result = self.compile_node(node.child)
         selection = tuple((ref, id.sql) for ref, id in node.input_output_pairs)
         return result.selection(selection)
 
     @_compile_node.register
-    def compile_projection(self, node: nodes.ProjectionNode, ordered: bool = True):
-        result = self.compile_node(node.child, ordered)
+    def compile_projection(self, node: nodes.ProjectionNode):
+        result = self.compile_node(node.child)
         projections = ((expr, id.sql) for expr, id in node.assignments)
         return result.projection(tuple(projections))
 
     @_compile_node.register
-    def compile_concat(self, node: nodes.ConcatNode, ordered: bool = True):
+    def compile_concat(self, node: nodes.ConcatNode):
         output_ids = [id.sql for id in node.output_ids]
-        if ordered:
-            compiled_ordered = [self.compile_ordered_ir(node) for node in node.children]
-            return concat_impl.concat_ordered(compiled_ordered, output_ids)
-        else:
-            compiled_unordered = [
-                self.compile_unordered_ir(node) for node in node.children
-            ]
-            return concat_impl.concat_unordered(compiled_unordered, output_ids)
+        compiled_unordered = [self.compile_node(node) for node in node.children]
+        return concat_impl.concat_unordered(compiled_unordered, output_ids)
 
     @_compile_node.register
-    def compile_rowcount(self, node: nodes.RowCountNode, ordered: bool = True):
-        result = self.compile_unordered_ir(node.child).row_count(name=node.col_id.sql)
-        return result if ordered else result.to_unordered()
+    def compile_rowcount(self, node: nodes.RowCountNode):
+        result = self.compile_node(node.child).row_count(name=node.col_id.sql)
+        return result
 
     @_compile_node.register
-    def compile_aggregate(self, node: nodes.AggregateNode, ordered: bool = True):
-        has_ordered_aggregation_ops = any(
-            aggregate.op.can_order_by for aggregate, _ in node.aggregations
-        )
+    def compile_aggregate(self, node: nodes.AggregateNode):
         aggs = tuple((agg, id.sql) for agg, id in node.aggregations)
-        if ordered and has_ordered_aggregation_ops:
-            return self.compile_ordered_ir(node.child).aggregate(
-                aggs, node.by_column_ids, node.dropna
-            )
-        else:
-            result = self.compile_unordered_ir(node.child).aggregate(
-                aggs, node.by_column_ids, node.dropna
-            )
-            return result if ordered else result.to_unordered()
+        result = self.compile_node(node.child).aggregate(
+            aggs, node.by_column_ids, node.dropna, order_by=node.order_by
+        )
+        return result
 
     @_compile_node.register
-    def compile_window(self, node: nodes.WindowOpNode, ordered: bool = True):
-        result = self.compile_ordered_ir(node.child).project_window_op(
+    def compile_window(self, node: nodes.WindowOpNode):
+        result = self.compile_node(node.child).project_window_op(
             node.expression,
             node.window_spec,
             node.output_name.sql,
             never_skip_nulls=node.never_skip_nulls,
         )
-        return result if ordered else result.to_unordered()
+        return result
 
     @_compile_node.register
-    def compile_explode(self, node: nodes.ExplodeNode, ordered: bool = True):
+    def compile_explode(self, node: nodes.ExplodeNode):
         offsets_col = node.offsets_col.sql if (node.offsets_col is not None) else None
-        if ordered:
-            return bigframes.core.compile.explode.explode_ordered(
-                self.compile_ordered_ir(node.child), node.column_ids, offsets_col
-            )
-        else:
-            return bigframes.core.compile.explode.explode_unordered(
-                self.compile_unordered_ir(node.child), node.column_ids, offsets_col
-            )
+        return bigframes.core.compile.explode.explode_unordered(
+            self.compile_node(node.child), node.column_ids, offsets_col
+        )
 
     @_compile_node.register
-    def compile_random_sample(self, node: nodes.RandomSampleNode, ordered: bool = True):
-        return self.compile_node(node.child, ordered)._uniform_sampling(node.fraction)
+    def compile_random_sample(self, node: nodes.RandomSampleNode):
+        return self.compile_node(node.child)._uniform_sampling(node.fraction)
+
+
+def set_output_names(
+    node: bigframes.core.nodes.BigFrameNode, output_ids: typing.Sequence[str]
+):
+    # TODO: Create specialized output operators that will handle final names
+    return nodes.SelectionNode(
+        node,
+        tuple(
+            (ex.DerefOp(old_id), ids.ColumnId(out_id))
+            for old_id, out_id in zip(node.ids, output_ids)
+        ),
+    )

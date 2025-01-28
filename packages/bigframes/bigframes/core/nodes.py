@@ -890,6 +890,32 @@ class ReadTableNode(LeafNode):
     def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
         return self
 
+    def with_order_cols(self):
+        # Maybe the ordering should be required to always be in the scan list, and then we won't need this?
+        if self.source.ordering is None:
+            return self, orderings.RowOrdering()
+
+        order_cols = {col.sql for col in self.source.ordering.referenced_columns}
+        scan_cols = {col.source_id for col in self.scan_list.items}
+        new_scan_cols = [
+            ScanItem(
+                bigframes.core.ids.ColumnId.unique(),
+                dtype=bigframes.dtypes.convert_schema_field(field)[1],
+                source_id=field.name,
+            )
+            for field in self.source.table.physical_schema
+            if (field.name in order_cols) and (field.name not in scan_cols)
+        ]
+        new_scan_list = ScanList(items=(*self.scan_list.items, *new_scan_cols))
+        new_order = self.source.ordering.remap_column_refs(
+            {
+                bigframes.core.ids.ColumnId(item.source_id): item.id
+                for item in new_scan_cols
+            },
+            allow_partial_bindings=True,
+        )
+        return dataclasses.replace(self, scan_list=new_scan_list), new_order
+
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class CachedTableNode(ReadTableNode):
@@ -1113,6 +1139,9 @@ class SelectionNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return tuple(id for _, id in self.input_output_pairs)
 
+    def get_id_mapping(self) -> dict[bfet_ids.ColumnId, bfet_ids.ColumnId]:
+        return {ref.id: out_id for ref, out_id in self.input_output_pairs}
+
     def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
         pruned_selections = (
             tuple(
@@ -1260,6 +1289,7 @@ class AggregateNode(UnaryNode):
         typing.Tuple[ex.Aggregation, bigframes.core.identifiers.ColumnId], ...
     ]
     by_column_ids: typing.Tuple[ex.DerefOp, ...] = tuple([])
+    order_by: Tuple[OrderingExpression, ...] = ()
     dropna: bool = True
 
     @property
@@ -1308,6 +1338,12 @@ class AggregateNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return tuple(id for _, id in self.aggregations)
 
+    @property
+    def has_ordered_ops(self) -> bool:
+        return not all(
+            aggregate.op.order_independent for aggregate, _ in self.aggregations
+        )
+
     def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
         by_ids = (ref.id for ref in self.by_column_ids)
         pruned_aggs = (
@@ -1319,7 +1355,9 @@ class AggregateNode(UnaryNode):
         )
         consumed_ids = frozenset(itertools.chain(by_ids, agg_inputs))
         pruned_child = self.child.prune(consumed_ids)
-        return AggregateNode(pruned_child, pruned_aggs, self.by_column_ids, self.dropna)
+        return AggregateNode(
+            pruned_child, pruned_aggs, self.by_column_ids, dropna=self.dropna
+        )
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
@@ -1333,8 +1371,9 @@ class AggregateNode(UnaryNode):
             for agg, id in self.aggregations
         )
         new_by_ids = tuple(id.remap_column_refs(mappings) for id in self.by_column_ids)
+        new_order_by = tuple(part.remap_column_refs(mappings) for part in self.order_by)
         return dataclasses.replace(
-            self, by_column_ids=new_by_ids, aggregations=new_aggs
+            self, by_column_ids=new_by_ids, aggregations=new_aggs, order_by=new_order_by
         )
 
 
@@ -1348,6 +1387,10 @@ class WindowOpNode(UnaryNode):
 
     def _validate(self):
         """Validate the local data in the node."""
+        # Since inner order and row bounds are coupled, rank ops can't be row bounded
+        assert (
+            not self.window_spec.row_bounded
+        ) or self.expression.op.implicitly_inherits_order
         assert all(ref in self.child.ids for ref in self.expression.column_references)
 
     @property
@@ -1386,6 +1429,14 @@ class WindowOpNode(UnaryNode):
     @property
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return (self.output_name,)
+
+    @property
+    def inherits_order(self) -> bool:
+        # does the op both use ordering at all? and if so, can it inherit order?
+        op_inherits_order = (
+            not self.expression.op.order_independent
+        ) and self.expression.op.implicitly_inherits_order
+        return op_inherits_order or self.window_spec.row_bounded
 
     def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
         if self.output_name not in used_cols:

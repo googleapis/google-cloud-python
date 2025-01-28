@@ -1854,6 +1854,7 @@ def test_groupby_window_ops(scalars_df_index, scalars_pandas_df_index, operator)
     pd_series = operator(
         scalars_pandas_df_index[col_name].groupby(scalars_pandas_df_index[group_key])
     ).astype(bf_series.dtype)
+
     pd.testing.assert_series_equal(
         pd_series,
         bf_series,

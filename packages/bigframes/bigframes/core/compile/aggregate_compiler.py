@@ -55,7 +55,7 @@ def compile_aggregate(
         return compile_nullary_agg(aggregate.op)
     if isinstance(aggregate, ex.UnaryAggregation):
         input = scalar_compiler.compile_expression(aggregate.arg, bindings=bindings)
-        if aggregate.op.can_order_by:
+        if not aggregate.op.order_independent:
             return compile_ordered_unary_agg(aggregate.op, input, order_by=order_by)  # type: ignore
         else:
             return compile_unary_agg(aggregate.op, input)  # type: ignore
@@ -151,6 +151,11 @@ def _(op: agg_ops.SizeOp, window=None) -> ibis_types.NumericValue:
 
 
 @compile_unary_agg.register
+def _(op: agg_ops.SizeUnaryOp, _, window=None) -> ibis_types.NumericValue:
+    return _apply_window_if_present(ibis_ops.count(1), window)
+
+
+@compile_unary_agg.register
 @numeric_op
 def _(
     op: agg_ops.SumOp,
@@ -171,13 +176,6 @@ def _(
     column: ibis_types.NumericColumn,
     window=None,
 ) -> ibis_types.NumericValue:
-    # PERCENTILE_CONT has very few allowed windows. For example, "window
-    # framing clause is not allowed for analytic function percentile_cont".
-    if window is not None:
-        raise NotImplementedError(
-            f"Median with windowing is not supported. {constants.FEEDBACK_LINK}"
-        )
-
     # TODO(swast): Allow switching between exact and approximate median.
     # For now, the best we can do is an approximate median when we're doing
     # an aggregation, as PERCENTILE_CONT is only an analytic function.

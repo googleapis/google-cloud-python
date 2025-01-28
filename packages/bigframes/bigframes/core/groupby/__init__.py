@@ -683,10 +683,12 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     @validations.requires_ordering()
     def cumcount(self, *args, **kwargs) -> series.Series:
+        # TODO: Add nullary op support to implement more cleanly
         return (
             self._apply_window_op(
-                agg_ops.rank_op,
+                agg_ops.SizeUnaryOp(),
                 discard_name=True,
+                never_skip_nulls=True,
             )
             - 1
         )
@@ -758,6 +760,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         op: agg_ops.WindowOp,
         discard_name=False,
         window: typing.Optional[core.WindowSpec] = None,
+        never_skip_nulls: bool = False,
     ):
         """Apply window op to groupby. Defaults to grouped cumulative window."""
         window_spec = window or window_specs.cumulative_rows(
@@ -770,6 +773,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             op,
             result_label=label,
             window_spec=window_spec,
+            never_skip_nulls=never_skip_nulls,
         )
         return series.Series(block.select_column(result_id))
 

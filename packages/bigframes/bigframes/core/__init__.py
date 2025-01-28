@@ -120,7 +120,9 @@ class ArrayValue:
         if offsets_col:
             ordering = orderings.TotalOrdering.from_offset_col(offsets_col)
         elif primary_key:
-            ordering = orderings.TotalOrdering.from_primary_key(primary_key)
+            ordering = orderings.TotalOrdering.from_primary_key(
+                [ids.ColumnId(key_part) for key_part in primary_key]
+            )
 
         # Scan all columns by default, we define this list as it can be pruned while preserving source_def
         scan_list = nodes.ScanList(

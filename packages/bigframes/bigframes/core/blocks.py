@@ -1410,7 +1410,7 @@ class Block:
 
         block, result_id = self.apply_window_op(
             value_columns[0],
-            agg_ops.rank_op,
+            agg_ops.count_op,
             window_spec=window_spec,
         )
 
