@@ -39,7 +39,12 @@ def sample_update_data_retention_settings():
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
+    data_retention_settings = admin_v1beta.DataRetentionSettings()
+    data_retention_settings.event_data_retention = "FIFTY_MONTHS"
+    data_retention_settings.user_data_retention = "FIFTY_MONTHS"
+
     request = admin_v1beta.UpdateDataRetentionSettingsRequest(
+        data_retention_settings=data_retention_settings,
     )
 
     # Make the request

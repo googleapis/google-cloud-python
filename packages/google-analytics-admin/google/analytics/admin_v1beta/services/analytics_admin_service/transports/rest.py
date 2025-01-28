@@ -1748,7 +1748,7 @@ class AnalyticsAdminServiceRestStub:
 class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport):
     """REST backend synchronous transport for AnalyticsAdminService.
 
-    Service Interface for the Analytics Admin API (GA4).
+    Service Interface for the Google Analytics Admin API.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -2883,8 +2883,8 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
 
             Returns:
                 ~.resources.FirebaseLink:
-                    A link between a GA4 property and a
-                Firebase project.
+                    A link between a Google Analytics
+                property and a Firebase project.
 
             """
 
@@ -3037,8 +3037,8 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
 
             Returns:
                 ~.resources.GoogleAdsLink:
-                    A link between a GA4 property and a
-                Google Ads account.
+                    A link between a Google Analytics
+                property and a Google Ads account.
 
             """
 
@@ -3504,7 +3504,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             Returns:
                 ~.resources.Property:
                     A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
             """
 
@@ -4435,7 +4435,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             Returns:
                 ~.resources.Property:
                     A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
             """
 
@@ -5893,7 +5893,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             Returns:
                 ~.resources.Property:
                     A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
             """
 
@@ -9058,8 +9058,8 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
 
             Returns:
                 ~.resources.GoogleAdsLink:
-                    A link between a GA4 property and a
-                Google Ads account.
+                    A link between a Google Analytics
+                property and a Google Ads account.
 
             """
 
@@ -9525,7 +9525,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             Returns:
                 ~.resources.Property:
                     A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
             """
 

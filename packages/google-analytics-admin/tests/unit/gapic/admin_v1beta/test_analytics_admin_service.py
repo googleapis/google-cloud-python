@@ -18541,6 +18541,7 @@ def test_get_data_retention_settings(request_type, transport: str = "grpc"):
         call.return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
         response = client.get_data_retention_settings(request)
@@ -18556,6 +18557,10 @@ def test_get_data_retention_settings(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -18696,6 +18701,7 @@ async def test_get_data_retention_settings_async(
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -18712,6 +18718,10 @@ async def test_get_data_retention_settings_async(
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -18898,6 +18908,7 @@ def test_update_data_retention_settings(request_type, transport: str = "grpc"):
         call.return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
         response = client.update_data_retention_settings(request)
@@ -18913,6 +18924,10 @@ def test_update_data_retention_settings(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -19049,6 +19064,7 @@ async def test_update_data_retention_settings_async(
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -19065,6 +19081,10 @@ async def test_update_data_retention_settings_async(
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -34301,6 +34321,7 @@ async def test_get_data_retention_settings_empty_call_grpc_asyncio():
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -34332,6 +34353,7 @@ async def test_update_data_retention_settings_empty_call_grpc_asyncio():
             resources.DataRetentionSettings(
                 name="name_value",
                 event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+                user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
                 reset_user_data_on_new_activity=True,
             )
         )
@@ -41661,6 +41683,7 @@ def test_get_data_retention_settings_rest_call_success(request_type):
         return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
 
@@ -41681,6 +41704,10 @@ def test_get_data_retention_settings_rest_call_success(request_type):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
@@ -41793,6 +41820,7 @@ def test_update_data_retention_settings_rest_call_success(request_type):
     request_init["data_retention_settings"] = {
         "name": "properties/sample1/dataRetentionSettings",
         "event_data_retention": 1,
+        "user_data_retention": 1,
         "reset_user_data_on_new_activity": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -41874,6 +41902,7 @@ def test_update_data_retention_settings_rest_call_success(request_type):
         return_value = resources.DataRetentionSettings(
             name="name_value",
             event_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
+            user_data_retention=resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS,
             reset_user_data_on_new_activity=True,
         )
 
@@ -41894,6 +41923,10 @@ def test_update_data_retention_settings_rest_call_success(request_type):
     assert response.name == "name_value"
     assert (
         response.event_data_retention
+        == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
+    )
+    assert (
+        response.user_data_retention
         == resources.DataRetentionSettings.RetentionDuration.TWO_MONTHS
     )
     assert response.reset_user_data_on_new_activity is True
