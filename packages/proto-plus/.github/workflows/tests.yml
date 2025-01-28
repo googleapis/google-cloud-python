@@ -45,7 +45,7 @@ jobs:
         # See https://github.com/actions/setup-python?tab=readme-ov-file#basic-usage
         # for the format of the entries in 'python'.
         # See https://downloads.python.org/pypy/ for the current supported versions of PyPy.
-        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', 'pypy3.10']
+        python: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12', '3.13', '3.14', 'pypy3.10']
         variant: ['cpp', 'python', 'upb']
         # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
         # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
@@ -59,6 +59,8 @@ jobs:
             python: 3.12
           - variant: "cpp"
             python: 3.13
+          - variant: "cpp"
+            python: 3.14
             # In PyPy 3.10, we see the following warning
             # UserWarning: Selected implementation upb is not available. Falling back to the python implementation.
           - variant: "upb"
@@ -92,7 +94,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        python: ['3.13']
+        python: ['3.14']
         variant: ['python', 'upb']
     steps:
       - uses: actions/checkout@v4

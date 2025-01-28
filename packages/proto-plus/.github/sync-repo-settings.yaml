@@ -27,8 +27,10 @@ branchProtectionRules:
     - 'unit (3.12, upb)'
     - 'unit (3.13, python)'
     - 'unit (3.13, upb)'
-    - 'prerelease (3.13, python)'
-    - 'prerelease (3.13, upb)'
+    - 'unit (3.14, python)'
+    - 'unit (3.14, upb)'
+    - 'prerelease (3.14, python)'
+    - 'prerelease (3.14, upb)'
     - cover
     - OwlBot Post Processor
     - 'cla/google'
