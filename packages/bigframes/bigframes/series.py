@@ -483,7 +483,19 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def case_when(self, caselist) -> Series:
-        cases = list(itertools.chain(*caselist, (True, self)))
+        cases = []
+
+        for condition, output in itertools.chain(caselist, [(True, self)]):
+            cases.append(condition)
+            cases.append(output)
+            # In pandas, the default value if no case matches is the original value.
+            # This makes it impossible to change the type of the column, but if
+            # the condition is always True, we know it will match and no subsequent
+            # conditions matter (including the fallback to `self`). This break allows
+            # the type to change (see: internal issue 349926559).
+            if condition is True:
+                break
+
         return self._apply_nary_op(
             ops.case_when_op,
             cases,

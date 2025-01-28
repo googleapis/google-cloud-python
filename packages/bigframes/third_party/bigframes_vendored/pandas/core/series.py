@@ -2648,6 +2648,21 @@ class Series(NDFrame):  # type: ignore[misc]
             3    2
             Name: c, dtype: Int64
 
+        If you'd like to change the type, add a case with the condition True at the end of the case list
+
+            >>> c.case_when(
+            ...     caselist=[
+            ...         (a.gt(0), 'a'),  # condition, replacement
+            ...         (b.gt(0), 'b'),
+            ...         (True, 'c'),
+            ...     ]
+            ... )
+            0    c
+            1    b
+            2    a
+            3    a
+            Name: c, dtype: string
+
         **See also:**
 
         - :func:`bigframes.pandas.Series.mask` : Replace values where the condition is True.
