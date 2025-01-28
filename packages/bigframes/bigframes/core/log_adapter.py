@@ -63,6 +63,9 @@ def submit_pandas_labels(
                     - 'PANDAS_PARAM_TRACKING_TASK': Indicates that the unimplemented feature is a
                       parameter of a method.
     """
+    if method_name.startswith("_") and not method_name.startswith("__"):
+        return
+
     labels_dict = {
         "task": task,
         "class_name": class_name.lower(),

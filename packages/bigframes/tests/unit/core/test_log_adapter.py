@@ -155,3 +155,13 @@ def test_submit_pandas_labels_without_valid_params_for_param_logging(mock_bqclie
 
     # For param tracking task without kwargs, we won't submit labels
     mock_bqclient.query.assert_not_called()
+
+
+def test_submit_pandas_labels_with_internal_method(mock_bqclient):
+    log_adapter.submit_pandas_labels(
+        mock_bqclient,
+        "Series",
+        "_repr_latex_",
+        task=log_adapter.PANDAS_API_TRACKING_TASK,
+    )
+    mock_bqclient.query.assert_not_called()
