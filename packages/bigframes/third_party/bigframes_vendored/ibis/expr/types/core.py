@@ -79,7 +79,7 @@ class Expr(Immutable, Coercible):
         return capture.get().rstrip()
 
     def __repr__(self) -> str:
-        if ibis.options.interactive:
+        if bigframes_vendored.ibis.options.interactive:
             return self._interactive_repr()
         else:
             return self._noninteractive_repr()
