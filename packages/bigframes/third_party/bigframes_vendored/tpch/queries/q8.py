@@ -62,17 +62,11 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     jn7["VOLUME"] = jn7["L_EXTENDEDPRICE"] * (1.0 - jn7["L_DISCOUNT"])
     jn7 = jn7.rename(columns={"N_NAME": "NATION"})
 
-    denominator = jn7.groupby("O_YEAR")["VOLUME"].sum().rename("DENOMINATOR")
-    numerator = (
-        jn7[jn7["NATION"] == var1]
-        .groupby(jn7["O_YEAR"])["VOLUME"]
-        .sum()
-        .rename("NUMERATOR")
-    )
-    jn8 = denominator.to_frame().join(numerator.to_frame(), how="left")
+    jn7["numerator"] = jn7["VOLUME"].where(jn7["NATION"] == var1, 0)
+    jn7["denominator"] = jn7["VOLUME"]
 
-    # ValueError: Caching with offsets only supported in strictly ordered mode.
-    jn8["MKT_SHARE"] = (jn8["NUMERATOR"] / jn8["DENOMINATOR"]).round(2)
+    sums = jn7.groupby("O_YEAR")[["numerator", "denominator"]].sum()
+    sums["MKT_SHARE"] = (sums["numerator"] / sums["denominator"]).round(2)
 
-    result_df = jn8["MKT_SHARE"].sort_index().rename("MKT_SHARE").reset_index()
+    result_df = sums["MKT_SHARE"].sort_index().rename("MKT_SHARE").reset_index()
     result_df.to_gbq()
