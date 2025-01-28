@@ -595,9 +595,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Returns:
                 ~.resource.ConferenceRecord:
-                    `Developer
-                Preview <https://developers.google.com/workspace/preview>`__.
-                Single instance of a meeting held in a space.
+                    Single instance of a meeting held in
+                a space.
 
             """
 
@@ -730,7 +729,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Args:
                 request (~.service.GetParticipantRequest):
-                    The request object. Request to get a Participant.
+                    The request object. Request to get a participant.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -741,9 +740,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Returns:
                 ~.resource.Participant:
-                    `Developer
-                Preview <https://developers.google.com/workspace/preview>`__.
-                User who attended or is attending a conference.
+                    User who attended or is attending a
+                conference.
 
             """
 
@@ -887,14 +885,15 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Returns:
                 ~.resource.ParticipantSession:
-                    `Developer
-                Preview <https://developers.google.com/workspace/preview>`__.
-                Refers to each unique join/leave session when a user
-                joins a conference from a device. Note that any time a
-                user joins the conference a new unique ID is assigned.
-                That means if a user joins a space multiple times from
-                the same device, they're assigned different IDs, and are
-                also be treated as different participant sessions.
+                    Refers to each unique join or leave
+                session when a user joins a conference
+                from a device. Note that any time a user
+                joins the conference a new unique ID is
+                assigned. That means if a user joins a
+                space multiple times from the same
+                device, they're assigned different IDs,
+                and are also be treated as different
+                participant sessions.
 
             """
 
@@ -1039,9 +1038,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Returns:
                 ~.resource.Recording:
-                    `Developer
-                Preview <https://developers.google.com/workspace/preview>`__.
-                Metadata about a recording created during a conference.
+                    Metadata about a recording created
+                during a conference.
 
             """
 
@@ -1185,11 +1183,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Returns:
                 ~.resource.Transcript:
-                    `Developer
-                Preview <https://developers.google.com/workspace/preview>`__.
-                Metadata for a transcript generated from a conference.
-                It refers to the ASR (Automatic Speech Recognition)
-                result of user's speech during the conference.
+                    Metadata for a transcript generated
+                from a conference. It refers to the ASR
+                (Automatic Speech Recognition) result of
+                user's speech during the conference.
 
             """
 
@@ -1334,10 +1331,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Returns:
                 ~.resource.TranscriptEntry:
-                    `Developer
-                Preview <https://developers.google.com/workspace/preview>`__.
-                Single entry for one user’s speech during a transcript
-                session.
+                    Single entry for one user’s speech
+                during a transcript session.
 
             """
 
@@ -1620,7 +1615,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             Args:
                 request (~.service.ListParticipantsRequest):
-                    The request object. Request to fetch list of participant
+                    The request object. Request to fetch list of participants
                 per conference.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1769,7 +1764,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             Args:
                 request (~.service.ListParticipantSessionsRequest):
                     The request object. Request to fetch list of participant
-                sessions per conference record per
+                sessions per conference record, per
                 participant.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -2071,7 +2066,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             Returns:
                 ~.service.ListTranscriptEntriesResponse:
                     Response for ListTranscriptEntries
-                method
+                method.
 
             """
 
