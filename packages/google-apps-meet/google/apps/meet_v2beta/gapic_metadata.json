@@ -209,9 +209,19 @@
         "grpc": {
           "libraryClient": "SpacesServiceClient",
           "rpcs": {
+            "CreateMember": {
+              "methods": [
+                "create_member"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
+              ]
+            },
+            "DeleteMember": {
+              "methods": [
+                "delete_member"
               ]
             },
             "EndActiveConference": {
@@ -219,9 +229,19 @@
                 "end_active_conference"
               ]
             },
+            "GetMember": {
+              "methods": [
+                "get_member"
+              ]
+            },
             "GetSpace": {
               "methods": [
                 "get_space"
+              ]
+            },
+            "ListMembers": {
+              "methods": [
+                "list_members"
               ]
             },
             "UpdateSpace": {
@@ -234,9 +254,19 @@
         "grpc-async": {
           "libraryClient": "SpacesServiceAsyncClient",
           "rpcs": {
+            "CreateMember": {
+              "methods": [
+                "create_member"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
+              ]
+            },
+            "DeleteMember": {
+              "methods": [
+                "delete_member"
               ]
             },
             "EndActiveConference": {
@@ -244,9 +274,19 @@
                 "end_active_conference"
               ]
             },
+            "GetMember": {
+              "methods": [
+                "get_member"
+              ]
+            },
             "GetSpace": {
               "methods": [
                 "get_space"
+              ]
+            },
+            "ListMembers": {
+              "methods": [
+                "list_members"
               ]
             },
             "UpdateSpace": {
@@ -259,9 +299,19 @@
         "rest": {
           "libraryClient": "SpacesServiceClient",
           "rpcs": {
+            "CreateMember": {
+              "methods": [
+                "create_member"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
+              ]
+            },
+            "DeleteMember": {
+              "methods": [
+                "delete_member"
               ]
             },
             "EndActiveConference": {
@@ -269,9 +319,19 @@
                 "end_active_conference"
               ]
             },
+            "GetMember": {
+              "methods": [
+                "get_member"
+              ]
+            },
             "GetSpace": {
               "methods": [
                 "get_space"
+              ]
+            },
+            "ListMembers": {
+              "methods": [
+                "list_members"
               ]
             },
             "UpdateSpace": {

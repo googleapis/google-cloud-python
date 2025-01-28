@@ -337,9 +337,7 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.ConferenceRecord:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Gets a conference record by conference ID.
+        r"""Gets a conference record by conference ID.
 
         .. code-block:: python
 
@@ -387,8 +385,8 @@ class ConferenceRecordsServiceAsyncClient:
 
         Returns:
             google.apps.meet_v2beta.types.ConferenceRecord:
-                [Developer Preview](\ https://developers.google.com/workspace/preview).
-                   Single instance of a meeting held in a space.
+                Single instance of a meeting held in
+                a space.
 
         """
         # Create or coerce a protobuf request object.
@@ -445,10 +443,8 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListConferenceRecordsAsyncPager:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Lists the conference records by start time and in descending
-        order.
+        r"""Lists the conference records. By default, ordered by
+        start time and in descending order.
 
         .. code-block:: python
 
@@ -543,9 +539,7 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.Participant:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Gets a participant by participant ID.
+        r"""Gets a participant by participant ID.
 
         .. code-block:: python
 
@@ -575,7 +569,7 @@ class ConferenceRecordsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.meet_v2beta.types.GetParticipantRequest, dict]]):
-                The request object. Request to get a Participant.
+                The request object. Request to get a participant.
             name (:class:`str`):
                 Required. Resource name of the
                 participant.
@@ -593,8 +587,8 @@ class ConferenceRecordsServiceAsyncClient:
 
         Returns:
             google.apps.meet_v2beta.types.Participant:
-                [Developer Preview](\ https://developers.google.com/workspace/preview).
-                   User who attended or is attending a conference.
+                User who attended or is attending a
+                conference.
 
         """
         # Create or coerce a protobuf request object.
@@ -652,9 +646,7 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListParticipantsAsyncPager:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Lists the participants in a conference record, by default
+        r"""Lists the participants in a conference record. By default,
         ordered by join time and in descending order. This API supports
         ``fields`` as standard parameters like every other API. However,
         when the ``fields`` request parameter is omitted, this API
@@ -689,7 +681,7 @@ class ConferenceRecordsServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.apps.meet_v2beta.types.ListParticipantsRequest, dict]]):
-                The request object. Request to fetch list of participant
+                The request object. Request to fetch list of participants
                 per conference.
             parent (:class:`str`):
                 Required. Format:
@@ -781,9 +773,7 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.ParticipantSession:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Gets a participant session by participant session ID.
+        r"""Gets a participant session by participant session ID.
 
         .. code-block:: python
 
@@ -831,14 +821,15 @@ class ConferenceRecordsServiceAsyncClient:
 
         Returns:
             google.apps.meet_v2beta.types.ParticipantSession:
-                [Developer Preview](\ https://developers.google.com/workspace/preview).
-                   Refers to each unique join/leave session when a user
-                   joins a conference from a device. Note that any time
-                   a user joins the conference a new unique ID is
-                   assigned. That means if a user joins a space multiple
-                   times from the same device, they're assigned
-                   different IDs, and are also be treated as different
-                   participant sessions.
+                Refers to each unique join or leave
+                session when a user joins a conference
+                from a device. Note that any time a user
+                joins the conference a new unique ID is
+                assigned. That means if a user joins a
+                space multiple times from the same
+                device, they're assigned different IDs,
+                and are also be treated as different
+                participant sessions.
 
         """
         # Create or coerce a protobuf request object.
@@ -896,13 +887,11 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListParticipantSessionsAsyncPager:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Lists the participant sessions of a participant in a conference
-        record, by default ordered by join time and in descending order.
-        This API supports ``fields`` as standard parameters like every
-        other API. However, when the ``fields`` request parameter is
-        omitted this API defaults to
+        r"""Lists the participant sessions of a participant in a conference
+        record. By default, ordered by join time and in descending
+        order. This API supports ``fields`` as standard parameters like
+        every other API. However, when the ``fields`` request parameter
+        is omitted this API defaults to
         ``'participantsessions/*, next_page_token'``.
 
         .. code-block:: python
@@ -935,7 +924,7 @@ class ConferenceRecordsServiceAsyncClient:
         Args:
             request (Optional[Union[google.apps.meet_v2beta.types.ListParticipantSessionsRequest, dict]]):
                 The request object. Request to fetch list of participant
-                sessions per conference record per
+                sessions per conference record, per
                 participant.
             parent (:class:`str`):
                 Required. Format:
@@ -1027,9 +1016,7 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.Recording:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Gets a recording by recording ID.
+        r"""Gets a recording by recording ID.
 
         .. code-block:: python
 
@@ -1078,9 +1065,8 @@ class ConferenceRecordsServiceAsyncClient:
 
         Returns:
             google.apps.meet_v2beta.types.Recording:
-                [Developer Preview](\ https://developers.google.com/workspace/preview).
-                   Metadata about a recording created during a
-                   conference.
+                Metadata about a recording created
+                during a conference.
 
         """
         # Create or coerce a protobuf request object.
@@ -1138,9 +1124,9 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRecordingsAsyncPager:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Lists the recording resources from the conference record.
+        r"""Lists the recording resources from the conference
+        record. By default, ordered by start time and in
+        ascending order.
 
         .. code-block:: python
 
@@ -1262,9 +1248,7 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.Transcript:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Gets a transcript by transcript ID.
+        r"""Gets a transcript by transcript ID.
 
         .. code-block:: python
 
@@ -1312,11 +1296,10 @@ class ConferenceRecordsServiceAsyncClient:
 
         Returns:
             google.apps.meet_v2beta.types.Transcript:
-                [Developer Preview](\ https://developers.google.com/workspace/preview).
-                   Metadata for a transcript generated from a
-                   conference. It refers to the ASR (Automatic Speech
-                   Recognition) result of user's speech during the
-                   conference.
+                Metadata for a transcript generated
+                from a conference. It refers to the ASR
+                (Automatic Speech Recognition) result of
+                user's speech during the conference.
 
         """
         # Create or coerce a protobuf request object.
@@ -1374,9 +1357,9 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTranscriptsAsyncPager:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Lists the set of transcripts from the conference record.
+        r"""Lists the set of transcripts from the conference
+        record. By default, ordered by start time and in
+        ascending order.
 
         .. code-block:: python
 
@@ -1498,9 +1481,7 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.TranscriptEntry:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Gets a ``TranscriptEntry`` resource by entry ID.
+        r"""Gets a ``TranscriptEntry`` resource by entry ID.
 
         Note: The transcript entries returned by the Google Meet API
         might not match the transcription found in the Google Docs
@@ -1552,9 +1533,8 @@ class ConferenceRecordsServiceAsyncClient:
 
         Returns:
             google.apps.meet_v2beta.types.TranscriptEntry:
-                [Developer Preview](\ https://developers.google.com/workspace/preview).
-                   Single entry for one user’s speech during a
-                   transcript session.
+                Single entry for one user’s speech
+                during a transcript session.
 
         """
         # Create or coerce a protobuf request object.
@@ -1612,15 +1592,15 @@ class ConferenceRecordsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTranscriptEntriesAsyncPager:
-        r"""`Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Lists the structured transcript entries per transcript. By
-        default, ordered by start time and in ascending order.
+        r"""Lists the structured transcript entries per
+        transcript. By default, ordered by start time and in
+        ascending order.
 
-        Note: The transcript entries returned by the Google Meet API
-        might not match the transcription found in the Google Docs
-        transcript file. This can occur when the Google Docs transcript
-        file is modified after generation.
+        Note: The transcript entries returned by the Google Meet
+        API might not match the transcription found in the
+        Google Docs transcript file. This can occur when the
+        Google Docs transcript file is modified after
+        generation.
 
         .. code-block:: python
 
@@ -1671,7 +1651,7 @@ class ConferenceRecordsServiceAsyncClient:
         Returns:
             google.apps.meet_v2beta.services.conference_records_service.pagers.ListTranscriptEntriesAsyncPager:
                 Response for ListTranscriptEntries
-                method
+                method.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -1048,6 +1048,7 @@ def test_spaces_service_client_create_channel_credentials_file(
             default_scopes=(
                 "https://www.googleapis.com/auth/meetings.space.created",
                 "https://www.googleapis.com/auth/meetings.space.readonly",
+                "https://www.googleapis.com/auth/meetings.space.settings",
             ),
             scopes=None,
             default_host="meet.googleapis.com",
@@ -4037,6 +4038,7 @@ def test_spaces_service_base_transport_with_credentials_file():
             default_scopes=(
                 "https://www.googleapis.com/auth/meetings.space.created",
                 "https://www.googleapis.com/auth/meetings.space.readonly",
+                "https://www.googleapis.com/auth/meetings.space.settings",
             ),
             quota_project_id="octopus",
         )
@@ -4063,6 +4065,7 @@ def test_spaces_service_auth_adc():
             default_scopes=(
                 "https://www.googleapis.com/auth/meetings.space.created",
                 "https://www.googleapis.com/auth/meetings.space.readonly",
+                "https://www.googleapis.com/auth/meetings.space.settings",
             ),
             quota_project_id=None,
         )
@@ -4086,6 +4089,7 @@ def test_spaces_service_transport_auth_adc(transport_class):
             default_scopes=(
                 "https://www.googleapis.com/auth/meetings.space.created",
                 "https://www.googleapis.com/auth/meetings.space.readonly",
+                "https://www.googleapis.com/auth/meetings.space.settings",
             ),
             quota_project_id="octopus",
         )
@@ -4141,6 +4145,7 @@ def test_spaces_service_transport_create_channel(transport_class, grpc_helpers):
             default_scopes=(
                 "https://www.googleapis.com/auth/meetings.space.created",
                 "https://www.googleapis.com/auth/meetings.space.readonly",
+                "https://www.googleapis.com/auth/meetings.space.settings",
             ),
             scopes=["1", "2"],
             default_host="meet.googleapis.com",

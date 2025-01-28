@@ -360,7 +360,10 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
     ) -> Callable[[service.GetSpaceRequest], Awaitable[resource.Space]]:
         r"""Return a callable for the get space method over gRPC.
 
-        Gets a space by ``space_id`` or ``meeting_code``.
+        Gets details about a meeting space.
+
+        For an example, see `Get a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space>`__.
 
         Returns:
             Callable[[~.GetSpaceRequest],
@@ -386,7 +389,10 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
     ) -> Callable[[service.UpdateSpaceRequest], Awaitable[resource.Space]]:
         r"""Return a callable for the update space method over gRPC.
 
-        Updates a space.
+        Updates details about a meeting space.
+
+        For an example, see `Update a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space>`__.
 
         Returns:
             Callable[[~.UpdateSpaceRequest],
@@ -413,6 +419,9 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
         r"""Return a callable for the end active conference method over gRPC.
 
         Ends an active conference (if there's one).
+
+        For an example, see `End active
+        conference <https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference>`__.
 
         Returns:
             Callable[[~.EndActiveConferenceRequest],
