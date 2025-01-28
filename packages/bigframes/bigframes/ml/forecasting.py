@@ -45,7 +45,7 @@ _BQML_PARAMS_MAPPING = {
 
 
 @log_adapter.class_logger
-class ARIMAPlus(base.SupervisedTrainablePredictor):
+class ARIMAPlus(base.SupervisedTrainableWithIdColPredictor):
     """Time Series ARIMA Plus model.
 
     Args:
@@ -183,18 +183,26 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         X: utils.ArrayType,
         y: utils.ArrayType,
         transforms: Optional[List[str]] = None,
-    ):
+        id_col: Optional[utils.ArrayType] = None,
+    ) -> ARIMAPlus:
         """Fit the model to training data.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
-                A dataframe of training timestamp.
-
-            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series,
+            or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                A dataframe or series of trainging timestamp.
+            y (bigframes.dataframe.DataFrame, or bigframes.series.Series,
+            or pandas.core.frame.DataFrame, or pandas.core.series.Series):
                 Target values for training.
             transforms (Optional[List[str]], default None):
                 Do not use. Internal param to be deprecated.
                 Use bigframes.ml.pipeline instead.
+            id_col (Optional[bigframes.dataframe.DataFrame]
+            or Optional[bigframes.series.Series]
+            or Optional[pandas.core.frame.DataFrame]
+            or Optional[pandas.core.frame.Series]
+            or None, default None):
+                An optional dataframe or series of training id col.
 
         Returns:
             ARIMAPlus: Fitted estimator.
@@ -202,18 +210,26 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         X, y = utils.batch_convert_to_dataframe(X, y)
 
         if X.columns.size != 1:
-            raise ValueError(
-                "Time series timestamp input X must only contain 1 column."
-            )
+            raise ValueError("Time series timestamp input X contain at least 1 column.")
         if y.columns.size != 1:
             raise ValueError("Time series data input y must only contain 1 column.")
+
+        if id_col is not None:
+            (id_col,) = utils.batch_convert_to_dataframe(id_col)
+
+            if id_col.columns.size != 1:
+                raise ValueError(
+                    "Time series id input id_col must only contain 1 column."
+                )
 
         self._bqml_model = self._bqml_model_factory.create_time_series_model(
             X,
             y,
+            id_col=id_col,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
     def predict(
         self, X=None, *, horizon: int = 3, confidence_level: float = 0.95
@@ -237,7 +253,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
 
         Returns:
             bigframes.dataframe.DataFrame: The predicted DataFrames. Which
-                contains 2 columns: "forecast_timestamp" and "forecast_value".
+                contains 2 columns: "forecast_timestamp", "id" as optional, and "forecast_value".
         """
         if horizon < 1 or horizon > 1000:
             raise ValueError(f"horizon must be [1, 1000], but is {horizon}.")
@@ -345,6 +361,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         self,
         X: utils.ArrayType,
         y: utils.ArrayType,
+        id_col: Optional[utils.ArrayType] = None,
     ) -> bpd.DataFrame:
         """Calculate evaluation metrics of the model.
 
@@ -355,13 +372,22 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
             for the outputs relevant to this model type.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
-                A BigQuery DataFrame only contains 1 column as
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series
+            or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                A dataframe or series only contains 1 column as
                 evaluation timestamp. The timestamp must be within the horizon
                 of the model, which by default is 1000 data points.
-            y (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
-                A BigQuery DataFrame only contains 1 column as
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series
+            or pandas.core.frame.DataFrame or pandas.core.series.Series):
+                A dataframe or series only contains 1 column as
                 evaluation numeric values.
+            id_col (Optional[bigframes.dataframe.DataFrame]
+            or Optional[bigframes.series.Series]
+            or Optional[pandas.core.frame.DataFrame]
+            or Optional[pandas.core.series.Series]
+            or None, default None):
+                An optional dataframe or series contains at least 1 column as
+                evaluation id column.
 
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame as evaluation result.
@@ -371,6 +397,10 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)
 
         input_data = X.join(y, how="outer")
+        if id_col is not None:
+            (id_col,) = utils.batch_convert_to_dataframe(id_col)
+            input_data = input_data.join(id_col, how="outer")
+
         return self._bqml_model.evaluate(input_data)
 
     def summary(

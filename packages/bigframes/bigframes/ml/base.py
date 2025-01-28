@@ -165,6 +165,34 @@ class SupervisedTrainablePredictor(TrainablePredictor):
         return self._fit(X, y)
 
 
+class SupervisedTrainableWithIdColPredictor(SupervisedTrainablePredictor):
+    """Inherits from SupervisedTrainablePredictor,
+    but adds an optional id_col parameter to fit()."""
+
+    def __init__(self):
+        super().__init__()
+        self.id_col = None
+
+    def _fit(
+        self,
+        X: utils.ArrayType,
+        y: utils.ArrayType,
+        transforms=None,
+        id_col: Optional[utils.ArrayType] = None,
+    ):
+        return self
+
+    def fit(
+        self,
+        X: utils.ArrayType,
+        y: utils.ArrayType,
+        transforms=None,
+        id_col: Optional[utils.ArrayType] = None,
+    ):
+        self.id_col = id_col
+        return self._fit(X, y, transforms=transforms, id_col=self.id_col)
+
+
 class TrainableWithEvaluationPredictor(TrainablePredictor):
     """A BigQuery DataFrames ML Model base class that can be used to fit and predict outputs.
 

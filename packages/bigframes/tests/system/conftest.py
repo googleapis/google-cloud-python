@@ -773,6 +773,31 @@ def new_time_series_df(session, new_time_series_pandas_df):
 
 
 @pytest.fixture(scope="session")
+def new_time_series_pandas_df_w_id():
+    """Additional data matching the time series dataset. The values are dummy ones used to basically check the prediction scores."""
+    utc = pytz.utc
+    return pd.DataFrame(
+        {
+            "parsed_date": [
+                datetime(2017, 8, 2, tzinfo=utc),
+                datetime(2017, 8, 2, tzinfo=utc),
+                datetime(2017, 8, 3, tzinfo=utc),
+                datetime(2017, 8, 3, tzinfo=utc),
+                datetime(2017, 8, 4, tzinfo=utc),
+                datetime(2017, 8, 4, tzinfo=utc),
+            ],
+            "id": ["1", "2", "1", "2", "1", "2"],
+            "total_visits": [2500, 2500, 2500, 2500, 2500, 2500],
+        }
+    )
+
+
+@pytest.fixture(scope="session")
+def new_time_series_df_w_id(session, new_time_series_pandas_df_w_id):
+    return session.read_pandas(new_time_series_pandas_df_w_id)
+
+
+@pytest.fixture(scope="session")
 def penguins_pandas_df_default_index() -> pd.DataFrame:
     """Consistently ordered pandas dataframe for penguins test data"""
     df = pd.read_json(
@@ -1015,25 +1040,16 @@ WHERE
         return model_name
 
 
-@pytest.fixture(scope="session")
-def time_series_arima_plus_model_name(
-    session: bigframes.Session, dataset_id_permanent, time_series_table_id
+def _get_or_create_arima_plus_model(
+    session: bigframes.Session, dataset_id_permanent, sql
 ) -> str:
-    """Provides a pretrained model as a test fixture that is cached across test runs.
-    This lets us run system tests without having to wait for a model.fit(...)"""
-    sql = f"""
-CREATE OR REPLACE MODEL `$model_name`
-OPTIONS (
-    model_type='ARIMA_PLUS',
-    time_series_timestamp_col = 'parsed_date',
-    time_series_data_col = 'total_visits'
-) AS SELECT
-    *
-FROM `{time_series_table_id}`"""
+    """Internal helper to compute a model name by hasing the given SQL.
+    attempst to retreive the model, create it if not exist.
+    retursn the fully qualitifed model"""
+
     # We use the SQL hash as the name to ensure the model is regenerated if this fixture is edited
     model_name = f"{dataset_id_permanent}.time_series_arima_plus_{hashlib.md5(sql.encode()).hexdigest()}"
     sql = sql.replace("$model_name", model_name)
-
     try:
         session.bqclient.get_model(model_name)
     except google.cloud.exceptions.NotFound:
@@ -1043,6 +1059,46 @@ FROM `{time_series_table_id}`"""
         session.bqclient.query(sql).result()
     finally:
         return model_name
+
+
+@pytest.fixture(scope="session")
+def time_series_arima_plus_model_name(
+    session: bigframes.Session, dataset_id_permanent, time_series_table_id
+) -> str:
+    """Provides a pretrained model as a test fixture that is cached across test runs.
+    This lets us run system tests without having to wait for a model.fit(...).
+    This version does not include time_series_id_col."""
+    sql = f"""
+CREATE OR REPLACE MODEL `$model_name`
+OPTIONS (
+    model_type='ARIMA_PLUS',
+    time_series_timestamp_col = 'parsed_date',
+    time_series_data_col = 'total_visits'
+) AS SELECT
+    parsed_date,
+    total_visits
+FROM `{time_series_table_id}`"""
+    return _get_or_create_arima_plus_model(session, dataset_id_permanent, sql)
+
+
+@pytest.fixture(scope="session")
+def time_series_arima_plus_model_name_w_id(
+    session: bigframes.Session, dataset_id_permanent, time_series_table_id
+) -> str:
+    """Provides a pretrained model as a test fixture that is cached across test runs.
+    This lets us run system tests without having to wait for a model.fit(...).
+    This version includes time_series_id_col."""
+    sql = f"""
+CREATE OR REPLACE MODEL `$model_name`
+OPTIONS (
+    model_type='ARIMA_PLUS',
+    time_series_timestamp_col = 'parsed_date',
+    time_series_data_col = 'total_visits',
+    time_series_id_col = 'id'
+) AS SELECT
+    *
+FROM `{time_series_table_id}`"""
+    return _get_or_create_arima_plus_model(session, dataset_id_permanent, sql)
 
 
 @pytest.fixture(scope="session")

@@ -181,15 +181,23 @@ class BqmlModel(BaseBqml):
 
     def forecast(self, options: Mapping[str, int | float]) -> bpd.DataFrame:
         sql = self._model_manipulation_sql_generator.ml_forecast(struct_options=options)
-        return self._session.read_gbq(sql, index_col="forecast_timestamp").reset_index()
+        timestamp_col_name = "forecast_timestamp"
+        index_cols = [timestamp_col_name]
+        first_col_name = self._session.read_gbq(sql).columns.values[0]
+        if timestamp_col_name != first_col_name:
+            index_cols.append(first_col_name)
+        return self._session.read_gbq(sql, index_col=index_cols).reset_index()
 
     def explain_forecast(self, options: Mapping[str, int | float]) -> bpd.DataFrame:
         sql = self._model_manipulation_sql_generator.ml_explain_forecast(
             struct_options=options
         )
-        return self._session.read_gbq(
-            sql, index_col="time_series_timestamp"
-        ).reset_index()
+        timestamp_col_name = "time_series_timestamp"
+        index_cols = [timestamp_col_name]
+        first_col_name = self._session.read_gbq(sql).columns.values[0]
+        if timestamp_col_name != first_col_name:
+            index_cols.append(first_col_name)
+        return self._session.read_gbq(sql, index_col=index_cols).reset_index()
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
         sql = self._model_manipulation_sql_generator.ml_evaluate(
@@ -390,6 +398,7 @@ class BqmlModelFactory:
         self,
         X_train: bpd.DataFrame,
         y_train: bpd.DataFrame,
+        id_col: Optional[bpd.DataFrame] = None,
         transforms: Optional[Iterable[str]] = None,
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> BqmlModel:
@@ -399,13 +408,21 @@ class BqmlModelFactory:
         assert (
             y_train.columns.size == 1
         ), "Time stamp data input must only contain 1 column."
+        assert id_col is None or (
+            id_col is not None and id_col.columns.size == 1
+        ), "Time series id input is either None or must only contain 1 column."
 
         options = dict(options)
         # Cache dataframes to make sure base table is not a snapshot
         # cached dataframe creates a full copy, never uses snapshot
-        input_data = X_train.join(y_train, how="outer").cache()
+        input_data = X_train.join(y_train, how="outer")
+        if id_col is not None:
+            input_data = input_data.join(id_col, how="outer")
+        input_data = input_data.cache()
         options.update({"TIME_SERIES_TIMESTAMP_COL": X_train.columns.tolist()[0]})
         options.update({"TIME_SERIES_DATA_COL": y_train.columns.tolist()[0]})
+        if id_col is not None:
+            options.update({"TIME_SERIES_ID_COL": id_col.columns.tolist()[0]})
 
         session = X_train._session
         model_ref = self._create_model_ref(session._anonymous_dataset)

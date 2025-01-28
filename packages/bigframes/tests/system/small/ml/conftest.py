@@ -305,12 +305,30 @@ def time_series_bqml_arima_plus_model(
 
 
 @pytest.fixture(scope="session")
+def time_series_bqml_arima_plus_model_w_id(
+    session, time_series_arima_plus_model_name_w_id
+) -> core.BqmlModel:
+    model = session.bqclient.get_model(time_series_arima_plus_model_name_w_id)
+    return core.BqmlModel(session, model)
+
+
+@pytest.fixture(scope="session")
 def time_series_arima_plus_model(
     session, time_series_arima_plus_model_name
 ) -> forecasting.ARIMAPlus:
     return cast(
         forecasting.ARIMAPlus,
         session.read_gbq_model(time_series_arima_plus_model_name),
+    )
+
+
+@pytest.fixture(scope="session")
+def time_series_arima_plus_model_w_id(
+    session, time_series_arima_plus_model_name_w_id
+) -> forecasting.ARIMAPlus:
+    return cast(
+        forecasting.ARIMAPlus,
+        session.read_gbq_model(time_series_arima_plus_model_name_w_id),
     )
 
 

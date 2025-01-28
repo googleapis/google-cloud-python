@@ -33,38 +33,65 @@ ARIMA_EVALUATE_OUTPUT_COL = [
 ]
 
 
-@pytest.fixture(scope="module")
-def arima_model(time_series_df_default_index):
+def _fit_arima_model(time_series_df_default_index):
     model = forecasting.ARIMAPlus()
     X_train = time_series_df_default_index["parsed_date"]
     y_train = time_series_df_default_index[["total_visits"]]
+    return model, X_train, y_train
+
+
+@pytest.fixture(scope="module")
+def arima_model(time_series_df_default_index):
+    model, X_train, y_train = _fit_arima_model(time_series_df_default_index)
     model.fit(X_train, y_train)
     return model
 
 
+@pytest.fixture(scope="module")
+def arima_model_w_id(time_series_df_default_index):
+    model, X_train, y_train = _fit_arima_model(time_series_df_default_index)
+    id_cols = time_series_df_default_index[["id"]]
+    model.fit(X_train, y_train, id_col=id_cols)
+    return model
+
+
+@pytest.mark.parametrize("id_col_name", [None, "id"])
 def test_arima_plus_model_fit_score(
     dataset_id,
     new_time_series_df,
+    new_time_series_df_w_id,
     arima_model,
+    arima_model_w_id,
+    id_col_name,
 ):
-
-    result = arima_model.score(
-        new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
-    ).to_pandas()
+    curr_model = arima_model_w_id if id_col_name else arima_model
+    if id_col_name:
+        result = curr_model.score(
+            new_time_series_df_w_id[["parsed_date"]],
+            new_time_series_df_w_id[["total_visits"]],
+            id_col=new_time_series_df_w_id[[id_col_name]],
+        ).to_pandas()
+    else:
+        result = curr_model.score(
+            new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
+        ).to_pandas()
+    expected_columns = [
+        "mean_absolute_error",
+        "mean_squared_error",
+        "root_mean_squared_error",
+        "mean_absolute_percentage_error",
+        "symmetric_mean_absolute_percentage_error",
+    ]
+    if id_col_name:
+        expected_columns.insert(0, id_col_name)
     utils.check_pandas_df_schema_and_index(
         result,
-        columns=[
-            "mean_absolute_error",
-            "mean_squared_error",
-            "root_mean_squared_error",
-            "mean_absolute_percentage_error",
-            "symmetric_mean_absolute_percentage_error",
-        ],
-        index=1,
+        columns=expected_columns,
+        index=2 if id_col_name else 1,
     )
 
     # save, load to ensure configuration was kept
-    reloaded_model = arima_model.to_gbq(
+    reloaded_model = curr_model.to_gbq(
         f"{dataset_id}.temp_arima_plus_model", replace=True
     )
     assert (
@@ -72,14 +99,22 @@ def test_arima_plus_model_fit_score(
     )
 
 
-def test_arima_plus_model_fit_summary(dataset_id, arima_model):
-    result = arima_model.summary().to_pandas()
+@pytest.mark.parametrize("id_col_name", [None, "id"])
+def test_arima_plus_model_fit_summary(
+    dataset_id, arima_model, arima_model_w_id, id_col_name
+):
+    curr_model = arima_model_w_id if id_col_name else arima_model
+    result = curr_model.summary().to_pandas()
+    expected_columns = (
+        [id_col_name] + ARIMA_EVALUATE_OUTPUT_COL
+        if id_col_name
+        else ARIMA_EVALUATE_OUTPUT_COL
+    )
     utils.check_pandas_df_schema_and_index(
-        result, columns=ARIMA_EVALUATE_OUTPUT_COL, index=1
+        result, columns=expected_columns, index=2 if id_col_name else 1
     )
-
     # save, load to ensure configuration was kept
-    reloaded_model = arima_model.to_gbq(
+    reloaded_model = curr_model.to_gbq(
         f"{dataset_id}.temp_arima_plus_model", replace=True
     )
     assert (
@@ -87,17 +122,29 @@ def test_arima_plus_model_fit_summary(dataset_id, arima_model):
     )
 
 
-def test_arima_coefficients(arima_model):
-    result = arima_model.coef_.to_pandas()
+@pytest.mark.parametrize("id_col_name", [None, "id"])
+def test_arima_coefficients(arima_model, arima_model_w_id, id_col_name):
+    result = (
+        arima_model_w_id.coef_.to_pandas()
+        if id_col_name
+        else arima_model.coef_.to_pandas()
+    )
     expected_columns = [
         "ar_coefficients",
         "ma_coefficients",
         "intercept_or_drift",
     ]
-    utils.check_pandas_df_schema_and_index(result, columns=expected_columns, index=1)
+    if id_col_name:
+        expected_columns.insert(0, id_col_name)
+    utils.check_pandas_df_schema_and_index(
+        result, columns=expected_columns, index=2 if id_col_name else 1
+    )
 
 
-def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):
+@pytest.mark.parametrize("id_col_name", [None, "id"])
+def test_arima_plus_model_fit_params(
+    time_series_df_default_index, dataset_id, id_col_name
+):
     model = forecasting.ARIMAPlus(
         horizon=100,
         auto_arima=True,
@@ -115,7 +162,11 @@ def test_arima_plus_model_fit_params(time_series_df_default_index, dataset_id):
 
     X_train = time_series_df_default_index[["parsed_date"]]
     y_train = time_series_df_default_index["total_visits"]
-    model.fit(X_train, y_train)
+    if id_col_name is None:
+        model.fit(X_train, y_train)
+    else:
+        id_cols = time_series_df_default_index[[id_col_name]]
+        model.fit(X_train, y_train, id_col=id_cols)
 
     # save, load to ensure configuration was kept
     reloaded_model = model.to_gbq(f"{dataset_id}.temp_arima_plus_model", replace=True)
