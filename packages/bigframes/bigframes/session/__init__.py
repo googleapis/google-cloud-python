@@ -1482,7 +1482,7 @@ class Session(
             2    TestCad$123456Str
             dtype: string
 
-        Another use case is to define your own remote funtion and use it later.
+        Another use case is to define your own remote function and use it later.
         For example, define the remote function:
 
             >>> @bpd.remote_function()

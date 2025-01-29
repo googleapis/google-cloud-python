@@ -31,8 +31,8 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
     default_python_version="3.10",
-    unit_test_python_versions=["3.9", "3.10", "3.11", "3.12"],
-    system_test_python_versions=["3.9", "3.11", "3.12"],
+    unit_test_python_versions=["3.9", "3.10", "3.11", "3.12", "3.13"],
+    system_test_python_versions=["3.9", "3.11", "3.12", "3.13"],
     cov_level=35,
     intersphinx_dependencies={
         "pandas": "https://pandas.pydata.org/pandas-docs/stable/",

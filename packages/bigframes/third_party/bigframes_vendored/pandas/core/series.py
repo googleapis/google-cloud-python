@@ -5053,13 +5053,13 @@ class Series(NDFrame):  # type: ignore[misc]
                 with corresponding value from other. If cond is callable, it is
                 computed on the Series/DataFrame and should return boolean
                 Series/DataFrame or array. The callable must not change input
-                Series/DataFrame (though pandas doesn’t check it).
+                Series/DataFrame (though pandas doesn't check it).
             other (scalar, Series/DataFrame, or callable):
                 Entries where cond is True are replaced with corresponding value
                 from other. If other is callable, it is computed on the
                 Series/DataFrame and should return scalar or Series/DataFrame.
                 The callable must not change input Series/DataFrame (though pandas
-                doesn’t check it). If not specified, entries will be filled with
+                doesn't check it). If not specified, entries will be filled with
                 the corresponding NULL value (np.nan for numpy dtypes, pd.NA for
                 extension dtypes).
 

@@ -18,6 +18,7 @@ import inspect
 import math  # must keep this at top level to test udf referring global import
 import os.path
 import shutil
+import sys
 import tempfile
 import textwrap
 
@@ -45,6 +46,12 @@ from tests.system.utils import (
 # remote functions
 _team_pi = "Team Pi"
 _team_euler = "Team Euler"
+
+
+pytestmark = pytest.mark.skipif(
+    sys.version_info >= (3, 13),
+    reason="Runtime 'python313' is not supported yet. Skip for now.",
+)
 
 
 def cleanup_remote_function_assets(

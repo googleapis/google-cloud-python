@@ -24,13 +24,15 @@ import re
 import shutil
 import time
 from typing import Dict, List
-import warnings
 
 import nox
 import nox.sessions
 
 BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.12.0"
+
+# TODO: switch to 3.13 once remote functions / cloud run adds a runtime for it (internal issue 333742751)
+LATEST_FULLY_SUPPORTED_PYTHON = "3.12"
 
 # pytest-retry is not yet compatible with pytest 8.x.
 # https://github.com/str0zzapreti/pytest-retry/issues/32
@@ -47,7 +49,7 @@ LINT_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.10"
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -57,7 +59,6 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-asyncio",
     "pytest-mock",
 ]
-UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
@@ -65,7 +66,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {"3.12": ["polars"]}
 
 # There are 4 different ibis-framework 9.x versions we want to test against.
 # 3.10 is needed for Windows tests.
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.12", "3.13"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "jinja2",
     "mock",
@@ -168,14 +169,6 @@ def lint_setup_py(session):
 def install_unittest_dependencies(session, install_test_extra, *constraints):
     standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
     session.install(*standard_deps, *constraints)
-
-    if UNIT_TEST_EXTERNAL_DEPENDENCIES:
-        msg = (
-            "'unit_test_external_dependencies' is deprecated. Instead, please "
-            "use 'unit_test_dependencies' or 'unit_test_local_dependencies'."
-        )
-        warnings.warn(msg, DeprecationWarning)
-        session.install(*UNIT_TEST_EXTERNAL_DEPENDENCIES, *constraints)
 
     if UNIT_TEST_LOCAL_DEPENDENCIES:
         session.install(*UNIT_TEST_LOCAL_DEPENDENCIES, *constraints)
@@ -375,7 +368,7 @@ def system(session: nox.sessions.Session):
     )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
+@nox.session(python=LATEST_FULLY_SUPPORTED_PYTHON)
 def system_noextras(session: nox.sessions.Session):
     """Run the system test suite."""
     run_system(
@@ -386,7 +379,7 @@ def system_noextras(session: nox.sessions.Session):
     )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
+@nox.session(python=LATEST_FULLY_SUPPORTED_PYTHON)
 def doctest(session: nox.sessions.Session):
     """Run the system test suite."""
     run_system(
@@ -762,6 +755,20 @@ def notebook(session: nox.Session):
         "notebooks/apps/synthetic_data_generation.ipynb",
     ]
 
+    # TODO: remove exception for Python 3.13 cloud run adds a runtime for it (internal issue 333742751)
+    # TODO: remove exception for Python 3.13 if nbmake adds support for
+    # sys.exit(0) or pytest.skip(...).
+    # See: https://github.com/treebeardtech/nbmake/issues/134
+    if session.python == "3.13":
+        denylist.extend(
+            [
+                "notebooks/getting_started/getting_started_bq_dataframes.ipynb",
+                "notebooks/remote_functions/remote_function_usecases.ipynb",
+                "notebooks/remote_functions/remote_function_vertex_claude_model.ipynb",
+                "notebooks/remote_functions/remote_function.ipynb",
+            ]
+        )
+
     # Convert each Path notebook object to a string using a list comprehension.
     notebooks = [str(nb) for nb in notebooks_list]
 
@@ -769,20 +776,27 @@ def notebook(session: nox.Session):
     notebooks = list(filter(lambda nb: nb not in denylist, notebooks))
 
     # Regionalized notebooks
-    notebooks_reg = {
-        "regionalized.ipynb": [
-            "asia-southeast1",
-            "eu",
-            "europe-west4",
-            "southamerica-west1",
-            "us",
-            "us-central1",
-        ]
-    }
-    notebooks_reg = {
-        os.path.join("notebooks/location", nb): regions
-        for nb, regions in notebooks_reg.items()
-    }
+    # TODO: remove exception for Python 3.13 cloud run adds a runtime for it (internal issue 333742751)
+    # TODO: remove exception for Python 3.13 if nbmake adds support for
+    # sys.exit(0) or pytest.skip(...).
+    # See: https://github.com/treebeardtech/nbmake/issues/134
+    if session.python == "3.13":
+        notebooks_reg = {}
+    else:
+        notebooks_reg = {
+            "regionalized.ipynb": [
+                "asia-southeast1",
+                "eu",
+                "europe-west4",
+                "southamerica-west1",
+                "us",
+                "us-central1",
+            ]
+        }
+        notebooks_reg = {
+            os.path.join("notebooks/location", nb): regions
+            for nb, regions in notebooks_reg.items()
+        }
 
     # The pytest --nbmake exits silently with "no tests ran" message if
     # one of the notebook paths supplied does not exist. Let's make sure that

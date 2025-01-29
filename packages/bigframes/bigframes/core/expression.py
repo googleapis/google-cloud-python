@@ -20,6 +20,8 @@ import itertools
 import typing
 from typing import Mapping, TypeVar, Union
 
+import pandas as pd
+
 import bigframes.core.identifiers as ids
 import bigframes.dtypes as dtypes
 import bigframes.operations
@@ -252,6 +254,17 @@ class ScalarConstantExpression(Expression):
     def is_bijective(self) -> bool:
         # () <-> value
         return True
+
+    def __eq__(self, other):
+        if not isinstance(other, ScalarConstantExpression):
+            return False
+
+        # With python 3.13 and the pre-release version of pandas,
+        # NA == NA is NA instead of True
+        if pd.isna(self.value) and pd.isna(other.value):  # type: ignore
+            return self.dtype == other.dtype
+
+        return self.value == other.value and self.dtype == other.dtype
 
 
 @dataclasses.dataclass(frozen=True)
