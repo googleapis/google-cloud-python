@@ -134,14 +134,6 @@ class CloudRedisClusterGrpcTransport(CloudRedisClusterTransport):
 
     -  ``projects/redpepper-1290/locations/us-central1/clusters/my-redis``
 
-    We use API version selector for Flex APIs
-
-    -  The versioning strategy is release-based versioning
-    -  Our backend CLH only deals with the superset version (called
-       v1main)
-    -  Existing backend for Redis Gen1 and MRR is not touched.
-    -  More details in go/redis-flex-api-versioning
-
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
     and call it.
@@ -555,6 +547,248 @@ class CloudRedisClusterGrpcTransport(CloudRedisClusterTransport):
                 response_deserializer=cloud_redis_cluster.CertificateAuthority.deserialize,
             )
         return self._stubs["get_cluster_certificate_authority"]
+
+    @property
+    def reschedule_cluster_maintenance(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.RescheduleClusterMaintenanceRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the reschedule cluster maintenance method over gRPC.
+
+        Reschedules upcoming maintenance event.
+
+        Returns:
+            Callable[[~.RescheduleClusterMaintenanceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reschedule_cluster_maintenance" not in self._stubs:
+            self._stubs[
+                "reschedule_cluster_maintenance"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/RescheduleClusterMaintenance",
+                request_serializer=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["reschedule_cluster_maintenance"]
+
+    @property
+    def list_backup_collections(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListBackupCollectionsRequest],
+        cloud_redis_cluster.ListBackupCollectionsResponse,
+    ]:
+        r"""Return a callable for the list backup collections method over gRPC.
+
+        Lists all backup collections owned by a consumer project in
+        either the specified location (region) or all locations.
+
+        If ``location_id`` is specified as ``-`` (wildcard), then all
+        regions available to the project are queried, and the results
+        are aggregated.
+
+        Returns:
+            Callable[[~.ListBackupCollectionsRequest],
+                    ~.ListBackupCollectionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_collections" not in self._stubs:
+            self._stubs["list_backup_collections"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/ListBackupCollections",
+                request_serializer=cloud_redis_cluster.ListBackupCollectionsRequest.serialize,
+                response_deserializer=cloud_redis_cluster.ListBackupCollectionsResponse.deserialize,
+            )
+        return self._stubs["list_backup_collections"]
+
+    @property
+    def get_backup_collection(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.GetBackupCollectionRequest],
+        cloud_redis_cluster.BackupCollection,
+    ]:
+        r"""Return a callable for the get backup collection method over gRPC.
+
+        Get a backup collection.
+
+        Returns:
+            Callable[[~.GetBackupCollectionRequest],
+                    ~.BackupCollection]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_collection" not in self._stubs:
+            self._stubs["get_backup_collection"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/GetBackupCollection",
+                request_serializer=cloud_redis_cluster.GetBackupCollectionRequest.serialize,
+                response_deserializer=cloud_redis_cluster.BackupCollection.deserialize,
+            )
+        return self._stubs["get_backup_collection"]
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [cloud_redis_cluster.ListBackupsRequest],
+        cloud_redis_cluster.ListBackupsResponse,
+    ]:
+        r"""Return a callable for the list backups method over gRPC.
+
+        Lists all backups owned by a backup collection.
+
+        Returns:
+            Callable[[~.ListBackupsRequest],
+                    ~.ListBackupsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backups" not in self._stubs:
+            self._stubs["list_backups"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/ListBackups",
+                request_serializer=cloud_redis_cluster.ListBackupsRequest.serialize,
+                response_deserializer=cloud_redis_cluster.ListBackupsResponse.deserialize,
+            )
+        return self._stubs["list_backups"]
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[[cloud_redis_cluster.GetBackupRequest], cloud_redis_cluster.Backup]:
+        r"""Return a callable for the get backup method over gRPC.
+
+        Gets the details of a specific backup.
+
+        Returns:
+            Callable[[~.GetBackupRequest],
+                    ~.Backup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup" not in self._stubs:
+            self._stubs["get_backup"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/GetBackup",
+                request_serializer=cloud_redis_cluster.GetBackupRequest.serialize,
+                response_deserializer=cloud_redis_cluster.Backup.deserialize,
+            )
+        return self._stubs["get_backup"]
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[[cloud_redis_cluster.DeleteBackupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete backup method over gRPC.
+
+        Deletes a specific backup.
+
+        Returns:
+            Callable[[~.DeleteBackupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup" not in self._stubs:
+            self._stubs["delete_backup"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/DeleteBackup",
+                request_serializer=cloud_redis_cluster.DeleteBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup"]
+
+    @property
+    def export_backup(
+        self,
+    ) -> Callable[[cloud_redis_cluster.ExportBackupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the export backup method over gRPC.
+
+        Exports a specific backup to a customer target Cloud
+        Storage URI.
+
+        Returns:
+            Callable[[~.ExportBackupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_backup" not in self._stubs:
+            self._stubs["export_backup"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/ExportBackup",
+                request_serializer=cloud_redis_cluster.ExportBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_backup"]
+
+    @property
+    def backup_cluster(
+        self,
+    ) -> Callable[[cloud_redis_cluster.BackupClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the backup cluster method over gRPC.
+
+        Backup Redis Cluster.
+        If this is the first time a backup is being created, a
+        backup collection will be created at the backend, and
+        this backup belongs to this collection. Both collection
+        and backup will have a resource name. Backup will be
+        executed for each shard. A replica (primary if nonHA)
+        will be selected to perform the execution. Backup call
+        will be rejected if there is an ongoing backup or update
+        operation. Be aware that during preview, if the
+        cluster's internal software version is too old, critical
+        update will be performed before actual backup. Once the
+        internal software version is updated to the minimum
+        version required by the backup feature, subsequent
+        backups will not require critical update. After preview,
+        there will be no critical update needed for backup.
+
+        Returns:
+            Callable[[~.BackupClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "backup_cluster" not in self._stubs:
+            self._stubs["backup_cluster"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.cluster.v1.CloudRedisCluster/BackupCluster",
+                request_serializer=cloud_redis_cluster.BackupClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["backup_cluster"]
 
     def close(self):
         self._logged_channel.close()

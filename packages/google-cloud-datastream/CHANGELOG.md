@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.11.0...google-cloud-datastream-v1.12.0) (2025-01-20)
+
+
+### Features
+
+* A new message `PostgresqlSslConfig` is added ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.cloud.datastream.v1.ConnectionProfile` is changed ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+* A comment for field `name` in message `.google.cloud.datastream.v1.PrivateConnection` is changed ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+* A comment for field `name` in message `.google.cloud.datastream.v1.Route` is changed ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+* A comment for field `name` in message `.google.cloud.datastream.v1.Stream` is changed ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+* A comment for field `name` in message `.google.cloud.datastream.v1.StreamObject` is changed ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+* A comment for field `password` in message `.google.cloud.datastream.v1.OracleAsmConfig` is changed ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+* A comment for message `OracleAsmConfig` is changed ([6fa4ff8](https://github.com/googleapis/google-cloud-python/commit/6fa4ff89f201cc5e3d5ae1dd4c7ced457745f5ef))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.10.1...google-cloud-datastream-v1.11.0) (2024-12-12)
 
 

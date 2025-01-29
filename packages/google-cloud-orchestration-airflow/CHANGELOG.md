@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.16.0...google-cloud-orchestration-airflow-v1.16.1) (2025-01-16)
+
+
+### Documentation
+
+* [google-cloud-orchestration-airflow] A comment for method `ListWorkloads` in service `Environments` is changed ([#13443](https://github.com/googleapis/google-cloud-python/issues/13443)) ([f47303a](https://github.com/googleapis/google-cloud-python/commit/f47303a072156798479cafa3fd9fe98b9145d7f7))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.15.1...google-cloud-orchestration-airflow-v1.16.0) (2024-12-12)
 
 

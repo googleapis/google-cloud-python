@@ -114,7 +114,11 @@ class Job(proto.Message):
             of
             [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count]
             times, with exponential backoff, until the next scheduled
-            start time.
+            start time. If retry_count is 0, a job attempt will not be
+            retried if it fails. Instead the Cloud Scheduler system will
+            wait for the next scheduled execution time. Setting
+            retry_count to 0 does not prevent failed jobs from running
+            according to schedule after the failure.
         time_zone (str):
             Specifies the time zone to be used in interpreting
             [schedule][google.cloud.scheduler.v1.Job.schedule]. The
@@ -290,9 +294,11 @@ class RetryConfig(proto.Message):
 
             The default value of retry_count is zero.
 
-            If retry_count is zero, a job attempt will *not* be retried
-            if it fails. Instead the Cloud Scheduler system will wait
-            for the next scheduled execution time.
+            If retry_count is 0, a job attempt will not be retried if it
+            fails. Instead the Cloud Scheduler system will wait for the
+            next scheduled execution time. Setting retry_count to 0 does
+            not prevent failed jobs from running according to schedule
+            after the failure.
 
             If retry_count is set to a non-zero number then Cloud
             Scheduler will retry failed attempts, using exponential
@@ -335,10 +341,10 @@ class RetryConfig(proto.Message):
             [min_backoff_duration][google.cloud.scheduler.v1.RetryConfig.min_backoff_duration]
             is 10s,
             [max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration]
-            is 300s, and ``max_doublings`` is 3, then the a job will
-            first be retried in 10s. The retry interval will double
-            three times, and then increase linearly by 2^3 \* 10s.
-            Finally, the job will retry at intervals of
+            is 300s, and ``max_doublings`` is 3, then the job will first
+            be retried in 10s. The retry interval will double three
+            times, and then increase linearly by 2^3 \* 10s. Finally,
+            the job will retry at intervals of
             [max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration]
             until the job has been attempted
             [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count]

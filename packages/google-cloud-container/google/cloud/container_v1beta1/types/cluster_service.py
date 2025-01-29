@@ -8945,7 +8945,7 @@ class NetworkConfig(proto.Message):
     Attributes:
         network (str):
             Output only. The relative name of the Google Compute Engine
-            [network]`google.container.v1beta1.NetworkConfig.network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__
+            `network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__
             to which the cluster is connected. Example:
             projects/my-project/global/networks/my-network
         subnetwork (str):

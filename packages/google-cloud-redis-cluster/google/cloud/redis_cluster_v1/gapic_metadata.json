@@ -10,14 +10,39 @@
         "grpc": {
           "libraryClient": "CloudRedisClusterClient",
           "rpcs": {
+            "BackupCluster": {
+              "methods": [
+                "backup_cluster"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
               ]
             },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
             "DeleteCluster": {
               "methods": [
                 "delete_cluster"
+              ]
+            },
+            "ExportBackup": {
+              "methods": [
+                "export_backup"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupCollection": {
+              "methods": [
+                "get_backup_collection"
               ]
             },
             "GetCluster": {
@@ -30,9 +55,24 @@
                 "get_cluster_certificate_authority"
               ]
             },
+            "ListBackupCollections": {
+              "methods": [
+                "list_backup_collections"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
             "ListClusters": {
               "methods": [
                 "list_clusters"
+              ]
+            },
+            "RescheduleClusterMaintenance": {
+              "methods": [
+                "reschedule_cluster_maintenance"
               ]
             },
             "UpdateCluster": {
@@ -45,14 +85,39 @@
         "grpc-async": {
           "libraryClient": "CloudRedisClusterAsyncClient",
           "rpcs": {
+            "BackupCluster": {
+              "methods": [
+                "backup_cluster"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
               ]
             },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
             "DeleteCluster": {
               "methods": [
                 "delete_cluster"
+              ]
+            },
+            "ExportBackup": {
+              "methods": [
+                "export_backup"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupCollection": {
+              "methods": [
+                "get_backup_collection"
               ]
             },
             "GetCluster": {
@@ -65,9 +130,24 @@
                 "get_cluster_certificate_authority"
               ]
             },
+            "ListBackupCollections": {
+              "methods": [
+                "list_backup_collections"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
             "ListClusters": {
               "methods": [
                 "list_clusters"
+              ]
+            },
+            "RescheduleClusterMaintenance": {
+              "methods": [
+                "reschedule_cluster_maintenance"
               ]
             },
             "UpdateCluster": {
@@ -80,14 +160,39 @@
         "rest": {
           "libraryClient": "CloudRedisClusterClient",
           "rpcs": {
+            "BackupCluster": {
+              "methods": [
+                "backup_cluster"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
               ]
             },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
             "DeleteCluster": {
               "methods": [
                 "delete_cluster"
+              ]
+            },
+            "ExportBackup": {
+              "methods": [
+                "export_backup"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupCollection": {
+              "methods": [
+                "get_backup_collection"
               ]
             },
             "GetCluster": {
@@ -100,9 +205,24 @@
                 "get_cluster_certificate_authority"
               ]
             },
+            "ListBackupCollections": {
+              "methods": [
+                "list_backup_collections"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
             "ListClusters": {
               "methods": [
                 "list_clusters"
+              ]
+            },
+            "RescheduleClusterMaintenance": {
+              "methods": [
+                "reschedule_cluster_maintenance"
               ]
             },
             "UpdateCluster": {

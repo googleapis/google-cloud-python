@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.3...google-cloud-oracledatabase-v0.1.4) (2025-01-13)
+
+
+### Features
+
+* [google-cloud-oracledatabase] A new value `ACCOUNT_SUSPENDED` is added to enum `State` ([#13414](https://github.com/googleapis/google-cloud-python/issues/13414)) ([d30f5ea](https://github.com/googleapis/google-cloud-python/commit/d30f5ea94a452d6ae06ee942e088594d47d36f3b))
+
+
+### Documentation
+
+* [google-cloud-oracledatabase] the CloudVmClusterProperties.system_version field is no longer labeled as output only ([#13397](https://github.com/googleapis/google-cloud-python/issues/13397)) ([e326602](https://github.com/googleapis/google-cloud-python/commit/e3266022dc8277b27d481107cf76f13b45ea0f90))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.2...google-cloud-oracledatabase-v0.1.3) (2024-12-12)
 
 

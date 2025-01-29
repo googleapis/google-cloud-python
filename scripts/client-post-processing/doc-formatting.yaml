@@ -38,11 +38,12 @@ replacements:
     after: "`NS_`"
     count: 2
   - paths: [
+      packages/google-ai-generativelanguage/google/ai/generativelanguage_v1alpha/types/retriever.py,
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
     ]
     before: \"corpora/\*/documents/\"
     after: "`corpora/*/documents/`"
-    count: 1
+    count: 2
   - paths: [
       packages/google-ai-generativelanguage/google/ai/generativelanguage_v1beta/types/retriever.py,
     ]
@@ -444,3 +445,59 @@ replacements:
               ```\n
               Values:
     count: 1
+  - paths: [
+      packages/google-cloud-monitoring/google/cloud/monitoring_v3/types/metric_service.py
+    ]
+    before: |
+      Optional. If true, only metrics and monitored
+      \            resource types that have recent data \(within
+      \            roughly 25 hours\) will be included in the
+      \            response.
+      \             - If a metric descriptor enumerates monitored
+      \              resource types, only the    monitored resource
+      \              types for which the metric type has recent
+      \              data will    be included in the returned
+      \              metric descriptor, and if none of them have
+      \              recent data, the metric descriptor will not be
+      \              returned.
+      \             - If a metric descriptor does not enumerate the
+      \              compatible monitored    resource types, it
+      \              will be returned only if the metric type has
+      \              recent    data for some monitored resource
+      \              type. The returned descriptor will not
+      \              enumerate any monitored resource types.
+    after: |
+      Optional. If true, only metrics and monitored
+                  resource types that have recent data (within
+                  roughly 25 hours) will be included in the
+                  response.\n
+                  - If a metric descriptor enumerates monitored
+                    resource types, only the monitored resource
+                    types for which the metric type has recent
+                    data will be included in the returned
+                    metric descriptor, and if none of them have
+                    recent data, the metric descriptor will not be
+                    returned.
+                  - If a metric descriptor does not enumerate the
+                    compatible monitored resource types, it
+                    will be returned only if the metric type has
+                    recent data for some monitored resource
+                    type. The returned descriptor will not
+                    enumerate any monitored resource types.
+    count: 1
+  - paths: [
+      packages/google-cloud-orchestration-airflow/google/cloud/orchestration/airflow/service_v1/types/environments.py,
+      packages/google-cloud-orchestration-airflow/google/cloud/orchestration/airflow/service_v1beta1/types/environments.py,
+    ]
+    before: |
+      \{
+                    "example": "ZXhhbXBsZV92YWx1ZQ==",
+                    "another-example":
+                  "YW5vdGhlcl9leGFtcGxlX3ZhbHVl" \}
+    after: |
+        .. code-block:: json\n
+                      {
+                        "example": "ZXhhbXBsZV92YWx1ZQ==",
+                        "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
+                      }\n
+    count: 2

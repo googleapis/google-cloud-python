@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.55.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.55.0...google-cloud-container-v2.55.1) (2025-01-27)
+
+
+### Documentation
+
+* [google-cloud-container] broken (or ambiguous) markdown link ([#13468](https://github.com/googleapis/google-cloud-python/issues/13468)) ([5579df8](https://github.com/googleapis/google-cloud-python/commit/5579df80a0859fb23b644ba666e63cc2864bf25b))
+
 ## [2.55.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.54.0...google-cloud-container-v2.55.0) (2024-12-12)
 
 

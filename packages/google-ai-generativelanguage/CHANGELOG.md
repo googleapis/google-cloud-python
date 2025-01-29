@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.6.15](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.14...google-ai-generativelanguage-v0.6.15) (2025-01-13)
+
+
+### Features
+
+* Add BidiGenerateContent + all the necessary protos ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add civic_integrity toggle to generation_config ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add GoogleSearch tool type ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add id to FunctionCall and FunctionResponse ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add image_safety block_reason + finish_reason ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add response_modalities to generation_config ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add return type `Schema response` to function declarations ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add TuningMultiturnExample ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add v1alpha ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+* Add voice_config to generation_config ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+
+
+### Documentation
+
+* Update safety filter list to include civic_integrity ([2c1e359](https://github.com/googleapis/google-cloud-python/commit/2c1e35981f7064f293669109097eb4b8c4942692))
+
 ## [0.6.14](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.6.13...google-ai-generativelanguage-v0.6.14) (2024-12-12)
 
 

@@ -23,6 +23,7 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.cloudcontrolspartner_v1beta import gapic_version as package_version
 from google.cloud.cloudcontrolspartner_v1beta.types import (
@@ -238,6 +239,21 @@ class CloudControlsPartnerCoreTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_customer: gapic_v1.method.wrap_method(
+                self.create_customer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_customer: gapic_v1.method.wrap_method(
+                self.update_customer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_customer: gapic_v1.method.wrap_method(
+                self.delete_customer,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -331,6 +347,33 @@ class CloudControlsPartnerCoreTransport(abc.ABC):
     ) -> Callable[
         [partners.GetPartnerRequest],
         Union[partners.Partner, Awaitable[partners.Partner]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_customer(
+        self,
+    ) -> Callable[
+        [customers.CreateCustomerRequest],
+        Union[customers.Customer, Awaitable[customers.Customer]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_customer(
+        self,
+    ) -> Callable[
+        [customers.UpdateCustomerRequest],
+        Union[customers.Customer, Awaitable[customers.Customer]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_customer(
+        self,
+    ) -> Callable[
+        [customers.DeleteCustomerRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

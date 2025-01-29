@@ -134,14 +134,6 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
     Note that location_id must be a GCP ``region``; for example:
 
     -  ``projects/redpepper-1290/locations/us-central1/clusters/my-redis``
-
-    We use API version selector for Flex APIs
-
-    -  The versioning strategy is release-based versioning
-    -  Our backend CLH only deals with the superset version (called
-       v1main)
-    -  Existing backend for Redis Gen1 and MRR is not touched.
-    -  More details in go/redis-flex-api-versioning
     """
 
     @staticmethod
@@ -231,6 +223,52 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
         return self._transport
 
     @staticmethod
+    def backup_path(
+        project: str,
+        location: str,
+        backup_collection: str,
+        backup: str,
+    ) -> str:
+        """Returns a fully-qualified backup string."""
+        return "projects/{project}/locations/{location}/backupCollections/{backup_collection}/backups/{backup}".format(
+            project=project,
+            location=location,
+            backup_collection=backup_collection,
+            backup=backup,
+        )
+
+    @staticmethod
+    def parse_backup_path(path: str) -> Dict[str, str]:
+        """Parses a backup path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupCollections/(?P<backup_collection>.+?)/backups/(?P<backup>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def backup_collection_path(
+        project: str,
+        location: str,
+        backup_collection: str,
+    ) -> str:
+        """Returns a fully-qualified backup_collection string."""
+        return "projects/{project}/locations/{location}/backupCollections/{backup_collection}".format(
+            project=project,
+            location=location,
+            backup_collection=backup_collection,
+        )
+
+    @staticmethod
+    def parse_backup_collection_path(path: str) -> Dict[str, str]:
+        """Parses a backup_collection path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupCollections/(?P<backup_collection>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def certificate_authority_path(
         project: str,
         location: str,
@@ -270,6 +308,119 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
         """Parses a cluster path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/clusters/(?P<cluster>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def crypto_key_version_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+        crypto_key_version: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key_version string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+            crypto_key_version=crypto_key_version,
+        )
+
+    @staticmethod
+    def parse_crypto_key_version_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key_version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def forwarding_rule_path(
+        project: str,
+        region: str,
+        forwarding_rule: str,
+    ) -> str:
+        """Returns a fully-qualified forwarding_rule string."""
+        return "projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}".format(
+            project=project,
+            region=region,
+            forwarding_rule=forwarding_rule,
+        )
+
+    @staticmethod
+    def parse_forwarding_rule_path(path: str) -> Dict[str, str]:
+        """Parses a forwarding_rule path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/forwardingRules/(?P<forwarding_rule>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def network_path(
+        project: str,
+        network: str,
+    ) -> str:
+        """Returns a fully-qualified network string."""
+        return "projects/{project}/global/networks/{network}".format(
+            project=project,
+            network=network,
+        )
+
+    @staticmethod
+    def parse_network_path(path: str) -> Dict[str, str]:
+        """Parses a network path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_attachment_path(
+        project: str,
+        region: str,
+        service_attachment: str,
+    ) -> str:
+        """Returns a fully-qualified service_attachment string."""
+        return "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
+            project=project,
+            region=region,
+            service_attachment=service_attachment,
+        )
+
+    @staticmethod
+    def parse_service_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a service_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/serviceAttachments/(?P<service_attachment>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1011,7 +1162,6 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
                 # Initialize request argument(s)
                 cluster = redis_cluster_v1.Cluster()
                 cluster.name = "name_value"
-                cluster.psc_configs.network = "network_value"
 
                 request = redis_cluster_v1.UpdateClusterRequest(
                     cluster=cluster,
@@ -1289,7 +1439,6 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
                 # Initialize request argument(s)
                 cluster = redis_cluster_v1.Cluster()
                 cluster.name = "name_value"
-                cluster.psc_configs.network = "network_value"
 
                 request = redis_cluster_v1.CreateClusterRequest(
                     parent="parent_value",
@@ -1519,6 +1668,972 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def reschedule_cluster_maintenance(
+        self,
+        request: Optional[
+            Union[cloud_redis_cluster.RescheduleClusterMaintenanceRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        reschedule_type: Optional[
+            cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType
+        ] = None,
+        schedule_time: Optional[timestamp_pb2.Timestamp] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Reschedules upcoming maintenance event.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_reschedule_cluster_maintenance():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.RescheduleClusterMaintenanceRequest(
+                    name="name_value",
+                    reschedule_type="SPECIFIC_TIME",
+                )
+
+                # Make the request
+                operation = client.reschedule_cluster_maintenance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.RescheduleClusterMaintenanceRequest, dict]):
+                The request object. Request for rescheduling a cluster
+                maintenance.
+            name (str):
+                Required. Redis Cluster instance resource name using the
+                form:
+                ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``
+                where ``location_id`` refers to a GCP region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            reschedule_type (google.cloud.redis_cluster_v1.types.RescheduleClusterMaintenanceRequest.RescheduleType):
+                Required. If reschedule type is SPECIFIC_TIME, must set
+                up schedule_time as well.
+
+                This corresponds to the ``reschedule_type`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schedule_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. Timestamp when the maintenance shall be
+                rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC
+                3339 format, for example ``2012-11-15T16:19:00.094Z``.
+
+                This corresponds to the ``schedule_time`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.redis_cluster_v1.types.Cluster` A
+                cluster instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, reschedule_type, schedule_time])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cloud_redis_cluster.RescheduleClusterMaintenanceRequest
+        ):
+            request = cloud_redis_cluster.RescheduleClusterMaintenanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if reschedule_type is not None:
+                request.reschedule_type = reschedule_type
+            if schedule_time is not None:
+                request.schedule_time = schedule_time
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.reschedule_cluster_maintenance
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_redis_cluster.Cluster,
+            metadata_type=any_pb2.Any,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_backup_collections(
+        self,
+        request: Optional[
+            Union[cloud_redis_cluster.ListBackupCollectionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListBackupCollectionsPager:
+        r"""Lists all backup collections owned by a consumer project in
+        either the specified location (region) or all locations.
+
+        If ``location_id`` is specified as ``-`` (wildcard), then all
+        regions available to the project are queried, and the results
+        are aggregated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_list_backup_collections():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.ListBackupCollectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backup_collections(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.ListBackupCollectionsRequest, dict]):
+                The request object. Request for [ListBackupCollections]
+            parent (str):
+                Required. The resource name of the backupCollection
+                location using the form:
+                ``projects/{project_id}/locations/{location_id}`` where
+                ``location_id`` refers to a GCP region.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.redis_cluster_v1.services.cloud_redis_cluster.pagers.ListBackupCollectionsPager:
+                Response for [ListBackupCollections].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_redis_cluster.ListBackupCollectionsRequest):
+            request = cloud_redis_cluster.ListBackupCollectionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_backup_collections]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBackupCollectionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_backup_collection(
+        self,
+        request: Optional[
+            Union[cloud_redis_cluster.GetBackupCollectionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cloud_redis_cluster.BackupCollection:
+        r"""Get a backup collection.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_get_backup_collection():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.GetBackupCollectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup_collection(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.GetBackupCollectionRequest, dict]):
+                The request object. Request for [GetBackupCollection].
+            name (str):
+                Required. Redis backupCollection resource name using the
+                form:
+                ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}``
+                where ``location_id`` refers to a GCP region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.redis_cluster_v1.types.BackupCollection:
+                BackupCollection of a cluster.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_redis_cluster.GetBackupCollectionRequest):
+            request = cloud_redis_cluster.GetBackupCollectionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_backup_collection]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_backups(
+        self,
+        request: Optional[Union[cloud_redis_cluster.ListBackupsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListBackupsPager:
+        r"""Lists all backups owned by a backup collection.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_list_backups():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.ListBackupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.ListBackupsRequest, dict]):
+                The request object. Request for [ListBackups].
+            parent (str):
+                Required. The resource name of the backupCollection
+                using the form:
+                ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.redis_cluster_v1.services.cloud_redis_cluster.pagers.ListBackupsPager:
+                Response for [ListBackups].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_redis_cluster.ListBackupsRequest):
+            request = cloud_redis_cluster.ListBackupsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_backups]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListBackupsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_backup(
+        self,
+        request: Optional[Union[cloud_redis_cluster.GetBackupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cloud_redis_cluster.Backup:
+        r"""Gets the details of a specific backup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_get_backup():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.GetBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.GetBackupRequest, dict]):
+                The request object. Request for [GetBackup].
+            name (str):
+                Required. Redis backup resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.redis_cluster_v1.types.Backup:
+                Backup of a cluster.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_redis_cluster.GetBackupRequest):
+            request = cloud_redis_cluster.GetBackupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_backup(
+        self,
+        request: Optional[Union[cloud_redis_cluster.DeleteBackupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a specific backup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_delete_backup():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.DeleteBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.DeleteBackupRequest, dict]):
+                The request object. Request for [DeleteBackup].
+            name (str):
+                Required. Redis backup resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_redis_cluster.DeleteBackupRequest):
+            request = cloud_redis_cluster.DeleteBackupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=any_pb2.Any,
+        )
+
+        # Done; return the response.
+        return response
+
+    def export_backup(
+        self,
+        request: Optional[Union[cloud_redis_cluster.ExportBackupRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Exports a specific backup to a customer target Cloud
+        Storage URI.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_export_backup():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.ExportBackupRequest(
+                    gcs_bucket="gcs_bucket_value",
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.ExportBackupRequest, dict]):
+                The request object. Request for [ExportBackup].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.redis_cluster_v1.types.Backup`
+                Backup of a cluster.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_redis_cluster.ExportBackupRequest):
+            request = cloud_redis_cluster.ExportBackupRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.export_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_redis_cluster.Backup,
+            metadata_type=any_pb2.Any,
+        )
+
+        # Done; return the response.
+        return response
+
+    def backup_cluster(
+        self,
+        request: Optional[Union[cloud_redis_cluster.BackupClusterRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Backup Redis Cluster.
+        If this is the first time a backup is being created, a
+        backup collection will be created at the backend, and
+        this backup belongs to this collection. Both collection
+        and backup will have a resource name. Backup will be
+        executed for each shard. A replica (primary if nonHA)
+        will be selected to perform the execution. Backup call
+        will be rejected if there is an ongoing backup or update
+        operation. Be aware that during preview, if the
+        cluster's internal software version is too old, critical
+        update will be performed before actual backup. Once the
+        internal software version is updated to the minimum
+        version required by the backup feature, subsequent
+        backups will not require critical update. After preview,
+        there will be no critical update needed for backup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            def sample_backup_cluster():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.BackupClusterRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.backup_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_cluster_v1.types.BackupClusterRequest, dict]):
+                The request object. Request for [BackupCluster].
+            name (str):
+                Required. Redis cluster resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``
+                where ``location_id`` refers to a GCP region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.redis_cluster_v1.types.Cluster` A
+                cluster instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cloud_redis_cluster.BackupClusterRequest):
+            request = cloud_redis_cluster.BackupClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.backup_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_redis_cluster.Cluster,
+            metadata_type=any_pb2.Any,
         )
 
         # Done; return the response.

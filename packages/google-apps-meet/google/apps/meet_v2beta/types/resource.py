@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
         "Space",
         "ActiveConference",
         "SpaceConfig",
+        "Member",
         "ConferenceRecord",
         "Participant",
         "ParticipantSession",
@@ -42,28 +43,42 @@ __protobuf__ = proto.module(
 
 
 class Space(proto.Message):
-    r"""`Developer
-    Preview <https://developers.google.com/workspace/preview>`__.
-    Virtual place where conferences are held. Only one active conference
-    can be held in one space at any given time.
+    r"""Virtual place where conferences are held. Only one active
+    conference can be held in one space at any given time.
 
     Attributes:
         name (str):
-            Immutable. Resource name of the space. Format:
-            ``spaces/{space}``
+            Immutable. Resource name of the space.
+
+            Format: ``spaces/{space}``.
+
+            ``{space}`` is the resource identifier for the space. It's a
+            unique, server-generated ID and is case sensitive. For
+            example, ``jQCFfuBOdN5z``.
+
+            For more information, see `How Meet identifies a meeting
+            space <https://developers.google.com/meet/api/guides/meeting-spaces#identify-meeting-space>`__.
         meeting_uri (str):
-            Output only. URI used to join meeting, such as
+            Output only. URI used to join meetings consisting of
+            ``https://meet.google.com/`` followed by the
+            ``meeting_code``. For example,
             ``https://meet.google.com/abc-mnop-xyz``.
         meeting_code (str):
-            Output only. Type friendly code to join the meeting. Format:
-            ``[a-z]+-[a-z]+-[a-z]+`` such as ``abc-mnop-xyz``. The
-            maximum length is 128 characters. Can ONLY be used as alias
-            of the space ID to get the space.
+            Output only. Type friendly unique string used to join the
+            meeting.
+
+            Format: ``[a-z]+-[a-z]+-[a-z]+``. For example,
+            ``abc-mnop-xyz``.
+
+            The maximum length is 128 characters.
+
+            Can only be used as an alias of the space name to get the
+            space.
         config (google.apps.meet_v2beta.types.SpaceConfig):
             Configuration pertaining to the meeting
             space.
         active_conference (google.apps.meet_v2beta.types.ActiveConference):
-            Active conference if it exists.
+            Active conference, if it exists.
     """
 
     name: str = proto.Field(
@@ -97,7 +112,7 @@ class ActiveConference(proto.Message):
         conference_record (str):
             Output only. Reference to 'ConferenceRecord' resource.
             Format: ``conferenceRecords/{conference_record}`` where
-            ``{conference_record}`` is a unique id for each instance of
+            ``{conference_record}`` is a unique ID for each instance of
             a call within a space.
     """
 
@@ -121,6 +136,26 @@ class SpaceConfig(proto.Message):
             Defines the entry points that can be used to
             join meetings hosted in this meeting space.
             Default: EntryPointAccess.ALL
+        moderation (google.apps.meet_v2beta.types.SpaceConfig.Moderation):
+            `Developer
+            Preview <https://developers.google.com/workspace/preview>`__:
+            The pre-configured moderation mode for the Meeting. Default:
+            Controlled by the user's policies.
+        moderation_restrictions (google.apps.meet_v2beta.types.SpaceConfig.ModerationRestrictions):
+            `Developer
+            Preview <https://developers.google.com/workspace/preview>`__:
+            When moderation.ON, these restrictions go into effect for
+            the meeting. When moderation.OFF, will be reset to default
+            ModerationRestrictions.
+        attendance_report_generation_type (google.apps.meet_v2beta.types.SpaceConfig.AttendanceReportGenerationType):
+            `Developer
+            Preview <https://developers.google.com/workspace/preview>`__:
+            Whether attendance report is enabled for the meeting space.
+        artifact_config (google.apps.meet_v2beta.types.SpaceConfig.ArtifactConfig):
+            `Developer
+            Preview <https://developers.google.com/workspace/preview>`__:
+            Configuration pertaining to the auto-generated artifacts
+            that the meeting supports.
     """
 
     class AccessType(proto.Enum):
@@ -150,7 +185,8 @@ class SpaceConfig(proto.Message):
 
     class EntryPointAccess(proto.Enum):
         r"""Entry points that can be used to join a meeting. Example:
-        ``meet.google.com``, the Embed SDK Web, or a mobile application.
+        ``meet.google.com``, the Meet Embed SDK Web, or a mobile
+        application.
 
         Values:
             ENTRY_POINT_ACCESS_UNSPECIFIED (0):
@@ -160,13 +196,235 @@ class SpaceConfig(proto.Message):
             CREATOR_APP_ONLY (2):
                 Only entry points owned by the Google Cloud
                 project that created the space can be used to
-                join meetings in this space.  Apps can use the
-                Embed SDK Web or mobile Meet SDKs to create
+                join meetings in this space. Apps can use the
+                Meet Embed SDK Web or mobile Meet SDKs to create
                 owned entry points.
         """
         ENTRY_POINT_ACCESS_UNSPECIFIED = 0
         ALL = 1
         CREATOR_APP_ONLY = 2
+
+    class Moderation(proto.Enum):
+        r"""The moderation mode for a meeting. When the moderation mode
+        is on, the meeting owner has more control over the meeting with
+        features such as co-host management (see message Member) and
+        feature restrictions (see message ModerationRestrictions).
+
+        Values:
+            MODERATION_UNSPECIFIED (0):
+                Moderation type is not specified. This is
+                used to indicate the user hasn't specified any
+                value as the user does not intend to update the
+                state. Users are not allowed to set the value as
+                unspecified.
+            OFF (1):
+                Moderation is off.
+            ON (2):
+                Moderation is on.
+        """
+        MODERATION_UNSPECIFIED = 0
+        OFF = 1
+        ON = 2
+
+    class AttendanceReportGenerationType(proto.Enum):
+        r"""Possible states of whether attendance report is enabled for
+        the meeting space.
+
+        Values:
+            ATTENDANCE_REPORT_GENERATION_TYPE_UNSPECIFIED (0):
+                Default value specified by user policy.
+                This should never be returned.
+            GENERATE_REPORT (1):
+                Attendance report will be generated and sent
+                to drive/email.
+            DO_NOT_GENERATE (2):
+                Attendance report will not be generated.
+        """
+        ATTENDANCE_REPORT_GENERATION_TYPE_UNSPECIFIED = 0
+        GENERATE_REPORT = 1
+        DO_NOT_GENERATE = 2
+
+    class ModerationRestrictions(proto.Message):
+        r"""Defines restrictions for features when the meeting is
+        moderated.
+
+        Attributes:
+            chat_restriction (google.apps.meet_v2beta.types.SpaceConfig.ModerationRestrictions.RestrictionType):
+                Defines who has permission to send chat
+                messages in the meeting space.
+            reaction_restriction (google.apps.meet_v2beta.types.SpaceConfig.ModerationRestrictions.RestrictionType):
+                Defines who has permission to send reactions
+                in the meeting space.
+            present_restriction (google.apps.meet_v2beta.types.SpaceConfig.ModerationRestrictions.RestrictionType):
+                Defines who has permission to share their
+                screen in the meeting space.
+            default_join_as_viewer_type (google.apps.meet_v2beta.types.SpaceConfig.ModerationRestrictions.DefaultJoinAsViewerType):
+                Defines whether to restrict the default role
+                assigned to users as viewer.
+        """
+
+        class RestrictionType(proto.Enum):
+            r"""Determines who has permission to use a particular feature.
+
+            Values:
+                RESTRICTION_TYPE_UNSPECIFIED (0):
+                    Default value specified by user policy.
+                    This should never be returned.
+                HOSTS_ONLY (1):
+                    Meeting owner and co-host have the
+                    permission.
+                NO_RESTRICTION (2):
+                    All Participants have permissions.
+            """
+            RESTRICTION_TYPE_UNSPECIFIED = 0
+            HOSTS_ONLY = 1
+            NO_RESTRICTION = 2
+
+        class DefaultJoinAsViewerType(proto.Enum):
+            r"""By default users will join as contributors. Hosts can
+            restrict users to join as viewers.
+            Note: If an explicit role is set for a users in the Member
+            resource, the user will join as that role.
+
+            Values:
+                DEFAULT_JOIN_AS_VIEWER_TYPE_UNSPECIFIED (0):
+                    Default value specified by user policy.
+                    This should never be returned.
+                ON (1):
+                    Users will by default join as viewers.
+                OFF (2):
+                    Users will by default join as contributors.
+            """
+            DEFAULT_JOIN_AS_VIEWER_TYPE_UNSPECIFIED = 0
+            ON = 1
+            OFF = 2
+
+        chat_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="SpaceConfig.ModerationRestrictions.RestrictionType",
+            )
+        )
+        reaction_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = (
+            proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="SpaceConfig.ModerationRestrictions.RestrictionType",
+            )
+        )
+        present_restriction: "SpaceConfig.ModerationRestrictions.RestrictionType" = (
+            proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="SpaceConfig.ModerationRestrictions.RestrictionType",
+            )
+        )
+        default_join_as_viewer_type: "SpaceConfig.ModerationRestrictions.DefaultJoinAsViewerType" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="SpaceConfig.ModerationRestrictions.DefaultJoinAsViewerType",
+        )
+
+    class ArtifactConfig(proto.Message):
+        r"""Configuration related to meeting artifacts potentially
+        generated by this meeting space.
+
+        Attributes:
+            recording_config (google.apps.meet_v2beta.types.SpaceConfig.ArtifactConfig.RecordingConfig):
+                Configuration for recording.
+            transcription_config (google.apps.meet_v2beta.types.SpaceConfig.ArtifactConfig.TranscriptionConfig):
+                Configuration for auto-transcript.
+            smart_notes_config (google.apps.meet_v2beta.types.SpaceConfig.ArtifactConfig.SmartNotesConfig):
+                Configuration for auto-smart-notes.
+        """
+
+        class AutoGenerationType(proto.Enum):
+            r"""Determines whether an artifact can be automatically generated
+            in the meeting space.
+
+            Values:
+                AUTO_GENERATION_TYPE_UNSPECIFIED (0):
+                    Default value specified by user policy.
+                    This should never be returned.
+                ON (1):
+                    The artifact is generated automatically.
+                OFF (2):
+                    The artifact is not generated automatically.
+            """
+            AUTO_GENERATION_TYPE_UNSPECIFIED = 0
+            ON = 1
+            OFF = 2
+
+        class RecordingConfig(proto.Message):
+            r"""Configuration related to recording in a meeting space.
+
+            Attributes:
+                auto_recording_generation (google.apps.meet_v2beta.types.SpaceConfig.ArtifactConfig.AutoGenerationType):
+                    Defines whether a meeting space is
+                    automatically recorded when someone with the
+                    privilege to record joins the meeting.
+            """
+
+            auto_recording_generation: "SpaceConfig.ArtifactConfig.AutoGenerationType" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="SpaceConfig.ArtifactConfig.AutoGenerationType",
+            )
+
+        class TranscriptionConfig(proto.Message):
+            r"""Configuration related to transcription in a meeting space.
+
+            Attributes:
+                auto_transcription_generation (google.apps.meet_v2beta.types.SpaceConfig.ArtifactConfig.AutoGenerationType):
+                    Defines whether the content of a meeting is
+                    automatically transcribed when someone with the
+                    privilege to transcribe joins the meeting.
+            """
+
+            auto_transcription_generation: "SpaceConfig.ArtifactConfig.AutoGenerationType" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="SpaceConfig.ArtifactConfig.AutoGenerationType",
+            )
+
+        class SmartNotesConfig(proto.Message):
+            r"""Configuration related to smart notes in a meeting space. More
+            details about smart notes
+            https://support.google.com/meet/answer/14754931?hl=en.
+
+            Attributes:
+                auto_smart_notes_generation (google.apps.meet_v2beta.types.SpaceConfig.ArtifactConfig.AutoGenerationType):
+                    Defines whether to automatically generate a
+                    summary and recap of the meeting for all
+                    invitees in the organization when someone with
+                    the privilege to enable smart notes joins the
+                    meeting.
+            """
+
+            auto_smart_notes_generation: "SpaceConfig.ArtifactConfig.AutoGenerationType" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="SpaceConfig.ArtifactConfig.AutoGenerationType",
+            )
+
+        recording_config: "SpaceConfig.ArtifactConfig.RecordingConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="SpaceConfig.ArtifactConfig.RecordingConfig",
+        )
+        transcription_config: "SpaceConfig.ArtifactConfig.TranscriptionConfig" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="SpaceConfig.ArtifactConfig.TranscriptionConfig",
+            )
+        )
+        smart_notes_config: "SpaceConfig.ArtifactConfig.SmartNotesConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="SpaceConfig.ArtifactConfig.SmartNotesConfig",
+        )
 
     access_type: AccessType = proto.Field(
         proto.ENUM,
@@ -178,31 +436,108 @@ class SpaceConfig(proto.Message):
         number=2,
         enum=EntryPointAccess,
     )
+    moderation: Moderation = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Moderation,
+    )
+    moderation_restrictions: ModerationRestrictions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=ModerationRestrictions,
+    )
+    attendance_report_generation_type: AttendanceReportGenerationType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=AttendanceReportGenerationType,
+    )
+    artifact_config: ArtifactConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=ArtifactConfig,
+    )
+
+
+class Member(proto.Message):
+    r"""Users who are configured to have a role in the space. These
+    users can join the space without knocking.
+
+    Attributes:
+        name (str):
+            Identifier. Resource name of the member.
+            Format: spaces/{space}/members/{member}
+        email (str):
+            Email for the member. This is required for
+            creating the member.
+        role (google.apps.meet_v2beta.types.Member.Role):
+            The meeting role assigned to the member.
+        user (str):
+            `Developer
+            Preview <https://developers.google.com/workspace/preview>`__:
+            Unique name for the user. Interoperable with Admin SDK API
+            and People API. This will be empty for non google users.
+            Setting both user and email in request will result in error.
+            Format: ``users/{user}``
+    """
+
+    class Role(proto.Enum):
+        r"""Role of this member in the space.
+
+        Values:
+            ROLE_UNSPECIFIED (0):
+                This is used to indicate the user hasn't
+                specified any value and the user’s role will be
+                determined upon joining the meetings between
+                'contributor' and 'viewer' role depending on
+                meeting configuration. More details about viewer
+                role
+                https://support.google.com/meet/answer/13658394?hl=en.
+            COHOST (1):
+                Co-host role.
+        """
+        ROLE_UNSPECIFIED = 0
+        COHOST = 1
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    email: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    role: Role = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Role,
+    )
+    user: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ConferenceRecord(proto.Message):
-    r"""`Developer
-    Preview <https://developers.google.com/workspace/preview>`__. Single
-    instance of a meeting held in a space.
+    r"""Single instance of a meeting held in a space.
 
     Attributes:
         name (str):
             Identifier. Resource name of the conference record. Format:
             ``conferenceRecords/{conference_record}`` where
-            ``{conference_record}`` is a unique id for each instance of
+            ``{conference_record}`` is a unique ID for each instance of
             a call within a space.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the conference
-            started, always set.
+            started. Always set.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the conference
             ended. Set for past conferences. Unset if the
             conference is ongoing.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Server enforced expire time for
-            when this conference record resource is deleted.
-            The resource is deleted 30 days after the
-            conference ends.
+            Output only. Server enforced expiration time
+            for when this conference record resource is
+            deleted. The resource is deleted 30 days after
+            the conference ends.
         space (str):
             Output only. The space where the conference
             was held.
@@ -234,9 +569,7 @@ class ConferenceRecord(proto.Message):
 
 
 class Participant(proto.Message):
-    r"""`Developer
-    Preview <https://developers.google.com/workspace/preview>`__. User
-    who attended or is attending a conference.
+    r"""User who attended or is attending a conference.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -255,19 +588,19 @@ class Participant(proto.Message):
 
             This field is a member of `oneof`_ ``user``.
         phone_user (google.apps.meet_v2beta.types.PhoneUser):
-            User who calls in from their phone.
+            User calling from their phone.
 
             This field is a member of `oneof`_ ``user``.
         name (str):
             Output only. Resource name of the participant. Format:
             ``conferenceRecords/{conference_record}/participants/{participant}``
         earliest_start_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time when the participant joined
-            the meeting for the first time.
+            Output only. Time when the participant first
+            joined the meeting.
         latest_end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the participant left
             the meeting for the last time. This can be null
-            if it is an active meeting.
+            if it's an active meeting.
     """
 
     signedin_user: "SignedinUser" = proto.Field(
@@ -305,23 +638,22 @@ class Participant(proto.Message):
 
 
 class ParticipantSession(proto.Message):
-    r"""`Developer
-    Preview <https://developers.google.com/workspace/preview>`__. Refers
-    to each unique join/leave session when a user joins a conference
-    from a device. Note that any time a user joins the conference a new
-    unique ID is assigned. That means if a user joins a space multiple
-    times from the same device, they're assigned different IDs, and are
-    also be treated as different participant sessions.
+    r"""Refers to each unique join or leave session when a user joins
+    a conference from a device. Note that any time a user joins the
+    conference a new unique ID is assigned. That means if a user
+    joins a space multiple times from the same device, they're
+    assigned different IDs, and are also be treated as different
+    participant sessions.
 
     Attributes:
         name (str):
             Identifier. Session id.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the user session
-            started.
+            starts.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the user session
-            ended. Unset if the user session hasn’t ended.
+            ends. Unset if the user session hasn’t ended.
     """
 
     name: str = proto.Field(
@@ -353,9 +685,9 @@ class SignedinUser(proto.Message):
             Admin SDK API and People API. Format: ``users/{user}``
         display_name (str):
             Output only. For a personal device, it's the
-            user's first and last name. For a robot account,
-            it's the admin specified device name. For
-            example, "Altostrat Room".
+            user's first name and last name. For a robot
+            account, it's the administrator-specified device
+            name. For example, "Altostrat Room".
     """
 
     user: str = proto.Field(
@@ -391,7 +723,7 @@ class PhoneUser(proto.Message):
     Attributes:
         display_name (str):
             Output only. Partially redacted user's phone
-            number when they call in.
+            number when calling.
     """
 
     display_name: str = proto.Field(
@@ -401,16 +733,13 @@ class PhoneUser(proto.Message):
 
 
 class Recording(proto.Message):
-    r"""`Developer
-    Preview <https://developers.google.com/workspace/preview>`__.
-    Metadata about a recording created during a conference.
-
+    r"""Metadata about a recording created during a conference.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         drive_destination (google.apps.meet_v2beta.types.DriveDestination):
-            Output only. Recording is saved to Google Drive as an mp4
+            Output only. Recording is saved to Google Drive as an MP4
             file. The ``drive_destination`` includes the Drive
             ``fileId`` that can be used to download the file using the
             ``files.get`` method of the Drive API.
@@ -506,11 +835,9 @@ class DriveDestination(proto.Message):
 
 
 class Transcript(proto.Message):
-    r"""`Developer
-    Preview <https://developers.google.com/workspace/preview>`__.
-    Metadata for a transcript generated from a conference. It refers to
-    the ASR (Automatic Speech Recognition) result of user's speech
-    during the conference.
+    r"""Metadata for a transcript generated from a conference. It
+    refers to the ASR (Automatic Speech Recognition) result of
+    user's speech during the conference.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -611,16 +938,15 @@ class DocsDestination(proto.Message):
 
 
 class TranscriptEntry(proto.Message):
-    r"""`Developer
-    Preview <https://developers.google.com/workspace/preview>`__. Single
-    entry for one user’s speech during a transcript session.
+    r"""Single entry for one user’s speech during a transcript
+    session.
 
     Attributes:
         name (str):
             Output only. Resource name of the entry. Format:
             "conferenceRecords/{conference_record}/transcripts/{transcript}/entries/{entry}".
         participant (str):
-            Output only. Refer to the participant who
+            Output only. Refers to the participant who
             speaks.
         text (str):
             Output only. The transcribed text of the

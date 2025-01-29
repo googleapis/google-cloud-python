@@ -30,12 +30,15 @@ from .customer_workloads import (
     WorkloadOnboardingStep,
 )
 from .customers import (
+    CreateCustomerRequest,
     Customer,
     CustomerOnboardingState,
     CustomerOnboardingStep,
+    DeleteCustomerRequest,
     GetCustomerRequest,
     ListCustomersRequest,
     ListCustomersResponse,
+    UpdateCustomerRequest,
 )
 from .ekm_connections import EkmConnection, EkmConnections, GetEkmConnectionsRequest
 from .partner_permissions import GetPartnerPermissionsRequest, PartnerPermissions
@@ -60,12 +63,15 @@ __all__ = (
     "Workload",
     "WorkloadOnboardingState",
     "WorkloadOnboardingStep",
+    "CreateCustomerRequest",
     "Customer",
     "CustomerOnboardingState",
     "CustomerOnboardingStep",
+    "DeleteCustomerRequest",
     "GetCustomerRequest",
     "ListCustomersRequest",
     "ListCustomersResponse",
+    "UpdateCustomerRequest",
     "EkmConnection",
     "EkmConnections",
     "GetEkmConnectionsRequest",

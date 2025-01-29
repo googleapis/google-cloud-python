@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.26.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.26.0...google-cloud-recaptcha-enterprise-v1.26.1) (2025-01-13)
+
+
+### Documentation
+
+* [google-cloud-recaptcha-enterprise] Update docs for FraudPrevention field in CreateAssessment ([#13403](https://github.com/googleapis/google-cloud-python/issues/13403)) ([ee59d69](https://github.com/googleapis/google-cloud-python/commit/ee59d691c71b57b591edce7dc3beb8c58020d62c))
+* challenge is also returned for INVISIBLE keys ([ee59d69](https://github.com/googleapis/google-cloud-python/commit/ee59d691c71b57b591edce7dc3beb8c58020d62c))
+
 ## [1.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.25.0...google-cloud-recaptcha-enterprise-v1.26.0) (2024-12-12)
 
 

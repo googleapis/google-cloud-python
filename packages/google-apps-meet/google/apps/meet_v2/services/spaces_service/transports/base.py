@@ -39,6 +39,7 @@ class SpacesServiceTransport(abc.ABC):
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/meetings.space.created",
         "https://www.googleapis.com/auth/meetings.space.readonly",
+        "https://www.googleapis.com/auth/meetings.space.settings",
     )
 
     DEFAULT_HOST: str = "meet.googleapis.com"

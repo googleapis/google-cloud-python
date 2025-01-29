@@ -43,12 +43,15 @@ from .types.customer_workloads import (
     WorkloadOnboardingStep,
 )
 from .types.customers import (
+    CreateCustomerRequest,
     Customer,
     CustomerOnboardingState,
     CustomerOnboardingStep,
+    DeleteCustomerRequest,
     GetCustomerRequest,
     ListCustomersRequest,
     ListCustomersResponse,
+    UpdateCustomerRequest,
 )
 from .types.ekm_connections import (
     EkmConnection,
@@ -72,9 +75,11 @@ __all__ = (
     "CloudControlsPartnerCoreClient",
     "CloudControlsPartnerMonitoringClient",
     "CompletionState",
+    "CreateCustomerRequest",
     "Customer",
     "CustomerOnboardingState",
     "CustomerOnboardingStep",
+    "DeleteCustomerRequest",
     "EkmConnection",
     "EkmConnections",
     "EkmMetadata",
@@ -96,6 +101,7 @@ __all__ = (
     "Partner",
     "PartnerPermissions",
     "Sku",
+    "UpdateCustomerRequest",
     "Violation",
     "Workload",
     "WorkloadOnboardingState",

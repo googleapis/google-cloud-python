@@ -41,7 +41,6 @@ def sample_create_cluster():
     # Initialize request argument(s)
     cluster = redis_cluster_v1.Cluster()
     cluster.name = "name_value"
-    cluster.psc_configs.network = "network_value"
 
     request = redis_cluster_v1.CreateClusterRequest(
         parent="parent_value",
