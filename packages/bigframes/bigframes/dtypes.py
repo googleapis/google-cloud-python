@@ -79,7 +79,7 @@ OBJ_REF_DTYPE = pd.ArrowDtype(
             ),
             pa.field(
                 "details",
-                pa.large_string(),  # JSON
+                db_dtypes.JSONArrowType(),
             ),
         )
     )
