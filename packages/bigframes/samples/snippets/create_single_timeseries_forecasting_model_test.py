@@ -104,7 +104,22 @@ def test_create_single_timeseries() -> None:
     # 25	2017-08-27 00:00:00+00:00	1853.735689	      410.596551	      0.8	                 1327.233216	                      2380.238162	                     1327.233216	                     2380.238162
     # 1	    2017-08-03 00:00:00+00:00	2621.33159	      241.093355	      0.8	                 2312.180802	                      2930.482379	                     2312.180802	                     2930.482379
     # [END bigquery_dataframes_single_timeseries_forecasting_model_tutorial_forecast]
+
+    # [START bigquery_dataframes_single_timeseries_forecasting_model_tutorial_explain_forecast]
+    ex_pred = model.predict_explain(horizon=30, confidence_level=0.8)
+
+    print(ex_pred.head(4))
+    # Expected output:
+    #       time_series_timestamp	  time_series_type	    time_series_data	time_series_adjusted_data	 standard_error	   confidence_level	   prediction_interval_lower_bound	   prediction_interval_upper_bound	  trend	   seasonal_period_yearly	  seasonal_period_quarterly	    seasonal_period_monthly	   seasonal_period_weekly	  seasonal_period_daily	    holiday_effect	   spikes_and_dips	   step_changes	   residual
+    # 0	  2016-08-01 00:00:00+00:00	      history	             1711.0	               505.716474	           206.939556	         <NA>	                    <NA>	                            <NA>	               0.0	           <NA>	                        <NA>	                     <NA>	                 169.611938	                  <NA>	                <NA>	            <NA>	       1205.283526	   336.104536
+    # 1	  2016-08-02 00:00:00+00:00	      history	             2140.0	               623.137701	           206.939556	         <NA>	                    <NA>	                            <NA>	            336.104428	       <NA>	                        <NA>	                     <NA>	                 287.033273	                  <NA>	                <NA>	            <NA>	       1205.283526	   311.578773
+    # 2	  2016-08-03 00:00:00+00:00	      history	             2890.0	               1008.655091	           206.939556	         <NA>	                    <NA>	                            <NA>	            563.514213	       <NA>	                        <NA>	                     <NA>	                 445.140878	                  <NA>	                <NA>	            <NA>	       1205.283526	   676.061383
+    # 3	  2016-08-04 00:00:00+00:00	      history	             3161.0	               1389.40959	           206.939556	         <NA>	                    <NA>	                            <NA>	            986.317236	       <NA>	                        <NA>	                     <NA>	                 403.092354	                  <NA>	                <NA>	            <NA>	       1205.283526	   566.306884
+    # 4	  2016-08-05 00:00:00+00:00	      history	             2702.0	               1394.395741	           206.939556	         <NA>	                    <NA>	                            <NA>	            1248.707386	       <NA>	                        <NA>	                     <NA>	                 145.688355	                  <NA>	                <NA>	            <NA>	       1205.283526	   102.320733
+    # 5	  2016-08-06 00:00:00+00:00	      history	             1663.0	               437.09243	           206.939556	         <NA>	                    <NA>	                            <NA>	            1188.59004	       <NA>	                        <NA>	                     <NA>	                 -751.49761	                  <NA>	                <NA>	            <NA>	       1205.283526	    20.624044
+    # [END bigquery_dataframes_single_timeseries_forecasting_model_tutorial_explain_forecast]
     assert coef is not None
+    assert ex_pred is not None
     assert summary is not None
     assert model is not None
     assert parsed_date is not None
