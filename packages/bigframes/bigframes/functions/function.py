@@ -120,11 +120,11 @@ def get_routine_reference(
 
 
 def remote_function(*args, **kwargs):
-    remote_function_session = bff_session.RemoteFunctionSession()
+    remote_function_session = bff_session.FunctionSession()
     return remote_function_session.remote_function(*args, **kwargs)
 
 
-remote_function.__doc__ = bff_session.RemoteFunctionSession.remote_function.__doc__
+remote_function.__doc__ = bff_session.FunctionSession.remote_function.__doc__
 
 
 def read_gbq_function(
@@ -174,7 +174,7 @@ def read_gbq_function(
     # The name "args" conflicts with the Ibis operator, so we use
     # non-standard names for the arguments here.
     def func(*bigframes_args, **bigframes_kwargs):
-        f"""Remote function {str(routine_ref)}."""
+        f"""Bigframes function {str(routine_ref)}."""
         nonlocal node  # type: ignore
 
         expr = node(*bigframes_args, **bigframes_kwargs)  # type: ignore

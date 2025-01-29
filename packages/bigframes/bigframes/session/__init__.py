@@ -245,7 +245,7 @@ class Session(
         )
 
         self._metrics = bigframes.session.metrics.ExecutionMetrics()
-        self._function_session = bff_session.RemoteFunctionSession()
+        self._function_session = bff_session.FunctionSession()
         self._temp_storage_manager = (
             bigframes.session.temp_storage.TemporaryGbqStorageManager(
                 self._clients_provider.bqclient,

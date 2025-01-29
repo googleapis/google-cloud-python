@@ -55,18 +55,18 @@ import pandas
 from . import _function_client, _utils
 
 
-class RemoteFunctionSession:
-    """Session to manage remote functions."""
+class FunctionSession:
+    """Session to manage bigframes functions."""
 
     def __init__(self):
-        # Session level mapping of remote function artifacts
+        # Session level mapping of function artifacts
         self._temp_artifacts: Dict[str, str] = dict()
 
         # Lock to synchronize the update of the session artifacts
         self._artifacts_lock = threading.Lock()
 
     def _update_temp_artifacts(self, bqrf_routine: str, gcf_path: str):
-        """Update remote function artifacts in the current session."""
+        """Update function artifacts in the current session."""
         with self._artifacts_lock:
             self._temp_artifacts[bqrf_routine] = gcf_path
 
@@ -76,11 +76,11 @@ class RemoteFunctionSession:
         gcfclient: functions_v2.FunctionServiceClient,
         session_id: str,
     ):
-        """Delete remote function artifacts in the current session."""
+        """Delete function artifacts in the current session."""
         with self._artifacts_lock:
             for bqrf_routine, gcf_path in self._temp_artifacts.items():
-                # Let's accept the possibility that the remote function may have
-                # been deleted directly by the user
+                # Let's accept the possibility that the function may have been
+                # deleted directly by the user
                 bqclient.delete_routine(bqrf_routine, not_found_ok=True)
 
                 # Let's accept the possibility that the cloud function may have
@@ -467,7 +467,7 @@ class RemoteFunctionSession:
                 signature, input_types, output_type  # type: ignore
             )
 
-            remote_function_client = _function_client.RemoteFunctionClient(
+            remote_function_client = _function_client.FunctionClient(
                 dataset_ref.project,
                 cloud_function_region,
                 cloud_functions_client,

@@ -54,10 +54,12 @@ _INGRESS_SETTINGS_MAP = types.MappingProxyType(
 )
 
 
-class RemoteFunctionClient:
+class FunctionClient:
     # Wait time (in seconds) for an IAM binding to take effect after creation
     _iam_wait_seconds = 120
 
+    # TODO(b/392707725): Convert all necessary parameters for cloud function
+    # deployment into method parameters.
     def __init__(
         self,
         gcp_project_id,
