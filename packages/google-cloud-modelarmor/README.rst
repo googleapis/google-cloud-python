@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Model Armor API
+=================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Model Armor API`_: Model Armor helps you protect against risks like prompt injection, harmful content, and data leakage in generative AI applications by letting you define policies that filter user prompts and model responses.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-modelarmor/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-modelarmor.svg
    :target: https://pypi.org/project/google-cloud-modelarmor/
-.. _: 
+.. _Model Armor API: https://cloud.google.com/security-command-center/docs/model-armor-overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-modelarmor/latest/summary_overview
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/security-command-center/docs/model-armor-overview
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Model Armor API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Model Armor API.:  https://cloud.google.com/security-command-center/docs/model-armor-overview
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Model Armor API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Model Armor API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Model Armor API Product documentation:  https://cloud.google.com/security-command-center/docs/model-armor-overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
