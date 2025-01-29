@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.11.4](https://github.com/googleapis/python-logging/compare/v3.11.3...v3.11.4) (2025-01-22)
+
+
+### Bug Fixes
+
+* Made `write_entries` raise `ValueError` on `ParseError`s ([#958](https://github.com/googleapis/python-logging/issues/958)) ([5309478](https://github.com/googleapis/python-logging/commit/5309478c054d0f2b9301817fd835f2098f51dc3a))
+* Require proto-plus &gt;= 1.25 for Python 3.13 ([#955](https://github.com/googleapis/python-logging/issues/955)) ([7baed8e](https://github.com/googleapis/python-logging/commit/7baed8e968f0bfa6abdbf0715dc43822f2fba8ba))
+* Require proto-plus &gt;= 1.25 for Python 3.13 ([#955](https://github.com/googleapis/python-logging/issues/955)) ([002b1fc](https://github.com/googleapis/python-logging/commit/002b1fcb395d77d94d7216560c30015b9aefca81))
+
 ## [3.11.3](https://github.com/googleapis/python-logging/compare/v3.11.2...v3.11.3) (2024-10-15)
 
 
