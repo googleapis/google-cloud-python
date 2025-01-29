@@ -4,6 +4,45 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.0.0](https://github.com/googleapis/python-storage/compare/v2.19.0...v3.0.0) (2025-01-28)
+
+
+### ⚠ BREAKING CHANGES
+
+Please consult the README for details on this major version release.
+
+* The default checksum strategy for uploads has changed from None to "auto" ([#1383](https://github.com/googleapis/python-storage/issues/1383))
+* The default checksum strategy for downloads has changed from "md5" to "auto" ([#1383](https://github.com/googleapis/python-storage/issues/1383))
+* Deprecated positional argument "num_retries" has been removed ([#1377](https://github.com/googleapis/python-storage/issues/1377))
+* Deprecated argument "text_mode" has been removed ([#1379](https://github.com/googleapis/python-storage/issues/1379))
+* Blob.download_to_filename() now deletes the empty destination file on a 404 ([#1394](https://github.com/googleapis/python-storage/pull/1394))
+* Media operations now use the same retry backoff, timeout and custom predicate system as non-media operations, which may slightly impact default retry behavior ([#1385](https://github.com/googleapis/python-storage/issues/1385))
+* Retries are now enabled by default for uploads, blob deletes and blob metadata updates ([#1400](https://github.com/googleapis/python-storage/issues/1400))
+
+### Features
+
+* Add "auto" checksum option and make default ([#1383](https://github.com/googleapis/python-storage/issues/1383)) ([5375fa0](https://github.com/googleapis/python-storage/commit/5375fa07385c60cac694025aee123e20cb25bb65))
+* Blob.download_to_filename() deletes the empty destination file on a 404 ([#1394](https://github.com/googleapis/python-storage/pull/1394)) ([066be2d](https://github.com/googleapis/python-storage/commit/066be2db789cfd28d47d143ca0f7ccc9da183682))
+* Enable custom predicates for media operations ([#1385](https://github.com/googleapis/python-storage/issues/1385)) ([f3517bf](https://github.com/googleapis/python-storage/commit/f3517bfcb9e4ab8e4d761eb64a753e64b3d5871d))
+* Integrate google-resumable-media ([#1283](https://github.com/googleapis/python-storage/issues/1283)) ([bd917b4](https://github.com/googleapis/python-storage/commit/bd917b49d2a20e2e1edee2d32dc65b66da8d6aba))
+* Retry by default for uploads, blob deletes, metadata updates ([#1400](https://github.com/googleapis/python-storage/issues/1400)) ([0426005](https://github.com/googleapis/python-storage/commit/0426005175079ebdd73c299642a83b8193086d60))
+
+
+### Bug Fixes
+
+* Cancel upload when BlobWriter exits with exception ([#1243](https://github.com/googleapis/python-storage/issues/1243)) ([df107d2](https://github.com/googleapis/python-storage/commit/df107d20a772e9b955d9978cd4a7731869e92cbe))
+* Changed name of methods `Blob.from_string()` and `Bucket.from_string()` to `from_uri()` ([#1335](https://github.com/googleapis/python-storage/issues/1335)) ([58c1d03](https://github.com/googleapis/python-storage/commit/58c1d038198046665317a0d00eb9630608349476))
+* Correctly calculate starting offset for retries of ranged reads ([#1376](https://github.com/googleapis/python-storage/issues/1376)) ([7b6c9a0](https://github.com/googleapis/python-storage/commit/7b6c9a0fb3a79d713f951176a690f6e72c4d77c5))
+* Filter download_kwargs in BlobReader ([#1411](https://github.com/googleapis/python-storage/issues/1411)) ([0c21210](https://github.com/googleapis/python-storage/commit/0c21210450319f6da920982116ee52075105c45a))
+* Remove deprecated num_retries argument ([#1377](https://github.com/googleapis/python-storage/issues/1377)) ([58b5040](https://github.com/googleapis/python-storage/commit/58b5040933d4b21e0be94357ed5aa14c87969f73))
+* Remove deprecated text_mode argument ([#1379](https://github.com/googleapis/python-storage/issues/1379)) ([4d20a8e](https://github.com/googleapis/python-storage/commit/4d20a8efa8cf37bb7f099b20a8c352c9a0c42659))
+
+
+### Documentation
+
+* Correct formatting and update README.rst ([#1427](https://github.com/googleapis/python-storage/issues/1427)) ([2945853](https://github.com/googleapis/python-storage/commit/29458539773e834b202fef0c77dc439c393b37e8))
+* Fix issue with exceptions.py documentation ([#1328](https://github.com/googleapis/python-storage/issues/1328)) ([22b8c30](https://github.com/googleapis/python-storage/commit/22b8c304afc7199fbc2dec448a4a3c5eba7d4e3a))
+
 ## [2.19.0](https://github.com/googleapis/python-storage/compare/v2.18.2...v2.19.0) (2024-11-21)
 
 
