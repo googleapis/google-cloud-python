@@ -2036,23 +2036,15 @@ class Block:
         return block
 
     def _isin_inner(self: Block, col: str, unique_values: core.ArrayValue) -> Block:
-        unique_values, const = unique_values.create_constant(
-            True, dtype=bigframes.dtypes.BOOL_DTYPE
-        )
-        expr, (l_map, r_map) = self._expr.relational_join(
-            unique_values, ((col, unique_values.column_ids[0]),), type="left"
-        )
-        expr, matches = expr.project_to_id(ops.notnull_op.as_expr(r_map[const]))
+        expr, matches = self._expr.isin(unique_values, col, unique_values.column_ids[0])
 
-        new_index_cols = tuple(l_map[idx_col] for idx_col in self.index_columns)
         new_value_cols = tuple(
-            l_map[val_col] if val_col != col else matches
-            for val_col in self.value_columns
+            val_col if val_col != col else matches for val_col in self.value_columns
         )
-        expr = expr.select_columns((*new_index_cols, *new_value_cols))
+        expr = expr.select_columns((*self.index_columns, *new_value_cols))
         return Block(
             expr,
-            index_columns=new_index_cols,
+            index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self._index_labels,
         )

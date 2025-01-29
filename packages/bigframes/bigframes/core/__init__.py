@@ -417,6 +417,18 @@ class ArrayValue:
             output_name,
         )
 
+    def isin(
+        self, other: ArrayValue, lcol: str, rcol: str
+    ) -> typing.Tuple[ArrayValue, str]:
+        node = nodes.InNode(
+            self.node,
+            other.node,
+            ex.deref(lcol),
+            ex.deref(rcol),
+            indicator_col=ids.ColumnId.unique(),
+        )
+        return ArrayValue(node), node.indicator_col.name
+
     def relational_join(
         self,
         other: ArrayValue,

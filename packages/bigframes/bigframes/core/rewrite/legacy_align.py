@@ -361,5 +361,5 @@ def common_selection_root(
 ) -> Optional[nodes.BigFrameNode]:
     """Find common subtree between join subtrees"""
     return bigframes.core.rewrite.implicit_align.first_shared_descendent(
-        l_tree, r_tree, descendable_types=LEGACY_REWRITER_NODES
+        {l_tree, r_tree}, descendable_types=LEGACY_REWRITER_NODES
     )

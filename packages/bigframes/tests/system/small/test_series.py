@@ -1241,6 +1241,51 @@ def test_isin_bigframes_values(scalars_dfs, col_name, test_set, session):
     )
 
 
+@pytest.mark.parametrize(
+    (
+        "col_name",
+        "test_set",
+    ),
+    [
+        (
+            "int64_col",
+            [314159, 2.0, 3, pd.NA],
+        ),
+        (
+            "int64_col",
+            [2, 55555, 4],
+        ),
+        (
+            "float64_col",
+            [-123.456, 1.25, pd.NA],
+        ),
+        (
+            "int64_too",
+            [1, 2, pd.NA],
+        ),
+        (
+            "string_col",
+            ["Hello, World!", "Hi", "こんにちは"],
+        ),
+    ],
+)
+def test_isin_bigframes_values_as_predicate(
+    scalars_dfs_maybe_ordered, col_name, test_set
+):
+    scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
+    bf_predicate = scalars_df[col_name].isin(
+        series.Series(test_set, session=scalars_df._session)
+    )
+    bf_result = scalars_df[bf_predicate].to_pandas()
+    pd_predicate = scalars_pandas_df[col_name].isin(test_set)
+    pd_result = scalars_pandas_df[pd_predicate]
+
+    pd.testing.assert_frame_equal(
+        pd_result.reset_index(),
+        bf_result.reset_index(),
+    )
+
+
 def test_isnull(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "float64_col"

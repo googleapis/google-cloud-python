@@ -160,6 +160,15 @@ def pull_up_order(
         elif isinstance(node, bigframes.core.nodes.FilterNode):
             child_result, child_order = pull_up_order_inner(node.child)
             return node.replace_child(child_result), child_order.with_non_sequential()
+        elif isinstance(node, bigframes.core.nodes.InNode):
+            child_result, child_order = pull_up_order_inner(node.left_child)
+            subquery_result = remove_order_strict(node.right_child)
+            return (
+                dataclasses.replace(
+                    node, left_child=child_result, right_child=subquery_result
+                ),
+                child_order,
+            )
         elif isinstance(node, bigframes.core.nodes.SelectionNode):
             child_result, child_order = pull_up_order_inner(node.child)
             selected_ids = set(ref.id for ref, _ in node.input_output_pairs)
