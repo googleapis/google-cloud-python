@@ -1873,6 +1873,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-modelarmor": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-modelarmor",
+            "extra-files": [
+                "google/cloud/modelarmor/gapic_version.py",
+                "google/cloud/modelarmor_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.modelarmor.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-monitoring": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

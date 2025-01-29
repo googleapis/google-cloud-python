@@ -109,6 +109,7 @@
     "packages/google-cloud-memcache": "1.11.0",
     "packages/google-cloud-memorystore": "0.1.0",
     "packages/google-cloud-migrationcenter": "0.1.12",
+    "packages/google-cloud-modelarmor": "0.0.0",
     "packages/google-cloud-monitoring": "2.26.0",
     "packages/google-cloud-monitoring-dashboards": "2.17.0",
     "packages/google-cloud-monitoring-metrics-scopes": "1.8.0",
