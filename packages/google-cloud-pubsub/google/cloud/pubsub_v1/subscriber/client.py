@@ -81,11 +81,15 @@ class Client(subscriber_client.SubscriberClient):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
+        # TODO(https://github.com/googleapis/python-pubsub/issues/1349): Move the emulator
+        # code below to test files.
         if os.environ.get("PUBSUB_EMULATOR_HOST"):
             kwargs["client_options"] = {
                 "api_endpoint": os.environ.get("PUBSUB_EMULATOR_HOST")
             }
-            kwargs["credentials"] = AnonymousCredentials()
+            # Configure credentials directly to transport, if provided.
+            if "transport" not in kwargs:
+                kwargs["credentials"] = AnonymousCredentials()
 
         # Instantiate the underlying GAPIC client.
         super().__init__(**kwargs)
