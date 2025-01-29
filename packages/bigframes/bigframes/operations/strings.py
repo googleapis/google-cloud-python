@@ -20,7 +20,6 @@ from typing import cast, Literal, Optional, Union
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.strings.accessor as vendorstr
 
-from bigframes import clients
 from bigframes.core import log_adapter
 import bigframes.dataframe as df
 import bigframes.operations as ops
@@ -306,11 +305,8 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
             raise NotImplementedError()
 
         session = self._block.session
-        connection = connection or session._bq_connection
-        connection = clients.resolve_full_bq_connection_name(
-            connection,
-            default_project=session._project,
-            default_location=session._location,
+        connection = session._create_bq_connection(
+            connection=connection, iam_role="storage.objectUser"
         )
         return self._apply_binary_op(connection, ops.obj_make_ref_op)
 

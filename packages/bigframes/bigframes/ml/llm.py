@@ -643,37 +643,16 @@ class TextEmbeddingGenerator(base.RetriableRemotePredictor):
     ):
         self.model_name = model_name
         self.session = session or global_session.get_global_session()
-        self._bq_connection_manager = self.session.bqconnectionmanager
-
-        connection_name = connection_name or self.session._bq_connection
-        self.connection_name = clients.resolve_full_bq_connection_name(
-            connection_name,
-            default_project=self.session._project,
-            default_location=self.session._location,
-        )
+        self.connection_name = connection_name
 
         self._bqml_model_factory = globals.bqml_model_factory()
         self._bqml_model: core.BqmlModel = self._create_bqml_model()
 
     def _create_bqml_model(self):
         # Parse and create connection if needed.
-        if not self.connection_name:
-            raise ValueError(
-                "Must provide connection_name, either in constructor or through session options."
-            )
-
-        if self._bq_connection_manager:
-            connection_name_parts = self.connection_name.split(".")
-            if len(connection_name_parts) != 3:
-                raise ValueError(
-                    f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
-                )
-            self._bq_connection_manager.create_bq_connection(
-                project_id=connection_name_parts[0],
-                location=connection_name_parts[1],
-                connection_id=connection_name_parts[2],
-                iam_role="aiplatform.user",
-            )
+        self.connection_name = self.session._create_bq_connection(
+            connection=self.connection_name, iam_role="aiplatform.user"
+        )
 
         if self.model_name not in _TEXT_EMBEDDING_ENDPOINTS:
             msg = _MODEL_NOT_SUPPORTED_WARNING.format(
@@ -828,37 +807,16 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         self.model_name = model_name
         self.session = session or global_session.get_global_session()
         self.max_iterations = max_iterations
-        self._bq_connection_manager = self.session.bqconnectionmanager
-
-        connection_name = connection_name or self.session._bq_connection
-        self.connection_name = clients.resolve_full_bq_connection_name(
-            connection_name,
-            default_project=self.session._project,
-            default_location=self.session._location,
-        )
+        self.connection_name = connection_name
 
         self._bqml_model_factory = globals.bqml_model_factory()
         self._bqml_model: core.BqmlModel = self._create_bqml_model()
 
     def _create_bqml_model(self):
         # Parse and create connection if needed.
-        if not self.connection_name:
-            raise ValueError(
-                "Must provide connection_name, either in constructor or through session options."
-            )
-
-        if self._bq_connection_manager:
-            connection_name_parts = self.connection_name.split(".")
-            if len(connection_name_parts) != 3:
-                raise ValueError(
-                    f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
-                )
-            self._bq_connection_manager.create_bq_connection(
-                project_id=connection_name_parts[0],
-                location=connection_name_parts[1],
-                connection_id=connection_name_parts[2],
-                iam_role="aiplatform.user",
-            )
+        self.connection_name = self.session._create_bq_connection(
+            connection=self.connection_name, iam_role="aiplatform.user"
+        )
 
         if self.model_name not in _GEMINI_ENDPOINTS:
             msg = _MODEL_NOT_SUPPORTED_WARNING.format(
@@ -953,10 +911,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         options["prompt_col"] = X.columns.tolist()[0]
 
         self._bqml_model = self._bqml_model_factory.create_llm_remote_model(
-            X,
-            y,
-            options=options,
-            connection_name=self.connection_name,
+            X, y, options=options, connection_name=cast(str, self.connection_name)
         )
         return self
 
@@ -1179,37 +1134,16 @@ class Claude3TextGenerator(base.RetriableRemotePredictor):
     ):
         self.model_name = model_name
         self.session = session or global_session.get_global_session()
-        self._bq_connection_manager = self.session.bqconnectionmanager
-
-        connection_name = connection_name or self.session._bq_connection
-        self.connection_name = clients.resolve_full_bq_connection_name(
-            connection_name,
-            default_project=self.session._project,
-            default_location=self.session._location,
-        )
+        self.connection_name = connection_name
 
         self._bqml_model_factory = globals.bqml_model_factory()
         self._bqml_model: core.BqmlModel = self._create_bqml_model()
 
     def _create_bqml_model(self):
         # Parse and create connection if needed.
-        if not self.connection_name:
-            raise ValueError(
-                "Must provide connection_name, either in constructor or through session options."
-            )
-
-        if self._bq_connection_manager:
-            connection_name_parts = self.connection_name.split(".")
-            if len(connection_name_parts) != 3:
-                raise ValueError(
-                    f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
-                )
-            self._bq_connection_manager.create_bq_connection(
-                project_id=connection_name_parts[0],
-                location=connection_name_parts[1],
-                connection_id=connection_name_parts[2],
-                iam_role="aiplatform.user",
-            )
+        self.connection_name = self.session._create_bq_connection(
+            connection=self.connection_name, iam_role="aiplatform.user"
+        )
 
         if self.model_name not in _CLAUDE_3_ENDPOINTS:
             msg = _MODEL_NOT_SUPPORTED_WARNING.format(
