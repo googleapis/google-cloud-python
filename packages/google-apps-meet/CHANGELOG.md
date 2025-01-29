@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.11...google-apps-meet-v0.1.12) (2025-01-29)
+
+
+### Features
+
+* Add methods for configuring meeting spaces and members (https://developers.google.com/meet/api/guides/beta/configuration-beta) ([7b23175](https://github.com/googleapis/google-cloud-python/commit/7b23175303cfd26145f3d00bbbd8defe06ae2090))
+* Add new OAuth scope `https://www.googleapis.com/auth/meetings.space.settings` to service `SpacesService` ([7b23175](https://github.com/googleapis/google-cloud-python/commit/7b23175303cfd26145f3d00bbbd8defe06ae2090))
+
+
+### Documentation
+
+* Improve docs for `GetSpaceRequest`, `EndActiveConferenceRequest`, `ListConferenceRecordsRequest` ([7b23175](https://github.com/googleapis/google-cloud-python/commit/7b23175303cfd26145f3d00bbbd8defe06ae2090))
+* improve docs for GetSpaceRequest, EndActiveConferenceRequest, ListConferenceRecordsRequest ([7b23175](https://github.com/googleapis/google-cloud-python/commit/7b23175303cfd26145f3d00bbbd8defe06ae2090))
+* Remove *Developer Preview* label from methods that are now generally available ([7b23175](https://github.com/googleapis/google-cloud-python/commit/7b23175303cfd26145f3d00bbbd8defe06ae2090))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.10...google-apps-meet-v0.1.11) (2024-12-12)
 
 

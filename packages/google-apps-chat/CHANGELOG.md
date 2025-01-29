@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.0...google-apps-chat-v0.2.1) (2025-01-29)
+
+
+### Features
+
+* A new field custom_emoji_metadata is added to message `.google.chat.v1.Annotation` ([b165f92](https://github.com/googleapis/google-cloud-python/commit/b165f923cdf47fbb23757531145eace0e3f088cb))
+* A new message `CustomEmojiMetadata` is added ([b165f92](https://github.com/googleapis/google-cloud-python/commit/b165f923cdf47fbb23757531145eace0e3f088cb))
+* A new value `CUSTOM_EMOJI` is added to enum `AnnotationType` ([b165f92](https://github.com/googleapis/google-cloud-python/commit/b165f923cdf47fbb23757531145eace0e3f088cb))
+
+
+### Documentation
+
+* A comment for field `custom_emoji` in message `.google.chat.v1.Emoji` is changed ([b165f92](https://github.com/googleapis/google-cloud-python/commit/b165f923cdf47fbb23757531145eace0e3f088cb))
+* A comment for method `CreateReaction` in service `ChatService` is changed ([b165f92](https://github.com/googleapis/google-cloud-python/commit/b165f923cdf47fbb23757531145eace0e3f088cb))
+* A comment for method `DeleteReaction` in service `ChatService` is changed ([b165f92](https://github.com/googleapis/google-cloud-python/commit/b165f923cdf47fbb23757531145eace0e3f088cb))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.14...google-apps-chat-v0.2.0) (2024-12-12)
 
 
