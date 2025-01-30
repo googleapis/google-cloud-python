@@ -123,6 +123,12 @@ def test_index_astype(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_index_equal(bf_result, pd_result)
 
 
+def test_index_astype_python(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.set_index("int64_col").index.astype(float).to_pandas()
+    pd_result = scalars_pandas_df_index.set_index("int64_col").index.astype("Float64")
+    pd.testing.assert_index_equal(bf_result, pd_result)
+
+
 def test_index_astype_error_error(session):
     input = pd.Index(["hello", "world", "3.11", "4000"])
     with pytest.raises(ValueError):

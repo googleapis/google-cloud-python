@@ -707,7 +707,7 @@ class Block:
         # Create an ordering col and convert to string
         block, ordering_col = block.promote_offsets()
         block, string_ordering_col = block.apply_unary_op(
-            ordering_col, ops.AsTypeOp(to_type="string[pyarrow]")
+            ordering_col, ops.AsTypeOp(to_type=bigframes.dtypes.STRING_DTYPE)
         )
 
         # Apply hash method to sum col and order by it.
@@ -1479,7 +1479,9 @@ class Block:
                 expr, new_col = expr.project_to_id(
                     expression=ops.add_op.as_expr(
                         ex.const(prefix),
-                        ops.AsTypeOp(to_type="string").as_expr(index_col),
+                        ops.AsTypeOp(to_type=bigframes.dtypes.STRING_DTYPE).as_expr(
+                            index_col
+                        ),
                     ),
                 )
                 new_index_cols.append(new_col)
@@ -1502,7 +1504,9 @@ class Block:
             for index_col in self._index_columns:
                 expr, new_col = expr.project_to_id(
                     expression=ops.add_op.as_expr(
-                        ops.AsTypeOp(to_type="string").as_expr(index_col),
+                        ops.AsTypeOp(to_type=bigframes.dtypes.STRING_DTYPE).as_expr(
+                            index_col
+                        ),
                         ex.const(suffix),
                     ),
                 )

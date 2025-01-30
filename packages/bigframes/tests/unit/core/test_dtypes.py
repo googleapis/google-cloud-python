@@ -219,20 +219,20 @@ def test_bigframes_dtype_converts(ibis_dtype, bigframes_dtype):
 def test_bigframes_string_dtype_converts(ibis_dtype, bigframes_dtype_str):
     """Test all the Ibis data types needed to read BigQuery tables"""
     result = bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
-        bigframes_dtype_str
+        bigframes.dtypes.bigframes_type(bigframes_dtype_str)
     )
     assert result == ibis_dtype
 
 
 def test_unsupported_dtype_raises_unexpected_datatype():
     """Incompatible dtypes should fail when passed into BigQuery DataFrames"""
-    with pytest.raises(ValueError, match="Unexpected data type"):
+    with pytest.raises(ValueError, match="Datatype has no ibis type mapping"):
         bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(np.float32)
 
 
 def test_unsupported_dtype_str_raises_unexpected_datatype():
     """Incompatible dtypes should fail when passed into BigQuery DataFrames"""
-    with pytest.raises(ValueError, match="Unexpected data type"):
+    with pytest.raises(ValueError, match="Datatype has no ibis type mapping"):
         bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype("int64")
 
 

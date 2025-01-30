@@ -16,8 +16,6 @@ import dataclasses
 import functools
 import typing
 
-import pyarrow as pa
-
 from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
@@ -56,17 +54,10 @@ hash_op = base_ops.create_unary_op(
 class AsTypeOp(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "astype"
     # TODO: Convert strings to dtype earlier
-    to_type: typing.Union[dtypes.DtypeString, dtypes.Dtype]
+    to_type: dtypes.Dtype
     safe: bool = False
 
     def output_type(self, *input_types):
-        # TODO: We should do this conversion earlier
-        if self.to_type == pa.string():
-            return dtypes.STRING_DTYPE
-        if isinstance(self.to_type, str):
-            return dtypes.BIGFRAMES_STRING_TO_BIGFRAMES[
-                typing.cast(dtypes.DtypeString, self.to_type)
-            ]
         return self.to_type
 
 

@@ -806,6 +806,7 @@ class Session(
             pa.ArrowInvalid,  # Thrown by arrow for unsupported types, such as geo.
             pa.ArrowTypeError,  # Thrown by arrow for types without mapping (geo).
             ValueError,  # Thrown by ibis for some unhandled types
+            TypeError,  # Not all types handleable by local code path
         ) as exc:
             if should_raise:
                 raise ValueError(

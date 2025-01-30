@@ -87,7 +87,8 @@ class SeriesMethods:
                 if name is not None:
                     data.name = name
                 if dtype is not None:
-                    data = data.astype(dtype)
+                    bf_dtype = bigframes.dtypes.bigframes_type(dtype)
+                    data = data.astype(bf_dtype)
             else:  # local dict-like data
                 data = read_pandas_func(pd.Series(data, name=name, dtype=dtype))  # type: ignore
             data_block = data._block

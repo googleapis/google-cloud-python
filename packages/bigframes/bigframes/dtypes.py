@@ -17,6 +17,7 @@
 from dataclasses import dataclass
 import datetime
 import decimal
+import textwrap
 import typing
 from typing import Any, Dict, List, Literal, Union
 
@@ -422,7 +423,7 @@ def arrow_dtype_to_bigframes_dtype(arrow_dtype: pa.DataType) -> Dtype:
         return DEFAULT_DTYPE
 
     # No other types matched.
-    raise ValueError(
+    raise TypeError(
         f"Unexpected Arrow data type {arrow_dtype}. {constants.FEEDBACK_LINK}"
     )
 
@@ -447,7 +448,7 @@ def bigframes_dtype_to_arrow_dtype(
         if pa.types.is_struct(bigframes_dtype.pyarrow_dtype):
             return bigframes_dtype.pyarrow_dtype
     else:
-        raise ValueError(
+        raise TypeError(
             f"No arrow conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
         )
 
@@ -474,7 +475,7 @@ def bigframes_dtype_to_literal(
     if isinstance(bigframes_dtype, gpd.array.GeometryDtype):
         return shapely.Point((0, 0))
 
-    raise ValueError(
+    raise TypeError(
         f"No literal  conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
     )
 
@@ -515,8 +516,88 @@ def arrow_type_to_literal(
     if pa.types.is_time(arrow_type):
         return datetime.time(1, 1, 1)
 
-    raise ValueError(
+    raise TypeError(
         f"No literal  conversion for {arrow_type}. {constants.FEEDBACK_LINK}"
+    )
+
+
+def bigframes_type(dtype) -> Dtype:
+    """Convert type object to canoncial bigframes dtype."""
+    if _is_bigframes_dtype(dtype):
+        return dtype
+    elif isinstance(dtype, str):
+        return _dtype_from_string(dtype)
+    elif isinstance(dtype, type):
+        return _infer_dtype_from_python_type(dtype)
+    elif isinstance(dtype, pa.DataType):
+        return arrow_dtype_to_bigframes_dtype(dtype)
+    else:
+        raise TypeError(
+            f"Cannot infer supported datatype for: {dtype}. {constants.FEEDBACK_LINK}"
+        )
+
+
+def _is_bigframes_dtype(dtype) -> bool:
+    """True iff dtyps is a canonical bigframes dtype"""
+    # have to be quite strict, as pyarrow dtypes equal their string form, and we don't consider that a canonical form.
+    if (type(dtype), dtype) in set(
+        (type(item.dtype), item.dtype) for item in SIMPLE_TYPES
+    ):
+        return True
+    if isinstance(dtype, pd.ArrowDtype):
+        try:
+            _ = arrow_dtype_to_bigframes_dtype(dtype.pyarrow_dtype)
+            return True
+        except TypeError:
+            return False
+    return False
+
+
+def _infer_dtype_from_python_type(type: type) -> Dtype:
+    if issubclass(type, (bool, np.bool_)):
+        return BOOL_DTYPE
+    if issubclass(type, (int, np.integer)):
+        return INT_DTYPE
+    if issubclass(type, (float, np.floating)):
+        return FLOAT_DTYPE
+    if issubclass(type, decimal.Decimal):
+        return NUMERIC_DTYPE
+    if issubclass(type, (str, np.str_)):
+        return STRING_DTYPE
+    if issubclass(type, (bytes, np.bytes_)):
+        return BYTES_DTYPE
+    if issubclass(type, datetime.date):
+        return DATE_DTYPE
+    if issubclass(type, datetime.time):
+        return TIME_DTYPE
+    else:
+        raise TypeError(
+            f"No matching datatype for python type: {type}. {constants.FEEDBACK_LINK}"
+        )
+
+
+def _dtype_from_string(dtype_string: str) -> typing.Optional[Dtype]:
+    if str(dtype_string) in BIGFRAMES_STRING_TO_BIGFRAMES:
+        return BIGFRAMES_STRING_TO_BIGFRAMES[
+            typing.cast(DtypeString, str(dtype_string))
+        ]
+    raise TypeError(
+        textwrap.dedent(
+            f"""
+                Unexpected data type string {dtype_string}. The following
+                        dtypes are supppted: 'boolean','Float64','Int64',
+                        'int64[pyarrow]','string','string[pyarrow]',
+                        'timestamp[us, tz=UTC][pyarrow]','timestamp[us][pyarrow]',
+                        'date32[day][pyarrow]','time64[us][pyarrow]'.
+                        The following pandas.ExtensionDtype are supported:
+                        pandas.BooleanDtype(), pandas.Float64Dtype(),
+                        pandas.Int64Dtype(), pandas.StringDtype(storage="pyarrow"),
+                        pd.ArrowDtype(pa.date32()), pd.ArrowDtype(pa.time64("us")),
+                        pd.ArrowDtype(pa.timestamp("us")),
+                        pd.ArrowDtype(pa.timestamp("us", tz="UTC")).
+                {constants.FEEDBACK_LINK}
+                """
+        )
     )
 
 
@@ -539,30 +620,17 @@ def infer_literal_type(literal) -> typing.Optional[Dtype]:
         return pd.ArrowDtype(pa.struct(fields))
     if pd.isna(literal):
         return None  # Null value without a definite type
-    if isinstance(literal, (bool, np.bool_)):
-        return BOOL_DTYPE
-    if isinstance(literal, (int, np.integer)):
-        return INT_DTYPE
-    if isinstance(literal, (float, np.floating)):
-        return FLOAT_DTYPE
-    if isinstance(literal, decimal.Decimal):
-        return NUMERIC_DTYPE
-    if isinstance(literal, (str, np.str_)):
-        return STRING_DTYPE
-    if isinstance(literal, (bytes, np.bytes_)):
-        return BYTES_DTYPE
     # Make sure to check datetime before date as datetimes are also dates
     if isinstance(literal, (datetime.datetime, pd.Timestamp)):
         if literal.tzinfo is not None:
             return TIMESTAMP_DTYPE
         else:
             return DATETIME_DTYPE
-    if isinstance(literal, datetime.date):
-        return DATE_DTYPE
-    if isinstance(literal, datetime.time):
-        return TIME_DTYPE
+    from_python_type = _infer_dtype_from_python_type(type(literal))
+    if from_python_type is not None:
+        return from_python_type
     else:
-        raise ValueError(f"Unable to infer type for value: {literal}")
+        raise TypeError(f"Unable to infer type for value: {literal}")
 
 
 def infer_literal_arrow_type(literal) -> typing.Optional[pa.DataType]:
@@ -602,7 +670,7 @@ def convert_schema_field(
             return field.name, pd.ArrowDtype(pa_type)
         return field.name, _TK_TO_BIGFRAMES[field.field_type]
     else:
-        raise ValueError(f"Cannot handle type: {field.field_type}")
+        raise TypeError(f"Cannot handle type: {field.field_type}")
 
 
 def convert_to_schema_field(
@@ -636,7 +704,7 @@ def convert_to_schema_field(
         if bigframes_dtype.pyarrow_dtype == pa.duration("us"):
             # Timedeltas are represented as integers in microseconds.
             return google.cloud.bigquery.SchemaField(name, "INTEGER")
-    raise ValueError(
+    raise TypeError(
         f"No arrow conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
     )
 

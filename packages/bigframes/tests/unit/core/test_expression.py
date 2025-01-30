@@ -47,7 +47,7 @@ def test_expression_dtype_where():
 
 
 def test_expression_dtype_astype():
-    expression = ops.AsTypeOp("Int64").as_expr(ex.const(3.14159))
+    expression = ops.AsTypeOp(dtypes.INT_DTYPE).as_expr(ex.const(3.14159))
 
     result = expression.output_type({})
 

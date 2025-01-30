@@ -445,7 +445,7 @@ class Index:
 
 
         Args:
-            dtype (str or pandas.ExtensionDtype):
+            dtype (str, data type, or pandas.ExtensionDtype):
                 A dtype supported by BigQuery DataFrame include ``'boolean'``,
                 ``'Float64'``, ``'Int64'``, ``'int64\\[pyarrow\\]'``,
                 ``'string'``, ``'string\\[pyarrow\\]'``,
