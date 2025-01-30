@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-test-utils/compare/v1.5.0...v1.6.0) (2025-01-30)
+
+
+### Features
+
+* Add support for `test_utils.__version__` ([#244](https://github.com/googleapis/python-test-utils/issues/244)) ([9655669](https://github.com/googleapis/python-test-utils/commit/9655669de131cd7e0d67b3d6377f49063b5c2acb))
+
 ## [1.5.0](https://github.com/googleapis/python-test-utils/compare/v1.4.0...v1.5.0) (2024-11-12)
 
 
