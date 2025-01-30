@@ -424,6 +424,25 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def keys(self):
+        """
+        Return alias for index.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> s = bpd.Series([1, 2, 3], index=[0, 1, 2])
+            >>> s.keys()
+            Index([0, 1, 2], dtype='Int64')
+
+        Returns:
+            Index:
+                Index of the Series.
+        """
+        return self.index
+
     # ----------------------------------------------------------------------
     # IO methods (to / from other formats)
 

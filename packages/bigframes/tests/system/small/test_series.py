@@ -228,6 +228,13 @@ def test_series_construct_geodata():
     )
 
 
+def test_series_keys(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df["int64_col"].keys().to_pandas()
+    pd_result = scalars_pandas_df["int64_col"].keys()
+    pd.testing.assert_index_equal(bf_result, pd_result)
+
+
 @pytest.mark.parametrize(
     ["data", "index"],
     [
