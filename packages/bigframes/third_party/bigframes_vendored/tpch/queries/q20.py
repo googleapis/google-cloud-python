@@ -44,8 +44,6 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     filtered_parts = part[part["P_NAME"].str.startswith(var4)]
 
-    if not session._strictly_ordered:
-        filtered_parts = filtered_parts[["P_PARTKEY"]].sort_values(by=["P_PARTKEY"])
     filtered_parts = filtered_parts["P_PARTKEY"].unique(keep_order=False).to_frame()
     joined_parts = filtered_parts.merge(
         partsupp, left_on="P_PARTKEY", right_on="PS_PARTKEY"
