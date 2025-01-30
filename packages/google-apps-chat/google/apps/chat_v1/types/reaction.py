@@ -85,7 +85,7 @@ class Emoji(proto.Message):
 
             This field is a member of `oneof`_ ``content``.
         custom_emoji (google.apps.chat_v1.types.CustomEmoji):
-            Output only. A custom emoji.
+            A custom emoji.
 
             This field is a member of `oneof`_ ``content``.
     """

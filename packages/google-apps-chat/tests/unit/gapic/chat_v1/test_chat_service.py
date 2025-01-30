@@ -18696,6 +18696,7 @@ def test_create_message_rest_call_success(request_type):
                         "message": "message_value",
                     },
                 },
+                "custom_emoji_metadata": {"custom_emoji": {"uid": "uid_value"}},
             }
         ],
         "thread": {"name": "name_value", "thread_key": "thread_key_value"},
@@ -18774,10 +18775,7 @@ def test_create_message_rest_call_success(request_type):
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
-                "emoji": {
-                    "unicode": "unicode_value",
-                    "custom_emoji": {"uid": "uid_value"},
-                },
+                "emoji": {"unicode": "unicode_value", "custom_emoji": {}},
                 "reaction_count": 1501,
             }
         ],
@@ -19778,6 +19776,7 @@ def test_update_message_rest_call_success(request_type):
                         "message": "message_value",
                     },
                 },
+                "custom_emoji_metadata": {"custom_emoji": {"uid": "uid_value"}},
             }
         ],
         "thread": {"name": "name_value", "thread_key": "thread_key_value"},
@@ -19856,10 +19855,7 @@ def test_update_message_rest_call_success(request_type):
         "client_assigned_message_id": "client_assigned_message_id_value",
         "emoji_reaction_summaries": [
             {
-                "emoji": {
-                    "unicode": "unicode_value",
-                    "custom_emoji": {"uid": "uid_value"},
-                },
+                "emoji": {"unicode": "unicode_value", "custom_emoji": {}},
                 "reaction_count": 1501,
             }
         ],

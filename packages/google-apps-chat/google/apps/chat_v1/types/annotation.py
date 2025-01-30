@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.apps.chat_v1.types import attachment
+from google.apps.chat_v1.types import attachment, reaction
 from google.apps.chat_v1.types import user as gc_user
 
 __protobuf__ = proto.module(
@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "UserMentionMetadata",
         "SlashCommandMetadata",
         "RichLinkMetadata",
+        "CustomEmojiMetadata",
         "DriveLinkData",
         "ChatSpaceLinkData",
     },
@@ -48,11 +49,14 @@ class AnnotationType(proto.Enum):
             A slash command is invoked.
         RICH_LINK (3):
             A rich link annotation.
+        CUSTOM_EMOJI (4):
+            A custom emoji annotation.
     """
     ANNOTATION_TYPE_UNSPECIFIED = 0
     USER_MENTION = 1
     SLASH_COMMAND = 2
     RICH_LINK = 3
+    CUSTOM_EMOJI = 4
 
 
 class Annotation(proto.Message):
@@ -116,6 +120,10 @@ class Annotation(proto.Message):
             The metadata for a rich link.
 
             This field is a member of `oneof`_ ``metadata``.
+        custom_emoji_metadata (google.apps.chat_v1.types.CustomEmojiMetadata):
+            The metadata for a custom emoji.
+
+            This field is a member of `oneof`_ ``metadata``.
     """
 
     type_: "AnnotationType" = proto.Field(
@@ -149,6 +157,12 @@ class Annotation(proto.Message):
         number=6,
         oneof="metadata",
         message="RichLinkMetadata",
+    )
+    custom_emoji_metadata: "CustomEmojiMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="metadata",
+        message="CustomEmojiMetadata",
     )
 
 
@@ -306,6 +320,21 @@ class RichLinkMetadata(proto.Message):
         number=4,
         oneof="data",
         message="ChatSpaceLinkData",
+    )
+
+
+class CustomEmojiMetadata(proto.Message):
+    r"""Annotation metadata for custom emoji.
+
+    Attributes:
+        custom_emoji (google.apps.chat_v1.types.CustomEmoji):
+            The custom emoji.
+    """
+
+    custom_emoji: reaction.CustomEmoji = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=reaction.CustomEmoji,
     )
 
 
