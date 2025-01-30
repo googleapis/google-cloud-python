@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -235,6 +236,9 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -842,7 +846,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_subscription: gapic_v1.method_async.wrap_method(
+            self.create_subscription: self._wrap_method(
                 self.create_subscription,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -858,7 +862,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_subscription: gapic_v1.method_async.wrap_method(
+            self.get_subscription: self._wrap_method(
                 self.get_subscription,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -874,7 +878,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_subscription: gapic_v1.method_async.wrap_method(
+            self.update_subscription: self._wrap_method(
                 self.update_subscription,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -888,7 +892,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_subscriptions: gapic_v1.method_async.wrap_method(
+            self.list_subscriptions: self._wrap_method(
                 self.list_subscriptions,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -904,7 +908,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_subscription: gapic_v1.method_async.wrap_method(
+            self.delete_subscription: self._wrap_method(
                 self.delete_subscription,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -918,7 +922,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.modify_ack_deadline: gapic_v1.method_async.wrap_method(
+            self.modify_ack_deadline: self._wrap_method(
                 self.modify_ack_deadline,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -932,7 +936,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.acknowledge: gapic_v1.method_async.wrap_method(
+            self.acknowledge: self._wrap_method(
                 self.acknowledge,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -946,7 +950,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.pull: gapic_v1.method_async.wrap_method(
+            self.pull: self._wrap_method(
                 self.pull,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -963,7 +967,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.streaming_pull: gapic_v1.method_async.wrap_method(
+            self.streaming_pull: self._wrap_method(
                 self.streaming_pull,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -981,7 +985,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=900.0,
                 client_info=client_info,
             ),
-            self.modify_push_config: gapic_v1.method_async.wrap_method(
+            self.modify_push_config: self._wrap_method(
                 self.modify_push_config,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -995,7 +999,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_snapshot: gapic_v1.method_async.wrap_method(
+            self.get_snapshot: self._wrap_method(
                 self.get_snapshot,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1011,7 +1015,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_snapshots: gapic_v1.method_async.wrap_method(
+            self.list_snapshots: self._wrap_method(
                 self.list_snapshots,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1027,7 +1031,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_snapshot: gapic_v1.method_async.wrap_method(
+            self.create_snapshot: self._wrap_method(
                 self.create_snapshot,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1041,7 +1045,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_snapshot: gapic_v1.method_async.wrap_method(
+            self.update_snapshot: self._wrap_method(
                 self.update_snapshot,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1055,7 +1059,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_snapshot: gapic_v1.method_async.wrap_method(
+            self.delete_snapshot: self._wrap_method(
                 self.delete_snapshot,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1069,7 +1073,7 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.seek: gapic_v1.method_async.wrap_method(
+            self.seek: self._wrap_method(
                 self.seek,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1085,10 +1089,34 @@ class SubscriberGrpcAsyncIOTransport(SubscriberTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("SubscriberGrpcAsyncIOTransport",)
