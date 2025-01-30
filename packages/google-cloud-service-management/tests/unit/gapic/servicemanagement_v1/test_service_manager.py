@@ -10682,7 +10682,8 @@ def test_create_service_config_rest_call_success(request_type):
                             "reference_docs_uri": "reference_docs_uri_value",
                             "destinations": [10],
                             "selective_gapic_generation": {
-                                "methods": ["methods_value1", "methods_value2"]
+                                "methods": ["methods_value1", "methods_value2"],
+                                "generate_omitted_as_internal": True,
                             },
                         },
                     },
