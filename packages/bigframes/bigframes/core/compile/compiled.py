@@ -16,7 +16,7 @@ from __future__ import annotations
 import functools
 import itertools
 import typing
-from typing import Collection, Optional, Sequence
+from typing import Optional, Sequence
 
 import bigframes_vendored.ibis
 import bigframes_vendored.ibis.backends.bigquery.backend as ibis_bigquery
@@ -38,9 +38,6 @@ from bigframes.core.window_spec import RangeWindowBounds, RowsWindowBounds, Wind
 import bigframes.dtypes
 import bigframes.operations.aggregations as agg_ops
 
-PREDICATE_COLUMN = "bigframes_predicate"
-
-
 op_compiler = op_compilers.scalar_op_compiler
 
 
@@ -50,11 +47,8 @@ class UnorderedIR:
         self,
         table: ibis_types.Table,
         columns: Sequence[ibis_types.Value],
-        predicates: Optional[Collection[ibis_types.BooleanValue]] = None,
     ):
         self._table = table
-        # Deferred predicates probably no longer needed?
-        self._predicates = tuple(predicates) if predicates is not None else ()
         # Allow creating a DataFrame directly from an Ibis table expression.
         # TODO(swast): Validate that each column references the same table (or
         # no table for literal values).
@@ -68,17 +62,6 @@ class UnorderedIR:
         # To allow for more efficient lookup by column name, create a
         # dictionary mapping names to column values.
         self._column_names = {column.get_name(): column for column in self._columns}
-
-    def builder(self):
-        """Creates a mutable builder for expressions."""
-        # Since ArrayValue is intended to be immutable (immutability offers
-        # potential opportunities for caching, though we might need to introduce
-        # more node types for that to be useful), we create a builder class.
-        return UnorderedIR.Builder(
-            self._table,
-            columns=self._columns,
-            predicates=self._predicates,
-        )
 
     def to_sql(
         self,
@@ -119,15 +102,6 @@ class UnorderedIR:
         return tuple(self._column_names.keys())
 
     @property
-    def _reduced_predicate(self) -> typing.Optional[ibis_types.BooleanValue]:
-        """Returns the frame's predicates as an equivalent boolean value, useful where a single predicate value is preferred."""
-        return (
-            _reduce_predicate_list(self._predicates).name(PREDICATE_COLUMN)
-            if self._predicates
-            else None
-        )
-
-    @property
     def _ibis_bindings(self) -> dict[str, ibis_types.Value]:
         return {col: self._get_ibis_column(col) for col in self.column_ids}
 
@@ -141,9 +115,7 @@ class UnorderedIR:
             op_compiler.compile_expression(expression, bindings).name(id)
             for expression, id in expression_id_pairs
         ]
-        builder = self.builder()
-        builder.columns = tuple([*self._columns, *new_values])
-        return builder.build()
+        return UnorderedIR(self._table, (*self._columns, *new_values))
 
     def selection(
         self,
@@ -155,9 +127,7 @@ class UnorderedIR:
             op_compiler.compile_expression(input, bindings).name(id)
             for input, id in input_output_pairs
         ]
-        builder = self.builder()
-        builder.columns = tuple(values)
-        return builder.build()
+        return UnorderedIR(self._table, tuple(values))
 
     def _get_ibis_column(self, key: str) -> ibis_types.Value:
         """Gets the Ibis expression for a given column."""
@@ -192,7 +162,6 @@ class UnorderedIR:
     def _to_ibis_expr(
         self,
         *,
-        expose_hidden_cols: bool = False,
         fraction: Optional[float] = None,
     ):
         """
@@ -206,26 +175,12 @@ class UnorderedIR:
             An ibis expression representing the data help by the ArrayValue object.
         """
         columns = list(self._columns)
-        columns_to_drop: list[
-            str
-        ] = []  # Ordering/Filtering columns that will be dropped at end
-
-        if self._reduced_predicate is not None:
-            columns.append(self._reduced_predicate)
-            # Usually drop predicate as it is will be all TRUE after filtering
-            if not expose_hidden_cols:
-                columns_to_drop.append(self._reduced_predicate.get_name())
-
         # Special case for empty tables, since we can't create an empty
         # projection.
         if not columns:
             return bigframes_vendored.ibis.memtable([])
 
         table = self._table.select(columns)
-        base_table = table
-        if self._reduced_predicate is not None:
-            table = table.filter(base_table[PREDICATE_COLUMN])
-        table = table.drop(*columns_to_drop)
         if fraction is not None:
             table = table.filter(
                 bigframes_vendored.ibis.random() < ibis_types.literal(fraction)
@@ -233,22 +188,12 @@ class UnorderedIR:
         return table
 
     def filter(self, predicate: ex.Expression) -> UnorderedIR:
-        for ref in predicate.column_references:
-            ibis_value = self._get_ibis_column(ref.sql)
-            if is_window(ibis_value):
-                # ibis doesn't support qualify syntax, so create CTE if filtering over window expression
-                # https://github.com/ibis-project/ibis/issues/9775
-                return self._reproject_to_table().filter(predicate)
-
-        bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
-        condition = op_compiler.compile_expression(predicate, bindings)
-        return self._filter(condition)  # type:ignore
-
-    def _filter(self, predicate_value: ibis_types.BooleanValue) -> UnorderedIR:
-        """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
-        expr = self.builder()
-        expr.predicates = [*self._predicates, predicate_value]
-        return expr.build()
+        table = self._to_ibis_expr()
+        condition = op_compiler.compile_expression(predicate, table)
+        table = table.filter(condition)
+        return UnorderedIR(
+            table, tuple(table[column_name] for column_name in self._column_names)
+        )
 
     def aggregate(
         self,
@@ -279,18 +224,18 @@ class UnorderedIR:
             for aggregate, col_out in aggregations
         }
         if by_column_ids:
+            if dropna:
+                table = table.filter(
+                    [table[ref.id.sql].notnull() for ref in by_column_ids]
+                )
             result = table.group_by((ref.id.sql for ref in by_column_ids)).aggregate(
                 **stats
             )
-            columns = tuple(result[key] for key in result.columns)
-            expr = UnorderedIR(result, columns=columns)
-            if dropna:
-                for ref in by_column_ids:
-                    expr = expr._filter(expr._compile_expression(ref).notnull())
-            return expr
+            return UnorderedIR(
+                result, columns=tuple(result[key] for key in result.columns)
+            )
         else:
-            aggregates = {**stats}
-            result = table.aggregate(**aggregates)
+            result = table.aggregate(**stats)
             return UnorderedIR(
                 result,
                 columns=[result[col_id] for col_id in [*stats.keys()]],
@@ -310,19 +255,6 @@ class UnorderedIR:
         )
 
     ## Helpers
-    def _set_or_replace_by_id(
-        self, id: str, new_value: ibis_types.Value
-    ) -> UnorderedIR:
-        builder = self.builder()
-        if id in self.column_ids:
-            builder.columns = [
-                val if (col_id != id) else new_value.name(id)
-                for col_id, val in zip(self.column_ids, self._columns)
-            ]
-        else:
-            builder.columns = [*self.columns, new_value.name(id)]
-        return builder.build()
-
     def _reproject_to_table(self) -> UnorderedIR:
         """
         Internal operators that projects the internal representation into a
@@ -337,24 +269,6 @@ class UnorderedIR:
             table,
             columns=columns,
         )
-
-    class Builder:
-        def __init__(
-            self,
-            table: ibis_types.Table,
-            columns: Collection[ibis_types.Value] = (),
-            predicates: Optional[Collection[ibis_types.BooleanValue]] = None,
-        ):
-            self.table = table
-            self.columns = list(columns)
-            self.predicates = list(predicates) if predicates is not None else None
-
-        def build(self) -> UnorderedIR:
-            return UnorderedIR(
-                table=self.table,
-                columns=self.columns,
-                predicates=self.predicates,
-            )
 
     @classmethod
     def from_pandas(
@@ -500,8 +414,7 @@ class UnorderedIR:
             case_statement = case_statement.else_(window_op).end()  # type: ignore
             window_op = case_statement  # type: ignore
 
-        result = self._set_or_replace_by_id(output_name, window_op)
-        return result
+        return UnorderedIR(self._table, (*self.columns, window_op.name(output_name)))
 
     def _compile_expression(self, expr: ex.Expression):
         return op_compiler.compile_expression(expr, self._ibis_bindings)
@@ -517,8 +430,6 @@ class UnorderedIR:
             if window_spec.grouping_keys
             else []
         )
-        if self._reduced_predicate is not None:
-            group_by.append(self._reduced_predicate)
 
         # Construct ordering. There are basically 3 main cases
         # 1. Order-independent op (aggregation, cut, rank) with unbound window - no ordering clause needed
@@ -567,18 +478,6 @@ def is_window(column: ibis_types.Value) -> bool:
         )
     )
     return any(isinstance(op, ibis_ops.WindowFunction) for op in matches)
-
-
-def _reduce_predicate_list(
-    predicate_list: typing.Collection[ibis_types.BooleanValue],
-) -> ibis_types.BooleanValue:
-    """Converts a list of predicates BooleanValues into a single BooleanValue."""
-    if len(predicate_list) == 0:
-        raise ValueError("Cannot reduce empty list of predicates")
-    if len(predicate_list) == 1:
-        (item,) = predicate_list
-        return item
-    return functools.reduce(lambda acc, pred: acc.__and__(pred), predicate_list)
 
 
 def _convert_ordering_to_table_values(
