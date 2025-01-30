@@ -14,9 +14,17 @@
 
 import io
 import os
+import re
 import setuptools  # type: ignore
 
-version = "1.5.0"
+version = None
+
+PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+with open(os.path.join(PACKAGE_ROOT, "test_utils/version.py")) as fp:
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert len(version_candidates) == 1
+    version = version_candidates[0]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
