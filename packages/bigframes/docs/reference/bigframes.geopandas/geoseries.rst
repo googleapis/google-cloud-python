@@ -11,7 +11,7 @@ GeoSeries
 Series
 ------
 
-.. autoclass:: bigframes.geopandas.geoseries.GeoSeries
+.. autoclass:: bigframes.geopandas.GeoSeries
     :members:
     :inherited-members:
     :undoc-members:

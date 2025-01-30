@@ -208,6 +208,10 @@
       uid: bigframes.bigquery
     name: bigframes.bigquery
   - items:
+    - name: GeoSeries
+      uid: bigframes.geopandas
+    name: bigframes.geopandas
+  - items:
     - name: Overview
       uid: bigframes.streaming
     - name: StreamingDataFrame
