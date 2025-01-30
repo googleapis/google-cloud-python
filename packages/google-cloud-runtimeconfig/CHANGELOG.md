@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.35.0](https://github.com/googleapis/python-runtimeconfig/compare/v0.34.0...v0.35.0) (2025-01-30)
+
+
+### Features
+
+* Add support for Python 3.13 ([#304](https://github.com/googleapis/python-runtimeconfig/issues/304)) ([b9dde5e](https://github.com/googleapis/python-runtimeconfig/commit/b9dde5ecc69f084056fce12ce73e1054d6db2400))
+
 ## [0.34.0](https://github.com/googleapis/python-runtimeconfig/compare/v0.33.3...v0.34.0) (2023-12-07)
 
 
