@@ -29,6 +29,11 @@ __protobuf__ = proto.module(
         "GetSpaceRequest",
         "UpdateSpaceRequest",
         "EndActiveConferenceRequest",
+        "CreateMemberRequest",
+        "GetMemberRequest",
+        "ListMembersRequest",
+        "ListMembersResponse",
+        "DeleteMemberRequest",
         "GetConferenceRecordRequest",
         "ListConferenceRecordsRequest",
         "ListConferenceRecordsResponse",
@@ -75,6 +80,27 @@ class GetSpaceRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the space.
+
+            Format: ``spaces/{space}`` or ``spaces/{meetingCode}``.
+
+            ``{space}`` is the resource identifier for the space. It's a
+            unique, server-generated ID and is case sensitive. For
+            example, ``jQCFfuBOdN5z``.
+
+            ``{meetingCode}`` is an alias for the space. It's a
+            typeable, unique character string and is non-case sensitive.
+            For example, ``abc-mnop-xyz``. The maximum length is 128
+            characters.
+
+            A ``meetingCode`` shouldn't be stored long term as it can
+            become dissociated from a meeting space and can be reused
+            for different meeting spaces in the future. Generally, a
+            ``meetingCode`` expires 365 days after last use. For more
+            information, see `Learn about meeting codes in Google
+            Meet <https://support.google.com/meet/answer/10710509>`__.
+
+            For more information, see `How Meet identifies a meeting
+            space <https://developers.google.com/meet/api/guides/meeting-spaces#identify-meeting-space>`__.
     """
 
     name: str = proto.Field(
@@ -91,9 +117,11 @@ class UpdateSpaceRequest(proto.Message):
             Required. Space to be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Field mask used to specify the fields to be
-            updated in the space. If update_mask isn't provided, it
-            defaults to '*' and updates all fields provided in the
-            request, including deleting fields not set in the request.
+            updated in the space. If update_mask isn't provided(not set,
+            set with empty paths, or only has "" as paths), it defaults
+            to update all fields provided with values in the request.
+            Using "*" as update_mask will update all fields, including
+            deleting fields not set in the request.
     """
 
     space: resource.Space = proto.Field(
@@ -114,6 +142,125 @@ class EndActiveConferenceRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of the space.
+
+            Format: ``spaces/{space}``.
+
+            ``{space}`` is the resource identifier for the space. It's a
+            unique, server-generated ID and is case sensitive. For
+            example, ``jQCFfuBOdN5z``.
+
+            For more information, see `How Meet identifies a meeting
+            space <https://developers.google.com/meet/api/guides/meeting-spaces#identify-meeting-space>`__.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateMemberRequest(proto.Message):
+    r"""Request to create a member for a space.
+
+    Attributes:
+        parent (str):
+            Required. Format: spaces/{space}
+        member (google.apps.meet_v2beta.types.Member):
+            Required. The member to be created.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    member: resource.Member = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resource.Member,
+    )
+
+
+class GetMemberRequest(proto.Message):
+    r"""Request to get a member from a space.
+
+    Attributes:
+        name (str):
+            Required. Format:
+            “spaces/{space}/members/{member}”
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListMembersRequest(proto.Message):
+    r"""Request to list all members of a space.
+
+    Attributes:
+        parent (str):
+            Required. Format: spaces/{space}
+        page_size (int):
+            Optional. Maximum number of members to
+            return. The service might return fewer than this
+            value. If unspecified, at most 25 members are
+            returned. The maximum value is 100; values above
+            100 are coerced to 100. Maximum might change in
+            the future.
+        page_token (str):
+            Optional. Page token returned from previous
+            List Call.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListMembersResponse(proto.Message):
+    r"""Response of list members.
+
+    Attributes:
+        members (MutableSequence[google.apps.meet_v2beta.types.Member]):
+            The list of members for the current page.
+        next_page_token (str):
+            Token to be circulated back for further list
+            call if current list doesn't include all the
+            members. Unset if all members are returned.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    members: MutableSequence[resource.Member] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resource.Member,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DeleteMemberRequest(proto.Message):
+    r"""Request to delete a member from a space.
+
+    Attributes:
+        name (str):
+            Required. Format:
+            “spaces/{space}/members/{member}”
     """
 
     name: str = proto.Field(
@@ -151,7 +298,8 @@ class ListConferenceRecordsRequest(proto.Message):
             Optional. Page token returned from previous
             List Call.
         filter (str):
-            Optional. User specified filtering condition in EBNF format.
+            Optional. User specified filtering condition in `EBNF
+            format <https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form>`__.
             The following are the filterable fields:
 
             -  ``space.meeting_code``
@@ -159,7 +307,12 @@ class ListConferenceRecordsRequest(proto.Message):
             -  ``start_time``
             -  ``end_time``
 
-            For example, ``space.meeting_code = "abc-mnop-xyz"``.
+            For example, consider the following filters:
+
+            -  ``space.name = "spaces/NAME"``
+            -  ``space.meeting_code = "abc-mnop-xyz"``
+            -  ``start_time>="2024-01-01T00:00:00.000Z" AND start_time<="2024-01-02T00:00:00.000Z"``
+            -  ``end_time IS NULL``
     """
 
     page_size: int = proto.Field(
@@ -207,7 +360,7 @@ class ListConferenceRecordsResponse(proto.Message):
 
 
 class GetParticipantRequest(proto.Message):
-    r"""Request to get a Participant.
+    r"""Request to get a participant.
 
     Attributes:
         name (str):
@@ -221,7 +374,7 @@ class GetParticipantRequest(proto.Message):
 
 
 class ListParticipantsRequest(proto.Message):
-    r"""Request to fetch list of participant per conference.
+    r"""Request to fetch list of participants per conference.
 
     Attributes:
         parent (str):
@@ -236,7 +389,8 @@ class ListParticipantsRequest(proto.Message):
         page_token (str):
             Page token returned from previous List Call.
         filter (str):
-            Optional. User specified filtering condition in EBNF format.
+            Optional. User specified filtering condition in `EBNF
+            format <https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form>`__.
             The following are the filterable fields:
 
             -  ``earliest_start_time``
@@ -317,7 +471,7 @@ class GetParticipantSessionRequest(proto.Message):
 
 class ListParticipantSessionsRequest(proto.Message):
     r"""Request to fetch list of participant sessions per conference
-    record per participant.
+    record, per participant.
 
     Attributes:
         parent (str):
@@ -334,7 +488,8 @@ class ListParticipantSessionsRequest(proto.Message):
             Optional. Page token returned from previous
             List Call.
         filter (str):
-            Optional. User specified filtering condition in EBNF format.
+            Optional. User specified filtering condition in `EBNF
+            format <https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form>`__.
             The following are the filterable fields:
 
             -  ``start_time``
@@ -585,7 +740,7 @@ class ListTranscriptEntriesRequest(proto.Message):
 
 
 class ListTranscriptEntriesResponse(proto.Message):
-    r"""Response for ListTranscriptEntries method
+    r"""Response for ListTranscriptEntries method.
 
     Attributes:
         transcript_entries (MutableSequence[google.apps.meet_v2beta.types.TranscriptEntry]):

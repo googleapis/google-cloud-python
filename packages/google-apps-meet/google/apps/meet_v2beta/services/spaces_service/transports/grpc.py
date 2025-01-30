@@ -325,8 +325,6 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
     def create_space(self) -> Callable[[service.CreateSpaceRequest], resource.Space]:
         r"""Return a callable for the create space method over gRPC.
 
-        `Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
         Creates a space.
 
         Returns:
@@ -351,9 +349,10 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
     def get_space(self) -> Callable[[service.GetSpaceRequest], resource.Space]:
         r"""Return a callable for the get space method over gRPC.
 
-        `Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Gets a space by ``space_id`` or ``meeting_code``.
+        Gets details about a meeting space.
+
+        For an example, see `Get a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space>`__.
 
         Returns:
             Callable[[~.GetSpaceRequest],
@@ -377,9 +376,10 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
     def update_space(self) -> Callable[[service.UpdateSpaceRequest], resource.Space]:
         r"""Return a callable for the update space method over gRPC.
 
-        `Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Updates a space.
+        Updates details about a meeting space.
+
+        For an example, see `Update a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space>`__.
 
         Returns:
             Callable[[~.UpdateSpaceRequest],
@@ -405,9 +405,10 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
     ) -> Callable[[service.EndActiveConferenceRequest], empty_pb2.Empty]:
         r"""Return a callable for the end active conference method over gRPC.
 
-        `Developer
-        Preview <https://developers.google.com/workspace/preview>`__.
-        Ends an active conference (if there is one).
+        Ends an active conference (if there's one).
+
+        For an example, see `End active
+        conference <https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference>`__.
 
         Returns:
             Callable[[~.EndActiveConferenceRequest],
@@ -426,6 +427,128 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["end_active_conference"]
+
+    @property
+    def create_member(self) -> Callable[[service.CreateMemberRequest], resource.Member]:
+        r"""Return a callable for the create member method over gRPC.
+
+        `Developer
+        Preview <https://developers.google.com/workspace/preview>`__:
+        Create a member.
+
+        This API supports the ``fields`` parameter in
+        `SystemParameterContext <https://cloud.google.com/apis/docs/system-parameters>`__.
+        When the ``fields`` parameter is omitted, this API response will
+        default to "name,email,role,user".
+
+        Returns:
+            Callable[[~.CreateMemberRequest],
+                    ~.Member]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_member" not in self._stubs:
+            self._stubs["create_member"] = self._logged_channel.unary_unary(
+                "/google.apps.meet.v2beta.SpacesService/CreateMember",
+                request_serializer=service.CreateMemberRequest.serialize,
+                response_deserializer=resource.Member.deserialize,
+            )
+        return self._stubs["create_member"]
+
+    @property
+    def get_member(self) -> Callable[[service.GetMemberRequest], resource.Member]:
+        r"""Return a callable for the get member method over gRPC.
+
+        `Developer
+        Preview <https://developers.google.com/workspace/preview>`__:
+        Get a member.
+
+        This API supports the ``fields`` parameter in
+        `SystemParameterContext <https://cloud.google.com/apis/docs/system-parameters>`__.
+        When the ``fields`` parameter is omitted, this API response will
+        default to "name,email,role,user".
+
+        Returns:
+            Callable[[~.GetMemberRequest],
+                    ~.Member]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_member" not in self._stubs:
+            self._stubs["get_member"] = self._logged_channel.unary_unary(
+                "/google.apps.meet.v2beta.SpacesService/GetMember",
+                request_serializer=service.GetMemberRequest.serialize,
+                response_deserializer=resource.Member.deserialize,
+            )
+        return self._stubs["get_member"]
+
+    @property
+    def list_members(
+        self,
+    ) -> Callable[[service.ListMembersRequest], service.ListMembersResponse]:
+        r"""Return a callable for the list members method over gRPC.
+
+        `Developer
+        Preview <https://developers.google.com/workspace/preview>`__:
+        List members.
+
+        This API supports the ``fields`` parameter in
+        `SystemParameterContext <https://cloud.google.com/apis/docs/system-parameters>`__.
+        When the ``fields`` parameter is omitted this API response will
+        default to "name,email,role,user".
+
+        Returns:
+            Callable[[~.ListMembersRequest],
+                    ~.ListMembersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_members" not in self._stubs:
+            self._stubs["list_members"] = self._logged_channel.unary_unary(
+                "/google.apps.meet.v2beta.SpacesService/ListMembers",
+                request_serializer=service.ListMembersRequest.serialize,
+                response_deserializer=service.ListMembersResponse.deserialize,
+            )
+        return self._stubs["list_members"]
+
+    @property
+    def delete_member(self) -> Callable[[service.DeleteMemberRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete member method over gRPC.
+
+        `Developer
+        Preview <https://developers.google.com/workspace/preview>`__:
+        Delete the member who was previously assigned roles in the
+        space.
+
+        Returns:
+            Callable[[~.DeleteMemberRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_member" not in self._stubs:
+            self._stubs["delete_member"] = self._logged_channel.unary_unary(
+                "/google.apps.meet.v2beta.SpacesService/DeleteMember",
+                request_serializer=service.DeleteMemberRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_member"]
 
     def close(self):
         self._logged_channel.close()
