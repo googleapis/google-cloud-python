@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.28.0](https://github.com/googleapis/python-pubsub/compare/v2.27.3...v2.28.0) (2025-01-30)
+
+
+### Features
+
+* Add support for message transforms to Topic and Subscription ([#1274](https://github.com/googleapis/python-pubsub/issues/1274)) ([e5e2f3f](https://github.com/googleapis/python-pubsub/commit/e5e2f3f732f451d14dfb4c37ae979e5c04045305))
+
+
+### Bug Fixes
+
+* Get channel target for a gRPC request ([#1339](https://github.com/googleapis/python-pubsub/issues/1339)) ([16ea766](https://github.com/googleapis/python-pubsub/commit/16ea76611d121700a3f3119d18919063d12c81c1))
+* Set creds only if transport not provided ([#1348](https://github.com/googleapis/python-pubsub/issues/1348)) ([59965a4](https://github.com/googleapis/python-pubsub/commit/59965a4804a434467a47815cdbdd5ce31bbb3662))
+
 ## [2.27.3](https://github.com/googleapis/python-pubsub/compare/v2.27.2...v2.27.3) (2025-01-24)
 
 
