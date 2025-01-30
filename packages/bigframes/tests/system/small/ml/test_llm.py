@@ -868,7 +868,6 @@ def test_llm_palm_score_params(llm_fine_tune_df_default_index):
             "label",
             "evaluation_status",
         ],
-        index=6,
     )
 
 
@@ -928,7 +927,6 @@ def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name)
             "label",
             "evaluation_status",
         ],
-        index=6,
     )
 
 

@@ -298,7 +298,7 @@ def assert_pandas_df_equal_pca(actual, expected, **kwargs):
 def check_pandas_df_schema_and_index(
     pd_df: pd.DataFrame,
     columns: Iterable,
-    index: Union[int, Iterable],
+    index: Optional[Union[int, Iterable]] = None,
     col_exact: bool = True,
 ):
     """Check pandas df schema and index. But not the values.
@@ -306,7 +306,7 @@ def check_pandas_df_schema_and_index(
     Args:
         pd_df: the input pandas df
         columns: target columns to check with
-        index: int or Iterable. If int, only check the length (index size) of the df. If Iterable, check index values match
+        index: int or Iterable or None, default None. If int, only check the length (index size) of the df. If Iterable, check index values match. If None, skip checking index.
         col_exact: If True, check the columns param are exact match. Otherwise only check the df contains all of those columns
     """
     if col_exact:
@@ -314,7 +314,9 @@ def check_pandas_df_schema_and_index(
     else:
         assert set(columns) <= set(pd_df.columns)
 
-    if isinstance(index, int):
+    if index is None:
+        pass
+    elif isinstance(index, int):
         assert len(pd_df) == index
     elif isinstance(index, Iterable):
         assert list(pd_df.index) == list(index)
