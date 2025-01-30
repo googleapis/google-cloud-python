@@ -62,7 +62,10 @@ def import_default(module_name, force=False, default=None):
         return default
 
     name = default.__name__
-    module = __import__(module_name, {}, {}, [name])
+    try:
+        module = __import__(module_name, {}, {}, [name])
+    except ModuleNotFoundError:
+        return default
 
     return getattr(module, name, default)
 
