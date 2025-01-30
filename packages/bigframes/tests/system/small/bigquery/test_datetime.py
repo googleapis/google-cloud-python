@@ -15,6 +15,7 @@
 import typing
 
 import pandas as pd
+import pytest
 
 from bigframes import bigquery
 
@@ -32,6 +33,13 @@ def test_unix_seconds(scalars_dfs):
     pd.testing.assert_series_equal(actual_res, expected_res)
 
 
+def test_unix_seconds_incorrect_input_type_raise_error(scalars_dfs):
+    df, _ = scalars_dfs
+
+    with pytest.raises(TypeError):
+        bigquery.unix_seconds(df["string_col"])
+
+
 def test_unix_millis(scalars_dfs):
     bigframes_df, pandas_df = scalars_dfs
 
@@ -45,6 +53,13 @@ def test_unix_millis(scalars_dfs):
     pd.testing.assert_series_equal(actual_res, expected_res)
 
 
+def test_unix_millis_incorrect_input_type_raise_error(scalars_dfs):
+    df, _ = scalars_dfs
+
+    with pytest.raises(TypeError):
+        bigquery.unix_millis(df["string_col"])
+
+
 def test_unix_micros(scalars_dfs):
     bigframes_df, pandas_df = scalars_dfs
 
@@ -56,6 +71,13 @@ def test_unix_micros(scalars_dfs):
         .astype("Int64")
     )
     pd.testing.assert_series_equal(actual_res, expected_res)
+
+
+def test_unix_micros_incorrect_input_type_raise_error(scalars_dfs):
+    df, _ = scalars_dfs
+
+    with pytest.raises(TypeError):
+        bigquery.unix_micros(df["string_col"])
 
 
 def _to_unix_epoch(

@@ -43,7 +43,7 @@ class ToDatetimeOp(base_ops.UnaryOp):
     format: typing.Optional[str] = None
     unit: typing.Optional[str] = None
 
-    def output_type(self, *input_types):
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         if input_types[0] not in (
             dtypes.FLOAT_DTYPE,
             dtypes.INT_DTYPE,
@@ -59,7 +59,7 @@ class ToTimestampOp(base_ops.UnaryOp):
     format: typing.Optional[str] = None
     unit: typing.Optional[str] = None
 
-    def output_type(self, *input_types):
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         # Must be numeric or string
         if input_types[0] not in (
             dtypes.FLOAT_DTYPE,
@@ -75,7 +75,7 @@ class StrftimeOp(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "strftime"
     date_format: str
 
-    def output_type(self, *input_types):
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.STRING_DTYPE
 
 
@@ -83,7 +83,9 @@ class StrftimeOp(base_ops.UnaryOp):
 class UnixSeconds(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "unix_seconds"
 
-    def output_type(self, *input_types):
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is not dtypes.TIMESTAMP_DTYPE:
+            raise TypeError("expected timestamp input")
         return dtypes.INT_DTYPE
 
 
@@ -91,7 +93,9 @@ class UnixSeconds(base_ops.UnaryOp):
 class UnixMillis(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "unix_millis"
 
-    def output_type(self, *input_types):
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is not dtypes.TIMESTAMP_DTYPE:
+            raise TypeError("expected timestamp input")
         return dtypes.INT_DTYPE
 
 
@@ -99,5 +103,7 @@ class UnixMillis(base_ops.UnaryOp):
 class UnixMicros(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "unix_micros"
 
-    def output_type(self, *input_types):
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is not dtypes.TIMESTAMP_DTYPE:
+            raise TypeError("expected timestamp input")
         return dtypes.INT_DTYPE
