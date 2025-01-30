@@ -20626,6 +20626,7 @@ def test_bulk_insert_rest_call_success(request_type):
             "scheduling": {
                 "automatic_restart": True,
                 "availability_domain": 2002,
+                "host_error_timeout_seconds": 2811,
                 "instance_termination_action": "instance_termination_action_value",
                 "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
                 "location_hint": "location_hint_value",
@@ -22457,6 +22458,7 @@ def test_insert_rest_call_success(request_type):
         "scheduling": {
             "automatic_restart": True,
             "availability_domain": 2002,
+            "host_error_timeout_seconds": 2811,
             "instance_termination_action": "instance_termination_action_value",
             "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
@@ -25837,6 +25839,7 @@ def test_set_scheduling_rest_call_success(request_type):
     request_init["scheduling_resource"] = {
         "automatic_restart": True,
         "availability_domain": 2002,
+        "host_error_timeout_seconds": 2811,
         "instance_termination_action": "instance_termination_action_value",
         "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
         "location_hint": "location_hint_value",
@@ -28318,6 +28321,7 @@ def test_update_rest_call_success(request_type):
         "scheduling": {
             "automatic_restart": True,
             "availability_domain": 2002,
+            "host_error_timeout_seconds": 2811,
             "instance_termination_action": "instance_termination_action_value",
             "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
