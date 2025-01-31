@@ -557,7 +557,7 @@ def create_cloudstorage_subscription(
         # Min 1 minutes, max 10 minutes
         max_duration=max_duration,
         # Min 1 KB, max 10 GiB
-        max_bytes=2000,
+        max_bytes=10000000,
     )
 
     # Wrap the subscriber in a 'with' block to automatically call close() to
