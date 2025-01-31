@@ -88,6 +88,8 @@ def collect_benchmark_result(
         millis_files = sorted(path.rglob("*.slotmillis"))
         bq_seconds_files = sorted(path.rglob("*.bq_exec_time_seconds"))
         local_seconds_files = sorted(path.rglob("*.local_exec_time_seconds"))
+        query_char_count_files = sorted(path.rglob("*.query_char_count"))
+
         error_files = sorted(path.rglob("*.error"))
 
         if not (
@@ -95,15 +97,18 @@ def collect_benchmark_result(
             == len(millis_files)
             == len(local_seconds_files)
             == len(bq_seconds_files)
+            == len(query_char_count_files)
         ):
             raise ValueError(
-                "Mismatch in the number of report files for bytes, millis, and seconds."
+                "Mismatch in the number of report files for bytes, millis, seconds and query char count."
             )
 
         for idx in range(len(bytes_files)):
             bytes_file = bytes_files[idx]
             millis_file = millis_files[idx]
             bq_seconds_file = bq_seconds_files[idx]
+            query_char_count_file = query_char_count_files[idx]
+
             filename = bytes_file.relative_to(path).with_suffix("")
 
             if filename != millis_file.relative_to(path).with_suffix(
@@ -136,12 +141,17 @@ def collect_benchmark_result(
                 lines = file.read().splitlines()
                 bq_seconds = sum(float(line) for line in lines) / iterations
 
+            with open(query_char_count_file, "r") as file:
+                lines = file.read().splitlines()
+                query_char_count = sum(int(line) for line in lines) / iterations
+
             results_dict[str(filename)] = [
                 query_count,
                 total_bytes,
                 total_slot_millis,
                 local_seconds,
                 bq_seconds,
+                query_char_count,
             ]
     finally:
         for files_to_remove in (
@@ -149,6 +159,7 @@ def collect_benchmark_result(
             path.rglob("*.slotmillis"),
             path.rglob("*.local_exec_time_seconds"),
             path.rglob("*.bq_exec_time_seconds"),
+            path.rglob("*.query_char_count"),
             path.rglob("*.error"),
         ):
             for log_file in files_to_remove:
@@ -160,6 +171,7 @@ def collect_benchmark_result(
         "Slot_Millis",
         "Local_Execution_Time_Sec",
         "BigQuery_Execution_Time_Sec",
+        "Query_Char_Count",
     ]
 
     benchmark_metrics = pd.DataFrame.from_dict(
@@ -182,14 +194,18 @@ def collect_benchmark_result(
         )
         print(
             f"{index} - query count: {row['Query_Count']},"
+            f" query char count: {row['Query_Char_Count']},",
             f" bytes processed sum: {row['Bytes_Processed']},"
             f" slot millis sum: {row['Slot_Millis']},"
             f" local execution time: {formatted_local_exec_time} seconds,"
-            f" bigquery execution time: {round(row['BigQuery_Execution_Time_Sec'], 1)} seconds"
+            f" bigquery execution time: {round(row['BigQuery_Execution_Time_Sec'], 1)} seconds",
         )
 
     geometric_mean_queries = geometric_mean_excluding_zeros(
         benchmark_metrics["Query_Count"]
+    )
+    geometric_mean_query_char_count = geometric_mean_excluding_zeros(
+        benchmark_metrics["Query_Char_Count"]
     )
     geometric_mean_bytes = geometric_mean_excluding_zeros(
         benchmark_metrics["Bytes_Processed"]
@@ -206,6 +222,7 @@ def collect_benchmark_result(
 
     print(
         f"---Geometric mean of queries: {geometric_mean_queries}, "
+        f"Geometric mean of queries char counts: {geometric_mean_query_char_count}, "
         f"Geometric mean of bytes processed: {geometric_mean_bytes}, "
         f"Geometric mean of slot millis: {geometric_mean_slot_millis}, "
         f"Geometric mean of local execution time: {geometric_mean_local_seconds} seconds, "

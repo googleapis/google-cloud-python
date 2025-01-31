@@ -30,28 +30,31 @@ class ExecutionMetrics:
     slot_millis: int = 0
     bytes_processed: int = 0
     execution_secs: float = 0
+    query_char_count: int = 0
 
     def count_job_stats(self, query_job: bq_job.QueryJob):
         stats = get_performance_stats(query_job)
         if stats is not None:
-            bytes_processed, slot_millis, execution_secs = stats
+            bytes_processed, slot_millis, execution_secs, query_char_count = stats
             self.execution_count += 1
             self.bytes_processed += bytes_processed
             self.slot_millis += slot_millis
             self.execution_secs += execution_secs
+            self.query_char_count += query_char_count
             if LOGGING_NAME_ENV_VAR in os.environ:
                 # when running notebooks via pytest nbmake
-                write_stats_to_disk(bytes_processed, slot_millis, execution_secs)
+                write_stats_to_disk(
+                    bytes_processed, slot_millis, execution_secs, query_char_count
+                )
 
 
 def get_performance_stats(
     query_job: bigquery.QueryJob,
-) -> Optional[Tuple[int, int, float]]:
+) -> Optional[Tuple[int, int, float, int]]:
     """Parse the query job for performance stats.
 
     Return None if the stats do not reflect real work done in bigquery.
     """
-
     if (
         query_job.configuration.dry_run
         or query_job.created is None
@@ -68,12 +71,13 @@ def get_performance_stats(
         return None  # filter out mocks
 
     execution_secs = (query_job.ended - query_job.created).total_seconds()
+    query_char_count = len(query_job.query)
 
-    return bytes_processed, slot_millis, execution_secs
+    return bytes_processed, slot_millis, execution_secs, query_char_count
 
 
 def write_stats_to_disk(
-    bytes_processed: int, slot_millis: int, exec_seconds: Optional[float]
+    bytes_processed: int, slot_millis: int, exec_seconds: float, query_char_count: int
 ):
     """For pytest runs only, log information about the query job
     to a file in order to create a performance report.
@@ -103,3 +107,10 @@ def write_stats_to_disk(
     )
     with open(exec_time_file, "a") as f:
         f.write(str(exec_seconds) + "\n")
+
+    # store length of query
+    query_char_count_file = os.path.join(
+        current_directory, test_name + ".query_char_count"
+    )
+    with open(query_char_count_file, "a") as f:
+        f.write(str(query_char_count) + "\n")
