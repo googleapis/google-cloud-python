@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.netapp.v1',
+    package="google.cloud.netapp.v1",
     manifest={
-        'ListQuotaRulesRequest',
-        'ListQuotaRulesResponse',
-        'GetQuotaRuleRequest',
-        'CreateQuotaRuleRequest',
-        'UpdateQuotaRuleRequest',
-        'DeleteQuotaRuleRequest',
-        'QuotaRule',
+        "ListQuotaRulesRequest",
+        "ListQuotaRulesResponse",
+        "GetQuotaRuleRequest",
+        "CreateQuotaRuleRequest",
+        "UpdateQuotaRuleRequest",
+        "DeleteQuotaRuleRequest",
+        "QuotaRule",
     },
 )
 
@@ -98,10 +96,10 @@ class ListQuotaRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    quota_rules: MutableSequence['QuotaRule'] = proto.RepeatedField(
+    quota_rules: MutableSequence["QuotaRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='QuotaRule',
+        message="QuotaRule",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -150,10 +148,10 @@ class CreateQuotaRuleRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    quota_rule: 'QuotaRule' = proto.Field(
+    quota_rule: "QuotaRule" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='QuotaRule',
+        message="QuotaRule",
     )
     quota_rule_id: str = proto.Field(
         proto.STRING,
@@ -181,10 +179,10 @@ class UpdateQuotaRuleRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    quota_rule: 'QuotaRule' = proto.Field(
+    quota_rule: "QuotaRule" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='QuotaRule',
+        message="QuotaRule",
     )
 
 
@@ -231,6 +229,7 @@ class QuotaRule(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels of the quota rule
     """
+
     class Type(proto.Enum):
         r"""Types of Quota Rule
 

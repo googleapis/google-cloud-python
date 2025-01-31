@@ -38,6 +38,8 @@ from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
 from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import kms
+from google.cloud.netapp_v1.types import quota_rule
+from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
 from google.cloud.netapp_v1.types import snapshot
@@ -126,6 +128,14 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_quota_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_quota_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_replication(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -195,6 +205,14 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_delete_kms_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_quota_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_quota_rule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -286,6 +304,14 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_quota_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_quota_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_replication(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -355,6 +381,14 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_list_kms_configs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_quota_rules(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_quota_rules(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -475,6 +509,14 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_update_kms_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_quota_rule(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_quota_rule(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -649,6 +691,31 @@ class NetAppRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_kms_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_quota_rule(
+        self,
+        request: gcn_quota_rule.CreateQuotaRuleRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_quota_rule.CreateQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_quota_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_create_quota_rule(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_quota_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -871,6 +938,31 @@ class NetAppRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_kms_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_quota_rule(
+        self,
+        request: quota_rule.DeleteQuotaRuleRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        quota_rule.DeleteQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_quota_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_delete_quota_rule(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_quota_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -1140,6 +1232,29 @@ class NetAppRestInterceptor:
         """
         return response
 
+    def pre_get_quota_rule(
+        self,
+        request: quota_rule.GetQuotaRuleRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[quota_rule.GetQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_quota_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_get_quota_rule(
+        self, response: quota_rule.QuotaRule
+    ) -> quota_rule.QuotaRule:
+        """Post-rpc interceptor for get_quota_rule
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_replication(
         self,
         request: replication.GetReplicationRequest,
@@ -1347,6 +1462,31 @@ class NetAppRestInterceptor:
         self, response: kms.ListKmsConfigsResponse
     ) -> kms.ListKmsConfigsResponse:
         """Post-rpc interceptor for list_kms_configs
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_quota_rules(
+        self,
+        request: quota_rule.ListQuotaRulesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        quota_rule.ListQuotaRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_quota_rules
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_list_quota_rules(
+        self, response: quota_rule.ListQuotaRulesResponse
+    ) -> quota_rule.ListQuotaRulesResponse:
+        """Post-rpc interceptor for list_quota_rules
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -1717,6 +1857,31 @@ class NetAppRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_kms_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_quota_rule(
+        self,
+        request: gcn_quota_rule.UpdateQuotaRuleRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_quota_rule.UpdateQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_quota_rule
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_update_quota_rule(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_quota_rule
 
         Override in a subclass to manipulate the response
         after it is returned by the NetApp server but before
@@ -2917,6 +3082,160 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     extra={
                         "serviceName": "google.cloud.netapp.v1.NetApp",
                         "rpcName": "CreateKmsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateQuotaRule(
+        _BaseNetAppRestTransport._BaseCreateQuotaRule, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.CreateQuotaRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_quota_rule.CreateQuotaRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create quota rule method over HTTP.
+
+            Args:
+                request (~.gcn_quota_rule.CreateQuotaRuleRequest):
+                    The request object. CreateQuotaRuleRequest for creating a
+                quota rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseCreateQuotaRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_quota_rule(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseCreateQuotaRule._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseNetAppRestTransport._BaseCreateQuotaRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseCreateQuotaRule._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateQuotaRule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateQuotaRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._CreateQuotaRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_quota_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_quota_rule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateQuotaRule",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -4257,6 +4576,154 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     extra={
                         "serviceName": "google.cloud.netapp.v1.NetApp",
                         "rpcName": "DeleteKmsConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteQuotaRule(
+        _BaseNetAppRestTransport._BaseDeleteQuotaRule, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.DeleteQuotaRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: quota_rule.DeleteQuotaRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete quota rule method over HTTP.
+
+            Args:
+                request (~.quota_rule.DeleteQuotaRuleRequest):
+                    The request object. DeleteQuotaRuleRequest for deleting a
+                single quota rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_quota_rule(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteQuotaRule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteQuotaRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._DeleteQuotaRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_quota_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_quota_rule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteQuotaRule",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -5881,6 +6348,153 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
+    class _GetQuotaRule(_BaseNetAppRestTransport._BaseGetQuotaRule, NetAppRestStub):
+        def __hash__(self):
+            return hash("NetAppRestTransport.GetQuotaRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: quota_rule.GetQuotaRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> quota_rule.QuotaRule:
+            r"""Call the get quota rule method over HTTP.
+
+            Args:
+                request (~.quota_rule.GetQuotaRuleRequest):
+                    The request object. GetQuotaRuleRequest for getting a
+                quota rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.quota_rule.QuotaRule:
+                    QuotaRule specifies the maximum disk
+                space a user or group can use within a
+                volume. They can be used for creating
+                default and individual quota rules.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseGetQuotaRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_quota_rule(request, metadata)
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseGetQuotaRule._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseGetQuotaRule._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetQuotaRule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetQuotaRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._GetQuotaRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = quota_rule.QuotaRule()
+            pb_resp = quota_rule.QuotaRule.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_quota_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = quota_rule.QuotaRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_quota_rule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetQuotaRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetReplication(_BaseNetAppRestTransport._BaseGetReplication, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.GetReplication")
@@ -7195,6 +7809,155 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     extra={
                         "serviceName": "google.cloud.netapp.v1.NetApp",
                         "rpcName": "ListKmsConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListQuotaRules(_BaseNetAppRestTransport._BaseListQuotaRules, NetAppRestStub):
+        def __hash__(self):
+            return hash("NetAppRestTransport.ListQuotaRules")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: quota_rule.ListQuotaRulesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> quota_rule.ListQuotaRulesResponse:
+            r"""Call the list quota rules method over HTTP.
+
+            Args:
+                request (~.quota_rule.ListQuotaRulesRequest):
+                    The request object. ListQuotaRulesRequest for listing
+                quota rules.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.quota_rule.ListQuotaRulesResponse:
+                    ListQuotaRulesResponse is the
+                response to a ListQuotaRulesRequest.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseListQuotaRules._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_quota_rules(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseListQuotaRules._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseListQuotaRules._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListQuotaRules",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListQuotaRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._ListQuotaRules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = quota_rule.ListQuotaRulesResponse()
+            pb_resp = quota_rule.ListQuotaRulesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_quota_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = quota_rule.ListQuotaRulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_quota_rules",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListQuotaRules",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -9473,6 +10236,160 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
+    class _UpdateQuotaRule(
+        _BaseNetAppRestTransport._BaseUpdateQuotaRule, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.UpdateQuotaRule")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_quota_rule.UpdateQuotaRuleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update quota rule method over HTTP.
+
+            Args:
+                request (~.gcn_quota_rule.UpdateQuotaRuleRequest):
+                    The request object. UpdateQuotaRuleRequest for updating a
+                quota rule.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_quota_rule(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateQuotaRule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateQuotaRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._UpdateQuotaRule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_quota_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_quota_rule",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateQuotaRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateReplication(
         _BaseNetAppRestTransport._BaseUpdateReplication, NetAppRestStub
     ):
@@ -10441,6 +11358,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._CreateKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_quota_rule(
+        self,
+    ) -> Callable[[gcn_quota_rule.CreateQuotaRuleRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_replication(
         self,
     ) -> Callable[[gcn_replication.CreateReplicationRequest], operations_pb2.Operation]:
@@ -10515,6 +11440,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_quota_rule(
+        self,
+    ) -> Callable[[quota_rule.DeleteQuotaRuleRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_replication(
@@ -10603,6 +11536,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._GetKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_quota_rule(
+        self,
+    ) -> Callable[[quota_rule.GetQuotaRuleRequest], quota_rule.QuotaRule]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_replication(
         self,
     ) -> Callable[[replication.GetReplicationRequest], replication.Replication]:
@@ -10679,6 +11620,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListKmsConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_quota_rules(
+        self,
+    ) -> Callable[
+        [quota_rule.ListQuotaRulesRequest], quota_rule.ListQuotaRulesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListQuotaRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_replications(
@@ -10813,6 +11764,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_quota_rule(
+        self,
+    ) -> Callable[[gcn_quota_rule.UpdateQuotaRuleRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_replication(

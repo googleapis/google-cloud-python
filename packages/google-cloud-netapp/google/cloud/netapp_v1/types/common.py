@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
     package="google.cloud.netapp.v1",
     manifest={
         "ServiceLevel",
+        "FlexPerformance",
         "EncryptionType",
         "DirectoryServiceType",
         "LocationMetadata",
@@ -50,6 +51,22 @@ class ServiceLevel(proto.Enum):
     EXTREME = 2
     STANDARD = 3
     FLEX = 4
+
+
+class FlexPerformance(proto.Enum):
+    r"""Flex Storage Pool performance.
+
+    Values:
+        FLEX_PERFORMANCE_UNSPECIFIED (0):
+            Unspecified flex performance.
+        FLEX_PERFORMANCE_DEFAULT (1):
+            Flex Storage Pool with default performance.
+        FLEX_PERFORMANCE_CUSTOM (2):
+            Flex Storage Pool with custom performance.
+    """
+    FLEX_PERFORMANCE_UNSPECIFIED = 0
+    FLEX_PERFORMANCE_DEFAULT = 1
+    FLEX_PERFORMANCE_CUSTOM = 2
 
 
 class EncryptionType(proto.Enum):
@@ -92,12 +109,22 @@ class LocationMetadata(proto.Message):
         supported_service_levels (MutableSequence[google.cloud.netapp_v1.types.ServiceLevel]):
             Output only. Supported service levels in a
             location.
+        supported_flex_performance (MutableSequence[google.cloud.netapp_v1.types.FlexPerformance]):
+            Output only. Supported flex performance in a
+            location.
     """
 
     supported_service_levels: MutableSequence["ServiceLevel"] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum="ServiceLevel",
+    )
+    supported_flex_performance: MutableSequence[
+        "FlexPerformance"
+    ] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum="FlexPerformance",
     )
 
 

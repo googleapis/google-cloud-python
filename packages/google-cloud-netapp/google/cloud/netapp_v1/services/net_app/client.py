@@ -76,6 +76,8 @@ from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
 from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import cloud_netapp_service, common, kms
+from google.cloud.netapp_v1.types import quota_rule
+from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
 from google.cloud.netapp_v1.types import snapshot
@@ -343,6 +345,30 @@ class NetAppClient(metaclass=NetAppClientMeta):
         """Parses a network path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def quota_rule_path(
+        project: str,
+        location: str,
+        volume: str,
+        quota_rule: str,
+    ) -> str:
+        """Returns a fully-qualified quota_rule string."""
+        return "projects/{project}/locations/{location}/volumes/{volume}/quotaRules/{quota_rule}".format(
+            project=project,
+            location=location,
+            volume=volume,
+            quota_rule=quota_rule,
+        )
+
+    @staticmethod
+    def parse_quota_rule_path(path: str) -> Dict[str, str]:
+        """Parses a quota_rule path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/volumes/(?P<volume>.+?)/quotaRules/(?P<quota_rule>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -7641,6 +7667,647 @@ class NetAppClient(metaclass=NetAppClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_backup_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_quota_rules(
+        self,
+        request: Optional[Union[quota_rule.ListQuotaRulesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListQuotaRulesPager:
+        r"""Returns list of all quota rules in a location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_list_quota_rules():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ListQuotaRulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_quota_rules(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.ListQuotaRulesRequest, dict]):
+                The request object. ListQuotaRulesRequest for listing
+                quota rules.
+            parent (str):
+                Required. Parent value for
+                ListQuotaRulesRequest
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.netapp_v1.services.net_app.pagers.ListQuotaRulesPager:
+                ListQuotaRulesResponse is the
+                response to a ListQuotaRulesRequest.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, quota_rule.ListQuotaRulesRequest):
+            request = quota_rule.ListQuotaRulesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_quota_rules]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListQuotaRulesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_quota_rule(
+        self,
+        request: Optional[Union[quota_rule.GetQuotaRuleRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> quota_rule.QuotaRule:
+        r"""Returns details of the specified quota rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_get_quota_rule():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.GetQuotaRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_quota_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.GetQuotaRuleRequest, dict]):
+                The request object. GetQuotaRuleRequest for getting a
+                quota rule.
+            name (str):
+                Required. Name of the quota rule
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.netapp_v1.types.QuotaRule:
+                QuotaRule specifies the maximum disk
+                space a user or group can use within a
+                volume. They can be used for creating
+                default and individual quota rules.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, quota_rule.GetQuotaRuleRequest):
+            request = quota_rule.GetQuotaRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_quota_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_quota_rule(
+        self,
+        request: Optional[Union[gcn_quota_rule.CreateQuotaRuleRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        quota_rule: Optional[gcn_quota_rule.QuotaRule] = None,
+        quota_rule_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new quota rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_create_quota_rule():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                quota_rule = netapp_v1.QuotaRule()
+                quota_rule.type_ = "DEFAULT_GROUP_QUOTA"
+                quota_rule.disk_limit_mib = 1472
+
+                request = netapp_v1.CreateQuotaRuleRequest(
+                    parent="parent_value",
+                    quota_rule=quota_rule,
+                    quota_rule_id="quota_rule_id_value",
+                )
+
+                # Make the request
+                operation = client.create_quota_rule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.CreateQuotaRuleRequest, dict]):
+                The request object. CreateQuotaRuleRequest for creating a
+                quota rule.
+            parent (str):
+                Required. Parent value for
+                CreateQuotaRuleRequest
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            quota_rule (google.cloud.netapp_v1.types.QuotaRule):
+                Required. Fields of the to be created
+                quota rule.
+
+                This corresponds to the ``quota_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            quota_rule_id (str):
+                Required. ID of the quota rule to
+                create. Must be unique within the parent
+                resource. Must contain only letters,
+                numbers, underscore and hyphen, with the
+                first character a letter or underscore,
+                the last a letter or underscore or a
+                number, and a 63 character maximum.
+
+                This corresponds to the ``quota_rule_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.netapp_v1.types.QuotaRule` QuotaRule specifies the maximum disk space a user or group can use within a
+                   volume. They can be used for creating default and
+                   individual quota rules.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, quota_rule, quota_rule_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_quota_rule.CreateQuotaRuleRequest):
+            request = gcn_quota_rule.CreateQuotaRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if quota_rule is not None:
+                request.quota_rule = quota_rule
+            if quota_rule_id is not None:
+                request.quota_rule_id = quota_rule_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_quota_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_quota_rule.QuotaRule,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_quota_rule(
+        self,
+        request: Optional[Union[gcn_quota_rule.UpdateQuotaRuleRequest, dict]] = None,
+        *,
+        quota_rule: Optional[gcn_quota_rule.QuotaRule] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates a quota rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_update_quota_rule():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                quota_rule = netapp_v1.QuotaRule()
+                quota_rule.type_ = "DEFAULT_GROUP_QUOTA"
+                quota_rule.disk_limit_mib = 1472
+
+                request = netapp_v1.UpdateQuotaRuleRequest(
+                    quota_rule=quota_rule,
+                )
+
+                # Make the request
+                operation = client.update_quota_rule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.UpdateQuotaRuleRequest, dict]):
+                The request object. UpdateQuotaRuleRequest for updating a
+                quota rule.
+            quota_rule (google.cloud.netapp_v1.types.QuotaRule):
+                Required. The quota rule being
+                updated
+
+                This corresponds to the ``quota_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the Quota Rule resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.netapp_v1.types.QuotaRule` QuotaRule specifies the maximum disk space a user or group can use within a
+                   volume. They can be used for creating default and
+                   individual quota rules.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([quota_rule, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gcn_quota_rule.UpdateQuotaRuleRequest):
+            request = gcn_quota_rule.UpdateQuotaRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if quota_rule is not None:
+                request.quota_rule = quota_rule
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_quota_rule]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("quota_rule.name", request.quota_rule.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcn_quota_rule.QuotaRule,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_quota_rule(
+        self,
+        request: Optional[Union[quota_rule.DeleteQuotaRuleRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a quota rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            def sample_delete_quota_rule():
+                # Create a client
+                client = netapp_v1.NetAppClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.DeleteQuotaRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_quota_rule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.netapp_v1.types.DeleteQuotaRuleRequest, dict]):
+                The request object. DeleteQuotaRuleRequest for deleting a
+                single quota rule.
+            name (str):
+                Required. Name of the quota rule.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, quota_rule.DeleteQuotaRuleRequest):
+            request = quota_rule.DeleteQuotaRuleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_quota_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
