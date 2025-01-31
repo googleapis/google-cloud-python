@@ -22,14 +22,15 @@ from typing import Any, cast, Dict, Iterable, Optional, Union
 
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import standard_sql
+from google.cloud.bigquery import enums
 from google.cloud.bigquery.enums import StandardSqlTypeNames
 
 
 _STRUCT_TYPES = ("RECORD", "STRUCT")
 
 # SQL types reference:
-# https://cloud.google.com/bigquery/data-types#legacy_sql_data_types
-# https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
+# LEGACY SQL: https://cloud.google.com/bigquery/data-types#legacy_sql_data_types
+# GoogleSQL: https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
 LEGACY_TO_STANDARD_TYPES = {
     "STRING": StandardSqlTypeNames.STRING,
     "BYTES": StandardSqlTypeNames.BYTES,
@@ -48,6 +49,7 @@ LEGACY_TO_STANDARD_TYPES = {
     "DATE": StandardSqlTypeNames.DATE,
     "TIME": StandardSqlTypeNames.TIME,
     "DATETIME": StandardSqlTypeNames.DATETIME,
+    "FOREIGN": StandardSqlTypeNames.FOREIGN,
     # no direct conversion from ARRAY, the latter is represented by mode="REPEATED"
 }
 """String names of the legacy SQL types to integer codes of Standard SQL standard_sql."""
@@ -166,6 +168,35 @@ class SchemaField(object):
             the type is RANGE, this field is required. Possible values for the
             field element type of a RANGE include `DATE`, `DATETIME` and
             `TIMESTAMP`.
+
+        rounding_mode: Union[enums.RoundingMode, str, None]
+            Specifies the rounding mode to be used when storing values of
+            NUMERIC and BIGNUMERIC type.
+
+            Unspecified will default to using ROUND_HALF_AWAY_FROM_ZERO.
+            ROUND_HALF_AWAY_FROM_ZERO rounds half values away from zero
+            when applying precision and scale upon writing of NUMERIC and BIGNUMERIC
+            values.
+
+            For Scale: 0
+            1.1, 1.2, 1.3, 1.4 => 1
+            1.5, 1.6, 1.7, 1.8, 1.9 => 2
+
+            ROUND_HALF_EVEN rounds half values to the nearest even value
+            when applying precision and scale upon writing of NUMERIC and BIGNUMERIC
+            values.
+
+            For Scale: 0
+            1.1, 1.2, 1.3, 1.4 => 1
+            1.5 => 2
+            1.6, 1.7, 1.8, 1.9 => 2
+            2.5 => 2
+
+        foreign_type_definition: Optional[str]
+            Definition of the foreign data type.
+
+            Only valid for top-level schema fields (not nested fields).
+            If the type is FOREIGN, this field is required.
     """
 
     def __init__(
@@ -181,11 +212,14 @@ class SchemaField(object):
         scale: Union[int, _DefaultSentinel] = _DEFAULT_VALUE,
         max_length: Union[int, _DefaultSentinel] = _DEFAULT_VALUE,
         range_element_type: Union[FieldElementType, str, None] = None,
+        rounding_mode: Union[enums.RoundingMode, str, None] = None,
+        foreign_type_definition: Optional[str] = None,
     ):
         self._properties: Dict[str, Any] = {
             "name": name,
             "type": field_type,
         }
+        self._properties["name"] = name
         if mode is not None:
             self._properties["mode"] = mode.upper()
         if description is not _DEFAULT_VALUE:
@@ -206,6 +240,11 @@ class SchemaField(object):
             self._properties["rangeElementType"] = {"type": range_element_type}
         if isinstance(range_element_type, FieldElementType):
             self._properties["rangeElementType"] = range_element_type.to_api_repr()
+        if rounding_mode is not None:
+            self._properties["roundingMode"] = rounding_mode
+        if foreign_type_definition is not None:
+            self._properties["foreignTypeDefinition"] = foreign_type_definition
+
         if fields:  # Don't set the property if it's not set.
             self._properties["fields"] = [field.to_api_repr() for field in fields]
 
@@ -303,6 +342,22 @@ class SchemaField(object):
         if self._properties.get("rangeElementType"):
             ret = self._properties.get("rangeElementType")
             return FieldElementType.from_api_repr(ret)
+
+    @property
+    def rounding_mode(self):
+        """Enum that specifies the rounding mode to be used when storing values of
+        NUMERIC and BIGNUMERIC type.
+        """
+        return self._properties.get("roundingMode")
+
+    @property
+    def foreign_type_definition(self):
+        """Definition of the foreign data type.
+
+        Only valid for top-level schema fields (not nested fields).
+        If the type is FOREIGN, this field is required.
+        """
+        return self._properties.get("foreignTypeDefinition")
 
     @property
     def fields(self):

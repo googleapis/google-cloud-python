@@ -19,6 +19,7 @@ from unittest import mock
 import pytest
 
 from google.cloud import bigquery
+from google.cloud.bigquery import enums
 from google.cloud.bigquery.standard_sql import StandardSqlStructType
 from google.cloud.bigquery import schema
 from google.cloud.bigquery.schema import PolicyTagList
@@ -49,6 +50,8 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.fields, ())
         self.assertIsNone(field.policy_tags)
         self.assertIsNone(field.default_value_expression)
+        self.assertEqual(field.rounding_mode, None)
+        self.assertEqual(field.foreign_type_definition, None)
 
     def test_constructor_explicit(self):
         FIELD_DEFAULT_VALUE_EXPRESSION = "This is the default value for this field"
@@ -64,6 +67,8 @@ class TestSchemaField(unittest.TestCase):
                 )
             ),
             default_value_expression=FIELD_DEFAULT_VALUE_EXPRESSION,
+            rounding_mode=enums.RoundingMode.ROUNDING_MODE_UNSPECIFIED,
+            foreign_type_definition="INTEGER",
         )
         self.assertEqual(field.name, "test")
         self.assertEqual(field.field_type, "STRING")
@@ -80,6 +85,8 @@ class TestSchemaField(unittest.TestCase):
                 )
             ),
         )
+        self.assertEqual(field.rounding_mode, "ROUNDING_MODE_UNSPECIFIED")
+        self.assertEqual(field.foreign_type_definition, "INTEGER")
 
     def test_constructor_explicit_none(self):
         field = self._make_one("test", "STRING", description=None, policy_tags=None)
@@ -137,8 +144,16 @@ class TestSchemaField(unittest.TestCase):
             {"names": ["foo", "bar"]},
         )
 
+        ROUNDINGMODE = enums.RoundingMode.ROUNDING_MODE_UNSPECIFIED
+
         field = self._make_one(
-            "foo", "INTEGER", "NULLABLE", description="hello world", policy_tags=policy
+            "foo",
+            "INTEGER",
+            "NULLABLE",
+            description="hello world",
+            policy_tags=policy,
+            rounding_mode=ROUNDINGMODE,
+            foreign_type_definition=None,
         )
         self.assertEqual(
             field.to_api_repr(),
@@ -148,6 +163,7 @@ class TestSchemaField(unittest.TestCase):
                 "type": "INTEGER",
                 "description": "hello world",
                 "policyTags": {"names": ["foo", "bar"]},
+                "roundingMode": "ROUNDING_MODE_UNSPECIFIED",
             },
         )
 
@@ -181,6 +197,7 @@ class TestSchemaField(unittest.TestCase):
                 "description": "test_description",
                 "name": "foo",
                 "type": "record",
+                "roundingMode": "ROUNDING_MODE_UNSPECIFIED",
             }
         )
         self.assertEqual(field.name, "foo")
@@ -192,6 +209,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.fields[0].field_type, "INTEGER")
         self.assertEqual(field.fields[0].mode, "NULLABLE")
         self.assertEqual(field.range_element_type, None)
+        self.assertEqual(field.rounding_mode, "ROUNDING_MODE_UNSPECIFIED")
 
     def test_from_api_repr_policy(self):
         field = self._get_target_class().from_api_repr(
@@ -282,6 +300,28 @@ class TestSchemaField(unittest.TestCase):
         fields = (sub_field1, sub_field2)
         schema_field = self._make_one("boat", "RECORD", fields=fields)
         self.assertEqual(schema_field.fields, fields)
+
+    def test_roundingmode_property_str(self):
+        ROUNDINGMODE = "ROUND_HALF_AWAY_FROM_ZERO"
+        schema_field = self._make_one("test", "STRING", rounding_mode=ROUNDINGMODE)
+        self.assertEqual(schema_field.rounding_mode, ROUNDINGMODE)
+
+        del schema_field
+        schema_field = self._make_one("test", "STRING")
+        schema_field._properties["roundingMode"] = ROUNDINGMODE
+        self.assertEqual(schema_field.rounding_mode, ROUNDINGMODE)
+
+    def test_foreign_type_definition_property_str(self):
+        FOREIGN_TYPE_DEFINITION = "INTEGER"
+        schema_field = self._make_one(
+            "test", "STRING", foreign_type_definition=FOREIGN_TYPE_DEFINITION
+        )
+        self.assertEqual(schema_field.foreign_type_definition, FOREIGN_TYPE_DEFINITION)
+
+        del schema_field
+        schema_field = self._make_one("test", "STRING")
+        schema_field._properties["foreignTypeDefinition"] = FOREIGN_TYPE_DEFINITION
+        self.assertEqual(schema_field.foreign_type_definition, FOREIGN_TYPE_DEFINITION)
 
     def test_to_standard_sql_simple_type(self):
         examples = (
@@ -456,6 +496,20 @@ class TestSchemaField(unittest.TestCase):
             standard_field.type.type_kind,
             bigquery.StandardSqlTypeNames.TYPE_KIND_UNSPECIFIED,
         )
+
+    def test_to_standard_sql_foreign_type_valid(self):
+        legacy_type = "FOREIGN"
+        standard_type = bigquery.StandardSqlTypeNames.FOREIGN
+        foreign_type_definition = "INTEGER"
+
+        field = self._make_one(
+            "some_field",
+            field_type=legacy_type,
+            foreign_type_definition=foreign_type_definition,
+        )
+        standard_field = field.to_standard_sql()
+        self.assertEqual(standard_field.name, "some_field")
+        self.assertEqual(standard_field.type.type_kind, standard_type)
 
     def test___eq___wrong_type(self):
         field = self._make_one("test", "STRING")
