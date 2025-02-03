@@ -245,6 +245,8 @@ def merge_select_select(_, **kwargs):
         ops.InSubquery,
         ops.Unnest,
         ops.Impure,
+        # This is used for remote functions, which we don't want to copy
+        ops.ScalarUDF,
     )
     if _.find_below(blocking, filter=ops.Value):
         return _

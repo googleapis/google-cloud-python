@@ -18,7 +18,7 @@ import abc
 import dataclasses
 import itertools
 import typing
-from typing import Mapping, TypeVar, Union
+from typing import Generator, Mapping, TypeVar, Union
 
 import pandas as pd
 
@@ -156,6 +156,16 @@ class Expression(abc.ABC):
         return ()
 
     @property
+    def children(self) -> typing.Tuple[Expression, ...]:
+        return ()
+
+    @property
+    def expensive(self) -> bool:
+        return any(
+            isinstance(ex, OpExpression) and ex.op.expensive for ex in self.walk()
+        )
+
+    @property
     @abc.abstractmethod
     def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
         ...
@@ -215,6 +225,11 @@ class Expression(abc.ABC):
     def is_identity(self) -> bool:
         """True for identity operation that does not transform input."""
         return False
+
+    def walk(self) -> Generator[Expression, None, None]:
+        yield self
+        for child in self.children:
+            yield from child.children
 
 
 @dataclasses.dataclass(frozen=True)
@@ -388,6 +403,10 @@ class OpExpression(Expression):
     @property
     def is_const(self) -> bool:
         return all(child.is_const for child in self.inputs)
+
+    @property
+    def children(self):
+        return self.inputs
 
     def output_type(
         self, input_types: dict[ids.ColumnId, dtypes.ExpressionType]

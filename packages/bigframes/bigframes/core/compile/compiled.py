@@ -110,12 +110,19 @@ class UnorderedIR:
         expression_id_pairs: typing.Tuple[typing.Tuple[ex.Expression, str], ...],
     ) -> UnorderedIR:
         """Apply an expression to the ArrayValue and assign the output to a column."""
+        cannot_inline = any(expr.expensive for expr, _ in expression_id_pairs)
+
         bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
         new_values = [
             op_compiler.compile_expression(expression, bindings).name(id)
             for expression, id in expression_id_pairs
         ]
-        return UnorderedIR(self._table, (*self._columns, *new_values))
+        result = UnorderedIR(self._table, (*self._columns, *new_values))
+        if cannot_inline:
+            return result._reproject_to_table()
+        else:
+            # Cheap ops can defer "SELECT" and inline into later ops
+            return result
 
     def selection(
         self,
@@ -174,13 +181,12 @@ class UnorderedIR:
         Returns:
             An ibis expression representing the data help by the ArrayValue object.
         """
-        columns = list(self._columns)
         # Special case for empty tables, since we can't create an empty
         # projection.
-        if not columns:
+        if not self._columns:
             return bigframes_vendored.ibis.memtable([])
 
-        table = self._table.select(columns)
+        table = self._table.select(self._columns)
         if fraction is not None:
             table = table.filter(
                 bigframes_vendored.ibis.random() < ibis_types.literal(fraction)

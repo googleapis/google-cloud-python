@@ -25,6 +25,10 @@ class RemoteFunctionOp(base_ops.UnaryOp):
     func: typing.Callable
     apply_on_null: bool
 
+    @property
+    def expensive(self) -> bool:
+        return True
+
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
         if hasattr(self.func, "output_dtype"):
@@ -45,6 +49,10 @@ class BinaryRemoteFunctionOp(base_ops.BinaryOp):
     name: typing.ClassVar[str] = "binary_remote_function"
     func: typing.Callable
 
+    @property
+    def expensive(self) -> bool:
+        return True
+
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
         if hasattr(self.func, "output_dtype"):
@@ -64,6 +72,10 @@ class BinaryRemoteFunctionOp(base_ops.BinaryOp):
 class NaryRemoteFunctionOp(base_ops.NaryOp):
     name: typing.ClassVar[str] = "nary_remote_function"
     func: typing.Callable
+
+    @property
+    def expensive(self) -> bool:
+        return True
 
     def output_type(self, *input_types):
         # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method

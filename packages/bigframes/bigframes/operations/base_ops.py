@@ -48,6 +48,11 @@ class RowOp(typing.Protocol):
         """Whether the operation is deterministic" (given deterministic inputs)"""
         ...
 
+    @property
+    def expensive(self) -> bool:
+        """Whether the operation is expensive to calculate. Such ops shouldn't be inlined if referenced multiple places."""
+        ...
+
 
 @dataclasses.dataclass(frozen=True)
 class ScalarOp:
@@ -72,6 +77,10 @@ class ScalarOp:
     def deterministic(self) -> bool:
         """Whether the operation is deterministic" (given deterministic inputs)"""
         return True
+
+    @property
+    def expensive(self) -> bool:
+        return False
 
 
 @dataclasses.dataclass(frozen=True)
