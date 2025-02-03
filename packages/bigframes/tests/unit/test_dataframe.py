@@ -41,6 +41,15 @@ def test_dataframe_repr_with_uninitialized_object():
     assert "DataFrame" in got
 
 
+def test_dataframe_setattr_with_uninitialized_object():
+    """Ensures DataFrame can be subclassed without trying to set attributes as columns."""
+    # Avoid calling __init__ since it might be called later in a subclass.
+    # https://stackoverflow.com/a/6384982/101923
+    dataframe = bigframes.dataframe.DataFrame.__new__(bigframes.dataframe.DataFrame)
+    dataframe.lineage = "my-test-value"
+    assert dataframe.lineage == "my-test-value"  # Should just be a regular attribute.
+
+
 def test_dataframe_to_gbq_invalid_destination(monkeypatch: pytest.MonkeyPatch):
     dataframe = resources.create_dataframe(monkeypatch)
 
