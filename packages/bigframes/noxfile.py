@@ -34,6 +34,16 @@ ISORT_VERSION = "isort==5.12.0"
 # TODO: switch to 3.13 once remote functions / cloud run adds a runtime for it (internal issue 333742751)
 LATEST_FULLY_SUPPORTED_PYTHON = "3.12"
 
+# Notebook tests should match colab and BQ Studio.
+# Check with import sys; sys.version_info
+# on a fresh notebook runtime.
+COLAB_AND_BQ_STUDIO_PYTHON_VERSIONS = [
+    # BQ Studio
+    "3.10",
+    # colab.research.google.com
+    "3.11",
+]
+
 # pytest-retry is not yet compatible with pytest 8.x.
 # https://github.com/str0zzapreti/pytest-retry/issues/32
 PYTEST_VERSION = "pytest<8.0.0dev"
@@ -64,8 +74,9 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {"3.12": ["polars"]}
 
-# There are 4 different ibis-framework 9.x versions we want to test against.
-# 3.10 is needed for Windows tests.
+# 3.10 is needed for Windows tests as it is the only version installed in the
+# bigframes-windows container image. For more information, search
+# bigframes/windows-docker, internally.
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.12", "3.13"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "jinja2",
@@ -698,7 +709,7 @@ def system_prerelease(session: nox.sessions.Session):
     )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=COLAB_AND_BQ_STUDIO_PYTHON_VERSIONS)
 def notebook(session: nox.Session):
     google_cloud_project = os.getenv("GOOGLE_CLOUD_PROJECT")
     if not google_cloud_project:
@@ -776,27 +787,20 @@ def notebook(session: nox.Session):
     notebooks = list(filter(lambda nb: nb not in denylist, notebooks))
 
     # Regionalized notebooks
-    # TODO: remove exception for Python 3.13 cloud run adds a runtime for it (internal issue 333742751)
-    # TODO: remove exception for Python 3.13 if nbmake adds support for
-    # sys.exit(0) or pytest.skip(...).
-    # See: https://github.com/treebeardtech/nbmake/issues/134
-    if session.python == "3.13":
-        notebooks_reg = {}
-    else:
-        notebooks_reg = {
-            "regionalized.ipynb": [
-                "asia-southeast1",
-                "eu",
-                "europe-west4",
-                "southamerica-west1",
-                "us",
-                "us-central1",
-            ]
-        }
-        notebooks_reg = {
-            os.path.join("notebooks/location", nb): regions
-            for nb, regions in notebooks_reg.items()
-        }
+    notebooks_reg = {
+        "regionalized.ipynb": [
+            "asia-southeast1",
+            "eu",
+            "europe-west4",
+            "southamerica-west1",
+            "us",
+            "us-central1",
+        ]
+    }
+    notebooks_reg = {
+        os.path.join("notebooks/location", nb): regions
+        for nb, regions in notebooks_reg.items()
+    }
 
     # The pytest --nbmake exits silently with "no tests ran" message if
     # one of the notebook paths supplied does not exist. Let's make sure that
