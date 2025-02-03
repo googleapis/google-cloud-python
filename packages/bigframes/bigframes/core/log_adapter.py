@@ -78,7 +78,9 @@ def submit_pandas_labels(
     else:
         return
 
-    if hasattr(cls, method_name):
+    # Omit __call__, because its not implemented on the actual instances of
+    # DataFrame/Series, only as the constructor.
+    if method_name != "__call__" and hasattr(cls, method_name):
         method = getattr(cls, method_name)
     else:
         return

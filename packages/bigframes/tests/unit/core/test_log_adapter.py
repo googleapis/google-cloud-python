@@ -157,11 +157,31 @@ def test_submit_pandas_labels_without_valid_params_for_param_logging(mock_bqclie
     mock_bqclient.query.assert_not_called()
 
 
-def test_submit_pandas_labels_with_internal_method(mock_bqclient):
+@pytest.mark.parametrize(
+    ("class_name", "method_name"),
+    (
+        ("Series", "_repr_latex_"),
+        (
+            "DataFrame",
+            # __call__ should be excluded.
+            # It's implemented on the pd.DataFrame class but not pd.DataFrame instances.
+            "__call__",
+        ),
+        (
+            "Series",
+            # __call__ should be excluded.
+            # It's implemented on the pd.Series class but not pd.Series instances.
+            "__call__",
+        ),
+    ),
+)
+def test_submit_pandas_labels_with_internal_method(
+    mock_bqclient, class_name, method_name
+):
     log_adapter.submit_pandas_labels(
         mock_bqclient,
-        "Series",
-        "_repr_latex_",
+        class_name,
+        method_name,
         task=log_adapter.PANDAS_API_TRACKING_TASK,
     )
     mock_bqclient.query.assert_not_called()
