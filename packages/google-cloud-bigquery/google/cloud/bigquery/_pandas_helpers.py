@@ -796,10 +796,15 @@ def _download_table_bqstorage_stream(
         rowstream = reader.rows(session)
 
     for page in rowstream.pages:
-        if download_state.done:
-            return
         item = page_to_item(page)
-        worker_queue.put(item)
+        while True:
+            if download_state.done:
+                return
+            try:
+                worker_queue.put(item, timeout=_PROGRESS_INTERVAL)
+                break
+            except queue.Full:  # pragma: NO COVER
+                continue
 
 
 def _nowait(futures):
