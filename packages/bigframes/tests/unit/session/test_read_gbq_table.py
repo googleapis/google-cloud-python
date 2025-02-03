@@ -27,8 +27,13 @@ from .. import resources
 @pytest.mark.parametrize(
     ("index_cols", "primary_keys", "values_distinct", "expected"),
     (
-        (["col1", "col2"], ["col1", "col2", "col3"], False, False),
-        (["col1", "col2", "col3"], ["col1", "col2", "col3"], True, True),
+        (["col1", "col2"], ["col1", "col2", "col3"], False, ("col1", "col2", "col3")),
+        (
+            ["col1", "col2", "col3"],
+            ["col1", "col2", "col3"],
+            True,
+            ("col1", "col2", "col3"),
+        ),
         (
             ["col2", "col3", "col1"],
             [
@@ -36,14 +41,14 @@ from .. import resources
                 "col2",
             ],
             True,
-            True,
+            ("col2", "col3"),
         ),
-        (["col1", "col2"], [], False, False),
-        ([], ["col1", "col2", "col3"], False, False),
-        ([], [], False, False),
+        (["col1", "col2"], [], False, ()),
+        ([], ["col1", "col2", "col3"], False, ("col1", "col2", "col3")),
+        ([], [], False, ()),
     ),
 )
-def test_are_index_cols_unique(index_cols, primary_keys, values_distinct, expected):
+def test_infer_unique_columns(index_cols, primary_keys, values_distinct, expected):
     """If a primary key is set on the table, we use that as the index column
     by default, no error should be raised in this case.
 
@@ -87,6 +92,6 @@ def test_are_index_cols_unique(index_cols, primary_keys, values_distinct, expect
     )
     table._properties["location"] = session._location
 
-    result = bf_read_gbq_table.are_index_cols_unique(bqclient, table, index_cols, "")
+    result = bf_read_gbq_table.infer_unique_columns(bqclient, table, index_cols, "")
 
     assert result == expected

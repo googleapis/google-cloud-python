@@ -424,7 +424,7 @@ class GbqDataLoader:
         # in the query that checks for index uniqueness.
         # TODO(b/338065601): Provide a way to assume uniqueness and avoid this
         # check.
-        is_index_unique = bf_read_gbq_table.are_index_cols_unique(
+        primary_key = bf_read_gbq_table.infer_unique_columns(
             bqclient=self._bqclient,
             table=table,
             index_cols=index_cols,
@@ -440,12 +440,12 @@ class GbqDataLoader:
             schema=schema,
             predicate=filter_str,
             at_time=time_travel_timestamp if enable_snapshot else None,
-            primary_key=index_cols if is_index_unique else (),
+            primary_key=primary_key,
             session=self._session,
         )
         # if we don't have a unique index, we order by row hash if we are in strict mode
         if self._force_total_order:
-            if not is_index_unique:
+            if not primary_key:
                 array_value = array_value.order_by(
                     [
                         bigframes.core.ordering.OrderingExpression(
