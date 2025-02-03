@@ -46,4 +46,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     agg_results = typing.cast(bpd.DataFrame, agg_results).sort_values("L_SHIPMODE")
 
-    next(agg_results.to_pandas_batches())
+    next(agg_results.to_pandas_batches(max_results=1500))

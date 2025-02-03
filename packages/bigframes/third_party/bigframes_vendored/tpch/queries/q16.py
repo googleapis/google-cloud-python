@@ -47,4 +47,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         ascending=[False, True, True, True],
     )
 
-    next(q_final.to_pandas_batches())
+    next(q_final.to_pandas_batches(max_results=1500))

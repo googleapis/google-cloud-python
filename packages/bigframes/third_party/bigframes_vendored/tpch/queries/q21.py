@@ -56,4 +56,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         by=["NUMWAIT", "S_NAME"], ascending=[False, True]
     ).head(100)
 
-    next(q_final.to_pandas_batches())
+    next(q_final.to_pandas_batches(max_results=1500))

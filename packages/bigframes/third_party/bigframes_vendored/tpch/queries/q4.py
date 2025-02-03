@@ -32,4 +32,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     agg = gb.agg(ORDER_COUNT=bpd.NamedAgg(column="L_ORDERKEY", aggfunc="count"))
 
     result_df = typing.cast(bpd.DataFrame, agg).sort_values(["O_ORDERPRIORITY"])
-    next(result_df.to_pandas_batches())
+    next(result_df.to_pandas_batches(max_results=1500))

@@ -39,4 +39,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     sorted_sel = sel.sort_values(by=["REVENUE", "O_ORDERDATE"], ascending=[False, True])
     result_df = sorted_sel.head(10)
 
-    next(result_df.to_pandas_batches())
+    next(result_df.to_pandas_batches(max_results=1500))

@@ -772,7 +772,7 @@ def verify(query_num=None):
                 file_content = file.read()
 
                 file_content = re.sub(
-                    r"next\((\w+)\.to_pandas_batches\(\)\)",
+                    r"next\((\w+)\.to_pandas_batches\((.*?)\)\)",
                     r"return \1.to_pandas()",
                     file_content,
                 )
