@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.35.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.34.0...v1.35.0) (2025-02-04)
+
+
+### Features
+
+* Add Series.keys() ([#1342](https://github.com/googleapis/python-bigquery-dataframes/issues/1342)) ([deb015d](https://github.com/googleapis/python-bigquery-dataframes/commit/deb015dc1276549519d51363501355272f8976d8))
+* Allow `case_when` to change dtypes if case list contains the condition `(True, some_default_value)` ([#1311](https://github.com/googleapis/python-bigquery-dataframes/issues/1311)) ([5c2a2c6](https://github.com/googleapis/python-bigquery-dataframes/commit/5c2a2c6086be20cba7da08ecd37899699aab518f))
+* Support python type as astype arg ([#1316](https://github.com/googleapis/python-bigquery-dataframes/issues/1316)) ([b26e135](https://github.com/googleapis/python-bigquery-dataframes/commit/b26e13570f198ec4d252590a8c07253624db667a))
+* Support time_series_id_col in ARIMAPlus  ([#1282](https://github.com/googleapis/python-bigquery-dataframes/issues/1282)) ([97532c9](https://github.com/googleapis/python-bigquery-dataframes/commit/97532c9ba02cd709d69666dd0afca5c1df8b9faf))
+
+
+### Bug Fixes
+
+* Exclude `DataFrame` and `Series` `__call__` from unimplemented API metrics ([#1351](https://github.com/googleapis/python-bigquery-dataframes/issues/1351)) ([f2d5264](https://github.com/googleapis/python-bigquery-dataframes/commit/f2d526445da7dae29c49c8d6dacdfee7d2fa9d79))
+* Make `DataFrame` `__getattr__` and `__setattr__` more robust to subclassing ([#1352](https://github.com/googleapis/python-bigquery-dataframes/issues/1352)) ([417de3a](https://github.com/googleapis/python-bigquery-dataframes/commit/417de3a449e5d0748831b502f4f5b9fb9ba38714))
+
+
+### Performance Improvements
+
+* Fall back to ordering by bq pk when possible ([#1350](https://github.com/googleapis/python-bigquery-dataframes/issues/1350)) ([3c4abf2](https://github.com/googleapis/python-bigquery-dataframes/commit/3c4abf24ea186e98f629b6f83c0f3e36dc0571c6))
+* Improve isin performance ([#1203](https://github.com/googleapis/python-bigquery-dataframes/issues/1203)) ([db087b0](https://github.com/googleapis/python-bigquery-dataframes/commit/db087b0bfe4b3ba965682d620079c923e098e362))
+* Prevent inlining of remote ops ([#1347](https://github.com/googleapis/python-bigquery-dataframes/issues/1347)) ([012081a](https://github.com/googleapis/python-bigquery-dataframes/commit/012081af9ef825ced96ec1e772b9646cbe09d9a1))
+
+
+### Dependencies
+
+* Add support for Python 3.13 for everything but remote functions ([#1307](https://github.com/googleapis/python-bigquery-dataframes/issues/1307)) ([533db96](https://github.com/googleapis/python-bigquery-dataframes/commit/533db9685d159de2bc76307b0e0add676bd679a0))
+
+
+### Documentation
+
+* Add `GeoSeries` docs ([#1327](https://github.com/googleapis/python-bigquery-dataframes/issues/1327)) ([05f83d1](https://github.com/googleapis/python-bigquery-dataframes/commit/05f83d18d276091a1549dbba1f2baf8c91c8c37e))
+* Add link to DataFrames intro to improve SEO ([#1176](https://github.com/googleapis/python-bigquery-dataframes/issues/1176)) ([aafb5be](https://github.com/googleapis/python-bigquery-dataframes/commit/aafb5be3e9c50f477fca2a1ebb5338194672913f))
+* Add snippet to explain the univariate model's forecast result in the Forecast a single time series with a univariate model tutorial ([#1272](https://github.com/googleapis/python-bigquery-dataframes/issues/1272)) ([c22126b](https://github.com/googleapis/python-bigquery-dataframes/commit/c22126b846db428d21c0f5cbd2d439ecc56365b2))
+
 ## [1.34.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.33.0...v1.34.0) (2025-01-27)
 
 
