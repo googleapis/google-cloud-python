@@ -22,6 +22,7 @@ _REQUIRED_PROTO_FIELDS = {
     SqlType.Bytes: "bytes_value",
     SqlType.String: "string_value",
     SqlType.Int64: "int_value",
+    SqlType.Float32: "float_value",
     SqlType.Float64: "float_value",
     SqlType.Bool: "bool_value",
     SqlType.Timestamp: "timestamp_value",

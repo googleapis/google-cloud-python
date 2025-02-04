@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, Optional
 import datetime
+from typing import Any, Dict, Optional
+
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+
 from google.cloud.bigtable.data.exceptions import ParameterTypeInferenceFailed
-from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
+from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
 
 
 def _format_execute_query_params(
@@ -48,7 +50,6 @@ def _format_execute_query_params(
     parameter_types = parameter_types or {}
 
     result_values = {}
-
     for key, value in params.items():
         user_provided_type = parameter_types.get(key)
         try:
@@ -107,6 +108,16 @@ def _detect_type(value: ExecuteQueryValueType) -> SqlType.Type:
     if value is None:
         raise ParameterTypeInferenceFailed(
             "Cannot infer type of None, please provide the type manually."
+        )
+
+    if isinstance(value, list):
+        raise ParameterTypeInferenceFailed(
+            "Cannot infer type of ARRAY parameters, please provide the type manually."
+        )
+
+    if isinstance(value, float):
+        raise ParameterTypeInferenceFailed(
+            "Cannot infer type of float, must specify either FLOAT32 or FLOAT64 type manually."
         )
 
     for field_type, type_dict in _TYPES_TO_TYPE_DICTS:

@@ -14,13 +14,16 @@
 
 import pytest
 import asyncio
+import datetime
 import uuid
 import os
 from google.api_core import retry
 from google.api_core.exceptions import ClientError
 
+from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from google.type import date_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 
@@ -1027,3 +1030,83 @@ class TestSystemAsync:
         row = rows[0]
         assert row["a"] == 1
         assert row["b"] == "foo"
+
+    @CrossSync.pytest
+    @pytest.mark.usefixtures("client")
+    @CrossSync.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    async def test_execute_query_params(self, client, table_id, instance_id):
+        query = (
+            "SELECT @stringParam AS strCol, @bytesParam as bytesCol, @int64Param AS intCol, "
+            "@float32Param AS float32Col, @float64Param AS float64Col, @boolParam AS boolCol, "
+            "@tsParam AS tsCol, @dateParam AS dateCol, @byteArrayParam AS byteArrayCol, "
+            "@stringArrayParam AS stringArrayCol, @intArrayParam AS intArrayCol, "
+            "@float32ArrayParam AS float32ArrayCol, @float64ArrayParam AS float64ArrayCol, "
+            "@boolArrayParam AS boolArrayCol, @tsArrayParam AS tsArrayCol, "
+            "@dateArrayParam AS dateArrayCol"
+        )
+        parameters = {
+            "stringParam": "foo",
+            "bytesParam": b"bar",
+            "int64Param": 12,
+            "float32Param": 1.1,
+            "float64Param": 1.2,
+            "boolParam": True,
+            "tsParam": datetime.datetime.fromtimestamp(1000, tz=datetime.timezone.utc),
+            "dateParam": datetime.date(2025, 1, 16),
+            "byteArrayParam": [b"foo", b"bar", None],
+            "stringArrayParam": ["foo", "bar", None],
+            "intArrayParam": [1, None, 2],
+            "float32ArrayParam": [1.2, None, 1.3],
+            "float64ArrayParam": [1.4, None, 1.5],
+            "boolArrayParam": [None, False, True],
+            "tsArrayParam": [
+                datetime.datetime.fromtimestamp(1000, tz=datetime.timezone.utc),
+                datetime.datetime.fromtimestamp(2000, tz=datetime.timezone.utc),
+                None,
+            ],
+            "dateArrayParam": [
+                datetime.date(2025, 1, 16),
+                datetime.date(2025, 1, 17),
+                None,
+            ],
+        }
+        param_types = {
+            "float32Param": SqlType.Float32(),
+            "float64Param": SqlType.Float64(),
+            "byteArrayParam": SqlType.Array(SqlType.Bytes()),
+            "stringArrayParam": SqlType.Array(SqlType.String()),
+            "intArrayParam": SqlType.Array(SqlType.Int64()),
+            "float32ArrayParam": SqlType.Array(SqlType.Float32()),
+            "float64ArrayParam": SqlType.Array(SqlType.Float64()),
+            "boolArrayParam": SqlType.Array(SqlType.Bool()),
+            "tsArrayParam": SqlType.Array(SqlType.Timestamp()),
+            "dateArrayParam": SqlType.Array(SqlType.Date()),
+        }
+        result = await client.execute_query(
+            query, instance_id, parameters=parameters, parameter_types=param_types
+        )
+        rows = [r async for r in result]
+        assert len(rows) == 1
+        row = rows[0]
+        assert row["strCol"] == parameters["stringParam"]
+        assert row["bytesCol"] == parameters["bytesParam"]
+        assert row["intCol"] == parameters["int64Param"]
+        assert row["float32Col"] == pytest.approx(parameters["float32Param"])
+        assert row["float64Col"] == pytest.approx(parameters["float64Param"])
+        assert row["boolCol"] == parameters["boolParam"]
+        assert row["tsCol"] == parameters["tsParam"]
+        assert row["dateCol"] == date_pb2.Date(year=2025, month=1, day=16)
+        assert row["stringArrayCol"] == parameters["stringArrayParam"]
+        assert row["byteArrayCol"] == parameters["byteArrayParam"]
+        assert row["intArrayCol"] == parameters["intArrayParam"]
+        assert row["float32ArrayCol"] == pytest.approx(parameters["float32ArrayParam"])
+        assert row["float64ArrayCol"] == pytest.approx(parameters["float64ArrayParam"])
+        assert row["boolArrayCol"] == parameters["boolArrayParam"]
+        assert row["tsArrayCol"] == parameters["tsArrayParam"]
+        assert row["dateArrayCol"] == [
+            date_pb2.Date(year=2025, month=1, day=16),
+            date_pb2.Date(year=2025, month=1, day=17),
+            None,
+        ]
