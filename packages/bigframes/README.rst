@@ -30,7 +30,8 @@ Documentation
 
 Getting started with BigQuery DataFrames
 ----------------------------------------
-Try the `BigQuery DataFrames quickstart <https://cloud.google.com/bigquery/docs/dataframes-quickstart>`_
+Read `Introduction to BigQuery DataFrames <https://cloud.google.com/bigquery/docs/bigquery-dataframes-introduction>`_
+and try the `BigQuery DataFrames quickstart <https://cloud.google.com/bigquery/docs/dataframes-quickstart>`_
 to get up and running in just a few minutes.
 
 
