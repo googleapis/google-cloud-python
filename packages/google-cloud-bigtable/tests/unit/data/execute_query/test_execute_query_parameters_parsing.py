@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.type import date_pb2
 import pytest
+
 from google.cloud.bigtable.data.execute_query._parameters_formatting import (
     _format_execute_query_params,
 )
 from google.cloud.bigtable.data.execute_query.metadata import SqlType
 from google.cloud.bigtable.data.execute_query.values import Struct
-import datetime
-
-from google.type import date_pb2
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-
+from google.protobuf import timestamp_pb2
 
 timestamp = int(
     datetime.datetime(2024, 5, 12, 17, 44, 12, tzinfo=datetime.timezone.utc).timestamp()
@@ -71,7 +72,7 @@ pb_date = date_pb2.Date(year=2024, month=5, day=15)
         ),
     ],
 )
-def test_instance_execute_query_parameters_simple_types_parsing(
+def test_execute_query_parameters_inferred_types_parsing(
     input_value, value_field, type_field, expected_value
 ):
     result = _format_execute_query_params(
@@ -84,7 +85,161 @@ def test_instance_execute_query_parameters_simple_types_parsing(
     assert type_field in result["test"]["type_"]
 
 
-def test_instance_execute_query_parameters_not_supported_types():
+@pytest.mark.parametrize(
+    "value, sql_type, proto_result",
+    [
+        (1.3, SqlType.Float32(), {"type_": {"float32_type": {}}, "float_value": 1.3}),
+        (1.3, SqlType.Float64(), {"type_": {"float64_type": {}}, "float_value": 1.3}),
+        (
+            [1, 2, 3, 4],
+            SqlType.Array(SqlType.Int64()),
+            {
+                "type_": {"array_type": {"element_type": {"int64_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"int_value": 1},
+                        {"int_value": 2},
+                        {"int_value": 3},
+                        {"int_value": 4},
+                    ]
+                },
+            },
+        ),
+        (
+            [1, None, 2, None],
+            SqlType.Array(SqlType.Int64()),
+            {
+                "type_": {"array_type": {"element_type": {"int64_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"int_value": 1},
+                        {},
+                        {"int_value": 2},
+                        {},
+                    ]
+                },
+            },
+        ),
+        (
+            None,
+            SqlType.Array(SqlType.Int64()),
+            {
+                "type_": {"array_type": {"element_type": {"int64_type": {}}}},
+            },
+        ),
+        (
+            ["foo", "bar", None],
+            SqlType.Array(SqlType.String()),
+            {
+                "type_": {"array_type": {"element_type": {"string_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"string_value": "foo"},
+                        {"string_value": "bar"},
+                        {},
+                    ]
+                },
+            },
+        ),
+        (
+            [b"foo", b"bar", None],
+            SqlType.Array(SqlType.Bytes()),
+            {
+                "type_": {"array_type": {"element_type": {"bytes_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"bytes_value": b"foo"},
+                        {"bytes_value": b"bar"},
+                        {},
+                    ]
+                },
+            },
+        ),
+        (
+            [
+                datetime.datetime.fromtimestamp(1000, tz=datetime.timezone.utc),
+                datetime.datetime.fromtimestamp(2000, tz=datetime.timezone.utc),
+                None,
+            ],
+            SqlType.Array(SqlType.Timestamp()),
+            {
+                "type_": {"array_type": {"element_type": {"timestamp_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"timestamp_value": timestamp_pb2.Timestamp(seconds=1000)},
+                        {"timestamp_value": timestamp_pb2.Timestamp(seconds=2000)},
+                        {},
+                    ],
+                },
+            },
+        ),
+        (
+            [True, False, None],
+            SqlType.Array(SqlType.Bool()),
+            {
+                "type_": {"array_type": {"element_type": {"bool_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"bool_value": True},
+                        {"bool_value": False},
+                        {},
+                    ],
+                },
+            },
+        ),
+        (
+            [datetime.date(2025, 1, 16), datetime.date(2025, 1, 17), None],
+            SqlType.Array(SqlType.Date()),
+            {
+                "type_": {"array_type": {"element_type": {"date_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"date_value": date_pb2.Date(year=2025, month=1, day=16)},
+                        {"date_value": date_pb2.Date(year=2025, month=1, day=17)},
+                        {},
+                    ],
+                },
+            },
+        ),
+        (
+            [1.1, 1.2, None],
+            SqlType.Array(SqlType.Float32()),
+            {
+                "type_": {"array_type": {"element_type": {"float32_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"float_value": 1.1},
+                        {"float_value": 1.2},
+                        {},
+                    ]
+                },
+            },
+        ),
+        (
+            [1.1, 1.2, None],
+            SqlType.Array(SqlType.Float64()),
+            {
+                "type_": {"array_type": {"element_type": {"float64_type": {}}}},
+                "array_value": {
+                    "values": [
+                        {"float_value": 1.1},
+                        {"float_value": 1.2},
+                        {},
+                    ]
+                },
+            },
+        ),
+    ],
+)
+def test_execute_query_explicit_parameter_parsing(value, sql_type, proto_result):
+    result = _format_execute_query_params(
+        {"param_name": value}, {"param_name": sql_type}
+    )
+    print(result)
+    assert result["param_name"] == proto_result
+
+
+def test_execute_query_parameters_not_supported_types():
     with pytest.raises(ValueError):
         _format_execute_query_params({"test1": 1.1}, None)
 
@@ -107,14 +262,6 @@ def test_instance_execute_query_parameters_not_supported_types():
 
     with pytest.raises(NotImplementedError, match="not supported"):
         _format_execute_query_params(
-            {"test1": [1]},
-            {
-                "test1": SqlType.Array(SqlType.Int64()),
-            },
-        )
-
-    with pytest.raises(NotImplementedError, match="not supported"):
-        _format_execute_query_params(
             {"test1": Struct([("field1", 1)])},
             {"test1": SqlType.Struct([("field1", SqlType.Int64())])},
         )
@@ -132,3 +279,16 @@ def test_instance_execute_query_parameters_not_match():
                 "test2": SqlType.String(),
             },
         )
+
+
+def test_array_params_enforce_element_type():
+    with pytest.raises(ValueError, match="Error when parsing parameter p") as e1:
+        _format_execute_query_params(
+            {"p": ["a", 1, None]}, {"p": SqlType.Array(SqlType.String())}
+        )
+    with pytest.raises(ValueError, match="Error when parsing parameter p") as e2:
+        _format_execute_query_params(
+            {"p": ["a", 1, None]}, {"p": SqlType.Array(SqlType.Int64())}
+        )
+    assert "Expected query parameter of type str, got int" in str(e1.value.__cause__)
+    assert "Expected query parameter of type int, got str" in str(e2.value.__cause__)

@@ -439,6 +439,8 @@ class BigtableDataClient(ClientWithProject):
                 will be chained with a RetryExceptionGroup containing GoogleAPIError exceptions
                 from any retries that failed
             google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
+            google.cloud.bigtable.data.exceptions.ParameterTypeInferenceFailed: Raised if
+                a parameter is passed without an explicit type, and the type cannot be infered
         """
         warnings.warn(
             "ExecuteQuery is in preview and may change in the future.",

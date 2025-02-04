@@ -22,7 +22,6 @@ from typing import (
     Tuple,
     TYPE_CHECKING,
 )
-
 from google.api_core import retry as retries
 
 from google.cloud.bigtable.data.execute_query._byte_cursor import _ByteCursor
@@ -116,7 +115,6 @@ class ExecuteQueryIteratorAsync:
             exception_factory=_retry_exception_factory,
         )
         self._req_metadata = req_metadata
-
         try:
             self._register_instance_task = CrossSync.create_task(
                 self._client._register_instance,

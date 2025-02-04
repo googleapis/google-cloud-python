@@ -21,23 +21,16 @@ as for specifying query parameter types explicitly.
 """
 
 from collections import defaultdict
-from typing import (
-    Optional,
-    List,
-    Dict,
-    Set,
-    Type,
-    Union,
-    Tuple,
-    Any,
-)
+import datetime
+from typing import Any, Dict, List, Optional, Set, Tuple, Type, Union
+
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+
 from google.cloud.bigtable.data.execute_query.values import _NamedList
 from google.cloud.bigtable_v2 import ResultSetMetadata
 from google.cloud.bigtable_v2 import Type as PBType
-from google.type import date_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-import datetime
 
 
 class SqlType:
@@ -127,6 +120,8 @@ class SqlType:
         def __init__(self, element_type: "SqlType.Type"):
             if isinstance(element_type, SqlType.Array):
                 raise ValueError("Arrays of arrays are not supported.")
+            if isinstance(element_type, SqlType.Map):
+                raise ValueError("Arrays of Maps are not supported.")
             self._element_type = element_type
 
         @property
@@ -140,10 +135,21 @@ class SqlType:
             return cls(_pb_type_to_metadata_type(type_pb.array_type.element_type))
 
         def _to_value_pb_dict(self, value: Any):
-            raise NotImplementedError("Array is not supported as a query parameter")
+            if value is None:
+                return {}
+
+            return {
+                "array_value": {
+                    "values": [
+                        self.element_type._to_value_pb_dict(entry) for entry in value
+                    ]
+                }
+            }
 
         def _to_type_pb_dict(self) -> Dict[str, Any]:
-            raise NotImplementedError("Array is not supported as a query parameter")
+            return {
+                "array_type": {"element_type": self.element_type._to_type_pb_dict()}
+            }
 
         def __eq__(self, other):
             return super().__eq__(other) and self.element_type == other.element_type
@@ -221,6 +227,13 @@ class SqlType:
         expected_type = float
         value_pb_dict_field_name = "float_value"
         type_field_name = "float64_type"
+
+    class Float32(Type):
+        """Float32 SQL type."""
+
+        expected_type = float
+        value_pb_dict_field_name = "float_value"
+        type_field_name = "float32_type"
 
     class Bool(Type):
         """Bool SQL type."""
@@ -376,6 +389,7 @@ _PROTO_TYPE_TO_METADATA_TYPE_FACTORY: Dict[str, Type[SqlType.Type]] = {
     "bytes_type": SqlType.Bytes,
     "string_type": SqlType.String,
     "int64_type": SqlType.Int64,
+    "float32_type": SqlType.Float32,
     "float64_type": SqlType.Float64,
     "bool_type": SqlType.Bool,
     "timestamp_type": SqlType.Timestamp,
