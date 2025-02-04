@@ -24,6 +24,7 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 import google.cloud.bigquery
 import pandas as pd
 
+from bigframes.core import utils
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.explode
@@ -173,6 +174,10 @@ class Compiler:
             io.BytesIO(node.feather_bytes),
             columns=[item.source_id for item in node.scan_list.items],
         )
+
+        # Convert timedeltas to microseconds for compatibility with BigQuery
+        _ = utils.replace_timedeltas_with_micros(array_as_pd)
+
         offsets = node.offsets_col.sql if node.offsets_col else None
         return compiled.UnorderedIR.from_pandas(
             array_as_pd, node.scan_list, offsets=offsets

@@ -120,6 +120,7 @@ INLINABLE_DTYPES: Sequence[bigframes.dtypes.Dtype] = (
     pandas.ArrowDtype(pa.timestamp("us", tz="UTC")),
     pandas.ArrowDtype(pa.decimal128(38, 9)),
     pandas.ArrowDtype(pa.decimal256(76, 38)),
+    pandas.ArrowDtype(pa.duration("us")),
 )
 
 

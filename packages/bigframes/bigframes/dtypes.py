@@ -409,9 +409,14 @@ _ARROW_TO_BIGFRAMES = {
 def arrow_dtype_to_bigframes_dtype(arrow_dtype: pa.DataType) -> Dtype:
     if arrow_dtype in _ARROW_TO_BIGFRAMES:
         return _ARROW_TO_BIGFRAMES[arrow_dtype]
+
     if pa.types.is_list(arrow_dtype):
         return pd.ArrowDtype(arrow_dtype)
+
     if pa.types.is_struct(arrow_dtype):
+        return pd.ArrowDtype(arrow_dtype)
+
+    if pa.types.is_duration(arrow_dtype):
         return pd.ArrowDtype(arrow_dtype)
 
     # BigFrames doesn't distinguish between string and large_string because the

@@ -19,6 +19,7 @@ import warnings
 
 import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import pandas as pd
+import pandas.api.types as pdtypes
 import typing_extensions
 
 import bigframes.exceptions as bfe
@@ -184,3 +185,29 @@ def preview(*, name: str):
         return wrapper
 
     return decorator
+
+
+def timedelta_to_micros(td: pd.Timedelta) -> int:
+    # td.value returns total nanoseconds.
+    return td.value // 1000
+
+
+def replace_timedeltas_with_micros(dataframe: pd.DataFrame) -> List[str]:
+    """
+    Replaces in-place timedeltas to integer values in microseconds. Nanosecond part is ignored.
+
+    Returns:
+        The names of updated columns
+    """
+    updated_columns = []
+
+    for col in dataframe.columns:
+        if pdtypes.is_timedelta64_dtype(dataframe[col].dtype):
+            dataframe[col] = dataframe[col].apply(timedelta_to_micros)
+            updated_columns.append(col)
+
+    if pdtypes.is_timedelta64_dtype(dataframe.index.dtype):
+        dataframe.index = dataframe.index.map(timedelta_to_micros)
+        updated_columns.append(dataframe.index.name)
+
+    return updated_columns

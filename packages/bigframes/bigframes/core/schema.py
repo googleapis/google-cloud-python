@@ -38,9 +38,13 @@ class ArraySchema:
     items: typing.Tuple[SchemaItem, ...]
 
     @classmethod
-    def from_bq_table(cls, table: google.cloud.bigquery.Table):
+    def from_bq_table(
+        cls,
+        table: google.cloud.bigquery.Table,
+        column_type_overrides: typing.Dict[str, bigframes.dtypes.Dtype] = {},
+    ):
         items = tuple(
-            SchemaItem(name, dtype)
+            SchemaItem(name, column_type_overrides.get(name, dtype))
             for name, dtype in bigframes.dtypes.bf_type_from_type_kind(
                 table.schema
             ).items()

@@ -691,6 +691,62 @@ def test_read_pandas_tokyo(
     assert len(expected) == result.total_rows
 
 
+@pytest.mark.parametrize(
+    "write_engine",
+    ["default", "bigquery_inline", "bigquery_load", "bigquery_streaming"],
+)
+def test_read_pandas_timedelta_dataframes(session, write_engine):
+    expected_df = pd.DataFrame({"my_col": pd.to_timedelta([1, 2, 3], unit="d")})
+
+    actual_result = (
+        session.read_pandas(expected_df, write_engine=write_engine)
+        .to_pandas()
+        .astype("timedelta64[ns]")
+    )
+
+    if write_engine == "bigquery_streaming":
+        expected_df.index = pd.Index([pd.NA] * 3, dtype="Int64")
+    pd.testing.assert_frame_equal(actual_result, expected_df, check_index_type=False)
+
+
+@pytest.mark.parametrize(
+    "write_engine",
+    ["default", "bigquery_inline", "bigquery_load", "bigquery_streaming"],
+)
+def test_read_pandas_timedelta_series(session, write_engine):
+    expected_series = pd.Series(pd.to_timedelta([1, 2, 3], unit="d"))
+
+    actual_result = (
+        session.read_pandas(expected_series, write_engine=write_engine)
+        .to_pandas()
+        .astype("timedelta64[ns]")
+    )
+
+    if write_engine == "bigquery_streaming":
+        expected_series.index = pd.Index([pd.NA] * 3, dtype="Int64")
+    pd.testing.assert_series_equal(
+        actual_result, expected_series, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "write_engine",
+    ["default", "bigquery_inline", "bigquery_load"],
+)
+def test_read_pandas_timedelta_index(session, write_engine):
+    expected_index = pd.to_timedelta(
+        [1, 2, 3], unit="d"
+    )  # to_timedelta returns an index
+
+    actual_result = (
+        session.read_pandas(expected_index, write_engine=write_engine)
+        .to_pandas()
+        .astype("timedelta64[ns]")
+    )
+
+    pd.testing.assert_index_equal(actual_result, expected_index)
+
+
 @utils.skip_legacy_pandas
 @pytest.mark.parametrize(
     ("write_engine",),

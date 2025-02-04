@@ -59,6 +59,9 @@ def arrow_type_replacements(type: pa.DataType) -> pa.DataType:
     if pa.types.is_time64(type):
         # This is potentially lossy, but BigFrames doesn't support ns
         return pa.time64("us")
+    if pa.types.is_duration(type):
+        # This is potentially lossy, but BigFrames doesn't support ns
+        return pa.duration("us")
     if pa.types.is_decimal128(type):
         return pa.decimal128(38, 9)
     if pa.types.is_decimal256(type):
