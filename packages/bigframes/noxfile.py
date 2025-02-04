@@ -698,7 +698,7 @@ def system_prerelease(session: nox.sessions.Session):
     # This would mean that we will only rely on the standard remote function
     # tests.
     small_remote_function_tests = os.path.join(
-        small_tests_dir, "test_remote_function.py"
+        small_tests_dir, "functions", "test_remote_function.py"
     )
     assert os.path.exists(small_remote_function_tests)
 
