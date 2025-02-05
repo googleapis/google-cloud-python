@@ -1055,6 +1055,7 @@ def test_get_execution(request_type, transport: str = "grpc"):
         call.return_value = execution.Execution(
             name="name_value",
             uid="uid_value",
+            creator="creator_value",
             generation=1068,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
             job="job_value",
@@ -1083,6 +1084,7 @@ def test_get_execution(request_type, transport: str = "grpc"):
     assert isinstance(response, execution.Execution)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
+    assert response.creator == "creator_value"
     assert response.generation == 1068
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.job == "job_value"
@@ -1225,6 +1227,7 @@ async def test_get_execution_async(
             execution.Execution(
                 name="name_value",
                 uid="uid_value",
+                creator="creator_value",
                 generation=1068,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
                 job="job_value",
@@ -1254,6 +1257,7 @@ async def test_get_execution_async(
     assert isinstance(response, execution.Execution)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
+    assert response.creator == "creator_value"
     assert response.generation == 1068
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.job == "job_value"
@@ -3628,6 +3632,7 @@ async def test_get_execution_empty_call_grpc_asyncio():
             execution.Execution(
                 name="name_value",
                 uid="uid_value",
+                creator="creator_value",
                 generation=1068,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
                 job="job_value",
@@ -3788,6 +3793,7 @@ def test_get_execution_rest_call_success(request_type):
         return_value = execution.Execution(
             name="name_value",
             uid="uid_value",
+            creator="creator_value",
             generation=1068,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
             job="job_value",
@@ -3821,6 +3827,7 @@ def test_get_execution_rest_call_success(request_type):
     assert isinstance(response, execution.Execution)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
+    assert response.creator == "creator_value"
     assert response.generation == 1068
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.job == "job_value"

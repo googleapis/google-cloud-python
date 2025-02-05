@@ -6246,6 +6246,11 @@ def test_create_job_rest_call_success(request_type):
                         },
                         "startup_probe": {},
                         "depends_on": ["depends_on_value1", "depends_on_value2"],
+                        "base_image_uri": "base_image_uri_value",
+                        "build_info": {
+                            "function_target": "function_target_value",
+                            "source_location": "source_location_value",
+                        },
                     }
                 ],
                 "volumes": [
@@ -6832,6 +6837,11 @@ def test_update_job_rest_call_success(request_type):
                         },
                         "startup_probe": {},
                         "depends_on": ["depends_on_value1", "depends_on_value2"],
+                        "base_image_uri": "base_image_uri_value",
+                        "build_info": {
+                            "function_target": "function_target_value",
+                            "source_location": "source_location_value",
+                        },
                     }
                 ],
                 "volumes": [

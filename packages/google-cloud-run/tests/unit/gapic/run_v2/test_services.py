@@ -5826,6 +5826,11 @@ def test_create_service_rest_call_success(request_type):
                     },
                     "startup_probe": {},
                     "depends_on": ["depends_on_value1", "depends_on_value2"],
+                    "base_image_uri": "base_image_uri_value",
+                    "build_info": {
+                        "function_target": "function_target_value",
+                        "source_location": "source_location_value",
+                    },
                 }
             ],
             "volumes": [
@@ -5913,6 +5918,17 @@ def test_create_service_rest_call_success(request_type):
         ],
         "uri": "uri_value",
         "satisfies_pzs": True,
+        "build_config": {
+            "name": "name_value",
+            "source_location": "source_location_value",
+            "function_target": "function_target_value",
+            "image_uri": "image_uri_value",
+            "base_image": "base_image_value",
+            "enable_automatic_updates": True,
+            "worker_pool": "worker_pool_value",
+            "environment_variables": {},
+            "service_account": "service_account_value",
+        },
         "reconciling": True,
         "etag": "etag_value",
     }
@@ -6460,6 +6476,11 @@ def test_update_service_rest_call_success(request_type):
                     },
                     "startup_probe": {},
                     "depends_on": ["depends_on_value1", "depends_on_value2"],
+                    "base_image_uri": "base_image_uri_value",
+                    "build_info": {
+                        "function_target": "function_target_value",
+                        "source_location": "source_location_value",
+                    },
                 }
             ],
             "volumes": [
@@ -6547,6 +6568,17 @@ def test_update_service_rest_call_success(request_type):
         ],
         "uri": "uri_value",
         "satisfies_pzs": True,
+        "build_config": {
+            "name": "name_value",
+            "source_location": "source_location_value",
+            "function_target": "function_target_value",
+            "image_uri": "image_uri_value",
+            "base_image": "base_image_value",
+            "enable_automatic_updates": True,
+            "worker_pool": "worker_pool_value",
+            "environment_variables": {},
+            "service_account": "service_account_value",
+        },
         "reconciling": True,
         "etag": "etag_value",
     }
@@ -8203,10 +8235,36 @@ def test_services_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_connector_path():
+def test_build_path():
     project = "squid"
     location = "clam"
-    connector = "whelk"
+    build = "whelk"
+    expected = "projects/{project}/locations/{location}/builds/{build}".format(
+        project=project,
+        location=location,
+        build=build,
+    )
+    actual = ServicesClient.build_path(project, location, build)
+    assert expected == actual
+
+
+def test_parse_build_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "build": "nudibranch",
+    }
+    path = ServicesClient.build_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ServicesClient.parse_build_path(path)
+    assert expected == actual
+
+
+def test_connector_path():
+    project = "cuttlefish"
+    location = "mussel"
+    connector = "winkle"
     expected = "projects/{project}/locations/{location}/connectors/{connector}".format(
         project=project,
         location=location,
@@ -8218,9 +8276,9 @@ def test_connector_path():
 
 def test_parse_connector_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "connector": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "connector": "abalone",
     }
     path = ServicesClient.connector_path(**expected)
 
@@ -8230,10 +8288,10 @@ def test_parse_connector_path():
 
 
 def test_crypto_key_path():
-    project = "cuttlefish"
-    location = "mussel"
-    key_ring = "winkle"
-    crypto_key = "nautilus"
+    project = "squid"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
         project=project,
         location=location,
@@ -8246,10 +8304,10 @@ def test_crypto_key_path():
 
 def test_parse_crypto_key_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "key_ring": "squid",
-        "crypto_key": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
     }
     path = ServicesClient.crypto_key_path(**expected)
 
@@ -8259,9 +8317,9 @@ def test_parse_crypto_key_path():
 
 
 def test_mesh_path():
-    project = "whelk"
-    location = "octopus"
-    mesh = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    mesh = "scallop"
     expected = "projects/{project}/locations/{location}/meshes/{mesh}".format(
         project=project,
         location=location,
@@ -8273,9 +8331,9 @@ def test_mesh_path():
 
 def test_parse_mesh_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "mesh": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "mesh": "clam",
     }
     path = ServicesClient.mesh_path(**expected)
 
@@ -8285,7 +8343,7 @@ def test_parse_mesh_path():
 
 
 def test_policy_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}/policy".format(
         project=project,
     )
@@ -8295,7 +8353,7 @@ def test_policy_path():
 
 def test_parse_policy_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = ServicesClient.policy_path(**expected)
 
@@ -8305,10 +8363,10 @@ def test_parse_policy_path():
 
 
 def test_revision_path():
-    project = "scallop"
-    location = "abalone"
-    service = "squid"
-    revision = "clam"
+    project = "oyster"
+    location = "nudibranch"
+    service = "cuttlefish"
+    revision = "mussel"
     expected = "projects/{project}/locations/{location}/services/{service}/revisions/{revision}".format(
         project=project,
         location=location,
@@ -8321,10 +8379,10 @@ def test_revision_path():
 
 def test_parse_revision_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "service": "oyster",
-        "revision": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
+        "service": "scallop",
+        "revision": "abalone",
     }
     path = ServicesClient.revision_path(**expected)
 
@@ -8334,8 +8392,8 @@ def test_parse_revision_path():
 
 
 def test_secret_path():
-    project = "cuttlefish"
-    secret = "mussel"
+    project = "squid"
+    secret = "clam"
     expected = "projects/{project}/secrets/{secret}".format(
         project=project,
         secret=secret,
@@ -8346,8 +8404,8 @@ def test_secret_path():
 
 def test_parse_secret_path():
     expected = {
-        "project": "winkle",
-        "secret": "nautilus",
+        "project": "whelk",
+        "secret": "octopus",
     }
     path = ServicesClient.secret_path(**expected)
 
@@ -8357,9 +8415,9 @@ def test_parse_secret_path():
 
 
 def test_secret_version_path():
-    project = "scallop"
-    secret = "abalone"
-    version = "squid"
+    project = "oyster"
+    secret = "nudibranch"
+    version = "cuttlefish"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -8371,9 +8429,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "clam",
-        "secret": "whelk",
-        "version": "octopus",
+        "project": "mussel",
+        "secret": "winkle",
+        "version": "nautilus",
     }
     path = ServicesClient.secret_version_path(**expected)
 
@@ -8383,9 +8441,9 @@ def test_parse_secret_version_path():
 
 
 def test_service_path():
-    project = "oyster"
-    location = "nudibranch"
-    service = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    service = "squid"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -8397,14 +8455,42 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "service": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "service": "octopus",
     }
     path = ServicesClient.service_path(**expected)
 
     # Check that the path construction is reversible.
     actual = ServicesClient.parse_service_path(path)
+    assert expected == actual
+
+
+def test_worker_pool_path():
+    project = "oyster"
+    location = "nudibranch"
+    worker_pool = "cuttlefish"
+    expected = (
+        "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
+            project=project,
+            location=location,
+            worker_pool=worker_pool,
+        )
+    )
+    actual = ServicesClient.worker_pool_path(project, location, worker_pool)
+    assert expected == actual
+
+
+def test_parse_worker_pool_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "worker_pool": "nautilus",
+    }
+    path = ServicesClient.worker_pool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ServicesClient.parse_worker_pool_path(path)
     assert expected == actual
 
 
