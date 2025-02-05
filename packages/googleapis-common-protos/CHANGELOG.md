@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.67.0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.66.0...googleapis-common-protos-v1.67.0) (2025-02-05)
+## [v1.67.0rc0](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.66.0...googleapis-common-protos-v1.67.0rc0) (2025-02-05)
 
 
 ### Features
