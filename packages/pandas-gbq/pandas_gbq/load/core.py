@@ -111,6 +111,11 @@ def cast_dataframe_for_parquet(
                     return decimal.Decimal(x)
 
             cast_column = dataframe[column_name].map(convert)
+        elif column_type == "STRING":
+            # Allow non-string columns to be uploaded to STRING in BigQuery.
+            # https://github.com/googleapis/python-bigquery-pandas/issues/875
+            # TODO: Use pyarrow as the storage when the minimum pandas version allows for it.
+            cast_column = dataframe[column_name].astype(pandas.StringDtype())
         else:
             cast_column = None
 

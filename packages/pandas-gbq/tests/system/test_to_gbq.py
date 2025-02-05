@@ -28,13 +28,13 @@ def method_under_test(to_gbq):
 
 SeriesRoundTripTestCase = collections.namedtuple(
     "SeriesRoundTripTestCase",
-    ["input_series", "api_methods"],
-    defaults=[None, {"load_csv", "load_parquet"}],
+    ["input_series", "api_methods", "expected_dtype"],
+    defaults=[None, {"load_csv", "load_parquet"}, None],
 )
 
 
 @pytest.mark.parametrize(
-    ["input_series", "api_methods"],
+    ["input_series", "api_methods", "expected_dtype"],
     [
         # Ensure that 64-bit floating point numbers are unchanged.
         # See: https://github.com/pydata/pandas-gbq/issues/326
@@ -53,40 +53,46 @@ SeriesRoundTripTestCase = collections.namedtuple(
                 name="test_col",
             ),
         ),
-        SeriesRoundTripTestCase(
-            input_series=pandas.Series(
-                [
-                    "abc",
-                    "defg",
-                    # Ensure that unicode characters are encoded. See:
-                    # https://github.com/googleapis/python-bigquery-pandas/issues/106
-                    "信用卡",
-                    "Skywalker™",
-                    "hülle",
-                ],
-                name="test_col",
+        pytest.param(
+            *SeriesRoundTripTestCase(
+                input_series=pandas.Series(
+                    [
+                        "abc",
+                        "defg",
+                        # Ensure that unicode characters are encoded. See:
+                        # https://github.com/googleapis/python-bigquery-pandas/issues/106
+                        "信用卡",
+                        "Skywalker™",
+                        "hülle",
+                    ],
+                    name="test_col",
+                ),
             ),
+            id="string-unicode",
         ),
-        SeriesRoundTripTestCase(
-            input_series=pandas.Series(
-                [
-                    "abc",
-                    "defg",
-                    # Ensure that empty strings are written as empty string,
-                    # not NULL. See:
-                    # https://github.com/googleapis/python-bigquery-pandas/issues/366
-                    "",
-                    None,
-                ],
-                name="empty_strings",
+        pytest.param(
+            *SeriesRoundTripTestCase(
+                input_series=pandas.Series(
+                    [
+                        "abc",
+                        "defg",
+                        # Ensure that empty strings are written as empty string,
+                        # not NULL. See:
+                        # https://github.com/googleapis/python-bigquery-pandas/issues/366
+                        "",
+                        None,
+                    ],
+                    name="empty_strings",
+                ),
+                # BigQuery CSV loader uses empty string as the "null marker" by
+                # default. Potentially one could choose a rarely used character or
+                # string as the null marker to disambiguate null from empty string,
+                # but then that string couldn't be loaded.
+                # TODO: Revist when custom load job configuration is supported.
+                #       https://github.com/googleapis/python-bigquery-pandas/issues/425
+                api_methods={"load_parquet"},
             ),
-            # BigQuery CSV loader uses empty string as the "null marker" by
-            # default. Potentially one could choose a rarely used character or
-            # string as the null marker to disambiguate null from empty string,
-            # but then that string couldn't be loaded.
-            # TODO: Revist when custom load job configuration is supported.
-            #       https://github.com/googleapis/python-bigquery-pandas/issues/425
-            api_methods={"load_parquet"},
+            id="string-empty-and-null",
         ),
     ],
 )
@@ -97,6 +103,7 @@ def test_series_round_trip(
     input_series,
     api_method,
     api_methods,
+    expected_dtype,
 ):
     if api_method not in api_methods:
         pytest.skip(f"{api_method} not supported.")
@@ -111,9 +118,14 @@ def test_series_round_trip(
 
     round_trip = read_gbq(table_id)
     round_trip_series = round_trip["test_col"].sort_values().reset_index(drop=True)
+
+    expected_series = input_series.copy()
+    if expected_dtype is not None:
+        expected_series = expected_series.astype(expected_dtype)
+
     pandas.testing.assert_series_equal(
         round_trip_series,
-        input_series,
+        expected_series,
         check_exact=True,
         check_names=False,
     )
@@ -361,6 +373,79 @@ DATAFRAME_ROUND_TRIPS = [
             ],
         ),
         id="issue365-extreme-datetimes",
+    ),
+    # Loading a STRING column should work with all available string dtypes.
+    pytest.param(
+        *DataFrameRoundTripTestCase(
+            input_df=pandas.DataFrame(
+                {
+                    "row_num": [1, 2, 3],
+                    # If a cast to STRING is lossless, pandas-gbq should do that automatically.
+                    # See: https://github.com/googleapis/python-bigquery-pandas/issues/875
+                    "int_want_string": [94043, 10011, 98033],
+                    "object": pandas.Series(["a", "b", "c"], dtype="object"),
+                    "string_python": pandas.Series(
+                        ["d", "e", "f"],
+                        dtype=(
+                            pandas.StringDtype(storage="python")
+                            if hasattr(pandas, "ArrowDtype")
+                            else pandas.StringDtype()
+                        ),
+                    ),
+                    "string_pyarrow": pandas.Series(
+                        ["g", "h", "i"],
+                        dtype=(
+                            pandas.StringDtype(storage="pyarrow")
+                            if hasattr(pandas, "ArrowDtype")
+                            else pandas.StringDtype()
+                        ),
+                    ),
+                    "arrowdtype_string": pandas.Series(
+                        ["j", "k", "l"],
+                        dtype=(
+                            pandas.ArrowDtype(pyarrow.string())
+                            if hasattr(pandas, "ArrowDtype")
+                            else pandas.StringDtype()
+                        ),
+                    ),
+                    "arrowdtype_large_string": pandas.Series(
+                        ["m", "n", "o"],
+                        dtype=(
+                            pandas.ArrowDtype(pyarrow.large_string())
+                            if hasattr(pandas, "ArrowDtype")
+                            and hasattr(pyarrow, "large_string")
+                            else pandas.StringDtype()
+                        ),
+                    ),
+                },
+            ),
+            expected_df=pandas.DataFrame(
+                {
+                    "row_num": [1, 2, 3],
+                    "int_want_string": pandas.Series(
+                        ["94043", "10011", "98033"], dtype="object"
+                    ),
+                    "object": pandas.Series(["a", "b", "c"], dtype="object"),
+                    "string_python": pandas.Series(["d", "e", "f"], dtype="object"),
+                    "string_pyarrow": pandas.Series(["g", "h", "i"], dtype="object"),
+                    "arrowdtype_string": pandas.Series(["j", "k", "l"], dtype="object"),
+                    "arrowdtype_large_string": pandas.Series(
+                        ["m", "n", "o"], dtype="object"
+                    ),
+                },
+            ),
+            table_schema=[
+                {"name": "row_num", "type": "INTEGER"},
+                {"name": "int_want_string", "type": "STRING"},
+                {"name": "object", "type": "STRING"},
+                {"name": "string_python", "type": "STRING"},
+                {"name": "string_pyarrow", "type": "STRING"},
+                {"name": "string_pyarrow_from_int", "type": "STRING"},
+                {"name": "arrowdtype_string", "type": "STRING"},
+                {"name": "arrowdtype_large_string", "type": "STRING"},
+            ],
+        ),
+        id="issue875-strings",
     ),
     pytest.param(
         # Load STRUCT and ARRAY using either object column or ArrowDtype.
