@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.4.0...v1.4.1) (2025-01-30)
+
+
+### Bug Fixes
+
+* Re-add ModuleNotFoundError handler for pandas_backports ([#319](https://github.com/googleapis/python-db-dtypes-pandas/issues/319)) ([931ff8a](https://github.com/googleapis/python-db-dtypes-pandas/commit/931ff8a0f15fb376f77954affb48d1c953094dee))
+
 ## [1.4.0](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.3.1...v1.4.0) (2025-01-21)
 
 
