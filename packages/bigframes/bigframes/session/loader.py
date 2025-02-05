@@ -177,7 +177,7 @@ class GbqDataLoader:
 
         destination_table = self._bqclient.get_table(load_table_destination)
         col_type_overrides: typing.Dict[str, bigframes.dtypes.Dtype] = {
-            col: bigframes.dtypes.TIMEDETLA_DTYPE
+            col: bigframes.dtypes.TIMEDELTA_DTYPE
             for col in df_and_labels.timedelta_cols
         }
         array_value = core.ArrayValue.from_table(
@@ -236,7 +236,7 @@ class GbqDataLoader:
                 )
 
         col_type_overrides: typing.Dict[str, bigframes.dtypes.Dtype] = {
-            col: bigframes.dtypes.TIMEDETLA_DTYPE
+            col: bigframes.dtypes.TIMEDELTA_DTYPE
             for col in df_and_labels.timedelta_cols
         }
         array_value = (

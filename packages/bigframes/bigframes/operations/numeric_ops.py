@@ -141,7 +141,10 @@ class SubOp(base_ops.BinaryOp):
         ):
             # Numeric subtraction
             return dtypes.coerce_to_common(left_type, right_type)
-        # TODO: Add temporal addition once delta types supported
+
+        if dtypes.is_datetime_like(left_type) and dtypes.is_datetime_like(right_type):
+            return dtypes.TIMEDELTA_DTYPE
+
         raise TypeError(f"Cannot subtract dtypes {left_type} and {right_type}")
 
 

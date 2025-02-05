@@ -14,6 +14,8 @@
 
 import datetime
 
+import numpy
+from pandas import testing
 import pandas as pd
 import pytest
 
@@ -367,3 +369,82 @@ def test_dt_clip_coerce_str_timestamp(scalars_dfs):
         pd_result,
         bf_result,
     )
+
+
+@pytest.mark.parametrize("column", ["timestamp_col", "datetime_col"])
+def test_timestamp_diff_two_series(scalars_dfs, column):
+    bf_df, pd_df = scalars_dfs
+    bf_series = bf_df[column]
+    pd_series = pd_df[column]
+
+    actual_result = (bf_series - bf_series).to_pandas()
+
+    expected_result = pd_series - pd_series
+    assert_series_equal(actual_result, expected_result)
+
+
+@pytest.mark.parametrize("column", ["timestamp_col", "datetime_col"])
+def test_timestamp_diff_two_series_with_numpy_ops(scalars_dfs, column):
+    bf_df, pd_df = scalars_dfs
+    bf_series = bf_df[column]
+    pd_series = pd_df[column]
+
+    actual_result = numpy.subtract(bf_series, bf_series).to_pandas()
+
+    expected_result = numpy.subtract(pd_series, pd_series)
+    assert_series_equal(actual_result, expected_result)
+
+
+def test_timestamp_diff_two_dataframes(scalars_dfs):
+    columns = ["timestamp_col", "datetime_col"]
+    bf_df, pd_df = scalars_dfs
+    bf_df = bf_df[columns]
+    pd_df = pd_df[columns]
+
+    actual_result = (bf_df - bf_df).to_pandas()
+
+    expected_result = pd_df - pd_df
+    testing.assert_frame_equal(actual_result, expected_result)
+
+
+def test_timestamp_diff_two_series_with_different_types_raise_error(scalars_dfs):
+    df, _ = scalars_dfs
+
+    with pytest.raises(TypeError):
+        (df["timestamp_col"] - df["datetime_col"]).to_pandas()
+
+
+@pytest.mark.parametrize(
+    ("column", "value"),
+    [
+        ("timestamp_col", pd.Timestamp("2025-01-01 00:00:01", tz="America/New_York")),
+        ("datetime_col", datetime.datetime(2025, 1, 1, 0, 0, 1)),
+    ],
+)
+def test_timestamp_diff_series_sub_literal(scalars_dfs, column, value):
+    bf_df, pd_df = scalars_dfs
+    bf_series = bf_df[column]
+    pd_series = pd_df[column]
+
+    actual_result = (bf_series - value).to_pandas()
+
+    expected_result = pd_series - value
+    assert_series_equal(actual_result, expected_result)
+
+
+@pytest.mark.parametrize(
+    ("column", "value"),
+    [
+        ("timestamp_col", pd.Timestamp("2025-01-01 00:00:01", tz="America/New_York")),
+        ("datetime_col", datetime.datetime(2025, 1, 1, 0, 0, 1)),
+    ],
+)
+def test_timestamp_diff_literal_sub_series(scalars_dfs, column, value):
+    bf_df, pd_df = scalars_dfs
+    bf_series = bf_df[column]
+    pd_series = pd_df[column]
+
+    actual_result = (value - bf_series).to_pandas()
+
+    expected_result = value - pd_series
+    assert_series_equal(actual_result, expected_result)

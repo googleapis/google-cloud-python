@@ -28,4 +28,4 @@ class ToTimedeltaOp(base_ops.UnaryOp):
     def output_type(self, *input_types):
         if input_types[0] is not dtypes.INT_DTYPE:
             raise TypeError("expected integer input")
-        return dtypes.TIMEDETLA_DTYPE
+        return dtypes.TIMEDELTA_DTYPE

@@ -805,10 +805,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     __rsub__.__doc__ = inspect.getdoc(vendored_pandas_series.Series.__rsub__)
 
-    def sub(self, other: float | int | Series) -> Series:
+    def sub(self, other) -> Series:
         return self._apply_binary_op(other, ops.sub_op)
 
-    def rsub(self, other: float | int | Series) -> Series:
+    def rsub(self, other) -> Series:
         return self._apply_binary_op(other, ops.sub_op, reverse=True)
 
     subtract = sub

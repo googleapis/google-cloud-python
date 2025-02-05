@@ -107,3 +107,22 @@ class UnixMicros(base_ops.UnaryOp):
         if input_types[0] is not dtypes.TIMESTAMP_DTYPE:
             raise TypeError("expected timestamp input")
         return dtypes.INT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class TimestampDiff(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "timestamp_diff"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] is not input_types[1]:
+            raise TypeError(
+                f"two inputs have different types. left: {input_types[0]}, right: {input_types[1]}"
+            )
+
+        if not dtypes.is_datetime_like(input_types[0]):
+            raise TypeError("expected timestamp input")
+
+        return dtypes.TIMEDELTA_DTYPE
+
+
+timestamp_diff_op = TimestampDiff()
