@@ -295,7 +295,10 @@ def is_object_like(type_: Union[ExpressionType, str]) -> bool:
     # See: https://stackoverflow.com/a/40312924/101923 and
     # https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html
     # for the way to identify object type.
-    return type_ in ("object", "O") or getattr(type_, "kind", None) == "O"
+    return type_ in ("object", "O") or (
+        getattr(type_, "kind", None) == "O"
+        and getattr(type_, "storage", None) != "pyarrow"
+    )
 
 
 def is_string_like(type_: ExpressionType) -> bool:

@@ -26,6 +26,7 @@ import pyarrow as pa  # type: ignore
 import pytest
 import shapely  # type: ignore
 
+import bigframes.features
 import bigframes.pandas
 import bigframes.series as series
 from tests.system.utils import (
@@ -225,6 +226,79 @@ def test_series_construct_geodata():
 
     pd.testing.assert_series_equal(
         pd_series, series.to_pandas(), check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    ("dtype"),
+    [
+        pytest.param(pd.Int64Dtype(), id="int"),
+        pytest.param(pd.Float64Dtype(), id="float"),
+        pytest.param(pd.StringDtype(storage="pyarrow"), id="string"),
+    ],
+)
+def test_series_construct_w_dtype_for_int(dtype):
+    data = [1, 2, 3]
+    expected = pd.Series(data, dtype=dtype)
+    expected.index = expected.index.astype("Int64")
+    series = bigframes.pandas.Series(data, dtype=dtype)
+    pd.testing.assert_series_equal(series.to_pandas(), expected)
+
+
+def test_series_construct_w_dtype_for_struct():
+    # The data shows the struct fields are disordered and correctly handled during
+    # construction.
+    data = [
+        {"a": 1, "c": "pandas", "b": dt.datetime(2020, 1, 20, 20, 20, 20, 20)},
+        {"a": 2, "c": "pandas", "b": dt.datetime(2019, 1, 20, 20, 20, 20, 20)},
+        {"a": 1, "c": "numpy", "b": None},
+    ]
+    dtype = pd.ArrowDtype(
+        pa.struct([("a", pa.int64()), ("c", pa.string()), ("b", pa.timestamp("us"))])
+    )
+    series = bigframes.pandas.Series(data, dtype=dtype)
+    expected = pd.Series(data, dtype=dtype)
+    expected.index = expected.index.astype("Int64")
+    pd.testing.assert_series_equal(series.to_pandas(), expected)
+
+
+def test_series_construct_w_dtype_for_array_string():
+    data = [["1", "2", "3"], [], ["4", "5"]]
+    dtype = pd.ArrowDtype(pa.list_(pa.string()))
+    series = bigframes.pandas.Series(data, dtype=dtype)
+    expected = pd.Series(data, dtype=dtype)
+    expected.index = expected.index.astype("Int64")
+
+    # Skip dtype check due to internal issue b/321013333. This issue causes array types
+    # to be converted to the `object` dtype when calling `to_pandas()`, resulting in
+    # a mismatch with the expected Pandas type.
+    if bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
+        check_dtype = True
+    else:
+        check_dtype = False
+
+    pd.testing.assert_series_equal(
+        series.to_pandas(), expected, check_dtype=check_dtype
+    )
+
+
+def test_series_construct_w_dtype_for_array_struct():
+    data = [[{"a": 1, "c": "aa"}, {"a": 2, "c": "bb"}], [], [{"a": 3, "c": "cc"}]]
+    dtype = pd.ArrowDtype(pa.list_(pa.struct([("a", pa.int64()), ("c", pa.string())])))
+    series = bigframes.pandas.Series(data, dtype=dtype)
+    expected = pd.Series(data, dtype=dtype)
+    expected.index = expected.index.astype("Int64")
+
+    # Skip dtype check due to internal issue b/321013333. This issue causes array types
+    # to be converted to the `object` dtype when calling `to_pandas()`, resulting in
+    # a mismatch with the expected Pandas type.
+    if bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
+        check_dtype = True
+    else:
+        check_dtype = False
+
+    pd.testing.assert_series_equal(
+        series.to_pandas(), expected, check_dtype=check_dtype
     )
 
 

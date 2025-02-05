@@ -166,6 +166,19 @@ def test_df_construct_inline_respects_location():
         assert table.location == "europe-west1"
 
 
+def test_df_construct_dtype():
+    data = {
+        "int_col": [1, 2, 3],
+        "string_col": ["1.1", "2.0", "3.5"],
+        "float_col": [1.0, 2.0, 3.0],
+    }
+    dtype = pd.StringDtype(storage="pyarrow")
+    bf_result = dataframe.DataFrame(data, dtype=dtype)
+    pd_result = pd.DataFrame(data, dtype=dtype)
+    pd_result.index = pd_result.index.astype("Int64")
+    pandas.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
+
+
 def test_get_column(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_col"

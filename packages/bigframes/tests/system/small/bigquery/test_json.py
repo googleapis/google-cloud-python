@@ -16,6 +16,7 @@ import json
 
 import geopandas as gpd  # type: ignore
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 import bigframes.bigquery as bbq
@@ -174,7 +175,7 @@ def test_json_extract_array_from_json_strings():
     actual = bbq.json_extract_array(s, "$.a")
     expected = bpd.Series(
         [['"ab"', '"2"', '"3 xy"'], [], ['"4"', '"5"'], None],
-        dtype=pd.StringDtype(storage="pyarrow"),
+        dtype=pd.ArrowDtype(pa.list_(pa.string())),
     )
     pd.testing.assert_series_equal(
         actual.to_pandas(),
@@ -190,7 +191,7 @@ def test_json_extract_array_from_json_array_strings():
     actual = bbq.json_extract_array(s)
     expected = bpd.Series(
         [["1", "2", "3"], [], ["4", "5"]],
-        dtype=pd.StringDtype(storage="pyarrow"),
+        dtype=pd.ArrowDtype(pa.list_(pa.string())),
     )
     pd.testing.assert_series_equal(
         actual.to_pandas(),
