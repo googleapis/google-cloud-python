@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.67.0rc1](https://github.com/googleapis/google-cloud-python/compare/googleapis-common-protos-v1.66.0...googleapis-common-protos-v1.67.0rc1) (2025-02-06)
+
+
+### Features
+
+* add support for field generate_omitted_as_internal in selective gapic generation ([#13482](https://github.com/googleapis/google-cloud-python/issues/13482)) ([993ff4d](https://github.com/googleapis/google-cloud-python/commit/993ff4db8ae64ab1ca1b45de2caf118effb003af))
+
 ## [1.66.0](https://github.com/googleapis/python-api-common-protos/compare/v1.65.0...v1.66.0) (2024-11-12)
 
 
