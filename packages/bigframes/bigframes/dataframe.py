@@ -180,7 +180,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
                 block = block.set_index([r_mapping[idx_col] for idx_col in idx_cols])
             if columns:
-                block = block.select_columns(list(columns))  # type:ignore
+                column_ids = [
+                    block.resolve_label_exact_or_error(label) for label in list(columns)
+                ]
+                block = block.select_columns(column_ids)  # type:ignore
             if dtype:
                 bf_dtype = bigframes.dtypes.bigframes_type(dtype)
                 block = block.multi_apply_unary_op(ops.AsTypeOp(to_type=bf_dtype))
@@ -238,15 +241,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return [self._block.value_columns.index(col_id) for col_id in col_ids]
 
     def _resolve_label_exact(self, label) -> Optional[str]:
-        """Returns the column id matching the label if there is exactly
-        one such column. If there are multiple columns with the same name,
-        raises an error. If there is no such column, returns None."""
-        matches = self._block.label_to_col_id.get(label, [])
-        if len(matches) > 1:
-            raise ValueError(
-                f"Multiple columns matching id {label} were found. {constants.FEEDBACK_LINK}"
-            )
-        return matches[0] if len(matches) != 0 else None
+        return self._block.resolve_label_exact(label)
 
     def _sql_names(
         self,
