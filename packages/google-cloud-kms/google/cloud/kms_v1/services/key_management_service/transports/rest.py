@@ -321,11 +321,36 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.AsymmetricDecryptResponse:
         """Post-rpc interceptor for asymmetric_decrypt
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_asymmetric_decrypt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_asymmetric_decrypt` interceptor runs
+        before the `post_asymmetric_decrypt_with_metadata` interceptor.
         """
         return response
+
+    def post_asymmetric_decrypt_with_metadata(
+        self,
+        response: service.AsymmetricDecryptResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.AsymmetricDecryptResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for asymmetric_decrypt
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_asymmetric_decrypt_with_metadata`
+        interceptor in new development instead of the `post_asymmetric_decrypt` interceptor.
+        When both interceptors are used, this `post_asymmetric_decrypt_with_metadata` interceptor runs after the
+        `post_asymmetric_decrypt` interceptor. The (possibly modified) response returned by
+        `post_asymmetric_decrypt` will be passed to
+        `post_asymmetric_decrypt_with_metadata`.
+        """
+        return response, metadata
 
     def pre_asymmetric_sign(
         self,
@@ -344,11 +369,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.AsymmetricSignResponse:
         """Post-rpc interceptor for asymmetric_sign
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_asymmetric_sign_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_asymmetric_sign` interceptor runs
+        before the `post_asymmetric_sign_with_metadata` interceptor.
         """
         return response
+
+    def post_asymmetric_sign_with_metadata(
+        self,
+        response: service.AsymmetricSignResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.AsymmetricSignResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for asymmetric_sign
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_asymmetric_sign_with_metadata`
+        interceptor in new development instead of the `post_asymmetric_sign` interceptor.
+        When both interceptors are used, this `post_asymmetric_sign_with_metadata` interceptor runs after the
+        `post_asymmetric_sign` interceptor. The (possibly modified) response returned by
+        `post_asymmetric_sign` will be passed to
+        `post_asymmetric_sign_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_crypto_key(
         self,
@@ -367,11 +415,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKey:
         """Post-rpc interceptor for create_crypto_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_crypto_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_crypto_key` interceptor runs
+        before the `post_create_crypto_key_with_metadata` interceptor.
         """
         return response
+
+    def post_create_crypto_key_with_metadata(
+        self,
+        response: resources.CryptoKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_crypto_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_create_crypto_key_with_metadata`
+        interceptor in new development instead of the `post_create_crypto_key` interceptor.
+        When both interceptors are used, this `post_create_crypto_key_with_metadata` interceptor runs after the
+        `post_create_crypto_key` interceptor. The (possibly modified) response returned by
+        `post_create_crypto_key` will be passed to
+        `post_create_crypto_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_crypto_key_version(
         self,
@@ -392,11 +463,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for create_crypto_key_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_crypto_key_version` interceptor runs
+        before the `post_create_crypto_key_version_with_metadata` interceptor.
         """
         return response
+
+    def post_create_crypto_key_version_with_metadata(
+        self,
+        response: resources.CryptoKeyVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_create_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_create_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_create_crypto_key_version_with_metadata` interceptor runs after the
+        `post_create_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_create_crypto_key_version` will be passed to
+        `post_create_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_import_job(
         self,
@@ -415,11 +509,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.ImportJob:
         """Post-rpc interceptor for create_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_import_job` interceptor runs
+        before the `post_create_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_import_job_with_metadata(
+        self,
+        response: resources.ImportJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.ImportJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_create_import_job_with_metadata`
+        interceptor in new development instead of the `post_create_import_job` interceptor.
+        When both interceptors are used, this `post_create_import_job_with_metadata` interceptor runs after the
+        `post_create_import_job` interceptor. The (possibly modified) response returned by
+        `post_create_import_job` will be passed to
+        `post_create_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_key_ring(
         self,
@@ -436,11 +553,34 @@ class KeyManagementServiceRestInterceptor:
     def post_create_key_ring(self, response: resources.KeyRing) -> resources.KeyRing:
         """Post-rpc interceptor for create_key_ring
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_key_ring_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_key_ring` interceptor runs
+        before the `post_create_key_ring_with_metadata` interceptor.
         """
         return response
+
+    def post_create_key_ring_with_metadata(
+        self,
+        response: resources.KeyRing,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.KeyRing, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_key_ring
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_create_key_ring_with_metadata`
+        interceptor in new development instead of the `post_create_key_ring` interceptor.
+        When both interceptors are used, this `post_create_key_ring_with_metadata` interceptor runs after the
+        `post_create_key_ring` interceptor. The (possibly modified) response returned by
+        `post_create_key_ring` will be passed to
+        `post_create_key_ring_with_metadata`.
+        """
+        return response, metadata
 
     def pre_decrypt(
         self,
@@ -459,11 +599,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.DecryptResponse:
         """Post-rpc interceptor for decrypt
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_decrypt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_decrypt` interceptor runs
+        before the `post_decrypt_with_metadata` interceptor.
         """
         return response
+
+    def post_decrypt_with_metadata(
+        self,
+        response: service.DecryptResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DecryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for decrypt
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_decrypt_with_metadata`
+        interceptor in new development instead of the `post_decrypt` interceptor.
+        When both interceptors are used, this `post_decrypt_with_metadata` interceptor runs after the
+        `post_decrypt` interceptor. The (possibly modified) response returned by
+        `post_decrypt` will be passed to
+        `post_decrypt_with_metadata`.
+        """
+        return response, metadata
 
     def pre_destroy_crypto_key_version(
         self,
@@ -484,11 +647,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for destroy_crypto_key_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_destroy_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_destroy_crypto_key_version` interceptor runs
+        before the `post_destroy_crypto_key_version_with_metadata` interceptor.
         """
         return response
+
+    def post_destroy_crypto_key_version_with_metadata(
+        self,
+        response: resources.CryptoKeyVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for destroy_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_destroy_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_destroy_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_destroy_crypto_key_version_with_metadata` interceptor runs after the
+        `post_destroy_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_destroy_crypto_key_version` will be passed to
+        `post_destroy_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_encrypt(
         self,
@@ -507,11 +693,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.EncryptResponse:
         """Post-rpc interceptor for encrypt
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_encrypt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_encrypt` interceptor runs
+        before the `post_encrypt_with_metadata` interceptor.
         """
         return response
+
+    def post_encrypt_with_metadata(
+        self,
+        response: service.EncryptResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.EncryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for encrypt
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_encrypt_with_metadata`
+        interceptor in new development instead of the `post_encrypt` interceptor.
+        When both interceptors are used, this `post_encrypt_with_metadata` interceptor runs after the
+        `post_encrypt` interceptor. The (possibly modified) response returned by
+        `post_encrypt` will be passed to
+        `post_encrypt_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_random_bytes(
         self,
@@ -532,11 +741,36 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.GenerateRandomBytesResponse:
         """Post-rpc interceptor for generate_random_bytes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_random_bytes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_random_bytes` interceptor runs
+        before the `post_generate_random_bytes_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_random_bytes_with_metadata(
+        self,
+        response: service.GenerateRandomBytesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GenerateRandomBytesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for generate_random_bytes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_generate_random_bytes_with_metadata`
+        interceptor in new development instead of the `post_generate_random_bytes` interceptor.
+        When both interceptors are used, this `post_generate_random_bytes_with_metadata` interceptor runs after the
+        `post_generate_random_bytes` interceptor. The (possibly modified) response returned by
+        `post_generate_random_bytes` will be passed to
+        `post_generate_random_bytes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_crypto_key(
         self,
@@ -553,11 +787,34 @@ class KeyManagementServiceRestInterceptor:
     def post_get_crypto_key(self, response: resources.CryptoKey) -> resources.CryptoKey:
         """Post-rpc interceptor for get_crypto_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_crypto_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_crypto_key` interceptor runs
+        before the `post_get_crypto_key_with_metadata` interceptor.
         """
         return response
+
+    def post_get_crypto_key_with_metadata(
+        self,
+        response: resources.CryptoKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_crypto_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_get_crypto_key_with_metadata`
+        interceptor in new development instead of the `post_get_crypto_key` interceptor.
+        When both interceptors are used, this `post_get_crypto_key_with_metadata` interceptor runs after the
+        `post_get_crypto_key` interceptor. The (possibly modified) response returned by
+        `post_get_crypto_key` will be passed to
+        `post_get_crypto_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_crypto_key_version(
         self,
@@ -578,11 +835,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for get_crypto_key_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_crypto_key_version` interceptor runs
+        before the `post_get_crypto_key_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_crypto_key_version_with_metadata(
+        self,
+        response: resources.CryptoKeyVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_get_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_get_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_get_crypto_key_version_with_metadata` interceptor runs after the
+        `post_get_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_get_crypto_key_version` will be passed to
+        `post_get_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_import_job(
         self,
@@ -599,11 +879,34 @@ class KeyManagementServiceRestInterceptor:
     def post_get_import_job(self, response: resources.ImportJob) -> resources.ImportJob:
         """Post-rpc interceptor for get_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_import_job` interceptor runs
+        before the `post_get_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_import_job_with_metadata(
+        self,
+        response: resources.ImportJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.ImportJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_get_import_job_with_metadata`
+        interceptor in new development instead of the `post_get_import_job` interceptor.
+        When both interceptors are used, this `post_get_import_job_with_metadata` interceptor runs after the
+        `post_get_import_job` interceptor. The (possibly modified) response returned by
+        `post_get_import_job` will be passed to
+        `post_get_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_key_ring(
         self,
@@ -620,11 +923,34 @@ class KeyManagementServiceRestInterceptor:
     def post_get_key_ring(self, response: resources.KeyRing) -> resources.KeyRing:
         """Post-rpc interceptor for get_key_ring
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_key_ring_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_key_ring` interceptor runs
+        before the `post_get_key_ring_with_metadata` interceptor.
         """
         return response
+
+    def post_get_key_ring_with_metadata(
+        self,
+        response: resources.KeyRing,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.KeyRing, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_key_ring
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_get_key_ring_with_metadata`
+        interceptor in new development instead of the `post_get_key_ring` interceptor.
+        When both interceptors are used, this `post_get_key_ring_with_metadata` interceptor runs after the
+        `post_get_key_ring` interceptor. The (possibly modified) response returned by
+        `post_get_key_ring` will be passed to
+        `post_get_key_ring_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_public_key(
         self,
@@ -641,11 +967,34 @@ class KeyManagementServiceRestInterceptor:
     def post_get_public_key(self, response: resources.PublicKey) -> resources.PublicKey:
         """Post-rpc interceptor for get_public_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_public_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_public_key` interceptor runs
+        before the `post_get_public_key_with_metadata` interceptor.
         """
         return response
+
+    def post_get_public_key_with_metadata(
+        self,
+        response: resources.PublicKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.PublicKey, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_public_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_get_public_key_with_metadata`
+        interceptor in new development instead of the `post_get_public_key` interceptor.
+        When both interceptors are used, this `post_get_public_key_with_metadata` interceptor runs after the
+        `post_get_public_key` interceptor. The (possibly modified) response returned by
+        `post_get_public_key` will be passed to
+        `post_get_public_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_crypto_key_version(
         self,
@@ -666,11 +1015,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for import_crypto_key_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_crypto_key_version` interceptor runs
+        before the `post_import_crypto_key_version_with_metadata` interceptor.
         """
         return response
+
+    def post_import_crypto_key_version_with_metadata(
+        self,
+        response: resources.CryptoKeyVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_import_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_import_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_import_crypto_key_version_with_metadata` interceptor runs after the
+        `post_import_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_import_crypto_key_version` will be passed to
+        `post_import_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_crypto_keys(
         self,
@@ -689,11 +1061,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.ListCryptoKeysResponse:
         """Post-rpc interceptor for list_crypto_keys
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_crypto_keys_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_crypto_keys` interceptor runs
+        before the `post_list_crypto_keys_with_metadata` interceptor.
         """
         return response
+
+    def post_list_crypto_keys_with_metadata(
+        self,
+        response: service.ListCryptoKeysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListCryptoKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_crypto_keys
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_list_crypto_keys_with_metadata`
+        interceptor in new development instead of the `post_list_crypto_keys` interceptor.
+        When both interceptors are used, this `post_list_crypto_keys_with_metadata` interceptor runs after the
+        `post_list_crypto_keys` interceptor. The (possibly modified) response returned by
+        `post_list_crypto_keys` will be passed to
+        `post_list_crypto_keys_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_crypto_key_versions(
         self,
@@ -714,11 +1109,36 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.ListCryptoKeyVersionsResponse:
         """Post-rpc interceptor for list_crypto_key_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_crypto_key_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_crypto_key_versions` interceptor runs
+        before the `post_list_crypto_key_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_crypto_key_versions_with_metadata(
+        self,
+        response: service.ListCryptoKeyVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListCryptoKeyVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_crypto_key_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_list_crypto_key_versions_with_metadata`
+        interceptor in new development instead of the `post_list_crypto_key_versions` interceptor.
+        When both interceptors are used, this `post_list_crypto_key_versions_with_metadata` interceptor runs after the
+        `post_list_crypto_key_versions` interceptor. The (possibly modified) response returned by
+        `post_list_crypto_key_versions` will be passed to
+        `post_list_crypto_key_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_import_jobs(
         self,
@@ -737,11 +1157,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.ListImportJobsResponse:
         """Post-rpc interceptor for list_import_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_import_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_import_jobs` interceptor runs
+        before the `post_list_import_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_import_jobs_with_metadata(
+        self,
+        response: service.ListImportJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListImportJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_import_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_list_import_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_import_jobs` interceptor.
+        When both interceptors are used, this `post_list_import_jobs_with_metadata` interceptor runs after the
+        `post_list_import_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_import_jobs` will be passed to
+        `post_list_import_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_key_rings(
         self,
@@ -760,11 +1203,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.ListKeyRingsResponse:
         """Post-rpc interceptor for list_key_rings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_key_rings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_key_rings` interceptor runs
+        before the `post_list_key_rings_with_metadata` interceptor.
         """
         return response
+
+    def post_list_key_rings_with_metadata(
+        self,
+        response: service.ListKeyRingsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListKeyRingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_key_rings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_list_key_rings_with_metadata`
+        interceptor in new development instead of the `post_list_key_rings` interceptor.
+        When both interceptors are used, this `post_list_key_rings_with_metadata` interceptor runs after the
+        `post_list_key_rings` interceptor. The (possibly modified) response returned by
+        `post_list_key_rings` will be passed to
+        `post_list_key_rings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_mac_sign(
         self,
@@ -783,11 +1249,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.MacSignResponse:
         """Post-rpc interceptor for mac_sign
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_mac_sign_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_mac_sign` interceptor runs
+        before the `post_mac_sign_with_metadata` interceptor.
         """
         return response
+
+    def post_mac_sign_with_metadata(
+        self,
+        response: service.MacSignResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.MacSignResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mac_sign
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_mac_sign_with_metadata`
+        interceptor in new development instead of the `post_mac_sign` interceptor.
+        When both interceptors are used, this `post_mac_sign_with_metadata` interceptor runs after the
+        `post_mac_sign` interceptor. The (possibly modified) response returned by
+        `post_mac_sign` will be passed to
+        `post_mac_sign_with_metadata`.
+        """
+        return response, metadata
 
     def pre_mac_verify(
         self,
@@ -806,11 +1295,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.MacVerifyResponse:
         """Post-rpc interceptor for mac_verify
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_mac_verify_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_mac_verify` interceptor runs
+        before the `post_mac_verify_with_metadata` interceptor.
         """
         return response
+
+    def post_mac_verify_with_metadata(
+        self,
+        response: service.MacVerifyResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.MacVerifyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for mac_verify
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_mac_verify_with_metadata`
+        interceptor in new development instead of the `post_mac_verify` interceptor.
+        When both interceptors are used, this `post_mac_verify_with_metadata` interceptor runs after the
+        `post_mac_verify` interceptor. The (possibly modified) response returned by
+        `post_mac_verify` will be passed to
+        `post_mac_verify_with_metadata`.
+        """
+        return response, metadata
 
     def pre_raw_decrypt(
         self,
@@ -829,11 +1341,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.RawDecryptResponse:
         """Post-rpc interceptor for raw_decrypt
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_raw_decrypt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_raw_decrypt` interceptor runs
+        before the `post_raw_decrypt_with_metadata` interceptor.
         """
         return response
+
+    def post_raw_decrypt_with_metadata(
+        self,
+        response: service.RawDecryptResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.RawDecryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for raw_decrypt
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_raw_decrypt_with_metadata`
+        interceptor in new development instead of the `post_raw_decrypt` interceptor.
+        When both interceptors are used, this `post_raw_decrypt_with_metadata` interceptor runs after the
+        `post_raw_decrypt` interceptor. The (possibly modified) response returned by
+        `post_raw_decrypt` will be passed to
+        `post_raw_decrypt_with_metadata`.
+        """
+        return response, metadata
 
     def pre_raw_encrypt(
         self,
@@ -852,11 +1387,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> service.RawEncryptResponse:
         """Post-rpc interceptor for raw_encrypt
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_raw_encrypt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_raw_encrypt` interceptor runs
+        before the `post_raw_encrypt_with_metadata` interceptor.
         """
         return response
+
+    def post_raw_encrypt_with_metadata(
+        self,
+        response: service.RawEncryptResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.RawEncryptResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for raw_encrypt
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_raw_encrypt_with_metadata`
+        interceptor in new development instead of the `post_raw_encrypt` interceptor.
+        When both interceptors are used, this `post_raw_encrypt_with_metadata` interceptor runs after the
+        `post_raw_encrypt` interceptor. The (possibly modified) response returned by
+        `post_raw_encrypt` will be passed to
+        `post_raw_encrypt_with_metadata`.
+        """
+        return response, metadata
 
     def pre_restore_crypto_key_version(
         self,
@@ -877,11 +1435,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for restore_crypto_key_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restore_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restore_crypto_key_version` interceptor runs
+        before the `post_restore_crypto_key_version_with_metadata` interceptor.
         """
         return response
+
+    def post_restore_crypto_key_version_with_metadata(
+        self,
+        response: resources.CryptoKeyVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restore_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_restore_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_restore_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_restore_crypto_key_version_with_metadata` interceptor runs after the
+        `post_restore_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_restore_crypto_key_version` will be passed to
+        `post_restore_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_crypto_key(
         self,
@@ -900,11 +1481,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKey:
         """Post-rpc interceptor for update_crypto_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_crypto_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_crypto_key` interceptor runs
+        before the `post_update_crypto_key_with_metadata` interceptor.
         """
         return response
+
+    def post_update_crypto_key_with_metadata(
+        self,
+        response: resources.CryptoKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_crypto_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_update_crypto_key_with_metadata`
+        interceptor in new development instead of the `post_update_crypto_key` interceptor.
+        When both interceptors are used, this `post_update_crypto_key_with_metadata` interceptor runs after the
+        `post_update_crypto_key` interceptor. The (possibly modified) response returned by
+        `post_update_crypto_key` will be passed to
+        `post_update_crypto_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_crypto_key_primary_version(
         self,
@@ -926,11 +1530,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKey:
         """Post-rpc interceptor for update_crypto_key_primary_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_crypto_key_primary_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_crypto_key_primary_version` interceptor runs
+        before the `post_update_crypto_key_primary_version_with_metadata` interceptor.
         """
         return response
+
+    def post_update_crypto_key_primary_version_with_metadata(
+        self,
+        response: resources.CryptoKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKey, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_crypto_key_primary_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_update_crypto_key_primary_version_with_metadata`
+        interceptor in new development instead of the `post_update_crypto_key_primary_version` interceptor.
+        When both interceptors are used, this `post_update_crypto_key_primary_version_with_metadata` interceptor runs after the
+        `post_update_crypto_key_primary_version` interceptor. The (possibly modified) response returned by
+        `post_update_crypto_key_primary_version` will be passed to
+        `post_update_crypto_key_primary_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_crypto_key_version(
         self,
@@ -951,11 +1578,34 @@ class KeyManagementServiceRestInterceptor:
     ) -> resources.CryptoKeyVersion:
         """Post-rpc interceptor for update_crypto_key_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_crypto_key_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the KeyManagementService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_crypto_key_version` interceptor runs
+        before the `post_update_crypto_key_version_with_metadata` interceptor.
         """
         return response
+
+    def post_update_crypto_key_version_with_metadata(
+        self,
+        response: resources.CryptoKeyVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.CryptoKeyVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_crypto_key_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the KeyManagementService server but before it is returned to user code.
+
+        We recommend only using this `post_update_crypto_key_version_with_metadata`
+        interceptor in new development instead of the `post_update_crypto_key_version` interceptor.
+        When both interceptors are used, this `post_update_crypto_key_version_with_metadata` interceptor runs after the
+        `post_update_crypto_key_version` interceptor. The (possibly modified) response returned by
+        `post_update_crypto_key_version` will be passed to
+        `post_update_crypto_key_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1333,6 +1983,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_asymmetric_decrypt(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_asymmetric_decrypt_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1485,6 +2139,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_asymmetric_sign(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_asymmetric_sign_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1644,6 +2302,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_crypto_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_crypto_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1811,6 +2473,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_crypto_key_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_crypto_key_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2006,6 +2672,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2157,6 +2827,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_key_ring(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_key_ring_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2307,6 +2981,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_decrypt(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_decrypt_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2473,6 +3151,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_destroy_crypto_key_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_destroy_crypto_key_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2623,6 +3305,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_encrypt(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_encrypt_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2777,6 +3463,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_random_bytes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_random_bytes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2930,6 +3620,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_crypto_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_crypto_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3091,6 +3785,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_crypto_key_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_crypto_key_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3278,6 +3976,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3423,6 +4125,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_key_ring(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_key_ring_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3569,6 +4275,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_public_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_public_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3736,6 +4446,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_crypto_key_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_crypto_key_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3882,6 +4596,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_crypto_keys(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_crypto_keys_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4030,6 +4748,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_crypto_key_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_crypto_key_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4178,6 +4900,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_import_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_import_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4322,6 +5048,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_key_rings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_key_rings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4472,6 +5202,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_mac_sign(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mac_sign_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4622,6 +5356,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_mac_verify(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_mac_verify_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4772,6 +5510,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_raw_decrypt(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_raw_decrypt_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4922,6 +5664,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_raw_encrypt(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_raw_encrypt_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5088,6 +5834,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_restore_crypto_key_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_crypto_key_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5247,6 +5997,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_crypto_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_crypto_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5409,6 +6163,13 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_crypto_key_primary_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_crypto_key_primary_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5576,6 +6337,10 @@ class KeyManagementServiceRestTransport(_BaseKeyManagementServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_crypto_key_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_crypto_key_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

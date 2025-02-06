@@ -73,6 +73,13 @@ from google.cloud.gkehub_v1.services.gke_hub import (
 )
 from google.cloud.gkehub_v1.types import feature, membership, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -293,6 +300,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         GkeHubClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = GkeHubClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = GkeHubClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7649,10 +7699,13 @@ def test_list_memberships_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GkeHubRestInterceptor, "post_list_memberships"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_list_memberships_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_list_memberships"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListMembershipsRequest.pb(service.ListMembershipsRequest())
         transcode.return_value = {
             "method": "post",
@@ -7676,6 +7729,7 @@ def test_list_memberships_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListMembershipsResponse()
+        post_with_metadata.return_value = service.ListMembershipsResponse(), metadata
 
         client.list_memberships(
             request,
@@ -7687,6 +7741,7 @@ def test_list_memberships_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_features_rest_bad_request(request_type=service.ListFeaturesRequest):
@@ -7767,10 +7822,13 @@ def test_list_features_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GkeHubRestInterceptor, "post_list_features"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_list_features_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_list_features"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListFeaturesRequest.pb(service.ListFeaturesRequest())
         transcode.return_value = {
             "method": "post",
@@ -7794,6 +7852,7 @@ def test_list_features_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListFeaturesResponse()
+        post_with_metadata.return_value = service.ListFeaturesResponse(), metadata
 
         client.list_features(
             request,
@@ -7805,6 +7864,7 @@ def test_list_features_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_membership_rest_bad_request(request_type=service.GetMembershipRequest):
@@ -7891,10 +7951,13 @@ def test_get_membership_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GkeHubRestInterceptor, "post_get_membership"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_get_membership_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_get_membership"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetMembershipRequest.pb(service.GetMembershipRequest())
         transcode.return_value = {
             "method": "post",
@@ -7916,6 +7979,7 @@ def test_get_membership_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = membership.Membership()
+        post_with_metadata.return_value = membership.Membership(), metadata
 
         client.get_membership(
             request,
@@ -7927,6 +7991,7 @@ def test_get_membership_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_feature_rest_bad_request(request_type=service.GetFeatureRequest):
@@ -8007,10 +8072,13 @@ def test_get_feature_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GkeHubRestInterceptor, "post_get_feature"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_get_feature_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_get_feature"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetFeatureRequest.pb(service.GetFeatureRequest())
         transcode.return_value = {
             "method": "post",
@@ -8032,6 +8100,7 @@ def test_get_feature_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = feature.Feature()
+        post_with_metadata.return_value = feature.Feature(), metadata
 
         client.get_feature(
             request,
@@ -8043,6 +8112,7 @@ def test_get_feature_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_membership_rest_bad_request(
@@ -8240,10 +8310,13 @@ def test_create_membership_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GkeHubRestInterceptor, "post_create_membership"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_create_membership_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_create_membership"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateMembershipRequest.pb(
             service.CreateMembershipRequest()
         )
@@ -8267,6 +8340,7 @@ def test_create_membership_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_membership(
             request,
@@ -8278,6 +8352,7 @@ def test_create_membership_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_feature_rest_bad_request(request_type=service.CreateFeatureRequest):
@@ -8441,10 +8516,13 @@ def test_create_feature_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GkeHubRestInterceptor, "post_create_feature"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_create_feature_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_create_feature"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateFeatureRequest.pb(service.CreateFeatureRequest())
         transcode.return_value = {
             "method": "post",
@@ -8466,6 +8544,7 @@ def test_create_feature_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_feature(
             request,
@@ -8477,6 +8556,7 @@ def test_create_feature_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_membership_rest_bad_request(
@@ -8555,10 +8635,13 @@ def test_delete_membership_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GkeHubRestInterceptor, "post_delete_membership"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_delete_membership_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_delete_membership"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteMembershipRequest.pb(
             service.DeleteMembershipRequest()
         )
@@ -8582,6 +8665,7 @@ def test_delete_membership_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_membership(
             request,
@@ -8593,6 +8677,7 @@ def test_delete_membership_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_feature_rest_bad_request(request_type=service.DeleteFeatureRequest):
@@ -8669,10 +8754,13 @@ def test_delete_feature_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GkeHubRestInterceptor, "post_delete_feature"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_delete_feature_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_delete_feature"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteFeatureRequest.pb(service.DeleteFeatureRequest())
         transcode.return_value = {
             "method": "post",
@@ -8694,6 +8782,7 @@ def test_delete_feature_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_feature(
             request,
@@ -8705,6 +8794,7 @@ def test_delete_feature_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_membership_rest_bad_request(
@@ -8902,10 +8992,13 @@ def test_update_membership_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GkeHubRestInterceptor, "post_update_membership"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_update_membership_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_update_membership"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateMembershipRequest.pb(
             service.UpdateMembershipRequest()
         )
@@ -8929,6 +9022,7 @@ def test_update_membership_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_membership(
             request,
@@ -8940,6 +9034,7 @@ def test_update_membership_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_feature_rest_bad_request(request_type=service.UpdateFeatureRequest):
@@ -9103,10 +9198,13 @@ def test_update_feature_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GkeHubRestInterceptor, "post_update_feature"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_update_feature_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_update_feature"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateFeatureRequest.pb(service.UpdateFeatureRequest())
         transcode.return_value = {
             "method": "post",
@@ -9128,6 +9226,7 @@ def test_update_feature_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_feature(
             request,
@@ -9139,6 +9238,7 @@ def test_update_feature_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_connect_manifest_rest_bad_request(
@@ -9218,10 +9318,13 @@ def test_generate_connect_manifest_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GkeHubRestInterceptor, "post_generate_connect_manifest"
     ) as post, mock.patch.object(
+        transports.GkeHubRestInterceptor, "post_generate_connect_manifest_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GkeHubRestInterceptor, "pre_generate_connect_manifest"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GenerateConnectManifestRequest.pb(
             service.GenerateConnectManifestRequest()
         )
@@ -9247,6 +9350,10 @@ def test_generate_connect_manifest_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.GenerateConnectManifestResponse()
+        post_with_metadata.return_value = (
+            service.GenerateConnectManifestResponse(),
+            metadata,
+        )
 
         client.generate_connect_manifest(
             request,
@@ -9258,6 +9365,7 @@ def test_generate_connect_manifest_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

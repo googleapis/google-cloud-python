@@ -302,11 +302,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_backup` interceptor runs
+        before the `post_create_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_create_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_create_backup_with_metadata`
+        interceptor in new development instead of the `post_create_backup` interceptor.
+        When both interceptors are used, this `post_create_backup_with_metadata` interceptor runs after the
+        `post_create_backup` interceptor. The (possibly modified) response returned by
+        `post_create_backup` will be passed to
+        `post_create_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_backup_plan(
         self,
@@ -327,11 +350,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_backup_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_backup_plan` interceptor runs
+        before the `post_create_backup_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_create_backup_plan_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_backup_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_create_backup_plan_with_metadata`
+        interceptor in new development instead of the `post_create_backup_plan` interceptor.
+        When both interceptors are used, this `post_create_backup_plan_with_metadata` interceptor runs after the
+        `post_create_backup_plan` interceptor. The (possibly modified) response returned by
+        `post_create_backup_plan` will be passed to
+        `post_create_backup_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_restore(
         self,
@@ -350,11 +396,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_restore
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_restore_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_restore` interceptor runs
+        before the `post_create_restore_with_metadata` interceptor.
         """
         return response
+
+    def post_create_restore_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_restore
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_create_restore_with_metadata`
+        interceptor in new development instead of the `post_create_restore` interceptor.
+        When both interceptors are used, this `post_create_restore_with_metadata` interceptor runs after the
+        `post_create_restore` interceptor. The (possibly modified) response returned by
+        `post_create_restore` will be passed to
+        `post_create_restore_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_restore_plan(
         self,
@@ -375,11 +444,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_restore_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_restore_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_restore_plan` interceptor runs
+        before the `post_create_restore_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_create_restore_plan_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_restore_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_create_restore_plan_with_metadata`
+        interceptor in new development instead of the `post_create_restore_plan` interceptor.
+        When both interceptors are used, this `post_create_restore_plan_with_metadata` interceptor runs after the
+        `post_create_restore_plan` interceptor. The (possibly modified) response returned by
+        `post_create_restore_plan` will be passed to
+        `post_create_restore_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_backup(
         self,
@@ -398,11 +490,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_backup` interceptor runs
+        before the `post_delete_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_delete_backup_with_metadata`
+        interceptor in new development instead of the `post_delete_backup` interceptor.
+        When both interceptors are used, this `post_delete_backup_with_metadata` interceptor runs after the
+        `post_delete_backup` interceptor. The (possibly modified) response returned by
+        `post_delete_backup` will be passed to
+        `post_delete_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_backup_plan(
         self,
@@ -423,11 +538,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_backup_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_backup_plan` interceptor runs
+        before the `post_delete_backup_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_backup_plan_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_backup_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_delete_backup_plan_with_metadata`
+        interceptor in new development instead of the `post_delete_backup_plan` interceptor.
+        When both interceptors are used, this `post_delete_backup_plan_with_metadata` interceptor runs after the
+        `post_delete_backup_plan` interceptor. The (possibly modified) response returned by
+        `post_delete_backup_plan` will be passed to
+        `post_delete_backup_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_restore(
         self,
@@ -446,11 +584,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_restore
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_restore_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_restore` interceptor runs
+        before the `post_delete_restore_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_restore_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_restore
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_delete_restore_with_metadata`
+        interceptor in new development instead of the `post_delete_restore` interceptor.
+        When both interceptors are used, this `post_delete_restore_with_metadata` interceptor runs after the
+        `post_delete_restore` interceptor. The (possibly modified) response returned by
+        `post_delete_restore` will be passed to
+        `post_delete_restore_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_restore_plan(
         self,
@@ -471,11 +632,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_restore_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_restore_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_restore_plan` interceptor runs
+        before the `post_delete_restore_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_restore_plan_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_restore_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_delete_restore_plan_with_metadata`
+        interceptor in new development instead of the `post_delete_restore_plan` interceptor.
+        When both interceptors are used, this `post_delete_restore_plan_with_metadata` interceptor runs after the
+        `post_delete_restore_plan` interceptor. The (possibly modified) response returned by
+        `post_delete_restore_plan` will be passed to
+        `post_delete_restore_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup(
         self,
@@ -492,11 +676,32 @@ class BackupForGKERestInterceptor:
     def post_get_backup(self, response: backup.Backup) -> backup.Backup:
         """Post-rpc interceptor for get_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup` interceptor runs
+        before the `post_get_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_with_metadata(
+        self, response: backup.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_with_metadata`
+        interceptor in new development instead of the `post_get_backup` interceptor.
+        When both interceptors are used, this `post_get_backup_with_metadata` interceptor runs after the
+        `post_get_backup` interceptor. The (possibly modified) response returned by
+        `post_get_backup` will be passed to
+        `post_get_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup_index_download_url(
         self,
@@ -518,11 +723,37 @@ class BackupForGKERestInterceptor:
     ) -> gkebackup.GetBackupIndexDownloadUrlResponse:
         """Post-rpc interceptor for get_backup_index_download_url
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_index_download_url_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup_index_download_url` interceptor runs
+        before the `post_get_backup_index_download_url_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_index_download_url_with_metadata(
+        self,
+        response: gkebackup.GetBackupIndexDownloadUrlResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.GetBackupIndexDownloadUrlResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_backup_index_download_url
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_index_download_url_with_metadata`
+        interceptor in new development instead of the `post_get_backup_index_download_url` interceptor.
+        When both interceptors are used, this `post_get_backup_index_download_url_with_metadata` interceptor runs after the
+        `post_get_backup_index_download_url` interceptor. The (possibly modified) response returned by
+        `post_get_backup_index_download_url` will be passed to
+        `post_get_backup_index_download_url_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_backup_plan(
         self,
@@ -541,11 +772,34 @@ class BackupForGKERestInterceptor:
     ) -> backup_plan.BackupPlan:
         """Post-rpc interceptor for get_backup_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_backup_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_backup_plan` interceptor runs
+        before the `post_get_backup_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_get_backup_plan_with_metadata(
+        self,
+        response: backup_plan.BackupPlan,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backup_plan.BackupPlan, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_plan_with_metadata`
+        interceptor in new development instead of the `post_get_backup_plan` interceptor.
+        When both interceptors are used, this `post_get_backup_plan_with_metadata` interceptor runs after the
+        `post_get_backup_plan` interceptor. The (possibly modified) response returned by
+        `post_get_backup_plan` will be passed to
+        `post_get_backup_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_restore(
         self,
@@ -562,11 +816,34 @@ class BackupForGKERestInterceptor:
     def post_get_restore(self, response: restore.Restore) -> restore.Restore:
         """Post-rpc interceptor for get_restore
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_restore_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_restore` interceptor runs
+        before the `post_get_restore_with_metadata` interceptor.
         """
         return response
+
+    def post_get_restore_with_metadata(
+        self,
+        response: restore.Restore,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[restore.Restore, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_restore
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_get_restore_with_metadata`
+        interceptor in new development instead of the `post_get_restore` interceptor.
+        When both interceptors are used, this `post_get_restore_with_metadata` interceptor runs after the
+        `post_get_restore` interceptor. The (possibly modified) response returned by
+        `post_get_restore` will be passed to
+        `post_get_restore_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_restore_plan(
         self,
@@ -587,11 +864,34 @@ class BackupForGKERestInterceptor:
     ) -> restore_plan.RestorePlan:
         """Post-rpc interceptor for get_restore_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_restore_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_restore_plan` interceptor runs
+        before the `post_get_restore_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_get_restore_plan_with_metadata(
+        self,
+        response: restore_plan.RestorePlan,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[restore_plan.RestorePlan, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_restore_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_get_restore_plan_with_metadata`
+        interceptor in new development instead of the `post_get_restore_plan` interceptor.
+        When both interceptors are used, this `post_get_restore_plan_with_metadata` interceptor runs after the
+        `post_get_restore_plan` interceptor. The (possibly modified) response returned by
+        `post_get_restore_plan` will be passed to
+        `post_get_restore_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_volume_backup(
         self,
@@ -612,11 +912,34 @@ class BackupForGKERestInterceptor:
     ) -> volume.VolumeBackup:
         """Post-rpc interceptor for get_volume_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_volume_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_volume_backup` interceptor runs
+        before the `post_get_volume_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_get_volume_backup_with_metadata(
+        self,
+        response: volume.VolumeBackup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.VolumeBackup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_volume_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_get_volume_backup_with_metadata`
+        interceptor in new development instead of the `post_get_volume_backup` interceptor.
+        When both interceptors are used, this `post_get_volume_backup_with_metadata` interceptor runs after the
+        `post_get_volume_backup` interceptor. The (possibly modified) response returned by
+        `post_get_volume_backup` will be passed to
+        `post_get_volume_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_volume_restore(
         self,
@@ -637,11 +960,34 @@ class BackupForGKERestInterceptor:
     ) -> volume.VolumeRestore:
         """Post-rpc interceptor for get_volume_restore
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_volume_restore_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_volume_restore` interceptor runs
+        before the `post_get_volume_restore_with_metadata` interceptor.
         """
         return response
+
+    def post_get_volume_restore_with_metadata(
+        self,
+        response: volume.VolumeRestore,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.VolumeRestore, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_volume_restore
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_get_volume_restore_with_metadata`
+        interceptor in new development instead of the `post_get_volume_restore` interceptor.
+        When both interceptors are used, this `post_get_volume_restore_with_metadata` interceptor runs after the
+        `post_get_volume_restore` interceptor. The (possibly modified) response returned by
+        `post_get_volume_restore` will be passed to
+        `post_get_volume_restore_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backup_plans(
         self,
@@ -662,11 +1008,36 @@ class BackupForGKERestInterceptor:
     ) -> gkebackup.ListBackupPlansResponse:
         """Post-rpc interceptor for list_backup_plans
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backup_plans_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backup_plans` interceptor runs
+        before the `post_list_backup_plans_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backup_plans_with_metadata(
+        self,
+        response: gkebackup.ListBackupPlansResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListBackupPlansResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_backup_plans
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_list_backup_plans_with_metadata`
+        interceptor in new development instead of the `post_list_backup_plans` interceptor.
+        When both interceptors are used, this `post_list_backup_plans_with_metadata` interceptor runs after the
+        `post_list_backup_plans` interceptor. The (possibly modified) response returned by
+        `post_list_backup_plans` will be passed to
+        `post_list_backup_plans_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_backups(
         self,
@@ -685,11 +1056,34 @@ class BackupForGKERestInterceptor:
     ) -> gkebackup.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_backups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_backups` interceptor runs
+        before the `post_list_backups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_backups_with_metadata(
+        self,
+        response: gkebackup.ListBackupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_list_backups_with_metadata`
+        interceptor in new development instead of the `post_list_backups` interceptor.
+        When both interceptors are used, this `post_list_backups_with_metadata` interceptor runs after the
+        `post_list_backups` interceptor. The (possibly modified) response returned by
+        `post_list_backups` will be passed to
+        `post_list_backups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_restore_plans(
         self,
@@ -710,11 +1104,36 @@ class BackupForGKERestInterceptor:
     ) -> gkebackup.ListRestorePlansResponse:
         """Post-rpc interceptor for list_restore_plans
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_restore_plans_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_restore_plans` interceptor runs
+        before the `post_list_restore_plans_with_metadata` interceptor.
         """
         return response
+
+    def post_list_restore_plans_with_metadata(
+        self,
+        response: gkebackup.ListRestorePlansResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListRestorePlansResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_restore_plans
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_list_restore_plans_with_metadata`
+        interceptor in new development instead of the `post_list_restore_plans` interceptor.
+        When both interceptors are used, this `post_list_restore_plans_with_metadata` interceptor runs after the
+        `post_list_restore_plans` interceptor. The (possibly modified) response returned by
+        `post_list_restore_plans` will be passed to
+        `post_list_restore_plans_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_restores(
         self,
@@ -733,11 +1152,34 @@ class BackupForGKERestInterceptor:
     ) -> gkebackup.ListRestoresResponse:
         """Post-rpc interceptor for list_restores
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_restores_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_restores` interceptor runs
+        before the `post_list_restores_with_metadata` interceptor.
         """
         return response
+
+    def post_list_restores_with_metadata(
+        self,
+        response: gkebackup.ListRestoresResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gkebackup.ListRestoresResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_restores
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_list_restores_with_metadata`
+        interceptor in new development instead of the `post_list_restores` interceptor.
+        When both interceptors are used, this `post_list_restores_with_metadata` interceptor runs after the
+        `post_list_restores` interceptor. The (possibly modified) response returned by
+        `post_list_restores` will be passed to
+        `post_list_restores_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_volume_backups(
         self,
@@ -758,11 +1200,36 @@ class BackupForGKERestInterceptor:
     ) -> gkebackup.ListVolumeBackupsResponse:
         """Post-rpc interceptor for list_volume_backups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_volume_backups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_volume_backups` interceptor runs
+        before the `post_list_volume_backups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_volume_backups_with_metadata(
+        self,
+        response: gkebackup.ListVolumeBackupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListVolumeBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_volume_backups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_list_volume_backups_with_metadata`
+        interceptor in new development instead of the `post_list_volume_backups` interceptor.
+        When both interceptors are used, this `post_list_volume_backups_with_metadata` interceptor runs after the
+        `post_list_volume_backups` interceptor. The (possibly modified) response returned by
+        `post_list_volume_backups` will be passed to
+        `post_list_volume_backups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_volume_restores(
         self,
@@ -783,11 +1250,36 @@ class BackupForGKERestInterceptor:
     ) -> gkebackup.ListVolumeRestoresResponse:
         """Post-rpc interceptor for list_volume_restores
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_volume_restores_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_volume_restores` interceptor runs
+        before the `post_list_volume_restores_with_metadata` interceptor.
         """
         return response
+
+    def post_list_volume_restores_with_metadata(
+        self,
+        response: gkebackup.ListVolumeRestoresResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gkebackup.ListVolumeRestoresResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_volume_restores
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_list_volume_restores_with_metadata`
+        interceptor in new development instead of the `post_list_volume_restores` interceptor.
+        When both interceptors are used, this `post_list_volume_restores_with_metadata` interceptor runs after the
+        `post_list_volume_restores` interceptor. The (possibly modified) response returned by
+        `post_list_volume_restores` will be passed to
+        `post_list_volume_restores_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_backup(
         self,
@@ -806,11 +1298,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_backup` interceptor runs
+        before the `post_update_backup_with_metadata` interceptor.
         """
         return response
+
+    def post_update_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_update_backup_with_metadata`
+        interceptor in new development instead of the `post_update_backup` interceptor.
+        When both interceptors are used, this `post_update_backup_with_metadata` interceptor runs after the
+        `post_update_backup` interceptor. The (possibly modified) response returned by
+        `post_update_backup` will be passed to
+        `post_update_backup_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_backup_plan(
         self,
@@ -831,11 +1346,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_backup_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_backup_plan` interceptor runs
+        before the `post_update_backup_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_update_backup_plan_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_backup_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_update_backup_plan_with_metadata`
+        interceptor in new development instead of the `post_update_backup_plan` interceptor.
+        When both interceptors are used, this `post_update_backup_plan_with_metadata` interceptor runs after the
+        `post_update_backup_plan` interceptor. The (possibly modified) response returned by
+        `post_update_backup_plan` will be passed to
+        `post_update_backup_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_restore(
         self,
@@ -854,11 +1392,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_restore
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_restore_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_restore` interceptor runs
+        before the `post_update_restore_with_metadata` interceptor.
         """
         return response
+
+    def post_update_restore_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_restore
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_update_restore_with_metadata`
+        interceptor in new development instead of the `post_update_restore` interceptor.
+        When both interceptors are used, this `post_update_restore_with_metadata` interceptor runs after the
+        `post_update_restore` interceptor. The (possibly modified) response returned by
+        `post_update_restore` will be passed to
+        `post_update_restore_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_restore_plan(
         self,
@@ -879,11 +1440,34 @@ class BackupForGKERestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_restore_plan
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_restore_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BackupForGKE server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_restore_plan` interceptor runs
+        before the `post_update_restore_plan_with_metadata` interceptor.
         """
         return response
+
+    def post_update_restore_plan_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_restore_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupForGKE server but before it is returned to user code.
+
+        We recommend only using this `post_update_restore_plan_with_metadata`
+        interceptor in new development instead of the `post_update_restore_plan` interceptor.
+        When both interceptors are used, this `post_update_restore_plan_with_metadata` interceptor runs after the
+        `post_update_restore_plan` interceptor. The (possibly modified) response returned by
+        `post_update_restore_plan` will be passed to
+        `post_update_restore_plan_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1374,6 +1958,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1523,6 +2111,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_backup_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_backup_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1670,6 +2262,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_restore(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_restore_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1820,6 +2416,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_restore_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_restore_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1963,6 +2563,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2106,6 +2710,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_backup_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_backup_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2247,6 +2855,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_restore(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_restore_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2391,6 +3003,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_restore_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_restore_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2542,6 +3158,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2691,6 +3311,13 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_backup_index_download_url(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_backup_index_download_url_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2835,6 +3462,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_backup_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2983,6 +3614,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_restore(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_restore_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3129,6 +3764,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_restore_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_restore_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3276,6 +3915,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_volume_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_volume_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3420,6 +4063,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_volume_restore(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_volume_restore_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3562,6 +4209,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_backup_plans(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backup_plans_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3708,6 +4359,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_backups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3852,6 +4507,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_restore_plans(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_restore_plans_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3996,6 +4655,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_restores(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_restores_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4141,6 +4804,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_volume_backups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_volume_backups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4288,6 +4955,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_volume_restores(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_volume_restores_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4441,6 +5112,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_backup_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4590,6 +5265,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_backup_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_backup_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4737,6 +5416,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_restore(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_restore_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4887,6 +5570,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_restore_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_restore_plan_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

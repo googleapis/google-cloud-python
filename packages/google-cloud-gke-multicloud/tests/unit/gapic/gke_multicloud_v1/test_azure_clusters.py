@@ -77,6 +77,13 @@ from google.cloud.gke_multicloud_v1.types import (
     common_resources,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -329,6 +336,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AzureClustersClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AzureClustersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AzureClustersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -13372,10 +13422,14 @@ def test_create_azure_client_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_create_azure_client"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_create_azure_client_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_create_azure_client"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.CreateAzureClientRequest.pb(
             azure_service.CreateAzureClientRequest()
         )
@@ -13399,6 +13453,7 @@ def test_create_azure_client_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_azure_client(
             request,
@@ -13410,6 +13465,7 @@ def test_create_azure_client_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_azure_client_rest_bad_request(
@@ -13504,10 +13560,13 @@ def test_get_azure_client_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_get_azure_client"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor, "post_get_azure_client_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_get_azure_client"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GetAzureClientRequest.pb(
             azure_service.GetAzureClientRequest()
         )
@@ -13533,6 +13592,7 @@ def test_get_azure_client_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_resources.AzureClient()
+        post_with_metadata.return_value = azure_resources.AzureClient(), metadata
 
         client.get_azure_client(
             request,
@@ -13544,6 +13604,7 @@ def test_get_azure_client_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_azure_clients_rest_bad_request(
@@ -13628,10 +13689,13 @@ def test_list_azure_clients_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_list_azure_clients"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor, "post_list_azure_clients_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_list_azure_clients"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.ListAzureClientsRequest.pb(
             azure_service.ListAzureClientsRequest()
         )
@@ -13657,6 +13721,10 @@ def test_list_azure_clients_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_service.ListAzureClientsResponse()
+        post_with_metadata.return_value = (
+            azure_service.ListAzureClientsResponse(),
+            metadata,
+        )
 
         client.list_azure_clients(
             request,
@@ -13668,6 +13736,7 @@ def test_list_azure_clients_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_azure_client_rest_bad_request(
@@ -13748,10 +13817,14 @@ def test_delete_azure_client_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_delete_azure_client"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_delete_azure_client_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_delete_azure_client"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.DeleteAzureClientRequest.pb(
             azure_service.DeleteAzureClientRequest()
         )
@@ -13775,6 +13848,7 @@ def test_delete_azure_client_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_azure_client(
             request,
@@ -13786,6 +13860,7 @@ def test_delete_azure_client_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_azure_cluster_rest_bad_request(
@@ -14010,10 +14085,14 @@ def test_create_azure_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_create_azure_cluster"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_create_azure_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_create_azure_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.CreateAzureClusterRequest.pb(
             azure_service.CreateAzureClusterRequest()
         )
@@ -14037,6 +14116,7 @@ def test_create_azure_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_azure_cluster(
             request,
@@ -14048,6 +14128,7 @@ def test_create_azure_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_azure_cluster_rest_bad_request(
@@ -14280,10 +14361,14 @@ def test_update_azure_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_update_azure_cluster"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_update_azure_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_update_azure_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.UpdateAzureClusterRequest.pb(
             azure_service.UpdateAzureClusterRequest()
         )
@@ -14307,6 +14392,7 @@ def test_update_azure_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_azure_cluster(
             request,
@@ -14318,6 +14404,7 @@ def test_update_azure_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_azure_cluster_rest_bad_request(
@@ -14422,10 +14509,13 @@ def test_get_azure_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_get_azure_cluster"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor, "post_get_azure_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_get_azure_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GetAzureClusterRequest.pb(
             azure_service.GetAzureClusterRequest()
         )
@@ -14451,6 +14541,7 @@ def test_get_azure_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_resources.AzureCluster()
+        post_with_metadata.return_value = azure_resources.AzureCluster(), metadata
 
         client.get_azure_cluster(
             request,
@@ -14462,6 +14553,7 @@ def test_get_azure_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_azure_clusters_rest_bad_request(
@@ -14546,10 +14638,14 @@ def test_list_azure_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_list_azure_clusters"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_list_azure_clusters_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_list_azure_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.ListAzureClustersRequest.pb(
             azure_service.ListAzureClustersRequest()
         )
@@ -14575,6 +14671,10 @@ def test_list_azure_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_service.ListAzureClustersResponse()
+        post_with_metadata.return_value = (
+            azure_service.ListAzureClustersResponse(),
+            metadata,
+        )
 
         client.list_azure_clusters(
             request,
@@ -14586,6 +14686,7 @@ def test_list_azure_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_azure_cluster_rest_bad_request(
@@ -14666,10 +14767,14 @@ def test_delete_azure_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_delete_azure_cluster"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_delete_azure_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_delete_azure_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.DeleteAzureClusterRequest.pb(
             azure_service.DeleteAzureClusterRequest()
         )
@@ -14693,6 +14798,7 @@ def test_delete_azure_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_azure_cluster(
             request,
@@ -14704,6 +14810,7 @@ def test_delete_azure_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_azure_cluster_agent_token_rest_bad_request(
@@ -14800,10 +14907,14 @@ def test_generate_azure_cluster_agent_token_rest_interceptors(null_interceptor):
         "post_generate_azure_cluster_agent_token",
     ) as post, mock.patch.object(
         transports.AzureClustersRestInterceptor,
+        "post_generate_azure_cluster_agent_token_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
         "pre_generate_azure_cluster_agent_token",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GenerateAzureClusterAgentTokenRequest.pb(
             azure_service.GenerateAzureClusterAgentTokenRequest()
         )
@@ -14829,6 +14940,10 @@ def test_generate_azure_cluster_agent_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_service.GenerateAzureClusterAgentTokenResponse()
+        post_with_metadata.return_value = (
+            azure_service.GenerateAzureClusterAgentTokenResponse(),
+            metadata,
+        )
 
         client.generate_azure_cluster_agent_token(
             request,
@@ -14840,6 +14955,7 @@ def test_generate_azure_cluster_agent_token_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_azure_access_token_rest_bad_request(
@@ -14928,10 +15044,14 @@ def test_generate_azure_access_token_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_generate_azure_access_token"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_generate_azure_access_token_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_generate_azure_access_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GenerateAzureAccessTokenRequest.pb(
             azure_service.GenerateAzureAccessTokenRequest()
         )
@@ -14957,6 +15077,10 @@ def test_generate_azure_access_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_service.GenerateAzureAccessTokenResponse()
+        post_with_metadata.return_value = (
+            azure_service.GenerateAzureAccessTokenResponse(),
+            metadata,
+        )
 
         client.generate_azure_access_token(
             request,
@@ -14968,6 +15092,7 @@ def test_generate_azure_access_token_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_azure_node_pool_rest_bad_request(
@@ -15153,10 +15278,14 @@ def test_create_azure_node_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_create_azure_node_pool"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_create_azure_node_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_create_azure_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.CreateAzureNodePoolRequest.pb(
             azure_service.CreateAzureNodePoolRequest()
         )
@@ -15180,6 +15309,7 @@ def test_create_azure_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_azure_node_pool(
             request,
@@ -15191,6 +15321,7 @@ def test_create_azure_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_azure_node_pool_rest_bad_request(
@@ -15380,10 +15511,14 @@ def test_update_azure_node_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_update_azure_node_pool"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_update_azure_node_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_update_azure_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.UpdateAzureNodePoolRequest.pb(
             azure_service.UpdateAzureNodePoolRequest()
         )
@@ -15407,6 +15542,7 @@ def test_update_azure_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_azure_node_pool(
             request,
@@ -15418,6 +15554,7 @@ def test_update_azure_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_azure_node_pool_rest_bad_request(
@@ -15520,10 +15657,14 @@ def test_get_azure_node_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_get_azure_node_pool"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_get_azure_node_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_get_azure_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GetAzureNodePoolRequest.pb(
             azure_service.GetAzureNodePoolRequest()
         )
@@ -15549,6 +15690,7 @@ def test_get_azure_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_resources.AzureNodePool()
+        post_with_metadata.return_value = azure_resources.AzureNodePool(), metadata
 
         client.get_azure_node_pool(
             request,
@@ -15560,6 +15702,7 @@ def test_get_azure_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_azure_node_pools_rest_bad_request(
@@ -15648,10 +15791,14 @@ def test_list_azure_node_pools_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_list_azure_node_pools"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_list_azure_node_pools_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_list_azure_node_pools"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.ListAzureNodePoolsRequest.pb(
             azure_service.ListAzureNodePoolsRequest()
         )
@@ -15677,6 +15824,10 @@ def test_list_azure_node_pools_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_service.ListAzureNodePoolsResponse()
+        post_with_metadata.return_value = (
+            azure_service.ListAzureNodePoolsResponse(),
+            metadata,
+        )
 
         client.list_azure_node_pools(
             request,
@@ -15688,6 +15839,7 @@ def test_list_azure_node_pools_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_azure_node_pool_rest_bad_request(
@@ -15772,10 +15924,14 @@ def test_delete_azure_node_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_delete_azure_node_pool"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_delete_azure_node_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_delete_azure_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.DeleteAzureNodePoolRequest.pb(
             azure_service.DeleteAzureNodePoolRequest()
         )
@@ -15799,6 +15955,7 @@ def test_delete_azure_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_azure_node_pool(
             request,
@@ -15810,6 +15967,7 @@ def test_delete_azure_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_azure_open_id_config_rest_bad_request(
@@ -15914,10 +16072,14 @@ def test_get_azure_open_id_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_get_azure_open_id_config"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_get_azure_open_id_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_get_azure_open_id_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GetAzureOpenIdConfigRequest.pb(
             azure_service.GetAzureOpenIdConfigRequest()
         )
@@ -15943,6 +16105,7 @@ def test_get_azure_open_id_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_resources.AzureOpenIdConfig()
+        post_with_metadata.return_value = azure_resources.AzureOpenIdConfig(), metadata
 
         client.get_azure_open_id_config(
             request,
@@ -15954,6 +16117,7 @@ def test_get_azure_open_id_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_azure_json_web_keys_rest_bad_request(
@@ -16039,10 +16203,14 @@ def test_get_azure_json_web_keys_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_get_azure_json_web_keys"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_get_azure_json_web_keys_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_get_azure_json_web_keys"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GetAzureJsonWebKeysRequest.pb(
             azure_service.GetAzureJsonWebKeysRequest()
         )
@@ -16068,6 +16236,7 @@ def test_get_azure_json_web_keys_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_resources.AzureJsonWebKeys()
+        post_with_metadata.return_value = azure_resources.AzureJsonWebKeys(), metadata
 
         client.get_azure_json_web_keys(
             request,
@@ -16079,6 +16248,7 @@ def test_get_azure_json_web_keys_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_azure_server_config_rest_bad_request(
@@ -16165,10 +16335,14 @@ def test_get_azure_server_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AzureClustersRestInterceptor, "post_get_azure_server_config"
     ) as post, mock.patch.object(
+        transports.AzureClustersRestInterceptor,
+        "post_get_azure_server_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AzureClustersRestInterceptor, "pre_get_azure_server_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = azure_service.GetAzureServerConfigRequest.pb(
             azure_service.GetAzureServerConfigRequest()
         )
@@ -16194,6 +16368,7 @@ def test_get_azure_server_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = azure_resources.AzureServerConfig()
+        post_with_metadata.return_value = azure_resources.AzureServerConfig(), metadata
 
         client.get_azure_server_config(
             request,
@@ -16205,6 +16380,7 @@ def test_get_azure_server_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

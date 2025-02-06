@@ -90,6 +90,13 @@ from google.cloud.gke_backup_v1.types import restore_plan
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
 from google.cloud.gke_backup_v1.types import volume
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -331,6 +338,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         BackupForGKEClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = BackupForGKEClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = BackupForGKEClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -17803,10 +17853,13 @@ def test_create_backup_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_create_backup_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_backup_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_create_backup_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.CreateBackupPlanRequest.pb(
             gkebackup.CreateBackupPlanRequest()
         )
@@ -17830,6 +17883,7 @@ def test_create_backup_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup_plan(
             request,
@@ -17841,6 +17895,7 @@ def test_create_backup_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_plans_rest_bad_request(
@@ -17927,10 +17982,13 @@ def test_list_backup_plans_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_list_backup_plans"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_backup_plans_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_list_backup_plans"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.ListBackupPlansRequest.pb(
             gkebackup.ListBackupPlansRequest()
         )
@@ -17956,6 +18014,7 @@ def test_list_backup_plans_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gkebackup.ListBackupPlansResponse()
+        post_with_metadata.return_value = gkebackup.ListBackupPlansResponse(), metadata
 
         client.list_backup_plans(
             request,
@@ -17967,6 +18026,7 @@ def test_list_backup_plans_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_plan_rest_bad_request(request_type=gkebackup.GetBackupPlanRequest):
@@ -18069,10 +18129,13 @@ def test_get_backup_plan_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_get_backup_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_backup_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_get_backup_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.GetBackupPlanRequest.pb(gkebackup.GetBackupPlanRequest())
         transcode.return_value = {
             "method": "post",
@@ -18094,6 +18157,7 @@ def test_get_backup_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup_plan.BackupPlan()
+        post_with_metadata.return_value = backup_plan.BackupPlan(), metadata
 
         client.get_backup_plan(
             request,
@@ -18105,6 +18169,7 @@ def test_get_backup_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_plan_rest_bad_request(
@@ -18324,10 +18389,13 @@ def test_update_backup_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_update_backup_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_backup_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_update_backup_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.UpdateBackupPlanRequest.pb(
             gkebackup.UpdateBackupPlanRequest()
         )
@@ -18351,6 +18419,7 @@ def test_update_backup_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup_plan(
             request,
@@ -18362,6 +18431,7 @@ def test_update_backup_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_plan_rest_bad_request(
@@ -18442,10 +18512,13 @@ def test_delete_backup_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_delete_backup_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_backup_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_delete_backup_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.DeleteBackupPlanRequest.pb(
             gkebackup.DeleteBackupPlanRequest()
         )
@@ -18469,6 +18542,7 @@ def test_delete_backup_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup_plan(
             request,
@@ -18480,6 +18554,7 @@ def test_delete_backup_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_rest_bad_request(request_type=gkebackup.CreateBackupRequest):
@@ -18665,10 +18740,13 @@ def test_create_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_create_backup"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_create_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.CreateBackupRequest.pb(gkebackup.CreateBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -18690,6 +18768,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup(
             request,
@@ -18701,6 +18780,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backups_rest_bad_request(request_type=gkebackup.ListBackupsRequest):
@@ -18783,10 +18863,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.ListBackupsRequest.pb(gkebackup.ListBackupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -18810,6 +18893,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gkebackup.ListBackupsResponse()
+        post_with_metadata.return_value = gkebackup.ListBackupsResponse(), metadata
 
         client.list_backups(
             request,
@@ -18821,6 +18905,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=gkebackup.GetBackupRequest):
@@ -18940,10 +19025,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.GetBackupRequest.pb(gkebackup.GetBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -18965,6 +19053,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup.Backup()
+        post_with_metadata.return_value = backup.Backup(), metadata
 
         client.get_backup(
             request,
@@ -18976,6 +19065,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_rest_bad_request(request_type=gkebackup.UpdateBackupRequest):
@@ -19169,10 +19259,13 @@ def test_update_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_update_backup"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_update_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.UpdateBackupRequest.pb(gkebackup.UpdateBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -19194,6 +19287,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup(
             request,
@@ -19205,6 +19299,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(request_type=gkebackup.DeleteBackupRequest):
@@ -19287,10 +19382,13 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_delete_backup"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_delete_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.DeleteBackupRequest.pb(gkebackup.DeleteBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -19312,6 +19410,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup(
             request,
@@ -19323,6 +19422,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_volume_backups_rest_bad_request(
@@ -19411,10 +19511,13 @@ def test_list_volume_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_list_volume_backups"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_volume_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_list_volume_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.ListVolumeBackupsRequest.pb(
             gkebackup.ListVolumeBackupsRequest()
         )
@@ -19440,6 +19543,10 @@ def test_list_volume_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gkebackup.ListVolumeBackupsResponse()
+        post_with_metadata.return_value = (
+            gkebackup.ListVolumeBackupsResponse(),
+            metadata,
+        )
 
         client.list_volume_backups(
             request,
@@ -19451,6 +19558,7 @@ def test_list_volume_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_volume_backup_rest_bad_request(
@@ -19557,10 +19665,13 @@ def test_get_volume_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_get_volume_backup"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_volume_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_get_volume_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.GetVolumeBackupRequest.pb(
             gkebackup.GetVolumeBackupRequest()
         )
@@ -19584,6 +19695,7 @@ def test_get_volume_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume.VolumeBackup()
+        post_with_metadata.return_value = volume.VolumeBackup(), metadata
 
         client.get_volume_backup(
             request,
@@ -19595,6 +19707,7 @@ def test_get_volume_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_restore_plan_rest_bad_request(
@@ -19816,10 +19929,13 @@ def test_create_restore_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_create_restore_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_restore_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_create_restore_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.CreateRestorePlanRequest.pb(
             gkebackup.CreateRestorePlanRequest()
         )
@@ -19843,6 +19959,7 @@ def test_create_restore_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_restore_plan(
             request,
@@ -19854,6 +19971,7 @@ def test_create_restore_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_restore_plans_rest_bad_request(
@@ -19940,10 +20058,13 @@ def test_list_restore_plans_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_list_restore_plans"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_restore_plans_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_list_restore_plans"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.ListRestorePlansRequest.pb(
             gkebackup.ListRestorePlansRequest()
         )
@@ -19969,6 +20090,7 @@ def test_list_restore_plans_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gkebackup.ListRestorePlansResponse()
+        post_with_metadata.return_value = gkebackup.ListRestorePlansResponse(), metadata
 
         client.list_restore_plans(
             request,
@@ -19980,6 +20102,7 @@ def test_list_restore_plans_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_restore_plan_rest_bad_request(
@@ -20078,10 +20201,13 @@ def test_get_restore_plan_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_get_restore_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_restore_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_get_restore_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.GetRestorePlanRequest.pb(
             gkebackup.GetRestorePlanRequest()
         )
@@ -20105,6 +20231,7 @@ def test_get_restore_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = restore_plan.RestorePlan()
+        post_with_metadata.return_value = restore_plan.RestorePlan(), metadata
 
         client.get_restore_plan(
             request,
@@ -20116,6 +20243,7 @@ def test_get_restore_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_restore_plan_rest_bad_request(
@@ -20345,10 +20473,13 @@ def test_update_restore_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_update_restore_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_restore_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_update_restore_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.UpdateRestorePlanRequest.pb(
             gkebackup.UpdateRestorePlanRequest()
         )
@@ -20372,6 +20503,7 @@ def test_update_restore_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_restore_plan(
             request,
@@ -20383,6 +20515,7 @@ def test_update_restore_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_restore_plan_rest_bad_request(
@@ -20463,10 +20596,13 @@ def test_delete_restore_plan_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_delete_restore_plan"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_restore_plan_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_delete_restore_plan"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.DeleteRestorePlanRequest.pb(
             gkebackup.DeleteRestorePlanRequest()
         )
@@ -20490,6 +20626,7 @@ def test_delete_restore_plan_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_restore_plan(
             request,
@@ -20501,6 +20638,7 @@ def test_delete_restore_plan_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_restore_rest_bad_request(request_type=gkebackup.CreateRestoreRequest):
@@ -20737,10 +20875,13 @@ def test_create_restore_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_create_restore"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_create_restore_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_create_restore"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.CreateRestoreRequest.pb(gkebackup.CreateRestoreRequest())
         transcode.return_value = {
             "method": "post",
@@ -20762,6 +20903,7 @@ def test_create_restore_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_restore(
             request,
@@ -20773,6 +20915,7 @@ def test_create_restore_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_restores_rest_bad_request(request_type=gkebackup.ListRestoresRequest):
@@ -20857,10 +21000,13 @@ def test_list_restores_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_list_restores"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_list_restores_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_list_restores"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.ListRestoresRequest.pb(gkebackup.ListRestoresRequest())
         transcode.return_value = {
             "method": "post",
@@ -20884,6 +21030,7 @@ def test_list_restores_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gkebackup.ListRestoresResponse()
+        post_with_metadata.return_value = gkebackup.ListRestoresResponse(), metadata
 
         client.list_restores(
             request,
@@ -20895,6 +21042,7 @@ def test_list_restores_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_restore_rest_bad_request(request_type=gkebackup.GetRestoreRequest):
@@ -21003,10 +21151,13 @@ def test_get_restore_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_get_restore"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_restore_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_get_restore"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.GetRestoreRequest.pb(gkebackup.GetRestoreRequest())
         transcode.return_value = {
             "method": "post",
@@ -21028,6 +21179,7 @@ def test_get_restore_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = restore.Restore()
+        post_with_metadata.return_value = restore.Restore(), metadata
 
         client.get_restore(
             request,
@@ -21039,6 +21191,7 @@ def test_get_restore_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_restore_rest_bad_request(request_type=gkebackup.UpdateRestoreRequest):
@@ -21283,10 +21436,13 @@ def test_update_restore_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_update_restore"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_update_restore_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_update_restore"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.UpdateRestoreRequest.pb(gkebackup.UpdateRestoreRequest())
         transcode.return_value = {
             "method": "post",
@@ -21308,6 +21464,7 @@ def test_update_restore_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_restore(
             request,
@@ -21319,6 +21476,7 @@ def test_update_restore_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_restore_rest_bad_request(request_type=gkebackup.DeleteRestoreRequest):
@@ -21401,10 +21559,13 @@ def test_delete_restore_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_delete_restore"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_delete_restore_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_delete_restore"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.DeleteRestoreRequest.pb(gkebackup.DeleteRestoreRequest())
         transcode.return_value = {
             "method": "post",
@@ -21426,6 +21587,7 @@ def test_delete_restore_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_restore(
             request,
@@ -21437,6 +21599,7 @@ def test_delete_restore_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_volume_restores_rest_bad_request(
@@ -21525,10 +21688,14 @@ def test_list_volume_restores_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_list_volume_restores"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor,
+        "post_list_volume_restores_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_list_volume_restores"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.ListVolumeRestoresRequest.pb(
             gkebackup.ListVolumeRestoresRequest()
         )
@@ -21554,6 +21721,10 @@ def test_list_volume_restores_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gkebackup.ListVolumeRestoresResponse()
+        post_with_metadata.return_value = (
+            gkebackup.ListVolumeRestoresResponse(),
+            metadata,
+        )
 
         client.list_volume_restores(
             request,
@@ -21565,6 +21736,7 @@ def test_list_volume_restores_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_volume_restore_rest_bad_request(
@@ -21667,10 +21839,13 @@ def test_get_volume_restore_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_get_volume_restore"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor, "post_get_volume_restore_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_get_volume_restore"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.GetVolumeRestoreRequest.pb(
             gkebackup.GetVolumeRestoreRequest()
         )
@@ -21694,6 +21869,7 @@ def test_get_volume_restore_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume.VolumeRestore()
+        post_with_metadata.return_value = volume.VolumeRestore(), metadata
 
         client.get_volume_restore(
             request,
@@ -21705,6 +21881,7 @@ def test_get_volume_restore_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_index_download_url_rest_bad_request(
@@ -21793,10 +21970,14 @@ def test_get_backup_index_download_url_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.BackupForGKERestInterceptor, "post_get_backup_index_download_url"
     ) as post, mock.patch.object(
+        transports.BackupForGKERestInterceptor,
+        "post_get_backup_index_download_url_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.BackupForGKERestInterceptor, "pre_get_backup_index_download_url"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gkebackup.GetBackupIndexDownloadUrlRequest.pb(
             gkebackup.GetBackupIndexDownloadUrlRequest()
         )
@@ -21822,6 +22003,10 @@ def test_get_backup_index_download_url_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gkebackup.GetBackupIndexDownloadUrlResponse()
+        post_with_metadata.return_value = (
+            gkebackup.GetBackupIndexDownloadUrlResponse(),
+            metadata,
+        )
 
         client.get_backup_index_download_url(
             request,
@@ -21833,6 +22018,7 @@ def test_get_backup_index_download_url_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

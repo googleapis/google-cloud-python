@@ -154,11 +154,34 @@ class GSuiteAddOnsRestInterceptor:
     ) -> gsuiteaddons.Deployment:
         """Post-rpc interceptor for create_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GSuiteAddOns server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_deployment` interceptor runs
+        before the `post_create_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_deployment_with_metadata(
+        self,
+        response: gsuiteaddons.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsuiteaddons.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GSuiteAddOns server but before it is returned to user code.
+
+        We recommend only using this `post_create_deployment_with_metadata`
+        interceptor in new development instead of the `post_create_deployment` interceptor.
+        When both interceptors are used, this `post_create_deployment_with_metadata` interceptor runs after the
+        `post_create_deployment` interceptor. The (possibly modified) response returned by
+        `post_create_deployment` will be passed to
+        `post_create_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_deployment(
         self,
@@ -193,11 +216,34 @@ class GSuiteAddOnsRestInterceptor:
     ) -> gsuiteaddons.Authorization:
         """Post-rpc interceptor for get_authorization
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_authorization_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GSuiteAddOns server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_authorization` interceptor runs
+        before the `post_get_authorization_with_metadata` interceptor.
         """
         return response
+
+    def post_get_authorization_with_metadata(
+        self,
+        response: gsuiteaddons.Authorization,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsuiteaddons.Authorization, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_authorization
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GSuiteAddOns server but before it is returned to user code.
+
+        We recommend only using this `post_get_authorization_with_metadata`
+        interceptor in new development instead of the `post_get_authorization` interceptor.
+        When both interceptors are used, this `post_get_authorization_with_metadata` interceptor runs after the
+        `post_get_authorization` interceptor. The (possibly modified) response returned by
+        `post_get_authorization` will be passed to
+        `post_get_authorization_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_deployment(
         self,
@@ -218,11 +264,34 @@ class GSuiteAddOnsRestInterceptor:
     ) -> gsuiteaddons.Deployment:
         """Post-rpc interceptor for get_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GSuiteAddOns server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_deployment` interceptor runs
+        before the `post_get_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_deployment_with_metadata(
+        self,
+        response: gsuiteaddons.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsuiteaddons.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GSuiteAddOns server but before it is returned to user code.
+
+        We recommend only using this `post_get_deployment_with_metadata`
+        interceptor in new development instead of the `post_get_deployment` interceptor.
+        When both interceptors are used, this `post_get_deployment_with_metadata` interceptor runs after the
+        `post_get_deployment` interceptor. The (possibly modified) response returned by
+        `post_get_deployment` will be passed to
+        `post_get_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_install_status(
         self,
@@ -243,11 +312,34 @@ class GSuiteAddOnsRestInterceptor:
     ) -> gsuiteaddons.InstallStatus:
         """Post-rpc interceptor for get_install_status
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_install_status_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GSuiteAddOns server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_install_status` interceptor runs
+        before the `post_get_install_status_with_metadata` interceptor.
         """
         return response
+
+    def post_get_install_status_with_metadata(
+        self,
+        response: gsuiteaddons.InstallStatus,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsuiteaddons.InstallStatus, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_install_status
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GSuiteAddOns server but before it is returned to user code.
+
+        We recommend only using this `post_get_install_status_with_metadata`
+        interceptor in new development instead of the `post_get_install_status` interceptor.
+        When both interceptors are used, this `post_get_install_status_with_metadata` interceptor runs after the
+        `post_get_install_status` interceptor. The (possibly modified) response returned by
+        `post_get_install_status` will be passed to
+        `post_get_install_status_with_metadata`.
+        """
+        return response, metadata
 
     def pre_install_deployment(
         self,
@@ -282,11 +374,36 @@ class GSuiteAddOnsRestInterceptor:
     ) -> gsuiteaddons.ListDeploymentsResponse:
         """Post-rpc interceptor for list_deployments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_deployments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GSuiteAddOns server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_deployments` interceptor runs
+        before the `post_list_deployments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_deployments_with_metadata(
+        self,
+        response: gsuiteaddons.ListDeploymentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsuiteaddons.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_deployments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GSuiteAddOns server but before it is returned to user code.
+
+        We recommend only using this `post_list_deployments_with_metadata`
+        interceptor in new development instead of the `post_list_deployments` interceptor.
+        When both interceptors are used, this `post_list_deployments_with_metadata` interceptor runs after the
+        `post_list_deployments` interceptor. The (possibly modified) response returned by
+        `post_list_deployments` will be passed to
+        `post_list_deployments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_replace_deployment(
         self,
@@ -307,11 +424,34 @@ class GSuiteAddOnsRestInterceptor:
     ) -> gsuiteaddons.Deployment:
         """Post-rpc interceptor for replace_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_replace_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GSuiteAddOns server but before
-        it is returned to user code.
+        it is returned to user code. This `post_replace_deployment` interceptor runs
+        before the `post_replace_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_replace_deployment_with_metadata(
+        self,
+        response: gsuiteaddons.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gsuiteaddons.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for replace_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GSuiteAddOns server but before it is returned to user code.
+
+        We recommend only using this `post_replace_deployment_with_metadata`
+        interceptor in new development instead of the `post_replace_deployment` interceptor.
+        When both interceptors are used, this `post_replace_deployment_with_metadata` interceptor runs after the
+        `post_replace_deployment` interceptor. The (possibly modified) response returned by
+        `post_replace_deployment` will be passed to
+        `post_replace_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_uninstall_deployment(
         self,
@@ -574,6 +714,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -829,6 +973,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_authorization(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_authorization_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -969,6 +1117,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1114,6 +1266,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_install_status(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_install_status_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1372,6 +1528,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_deployments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_deployments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1523,6 +1683,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_replace_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_replace_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

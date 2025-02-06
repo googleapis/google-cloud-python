@@ -99,6 +99,13 @@ from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -327,6 +334,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         EventarcClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = EventarcClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = EventarcClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -26554,10 +26604,13 @@ def test_get_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_trigger"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetTriggerRequest.pb(eventarc.GetTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -26579,6 +26632,7 @@ def test_get_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = trigger.Trigger()
+        post_with_metadata.return_value = trigger.Trigger(), metadata
 
         client.get_trigger(
             request,
@@ -26590,6 +26644,7 @@ def test_get_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_triggers_rest_bad_request(request_type=eventarc.ListTriggersRequest):
@@ -26672,10 +26727,13 @@ def test_list_triggers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_triggers"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_list_triggers_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_triggers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListTriggersRequest.pb(eventarc.ListTriggersRequest())
         transcode.return_value = {
             "method": "post",
@@ -26699,6 +26757,7 @@ def test_list_triggers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListTriggersResponse()
+        post_with_metadata.return_value = eventarc.ListTriggersResponse(), metadata
 
         client.list_triggers(
             request,
@@ -26710,6 +26769,7 @@ def test_list_triggers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_trigger_rest_bad_request(request_type=eventarc.CreateTriggerRequest):
@@ -26894,10 +26954,13 @@ def test_create_trigger_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_create_trigger"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_create_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_create_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.CreateTriggerRequest.pb(eventarc.CreateTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -26919,6 +26982,7 @@ def test_create_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_trigger(
             request,
@@ -26930,6 +26994,7 @@ def test_create_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_trigger_rest_bad_request(request_type=eventarc.UpdateTriggerRequest):
@@ -27118,10 +27183,13 @@ def test_update_trigger_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_update_trigger"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_update_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_update_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.UpdateTriggerRequest.pb(eventarc.UpdateTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -27143,6 +27211,7 @@ def test_update_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_trigger(
             request,
@@ -27154,6 +27223,7 @@ def test_update_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_trigger_rest_bad_request(request_type=eventarc.DeleteTriggerRequest):
@@ -27230,10 +27300,13 @@ def test_delete_trigger_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_delete_trigger"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_delete_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_delete_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.DeleteTriggerRequest.pb(eventarc.DeleteTriggerRequest())
         transcode.return_value = {
             "method": "post",
@@ -27255,6 +27328,7 @@ def test_delete_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_trigger(
             request,
@@ -27266,6 +27340,7 @@ def test_delete_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_channel_rest_bad_request(request_type=eventarc.GetChannelRequest):
@@ -27359,10 +27434,13 @@ def test_get_channel_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_channel"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetChannelRequest.pb(eventarc.GetChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -27384,6 +27462,7 @@ def test_get_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = channel.Channel()
+        post_with_metadata.return_value = channel.Channel(), metadata
 
         client.get_channel(
             request,
@@ -27395,6 +27474,7 @@ def test_get_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_channels_rest_bad_request(request_type=eventarc.ListChannelsRequest):
@@ -27477,10 +27557,13 @@ def test_list_channels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_channels"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_list_channels_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_channels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListChannelsRequest.pb(eventarc.ListChannelsRequest())
         transcode.return_value = {
             "method": "post",
@@ -27504,6 +27587,7 @@ def test_list_channels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListChannelsResponse()
+        post_with_metadata.return_value = eventarc.ListChannelsResponse(), metadata
 
         client.list_channels(
             request,
@@ -27515,6 +27599,7 @@ def test_list_channels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_channel_rest_bad_request(request_type=eventarc.CreateChannelRequest):
@@ -27670,10 +27755,13 @@ def test_create_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_create_channel"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_create_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_create_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.CreateChannelRequest.pb(eventarc.CreateChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -27695,6 +27783,7 @@ def test_create_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_channel(
             request,
@@ -27706,6 +27795,7 @@ def test_create_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_channel_rest_bad_request(request_type=eventarc.UpdateChannelRequest):
@@ -27865,10 +27955,13 @@ def test_update_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_update_channel"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_update_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_update_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.UpdateChannelRequest.pb(eventarc.UpdateChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -27890,6 +27983,7 @@ def test_update_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_channel(
             request,
@@ -27901,6 +27995,7 @@ def test_update_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_channel_rest_bad_request(request_type=eventarc.DeleteChannelRequest):
@@ -27977,10 +28072,13 @@ def test_delete_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_delete_channel"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_delete_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_delete_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.DeleteChannelRequest.pb(eventarc.DeleteChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -28002,6 +28100,7 @@ def test_delete_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_channel(
             request,
@@ -28013,6 +28112,7 @@ def test_delete_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_provider_rest_bad_request(request_type=eventarc.GetProviderRequest):
@@ -28095,10 +28195,13 @@ def test_get_provider_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_provider"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_provider_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_provider"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetProviderRequest.pb(eventarc.GetProviderRequest())
         transcode.return_value = {
             "method": "post",
@@ -28120,6 +28223,7 @@ def test_get_provider_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = discovery.Provider()
+        post_with_metadata.return_value = discovery.Provider(), metadata
 
         client.get_provider(
             request,
@@ -28131,6 +28235,7 @@ def test_get_provider_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_providers_rest_bad_request(request_type=eventarc.ListProvidersRequest):
@@ -28213,10 +28318,13 @@ def test_list_providers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_providers"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_list_providers_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_providers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListProvidersRequest.pb(eventarc.ListProvidersRequest())
         transcode.return_value = {
             "method": "post",
@@ -28240,6 +28348,7 @@ def test_list_providers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListProvidersResponse()
+        post_with_metadata.return_value = eventarc.ListProvidersResponse(), metadata
 
         client.list_providers(
             request,
@@ -28251,6 +28360,7 @@ def test_list_providers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_channel_connection_rest_bad_request(
@@ -28343,10 +28453,13 @@ def test_get_channel_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_channel_connection"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_channel_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_channel_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetChannelConnectionRequest.pb(
             eventarc.GetChannelConnectionRequest()
         )
@@ -28372,6 +28485,10 @@ def test_get_channel_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = channel_connection.ChannelConnection()
+        post_with_metadata.return_value = (
+            channel_connection.ChannelConnection(),
+            metadata,
+        )
 
         client.get_channel_connection(
             request,
@@ -28383,6 +28500,7 @@ def test_get_channel_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_channel_connections_rest_bad_request(
@@ -28467,10 +28585,14 @@ def test_list_channel_connections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_channel_connections"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_list_channel_connections_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_channel_connections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListChannelConnectionsRequest.pb(
             eventarc.ListChannelConnectionsRequest()
         )
@@ -28496,6 +28618,10 @@ def test_list_channel_connections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListChannelConnectionsResponse()
+        post_with_metadata.return_value = (
+            eventarc.ListChannelConnectionsResponse(),
+            metadata,
+        )
 
         client.list_channel_connections(
             request,
@@ -28507,6 +28633,7 @@ def test_list_channel_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_channel_connection_rest_bad_request(
@@ -28662,10 +28789,14 @@ def test_create_channel_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_create_channel_connection"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_create_channel_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_create_channel_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.CreateChannelConnectionRequest.pb(
             eventarc.CreateChannelConnectionRequest()
         )
@@ -28689,6 +28820,7 @@ def test_create_channel_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_channel_connection(
             request,
@@ -28700,6 +28832,7 @@ def test_create_channel_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_channel_connection_rest_bad_request(
@@ -28782,10 +28915,14 @@ def test_delete_channel_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_delete_channel_connection"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_delete_channel_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_delete_channel_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.DeleteChannelConnectionRequest.pb(
             eventarc.DeleteChannelConnectionRequest()
         )
@@ -28809,6 +28946,7 @@ def test_delete_channel_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_channel_connection(
             request,
@@ -28820,6 +28958,7 @@ def test_delete_channel_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_google_channel_config_rest_bad_request(
@@ -28904,10 +29043,14 @@ def test_get_google_channel_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_google_channel_config"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_get_google_channel_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_google_channel_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetGoogleChannelConfigRequest.pb(
             eventarc.GetGoogleChannelConfigRequest()
         )
@@ -28933,6 +29076,10 @@ def test_get_google_channel_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = google_channel_config.GoogleChannelConfig()
+        post_with_metadata.return_value = (
+            google_channel_config.GoogleChannelConfig(),
+            metadata,
+        )
 
         client.get_google_channel_config(
             request,
@@ -28944,6 +29091,7 @@ def test_get_google_channel_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_google_channel_config_rest_bad_request(
@@ -29112,10 +29260,14 @@ def test_update_google_channel_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_update_google_channel_config"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_update_google_channel_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_update_google_channel_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.UpdateGoogleChannelConfigRequest.pb(
             eventarc.UpdateGoogleChannelConfigRequest()
         )
@@ -29141,6 +29293,10 @@ def test_update_google_channel_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gce_google_channel_config.GoogleChannelConfig()
+        post_with_metadata.return_value = (
+            gce_google_channel_config.GoogleChannelConfig(),
+            metadata,
+        )
 
         client.update_google_channel_config(
             request,
@@ -29152,6 +29308,7 @@ def test_update_google_channel_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_message_bus_rest_bad_request(request_type=eventarc.GetMessageBusRequest):
@@ -29240,10 +29397,13 @@ def test_get_message_bus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_message_bus"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_message_bus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_message_bus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetMessageBusRequest.pb(eventarc.GetMessageBusRequest())
         transcode.return_value = {
             "method": "post",
@@ -29265,6 +29425,7 @@ def test_get_message_bus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = message_bus.MessageBus()
+        post_with_metadata.return_value = message_bus.MessageBus(), metadata
 
         client.get_message_bus(
             request,
@@ -29276,6 +29437,7 @@ def test_get_message_bus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_message_buses_rest_bad_request(
@@ -29360,10 +29522,13 @@ def test_list_message_buses_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_message_buses"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_list_message_buses_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_message_buses"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListMessageBusesRequest.pb(
             eventarc.ListMessageBusesRequest()
         )
@@ -29389,6 +29554,7 @@ def test_list_message_buses_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListMessageBusesResponse()
+        post_with_metadata.return_value = eventarc.ListMessageBusesResponse(), metadata
 
         client.list_message_buses(
             request,
@@ -29400,6 +29566,7 @@ def test_list_message_buses_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_message_bus_enrollments_rest_bad_request(
@@ -29486,10 +29653,14 @@ def test_list_message_bus_enrollments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_message_bus_enrollments"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_list_message_bus_enrollments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_message_bus_enrollments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListMessageBusEnrollmentsRequest.pb(
             eventarc.ListMessageBusEnrollmentsRequest()
         )
@@ -29515,6 +29686,10 @@ def test_list_message_bus_enrollments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListMessageBusEnrollmentsResponse()
+        post_with_metadata.return_value = (
+            eventarc.ListMessageBusEnrollmentsResponse(),
+            metadata,
+        )
 
         client.list_message_bus_enrollments(
             request,
@@ -29526,6 +29701,7 @@ def test_list_message_bus_enrollments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_message_bus_rest_bad_request(
@@ -29683,10 +29859,13 @@ def test_create_message_bus_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_create_message_bus"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_create_message_bus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_create_message_bus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.CreateMessageBusRequest.pb(
             eventarc.CreateMessageBusRequest()
         )
@@ -29710,6 +29889,7 @@ def test_create_message_bus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_message_bus(
             request,
@@ -29721,6 +29901,7 @@ def test_create_message_bus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_message_bus_rest_bad_request(
@@ -29886,10 +30067,13 @@ def test_update_message_bus_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_update_message_bus"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_update_message_bus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_update_message_bus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.UpdateMessageBusRequest.pb(
             eventarc.UpdateMessageBusRequest()
         )
@@ -29913,6 +30097,7 @@ def test_update_message_bus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_message_bus(
             request,
@@ -29924,6 +30109,7 @@ def test_update_message_bus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_message_bus_rest_bad_request(
@@ -30002,10 +30188,13 @@ def test_delete_message_bus_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_delete_message_bus"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_delete_message_bus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_delete_message_bus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.DeleteMessageBusRequest.pb(
             eventarc.DeleteMessageBusRequest()
         )
@@ -30029,6 +30218,7 @@ def test_delete_message_bus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_message_bus(
             request,
@@ -30040,6 +30230,7 @@ def test_delete_message_bus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_enrollment_rest_bad_request(request_type=eventarc.GetEnrollmentRequest):
@@ -30132,10 +30323,13 @@ def test_get_enrollment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_enrollment"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_enrollment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_enrollment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetEnrollmentRequest.pb(eventarc.GetEnrollmentRequest())
         transcode.return_value = {
             "method": "post",
@@ -30157,6 +30351,7 @@ def test_get_enrollment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = enrollment.Enrollment()
+        post_with_metadata.return_value = enrollment.Enrollment(), metadata
 
         client.get_enrollment(
             request,
@@ -30168,6 +30363,7 @@ def test_get_enrollment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_enrollments_rest_bad_request(
@@ -30252,10 +30448,13 @@ def test_list_enrollments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_enrollments"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_list_enrollments_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_enrollments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListEnrollmentsRequest.pb(
             eventarc.ListEnrollmentsRequest()
         )
@@ -30281,6 +30480,7 @@ def test_list_enrollments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListEnrollmentsResponse()
+        post_with_metadata.return_value = eventarc.ListEnrollmentsResponse(), metadata
 
         client.list_enrollments(
             request,
@@ -30292,6 +30492,7 @@ def test_list_enrollments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_enrollment_rest_bad_request(
@@ -30450,10 +30651,13 @@ def test_create_enrollment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_create_enrollment"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_create_enrollment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_create_enrollment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.CreateEnrollmentRequest.pb(
             eventarc.CreateEnrollmentRequest()
         )
@@ -30477,6 +30681,7 @@ def test_create_enrollment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_enrollment(
             request,
@@ -30488,6 +30693,7 @@ def test_create_enrollment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_enrollment_rest_bad_request(
@@ -30650,10 +30856,13 @@ def test_update_enrollment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_update_enrollment"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_update_enrollment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_update_enrollment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.UpdateEnrollmentRequest.pb(
             eventarc.UpdateEnrollmentRequest()
         )
@@ -30677,6 +30886,7 @@ def test_update_enrollment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_enrollment(
             request,
@@ -30688,6 +30898,7 @@ def test_update_enrollment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_enrollment_rest_bad_request(
@@ -30766,10 +30977,13 @@ def test_delete_enrollment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_delete_enrollment"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_delete_enrollment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_delete_enrollment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.DeleteEnrollmentRequest.pb(
             eventarc.DeleteEnrollmentRequest()
         )
@@ -30793,6 +31007,7 @@ def test_delete_enrollment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_enrollment(
             request,
@@ -30804,6 +31019,7 @@ def test_delete_enrollment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_pipeline_rest_bad_request(request_type=eventarc.GetPipelineRequest):
@@ -30892,10 +31108,13 @@ def test_get_pipeline_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_pipeline"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_pipeline_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_pipeline"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetPipelineRequest.pb(eventarc.GetPipelineRequest())
         transcode.return_value = {
             "method": "post",
@@ -30917,6 +31136,7 @@ def test_get_pipeline_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = pipeline.Pipeline()
+        post_with_metadata.return_value = pipeline.Pipeline(), metadata
 
         client.get_pipeline(
             request,
@@ -30928,6 +31148,7 @@ def test_get_pipeline_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_pipelines_rest_bad_request(request_type=eventarc.ListPipelinesRequest):
@@ -31010,10 +31231,13 @@ def test_list_pipelines_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_pipelines"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_list_pipelines_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_pipelines"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListPipelinesRequest.pb(eventarc.ListPipelinesRequest())
         transcode.return_value = {
             "method": "post",
@@ -31037,6 +31261,7 @@ def test_list_pipelines_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListPipelinesResponse()
+        post_with_metadata.return_value = eventarc.ListPipelinesResponse(), metadata
 
         client.list_pipelines(
             request,
@@ -31048,6 +31273,7 @@ def test_list_pipelines_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_pipeline_rest_bad_request(request_type=eventarc.CreatePipelineRequest):
@@ -31243,10 +31469,13 @@ def test_create_pipeline_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_create_pipeline"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_create_pipeline_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_create_pipeline"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.CreatePipelineRequest.pb(eventarc.CreatePipelineRequest())
         transcode.return_value = {
             "method": "post",
@@ -31268,6 +31497,7 @@ def test_create_pipeline_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_pipeline(
             request,
@@ -31279,6 +31509,7 @@ def test_create_pipeline_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_pipeline_rest_bad_request(request_type=eventarc.UpdatePipelineRequest):
@@ -31478,10 +31709,13 @@ def test_update_pipeline_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_update_pipeline"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_update_pipeline_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_update_pipeline"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.UpdatePipelineRequest.pb(eventarc.UpdatePipelineRequest())
         transcode.return_value = {
             "method": "post",
@@ -31503,6 +31737,7 @@ def test_update_pipeline_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_pipeline(
             request,
@@ -31514,6 +31749,7 @@ def test_update_pipeline_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_pipeline_rest_bad_request(request_type=eventarc.DeletePipelineRequest):
@@ -31590,10 +31826,13 @@ def test_delete_pipeline_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_delete_pipeline"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_delete_pipeline_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_delete_pipeline"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.DeletePipelineRequest.pb(eventarc.DeletePipelineRequest())
         transcode.return_value = {
             "method": "post",
@@ -31615,6 +31854,7 @@ def test_delete_pipeline_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_pipeline(
             request,
@@ -31626,6 +31866,7 @@ def test_delete_pipeline_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_google_api_source_rest_bad_request(
@@ -31722,10 +31963,13 @@ def test_get_google_api_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_get_google_api_source"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_get_google_api_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_get_google_api_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.GetGoogleApiSourceRequest.pb(
             eventarc.GetGoogleApiSourceRequest()
         )
@@ -31751,6 +31995,7 @@ def test_get_google_api_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = google_api_source.GoogleApiSource()
+        post_with_metadata.return_value = google_api_source.GoogleApiSource(), metadata
 
         client.get_google_api_source(
             request,
@@ -31762,6 +32007,7 @@ def test_get_google_api_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_google_api_sources_rest_bad_request(
@@ -31846,10 +32092,13 @@ def test_list_google_api_sources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EventarcRestInterceptor, "post_list_google_api_sources"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor, "post_list_google_api_sources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_list_google_api_sources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.ListGoogleApiSourcesRequest.pb(
             eventarc.ListGoogleApiSourcesRequest()
         )
@@ -31875,6 +32124,10 @@ def test_list_google_api_sources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = eventarc.ListGoogleApiSourcesResponse()
+        post_with_metadata.return_value = (
+            eventarc.ListGoogleApiSourcesResponse(),
+            metadata,
+        )
 
         client.list_google_api_sources(
             request,
@@ -31886,6 +32139,7 @@ def test_list_google_api_sources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_google_api_source_rest_bad_request(
@@ -32044,10 +32298,14 @@ def test_create_google_api_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_create_google_api_source"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_create_google_api_source_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_create_google_api_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.CreateGoogleApiSourceRequest.pb(
             eventarc.CreateGoogleApiSourceRequest()
         )
@@ -32071,6 +32329,7 @@ def test_create_google_api_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_google_api_source(
             request,
@@ -32082,6 +32341,7 @@ def test_create_google_api_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_google_api_source_rest_bad_request(
@@ -32248,10 +32508,14 @@ def test_update_google_api_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_update_google_api_source"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_update_google_api_source_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_update_google_api_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.UpdateGoogleApiSourceRequest.pb(
             eventarc.UpdateGoogleApiSourceRequest()
         )
@@ -32275,6 +32539,7 @@ def test_update_google_api_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_google_api_source(
             request,
@@ -32286,6 +32551,7 @@ def test_update_google_api_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_google_api_source_rest_bad_request(
@@ -32368,10 +32634,14 @@ def test_delete_google_api_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EventarcRestInterceptor, "post_delete_google_api_source"
     ) as post, mock.patch.object(
+        transports.EventarcRestInterceptor,
+        "post_delete_google_api_source_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EventarcRestInterceptor, "pre_delete_google_api_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = eventarc.DeleteGoogleApiSourceRequest.pb(
             eventarc.DeleteGoogleApiSourceRequest()
         )
@@ -32395,6 +32665,7 @@ def test_delete_google_api_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_google_api_source(
             request,
@@ -32406,6 +32677,7 @@ def test_delete_google_api_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
