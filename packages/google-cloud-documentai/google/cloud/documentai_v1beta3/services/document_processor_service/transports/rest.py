@@ -283,11 +283,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_process_documents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_process_documents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_process_documents` interceptor runs
+        before the `post_batch_process_documents_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_process_documents_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_process_documents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_process_documents_with_metadata`
+        interceptor in new development instead of the `post_batch_process_documents` interceptor.
+        When both interceptors are used, this `post_batch_process_documents_with_metadata` interceptor runs after the
+        `post_batch_process_documents` interceptor. The (possibly modified) response returned by
+        `post_batch_process_documents` will be passed to
+        `post_batch_process_documents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_processor(
         self,
@@ -309,11 +332,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> gcd_processor.Processor:
         """Post-rpc interceptor for create_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_processor` interceptor runs
+        before the `post_create_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_create_processor_with_metadata(
+        self,
+        response: gcd_processor.Processor,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_processor.Processor, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_create_processor_with_metadata`
+        interceptor in new development instead of the `post_create_processor` interceptor.
+        When both interceptors are used, this `post_create_processor_with_metadata` interceptor runs after the
+        `post_create_processor` interceptor. The (possibly modified) response returned by
+        `post_create_processor` will be passed to
+        `post_create_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_processor(
         self,
@@ -335,11 +381,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_processor` interceptor runs
+        before the `post_delete_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_processor_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_processor_with_metadata`
+        interceptor in new development instead of the `post_delete_processor` interceptor.
+        When both interceptors are used, this `post_delete_processor_with_metadata` interceptor runs after the
+        `post_delete_processor` interceptor. The (possibly modified) response returned by
+        `post_delete_processor` will be passed to
+        `post_delete_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_processor_version(
         self,
@@ -361,11 +430,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_processor_version` interceptor runs
+        before the `post_delete_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_processor_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_processor_version_with_metadata`
+        interceptor in new development instead of the `post_delete_processor_version` interceptor.
+        When both interceptors are used, this `post_delete_processor_version_with_metadata` interceptor runs after the
+        `post_delete_processor_version` interceptor. The (possibly modified) response returned by
+        `post_delete_processor_version` will be passed to
+        `post_delete_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_deploy_processor_version(
         self,
@@ -387,11 +479,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_deploy_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_deploy_processor_version` interceptor runs
+        before the `post_deploy_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_deploy_processor_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for deploy_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_deploy_processor_version_with_metadata`
+        interceptor in new development instead of the `post_deploy_processor_version` interceptor.
+        When both interceptors are used, this `post_deploy_processor_version_with_metadata` interceptor runs after the
+        `post_deploy_processor_version` interceptor. The (possibly modified) response returned by
+        `post_deploy_processor_version` will be passed to
+        `post_deploy_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_disable_processor(
         self,
@@ -413,11 +528,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_disable_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_disable_processor` interceptor runs
+        before the `post_disable_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_disable_processor_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_disable_processor_with_metadata`
+        interceptor in new development instead of the `post_disable_processor` interceptor.
+        When both interceptors are used, this `post_disable_processor_with_metadata` interceptor runs after the
+        `post_disable_processor` interceptor. The (possibly modified) response returned by
+        `post_disable_processor` will be passed to
+        `post_disable_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_enable_processor(
         self,
@@ -439,11 +577,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_enable_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_enable_processor` interceptor runs
+        before the `post_enable_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_enable_processor_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_enable_processor_with_metadata`
+        interceptor in new development instead of the `post_enable_processor` interceptor.
+        When both interceptors are used, this `post_enable_processor_with_metadata` interceptor runs after the
+        `post_enable_processor` interceptor. The (possibly modified) response returned by
+        `post_enable_processor` will be passed to
+        `post_enable_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_evaluate_processor_version(
         self,
@@ -465,11 +626,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for evaluate_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_evaluate_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_evaluate_processor_version` interceptor runs
+        before the `post_evaluate_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_evaluate_processor_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for evaluate_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_evaluate_processor_version_with_metadata`
+        interceptor in new development instead of the `post_evaluate_processor_version` interceptor.
+        When both interceptors are used, this `post_evaluate_processor_version_with_metadata` interceptor runs after the
+        `post_evaluate_processor_version` interceptor. The (possibly modified) response returned by
+        `post_evaluate_processor_version` will be passed to
+        `post_evaluate_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_processor_types(
         self,
@@ -491,11 +675,37 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> document_processor_service.FetchProcessorTypesResponse:
         """Post-rpc interceptor for fetch_processor_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_processor_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_processor_types` interceptor runs
+        before the `post_fetch_processor_types_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_processor_types_with_metadata(
+        self,
+        response: document_processor_service.FetchProcessorTypesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_processor_service.FetchProcessorTypesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_processor_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_processor_types_with_metadata`
+        interceptor in new development instead of the `post_fetch_processor_types` interceptor.
+        When both interceptors are used, this `post_fetch_processor_types_with_metadata` interceptor runs after the
+        `post_fetch_processor_types` interceptor. The (possibly modified) response returned by
+        `post_fetch_processor_types` will be passed to
+        `post_fetch_processor_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_evaluation(
         self,
@@ -517,11 +727,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> evaluation.Evaluation:
         """Post-rpc interceptor for get_evaluation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_evaluation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_evaluation` interceptor runs
+        before the `post_get_evaluation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_evaluation_with_metadata(
+        self,
+        response: evaluation.Evaluation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[evaluation.Evaluation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_evaluation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_get_evaluation_with_metadata`
+        interceptor in new development instead of the `post_get_evaluation` interceptor.
+        When both interceptors are used, this `post_get_evaluation_with_metadata` interceptor runs after the
+        `post_get_evaluation` interceptor. The (possibly modified) response returned by
+        `post_get_evaluation` will be passed to
+        `post_get_evaluation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_processor(
         self,
@@ -541,11 +774,34 @@ class DocumentProcessorServiceRestInterceptor:
     def post_get_processor(self, response: processor.Processor) -> processor.Processor:
         """Post-rpc interceptor for get_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_processor` interceptor runs
+        before the `post_get_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_get_processor_with_metadata(
+        self,
+        response: processor.Processor,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[processor.Processor, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_get_processor_with_metadata`
+        interceptor in new development instead of the `post_get_processor` interceptor.
+        When both interceptors are used, this `post_get_processor_with_metadata` interceptor runs after the
+        `post_get_processor` interceptor. The (possibly modified) response returned by
+        `post_get_processor` will be passed to
+        `post_get_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_processor_type(
         self,
@@ -567,11 +823,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> processor_type.ProcessorType:
         """Post-rpc interceptor for get_processor_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_processor_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_processor_type` interceptor runs
+        before the `post_get_processor_type_with_metadata` interceptor.
         """
         return response
+
+    def post_get_processor_type_with_metadata(
+        self,
+        response: processor_type.ProcessorType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[processor_type.ProcessorType, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_processor_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_get_processor_type_with_metadata`
+        interceptor in new development instead of the `post_get_processor_type` interceptor.
+        When both interceptors are used, this `post_get_processor_type_with_metadata` interceptor runs after the
+        `post_get_processor_type` interceptor. The (possibly modified) response returned by
+        `post_get_processor_type` will be passed to
+        `post_get_processor_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_processor_version(
         self,
@@ -593,11 +872,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> processor.ProcessorVersion:
         """Post-rpc interceptor for get_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_processor_version` interceptor runs
+        before the `post_get_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_processor_version_with_metadata(
+        self,
+        response: processor.ProcessorVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[processor.ProcessorVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_get_processor_version_with_metadata`
+        interceptor in new development instead of the `post_get_processor_version` interceptor.
+        When both interceptors are used, this `post_get_processor_version_with_metadata` interceptor runs after the
+        `post_get_processor_version` interceptor. The (possibly modified) response returned by
+        `post_get_processor_version` will be passed to
+        `post_get_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_processor_version(
         self,
@@ -619,11 +921,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_processor_version` interceptor runs
+        before the `post_import_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_import_processor_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_import_processor_version_with_metadata`
+        interceptor in new development instead of the `post_import_processor_version` interceptor.
+        When both interceptors are used, this `post_import_processor_version_with_metadata` interceptor runs after the
+        `post_import_processor_version` interceptor. The (possibly modified) response returned by
+        `post_import_processor_version` will be passed to
+        `post_import_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_evaluations(
         self,
@@ -645,11 +970,37 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> document_processor_service.ListEvaluationsResponse:
         """Post-rpc interceptor for list_evaluations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_evaluations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_evaluations` interceptor runs
+        before the `post_list_evaluations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_evaluations_with_metadata(
+        self,
+        response: document_processor_service.ListEvaluationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_processor_service.ListEvaluationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_evaluations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_list_evaluations_with_metadata`
+        interceptor in new development instead of the `post_list_evaluations` interceptor.
+        When both interceptors are used, this `post_list_evaluations_with_metadata` interceptor runs after the
+        `post_list_evaluations` interceptor. The (possibly modified) response returned by
+        `post_list_evaluations` will be passed to
+        `post_list_evaluations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_processors(
         self,
@@ -671,11 +1022,37 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> document_processor_service.ListProcessorsResponse:
         """Post-rpc interceptor for list_processors
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_processors_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_processors` interceptor runs
+        before the `post_list_processors_with_metadata` interceptor.
         """
         return response
+
+    def post_list_processors_with_metadata(
+        self,
+        response: document_processor_service.ListProcessorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_processor_service.ListProcessorsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_processors
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_list_processors_with_metadata`
+        interceptor in new development instead of the `post_list_processors` interceptor.
+        When both interceptors are used, this `post_list_processors_with_metadata` interceptor runs after the
+        `post_list_processors` interceptor. The (possibly modified) response returned by
+        `post_list_processors` will be passed to
+        `post_list_processors_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_processor_types(
         self,
@@ -697,11 +1074,37 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> document_processor_service.ListProcessorTypesResponse:
         """Post-rpc interceptor for list_processor_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_processor_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_processor_types` interceptor runs
+        before the `post_list_processor_types_with_metadata` interceptor.
         """
         return response
+
+    def post_list_processor_types_with_metadata(
+        self,
+        response: document_processor_service.ListProcessorTypesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_processor_service.ListProcessorTypesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_processor_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_list_processor_types_with_metadata`
+        interceptor in new development instead of the `post_list_processor_types` interceptor.
+        When both interceptors are used, this `post_list_processor_types_with_metadata` interceptor runs after the
+        `post_list_processor_types` interceptor. The (possibly modified) response returned by
+        `post_list_processor_types` will be passed to
+        `post_list_processor_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_processor_versions(
         self,
@@ -723,11 +1126,37 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> document_processor_service.ListProcessorVersionsResponse:
         """Post-rpc interceptor for list_processor_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_processor_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_processor_versions` interceptor runs
+        before the `post_list_processor_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_processor_versions_with_metadata(
+        self,
+        response: document_processor_service.ListProcessorVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_processor_service.ListProcessorVersionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_processor_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_list_processor_versions_with_metadata`
+        interceptor in new development instead of the `post_list_processor_versions` interceptor.
+        When both interceptors are used, this `post_list_processor_versions_with_metadata` interceptor runs after the
+        `post_list_processor_versions` interceptor. The (possibly modified) response returned by
+        `post_list_processor_versions` will be passed to
+        `post_list_processor_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_process_document(
         self,
@@ -749,11 +1178,37 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> document_processor_service.ProcessResponse:
         """Post-rpc interceptor for process_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_process_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_process_document` interceptor runs
+        before the `post_process_document_with_metadata` interceptor.
         """
         return response
+
+    def post_process_document_with_metadata(
+        self,
+        response: document_processor_service.ProcessResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        document_processor_service.ProcessResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for process_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_process_document_with_metadata`
+        interceptor in new development instead of the `post_process_document` interceptor.
+        When both interceptors are used, this `post_process_document_with_metadata` interceptor runs after the
+        `post_process_document` interceptor. The (possibly modified) response returned by
+        `post_process_document` will be passed to
+        `post_process_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_review_document(
         self,
@@ -775,11 +1230,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for review_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_review_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_review_document` interceptor runs
+        before the `post_review_document_with_metadata` interceptor.
         """
         return response
+
+    def post_review_document_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for review_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_review_document_with_metadata`
+        interceptor in new development instead of the `post_review_document` interceptor.
+        When both interceptors are used, this `post_review_document_with_metadata` interceptor runs after the
+        `post_review_document` interceptor. The (possibly modified) response returned by
+        `post_review_document` will be passed to
+        `post_review_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_default_processor_version(
         self,
@@ -801,11 +1279,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_default_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_default_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_default_processor_version` interceptor runs
+        before the `post_set_default_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_set_default_processor_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_default_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_set_default_processor_version_with_metadata`
+        interceptor in new development instead of the `post_set_default_processor_version` interceptor.
+        When both interceptors are used, this `post_set_default_processor_version_with_metadata` interceptor runs after the
+        `post_set_default_processor_version` interceptor. The (possibly modified) response returned by
+        `post_set_default_processor_version` will be passed to
+        `post_set_default_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_train_processor_version(
         self,
@@ -827,11 +1328,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for train_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_train_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_train_processor_version` interceptor runs
+        before the `post_train_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_train_processor_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for train_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_train_processor_version_with_metadata`
+        interceptor in new development instead of the `post_train_processor_version` interceptor.
+        When both interceptors are used, this `post_train_processor_version_with_metadata` interceptor runs after the
+        `post_train_processor_version` interceptor. The (possibly modified) response returned by
+        `post_train_processor_version` will be passed to
+        `post_train_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undeploy_processor_version(
         self,
@@ -853,11 +1377,34 @@ class DocumentProcessorServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_processor_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undeploy_processor_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DocumentProcessorService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undeploy_processor_version` interceptor runs
+        before the `post_undeploy_processor_version_with_metadata` interceptor.
         """
         return response
+
+    def post_undeploy_processor_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undeploy_processor_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DocumentProcessorService server but before it is returned to user code.
+
+        We recommend only using this `post_undeploy_processor_version_with_metadata`
+        interceptor in new development instead of the `post_undeploy_processor_version` interceptor.
+        When both interceptors are used, this `post_undeploy_processor_version_with_metadata` interceptor runs after the
+        `post_undeploy_processor_version` interceptor. The (possibly modified) response returned by
+        `post_undeploy_processor_version` will be passed to
+        `post_undeploy_processor_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1260,6 +1807,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_process_documents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_process_documents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1420,6 +1971,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1568,6 +2123,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1714,6 +2273,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1866,6 +2429,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_deploy_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_deploy_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2020,6 +2587,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_disable_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_disable_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2174,6 +2745,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_enable_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_enable_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2329,6 +2904,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_evaluate_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_evaluate_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2478,6 +3057,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_processor_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_processor_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2627,6 +3210,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_evaluation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_evaluation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2776,6 +3363,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2927,6 +3518,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_processor_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_processor_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3080,6 +3675,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3246,6 +3845,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3392,6 +3995,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_evaluations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_evaluations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3543,6 +4150,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_processors(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_processors_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3698,6 +4309,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_processor_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_processor_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3850,6 +4465,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_processor_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_processor_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4008,6 +4627,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_process_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_process_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4162,6 +4785,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_review_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_review_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4317,6 +4944,13 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_default_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_set_default_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4469,6 +5103,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_train_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_train_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4624,6 +5262,10 @@ class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undeploy_processor_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undeploy_processor_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
