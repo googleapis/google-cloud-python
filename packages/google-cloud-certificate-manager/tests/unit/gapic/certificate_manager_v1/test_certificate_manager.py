@@ -81,6 +81,13 @@ from google.cloud.certificate_manager_v1.types import trust_config as gcc_trust_
 from google.cloud.certificate_manager_v1.types import certificate_manager
 from google.cloud.certificate_manager_v1.types import trust_config
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -350,6 +357,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CertificateManagerClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CertificateManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CertificateManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -20478,10 +20528,14 @@ def test_list_certificates_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_list_certificates"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_list_certificates_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_list_certificates"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.ListCertificatesRequest.pb(
             certificate_manager.ListCertificatesRequest()
         )
@@ -20507,6 +20561,10 @@ def test_list_certificates_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.ListCertificatesResponse()
+        post_with_metadata.return_value = (
+            certificate_manager.ListCertificatesResponse(),
+            metadata,
+        )
 
         client.list_certificates(
             request,
@@ -20518,6 +20576,7 @@ def test_list_certificates_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_certificate_rest_bad_request(
@@ -20610,10 +20669,14 @@ def test_get_certificate_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_get_certificate"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_get_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_get_certificate"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.GetCertificateRequest.pb(
             certificate_manager.GetCertificateRequest()
         )
@@ -20639,6 +20702,7 @@ def test_get_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.Certificate()
+        post_with_metadata.return_value = certificate_manager.Certificate(), metadata
 
         client.get_certificate(
             request,
@@ -20650,6 +20714,7 @@ def test_get_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_certificate_rest_bad_request(
@@ -20830,10 +20895,14 @@ def test_create_certificate_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_create_certificate"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_create_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_create_certificate"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.CreateCertificateRequest.pb(
             certificate_manager.CreateCertificateRequest()
         )
@@ -20857,6 +20926,7 @@ def test_create_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_certificate(
             request,
@@ -20868,6 +20938,7 @@ def test_create_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_certificate_rest_bad_request(
@@ -21056,10 +21127,14 @@ def test_update_certificate_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_update_certificate"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_update_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_update_certificate"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.UpdateCertificateRequest.pb(
             certificate_manager.UpdateCertificateRequest()
         )
@@ -21083,6 +21158,7 @@ def test_update_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_certificate(
             request,
@@ -21094,6 +21170,7 @@ def test_update_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_certificate_rest_bad_request(
@@ -21174,10 +21251,14 @@ def test_delete_certificate_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_delete_certificate"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_delete_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_delete_certificate"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.DeleteCertificateRequest.pb(
             certificate_manager.DeleteCertificateRequest()
         )
@@ -21201,6 +21282,7 @@ def test_delete_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_certificate(
             request,
@@ -21212,6 +21294,7 @@ def test_delete_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_certificate_maps_rest_bad_request(
@@ -21298,10 +21381,14 @@ def test_list_certificate_maps_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_list_certificate_maps"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_list_certificate_maps_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_list_certificate_maps"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.ListCertificateMapsRequest.pb(
             certificate_manager.ListCertificateMapsRequest()
         )
@@ -21327,6 +21414,10 @@ def test_list_certificate_maps_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.ListCertificateMapsResponse()
+        post_with_metadata.return_value = (
+            certificate_manager.ListCertificateMapsResponse(),
+            metadata,
+        )
 
         client.list_certificate_maps(
             request,
@@ -21338,6 +21429,7 @@ def test_list_certificate_maps_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_certificate_map_rest_bad_request(
@@ -21428,10 +21520,14 @@ def test_get_certificate_map_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_get_certificate_map"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_get_certificate_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_get_certificate_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.GetCertificateMapRequest.pb(
             certificate_manager.GetCertificateMapRequest()
         )
@@ -21457,6 +21553,7 @@ def test_get_certificate_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.CertificateMap()
+        post_with_metadata.return_value = certificate_manager.CertificateMap(), metadata
 
         client.get_certificate_map(
             request,
@@ -21468,6 +21565,7 @@ def test_get_certificate_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_certificate_map_rest_bad_request(
@@ -21631,10 +21729,14 @@ def test_create_certificate_map_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_create_certificate_map"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_create_certificate_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_create_certificate_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.CreateCertificateMapRequest.pb(
             certificate_manager.CreateCertificateMapRequest()
         )
@@ -21658,6 +21760,7 @@ def test_create_certificate_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_certificate_map(
             request,
@@ -21669,6 +21772,7 @@ def test_create_certificate_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_certificate_map_rest_bad_request(
@@ -21840,10 +21944,14 @@ def test_update_certificate_map_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_update_certificate_map"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_update_certificate_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_update_certificate_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.UpdateCertificateMapRequest.pb(
             certificate_manager.UpdateCertificateMapRequest()
         )
@@ -21867,6 +21975,7 @@ def test_update_certificate_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_certificate_map(
             request,
@@ -21878,6 +21987,7 @@ def test_update_certificate_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_certificate_map_rest_bad_request(
@@ -21962,10 +22072,14 @@ def test_delete_certificate_map_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_delete_certificate_map"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_delete_certificate_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_delete_certificate_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.DeleteCertificateMapRequest.pb(
             certificate_manager.DeleteCertificateMapRequest()
         )
@@ -21989,6 +22103,7 @@ def test_delete_certificate_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_certificate_map(
             request,
@@ -22000,6 +22115,7 @@ def test_delete_certificate_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_certificate_map_entries_rest_bad_request(
@@ -22093,10 +22209,14 @@ def test_list_certificate_map_entries_rest_interceptors(null_interceptor):
         transports.CertificateManagerRestInterceptor,
         "post_list_certificate_map_entries",
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_list_certificate_map_entries_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_list_certificate_map_entries"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.ListCertificateMapEntriesRequest.pb(
             certificate_manager.ListCertificateMapEntriesRequest()
         )
@@ -22122,6 +22242,10 @@ def test_list_certificate_map_entries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.ListCertificateMapEntriesResponse()
+        post_with_metadata.return_value = (
+            certificate_manager.ListCertificateMapEntriesResponse(),
+            metadata,
+        )
 
         client.list_certificate_map_entries(
             request,
@@ -22133,6 +22257,7 @@ def test_list_certificate_map_entries_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_certificate_map_entry_rest_bad_request(
@@ -22228,10 +22353,14 @@ def test_get_certificate_map_entry_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_get_certificate_map_entry"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_get_certificate_map_entry_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_get_certificate_map_entry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.GetCertificateMapEntryRequest.pb(
             certificate_manager.GetCertificateMapEntryRequest()
         )
@@ -22257,6 +22386,10 @@ def test_get_certificate_map_entry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.CertificateMapEntry()
+        post_with_metadata.return_value = (
+            certificate_manager.CertificateMapEntry(),
+            metadata,
+        )
 
         client.get_certificate_map_entry(
             request,
@@ -22268,6 +22401,7 @@ def test_get_certificate_map_entry_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_certificate_map_entry_rest_bad_request(
@@ -22435,10 +22569,14 @@ def test_create_certificate_map_entry_rest_interceptors(null_interceptor):
         transports.CertificateManagerRestInterceptor,
         "post_create_certificate_map_entry",
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_create_certificate_map_entry_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_create_certificate_map_entry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.CreateCertificateMapEntryRequest.pb(
             certificate_manager.CreateCertificateMapEntryRequest()
         )
@@ -22462,6 +22600,7 @@ def test_create_certificate_map_entry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_certificate_map_entry(
             request,
@@ -22473,6 +22612,7 @@ def test_create_certificate_map_entry_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_certificate_map_entry_rest_bad_request(
@@ -22644,10 +22784,14 @@ def test_update_certificate_map_entry_rest_interceptors(null_interceptor):
         transports.CertificateManagerRestInterceptor,
         "post_update_certificate_map_entry",
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_update_certificate_map_entry_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_update_certificate_map_entry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.UpdateCertificateMapEntryRequest.pb(
             certificate_manager.UpdateCertificateMapEntryRequest()
         )
@@ -22671,6 +22815,7 @@ def test_update_certificate_map_entry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_certificate_map_entry(
             request,
@@ -22682,6 +22827,7 @@ def test_update_certificate_map_entry_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_certificate_map_entry_rest_bad_request(
@@ -22767,10 +22913,14 @@ def test_delete_certificate_map_entry_rest_interceptors(null_interceptor):
         transports.CertificateManagerRestInterceptor,
         "post_delete_certificate_map_entry",
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_delete_certificate_map_entry_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_delete_certificate_map_entry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.DeleteCertificateMapEntryRequest.pb(
             certificate_manager.DeleteCertificateMapEntryRequest()
         )
@@ -22794,6 +22944,7 @@ def test_delete_certificate_map_entry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_certificate_map_entry(
             request,
@@ -22805,6 +22956,7 @@ def test_delete_certificate_map_entry_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_dns_authorizations_rest_bad_request(
@@ -22893,10 +23045,14 @@ def test_list_dns_authorizations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_list_dns_authorizations"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_list_dns_authorizations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_list_dns_authorizations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.ListDnsAuthorizationsRequest.pb(
             certificate_manager.ListDnsAuthorizationsRequest()
         )
@@ -22922,6 +23078,10 @@ def test_list_dns_authorizations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.ListDnsAuthorizationsResponse()
+        post_with_metadata.return_value = (
+            certificate_manager.ListDnsAuthorizationsResponse(),
+            metadata,
+        )
 
         client.list_dns_authorizations(
             request,
@@ -22933,6 +23093,7 @@ def test_list_dns_authorizations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_dns_authorization_rest_bad_request(
@@ -23027,10 +23188,14 @@ def test_get_dns_authorization_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_get_dns_authorization"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_get_dns_authorization_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_get_dns_authorization"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.GetDnsAuthorizationRequest.pb(
             certificate_manager.GetDnsAuthorizationRequest()
         )
@@ -23056,6 +23221,10 @@ def test_get_dns_authorization_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_manager.DnsAuthorization()
+        post_with_metadata.return_value = (
+            certificate_manager.DnsAuthorization(),
+            metadata,
+        )
 
         client.get_dns_authorization(
             request,
@@ -23067,6 +23236,7 @@ def test_get_dns_authorization_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_dns_authorization_rest_bad_request(
@@ -23230,10 +23400,14 @@ def test_create_dns_authorization_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_create_dns_authorization"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_create_dns_authorization_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_create_dns_authorization"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.CreateDnsAuthorizationRequest.pb(
             certificate_manager.CreateDnsAuthorizationRequest()
         )
@@ -23257,6 +23431,7 @@ def test_create_dns_authorization_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_dns_authorization(
             request,
@@ -23268,6 +23443,7 @@ def test_create_dns_authorization_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_dns_authorization_rest_bad_request(
@@ -23439,10 +23615,14 @@ def test_update_dns_authorization_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_update_dns_authorization"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_update_dns_authorization_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_update_dns_authorization"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.UpdateDnsAuthorizationRequest.pb(
             certificate_manager.UpdateDnsAuthorizationRequest()
         )
@@ -23466,6 +23646,7 @@ def test_update_dns_authorization_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_dns_authorization(
             request,
@@ -23477,6 +23658,7 @@ def test_update_dns_authorization_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_dns_authorization_rest_bad_request(
@@ -23561,10 +23743,14 @@ def test_delete_dns_authorization_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_delete_dns_authorization"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_delete_dns_authorization_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_delete_dns_authorization"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_manager.DeleteDnsAuthorizationRequest.pb(
             certificate_manager.DeleteDnsAuthorizationRequest()
         )
@@ -23588,6 +23774,7 @@ def test_delete_dns_authorization_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_dns_authorization(
             request,
@@ -23599,6 +23786,7 @@ def test_delete_dns_authorization_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_certificate_issuance_configs_rest_bad_request(
@@ -23693,10 +23881,14 @@ def test_list_certificate_issuance_configs_rest_interceptors(null_interceptor):
         "post_list_certificate_issuance_configs",
     ) as post, mock.patch.object(
         transports.CertificateManagerRestInterceptor,
+        "post_list_certificate_issuance_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
         "pre_list_certificate_issuance_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             certificate_issuance_config.ListCertificateIssuanceConfigsRequest.pb(
                 certificate_issuance_config.ListCertificateIssuanceConfigsRequest()
@@ -23728,6 +23920,10 @@ def test_list_certificate_issuance_configs_rest_interceptors(null_interceptor):
         post.return_value = (
             certificate_issuance_config.ListCertificateIssuanceConfigsResponse()
         )
+        post_with_metadata.return_value = (
+            certificate_issuance_config.ListCertificateIssuanceConfigsResponse(),
+            metadata,
+        )
 
         client.list_certificate_issuance_configs(
             request,
@@ -23739,6 +23935,7 @@ def test_list_certificate_issuance_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_certificate_issuance_config_rest_bad_request(
@@ -23840,10 +24037,14 @@ def test_get_certificate_issuance_config_rest_interceptors(null_interceptor):
         "post_get_certificate_issuance_config",
     ) as post, mock.patch.object(
         transports.CertificateManagerRestInterceptor,
+        "post_get_certificate_issuance_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
         "pre_get_certificate_issuance_config",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = certificate_issuance_config.GetCertificateIssuanceConfigRequest.pb(
             certificate_issuance_config.GetCertificateIssuanceConfigRequest()
         )
@@ -23869,6 +24070,10 @@ def test_get_certificate_issuance_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = certificate_issuance_config.CertificateIssuanceConfig()
+        post_with_metadata.return_value = (
+            certificate_issuance_config.CertificateIssuanceConfig(),
+            metadata,
+        )
 
         client.get_certificate_issuance_config(
             request,
@@ -23880,6 +24085,7 @@ def test_get_certificate_issuance_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_certificate_issuance_config_rest_bad_request(
@@ -24048,10 +24254,14 @@ def test_create_certificate_issuance_config_rest_interceptors(null_interceptor):
         "post_create_certificate_issuance_config",
     ) as post, mock.patch.object(
         transports.CertificateManagerRestInterceptor,
+        "post_create_certificate_issuance_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
         "pre_create_certificate_issuance_config",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest.pb(
                 gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest()
@@ -24079,6 +24289,7 @@ def test_create_certificate_issuance_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_certificate_issuance_config(
             request,
@@ -24090,6 +24301,7 @@ def test_create_certificate_issuance_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_certificate_issuance_config_rest_bad_request(
@@ -24176,10 +24388,14 @@ def test_delete_certificate_issuance_config_rest_interceptors(null_interceptor):
         "post_delete_certificate_issuance_config",
     ) as post, mock.patch.object(
         transports.CertificateManagerRestInterceptor,
+        "post_delete_certificate_issuance_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
         "pre_delete_certificate_issuance_config",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             certificate_issuance_config.DeleteCertificateIssuanceConfigRequest.pb(
                 certificate_issuance_config.DeleteCertificateIssuanceConfigRequest()
@@ -24205,6 +24421,7 @@ def test_delete_certificate_issuance_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_certificate_issuance_config(
             request,
@@ -24216,6 +24433,7 @@ def test_delete_certificate_issuance_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_trust_configs_rest_bad_request(
@@ -24302,10 +24520,14 @@ def test_list_trust_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_list_trust_configs"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_list_trust_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_list_trust_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = trust_config.ListTrustConfigsRequest.pb(
             trust_config.ListTrustConfigsRequest()
         )
@@ -24331,6 +24553,10 @@ def test_list_trust_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = trust_config.ListTrustConfigsResponse()
+        post_with_metadata.return_value = (
+            trust_config.ListTrustConfigsResponse(),
+            metadata,
+        )
 
         client.list_trust_configs(
             request,
@@ -24342,6 +24568,7 @@ def test_list_trust_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_trust_config_rest_bad_request(
@@ -24430,10 +24657,14 @@ def test_get_trust_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_get_trust_config"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_get_trust_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_get_trust_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = trust_config.GetTrustConfigRequest.pb(
             trust_config.GetTrustConfigRequest()
         )
@@ -24457,6 +24688,7 @@ def test_get_trust_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = trust_config.TrustConfig()
+        post_with_metadata.return_value = trust_config.TrustConfig(), metadata
 
         client.get_trust_config(
             request,
@@ -24468,6 +24700,7 @@ def test_get_trust_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_trust_config_rest_bad_request(
@@ -24629,10 +24862,14 @@ def test_create_trust_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_create_trust_config"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_create_trust_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_create_trust_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcc_trust_config.CreateTrustConfigRequest.pb(
             gcc_trust_config.CreateTrustConfigRequest()
         )
@@ -24656,6 +24893,7 @@ def test_create_trust_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_trust_config(
             request,
@@ -24667,6 +24905,7 @@ def test_create_trust_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_trust_config_rest_bad_request(
@@ -24836,10 +25075,14 @@ def test_update_trust_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_update_trust_config"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_update_trust_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_update_trust_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcc_trust_config.UpdateTrustConfigRequest.pb(
             gcc_trust_config.UpdateTrustConfigRequest()
         )
@@ -24863,6 +25106,7 @@ def test_update_trust_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_trust_config(
             request,
@@ -24874,6 +25118,7 @@ def test_update_trust_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_trust_config_rest_bad_request(
@@ -24954,10 +25199,14 @@ def test_delete_trust_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CertificateManagerRestInterceptor, "post_delete_trust_config"
     ) as post, mock.patch.object(
+        transports.CertificateManagerRestInterceptor,
+        "post_delete_trust_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CertificateManagerRestInterceptor, "pre_delete_trust_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = trust_config.DeleteTrustConfigRequest.pb(
             trust_config.DeleteTrustConfigRequest()
         )
@@ -24981,6 +25230,7 @@ def test_delete_trust_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_trust_config(
             request,
@@ -24992,6 +25242,7 @@ def test_delete_trust_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

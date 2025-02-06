@@ -210,11 +210,34 @@ class RepositoryManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_create_repositories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_create_repositories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_create_repositories` interceptor runs
+        before the `post_batch_create_repositories_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_create_repositories_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_create_repositories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_repositories_with_metadata`
+        interceptor in new development instead of the `post_batch_create_repositories` interceptor.
+        When both interceptors are used, this `post_batch_create_repositories_with_metadata` interceptor runs after the
+        `post_batch_create_repositories` interceptor. The (possibly modified) response returned by
+        `post_batch_create_repositories` will be passed to
+        `post_batch_create_repositories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_connection(
         self,
@@ -235,11 +258,34 @@ class RepositoryManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_connection` interceptor runs
+        before the `post_create_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_create_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_connection_with_metadata`
+        interceptor in new development instead of the `post_create_connection` interceptor.
+        When both interceptors are used, this `post_create_connection_with_metadata` interceptor runs after the
+        `post_create_connection` interceptor. The (possibly modified) response returned by
+        `post_create_connection` will be passed to
+        `post_create_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_repository(
         self,
@@ -260,11 +306,34 @@ class RepositoryManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_repository` interceptor runs
+        before the `post_create_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_create_repository_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_repository_with_metadata`
+        interceptor in new development instead of the `post_create_repository` interceptor.
+        When both interceptors are used, this `post_create_repository_with_metadata` interceptor runs after the
+        `post_create_repository` interceptor. The (possibly modified) response returned by
+        `post_create_repository` will be passed to
+        `post_create_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_connection(
         self,
@@ -285,11 +354,34 @@ class RepositoryManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_connection` interceptor runs
+        before the `post_delete_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_connection_with_metadata`
+        interceptor in new development instead of the `post_delete_connection` interceptor.
+        When both interceptors are used, this `post_delete_connection_with_metadata` interceptor runs after the
+        `post_delete_connection` interceptor. The (possibly modified) response returned by
+        `post_delete_connection` will be passed to
+        `post_delete_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_repository(
         self,
@@ -310,11 +402,34 @@ class RepositoryManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_repository` interceptor runs
+        before the `post_delete_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_repository_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_repository_with_metadata`
+        interceptor in new development instead of the `post_delete_repository` interceptor.
+        When both interceptors are used, this `post_delete_repository_with_metadata` interceptor runs after the
+        `post_delete_repository` interceptor. The (possibly modified) response returned by
+        `post_delete_repository` will be passed to
+        `post_delete_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_git_refs(
         self,
@@ -335,11 +450,36 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.FetchGitRefsResponse:
         """Post-rpc interceptor for fetch_git_refs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_git_refs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_git_refs` interceptor runs
+        before the `post_fetch_git_refs_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_git_refs_with_metadata(
+        self,
+        response: repositories.FetchGitRefsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.FetchGitRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_git_refs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_git_refs_with_metadata`
+        interceptor in new development instead of the `post_fetch_git_refs` interceptor.
+        When both interceptors are used, this `post_fetch_git_refs_with_metadata` interceptor runs after the
+        `post_fetch_git_refs` interceptor. The (possibly modified) response returned by
+        `post_fetch_git_refs` will be passed to
+        `post_fetch_git_refs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_linkable_repositories(
         self,
@@ -361,11 +501,37 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.FetchLinkableRepositoriesResponse:
         """Post-rpc interceptor for fetch_linkable_repositories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_linkable_repositories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_linkable_repositories` interceptor runs
+        before the `post_fetch_linkable_repositories_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_linkable_repositories_with_metadata(
+        self,
+        response: repositories.FetchLinkableRepositoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.FetchLinkableRepositoriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_linkable_repositories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_linkable_repositories_with_metadata`
+        interceptor in new development instead of the `post_fetch_linkable_repositories` interceptor.
+        When both interceptors are used, this `post_fetch_linkable_repositories_with_metadata` interceptor runs after the
+        `post_fetch_linkable_repositories` interceptor. The (possibly modified) response returned by
+        `post_fetch_linkable_repositories` will be passed to
+        `post_fetch_linkable_repositories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_read_token(
         self,
@@ -386,11 +552,36 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.FetchReadTokenResponse:
         """Post-rpc interceptor for fetch_read_token
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_read_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_read_token` interceptor runs
+        before the `post_fetch_read_token_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_read_token_with_metadata(
+        self,
+        response: repositories.FetchReadTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.FetchReadTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_read_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_read_token_with_metadata`
+        interceptor in new development instead of the `post_fetch_read_token` interceptor.
+        When both interceptors are used, this `post_fetch_read_token_with_metadata` interceptor runs after the
+        `post_fetch_read_token` interceptor. The (possibly modified) response returned by
+        `post_fetch_read_token` will be passed to
+        `post_fetch_read_token_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_read_write_token(
         self,
@@ -411,11 +602,37 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.FetchReadWriteTokenResponse:
         """Post-rpc interceptor for fetch_read_write_token
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_read_write_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_read_write_token` interceptor runs
+        before the `post_fetch_read_write_token_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_read_write_token_with_metadata(
+        self,
+        response: repositories.FetchReadWriteTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.FetchReadWriteTokenResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_read_write_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_read_write_token_with_metadata`
+        interceptor in new development instead of the `post_fetch_read_write_token` interceptor.
+        When both interceptors are used, this `post_fetch_read_write_token_with_metadata` interceptor runs after the
+        `post_fetch_read_write_token` interceptor. The (possibly modified) response returned by
+        `post_fetch_read_write_token` will be passed to
+        `post_fetch_read_write_token_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_connection(
         self,
@@ -436,11 +653,34 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.Connection:
         """Post-rpc interceptor for get_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_connection` interceptor runs
+        before the `post_get_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_get_connection_with_metadata(
+        self,
+        response: repositories.Connection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[repositories.Connection, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_connection_with_metadata`
+        interceptor in new development instead of the `post_get_connection` interceptor.
+        When both interceptors are used, this `post_get_connection_with_metadata` interceptor runs after the
+        `post_get_connection` interceptor. The (possibly modified) response returned by
+        `post_get_connection` will be passed to
+        `post_get_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_repository(
         self,
@@ -461,11 +701,34 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.Repository:
         """Post-rpc interceptor for get_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_repository` interceptor runs
+        before the `post_get_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_get_repository_with_metadata(
+        self,
+        response: repositories.Repository,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[repositories.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_repository_with_metadata`
+        interceptor in new development instead of the `post_get_repository` interceptor.
+        When both interceptors are used, this `post_get_repository_with_metadata` interceptor runs after the
+        `post_get_repository` interceptor. The (possibly modified) response returned by
+        `post_get_repository` will be passed to
+        `post_get_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_connections(
         self,
@@ -486,11 +749,36 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.ListConnectionsResponse:
         """Post-rpc interceptor for list_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_connections` interceptor runs
+        before the `post_list_connections_with_metadata` interceptor.
         """
         return response
+
+    def post_list_connections_with_metadata(
+        self,
+        response: repositories.ListConnectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.ListConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_connections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_connections_with_metadata`
+        interceptor in new development instead of the `post_list_connections` interceptor.
+        When both interceptors are used, this `post_list_connections_with_metadata` interceptor runs after the
+        `post_list_connections` interceptor. The (possibly modified) response returned by
+        `post_list_connections` will be passed to
+        `post_list_connections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_repositories(
         self,
@@ -511,11 +799,36 @@ class RepositoryManagerRestInterceptor:
     ) -> repositories.ListRepositoriesResponse:
         """Post-rpc interceptor for list_repositories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_repositories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_repositories` interceptor runs
+        before the `post_list_repositories_with_metadata` interceptor.
         """
         return response
+
+    def post_list_repositories_with_metadata(
+        self,
+        response: repositories.ListRepositoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.ListRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_repositories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_repositories_with_metadata`
+        interceptor in new development instead of the `post_list_repositories` interceptor.
+        When both interceptors are used, this `post_list_repositories_with_metadata` interceptor runs after the
+        `post_list_repositories` interceptor. The (possibly modified) response returned by
+        `post_list_repositories` will be passed to
+        `post_list_repositories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_connection(
         self,
@@ -536,11 +849,34 @@ class RepositoryManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RepositoryManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_connection` interceptor runs
+        before the `post_update_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_update_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RepositoryManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_connection_with_metadata`
+        interceptor in new development instead of the `post_update_connection` interceptor.
+        When both interceptors are used, this `post_update_connection_with_metadata` interceptor runs after the
+        `post_update_connection` interceptor. The (possibly modified) response returned by
+        `post_update_connection` will be passed to
+        `post_update_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -921,6 +1257,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_create_repositories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_repositories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1071,6 +1411,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1221,6 +1565,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1365,6 +1713,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1509,6 +1861,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1649,6 +2005,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_git_refs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_git_refs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1800,6 +2160,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_linkable_repositories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_linkable_repositories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1953,6 +2317,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_read_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_read_token_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2109,6 +2477,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_read_write_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_read_write_token_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2256,6 +2628,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2400,6 +2776,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2546,6 +2926,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_connections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_connections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2694,6 +3078,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_repositories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_repositories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2846,6 +3234,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

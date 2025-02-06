@@ -79,6 +79,13 @@ from google.cloud.config_v1.services.config import (
 )
 from google.cloud.config_v1.types import config
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -299,6 +306,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ConfigClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ConfigClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ConfigClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -15590,10 +15640,13 @@ def test_list_deployments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_deployments"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_list_deployments_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_deployments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ListDeploymentsRequest.pb(config.ListDeploymentsRequest())
         transcode.return_value = {
             "method": "post",
@@ -15617,6 +15670,7 @@ def test_list_deployments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.ListDeploymentsResponse()
+        post_with_metadata.return_value = config.ListDeploymentsResponse(), metadata
 
         client.list_deployments(
             request,
@@ -15628,6 +15682,7 @@ def test_list_deployments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_deployment_rest_bad_request(request_type=config.GetDeploymentRequest):
@@ -15738,10 +15793,13 @@ def test_get_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_deployment"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_get_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.GetDeploymentRequest.pb(config.GetDeploymentRequest())
         transcode.return_value = {
             "method": "post",
@@ -15763,6 +15821,7 @@ def test_get_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.Deployment()
+        post_with_metadata.return_value = config.Deployment(), metadata
 
         client.get_deployment(
             request,
@@ -15774,6 +15833,7 @@ def test_get_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_deployment_rest_bad_request(
@@ -15972,10 +16032,13 @@ def test_create_deployment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConfigRestInterceptor, "post_create_deployment"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_create_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_create_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.CreateDeploymentRequest.pb(config.CreateDeploymentRequest())
         transcode.return_value = {
             "method": "post",
@@ -15997,6 +16060,7 @@ def test_create_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_deployment(
             request,
@@ -16008,6 +16072,7 @@ def test_create_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_deployment_rest_bad_request(
@@ -16210,10 +16275,13 @@ def test_update_deployment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConfigRestInterceptor, "post_update_deployment"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_update_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_update_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.UpdateDeploymentRequest.pb(config.UpdateDeploymentRequest())
         transcode.return_value = {
             "method": "post",
@@ -16235,6 +16303,7 @@ def test_update_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_deployment(
             request,
@@ -16246,6 +16315,7 @@ def test_update_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_deployment_rest_bad_request(
@@ -16324,10 +16394,13 @@ def test_delete_deployment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConfigRestInterceptor, "post_delete_deployment"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_delete_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_delete_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.DeleteDeploymentRequest.pb(config.DeleteDeploymentRequest())
         transcode.return_value = {
             "method": "post",
@@ -16349,6 +16422,7 @@ def test_delete_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_deployment(
             request,
@@ -16360,6 +16434,7 @@ def test_delete_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_revisions_rest_bad_request(request_type=config.ListRevisionsRequest):
@@ -16442,10 +16517,13 @@ def test_list_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_revisions"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_list_revisions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ListRevisionsRequest.pb(config.ListRevisionsRequest())
         transcode.return_value = {
             "method": "post",
@@ -16469,6 +16547,7 @@ def test_list_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.ListRevisionsResponse()
+        post_with_metadata.return_value = config.ListRevisionsResponse(), metadata
 
         client.list_revisions(
             request,
@@ -16480,6 +16559,7 @@ def test_list_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_revision_rest_bad_request(request_type=config.GetRevisionRequest):
@@ -16594,10 +16674,13 @@ def test_get_revision_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_revision"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_get_revision_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_revision"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.GetRevisionRequest.pb(config.GetRevisionRequest())
         transcode.return_value = {
             "method": "post",
@@ -16619,6 +16702,7 @@ def test_get_revision_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.Revision()
+        post_with_metadata.return_value = config.Revision(), metadata
 
         client.get_revision(
             request,
@@ -16630,6 +16714,7 @@ def test_get_revision_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_resource_rest_bad_request(request_type=config.GetResourceRequest):
@@ -16718,10 +16803,13 @@ def test_get_resource_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_resource"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_get_resource_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.GetResourceRequest.pb(config.GetResourceRequest())
         transcode.return_value = {
             "method": "post",
@@ -16743,6 +16831,7 @@ def test_get_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.Resource()
+        post_with_metadata.return_value = config.Resource(), metadata
 
         client.get_resource(
             request,
@@ -16754,6 +16843,7 @@ def test_get_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_resources_rest_bad_request(request_type=config.ListResourcesRequest):
@@ -16840,10 +16930,13 @@ def test_list_resources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_resources"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_list_resources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_resources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ListResourcesRequest.pb(config.ListResourcesRequest())
         transcode.return_value = {
             "method": "post",
@@ -16867,6 +16960,7 @@ def test_list_resources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.ListResourcesResponse()
+        post_with_metadata.return_value = config.ListResourcesResponse(), metadata
 
         client.list_resources(
             request,
@@ -16878,6 +16972,7 @@ def test_list_resources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_deployment_statefile_rest_bad_request(
@@ -16960,10 +17055,14 @@ def test_export_deployment_statefile_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_export_deployment_statefile"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor,
+        "post_export_deployment_statefile_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_deployment_statefile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ExportDeploymentStatefileRequest.pb(
             config.ExportDeploymentStatefileRequest()
         )
@@ -16987,6 +17086,7 @@ def test_export_deployment_statefile_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.Statefile()
+        post_with_metadata.return_value = config.Statefile(), metadata
 
         client.export_deployment_statefile(
             request,
@@ -16998,6 +17098,7 @@ def test_export_deployment_statefile_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_revision_statefile_rest_bad_request(
@@ -17084,10 +17185,13 @@ def test_export_revision_statefile_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_export_revision_statefile"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_export_revision_statefile_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_revision_statefile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ExportRevisionStatefileRequest.pb(
             config.ExportRevisionStatefileRequest()
         )
@@ -17111,6 +17215,7 @@ def test_export_revision_statefile_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.Statefile()
+        post_with_metadata.return_value = config.Statefile(), metadata
 
         client.export_revision_statefile(
             request,
@@ -17122,6 +17227,7 @@ def test_export_revision_statefile_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_statefile_rest_bad_request(request_type=config.ImportStatefileRequest):
@@ -17202,10 +17308,13 @@ def test_import_statefile_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_import_statefile"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_import_statefile_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_import_statefile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ImportStatefileRequest.pb(config.ImportStatefileRequest())
         transcode.return_value = {
             "method": "post",
@@ -17227,6 +17336,7 @@ def test_import_statefile_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.Statefile()
+        post_with_metadata.return_value = config.Statefile(), metadata
 
         client.import_statefile(
             request,
@@ -17238,6 +17348,7 @@ def test_import_statefile_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_statefile_rest_bad_request(request_type=config.DeleteStatefileRequest):
@@ -17417,10 +17528,13 @@ def test_lock_deployment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConfigRestInterceptor, "post_lock_deployment"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_lock_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_lock_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.LockDeploymentRequest.pb(config.LockDeploymentRequest())
         transcode.return_value = {
             "method": "post",
@@ -17442,6 +17556,7 @@ def test_lock_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.lock_deployment(
             request,
@@ -17453,6 +17568,7 @@ def test_lock_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_unlock_deployment_rest_bad_request(
@@ -17531,10 +17647,13 @@ def test_unlock_deployment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConfigRestInterceptor, "post_unlock_deployment"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_unlock_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_unlock_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.UnlockDeploymentRequest.pb(config.UnlockDeploymentRequest())
         transcode.return_value = {
             "method": "post",
@@ -17556,6 +17675,7 @@ def test_unlock_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.unlock_deployment(
             request,
@@ -17567,6 +17687,7 @@ def test_unlock_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_lock_info_rest_bad_request(request_type=config.ExportLockInfoRequest):
@@ -17655,10 +17776,13 @@ def test_export_lock_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_export_lock_info"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_export_lock_info_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_lock_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ExportLockInfoRequest.pb(config.ExportLockInfoRequest())
         transcode.return_value = {
             "method": "post",
@@ -17680,6 +17804,7 @@ def test_export_lock_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.LockInfo()
+        post_with_metadata.return_value = config.LockInfo(), metadata
 
         client.export_lock_info(
             request,
@@ -17691,6 +17816,7 @@ def test_export_lock_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_preview_rest_bad_request(request_type=config.CreatePreviewRequest):
@@ -17883,10 +18009,13 @@ def test_create_preview_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConfigRestInterceptor, "post_create_preview"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_create_preview_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_create_preview"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.CreatePreviewRequest.pb(config.CreatePreviewRequest())
         transcode.return_value = {
             "method": "post",
@@ -17908,6 +18037,7 @@ def test_create_preview_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_preview(
             request,
@@ -17919,6 +18049,7 @@ def test_create_preview_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_preview_rest_bad_request(request_type=config.GetPreviewRequest):
@@ -18023,10 +18154,13 @@ def test_get_preview_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_preview"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_get_preview_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_preview"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.GetPreviewRequest.pb(config.GetPreviewRequest())
         transcode.return_value = {
             "method": "post",
@@ -18048,6 +18182,7 @@ def test_get_preview_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.Preview()
+        post_with_metadata.return_value = config.Preview(), metadata
 
         client.get_preview(
             request,
@@ -18059,6 +18194,7 @@ def test_get_preview_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_previews_rest_bad_request(request_type=config.ListPreviewsRequest):
@@ -18141,10 +18277,13 @@ def test_list_previews_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_previews"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_list_previews_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_previews"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ListPreviewsRequest.pb(config.ListPreviewsRequest())
         transcode.return_value = {
             "method": "post",
@@ -18168,6 +18307,7 @@ def test_list_previews_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.ListPreviewsResponse()
+        post_with_metadata.return_value = config.ListPreviewsResponse(), metadata
 
         client.list_previews(
             request,
@@ -18179,6 +18319,7 @@ def test_list_previews_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_preview_rest_bad_request(request_type=config.DeletePreviewRequest):
@@ -18255,10 +18396,13 @@ def test_delete_preview_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ConfigRestInterceptor, "post_delete_preview"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_delete_preview_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_delete_preview"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.DeletePreviewRequest.pb(config.DeletePreviewRequest())
         transcode.return_value = {
             "method": "post",
@@ -18280,6 +18424,7 @@ def test_delete_preview_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_preview(
             request,
@@ -18291,6 +18436,7 @@ def test_delete_preview_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_preview_result_rest_bad_request(
@@ -18370,10 +18516,13 @@ def test_export_preview_result_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_export_preview_result"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_export_preview_result_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_preview_result"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ExportPreviewResultRequest.pb(
             config.ExportPreviewResultRequest()
         )
@@ -18399,6 +18548,7 @@ def test_export_preview_result_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.ExportPreviewResultResponse()
+        post_with_metadata.return_value = config.ExportPreviewResultResponse(), metadata
 
         client.export_preview_result(
             request,
@@ -18410,6 +18560,7 @@ def test_export_preview_result_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_terraform_versions_rest_bad_request(
@@ -18494,10 +18645,13 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_terraform_versions"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_list_terraform_versions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_terraform_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.ListTerraformVersionsRequest.pb(
             config.ListTerraformVersionsRequest()
         )
@@ -18523,6 +18677,10 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.ListTerraformVersionsResponse()
+        post_with_metadata.return_value = (
+            config.ListTerraformVersionsResponse(),
+            metadata,
+        )
 
         client.list_terraform_versions(
             request,
@@ -18534,6 +18692,7 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_terraform_version_rest_bad_request(
@@ -18622,10 +18781,13 @@ def test_get_terraform_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_terraform_version"
     ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_get_terraform_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_terraform_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = config.GetTerraformVersionRequest.pb(
             config.GetTerraformVersionRequest()
         )
@@ -18649,6 +18811,7 @@ def test_get_terraform_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.TerraformVersion()
+        post_with_metadata.return_value = config.TerraformVersion(), metadata
 
         client.get_terraform_version(
             request,
@@ -18660,6 +18823,7 @@ def test_get_terraform_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

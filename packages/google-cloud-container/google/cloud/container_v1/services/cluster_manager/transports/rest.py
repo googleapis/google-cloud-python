@@ -373,11 +373,37 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.CheckAutopilotCompatibilityResponse:
         """Post-rpc interceptor for check_autopilot_compatibility
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_check_autopilot_compatibility_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_check_autopilot_compatibility` interceptor runs
+        before the `post_check_autopilot_compatibility_with_metadata` interceptor.
         """
         return response
+
+    def post_check_autopilot_compatibility_with_metadata(
+        self,
+        response: cluster_service.CheckAutopilotCompatibilityResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.CheckAutopilotCompatibilityResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for check_autopilot_compatibility
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_check_autopilot_compatibility_with_metadata`
+        interceptor in new development instead of the `post_check_autopilot_compatibility` interceptor.
+        When both interceptors are used, this `post_check_autopilot_compatibility_with_metadata` interceptor runs after the
+        `post_check_autopilot_compatibility` interceptor. The (possibly modified) response returned by
+        `post_check_autopilot_compatibility` will be passed to
+        `post_check_autopilot_compatibility_with_metadata`.
+        """
+        return response, metadata
 
     def pre_complete_ip_rotation(
         self,
@@ -399,11 +425,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for complete_ip_rotation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_complete_ip_rotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_complete_ip_rotation` interceptor runs
+        before the `post_complete_ip_rotation_with_metadata` interceptor.
         """
         return response
+
+    def post_complete_ip_rotation_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for complete_ip_rotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_complete_ip_rotation_with_metadata`
+        interceptor in new development instead of the `post_complete_ip_rotation` interceptor.
+        When both interceptors are used, this `post_complete_ip_rotation_with_metadata` interceptor runs after the
+        `post_complete_ip_rotation` interceptor. The (possibly modified) response returned by
+        `post_complete_ip_rotation` will be passed to
+        `post_complete_ip_rotation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_complete_node_pool_upgrade(
         self,
@@ -439,11 +488,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for create_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cluster` interceptor runs
+        before the `post_create_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cluster_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_cluster` interceptor.
+        When both interceptors are used, this `post_create_cluster_with_metadata` interceptor runs after the
+        `post_create_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_cluster` will be passed to
+        `post_create_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_node_pool(
         self,
@@ -464,11 +536,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for create_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_node_pool` interceptor runs
+        before the `post_create_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_create_node_pool_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_node_pool_with_metadata`
+        interceptor in new development instead of the `post_create_node_pool` interceptor.
+        When both interceptors are used, this `post_create_node_pool_with_metadata` interceptor runs after the
+        `post_create_node_pool` interceptor. The (possibly modified) response returned by
+        `post_create_node_pool` will be passed to
+        `post_create_node_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cluster(
         self,
@@ -489,11 +584,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for delete_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cluster` interceptor runs
+        before the `post_delete_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cluster_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_cluster` interceptor.
+        When both interceptors are used, this `post_delete_cluster_with_metadata` interceptor runs after the
+        `post_delete_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_cluster` will be passed to
+        `post_delete_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_node_pool(
         self,
@@ -514,11 +632,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for delete_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_node_pool` interceptor runs
+        before the `post_delete_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_node_pool_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_node_pool_with_metadata`
+        interceptor in new development instead of the `post_delete_node_pool` interceptor.
+        When both interceptors are used, this `post_delete_node_pool_with_metadata` interceptor runs after the
+        `post_delete_node_pool` interceptor. The (possibly modified) response returned by
+        `post_delete_node_pool` will be passed to
+        `post_delete_node_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cluster(
         self,
@@ -539,11 +680,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Cluster:
         """Post-rpc interceptor for get_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cluster` interceptor runs
+        before the `post_get_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cluster_with_metadata(
+        self,
+        response: cluster_service.Cluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_cluster` interceptor.
+        When both interceptors are used, this `post_get_cluster_with_metadata` interceptor runs after the
+        `post_get_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_cluster` will be passed to
+        `post_get_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_json_web_keys(
         self,
@@ -564,11 +728,36 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.GetJSONWebKeysResponse:
         """Post-rpc interceptor for get_json_web_keys
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_json_web_keys_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_json_web_keys` interceptor runs
+        before the `post_get_json_web_keys_with_metadata` interceptor.
         """
         return response
+
+    def post_get_json_web_keys_with_metadata(
+        self,
+        response: cluster_service.GetJSONWebKeysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.GetJSONWebKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_json_web_keys
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_json_web_keys_with_metadata`
+        interceptor in new development instead of the `post_get_json_web_keys` interceptor.
+        When both interceptors are used, this `post_get_json_web_keys_with_metadata` interceptor runs after the
+        `post_get_json_web_keys` interceptor. The (possibly modified) response returned by
+        `post_get_json_web_keys` will be passed to
+        `post_get_json_web_keys_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_node_pool(
         self,
@@ -589,11 +778,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.NodePool:
         """Post-rpc interceptor for get_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_node_pool` interceptor runs
+        before the `post_get_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_get_node_pool_with_metadata(
+        self,
+        response: cluster_service.NodePool,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.NodePool, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_node_pool_with_metadata`
+        interceptor in new development instead of the `post_get_node_pool` interceptor.
+        When both interceptors are used, this `post_get_node_pool_with_metadata` interceptor runs after the
+        `post_get_node_pool` interceptor. The (possibly modified) response returned by
+        `post_get_node_pool` will be passed to
+        `post_get_node_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -614,11 +826,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for get_operation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_operation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_operation` interceptor runs
+        before the `post_get_operation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_operation_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_operation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_operation_with_metadata`
+        interceptor in new development instead of the `post_get_operation` interceptor.
+        When both interceptors are used, this `post_get_operation_with_metadata` interceptor runs after the
+        `post_get_operation` interceptor. The (possibly modified) response returned by
+        `post_get_operation` will be passed to
+        `post_get_operation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_server_config(
         self,
@@ -639,11 +874,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.ServerConfig:
         """Post-rpc interceptor for get_server_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_server_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_server_config` interceptor runs
+        before the `post_get_server_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_server_config_with_metadata(
+        self,
+        response: cluster_service.ServerConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.ServerConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_server_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_server_config_with_metadata`
+        interceptor in new development instead of the `post_get_server_config` interceptor.
+        When both interceptors are used, this `post_get_server_config_with_metadata` interceptor runs after the
+        `post_get_server_config` interceptor. The (possibly modified) response returned by
+        `post_get_server_config` will be passed to
+        `post_get_server_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clusters(
         self,
@@ -664,11 +922,36 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clusters` interceptor runs
+        before the `post_list_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clusters_with_metadata(
+        self,
+        response: cluster_service.ListClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_clusters` interceptor.
+        When both interceptors are used, this `post_list_clusters_with_metadata` interceptor runs after the
+        `post_list_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_clusters` will be passed to
+        `post_list_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_node_pools(
         self,
@@ -689,11 +972,36 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.ListNodePoolsResponse:
         """Post-rpc interceptor for list_node_pools
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_node_pools_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_node_pools` interceptor runs
+        before the `post_list_node_pools_with_metadata` interceptor.
         """
         return response
+
+    def post_list_node_pools_with_metadata(
+        self,
+        response: cluster_service.ListNodePoolsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListNodePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_node_pools
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_node_pools_with_metadata`
+        interceptor in new development instead of the `post_list_node_pools` interceptor.
+        When both interceptors are used, this `post_list_node_pools_with_metadata` interceptor runs after the
+        `post_list_node_pools` interceptor. The (possibly modified) response returned by
+        `post_list_node_pools` will be passed to
+        `post_list_node_pools_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_operations(
         self,
@@ -714,11 +1022,36 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_operations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_operations` interceptor runs
+        before the `post_list_operations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_operations_with_metadata(
+        self,
+        response: cluster_service.ListOperationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListOperationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_operations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_operations_with_metadata`
+        interceptor in new development instead of the `post_list_operations` interceptor.
+        When both interceptors are used, this `post_list_operations_with_metadata` interceptor runs after the
+        `post_list_operations` interceptor. The (possibly modified) response returned by
+        `post_list_operations` will be passed to
+        `post_list_operations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_usable_subnetworks(
         self,
@@ -740,11 +1073,37 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.ListUsableSubnetworksResponse:
         """Post-rpc interceptor for list_usable_subnetworks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_usable_subnetworks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_usable_subnetworks` interceptor runs
+        before the `post_list_usable_subnetworks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_usable_subnetworks_with_metadata(
+        self,
+        response: cluster_service.ListUsableSubnetworksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ListUsableSubnetworksResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_usable_subnetworks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_usable_subnetworks_with_metadata`
+        interceptor in new development instead of the `post_list_usable_subnetworks` interceptor.
+        When both interceptors are used, this `post_list_usable_subnetworks_with_metadata` interceptor runs after the
+        `post_list_usable_subnetworks` interceptor. The (possibly modified) response returned by
+        `post_list_usable_subnetworks` will be passed to
+        `post_list_usable_subnetworks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rollback_node_pool_upgrade(
         self,
@@ -766,11 +1125,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for rollback_node_pool_upgrade
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rollback_node_pool_upgrade_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rollback_node_pool_upgrade` interceptor runs
+        before the `post_rollback_node_pool_upgrade_with_metadata` interceptor.
         """
         return response
+
+    def post_rollback_node_pool_upgrade_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rollback_node_pool_upgrade
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_rollback_node_pool_upgrade_with_metadata`
+        interceptor in new development instead of the `post_rollback_node_pool_upgrade` interceptor.
+        When both interceptors are used, this `post_rollback_node_pool_upgrade_with_metadata` interceptor runs after the
+        `post_rollback_node_pool_upgrade` interceptor. The (possibly modified) response returned by
+        `post_rollback_node_pool_upgrade` will be passed to
+        `post_rollback_node_pool_upgrade_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_addons_config(
         self,
@@ -791,11 +1173,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_addons_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_addons_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_addons_config` interceptor runs
+        before the `post_set_addons_config_with_metadata` interceptor.
         """
         return response
+
+    def post_set_addons_config_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_addons_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_addons_config_with_metadata`
+        interceptor in new development instead of the `post_set_addons_config` interceptor.
+        When both interceptors are used, this `post_set_addons_config_with_metadata` interceptor runs after the
+        `post_set_addons_config` interceptor. The (possibly modified) response returned by
+        `post_set_addons_config` will be passed to
+        `post_set_addons_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_labels(
         self,
@@ -816,11 +1221,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_labels` interceptor runs
+        before the `post_set_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_set_labels_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_labels_with_metadata`
+        interceptor in new development instead of the `post_set_labels` interceptor.
+        When both interceptors are used, this `post_set_labels_with_metadata` interceptor runs after the
+        `post_set_labels` interceptor. The (possibly modified) response returned by
+        `post_set_labels` will be passed to
+        `post_set_labels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_legacy_abac(
         self,
@@ -841,11 +1269,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_legacy_abac
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_legacy_abac_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_legacy_abac` interceptor runs
+        before the `post_set_legacy_abac_with_metadata` interceptor.
         """
         return response
+
+    def post_set_legacy_abac_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_legacy_abac
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_legacy_abac_with_metadata`
+        interceptor in new development instead of the `post_set_legacy_abac` interceptor.
+        When both interceptors are used, this `post_set_legacy_abac_with_metadata` interceptor runs after the
+        `post_set_legacy_abac` interceptor. The (possibly modified) response returned by
+        `post_set_legacy_abac` will be passed to
+        `post_set_legacy_abac_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_locations(
         self,
@@ -866,11 +1317,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_locations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_locations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_locations` interceptor runs
+        before the `post_set_locations_with_metadata` interceptor.
         """
         return response
+
+    def post_set_locations_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_locations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_locations_with_metadata`
+        interceptor in new development instead of the `post_set_locations` interceptor.
+        When both interceptors are used, this `post_set_locations_with_metadata` interceptor runs after the
+        `post_set_locations` interceptor. The (possibly modified) response returned by
+        `post_set_locations` will be passed to
+        `post_set_locations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_logging_service(
         self,
@@ -892,11 +1366,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_logging_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_logging_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_logging_service` interceptor runs
+        before the `post_set_logging_service_with_metadata` interceptor.
         """
         return response
+
+    def post_set_logging_service_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_logging_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_logging_service_with_metadata`
+        interceptor in new development instead of the `post_set_logging_service` interceptor.
+        When both interceptors are used, this `post_set_logging_service_with_metadata` interceptor runs after the
+        `post_set_logging_service` interceptor. The (possibly modified) response returned by
+        `post_set_logging_service` will be passed to
+        `post_set_logging_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_maintenance_policy(
         self,
@@ -918,11 +1415,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_maintenance_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_maintenance_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_maintenance_policy` interceptor runs
+        before the `post_set_maintenance_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_maintenance_policy_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_maintenance_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_maintenance_policy_with_metadata`
+        interceptor in new development instead of the `post_set_maintenance_policy` interceptor.
+        When both interceptors are used, this `post_set_maintenance_policy_with_metadata` interceptor runs after the
+        `post_set_maintenance_policy` interceptor. The (possibly modified) response returned by
+        `post_set_maintenance_policy` will be passed to
+        `post_set_maintenance_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_master_auth(
         self,
@@ -943,11 +1463,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_master_auth
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_master_auth_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_master_auth` interceptor runs
+        before the `post_set_master_auth_with_metadata` interceptor.
         """
         return response
+
+    def post_set_master_auth_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_master_auth
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_master_auth_with_metadata`
+        interceptor in new development instead of the `post_set_master_auth` interceptor.
+        When both interceptors are used, this `post_set_master_auth_with_metadata` interceptor runs after the
+        `post_set_master_auth` interceptor. The (possibly modified) response returned by
+        `post_set_master_auth` will be passed to
+        `post_set_master_auth_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_monitoring_service(
         self,
@@ -969,11 +1512,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_monitoring_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_monitoring_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_monitoring_service` interceptor runs
+        before the `post_set_monitoring_service_with_metadata` interceptor.
         """
         return response
+
+    def post_set_monitoring_service_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_monitoring_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_monitoring_service_with_metadata`
+        interceptor in new development instead of the `post_set_monitoring_service` interceptor.
+        When both interceptors are used, this `post_set_monitoring_service_with_metadata` interceptor runs after the
+        `post_set_monitoring_service` interceptor. The (possibly modified) response returned by
+        `post_set_monitoring_service` will be passed to
+        `post_set_monitoring_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_network_policy(
         self,
@@ -994,11 +1560,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_network_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_network_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_network_policy` interceptor runs
+        before the `post_set_network_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_set_network_policy_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_network_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_network_policy_with_metadata`
+        interceptor in new development instead of the `post_set_network_policy` interceptor.
+        When both interceptors are used, this `post_set_network_policy_with_metadata` interceptor runs after the
+        `post_set_network_policy` interceptor. The (possibly modified) response returned by
+        `post_set_network_policy` will be passed to
+        `post_set_network_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_node_pool_autoscaling(
         self,
@@ -1020,11 +1609,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_node_pool_autoscaling
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_node_pool_autoscaling_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_node_pool_autoscaling` interceptor runs
+        before the `post_set_node_pool_autoscaling_with_metadata` interceptor.
         """
         return response
+
+    def post_set_node_pool_autoscaling_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_node_pool_autoscaling
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_node_pool_autoscaling_with_metadata`
+        interceptor in new development instead of the `post_set_node_pool_autoscaling` interceptor.
+        When both interceptors are used, this `post_set_node_pool_autoscaling_with_metadata` interceptor runs after the
+        `post_set_node_pool_autoscaling` interceptor. The (possibly modified) response returned by
+        `post_set_node_pool_autoscaling` will be passed to
+        `post_set_node_pool_autoscaling_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_node_pool_management(
         self,
@@ -1046,11 +1658,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_node_pool_management
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_node_pool_management_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_node_pool_management` interceptor runs
+        before the `post_set_node_pool_management_with_metadata` interceptor.
         """
         return response
+
+    def post_set_node_pool_management_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_node_pool_management
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_node_pool_management_with_metadata`
+        interceptor in new development instead of the `post_set_node_pool_management` interceptor.
+        When both interceptors are used, this `post_set_node_pool_management_with_metadata` interceptor runs after the
+        `post_set_node_pool_management` interceptor. The (possibly modified) response returned by
+        `post_set_node_pool_management` will be passed to
+        `post_set_node_pool_management_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_node_pool_size(
         self,
@@ -1071,11 +1706,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for set_node_pool_size
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_node_pool_size_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_node_pool_size` interceptor runs
+        before the `post_set_node_pool_size_with_metadata` interceptor.
         """
         return response
+
+    def post_set_node_pool_size_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_node_pool_size
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_node_pool_size_with_metadata`
+        interceptor in new development instead of the `post_set_node_pool_size` interceptor.
+        When both interceptors are used, this `post_set_node_pool_size_with_metadata` interceptor runs after the
+        `post_set_node_pool_size` interceptor. The (possibly modified) response returned by
+        `post_set_node_pool_size` will be passed to
+        `post_set_node_pool_size_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_ip_rotation(
         self,
@@ -1096,11 +1754,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for start_ip_rotation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_ip_rotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_ip_rotation` interceptor runs
+        before the `post_start_ip_rotation_with_metadata` interceptor.
         """
         return response
+
+    def post_start_ip_rotation_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_ip_rotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_start_ip_rotation_with_metadata`
+        interceptor in new development instead of the `post_start_ip_rotation` interceptor.
+        When both interceptors are used, this `post_start_ip_rotation_with_metadata` interceptor runs after the
+        `post_start_ip_rotation` interceptor. The (possibly modified) response returned by
+        `post_start_ip_rotation` will be passed to
+        `post_start_ip_rotation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_cluster(
         self,
@@ -1121,11 +1802,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for update_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_cluster` interceptor runs
+        before the `post_update_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_update_cluster_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_cluster_with_metadata`
+        interceptor in new development instead of the `post_update_cluster` interceptor.
+        When both interceptors are used, this `post_update_cluster_with_metadata` interceptor runs after the
+        `post_update_cluster` interceptor. The (possibly modified) response returned by
+        `post_update_cluster` will be passed to
+        `post_update_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_master(
         self,
@@ -1146,11 +1850,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for update_master
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_master_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_master` interceptor runs
+        before the `post_update_master_with_metadata` interceptor.
         """
         return response
+
+    def post_update_master_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_master
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_master_with_metadata`
+        interceptor in new development instead of the `post_update_master` interceptor.
+        When both interceptors are used, this `post_update_master_with_metadata` interceptor runs after the
+        `post_update_master` interceptor. The (possibly modified) response returned by
+        `post_update_master` will be passed to
+        `post_update_master_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_node_pool(
         self,
@@ -1171,11 +1898,34 @@ class ClusterManagerRestInterceptor:
     ) -> cluster_service.Operation:
         """Post-rpc interceptor for update_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClusterManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_node_pool` interceptor runs
+        before the `post_update_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_update_node_pool_with_metadata(
+        self,
+        response: cluster_service.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cluster_service.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_node_pool_with_metadata`
+        interceptor in new development instead of the `post_update_node_pool` interceptor.
+        When both interceptors are used, this `post_update_node_pool_with_metadata` interceptor runs after the
+        `post_update_node_pool` interceptor. The (possibly modified) response returned by
+        `post_update_node_pool` will be passed to
+        `post_update_node_pool_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -1506,6 +2256,13 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_check_autopilot_compatibility(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_check_autopilot_compatibility_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1663,6 +2420,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_complete_ip_rotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_complete_ip_rotation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1934,6 +2695,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2087,6 +2852,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2232,6 +3001,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2379,6 +3152,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2522,6 +3299,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2671,6 +3452,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_json_web_keys(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_json_web_keys_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2824,6 +3609,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2969,6 +3758,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_operation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_operation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3114,6 +3907,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_server_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_server_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3256,6 +4053,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3401,6 +4202,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_node_pools(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_node_pools_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3546,6 +4351,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_operations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_operations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3696,6 +4505,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_usable_subnetworks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_usable_subnetworks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3858,6 +4671,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rollback_node_pool_upgrade(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rollback_node_pool_upgrade_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4011,6 +4828,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_addons_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_addons_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4171,6 +4992,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4323,6 +5148,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_legacy_abac(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_legacy_abac_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4474,6 +5303,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_locations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_locations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4627,6 +5460,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_logging_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_logging_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4781,6 +5618,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_maintenance_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_maintenance_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4932,6 +5773,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_master_auth(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_master_auth_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5086,6 +5931,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_monitoring_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_monitoring_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5240,6 +6089,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_network_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_network_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5396,6 +6249,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_node_pool_autoscaling(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_node_pool_autoscaling_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5551,6 +6408,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_node_pool_management(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_node_pool_management_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5704,6 +6565,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_node_pool_size(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_node_pool_size_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5859,6 +6724,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_ip_rotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_ip_rotation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6010,6 +6879,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6161,6 +7034,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_master(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_master_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6314,6 +7191,10 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

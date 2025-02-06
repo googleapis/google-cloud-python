@@ -132,11 +132,34 @@ class RuleSetServiceRestInterceptor:
     ) -> rule_engine.RuleSet:
         """Post-rpc interceptor for create_rule_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_rule_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RuleSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_rule_set` interceptor runs
+        before the `post_create_rule_set_with_metadata` interceptor.
         """
         return response
+
+    def post_create_rule_set_with_metadata(
+        self,
+        response: rule_engine.RuleSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[rule_engine.RuleSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_rule_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RuleSetService server but before it is returned to user code.
+
+        We recommend only using this `post_create_rule_set_with_metadata`
+        interceptor in new development instead of the `post_create_rule_set` interceptor.
+        When both interceptors are used, this `post_create_rule_set_with_metadata` interceptor runs after the
+        `post_create_rule_set` interceptor. The (possibly modified) response returned by
+        `post_create_rule_set` will be passed to
+        `post_create_rule_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_rule_set(
         self,
@@ -171,11 +194,34 @@ class RuleSetServiceRestInterceptor:
     def post_get_rule_set(self, response: rule_engine.RuleSet) -> rule_engine.RuleSet:
         """Post-rpc interceptor for get_rule_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_rule_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RuleSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_rule_set` interceptor runs
+        before the `post_get_rule_set_with_metadata` interceptor.
         """
         return response
+
+    def post_get_rule_set_with_metadata(
+        self,
+        response: rule_engine.RuleSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[rule_engine.RuleSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_rule_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RuleSetService server but before it is returned to user code.
+
+        We recommend only using this `post_get_rule_set_with_metadata`
+        interceptor in new development instead of the `post_get_rule_set` interceptor.
+        When both interceptors are used, this `post_get_rule_set_with_metadata` interceptor runs after the
+        `post_get_rule_set` interceptor. The (possibly modified) response returned by
+        `post_get_rule_set` will be passed to
+        `post_get_rule_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_rule_sets(
         self,
@@ -197,11 +243,37 @@ class RuleSetServiceRestInterceptor:
     ) -> ruleset_service_request.ListRuleSetsResponse:
         """Post-rpc interceptor for list_rule_sets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_rule_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RuleSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_rule_sets` interceptor runs
+        before the `post_list_rule_sets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_rule_sets_with_metadata(
+        self,
+        response: ruleset_service_request.ListRuleSetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ruleset_service_request.ListRuleSetsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_rule_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RuleSetService server but before it is returned to user code.
+
+        We recommend only using this `post_list_rule_sets_with_metadata`
+        interceptor in new development instead of the `post_list_rule_sets` interceptor.
+        When both interceptors are used, this `post_list_rule_sets_with_metadata` interceptor runs after the
+        `post_list_rule_sets` interceptor. The (possibly modified) response returned by
+        `post_list_rule_sets` will be passed to
+        `post_list_rule_sets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_rule_set(
         self,
@@ -223,11 +295,34 @@ class RuleSetServiceRestInterceptor:
     ) -> rule_engine.RuleSet:
         """Post-rpc interceptor for update_rule_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_rule_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the RuleSetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_rule_set` interceptor runs
+        before the `post_update_rule_set_with_metadata` interceptor.
         """
         return response
+
+    def post_update_rule_set_with_metadata(
+        self,
+        response: rule_engine.RuleSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[rule_engine.RuleSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_rule_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the RuleSetService server but before it is returned to user code.
+
+        We recommend only using this `post_update_rule_set_with_metadata`
+        interceptor in new development instead of the `post_update_rule_set` interceptor.
+        When both interceptors are used, this `post_update_rule_set_with_metadata` interceptor runs after the
+        `post_update_rule_set` interceptor. The (possibly modified) response returned by
+        `post_update_rule_set` will be passed to
+        `post_update_rule_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -467,6 +562,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_rule_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_rule_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -719,6 +818,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_rule_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_rule_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -862,6 +965,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_rule_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_rule_sets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1013,6 +1120,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_rule_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_rule_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

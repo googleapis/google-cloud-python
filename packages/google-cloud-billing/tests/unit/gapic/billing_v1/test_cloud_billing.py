@@ -65,6 +65,13 @@ from google.cloud.billing_v1.services.cloud_billing import (
 )
 from google.cloud.billing_v1.types import cloud_billing
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -306,6 +313,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CloudBillingClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CloudBillingClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CloudBillingClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -8005,10 +8055,13 @@ def test_get_billing_account_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_get_billing_account"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor, "post_get_billing_account_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_get_billing_account"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.GetBillingAccountRequest.pb(
             cloud_billing.GetBillingAccountRequest()
         )
@@ -8034,6 +8087,7 @@ def test_get_billing_account_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.BillingAccount()
+        post_with_metadata.return_value = cloud_billing.BillingAccount(), metadata
 
         client.get_billing_account(
             request,
@@ -8045,6 +8099,7 @@ def test_get_billing_account_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_billing_accounts_rest_bad_request(
@@ -8129,10 +8184,14 @@ def test_list_billing_accounts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_list_billing_accounts"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_list_billing_accounts_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_list_billing_accounts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.ListBillingAccountsRequest.pb(
             cloud_billing.ListBillingAccountsRequest()
         )
@@ -8158,6 +8217,10 @@ def test_list_billing_accounts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.ListBillingAccountsResponse()
+        post_with_metadata.return_value = (
+            cloud_billing.ListBillingAccountsResponse(),
+            metadata,
+        )
 
         client.list_billing_accounts(
             request,
@@ -8169,6 +8232,7 @@ def test_list_billing_accounts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_billing_account_rest_bad_request(
@@ -8338,10 +8402,14 @@ def test_update_billing_account_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_update_billing_account"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_update_billing_account_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_update_billing_account"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.UpdateBillingAccountRequest.pb(
             cloud_billing.UpdateBillingAccountRequest()
         )
@@ -8367,6 +8435,7 @@ def test_update_billing_account_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.BillingAccount()
+        post_with_metadata.return_value = cloud_billing.BillingAccount(), metadata
 
         client.update_billing_account(
             request,
@@ -8378,6 +8447,7 @@ def test_update_billing_account_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_billing_account_rest_bad_request(
@@ -8549,10 +8619,14 @@ def test_create_billing_account_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_create_billing_account"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_create_billing_account_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_create_billing_account"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.CreateBillingAccountRequest.pb(
             cloud_billing.CreateBillingAccountRequest()
         )
@@ -8578,6 +8652,7 @@ def test_create_billing_account_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.BillingAccount()
+        post_with_metadata.return_value = cloud_billing.BillingAccount(), metadata
 
         client.create_billing_account(
             request,
@@ -8589,6 +8664,7 @@ def test_create_billing_account_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_project_billing_info_rest_bad_request(
@@ -8673,10 +8749,14 @@ def test_list_project_billing_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_list_project_billing_info"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_list_project_billing_info_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_list_project_billing_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.ListProjectBillingInfoRequest.pb(
             cloud_billing.ListProjectBillingInfoRequest()
         )
@@ -8702,6 +8782,10 @@ def test_list_project_billing_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.ListProjectBillingInfoResponse()
+        post_with_metadata.return_value = (
+            cloud_billing.ListProjectBillingInfoResponse(),
+            metadata,
+        )
 
         client.list_project_billing_info(
             request,
@@ -8713,6 +8797,7 @@ def test_list_project_billing_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_project_billing_info_rest_bad_request(
@@ -8803,10 +8888,14 @@ def test_get_project_billing_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_get_project_billing_info"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_get_project_billing_info_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_get_project_billing_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.GetProjectBillingInfoRequest.pb(
             cloud_billing.GetProjectBillingInfoRequest()
         )
@@ -8832,6 +8921,7 @@ def test_get_project_billing_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.ProjectBillingInfo()
+        post_with_metadata.return_value = cloud_billing.ProjectBillingInfo(), metadata
 
         client.get_project_billing_info(
             request,
@@ -8843,6 +8933,7 @@ def test_get_project_billing_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_project_billing_info_rest_bad_request(
@@ -9010,10 +9101,14 @@ def test_update_project_billing_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_update_project_billing_info"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_update_project_billing_info_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_update_project_billing_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.UpdateProjectBillingInfoRequest.pb(
             cloud_billing.UpdateProjectBillingInfoRequest()
         )
@@ -9039,6 +9134,7 @@ def test_update_project_billing_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.ProjectBillingInfo()
+        post_with_metadata.return_value = cloud_billing.ProjectBillingInfo(), metadata
 
         client.update_project_billing_info(
             request,
@@ -9050,6 +9146,7 @@ def test_update_project_billing_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -9133,10 +9230,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -9158,6 +9258,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -9169,6 +9270,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -9252,10 +9354,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -9277,6 +9382,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -9288,6 +9394,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -9369,10 +9476,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_test_iam_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -9396,6 +9507,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -9407,6 +9522,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_move_billing_account_rest_bad_request(
@@ -9501,10 +9617,14 @@ def test_move_billing_account_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBillingRestInterceptor, "post_move_billing_account"
     ) as post, mock.patch.object(
+        transports.CloudBillingRestInterceptor,
+        "post_move_billing_account_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBillingRestInterceptor, "pre_move_billing_account"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_billing.MoveBillingAccountRequest.pb(
             cloud_billing.MoveBillingAccountRequest()
         )
@@ -9530,6 +9650,7 @@ def test_move_billing_account_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_billing.BillingAccount()
+        post_with_metadata.return_value = cloud_billing.BillingAccount(), metadata
 
         client.move_billing_account(
             request,
@@ -9541,6 +9662,7 @@ def test_move_billing_account_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():
