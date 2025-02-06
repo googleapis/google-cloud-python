@@ -237,11 +237,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_node
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_node_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_node` interceptor runs
+        before the `post_create_node_with_metadata` interceptor.
         """
         return response
+
+    def post_create_node_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_node
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_create_node_with_metadata`
+        interceptor in new development instead of the `post_create_node` interceptor.
+        When both interceptors are used, this `post_create_node_with_metadata` interceptor runs after the
+        `post_create_node` interceptor. The (possibly modified) response returned by
+        `post_create_node` will be passed to
+        `post_create_node_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_queued_resource(
         self,
@@ -262,11 +285,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_queued_resource
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_queued_resource_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_queued_resource` interceptor runs
+        before the `post_create_queued_resource_with_metadata` interceptor.
         """
         return response
+
+    def post_create_queued_resource_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_queued_resource
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_create_queued_resource_with_metadata`
+        interceptor in new development instead of the `post_create_queued_resource` interceptor.
+        When both interceptors are used, this `post_create_queued_resource_with_metadata` interceptor runs after the
+        `post_create_queued_resource` interceptor. The (possibly modified) response returned by
+        `post_create_queued_resource` will be passed to
+        `post_create_queued_resource_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_node(
         self,
@@ -285,11 +331,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_node
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_node_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_node` interceptor runs
+        before the `post_delete_node_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_node_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_node
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_delete_node_with_metadata`
+        interceptor in new development instead of the `post_delete_node` interceptor.
+        When both interceptors are used, this `post_delete_node_with_metadata` interceptor runs after the
+        `post_delete_node` interceptor. The (possibly modified) response returned by
+        `post_delete_node` will be passed to
+        `post_delete_node_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_queued_resource(
         self,
@@ -310,11 +379,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_queued_resource
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_queued_resource_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_queued_resource` interceptor runs
+        before the `post_delete_queued_resource_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_queued_resource_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_queued_resource
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_delete_queued_resource_with_metadata`
+        interceptor in new development instead of the `post_delete_queued_resource` interceptor.
+        When both interceptors are used, this `post_delete_queued_resource_with_metadata` interceptor runs after the
+        `post_delete_queued_resource` interceptor. The (possibly modified) response returned by
+        `post_delete_queued_resource` will be passed to
+        `post_delete_queued_resource_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_service_identity(
         self,
@@ -336,11 +428,37 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.GenerateServiceIdentityResponse:
         """Post-rpc interceptor for generate_service_identity
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_service_identity_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_service_identity` interceptor runs
+        before the `post_generate_service_identity_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_service_identity_with_metadata(
+        self,
+        response: cloud_tpu.GenerateServiceIdentityResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.GenerateServiceIdentityResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_service_identity
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_generate_service_identity_with_metadata`
+        interceptor in new development instead of the `post_generate_service_identity` interceptor.
+        When both interceptors are used, this `post_generate_service_identity_with_metadata` interceptor runs after the
+        `post_generate_service_identity` interceptor. The (possibly modified) response returned by
+        `post_generate_service_identity` will be passed to
+        `post_generate_service_identity_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_accelerator_type(
         self,
@@ -361,11 +479,34 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.AcceleratorType:
         """Post-rpc interceptor for get_accelerator_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_accelerator_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_accelerator_type` interceptor runs
+        before the `post_get_accelerator_type_with_metadata` interceptor.
         """
         return response
+
+    def post_get_accelerator_type_with_metadata(
+        self,
+        response: cloud_tpu.AcceleratorType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_tpu.AcceleratorType, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_accelerator_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_get_accelerator_type_with_metadata`
+        interceptor in new development instead of the `post_get_accelerator_type` interceptor.
+        When both interceptors are used, this `post_get_accelerator_type_with_metadata` interceptor runs after the
+        `post_get_accelerator_type` interceptor. The (possibly modified) response returned by
+        `post_get_accelerator_type` will be passed to
+        `post_get_accelerator_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_guest_attributes(
         self,
@@ -386,11 +527,36 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.GetGuestAttributesResponse:
         """Post-rpc interceptor for get_guest_attributes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_guest_attributes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_guest_attributes` interceptor runs
+        before the `post_get_guest_attributes_with_metadata` interceptor.
         """
         return response
+
+    def post_get_guest_attributes_with_metadata(
+        self,
+        response: cloud_tpu.GetGuestAttributesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.GetGuestAttributesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_guest_attributes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_get_guest_attributes_with_metadata`
+        interceptor in new development instead of the `post_get_guest_attributes` interceptor.
+        When both interceptors are used, this `post_get_guest_attributes_with_metadata` interceptor runs after the
+        `post_get_guest_attributes` interceptor. The (possibly modified) response returned by
+        `post_get_guest_attributes` will be passed to
+        `post_get_guest_attributes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_node(
         self,
@@ -407,11 +573,34 @@ class TpuRestInterceptor:
     def post_get_node(self, response: cloud_tpu.Node) -> cloud_tpu.Node:
         """Post-rpc interceptor for get_node
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_node_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_node` interceptor runs
+        before the `post_get_node_with_metadata` interceptor.
         """
         return response
+
+    def post_get_node_with_metadata(
+        self,
+        response: cloud_tpu.Node,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_tpu.Node, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_node
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_get_node_with_metadata`
+        interceptor in new development instead of the `post_get_node` interceptor.
+        When both interceptors are used, this `post_get_node_with_metadata` interceptor runs after the
+        `post_get_node` interceptor. The (possibly modified) response returned by
+        `post_get_node` will be passed to
+        `post_get_node_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_queued_resource(
         self,
@@ -432,11 +621,34 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.QueuedResource:
         """Post-rpc interceptor for get_queued_resource
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_queued_resource_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_queued_resource` interceptor runs
+        before the `post_get_queued_resource_with_metadata` interceptor.
         """
         return response
+
+    def post_get_queued_resource_with_metadata(
+        self,
+        response: cloud_tpu.QueuedResource,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_tpu.QueuedResource, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_queued_resource
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_get_queued_resource_with_metadata`
+        interceptor in new development instead of the `post_get_queued_resource` interceptor.
+        When both interceptors are used, this `post_get_queued_resource_with_metadata` interceptor runs after the
+        `post_get_queued_resource` interceptor. The (possibly modified) response returned by
+        `post_get_queued_resource` will be passed to
+        `post_get_queued_resource_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_runtime_version(
         self,
@@ -457,11 +669,34 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.RuntimeVersion:
         """Post-rpc interceptor for get_runtime_version
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_runtime_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_runtime_version` interceptor runs
+        before the `post_get_runtime_version_with_metadata` interceptor.
         """
         return response
+
+    def post_get_runtime_version_with_metadata(
+        self,
+        response: cloud_tpu.RuntimeVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_tpu.RuntimeVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_runtime_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_get_runtime_version_with_metadata`
+        interceptor in new development instead of the `post_get_runtime_version` interceptor.
+        When both interceptors are used, this `post_get_runtime_version_with_metadata` interceptor runs after the
+        `post_get_runtime_version` interceptor. The (possibly modified) response returned by
+        `post_get_runtime_version` will be passed to
+        `post_get_runtime_version_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_accelerator_types(
         self,
@@ -482,11 +717,36 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.ListAcceleratorTypesResponse:
         """Post-rpc interceptor for list_accelerator_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_accelerator_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_accelerator_types` interceptor runs
+        before the `post_list_accelerator_types_with_metadata` interceptor.
         """
         return response
+
+    def post_list_accelerator_types_with_metadata(
+        self,
+        response: cloud_tpu.ListAcceleratorTypesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.ListAcceleratorTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_accelerator_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_list_accelerator_types_with_metadata`
+        interceptor in new development instead of the `post_list_accelerator_types` interceptor.
+        When both interceptors are used, this `post_list_accelerator_types_with_metadata` interceptor runs after the
+        `post_list_accelerator_types` interceptor. The (possibly modified) response returned by
+        `post_list_accelerator_types` will be passed to
+        `post_list_accelerator_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_nodes(
         self,
@@ -505,11 +765,34 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.ListNodesResponse:
         """Post-rpc interceptor for list_nodes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_nodes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_nodes` interceptor runs
+        before the `post_list_nodes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_nodes_with_metadata(
+        self,
+        response: cloud_tpu.ListNodesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_tpu.ListNodesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_nodes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_list_nodes_with_metadata`
+        interceptor in new development instead of the `post_list_nodes` interceptor.
+        When both interceptors are used, this `post_list_nodes_with_metadata` interceptor runs after the
+        `post_list_nodes` interceptor. The (possibly modified) response returned by
+        `post_list_nodes` will be passed to
+        `post_list_nodes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_queued_resources(
         self,
@@ -530,11 +813,36 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.ListQueuedResourcesResponse:
         """Post-rpc interceptor for list_queued_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_queued_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_queued_resources` interceptor runs
+        before the `post_list_queued_resources_with_metadata` interceptor.
         """
         return response
+
+    def post_list_queued_resources_with_metadata(
+        self,
+        response: cloud_tpu.ListQueuedResourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.ListQueuedResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_queued_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_list_queued_resources_with_metadata`
+        interceptor in new development instead of the `post_list_queued_resources` interceptor.
+        When both interceptors are used, this `post_list_queued_resources_with_metadata` interceptor runs after the
+        `post_list_queued_resources` interceptor. The (possibly modified) response returned by
+        `post_list_queued_resources` will be passed to
+        `post_list_queued_resources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_runtime_versions(
         self,
@@ -555,11 +863,36 @@ class TpuRestInterceptor:
     ) -> cloud_tpu.ListRuntimeVersionsResponse:
         """Post-rpc interceptor for list_runtime_versions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_runtime_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_runtime_versions` interceptor runs
+        before the `post_list_runtime_versions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_runtime_versions_with_metadata(
+        self,
+        response: cloud_tpu.ListRuntimeVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_tpu.ListRuntimeVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_runtime_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_list_runtime_versions_with_metadata`
+        interceptor in new development instead of the `post_list_runtime_versions` interceptor.
+        When both interceptors are used, this `post_list_runtime_versions_with_metadata` interceptor runs after the
+        `post_list_runtime_versions` interceptor. The (possibly modified) response returned by
+        `post_list_runtime_versions` will be passed to
+        `post_list_runtime_versions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_queued_resource(
         self,
@@ -580,11 +913,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_queued_resource
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_queued_resource_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset_queued_resource` interceptor runs
+        before the `post_reset_queued_resource_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_queued_resource_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset_queued_resource
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_reset_queued_resource_with_metadata`
+        interceptor in new development instead of the `post_reset_queued_resource` interceptor.
+        When both interceptors are used, this `post_reset_queued_resource_with_metadata` interceptor runs after the
+        `post_reset_queued_resource` interceptor. The (possibly modified) response returned by
+        `post_reset_queued_resource` will be passed to
+        `post_reset_queued_resource_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_node(
         self,
@@ -603,11 +959,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_node
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_node_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_node` interceptor runs
+        before the `post_start_node_with_metadata` interceptor.
         """
         return response
+
+    def post_start_node_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_node
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_start_node_with_metadata`
+        interceptor in new development instead of the `post_start_node` interceptor.
+        When both interceptors are used, this `post_start_node_with_metadata` interceptor runs after the
+        `post_start_node` interceptor. The (possibly modified) response returned by
+        `post_start_node` will be passed to
+        `post_start_node_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop_node(
         self,
@@ -626,11 +1005,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_node
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_node_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop_node` interceptor runs
+        before the `post_stop_node_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_node_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop_node
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_stop_node_with_metadata`
+        interceptor in new development instead of the `post_stop_node` interceptor.
+        When both interceptors are used, this `post_stop_node_with_metadata` interceptor runs after the
+        `post_stop_node` interceptor. The (possibly modified) response returned by
+        `post_stop_node` will be passed to
+        `post_stop_node_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_node(
         self,
@@ -649,11 +1051,34 @@ class TpuRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_node
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_node_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Tpu server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_node` interceptor runs
+        before the `post_update_node_with_metadata` interceptor.
         """
         return response
+
+    def post_update_node_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_node
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Tpu server but before it is returned to user code.
+
+        We recommend only using this `post_update_node_with_metadata`
+        interceptor in new development instead of the `post_update_node` interceptor.
+        When both interceptors are used, this `post_update_node_with_metadata` interceptor runs after the
+        `post_update_node` interceptor. The (possibly modified) response returned by
+        `post_update_node` will be passed to
+        `post_update_node_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1066,6 +1491,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_node(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_node_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1222,6 +1651,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_queued_resource(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_queued_resource_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1362,6 +1795,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_node(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_node_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1510,6 +1947,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_queued_resource(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_queued_resource_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1661,6 +2102,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_service_identity(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_service_identity_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1812,6 +2257,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_accelerator_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_accelerator_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1967,6 +2416,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_guest_attributes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_guest_attributes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2107,6 +2560,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_node(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_node_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2256,6 +2713,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_queued_resource(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_queued_resource_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2403,6 +2864,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_runtime_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_runtime_version_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2552,6 +3017,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_accelerator_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_accelerator_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2695,6 +3164,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_nodes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_nodes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2844,6 +3317,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_queued_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_queued_resources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2995,6 +3472,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_runtime_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_runtime_versions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3153,6 +3634,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset_queued_resource(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_queued_resource_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3299,6 +3784,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_node(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_node_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3445,6 +3934,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop_node(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_node_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3591,6 +4084,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_node(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_node_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

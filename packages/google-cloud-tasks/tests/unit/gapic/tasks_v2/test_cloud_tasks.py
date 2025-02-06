@@ -75,6 +75,13 @@ from google.cloud.tasks_v2.types import target
 from google.cloud.tasks_v2.types import task
 from google.cloud.tasks_v2.types import task as gct_task
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -308,6 +315,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CloudTasksClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CloudTasksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CloudTasksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10708,10 +10758,13 @@ def test_list_queues_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_list_queues"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_list_queues_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_list_queues"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.ListQueuesRequest.pb(cloudtasks.ListQueuesRequest())
         transcode.return_value = {
             "method": "post",
@@ -10735,6 +10788,7 @@ def test_list_queues_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudtasks.ListQueuesResponse()
+        post_with_metadata.return_value = cloudtasks.ListQueuesResponse(), metadata
 
         client.list_queues(
             request,
@@ -10746,6 +10800,7 @@ def test_list_queues_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_queue_rest_bad_request(request_type=cloudtasks.GetQueueRequest):
@@ -10830,10 +10885,13 @@ def test_get_queue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_get_queue"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_get_queue_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_get_queue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.GetQueueRequest.pb(cloudtasks.GetQueueRequest())
         transcode.return_value = {
             "method": "post",
@@ -10855,6 +10913,7 @@ def test_get_queue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = queue.Queue()
+        post_with_metadata.return_value = queue.Queue(), metadata
 
         client.get_queue(
             request,
@@ -10866,6 +10925,7 @@ def test_get_queue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_queue_rest_bad_request(request_type=cloudtasks.CreateQueueRequest):
@@ -11041,10 +11101,13 @@ def test_create_queue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_create_queue"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_create_queue_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_create_queue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.CreateQueueRequest.pb(cloudtasks.CreateQueueRequest())
         transcode.return_value = {
             "method": "post",
@@ -11066,6 +11129,7 @@ def test_create_queue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gct_queue.Queue()
+        post_with_metadata.return_value = gct_queue.Queue(), metadata
 
         client.create_queue(
             request,
@@ -11077,6 +11141,7 @@ def test_create_queue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_queue_rest_bad_request(request_type=cloudtasks.UpdateQueueRequest):
@@ -11256,10 +11321,13 @@ def test_update_queue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_update_queue"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_update_queue_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_update_queue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.UpdateQueueRequest.pb(cloudtasks.UpdateQueueRequest())
         transcode.return_value = {
             "method": "post",
@@ -11281,6 +11349,7 @@ def test_update_queue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gct_queue.Queue()
+        post_with_metadata.return_value = gct_queue.Queue(), metadata
 
         client.update_queue(
             request,
@@ -11292,6 +11361,7 @@ def test_update_queue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_queue_rest_bad_request(request_type=cloudtasks.DeleteQueueRequest):
@@ -11481,10 +11551,13 @@ def test_purge_queue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_purge_queue"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_purge_queue_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_purge_queue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.PurgeQueueRequest.pb(cloudtasks.PurgeQueueRequest())
         transcode.return_value = {
             "method": "post",
@@ -11506,6 +11579,7 @@ def test_purge_queue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = queue.Queue()
+        post_with_metadata.return_value = queue.Queue(), metadata
 
         client.purge_queue(
             request,
@@ -11517,6 +11591,7 @@ def test_purge_queue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_pause_queue_rest_bad_request(request_type=cloudtasks.PauseQueueRequest):
@@ -11601,10 +11676,13 @@ def test_pause_queue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_pause_queue"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_pause_queue_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_pause_queue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.PauseQueueRequest.pb(cloudtasks.PauseQueueRequest())
         transcode.return_value = {
             "method": "post",
@@ -11626,6 +11704,7 @@ def test_pause_queue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = queue.Queue()
+        post_with_metadata.return_value = queue.Queue(), metadata
 
         client.pause_queue(
             request,
@@ -11637,6 +11716,7 @@ def test_pause_queue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resume_queue_rest_bad_request(request_type=cloudtasks.ResumeQueueRequest):
@@ -11721,10 +11801,13 @@ def test_resume_queue_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_resume_queue"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_resume_queue_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_resume_queue"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.ResumeQueueRequest.pb(cloudtasks.ResumeQueueRequest())
         transcode.return_value = {
             "method": "post",
@@ -11746,6 +11829,7 @@ def test_resume_queue_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = queue.Queue()
+        post_with_metadata.return_value = queue.Queue(), metadata
 
         client.resume_queue(
             request,
@@ -11757,6 +11841,7 @@ def test_resume_queue_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -11840,10 +11925,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -11865,6 +11953,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -11876,6 +11965,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -11959,10 +12049,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -11984,6 +12077,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -11995,6 +12089,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -12076,10 +12171,13 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_test_iam_permissions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -12103,6 +12201,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -12114,6 +12216,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_tasks_rest_bad_request(request_type=cloudtasks.ListTasksRequest):
@@ -12196,10 +12299,13 @@ def test_list_tasks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_list_tasks"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_list_tasks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_list_tasks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.ListTasksRequest.pb(cloudtasks.ListTasksRequest())
         transcode.return_value = {
             "method": "post",
@@ -12223,6 +12329,7 @@ def test_list_tasks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudtasks.ListTasksResponse()
+        post_with_metadata.return_value = cloudtasks.ListTasksResponse(), metadata
 
         client.list_tasks(
             request,
@@ -12234,6 +12341,7 @@ def test_list_tasks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_task_rest_bad_request(request_type=cloudtasks.GetTaskRequest):
@@ -12326,10 +12434,13 @@ def test_get_task_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_get_task"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_get_task_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_get_task"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.GetTaskRequest.pb(cloudtasks.GetTaskRequest())
         transcode.return_value = {
             "method": "post",
@@ -12351,6 +12462,7 @@ def test_get_task_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = task.Task()
+        post_with_metadata.return_value = task.Task(), metadata
 
         client.get_task(
             request,
@@ -12362,6 +12474,7 @@ def test_get_task_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_task_rest_bad_request(request_type=cloudtasks.CreateTaskRequest):
@@ -12450,10 +12563,13 @@ def test_create_task_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_create_task"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_create_task_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_create_task"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.CreateTaskRequest.pb(cloudtasks.CreateTaskRequest())
         transcode.return_value = {
             "method": "post",
@@ -12475,6 +12591,7 @@ def test_create_task_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gct_task.Task()
+        post_with_metadata.return_value = gct_task.Task(), metadata
 
         client.create_task(
             request,
@@ -12486,6 +12603,7 @@ def test_create_task_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_task_rest_bad_request(request_type=cloudtasks.DeleteTaskRequest):
@@ -12687,10 +12805,13 @@ def test_run_task_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudTasksRestInterceptor, "post_run_task"
     ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_run_task_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudTasksRestInterceptor, "pre_run_task"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudtasks.RunTaskRequest.pb(cloudtasks.RunTaskRequest())
         transcode.return_value = {
             "method": "post",
@@ -12712,6 +12833,7 @@ def test_run_task_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = task.Task()
+        post_with_metadata.return_value = task.Task(), metadata
 
         client.run_task(
             request,
@@ -12723,6 +12845,7 @@ def test_run_task_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

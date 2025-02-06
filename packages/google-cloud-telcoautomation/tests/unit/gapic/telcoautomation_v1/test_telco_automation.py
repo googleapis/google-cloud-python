@@ -74,6 +74,13 @@ from google.cloud.telcoautomation_v1.services.telco_automation import (
 )
 from google.cloud.telcoautomation_v1.types import telcoautomation
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -330,6 +337,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TelcoAutomationClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TelcoAutomationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TelcoAutomationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -25556,10 +25606,14 @@ def test_list_orchestration_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_orchestration_clusters"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_list_orchestration_clusters_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_orchestration_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListOrchestrationClustersRequest.pb(
             telcoautomation.ListOrchestrationClustersRequest()
         )
@@ -25585,6 +25639,10 @@ def test_list_orchestration_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListOrchestrationClustersResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListOrchestrationClustersResponse(),
+            metadata,
+        )
 
         client.list_orchestration_clusters(
             request,
@@ -25596,6 +25654,7 @@ def test_list_orchestration_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_orchestration_cluster_rest_bad_request(
@@ -25688,10 +25747,14 @@ def test_get_orchestration_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_get_orchestration_cluster"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_get_orchestration_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_get_orchestration_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.GetOrchestrationClusterRequest.pb(
             telcoautomation.GetOrchestrationClusterRequest()
         )
@@ -25717,6 +25780,10 @@ def test_get_orchestration_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.OrchestrationCluster()
+        post_with_metadata.return_value = (
+            telcoautomation.OrchestrationCluster(),
+            metadata,
+        )
 
         client.get_orchestration_cluster(
             request,
@@ -25728,6 +25795,7 @@ def test_get_orchestration_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_orchestration_cluster_rest_bad_request(
@@ -25916,10 +25984,14 @@ def test_create_orchestration_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_create_orchestration_cluster"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_create_orchestration_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_create_orchestration_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.CreateOrchestrationClusterRequest.pb(
             telcoautomation.CreateOrchestrationClusterRequest()
         )
@@ -25943,6 +26015,7 @@ def test_create_orchestration_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_orchestration_cluster(
             request,
@@ -25954,6 +26027,7 @@ def test_create_orchestration_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_orchestration_cluster_rest_bad_request(
@@ -26038,10 +26112,14 @@ def test_delete_orchestration_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_delete_orchestration_cluster"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_delete_orchestration_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_delete_orchestration_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.DeleteOrchestrationClusterRequest.pb(
             telcoautomation.DeleteOrchestrationClusterRequest()
         )
@@ -26065,6 +26143,7 @@ def test_delete_orchestration_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_orchestration_cluster(
             request,
@@ -26076,6 +26155,7 @@ def test_delete_orchestration_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_edge_slms_rest_bad_request(
@@ -26162,10 +26242,13 @@ def test_list_edge_slms_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_edge_slms"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_edge_slms_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_edge_slms"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListEdgeSlmsRequest.pb(
             telcoautomation.ListEdgeSlmsRequest()
         )
@@ -26191,6 +26274,10 @@ def test_list_edge_slms_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListEdgeSlmsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListEdgeSlmsResponse(),
+            metadata,
+        )
 
         client.list_edge_slms(
             request,
@@ -26202,6 +26289,7 @@ def test_list_edge_slms_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_edge_slm_rest_bad_request(request_type=telcoautomation.GetEdgeSlmRequest):
@@ -26295,10 +26383,13 @@ def test_get_edge_slm_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_get_edge_slm"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_edge_slm_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_get_edge_slm"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.GetEdgeSlmRequest.pb(
             telcoautomation.GetEdgeSlmRequest()
         )
@@ -26322,6 +26413,7 @@ def test_get_edge_slm_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.EdgeSlm()
+        post_with_metadata.return_value = telcoautomation.EdgeSlm(), metadata
 
         client.get_edge_slm(
             request,
@@ -26333,6 +26425,7 @@ def test_get_edge_slm_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_edge_slm_rest_bad_request(
@@ -26490,10 +26583,13 @@ def test_create_edge_slm_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_create_edge_slm"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_create_edge_slm_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_create_edge_slm"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.CreateEdgeSlmRequest.pb(
             telcoautomation.CreateEdgeSlmRequest()
         )
@@ -26517,6 +26613,7 @@ def test_create_edge_slm_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_edge_slm(
             request,
@@ -26528,6 +26625,7 @@ def test_create_edge_slm_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_edge_slm_rest_bad_request(
@@ -26608,10 +26706,13 @@ def test_delete_edge_slm_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_delete_edge_slm"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_delete_edge_slm_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_delete_edge_slm"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.DeleteEdgeSlmRequest.pb(
             telcoautomation.DeleteEdgeSlmRequest()
         )
@@ -26635,6 +26736,7 @@ def test_delete_edge_slm_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_edge_slm(
             request,
@@ -26646,6 +26748,7 @@ def test_delete_edge_slm_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_blueprint_rest_bad_request(
@@ -26840,10 +26943,13 @@ def test_create_blueprint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_create_blueprint"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_create_blueprint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_create_blueprint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.CreateBlueprintRequest.pb(
             telcoautomation.CreateBlueprintRequest()
         )
@@ -26867,6 +26973,7 @@ def test_create_blueprint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Blueprint()
+        post_with_metadata.return_value = telcoautomation.Blueprint(), metadata
 
         client.create_blueprint(
             request,
@@ -26878,6 +26985,7 @@ def test_create_blueprint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_blueprint_rest_bad_request(
@@ -27076,10 +27184,13 @@ def test_update_blueprint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_update_blueprint"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_update_blueprint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_update_blueprint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.UpdateBlueprintRequest.pb(
             telcoautomation.UpdateBlueprintRequest()
         )
@@ -27103,6 +27214,7 @@ def test_update_blueprint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Blueprint()
+        post_with_metadata.return_value = telcoautomation.Blueprint(), metadata
 
         client.update_blueprint(
             request,
@@ -27114,6 +27226,7 @@ def test_update_blueprint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_blueprint_rest_bad_request(
@@ -27218,10 +27331,13 @@ def test_get_blueprint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_get_blueprint"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_blueprint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_get_blueprint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.GetBlueprintRequest.pb(
             telcoautomation.GetBlueprintRequest()
         )
@@ -27245,6 +27361,7 @@ def test_get_blueprint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Blueprint()
+        post_with_metadata.return_value = telcoautomation.Blueprint(), metadata
 
         client.get_blueprint(
             request,
@@ -27256,6 +27373,7 @@ def test_get_blueprint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_blueprint_rest_bad_request(
@@ -27457,10 +27575,13 @@ def test_list_blueprints_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_blueprints"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_blueprints_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_blueprints"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListBlueprintsRequest.pb(
             telcoautomation.ListBlueprintsRequest()
         )
@@ -27486,6 +27607,10 @@ def test_list_blueprints_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListBlueprintsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListBlueprintsResponse(),
+            metadata,
+        )
 
         client.list_blueprints(
             request,
@@ -27497,6 +27622,7 @@ def test_list_blueprints_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_approve_blueprint_rest_bad_request(
@@ -27601,10 +27727,14 @@ def test_approve_blueprint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_approve_blueprint"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_approve_blueprint_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_approve_blueprint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ApproveBlueprintRequest.pb(
             telcoautomation.ApproveBlueprintRequest()
         )
@@ -27628,6 +27758,7 @@ def test_approve_blueprint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Blueprint()
+        post_with_metadata.return_value = telcoautomation.Blueprint(), metadata
 
         client.approve_blueprint(
             request,
@@ -27639,6 +27770,7 @@ def test_approve_blueprint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_propose_blueprint_rest_bad_request(
@@ -27743,10 +27875,14 @@ def test_propose_blueprint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_propose_blueprint"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_propose_blueprint_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_propose_blueprint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ProposeBlueprintRequest.pb(
             telcoautomation.ProposeBlueprintRequest()
         )
@@ -27770,6 +27906,7 @@ def test_propose_blueprint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Blueprint()
+        post_with_metadata.return_value = telcoautomation.Blueprint(), metadata
 
         client.propose_blueprint(
             request,
@@ -27781,6 +27918,7 @@ def test_propose_blueprint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reject_blueprint_rest_bad_request(
@@ -27885,10 +28023,13 @@ def test_reject_blueprint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_reject_blueprint"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_reject_blueprint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_reject_blueprint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.RejectBlueprintRequest.pb(
             telcoautomation.RejectBlueprintRequest()
         )
@@ -27912,6 +28053,7 @@ def test_reject_blueprint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Blueprint()
+        post_with_metadata.return_value = telcoautomation.Blueprint(), metadata
 
         client.reject_blueprint(
             request,
@@ -27923,6 +28065,7 @@ def test_reject_blueprint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_blueprint_revisions_rest_bad_request(
@@ -28011,10 +28154,14 @@ def test_list_blueprint_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_blueprint_revisions"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_list_blueprint_revisions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_blueprint_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListBlueprintRevisionsRequest.pb(
             telcoautomation.ListBlueprintRevisionsRequest()
         )
@@ -28040,6 +28187,10 @@ def test_list_blueprint_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListBlueprintRevisionsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListBlueprintRevisionsResponse(),
+            metadata,
+        )
 
         client.list_blueprint_revisions(
             request,
@@ -28051,6 +28202,7 @@ def test_list_blueprint_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_blueprint_revisions_rest_bad_request(
@@ -28139,10 +28291,14 @@ def test_search_blueprint_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_search_blueprint_revisions"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_search_blueprint_revisions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_search_blueprint_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.SearchBlueprintRevisionsRequest.pb(
             telcoautomation.SearchBlueprintRevisionsRequest()
         )
@@ -28168,6 +28324,10 @@ def test_search_blueprint_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.SearchBlueprintRevisionsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.SearchBlueprintRevisionsResponse(),
+            metadata,
+        )
 
         client.search_blueprint_revisions(
             request,
@@ -28179,6 +28339,7 @@ def test_search_blueprint_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_deployment_revisions_rest_bad_request(
@@ -28269,10 +28430,14 @@ def test_search_deployment_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_search_deployment_revisions"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_search_deployment_revisions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_search_deployment_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.SearchDeploymentRevisionsRequest.pb(
             telcoautomation.SearchDeploymentRevisionsRequest()
         )
@@ -28298,6 +28463,10 @@ def test_search_deployment_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.SearchDeploymentRevisionsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.SearchDeploymentRevisionsResponse(),
+            metadata,
+        )
 
         client.search_deployment_revisions(
             request,
@@ -28309,6 +28478,7 @@ def test_search_deployment_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_discard_blueprint_changes_rest_bad_request(
@@ -28394,10 +28564,14 @@ def test_discard_blueprint_changes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_discard_blueprint_changes"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_discard_blueprint_changes_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_discard_blueprint_changes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.DiscardBlueprintChangesRequest.pb(
             telcoautomation.DiscardBlueprintChangesRequest()
         )
@@ -28423,6 +28597,10 @@ def test_discard_blueprint_changes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.DiscardBlueprintChangesResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.DiscardBlueprintChangesResponse(),
+            metadata,
+        )
 
         client.discard_blueprint_changes(
             request,
@@ -28434,6 +28612,7 @@ def test_discard_blueprint_changes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_public_blueprints_rest_bad_request(
@@ -28518,10 +28697,14 @@ def test_list_public_blueprints_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_public_blueprints"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_list_public_blueprints_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_public_blueprints"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListPublicBlueprintsRequest.pb(
             telcoautomation.ListPublicBlueprintsRequest()
         )
@@ -28547,6 +28730,10 @@ def test_list_public_blueprints_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListPublicBlueprintsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListPublicBlueprintsResponse(),
+            metadata,
+        )
 
         client.list_public_blueprints(
             request,
@@ -28558,6 +28745,7 @@ def test_list_public_blueprints_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_public_blueprint_rest_bad_request(
@@ -28656,10 +28844,14 @@ def test_get_public_blueprint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_get_public_blueprint"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_get_public_blueprint_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_get_public_blueprint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.GetPublicBlueprintRequest.pb(
             telcoautomation.GetPublicBlueprintRequest()
         )
@@ -28685,6 +28877,7 @@ def test_get_public_blueprint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.PublicBlueprint()
+        post_with_metadata.return_value = telcoautomation.PublicBlueprint(), metadata
 
         client.get_public_blueprint(
             request,
@@ -28696,6 +28889,7 @@ def test_get_public_blueprint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_deployment_rest_bad_request(
@@ -28893,10 +29087,14 @@ def test_create_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_create_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_create_deployment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_create_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.CreateDeploymentRequest.pb(
             telcoautomation.CreateDeploymentRequest()
         )
@@ -28920,6 +29118,7 @@ def test_create_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Deployment()
+        post_with_metadata.return_value = telcoautomation.Deployment(), metadata
 
         client.create_deployment(
             request,
@@ -28931,6 +29130,7 @@ def test_create_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_deployment_rest_bad_request(
@@ -29132,10 +29332,14 @@ def test_update_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_update_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_update_deployment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_update_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.UpdateDeploymentRequest.pb(
             telcoautomation.UpdateDeploymentRequest()
         )
@@ -29159,6 +29363,7 @@ def test_update_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Deployment()
+        post_with_metadata.return_value = telcoautomation.Deployment(), metadata
 
         client.update_deployment(
             request,
@@ -29170,6 +29375,7 @@ def test_update_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_deployment_rest_bad_request(
@@ -29276,10 +29482,13 @@ def test_get_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_get_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_get_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.GetDeploymentRequest.pb(
             telcoautomation.GetDeploymentRequest()
         )
@@ -29303,6 +29512,7 @@ def test_get_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Deployment()
+        post_with_metadata.return_value = telcoautomation.Deployment(), metadata
 
         client.get_deployment(
             request,
@@ -29314,6 +29524,7 @@ def test_get_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_deployment_rest_bad_request(
@@ -29515,10 +29726,13 @@ def test_list_deployments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_deployments"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_deployments_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_deployments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListDeploymentsRequest.pb(
             telcoautomation.ListDeploymentsRequest()
         )
@@ -29544,6 +29758,10 @@ def test_list_deployments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListDeploymentsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListDeploymentsResponse(),
+            metadata,
+        )
 
         client.list_deployments(
             request,
@@ -29555,6 +29773,7 @@ def test_list_deployments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_deployment_revisions_rest_bad_request(
@@ -29643,10 +29862,14 @@ def test_list_deployment_revisions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_deployment_revisions"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_list_deployment_revisions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_deployment_revisions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListDeploymentRevisionsRequest.pb(
             telcoautomation.ListDeploymentRevisionsRequest()
         )
@@ -29672,6 +29895,10 @@ def test_list_deployment_revisions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListDeploymentRevisionsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListDeploymentRevisionsResponse(),
+            metadata,
+        )
 
         client.list_deployment_revisions(
             request,
@@ -29683,6 +29910,7 @@ def test_list_deployment_revisions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_discard_deployment_changes_rest_bad_request(
@@ -29768,10 +29996,14 @@ def test_discard_deployment_changes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_discard_deployment_changes"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_discard_deployment_changes_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_discard_deployment_changes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.DiscardDeploymentChangesRequest.pb(
             telcoautomation.DiscardDeploymentChangesRequest()
         )
@@ -29797,6 +30029,10 @@ def test_discard_deployment_changes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.DiscardDeploymentChangesResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.DiscardDeploymentChangesResponse(),
+            metadata,
+        )
 
         client.discard_deployment_changes(
             request,
@@ -29808,6 +30044,7 @@ def test_discard_deployment_changes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_apply_deployment_rest_bad_request(
@@ -29914,10 +30151,13 @@ def test_apply_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_apply_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_apply_deployment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_apply_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ApplyDeploymentRequest.pb(
             telcoautomation.ApplyDeploymentRequest()
         )
@@ -29941,6 +30181,7 @@ def test_apply_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Deployment()
+        post_with_metadata.return_value = telcoautomation.Deployment(), metadata
 
         client.apply_deployment(
             request,
@@ -29952,6 +30193,7 @@ def test_apply_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_compute_deployment_status_rest_bad_request(
@@ -30042,10 +30284,14 @@ def test_compute_deployment_status_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_compute_deployment_status"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_compute_deployment_status_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_compute_deployment_status"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ComputeDeploymentStatusRequest.pb(
             telcoautomation.ComputeDeploymentStatusRequest()
         )
@@ -30071,6 +30317,10 @@ def test_compute_deployment_status_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ComputeDeploymentStatusResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ComputeDeploymentStatusResponse(),
+            metadata,
+        )
 
         client.compute_deployment_status(
             request,
@@ -30082,6 +30332,7 @@ def test_compute_deployment_status_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rollback_deployment_rest_bad_request(
@@ -30188,10 +30439,14 @@ def test_rollback_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_rollback_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_rollback_deployment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_rollback_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.RollbackDeploymentRequest.pb(
             telcoautomation.RollbackDeploymentRequest()
         )
@@ -30215,6 +30470,7 @@ def test_rollback_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.Deployment()
+        post_with_metadata.return_value = telcoautomation.Deployment(), metadata
 
         client.rollback_deployment(
             request,
@@ -30226,6 +30482,7 @@ def test_rollback_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_hydrated_deployment_rest_bad_request(
@@ -30318,10 +30575,14 @@ def test_get_hydrated_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_get_hydrated_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_get_hydrated_deployment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_get_hydrated_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.GetHydratedDeploymentRequest.pb(
             telcoautomation.GetHydratedDeploymentRequest()
         )
@@ -30347,6 +30608,7 @@ def test_get_hydrated_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.HydratedDeployment()
+        post_with_metadata.return_value = telcoautomation.HydratedDeployment(), metadata
 
         client.get_hydrated_deployment(
             request,
@@ -30358,6 +30620,7 @@ def test_get_hydrated_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_hydrated_deployments_rest_bad_request(
@@ -30446,10 +30709,14 @@ def test_list_hydrated_deployments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_list_hydrated_deployments"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_list_hydrated_deployments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_list_hydrated_deployments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ListHydratedDeploymentsRequest.pb(
             telcoautomation.ListHydratedDeploymentsRequest()
         )
@@ -30475,6 +30742,10 @@ def test_list_hydrated_deployments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.ListHydratedDeploymentsResponse()
+        post_with_metadata.return_value = (
+            telcoautomation.ListHydratedDeploymentsResponse(),
+            metadata,
+        )
 
         client.list_hydrated_deployments(
             request,
@@ -30486,6 +30757,7 @@ def test_list_hydrated_deployments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_hydrated_deployment_rest_bad_request(
@@ -30664,10 +30936,14 @@ def test_update_hydrated_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_update_hydrated_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_update_hydrated_deployment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_update_hydrated_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.UpdateHydratedDeploymentRequest.pb(
             telcoautomation.UpdateHydratedDeploymentRequest()
         )
@@ -30693,6 +30969,7 @@ def test_update_hydrated_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.HydratedDeployment()
+        post_with_metadata.return_value = telcoautomation.HydratedDeployment(), metadata
 
         client.update_hydrated_deployment(
             request,
@@ -30704,6 +30981,7 @@ def test_update_hydrated_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_apply_hydrated_deployment_rest_bad_request(
@@ -30796,10 +31074,14 @@ def test_apply_hydrated_deployment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "post_apply_hydrated_deployment"
     ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor,
+        "post_apply_hydrated_deployment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TelcoAutomationRestInterceptor, "pre_apply_hydrated_deployment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = telcoautomation.ApplyHydratedDeploymentRequest.pb(
             telcoautomation.ApplyHydratedDeploymentRequest()
         )
@@ -30825,6 +31107,7 @@ def test_apply_hydrated_deployment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = telcoautomation.HydratedDeployment()
+        post_with_metadata.return_value = telcoautomation.HydratedDeployment(), metadata
 
         client.apply_hydrated_deployment(
             request,
@@ -30836,6 +31119,7 @@ def test_apply_hydrated_deployment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

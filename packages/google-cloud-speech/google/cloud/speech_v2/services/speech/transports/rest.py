@@ -271,11 +271,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_recognize
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_recognize_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_recognize` interceptor runs
+        before the `post_batch_recognize_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_recognize_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_recognize
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_batch_recognize_with_metadata`
+        interceptor in new development instead of the `post_batch_recognize` interceptor.
+        When both interceptors are used, this `post_batch_recognize_with_metadata` interceptor runs after the
+        `post_batch_recognize` interceptor. The (possibly modified) response returned by
+        `post_batch_recognize` will be passed to
+        `post_batch_recognize_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_custom_class(
         self,
@@ -296,11 +319,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_custom_class` interceptor runs
+        before the `post_create_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_create_custom_class_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_create_custom_class_with_metadata`
+        interceptor in new development instead of the `post_create_custom_class` interceptor.
+        When both interceptors are used, this `post_create_custom_class_with_metadata` interceptor runs after the
+        `post_create_custom_class` interceptor. The (possibly modified) response returned by
+        `post_create_custom_class` will be passed to
+        `post_create_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_phrase_set(
         self,
@@ -321,11 +367,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_phrase_set` interceptor runs
+        before the `post_create_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_create_phrase_set_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_create_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_create_phrase_set` interceptor.
+        When both interceptors are used, this `post_create_phrase_set_with_metadata` interceptor runs after the
+        `post_create_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_create_phrase_set` will be passed to
+        `post_create_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_recognizer(
         self,
@@ -346,11 +415,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_recognizer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_recognizer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_recognizer` interceptor runs
+        before the `post_create_recognizer_with_metadata` interceptor.
         """
         return response
+
+    def post_create_recognizer_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_recognizer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_create_recognizer_with_metadata`
+        interceptor in new development instead of the `post_create_recognizer` interceptor.
+        When both interceptors are used, this `post_create_recognizer_with_metadata` interceptor runs after the
+        `post_create_recognizer` interceptor. The (possibly modified) response returned by
+        `post_create_recognizer` will be passed to
+        `post_create_recognizer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_custom_class(
         self,
@@ -371,11 +463,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_custom_class` interceptor runs
+        before the `post_delete_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_custom_class_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_delete_custom_class_with_metadata`
+        interceptor in new development instead of the `post_delete_custom_class` interceptor.
+        When both interceptors are used, this `post_delete_custom_class_with_metadata` interceptor runs after the
+        `post_delete_custom_class` interceptor. The (possibly modified) response returned by
+        `post_delete_custom_class` will be passed to
+        `post_delete_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_phrase_set(
         self,
@@ -396,11 +511,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_phrase_set` interceptor runs
+        before the `post_delete_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_phrase_set_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_delete_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_delete_phrase_set` interceptor.
+        When both interceptors are used, this `post_delete_phrase_set_with_metadata` interceptor runs after the
+        `post_delete_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_delete_phrase_set` will be passed to
+        `post_delete_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_recognizer(
         self,
@@ -421,11 +559,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_recognizer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_recognizer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_recognizer` interceptor runs
+        before the `post_delete_recognizer_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_recognizer_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_recognizer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_delete_recognizer_with_metadata`
+        interceptor in new development instead of the `post_delete_recognizer` interceptor.
+        When both interceptors are used, this `post_delete_recognizer_with_metadata` interceptor runs after the
+        `post_delete_recognizer` interceptor. The (possibly modified) response returned by
+        `post_delete_recognizer` will be passed to
+        `post_delete_recognizer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_config(
         self,
@@ -442,11 +603,34 @@ class SpeechRestInterceptor:
     def post_get_config(self, response: cloud_speech.Config) -> cloud_speech.Config:
         """Post-rpc interceptor for get_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_config` interceptor runs
+        before the `post_get_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_config_with_metadata(
+        self,
+        response: cloud_speech.Config,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_get_config_with_metadata`
+        interceptor in new development instead of the `post_get_config` interceptor.
+        When both interceptors are used, this `post_get_config_with_metadata` interceptor runs after the
+        `post_get_config` interceptor. The (possibly modified) response returned by
+        `post_get_config` will be passed to
+        `post_get_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_custom_class(
         self,
@@ -467,11 +651,34 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.CustomClass:
         """Post-rpc interceptor for get_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_custom_class` interceptor runs
+        before the `post_get_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_get_custom_class_with_metadata(
+        self,
+        response: cloud_speech.CustomClass,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_get_custom_class_with_metadata`
+        interceptor in new development instead of the `post_get_custom_class` interceptor.
+        When both interceptors are used, this `post_get_custom_class_with_metadata` interceptor runs after the
+        `post_get_custom_class` interceptor. The (possibly modified) response returned by
+        `post_get_custom_class` will be passed to
+        `post_get_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_phrase_set(
         self,
@@ -492,11 +699,34 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.PhraseSet:
         """Post-rpc interceptor for get_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_phrase_set` interceptor runs
+        before the `post_get_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_get_phrase_set_with_metadata(
+        self,
+        response: cloud_speech.PhraseSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_get_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_get_phrase_set` interceptor.
+        When both interceptors are used, this `post_get_phrase_set_with_metadata` interceptor runs after the
+        `post_get_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_get_phrase_set` will be passed to
+        `post_get_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_recognizer(
         self,
@@ -517,11 +747,34 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.Recognizer:
         """Post-rpc interceptor for get_recognizer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_recognizer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_recognizer` interceptor runs
+        before the `post_get_recognizer_with_metadata` interceptor.
         """
         return response
+
+    def post_get_recognizer_with_metadata(
+        self,
+        response: cloud_speech.Recognizer,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.Recognizer, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_recognizer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_get_recognizer_with_metadata`
+        interceptor in new development instead of the `post_get_recognizer` interceptor.
+        When both interceptors are used, this `post_get_recognizer_with_metadata` interceptor runs after the
+        `post_get_recognizer` interceptor. The (possibly modified) response returned by
+        `post_get_recognizer` will be passed to
+        `post_get_recognizer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_custom_classes(
         self,
@@ -542,11 +795,36 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.ListCustomClassesResponse:
         """Post-rpc interceptor for list_custom_classes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_custom_classes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_custom_classes` interceptor runs
+        before the `post_list_custom_classes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_custom_classes_with_metadata(
+        self,
+        response: cloud_speech.ListCustomClassesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.ListCustomClassesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_custom_classes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_list_custom_classes_with_metadata`
+        interceptor in new development instead of the `post_list_custom_classes` interceptor.
+        When both interceptors are used, this `post_list_custom_classes_with_metadata` interceptor runs after the
+        `post_list_custom_classes` interceptor. The (possibly modified) response returned by
+        `post_list_custom_classes` will be passed to
+        `post_list_custom_classes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_phrase_sets(
         self,
@@ -567,11 +845,36 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.ListPhraseSetsResponse:
         """Post-rpc interceptor for list_phrase_sets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_phrase_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_phrase_sets` interceptor runs
+        before the `post_list_phrase_sets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_phrase_sets_with_metadata(
+        self,
+        response: cloud_speech.ListPhraseSetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.ListPhraseSetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_phrase_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_list_phrase_sets_with_metadata`
+        interceptor in new development instead of the `post_list_phrase_sets` interceptor.
+        When both interceptors are used, this `post_list_phrase_sets_with_metadata` interceptor runs after the
+        `post_list_phrase_sets` interceptor. The (possibly modified) response returned by
+        `post_list_phrase_sets` will be passed to
+        `post_list_phrase_sets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_recognizers(
         self,
@@ -592,11 +895,36 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.ListRecognizersResponse:
         """Post-rpc interceptor for list_recognizers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_recognizers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_recognizers` interceptor runs
+        before the `post_list_recognizers_with_metadata` interceptor.
         """
         return response
+
+    def post_list_recognizers_with_metadata(
+        self,
+        response: cloud_speech.ListRecognizersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_speech.ListRecognizersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_recognizers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_list_recognizers_with_metadata`
+        interceptor in new development instead of the `post_list_recognizers` interceptor.
+        When both interceptors are used, this `post_list_recognizers_with_metadata` interceptor runs after the
+        `post_list_recognizers` interceptor. The (possibly modified) response returned by
+        `post_list_recognizers` will be passed to
+        `post_list_recognizers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_recognize(
         self,
@@ -615,11 +943,34 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.RecognizeResponse:
         """Post-rpc interceptor for recognize
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_recognize_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_recognize` interceptor runs
+        before the `post_recognize_with_metadata` interceptor.
         """
         return response
+
+    def post_recognize_with_metadata(
+        self,
+        response: cloud_speech.RecognizeResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.RecognizeResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for recognize
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_recognize_with_metadata`
+        interceptor in new development instead of the `post_recognize` interceptor.
+        When both interceptors are used, this `post_recognize_with_metadata` interceptor runs after the
+        `post_recognize` interceptor. The (possibly modified) response returned by
+        `post_recognize` will be passed to
+        `post_recognize_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undelete_custom_class(
         self,
@@ -640,11 +991,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undelete_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undelete_custom_class` interceptor runs
+        before the `post_undelete_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_undelete_custom_class_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undelete_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_undelete_custom_class_with_metadata`
+        interceptor in new development instead of the `post_undelete_custom_class` interceptor.
+        When both interceptors are used, this `post_undelete_custom_class_with_metadata` interceptor runs after the
+        `post_undelete_custom_class` interceptor. The (possibly modified) response returned by
+        `post_undelete_custom_class` will be passed to
+        `post_undelete_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undelete_phrase_set(
         self,
@@ -665,11 +1039,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undelete_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undelete_phrase_set` interceptor runs
+        before the `post_undelete_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_undelete_phrase_set_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undelete_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_undelete_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_undelete_phrase_set` interceptor.
+        When both interceptors are used, this `post_undelete_phrase_set_with_metadata` interceptor runs after the
+        `post_undelete_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_undelete_phrase_set` will be passed to
+        `post_undelete_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undelete_recognizer(
         self,
@@ -690,11 +1087,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_recognizer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undelete_recognizer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undelete_recognizer` interceptor runs
+        before the `post_undelete_recognizer_with_metadata` interceptor.
         """
         return response
+
+    def post_undelete_recognizer_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undelete_recognizer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_undelete_recognizer_with_metadata`
+        interceptor in new development instead of the `post_undelete_recognizer` interceptor.
+        When both interceptors are used, this `post_undelete_recognizer_with_metadata` interceptor runs after the
+        `post_undelete_recognizer` interceptor. The (possibly modified) response returned by
+        `post_undelete_recognizer` will be passed to
+        `post_undelete_recognizer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_config(
         self,
@@ -713,11 +1133,34 @@ class SpeechRestInterceptor:
     def post_update_config(self, response: cloud_speech.Config) -> cloud_speech.Config:
         """Post-rpc interceptor for update_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_config` interceptor runs
+        before the `post_update_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_config_with_metadata(
+        self,
+        response: cloud_speech.Config,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_update_config_with_metadata`
+        interceptor in new development instead of the `post_update_config` interceptor.
+        When both interceptors are used, this `post_update_config_with_metadata` interceptor runs after the
+        `post_update_config` interceptor. The (possibly modified) response returned by
+        `post_update_config` will be passed to
+        `post_update_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_custom_class(
         self,
@@ -738,11 +1181,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_custom_class
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_custom_class_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_custom_class` interceptor runs
+        before the `post_update_custom_class_with_metadata` interceptor.
         """
         return response
+
+    def post_update_custom_class_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_custom_class
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_update_custom_class_with_metadata`
+        interceptor in new development instead of the `post_update_custom_class` interceptor.
+        When both interceptors are used, this `post_update_custom_class_with_metadata` interceptor runs after the
+        `post_update_custom_class` interceptor. The (possibly modified) response returned by
+        `post_update_custom_class` will be passed to
+        `post_update_custom_class_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_phrase_set(
         self,
@@ -763,11 +1229,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_phrase_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_phrase_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_phrase_set` interceptor runs
+        before the `post_update_phrase_set_with_metadata` interceptor.
         """
         return response
+
+    def post_update_phrase_set_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_phrase_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_update_phrase_set_with_metadata`
+        interceptor in new development instead of the `post_update_phrase_set` interceptor.
+        When both interceptors are used, this `post_update_phrase_set_with_metadata` interceptor runs after the
+        `post_update_phrase_set` interceptor. The (possibly modified) response returned by
+        `post_update_phrase_set` will be passed to
+        `post_update_phrase_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_recognizer(
         self,
@@ -788,11 +1277,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_recognizer
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_recognizer_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_recognizer` interceptor runs
+        before the `post_update_recognizer_with_metadata` interceptor.
         """
         return response
+
+    def post_update_recognizer_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_recognizer
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_update_recognizer_with_metadata`
+        interceptor in new development instead of the `post_update_recognizer` interceptor.
+        When both interceptors are used, this `post_update_recognizer_with_metadata` interceptor runs after the
+        `post_update_recognizer` interceptor. The (possibly modified) response returned by
+        `post_update_recognizer` will be passed to
+        `post_update_recognizer_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1209,6 +1721,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_recognize(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_recognize_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1366,6 +1882,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1521,6 +2041,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1678,6 +2202,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_recognizer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_recognizer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1827,6 +2355,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1976,6 +2508,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2125,6 +2661,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_recognizer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_recognizer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2271,6 +2811,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2423,6 +2967,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2572,6 +3120,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2718,6 +3270,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_recognizer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_recognizer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2869,6 +3425,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_custom_classes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_custom_classes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3020,6 +3580,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_phrase_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_phrase_sets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3173,6 +3737,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_recognizers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_recognizers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3330,6 +3898,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_recognize(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_recognize_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3499,6 +4071,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undelete_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undelete_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3656,6 +4232,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undelete_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undelete_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3811,6 +4391,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undelete_recognizer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undelete_recognizer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3965,6 +4549,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4122,6 +4710,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_custom_class(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_custom_class_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4277,6 +4869,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_phrase_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_phrase_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4434,6 +5030,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_recognizer(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_recognizer_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

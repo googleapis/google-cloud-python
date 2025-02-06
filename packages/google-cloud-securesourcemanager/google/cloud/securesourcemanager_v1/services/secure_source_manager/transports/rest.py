@@ -226,11 +226,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_branch_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_branch_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_branch_rule` interceptor runs
+        before the `post_create_branch_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_create_branch_rule_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_branch_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_branch_rule_with_metadata`
+        interceptor in new development instead of the `post_create_branch_rule` interceptor.
+        When both interceptors are used, this `post_create_branch_rule_with_metadata` interceptor runs after the
+        `post_create_branch_rule` interceptor. The (possibly modified) response returned by
+        `post_create_branch_rule` will be passed to
+        `post_create_branch_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_instance(
         self,
@@ -252,11 +275,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_instance` interceptor runs
+        before the `post_create_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_create_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_instance_with_metadata`
+        interceptor in new development instead of the `post_create_instance` interceptor.
+        When both interceptors are used, this `post_create_instance_with_metadata` interceptor runs after the
+        `post_create_instance` interceptor. The (possibly modified) response returned by
+        `post_create_instance` will be passed to
+        `post_create_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_repository(
         self,
@@ -278,11 +324,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_repository` interceptor runs
+        before the `post_create_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_create_repository_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_repository_with_metadata`
+        interceptor in new development instead of the `post_create_repository` interceptor.
+        When both interceptors are used, this `post_create_repository_with_metadata` interceptor runs after the
+        `post_create_repository` interceptor. The (possibly modified) response returned by
+        `post_create_repository` will be passed to
+        `post_create_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_branch_rule(
         self,
@@ -304,11 +373,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_branch_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_branch_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_branch_rule` interceptor runs
+        before the `post_delete_branch_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_branch_rule_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_branch_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_branch_rule_with_metadata`
+        interceptor in new development instead of the `post_delete_branch_rule` interceptor.
+        When both interceptors are used, this `post_delete_branch_rule_with_metadata` interceptor runs after the
+        `post_delete_branch_rule` interceptor. The (possibly modified) response returned by
+        `post_delete_branch_rule` will be passed to
+        `post_delete_branch_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_instance(
         self,
@@ -330,11 +422,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_instance` interceptor runs
+        before the `post_delete_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_instance_with_metadata`
+        interceptor in new development instead of the `post_delete_instance` interceptor.
+        When both interceptors are used, this `post_delete_instance_with_metadata` interceptor runs after the
+        `post_delete_instance` interceptor. The (possibly modified) response returned by
+        `post_delete_instance` will be passed to
+        `post_delete_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_repository(
         self,
@@ -356,11 +471,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_repository` interceptor runs
+        before the `post_delete_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_repository_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_repository_with_metadata`
+        interceptor in new development instead of the `post_delete_repository` interceptor.
+        When both interceptors are used, this `post_delete_repository_with_metadata` interceptor runs after the
+        `post_delete_repository` interceptor. The (possibly modified) response returned by
+        `post_delete_repository` will be passed to
+        `post_delete_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_branch_rule(
         self,
@@ -382,11 +520,36 @@ class SecureSourceManagerRestInterceptor:
     ) -> secure_source_manager.BranchRule:
         """Post-rpc interceptor for get_branch_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_branch_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_branch_rule` interceptor runs
+        before the `post_get_branch_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_get_branch_rule_with_metadata(
+        self,
+        response: secure_source_manager.BranchRule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.BranchRule, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_branch_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_branch_rule_with_metadata`
+        interceptor in new development instead of the `post_get_branch_rule` interceptor.
+        When both interceptors are used, this `post_get_branch_rule_with_metadata` interceptor runs after the
+        `post_get_branch_rule` interceptor. The (possibly modified) response returned by
+        `post_get_branch_rule` will be passed to
+        `post_get_branch_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy_repo(
         self,
@@ -407,11 +570,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy_repo
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_iam_policy_repo_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_iam_policy_repo` interceptor runs
+        before the `post_get_iam_policy_repo_with_metadata` interceptor.
         """
         return response
+
+    def post_get_iam_policy_repo_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_iam_policy_repo
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_iam_policy_repo_with_metadata`
+        interceptor in new development instead of the `post_get_iam_policy_repo` interceptor.
+        When both interceptors are used, this `post_get_iam_policy_repo_with_metadata` interceptor runs after the
+        `post_get_iam_policy_repo` interceptor. The (possibly modified) response returned by
+        `post_get_iam_policy_repo` will be passed to
+        `post_get_iam_policy_repo_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance(
         self,
@@ -433,11 +619,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> secure_source_manager.Instance:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance` interceptor runs
+        before the `post_get_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_with_metadata(
+        self,
+        response: secure_source_manager.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[secure_source_manager.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_with_metadata`
+        interceptor in new development instead of the `post_get_instance` interceptor.
+        When both interceptors are used, this `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` interceptor. The (possibly modified) response returned by
+        `post_get_instance` will be passed to
+        `post_get_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_repository(
         self,
@@ -459,11 +668,36 @@ class SecureSourceManagerRestInterceptor:
     ) -> secure_source_manager.Repository:
         """Post-rpc interceptor for get_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_repository` interceptor runs
+        before the `post_get_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_get_repository_with_metadata(
+        self,
+        response: secure_source_manager.Repository,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.Repository, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_repository_with_metadata`
+        interceptor in new development instead of the `post_get_repository` interceptor.
+        When both interceptors are used, this `post_get_repository_with_metadata` interceptor runs after the
+        `post_get_repository` interceptor. The (possibly modified) response returned by
+        `post_get_repository` will be passed to
+        `post_get_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_branch_rules(
         self,
@@ -485,11 +719,37 @@ class SecureSourceManagerRestInterceptor:
     ) -> secure_source_manager.ListBranchRulesResponse:
         """Post-rpc interceptor for list_branch_rules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_branch_rules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_branch_rules` interceptor runs
+        before the `post_list_branch_rules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_branch_rules_with_metadata(
+        self,
+        response: secure_source_manager.ListBranchRulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListBranchRulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_branch_rules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_branch_rules_with_metadata`
+        interceptor in new development instead of the `post_list_branch_rules` interceptor.
+        When both interceptors are used, this `post_list_branch_rules_with_metadata` interceptor runs after the
+        `post_list_branch_rules` interceptor. The (possibly modified) response returned by
+        `post_list_branch_rules` will be passed to
+        `post_list_branch_rules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instances(
         self,
@@ -511,11 +771,37 @@ class SecureSourceManagerRestInterceptor:
     ) -> secure_source_manager.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instances` interceptor runs
+        before the `post_list_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instances_with_metadata(
+        self,
+        response: secure_source_manager.ListInstancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListInstancesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_instances_with_metadata`
+        interceptor in new development instead of the `post_list_instances` interceptor.
+        When both interceptors are used, this `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` interceptor. The (possibly modified) response returned by
+        `post_list_instances` will be passed to
+        `post_list_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_repositories(
         self,
@@ -537,11 +823,37 @@ class SecureSourceManagerRestInterceptor:
     ) -> secure_source_manager.ListRepositoriesResponse:
         """Post-rpc interceptor for list_repositories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_repositories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_repositories` interceptor runs
+        before the `post_list_repositories_with_metadata` interceptor.
         """
         return response
+
+    def post_list_repositories_with_metadata(
+        self,
+        response: secure_source_manager.ListRepositoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListRepositoriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_repositories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_repositories_with_metadata`
+        interceptor in new development instead of the `post_list_repositories` interceptor.
+        When both interceptors are used, this `post_list_repositories_with_metadata` interceptor runs after the
+        `post_list_repositories` interceptor. The (possibly modified) response returned by
+        `post_list_repositories` will be passed to
+        `post_list_repositories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_iam_policy_repo(
         self,
@@ -562,11 +874,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy_repo
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_iam_policy_repo_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_iam_policy_repo` interceptor runs
+        before the `post_set_iam_policy_repo_with_metadata` interceptor.
         """
         return response
+
+    def post_set_iam_policy_repo_with_metadata(
+        self,
+        response: policy_pb2.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_iam_policy_repo
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_set_iam_policy_repo_with_metadata`
+        interceptor in new development instead of the `post_set_iam_policy_repo` interceptor.
+        When both interceptors are used, this `post_set_iam_policy_repo_with_metadata` interceptor runs after the
+        `post_set_iam_policy_repo` interceptor. The (possibly modified) response returned by
+        `post_set_iam_policy_repo` will be passed to
+        `post_set_iam_policy_repo_with_metadata`.
+        """
+        return response, metadata
 
     def pre_test_iam_permissions_repo(
         self,
@@ -588,11 +923,37 @@ class SecureSourceManagerRestInterceptor:
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions_repo
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_test_iam_permissions_repo_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_test_iam_permissions_repo` interceptor runs
+        before the `post_test_iam_permissions_repo_with_metadata` interceptor.
         """
         return response
+
+    def post_test_iam_permissions_repo_with_metadata(
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for test_iam_permissions_repo
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_test_iam_permissions_repo_with_metadata`
+        interceptor in new development instead of the `post_test_iam_permissions_repo` interceptor.
+        When both interceptors are used, this `post_test_iam_permissions_repo_with_metadata` interceptor runs after the
+        `post_test_iam_permissions_repo` interceptor. The (possibly modified) response returned by
+        `post_test_iam_permissions_repo` will be passed to
+        `post_test_iam_permissions_repo_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_branch_rule(
         self,
@@ -614,11 +975,34 @@ class SecureSourceManagerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_branch_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_branch_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecureSourceManager server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_branch_rule` interceptor runs
+        before the `post_update_branch_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_update_branch_rule_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_branch_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_branch_rule_with_metadata`
+        interceptor in new development instead of the `post_update_branch_rule` interceptor.
+        When both interceptors are used, this `post_update_branch_rule_with_metadata` interceptor runs after the
+        `post_update_branch_rule` interceptor. The (possibly modified) response returned by
+        `post_update_branch_rule` will be passed to
+        `post_update_branch_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1131,6 +1515,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_branch_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_branch_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1280,6 +1668,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1431,6 +1823,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1576,6 +1972,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_branch_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_branch_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1719,6 +2119,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1864,6 +2268,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2010,6 +2418,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_branch_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_branch_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2230,6 +2642,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_iam_policy_repo(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_iam_policy_repo_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2374,6 +2790,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2518,6 +2938,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2666,6 +3090,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_branch_rules(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_branch_rules_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2810,6 +3238,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2956,6 +3388,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_repositories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_repositories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3182,6 +3618,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_iam_policy_repo(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_iam_policy_repo_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3333,6 +3773,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_test_iam_permissions_repo(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_test_iam_permissions_repo_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3484,6 +3928,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_branch_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_branch_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

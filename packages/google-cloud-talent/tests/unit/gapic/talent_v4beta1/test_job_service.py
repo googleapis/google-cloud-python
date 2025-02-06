@@ -81,6 +81,13 @@ from google.cloud.talent_v4beta1.types import job
 from google.cloud.talent_v4beta1.types import job as gct_job
 from google.cloud.talent_v4beta1.types import job_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -314,6 +321,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         JobServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = JobServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = JobServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7756,10 +7806,13 @@ def test_create_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.JobServiceRestInterceptor, "post_create_job"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_create_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_create_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.CreateJobRequest.pb(job_service.CreateJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -7781,6 +7834,7 @@ def test_create_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gct_job.Job()
+        post_with_metadata.return_value = gct_job.Job(), metadata
 
         client.create_job(
             request,
@@ -7792,6 +7846,7 @@ def test_create_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_create_jobs_rest_bad_request(
@@ -7872,10 +7927,13 @@ def test_batch_create_jobs_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.JobServiceRestInterceptor, "post_batch_create_jobs"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_batch_create_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_batch_create_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.BatchCreateJobsRequest.pb(
             job_service.BatchCreateJobsRequest()
         )
@@ -7899,6 +7957,7 @@ def test_batch_create_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_create_jobs(
             request,
@@ -7910,6 +7969,7 @@ def test_batch_create_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_job_rest_bad_request(request_type=job_service.GetJobRequest):
@@ -8028,10 +8088,13 @@ def test_get_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.JobServiceRestInterceptor, "post_get_job"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_get_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_get_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.GetJobRequest.pb(job_service.GetJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -8053,6 +8116,7 @@ def test_get_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = job.Job()
+        post_with_metadata.return_value = job.Job(), metadata
 
         client.get_job(
             request,
@@ -8064,6 +8128,7 @@ def test_get_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_job_rest_bad_request(request_type=job_service.UpdateJobRequest):
@@ -8182,10 +8247,13 @@ def test_update_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.JobServiceRestInterceptor, "post_update_job"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_update_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_update_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.UpdateJobRequest.pb(job_service.UpdateJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -8207,6 +8275,7 @@ def test_update_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gct_job.Job()
+        post_with_metadata.return_value = gct_job.Job(), metadata
 
         client.update_job(
             request,
@@ -8218,6 +8287,7 @@ def test_update_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_update_jobs_rest_bad_request(
@@ -8298,10 +8368,13 @@ def test_batch_update_jobs_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.JobServiceRestInterceptor, "post_batch_update_jobs"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_batch_update_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_batch_update_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.BatchUpdateJobsRequest.pb(
             job_service.BatchUpdateJobsRequest()
         )
@@ -8325,6 +8398,7 @@ def test_batch_update_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_update_jobs(
             request,
@@ -8336,6 +8410,7 @@ def test_batch_update_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_job_rest_bad_request(request_type=job_service.DeleteJobRequest):
@@ -8632,10 +8707,13 @@ def test_list_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.JobServiceRestInterceptor, "post_list_jobs"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_list_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_list_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.ListJobsRequest.pb(job_service.ListJobsRequest())
         transcode.return_value = {
             "method": "post",
@@ -8659,6 +8737,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = job_service.ListJobsResponse()
+        post_with_metadata.return_value = job_service.ListJobsResponse(), metadata
 
         client.list_jobs(
             request,
@@ -8670,6 +8749,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_jobs_rest_bad_request(request_type=job_service.SearchJobsRequest):
@@ -8758,10 +8838,13 @@ def test_search_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.JobServiceRestInterceptor, "post_search_jobs"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_search_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_search_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.SearchJobsRequest.pb(job_service.SearchJobsRequest())
         transcode.return_value = {
             "method": "post",
@@ -8785,6 +8868,7 @@ def test_search_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = job_service.SearchJobsResponse()
+        post_with_metadata.return_value = job_service.SearchJobsResponse(), metadata
 
         client.search_jobs(
             request,
@@ -8796,6 +8880,7 @@ def test_search_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_jobs_for_alert_rest_bad_request(
@@ -8886,10 +8971,13 @@ def test_search_jobs_for_alert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.JobServiceRestInterceptor, "post_search_jobs_for_alert"
     ) as post, mock.patch.object(
+        transports.JobServiceRestInterceptor, "post_search_jobs_for_alert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.JobServiceRestInterceptor, "pre_search_jobs_for_alert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = job_service.SearchJobsRequest.pb(job_service.SearchJobsRequest())
         transcode.return_value = {
             "method": "post",
@@ -8913,6 +9001,7 @@ def test_search_jobs_for_alert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = job_service.SearchJobsResponse()
+        post_with_metadata.return_value = job_service.SearchJobsResponse(), metadata
 
         client.search_jobs_for_alert(
             request,
@@ -8924,6 +9013,7 @@ def test_search_jobs_for_alert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

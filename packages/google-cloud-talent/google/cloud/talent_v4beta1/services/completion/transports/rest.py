@@ -102,11 +102,37 @@ class CompletionRestInterceptor:
     ) -> completion_service.CompleteQueryResponse:
         """Post-rpc interceptor for complete_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_complete_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Completion server but before
-        it is returned to user code.
+        it is returned to user code. This `post_complete_query` interceptor runs
+        before the `post_complete_query_with_metadata` interceptor.
         """
         return response
+
+    def post_complete_query_with_metadata(
+        self,
+        response: completion_service.CompleteQueryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        completion_service.CompleteQueryResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for complete_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Completion server but before it is returned to user code.
+
+        We recommend only using this `post_complete_query_with_metadata`
+        interceptor in new development instead of the `post_complete_query` interceptor.
+        When both interceptors are used, this `post_complete_query_with_metadata` interceptor runs after the
+        `post_complete_query` interceptor. The (possibly modified) response returned by
+        `post_complete_query` will be passed to
+        `post_complete_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -341,6 +367,10 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_complete_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_complete_query_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
