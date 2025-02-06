@@ -62,6 +62,13 @@ from google.cloud.essential_contacts_v1.services.essential_contacts_service impo
 )
 from google.cloud.essential_contacts_v1.types import enums, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -335,6 +342,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         EssentialContactsServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = EssentialContactsServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = EssentialContactsServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5599,10 +5649,14 @@ def test_create_contact_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "post_create_contact"
     ) as post, mock.patch.object(
+        transports.EssentialContactsServiceRestInterceptor,
+        "post_create_contact_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "pre_create_contact"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateContactRequest.pb(service.CreateContactRequest())
         transcode.return_value = {
             "method": "post",
@@ -5624,6 +5678,7 @@ def test_create_contact_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.Contact()
+        post_with_metadata.return_value = service.Contact(), metadata
 
         client.create_contact(
             request,
@@ -5635,6 +5690,7 @@ def test_create_contact_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_contact_rest_bad_request(request_type=service.UpdateContactRequest):
@@ -5802,10 +5858,14 @@ def test_update_contact_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "post_update_contact"
     ) as post, mock.patch.object(
+        transports.EssentialContactsServiceRestInterceptor,
+        "post_update_contact_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "pre_update_contact"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateContactRequest.pb(service.UpdateContactRequest())
         transcode.return_value = {
             "method": "post",
@@ -5827,6 +5887,7 @@ def test_update_contact_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.Contact()
+        post_with_metadata.return_value = service.Contact(), metadata
 
         client.update_contact(
             request,
@@ -5838,6 +5899,7 @@ def test_update_contact_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_contacts_rest_bad_request(request_type=service.ListContactsRequest):
@@ -5920,10 +5982,14 @@ def test_list_contacts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "post_list_contacts"
     ) as post, mock.patch.object(
+        transports.EssentialContactsServiceRestInterceptor,
+        "post_list_contacts_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "pre_list_contacts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListContactsRequest.pb(service.ListContactsRequest())
         transcode.return_value = {
             "method": "post",
@@ -5947,6 +6013,7 @@ def test_list_contacts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListContactsResponse()
+        post_with_metadata.return_value = service.ListContactsResponse(), metadata
 
         client.list_contacts(
             request,
@@ -5958,6 +6025,7 @@ def test_list_contacts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_contact_rest_bad_request(request_type=service.GetContactRequest):
@@ -6050,10 +6118,14 @@ def test_get_contact_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "post_get_contact"
     ) as post, mock.patch.object(
+        transports.EssentialContactsServiceRestInterceptor,
+        "post_get_contact_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "pre_get_contact"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetContactRequest.pb(service.GetContactRequest())
         transcode.return_value = {
             "method": "post",
@@ -6075,6 +6147,7 @@ def test_get_contact_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.Contact()
+        post_with_metadata.return_value = service.Contact(), metadata
 
         client.get_contact(
             request,
@@ -6086,6 +6159,7 @@ def test_get_contact_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_contact_rest_bad_request(request_type=service.DeleteContactRequest):
@@ -6273,10 +6347,14 @@ def test_compute_contacts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "post_compute_contacts"
     ) as post, mock.patch.object(
+        transports.EssentialContactsServiceRestInterceptor,
+        "post_compute_contacts_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EssentialContactsServiceRestInterceptor, "pre_compute_contacts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ComputeContactsRequest.pb(service.ComputeContactsRequest())
         transcode.return_value = {
             "method": "post",
@@ -6300,6 +6378,7 @@ def test_compute_contacts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ComputeContactsResponse()
+        post_with_metadata.return_value = service.ComputeContactsResponse(), metadata
 
         client.compute_contacts(
             request,
@@ -6311,6 +6390,7 @@ def test_compute_contacts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_send_test_message_rest_bad_request(
