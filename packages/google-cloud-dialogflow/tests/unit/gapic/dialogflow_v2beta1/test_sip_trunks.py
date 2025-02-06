@@ -65,6 +65,13 @@ from google.cloud.dialogflow_v2beta1.services.sip_trunks import (
 from google.cloud.dialogflow_v2beta1.types import sip_trunk
 from google.cloud.dialogflow_v2beta1.types import sip_trunk as gcd_sip_trunk
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -296,6 +303,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         SipTrunksClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = SipTrunksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = SipTrunksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4386,10 +4436,13 @@ def test_create_sip_trunk_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SipTrunksRestInterceptor, "post_create_sip_trunk"
     ) as post, mock.patch.object(
+        transports.SipTrunksRestInterceptor, "post_create_sip_trunk_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SipTrunksRestInterceptor, "pre_create_sip_trunk"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_sip_trunk.CreateSipTrunkRequest.pb(
             gcd_sip_trunk.CreateSipTrunkRequest()
         )
@@ -4413,6 +4466,7 @@ def test_create_sip_trunk_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_sip_trunk.SipTrunk()
+        post_with_metadata.return_value = gcd_sip_trunk.SipTrunk(), metadata
 
         client.create_sip_trunk(
             request,
@@ -4424,6 +4478,7 @@ def test_create_sip_trunk_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_sip_trunk_rest_bad_request(
@@ -4611,10 +4666,13 @@ def test_list_sip_trunks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SipTrunksRestInterceptor, "post_list_sip_trunks"
     ) as post, mock.patch.object(
+        transports.SipTrunksRestInterceptor, "post_list_sip_trunks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SipTrunksRestInterceptor, "pre_list_sip_trunks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = sip_trunk.ListSipTrunksRequest.pb(sip_trunk.ListSipTrunksRequest())
         transcode.return_value = {
             "method": "post",
@@ -4638,6 +4696,7 @@ def test_list_sip_trunks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = sip_trunk.ListSipTrunksResponse()
+        post_with_metadata.return_value = sip_trunk.ListSipTrunksResponse(), metadata
 
         client.list_sip_trunks(
             request,
@@ -4649,6 +4708,7 @@ def test_list_sip_trunks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_sip_trunk_rest_bad_request(request_type=sip_trunk.GetSipTrunkRequest):
@@ -4733,10 +4793,13 @@ def test_get_sip_trunk_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SipTrunksRestInterceptor, "post_get_sip_trunk"
     ) as post, mock.patch.object(
+        transports.SipTrunksRestInterceptor, "post_get_sip_trunk_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SipTrunksRestInterceptor, "pre_get_sip_trunk"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = sip_trunk.GetSipTrunkRequest.pb(sip_trunk.GetSipTrunkRequest())
         transcode.return_value = {
             "method": "post",
@@ -4758,6 +4821,7 @@ def test_get_sip_trunk_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = sip_trunk.SipTrunk()
+        post_with_metadata.return_value = sip_trunk.SipTrunk(), metadata
 
         client.get_sip_trunk(
             request,
@@ -4769,6 +4833,7 @@ def test_get_sip_trunk_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_sip_trunk_rest_bad_request(
@@ -4942,10 +5007,13 @@ def test_update_sip_trunk_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SipTrunksRestInterceptor, "post_update_sip_trunk"
     ) as post, mock.patch.object(
+        transports.SipTrunksRestInterceptor, "post_update_sip_trunk_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SipTrunksRestInterceptor, "pre_update_sip_trunk"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_sip_trunk.UpdateSipTrunkRequest.pb(
             gcd_sip_trunk.UpdateSipTrunkRequest()
         )
@@ -4969,6 +5037,7 @@ def test_update_sip_trunk_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_sip_trunk.SipTrunk()
+        post_with_metadata.return_value = gcd_sip_trunk.SipTrunk(), metadata
 
         client.update_sip_trunk(
             request,
@@ -4980,6 +5049,7 @@ def test_update_sip_trunk_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

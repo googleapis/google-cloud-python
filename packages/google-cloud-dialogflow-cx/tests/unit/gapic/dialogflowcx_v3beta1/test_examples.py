@@ -66,6 +66,13 @@ from google.cloud.dialogflowcx_v3beta1.services.examples import (
 from google.cloud.dialogflowcx_v3beta1.types import example
 from google.cloud.dialogflowcx_v3beta1.types import example as gcdc_example
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -294,6 +301,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ExamplesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ExamplesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ExamplesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4449,10 +4499,13 @@ def test_create_example_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ExamplesRestInterceptor, "post_create_example"
     ) as post, mock.patch.object(
+        transports.ExamplesRestInterceptor, "post_create_example_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExamplesRestInterceptor, "pre_create_example"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_example.CreateExampleRequest.pb(
             gcdc_example.CreateExampleRequest()
         )
@@ -4476,6 +4529,7 @@ def test_create_example_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_example.Example()
+        post_with_metadata.return_value = gcdc_example.Example(), metadata
 
         client.create_example(
             request,
@@ -4487,6 +4541,7 @@ def test_create_example_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_example_rest_bad_request(request_type=example.DeleteExampleRequest):
@@ -4678,10 +4733,13 @@ def test_list_examples_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ExamplesRestInterceptor, "post_list_examples"
     ) as post, mock.patch.object(
+        transports.ExamplesRestInterceptor, "post_list_examples_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExamplesRestInterceptor, "pre_list_examples"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = example.ListExamplesRequest.pb(example.ListExamplesRequest())
         transcode.return_value = {
             "method": "post",
@@ -4705,6 +4763,7 @@ def test_list_examples_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = example.ListExamplesResponse()
+        post_with_metadata.return_value = example.ListExamplesResponse(), metadata
 
         client.list_examples(
             request,
@@ -4716,6 +4775,7 @@ def test_list_examples_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_example_rest_bad_request(request_type=example.GetExampleRequest):
@@ -4810,10 +4870,13 @@ def test_get_example_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ExamplesRestInterceptor, "post_get_example"
     ) as post, mock.patch.object(
+        transports.ExamplesRestInterceptor, "post_get_example_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExamplesRestInterceptor, "pre_get_example"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = example.GetExampleRequest.pb(example.GetExampleRequest())
         transcode.return_value = {
             "method": "post",
@@ -4835,6 +4898,7 @@ def test_get_example_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = example.Example()
+        post_with_metadata.return_value = example.Example(), metadata
 
         client.get_example(
             request,
@@ -4846,6 +4910,7 @@ def test_get_example_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_example_rest_bad_request(
@@ -5055,10 +5120,13 @@ def test_update_example_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ExamplesRestInterceptor, "post_update_example"
     ) as post, mock.patch.object(
+        transports.ExamplesRestInterceptor, "post_update_example_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExamplesRestInterceptor, "pre_update_example"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcdc_example.UpdateExampleRequest.pb(
             gcdc_example.UpdateExampleRequest()
         )
@@ -5082,6 +5150,7 @@ def test_update_example_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcdc_example.Example()
+        post_with_metadata.return_value = gcdc_example.Example(), metadata
 
         client.update_example(
             request,
@@ -5093,6 +5162,7 @@ def test_update_example_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

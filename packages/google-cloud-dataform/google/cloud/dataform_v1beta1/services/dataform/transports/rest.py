@@ -497,11 +497,37 @@ class DataformRestInterceptor:
     ) -> dataform.ComputeRepositoryAccessTokenStatusResponse:
         """Post-rpc interceptor for compute_repository_access_token_status
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compute_repository_access_token_status_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compute_repository_access_token_status` interceptor runs
+        before the `post_compute_repository_access_token_status_with_metadata` interceptor.
         """
         return response
+
+    def post_compute_repository_access_token_status_with_metadata(
+        self,
+        response: dataform.ComputeRepositoryAccessTokenStatusResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ComputeRepositoryAccessTokenStatusResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for compute_repository_access_token_status
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_compute_repository_access_token_status_with_metadata`
+        interceptor in new development instead of the `post_compute_repository_access_token_status` interceptor.
+        When both interceptors are used, this `post_compute_repository_access_token_status_with_metadata` interceptor runs after the
+        `post_compute_repository_access_token_status` interceptor. The (possibly modified) response returned by
+        `post_compute_repository_access_token_status` will be passed to
+        `post_compute_repository_access_token_status_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_compilation_result(
         self,
@@ -522,11 +548,34 @@ class DataformRestInterceptor:
     ) -> dataform.CompilationResult:
         """Post-rpc interceptor for create_compilation_result
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_compilation_result_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_compilation_result` interceptor runs
+        before the `post_create_compilation_result_with_metadata` interceptor.
         """
         return response
+
+    def post_create_compilation_result_with_metadata(
+        self,
+        response: dataform.CompilationResult,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.CompilationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_compilation_result
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_compilation_result_with_metadata`
+        interceptor in new development instead of the `post_create_compilation_result` interceptor.
+        When both interceptors are used, this `post_create_compilation_result_with_metadata` interceptor runs after the
+        `post_create_compilation_result` interceptor. The (possibly modified) response returned by
+        `post_create_compilation_result` will be passed to
+        `post_create_compilation_result_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_release_config(
         self,
@@ -547,11 +596,34 @@ class DataformRestInterceptor:
     ) -> dataform.ReleaseConfig:
         """Post-rpc interceptor for create_release_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_release_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_release_config` interceptor runs
+        before the `post_create_release_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_release_config_with_metadata(
+        self,
+        response: dataform.ReleaseConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.ReleaseConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_release_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_release_config_with_metadata`
+        interceptor in new development instead of the `post_create_release_config` interceptor.
+        When both interceptors are used, this `post_create_release_config_with_metadata` interceptor runs after the
+        `post_create_release_config` interceptor. The (possibly modified) response returned by
+        `post_create_release_config` will be passed to
+        `post_create_release_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_repository(
         self,
@@ -572,11 +644,34 @@ class DataformRestInterceptor:
     ) -> dataform.Repository:
         """Post-rpc interceptor for create_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_repository` interceptor runs
+        before the `post_create_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_create_repository_with_metadata(
+        self,
+        response: dataform.Repository,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_repository_with_metadata`
+        interceptor in new development instead of the `post_create_repository` interceptor.
+        When both interceptors are used, this `post_create_repository_with_metadata` interceptor runs after the
+        `post_create_repository` interceptor. The (possibly modified) response returned by
+        `post_create_repository` will be passed to
+        `post_create_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_workflow_config(
         self,
@@ -597,11 +692,34 @@ class DataformRestInterceptor:
     ) -> dataform.WorkflowConfig:
         """Post-rpc interceptor for create_workflow_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workflow_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workflow_config` interceptor runs
+        before the `post_create_workflow_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workflow_config_with_metadata(
+        self,
+        response: dataform.WorkflowConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.WorkflowConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workflow_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_workflow_config_with_metadata`
+        interceptor in new development instead of the `post_create_workflow_config` interceptor.
+        When both interceptors are used, this `post_create_workflow_config_with_metadata` interceptor runs after the
+        `post_create_workflow_config` interceptor. The (possibly modified) response returned by
+        `post_create_workflow_config` will be passed to
+        `post_create_workflow_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_workflow_invocation(
         self,
@@ -623,11 +741,34 @@ class DataformRestInterceptor:
     ) -> dataform.WorkflowInvocation:
         """Post-rpc interceptor for create_workflow_invocation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workflow_invocation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workflow_invocation` interceptor runs
+        before the `post_create_workflow_invocation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workflow_invocation_with_metadata(
+        self,
+        response: dataform.WorkflowInvocation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.WorkflowInvocation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workflow_invocation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_workflow_invocation_with_metadata`
+        interceptor in new development instead of the `post_create_workflow_invocation` interceptor.
+        When both interceptors are used, this `post_create_workflow_invocation_with_metadata` interceptor runs after the
+        `post_create_workflow_invocation` interceptor. The (possibly modified) response returned by
+        `post_create_workflow_invocation` will be passed to
+        `post_create_workflow_invocation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_workspace(
         self,
@@ -646,11 +787,34 @@ class DataformRestInterceptor:
     def post_create_workspace(self, response: dataform.Workspace) -> dataform.Workspace:
         """Post-rpc interceptor for create_workspace
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workspace_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workspace` interceptor runs
+        before the `post_create_workspace_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workspace_with_metadata(
+        self,
+        response: dataform.Workspace,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Workspace, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workspace
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_create_workspace_with_metadata`
+        interceptor in new development instead of the `post_create_workspace` interceptor.
+        When both interceptors are used, this `post_create_workspace_with_metadata` interceptor runs after the
+        `post_create_workspace` interceptor. The (possibly modified) response returned by
+        `post_create_workspace` will be passed to
+        `post_create_workspace_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_release_config(
         self,
@@ -740,11 +904,34 @@ class DataformRestInterceptor:
     ) -> dataform.FetchFileDiffResponse:
         """Post-rpc interceptor for fetch_file_diff
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_file_diff_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_file_diff` interceptor runs
+        before the `post_fetch_file_diff_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_file_diff_with_metadata(
+        self,
+        response: dataform.FetchFileDiffResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.FetchFileDiffResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for fetch_file_diff
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_file_diff_with_metadata`
+        interceptor in new development instead of the `post_fetch_file_diff` interceptor.
+        When both interceptors are used, this `post_fetch_file_diff_with_metadata` interceptor runs after the
+        `post_fetch_file_diff` interceptor. The (possibly modified) response returned by
+        `post_fetch_file_diff` will be passed to
+        `post_fetch_file_diff_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_file_git_statuses(
         self,
@@ -765,11 +952,36 @@ class DataformRestInterceptor:
     ) -> dataform.FetchFileGitStatusesResponse:
         """Post-rpc interceptor for fetch_file_git_statuses
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_file_git_statuses_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_file_git_statuses` interceptor runs
+        before the `post_fetch_file_git_statuses_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_file_git_statuses_with_metadata(
+        self,
+        response: dataform.FetchFileGitStatusesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchFileGitStatusesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_file_git_statuses
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_file_git_statuses_with_metadata`
+        interceptor in new development instead of the `post_fetch_file_git_statuses` interceptor.
+        When both interceptors are used, this `post_fetch_file_git_statuses_with_metadata` interceptor runs after the
+        `post_fetch_file_git_statuses` interceptor. The (possibly modified) response returned by
+        `post_fetch_file_git_statuses` will be passed to
+        `post_fetch_file_git_statuses_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_git_ahead_behind(
         self,
@@ -790,11 +1002,36 @@ class DataformRestInterceptor:
     ) -> dataform.FetchGitAheadBehindResponse:
         """Post-rpc interceptor for fetch_git_ahead_behind
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_git_ahead_behind_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_git_ahead_behind` interceptor runs
+        before the `post_fetch_git_ahead_behind_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_git_ahead_behind_with_metadata(
+        self,
+        response: dataform.FetchGitAheadBehindResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchGitAheadBehindResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_git_ahead_behind
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_git_ahead_behind_with_metadata`
+        interceptor in new development instead of the `post_fetch_git_ahead_behind` interceptor.
+        When both interceptors are used, this `post_fetch_git_ahead_behind_with_metadata` interceptor runs after the
+        `post_fetch_git_ahead_behind` interceptor. The (possibly modified) response returned by
+        `post_fetch_git_ahead_behind` will be passed to
+        `post_fetch_git_ahead_behind_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_remote_branches(
         self,
@@ -815,11 +1052,36 @@ class DataformRestInterceptor:
     ) -> dataform.FetchRemoteBranchesResponse:
         """Post-rpc interceptor for fetch_remote_branches
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_remote_branches_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_remote_branches` interceptor runs
+        before the `post_fetch_remote_branches_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_remote_branches_with_metadata(
+        self,
+        response: dataform.FetchRemoteBranchesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchRemoteBranchesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_remote_branches
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_remote_branches_with_metadata`
+        interceptor in new development instead of the `post_fetch_remote_branches` interceptor.
+        When both interceptors are used, this `post_fetch_remote_branches_with_metadata` interceptor runs after the
+        `post_fetch_remote_branches` interceptor. The (possibly modified) response returned by
+        `post_fetch_remote_branches` will be passed to
+        `post_fetch_remote_branches_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_repository_history(
         self,
@@ -840,11 +1102,36 @@ class DataformRestInterceptor:
     ) -> dataform.FetchRepositoryHistoryResponse:
         """Post-rpc interceptor for fetch_repository_history
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_repository_history_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_repository_history` interceptor runs
+        before the `post_fetch_repository_history_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_repository_history_with_metadata(
+        self,
+        response: dataform.FetchRepositoryHistoryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchRepositoryHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_repository_history
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_repository_history_with_metadata`
+        interceptor in new development instead of the `post_fetch_repository_history` interceptor.
+        When both interceptors are used, this `post_fetch_repository_history_with_metadata` interceptor runs after the
+        `post_fetch_repository_history` interceptor. The (possibly modified) response returned by
+        `post_fetch_repository_history` will be passed to
+        `post_fetch_repository_history_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_compilation_result(
         self,
@@ -865,11 +1152,34 @@ class DataformRestInterceptor:
     ) -> dataform.CompilationResult:
         """Post-rpc interceptor for get_compilation_result
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_compilation_result_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_compilation_result` interceptor runs
+        before the `post_get_compilation_result_with_metadata` interceptor.
         """
         return response
+
+    def post_get_compilation_result_with_metadata(
+        self,
+        response: dataform.CompilationResult,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.CompilationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_compilation_result
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_compilation_result_with_metadata`
+        interceptor in new development instead of the `post_get_compilation_result` interceptor.
+        When both interceptors are used, this `post_get_compilation_result_with_metadata` interceptor runs after the
+        `post_get_compilation_result` interceptor. The (possibly modified) response returned by
+        `post_get_compilation_result` will be passed to
+        `post_get_compilation_result_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_release_config(
         self,
@@ -890,11 +1200,34 @@ class DataformRestInterceptor:
     ) -> dataform.ReleaseConfig:
         """Post-rpc interceptor for get_release_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_release_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_release_config` interceptor runs
+        before the `post_get_release_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_release_config_with_metadata(
+        self,
+        response: dataform.ReleaseConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.ReleaseConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_release_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_release_config_with_metadata`
+        interceptor in new development instead of the `post_get_release_config` interceptor.
+        When both interceptors are used, this `post_get_release_config_with_metadata` interceptor runs after the
+        `post_get_release_config` interceptor. The (possibly modified) response returned by
+        `post_get_release_config` will be passed to
+        `post_get_release_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_repository(
         self,
@@ -911,11 +1244,34 @@ class DataformRestInterceptor:
     def post_get_repository(self, response: dataform.Repository) -> dataform.Repository:
         """Post-rpc interceptor for get_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_repository` interceptor runs
+        before the `post_get_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_get_repository_with_metadata(
+        self,
+        response: dataform.Repository,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_repository_with_metadata`
+        interceptor in new development instead of the `post_get_repository` interceptor.
+        When both interceptors are used, this `post_get_repository_with_metadata` interceptor runs after the
+        `post_get_repository` interceptor. The (possibly modified) response returned by
+        `post_get_repository` will be passed to
+        `post_get_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workflow_config(
         self,
@@ -936,11 +1292,34 @@ class DataformRestInterceptor:
     ) -> dataform.WorkflowConfig:
         """Post-rpc interceptor for get_workflow_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workflow_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workflow_config` interceptor runs
+        before the `post_get_workflow_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workflow_config_with_metadata(
+        self,
+        response: dataform.WorkflowConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.WorkflowConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workflow_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_workflow_config_with_metadata`
+        interceptor in new development instead of the `post_get_workflow_config` interceptor.
+        When both interceptors are used, this `post_get_workflow_config_with_metadata` interceptor runs after the
+        `post_get_workflow_config` interceptor. The (possibly modified) response returned by
+        `post_get_workflow_config` will be passed to
+        `post_get_workflow_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workflow_invocation(
         self,
@@ -961,11 +1340,34 @@ class DataformRestInterceptor:
     ) -> dataform.WorkflowInvocation:
         """Post-rpc interceptor for get_workflow_invocation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workflow_invocation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workflow_invocation` interceptor runs
+        before the `post_get_workflow_invocation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workflow_invocation_with_metadata(
+        self,
+        response: dataform.WorkflowInvocation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.WorkflowInvocation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workflow_invocation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_workflow_invocation_with_metadata`
+        interceptor in new development instead of the `post_get_workflow_invocation` interceptor.
+        When both interceptors are used, this `post_get_workflow_invocation_with_metadata` interceptor runs after the
+        `post_get_workflow_invocation` interceptor. The (possibly modified) response returned by
+        `post_get_workflow_invocation` will be passed to
+        `post_get_workflow_invocation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workspace(
         self,
@@ -982,11 +1384,34 @@ class DataformRestInterceptor:
     def post_get_workspace(self, response: dataform.Workspace) -> dataform.Workspace:
         """Post-rpc interceptor for get_workspace
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workspace_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workspace` interceptor runs
+        before the `post_get_workspace_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workspace_with_metadata(
+        self,
+        response: dataform.Workspace,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Workspace, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workspace
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_get_workspace_with_metadata`
+        interceptor in new development instead of the `post_get_workspace` interceptor.
+        When both interceptors are used, this `post_get_workspace_with_metadata` interceptor runs after the
+        `post_get_workspace` interceptor. The (possibly modified) response returned by
+        `post_get_workspace` will be passed to
+        `post_get_workspace_with_metadata`.
+        """
+        return response, metadata
 
     def pre_install_npm_packages(
         self,
@@ -1007,11 +1432,36 @@ class DataformRestInterceptor:
     ) -> dataform.InstallNpmPackagesResponse:
         """Post-rpc interceptor for install_npm_packages
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_install_npm_packages_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_install_npm_packages` interceptor runs
+        before the `post_install_npm_packages_with_metadata` interceptor.
         """
         return response
+
+    def post_install_npm_packages_with_metadata(
+        self,
+        response: dataform.InstallNpmPackagesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.InstallNpmPackagesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for install_npm_packages
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_install_npm_packages_with_metadata`
+        interceptor in new development instead of the `post_install_npm_packages` interceptor.
+        When both interceptors are used, this `post_install_npm_packages_with_metadata` interceptor runs after the
+        `post_install_npm_packages` interceptor. The (possibly modified) response returned by
+        `post_install_npm_packages` will be passed to
+        `post_install_npm_packages_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_compilation_results(
         self,
@@ -1032,11 +1482,36 @@ class DataformRestInterceptor:
     ) -> dataform.ListCompilationResultsResponse:
         """Post-rpc interceptor for list_compilation_results
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_compilation_results_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_compilation_results` interceptor runs
+        before the `post_list_compilation_results_with_metadata` interceptor.
         """
         return response
+
+    def post_list_compilation_results_with_metadata(
+        self,
+        response: dataform.ListCompilationResultsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ListCompilationResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_compilation_results
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_list_compilation_results_with_metadata`
+        interceptor in new development instead of the `post_list_compilation_results` interceptor.
+        When both interceptors are used, this `post_list_compilation_results_with_metadata` interceptor runs after the
+        `post_list_compilation_results` interceptor. The (possibly modified) response returned by
+        `post_list_compilation_results` will be passed to
+        `post_list_compilation_results_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_release_configs(
         self,
@@ -1057,11 +1532,36 @@ class DataformRestInterceptor:
     ) -> dataform.ListReleaseConfigsResponse:
         """Post-rpc interceptor for list_release_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_release_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_release_configs` interceptor runs
+        before the `post_list_release_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_release_configs_with_metadata(
+        self,
+        response: dataform.ListReleaseConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ListReleaseConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_release_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_list_release_configs_with_metadata`
+        interceptor in new development instead of the `post_list_release_configs` interceptor.
+        When both interceptors are used, this `post_list_release_configs_with_metadata` interceptor runs after the
+        `post_list_release_configs` interceptor. The (possibly modified) response returned by
+        `post_list_release_configs` will be passed to
+        `post_list_release_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_repositories(
         self,
@@ -1082,11 +1582,36 @@ class DataformRestInterceptor:
     ) -> dataform.ListRepositoriesResponse:
         """Post-rpc interceptor for list_repositories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_repositories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_repositories` interceptor runs
+        before the `post_list_repositories_with_metadata` interceptor.
         """
         return response
+
+    def post_list_repositories_with_metadata(
+        self,
+        response: dataform.ListRepositoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ListRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_repositories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_list_repositories_with_metadata`
+        interceptor in new development instead of the `post_list_repositories` interceptor.
+        When both interceptors are used, this `post_list_repositories_with_metadata` interceptor runs after the
+        `post_list_repositories` interceptor. The (possibly modified) response returned by
+        `post_list_repositories` will be passed to
+        `post_list_repositories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workflow_configs(
         self,
@@ -1107,11 +1632,36 @@ class DataformRestInterceptor:
     ) -> dataform.ListWorkflowConfigsResponse:
         """Post-rpc interceptor for list_workflow_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workflow_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workflow_configs` interceptor runs
+        before the `post_list_workflow_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workflow_configs_with_metadata(
+        self,
+        response: dataform.ListWorkflowConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ListWorkflowConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_workflow_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_list_workflow_configs_with_metadata`
+        interceptor in new development instead of the `post_list_workflow_configs` interceptor.
+        When both interceptors are used, this `post_list_workflow_configs_with_metadata` interceptor runs after the
+        `post_list_workflow_configs` interceptor. The (possibly modified) response returned by
+        `post_list_workflow_configs` will be passed to
+        `post_list_workflow_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workflow_invocations(
         self,
@@ -1132,11 +1682,37 @@ class DataformRestInterceptor:
     ) -> dataform.ListWorkflowInvocationsResponse:
         """Post-rpc interceptor for list_workflow_invocations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workflow_invocations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workflow_invocations` interceptor runs
+        before the `post_list_workflow_invocations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workflow_invocations_with_metadata(
+        self,
+        response: dataform.ListWorkflowInvocationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ListWorkflowInvocationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_workflow_invocations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_list_workflow_invocations_with_metadata`
+        interceptor in new development instead of the `post_list_workflow_invocations` interceptor.
+        When both interceptors are used, this `post_list_workflow_invocations_with_metadata` interceptor runs after the
+        `post_list_workflow_invocations` interceptor. The (possibly modified) response returned by
+        `post_list_workflow_invocations` will be passed to
+        `post_list_workflow_invocations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workspaces(
         self,
@@ -1155,11 +1731,36 @@ class DataformRestInterceptor:
     ) -> dataform.ListWorkspacesResponse:
         """Post-rpc interceptor for list_workspaces
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workspaces_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workspaces` interceptor runs
+        before the `post_list_workspaces_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workspaces_with_metadata(
+        self,
+        response: dataform.ListWorkspacesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ListWorkspacesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_workspaces
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_list_workspaces_with_metadata`
+        interceptor in new development instead of the `post_list_workspaces` interceptor.
+        When both interceptors are used, this `post_list_workspaces_with_metadata` interceptor runs after the
+        `post_list_workspaces` interceptor. The (possibly modified) response returned by
+        `post_list_workspaces` will be passed to
+        `post_list_workspaces_with_metadata`.
+        """
+        return response, metadata
 
     def pre_make_directory(
         self,
@@ -1178,11 +1779,34 @@ class DataformRestInterceptor:
     ) -> dataform.MakeDirectoryResponse:
         """Post-rpc interceptor for make_directory
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_make_directory_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_make_directory` interceptor runs
+        before the `post_make_directory_with_metadata` interceptor.
         """
         return response
+
+    def post_make_directory_with_metadata(
+        self,
+        response: dataform.MakeDirectoryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.MakeDirectoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for make_directory
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_make_directory_with_metadata`
+        interceptor in new development instead of the `post_make_directory` interceptor.
+        When both interceptors are used, this `post_make_directory_with_metadata` interceptor runs after the
+        `post_make_directory` interceptor. The (possibly modified) response returned by
+        `post_make_directory` will be passed to
+        `post_make_directory_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move_directory(
         self,
@@ -1201,11 +1825,34 @@ class DataformRestInterceptor:
     ) -> dataform.MoveDirectoryResponse:
         """Post-rpc interceptor for move_directory
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_directory_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move_directory` interceptor runs
+        before the `post_move_directory_with_metadata` interceptor.
         """
         return response
+
+    def post_move_directory_with_metadata(
+        self,
+        response: dataform.MoveDirectoryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.MoveDirectoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_directory
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_move_directory_with_metadata`
+        interceptor in new development instead of the `post_move_directory` interceptor.
+        When both interceptors are used, this `post_move_directory_with_metadata` interceptor runs after the
+        `post_move_directory` interceptor. The (possibly modified) response returned by
+        `post_move_directory` will be passed to
+        `post_move_directory_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move_file(
         self,
@@ -1224,11 +1871,34 @@ class DataformRestInterceptor:
     ) -> dataform.MoveFileResponse:
         """Post-rpc interceptor for move_file
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move_file` interceptor runs
+        before the `post_move_file_with_metadata` interceptor.
         """
         return response
+
+    def post_move_file_with_metadata(
+        self,
+        response: dataform.MoveFileResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.MoveFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_move_file_with_metadata`
+        interceptor in new development instead of the `post_move_file` interceptor.
+        When both interceptors are used, this `post_move_file_with_metadata` interceptor runs after the
+        `post_move_file` interceptor. The (possibly modified) response returned by
+        `post_move_file` will be passed to
+        `post_move_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_pull_git_commits(
         self,
@@ -1274,11 +1944,37 @@ class DataformRestInterceptor:
     ) -> dataform.QueryCompilationResultActionsResponse:
         """Post-rpc interceptor for query_compilation_result_actions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_compilation_result_actions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_compilation_result_actions` interceptor runs
+        before the `post_query_compilation_result_actions_with_metadata` interceptor.
         """
         return response
+
+    def post_query_compilation_result_actions_with_metadata(
+        self,
+        response: dataform.QueryCompilationResultActionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryCompilationResultActionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for query_compilation_result_actions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_query_compilation_result_actions_with_metadata`
+        interceptor in new development instead of the `post_query_compilation_result_actions` interceptor.
+        When both interceptors are used, this `post_query_compilation_result_actions_with_metadata` interceptor runs after the
+        `post_query_compilation_result_actions` interceptor. The (possibly modified) response returned by
+        `post_query_compilation_result_actions` will be passed to
+        `post_query_compilation_result_actions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_query_directory_contents(
         self,
@@ -1299,11 +1995,36 @@ class DataformRestInterceptor:
     ) -> dataform.QueryDirectoryContentsResponse:
         """Post-rpc interceptor for query_directory_contents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_directory_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_directory_contents` interceptor runs
+        before the `post_query_directory_contents_with_metadata` interceptor.
         """
         return response
+
+    def post_query_directory_contents_with_metadata(
+        self,
+        response: dataform.QueryDirectoryContentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryDirectoryContentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for query_directory_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_query_directory_contents_with_metadata`
+        interceptor in new development instead of the `post_query_directory_contents` interceptor.
+        When both interceptors are used, this `post_query_directory_contents_with_metadata` interceptor runs after the
+        `post_query_directory_contents` interceptor. The (possibly modified) response returned by
+        `post_query_directory_contents` will be passed to
+        `post_query_directory_contents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_query_repository_directory_contents(
         self,
@@ -1325,11 +2046,37 @@ class DataformRestInterceptor:
     ) -> dataform.QueryRepositoryDirectoryContentsResponse:
         """Post-rpc interceptor for query_repository_directory_contents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_repository_directory_contents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_repository_directory_contents` interceptor runs
+        before the `post_query_repository_directory_contents_with_metadata` interceptor.
         """
         return response
+
+    def post_query_repository_directory_contents_with_metadata(
+        self,
+        response: dataform.QueryRepositoryDirectoryContentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryRepositoryDirectoryContentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for query_repository_directory_contents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_query_repository_directory_contents_with_metadata`
+        interceptor in new development instead of the `post_query_repository_directory_contents` interceptor.
+        When both interceptors are used, this `post_query_repository_directory_contents_with_metadata` interceptor runs after the
+        `post_query_repository_directory_contents` interceptor. The (possibly modified) response returned by
+        `post_query_repository_directory_contents` will be passed to
+        `post_query_repository_directory_contents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_query_workflow_invocation_actions(
         self,
@@ -1351,11 +2098,37 @@ class DataformRestInterceptor:
     ) -> dataform.QueryWorkflowInvocationActionsResponse:
         """Post-rpc interceptor for query_workflow_invocation_actions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_workflow_invocation_actions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_workflow_invocation_actions` interceptor runs
+        before the `post_query_workflow_invocation_actions_with_metadata` interceptor.
         """
         return response
+
+    def post_query_workflow_invocation_actions_with_metadata(
+        self,
+        response: dataform.QueryWorkflowInvocationActionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.QueryWorkflowInvocationActionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for query_workflow_invocation_actions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_query_workflow_invocation_actions_with_metadata`
+        interceptor in new development instead of the `post_query_workflow_invocation_actions` interceptor.
+        When both interceptors are used, this `post_query_workflow_invocation_actions_with_metadata` interceptor runs after the
+        `post_query_workflow_invocation_actions` interceptor. The (possibly modified) response returned by
+        `post_query_workflow_invocation_actions` will be passed to
+        `post_query_workflow_invocation_actions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_read_file(
         self,
@@ -1374,11 +2147,34 @@ class DataformRestInterceptor:
     ) -> dataform.ReadFileResponse:
         """Post-rpc interceptor for read_file
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_read_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_read_file` interceptor runs
+        before the `post_read_file_with_metadata` interceptor.
         """
         return response
+
+    def post_read_file_with_metadata(
+        self,
+        response: dataform.ReadFileResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.ReadFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for read_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_read_file_with_metadata`
+        interceptor in new development instead of the `post_read_file` interceptor.
+        When both interceptors are used, this `post_read_file_with_metadata` interceptor runs after the
+        `post_read_file` interceptor. The (possibly modified) response returned by
+        `post_read_file` will be passed to
+        `post_read_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_read_repository_file(
         self,
@@ -1399,11 +2195,36 @@ class DataformRestInterceptor:
     ) -> dataform.ReadRepositoryFileResponse:
         """Post-rpc interceptor for read_repository_file
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_read_repository_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_read_repository_file` interceptor runs
+        before the `post_read_repository_file_with_metadata` interceptor.
         """
         return response
+
+    def post_read_repository_file_with_metadata(
+        self,
+        response: dataform.ReadRepositoryFileResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.ReadRepositoryFileResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for read_repository_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_read_repository_file_with_metadata`
+        interceptor in new development instead of the `post_read_repository_file` interceptor.
+        When both interceptors are used, this `post_read_repository_file_with_metadata` interceptor runs after the
+        `post_read_repository_file` interceptor. The (possibly modified) response returned by
+        `post_read_repository_file` will be passed to
+        `post_read_repository_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_directory(
         self,
@@ -1464,11 +2285,34 @@ class DataformRestInterceptor:
     ) -> dataform.ReleaseConfig:
         """Post-rpc interceptor for update_release_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_release_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_release_config` interceptor runs
+        before the `post_update_release_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_release_config_with_metadata(
+        self,
+        response: dataform.ReleaseConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.ReleaseConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_release_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_update_release_config_with_metadata`
+        interceptor in new development instead of the `post_update_release_config` interceptor.
+        When both interceptors are used, this `post_update_release_config_with_metadata` interceptor runs after the
+        `post_update_release_config` interceptor. The (possibly modified) response returned by
+        `post_update_release_config` will be passed to
+        `post_update_release_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_repository(
         self,
@@ -1489,11 +2333,34 @@ class DataformRestInterceptor:
     ) -> dataform.Repository:
         """Post-rpc interceptor for update_repository
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_repository` interceptor runs
+        before the `post_update_repository_with_metadata` interceptor.
         """
         return response
+
+    def post_update_repository_with_metadata(
+        self,
+        response: dataform.Repository,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_update_repository_with_metadata`
+        interceptor in new development instead of the `post_update_repository` interceptor.
+        When both interceptors are used, this `post_update_repository_with_metadata` interceptor runs after the
+        `post_update_repository` interceptor. The (possibly modified) response returned by
+        `post_update_repository` will be passed to
+        `post_update_repository_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_workflow_config(
         self,
@@ -1514,11 +2381,34 @@ class DataformRestInterceptor:
     ) -> dataform.WorkflowConfig:
         """Post-rpc interceptor for update_workflow_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_workflow_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_workflow_config` interceptor runs
+        before the `post_update_workflow_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_workflow_config_with_metadata(
+        self,
+        response: dataform.WorkflowConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.WorkflowConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_workflow_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_update_workflow_config_with_metadata`
+        interceptor in new development instead of the `post_update_workflow_config` interceptor.
+        When both interceptors are used, this `post_update_workflow_config_with_metadata` interceptor runs after the
+        `post_update_workflow_config` interceptor. The (possibly modified) response returned by
+        `post_update_workflow_config` will be passed to
+        `post_update_workflow_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_write_file(
         self,
@@ -1537,11 +2427,34 @@ class DataformRestInterceptor:
     ) -> dataform.WriteFileResponse:
         """Post-rpc interceptor for write_file
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_write_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Dataform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_write_file` interceptor runs
+        before the `post_write_file_with_metadata` interceptor.
         """
         return response
+
+    def post_write_file_with_metadata(
+        self,
+        response: dataform.WriteFileResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.WriteFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for write_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_write_file_with_metadata`
+        interceptor in new development instead of the `post_write_file` interceptor.
+        When both interceptors are used, this `post_write_file_with_metadata` interceptor runs after the
+        `post_write_file` interceptor. The (possibly modified) response returned by
+        `post_write_file` will be passed to
+        `post_write_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -2222,6 +3135,13 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_compute_repository_access_token_status(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_compute_repository_access_token_status_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2376,6 +3296,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_compilation_result(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_compilation_result_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2526,6 +3450,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_release_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_release_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2678,6 +3606,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2828,6 +3760,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workflow_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workflow_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2979,6 +3915,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workflow_invocation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workflow_invocation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3133,6 +4073,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workspace(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workspace_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3824,6 +4768,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_file_diff(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_file_diff_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3966,6 +4914,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_file_git_statuses(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_file_git_statuses_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4110,6 +5062,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_git_ahead_behind(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_git_ahead_behind_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4254,6 +5210,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_remote_branches(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_remote_branches_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4398,6 +5358,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_repository_history(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_repository_history_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4544,6 +5508,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_compilation_result(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_compilation_result_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4690,6 +5658,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_release_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_release_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4834,6 +5806,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4978,6 +5954,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workflow_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workflow_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5122,6 +6102,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workflow_invocation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workflow_invocation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5264,6 +6248,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workspace(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workspace_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5412,6 +6400,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_install_npm_packages(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_install_npm_packages_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5556,6 +6548,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_compilation_results(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_compilation_results_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5700,6 +6696,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_release_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_release_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5846,6 +6846,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_repositories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_repositories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5990,6 +6994,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workflow_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workflow_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6134,6 +7142,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workflow_invocations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workflow_invocations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6280,6 +7292,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workspaces(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workspaces_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6430,6 +7446,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_make_directory(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_make_directory_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6580,6 +7600,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_move_directory(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_directory_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6726,6 +7750,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_move_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_file_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7111,6 +8139,13 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_compilation_result_actions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_query_compilation_result_actions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7255,6 +8290,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_directory_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_directory_contents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7406,6 +8445,13 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_repository_directory_contents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_query_repository_directory_contents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7555,6 +8601,13 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_workflow_invocation_actions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_query_workflow_invocation_actions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7699,6 +8752,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_read_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_read_file_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7841,6 +8898,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_read_repository_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_read_repository_file_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8341,6 +9402,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_release_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_release_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8493,6 +9558,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_repository_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8643,6 +9712,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_workflow_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_workflow_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8789,6 +9862,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_write_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_write_file_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

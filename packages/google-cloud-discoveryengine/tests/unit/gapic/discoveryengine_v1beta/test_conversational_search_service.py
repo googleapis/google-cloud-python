@@ -72,6 +72,13 @@ from google.cloud.discoveryengine_v1beta.types import conversation
 from google.cloud.discoveryengine_v1beta.types import session
 from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -353,6 +360,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ConversationalSearchServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ConversationalSearchServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ConversationalSearchServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9265,10 +9315,14 @@ def test_converse_conversation_rest_interceptors(null_interceptor):
         "post_converse_conversation",
     ) as post, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor,
+        "post_converse_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
         "pre_converse_conversation",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.ConverseConversationRequest.pb(
             conversational_search_service.ConverseConversationRequest()
         )
@@ -9296,6 +9350,10 @@ def test_converse_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversational_search_service.ConverseConversationResponse()
+        post_with_metadata.return_value = (
+            conversational_search_service.ConverseConversationResponse(),
+            metadata,
+        )
 
         client.converse_conversation(
             request,
@@ -9307,6 +9365,7 @@ def test_converse_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_conversation_rest_bad_request(
@@ -9531,10 +9590,14 @@ def test_create_conversation_rest_interceptors(null_interceptor):
         transports.ConversationalSearchServiceRestInterceptor,
         "post_create_conversation",
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_create_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_create_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.CreateConversationRequest.pb(
             conversational_search_service.CreateConversationRequest()
         )
@@ -9560,6 +9623,7 @@ def test_create_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_conversation.Conversation()
+        post_with_metadata.return_value = gcd_conversation.Conversation(), metadata
 
         client.create_conversation(
             request,
@@ -9571,6 +9635,7 @@ def test_create_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_conversation_rest_bad_request(
@@ -9916,10 +9981,14 @@ def test_update_conversation_rest_interceptors(null_interceptor):
         transports.ConversationalSearchServiceRestInterceptor,
         "post_update_conversation",
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_update_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_update_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.UpdateConversationRequest.pb(
             conversational_search_service.UpdateConversationRequest()
         )
@@ -9945,6 +10014,7 @@ def test_update_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_conversation.Conversation()
+        post_with_metadata.return_value = gcd_conversation.Conversation(), metadata
 
         client.update_conversation(
             request,
@@ -9956,6 +10026,7 @@ def test_update_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_conversation_rest_bad_request(
@@ -10048,10 +10119,14 @@ def test_get_conversation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_get_conversation"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_get_conversation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_get_conversation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.GetConversationRequest.pb(
             conversational_search_service.GetConversationRequest()
         )
@@ -10075,6 +10150,7 @@ def test_get_conversation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversation.Conversation()
+        post_with_metadata.return_value = conversation.Conversation(), metadata
 
         client.get_conversation(
             request,
@@ -10086,6 +10162,7 @@ def test_get_conversation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_conversations_rest_bad_request(
@@ -10172,10 +10249,14 @@ def test_list_conversations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_list_conversations"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_list_conversations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_list_conversations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.ListConversationsRequest.pb(
             conversational_search_service.ListConversationsRequest()
         )
@@ -10201,6 +10282,10 @@ def test_list_conversations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversational_search_service.ListConversationsResponse()
+        post_with_metadata.return_value = (
+            conversational_search_service.ListConversationsResponse(),
+            metadata,
+        )
 
         client.list_conversations(
             request,
@@ -10212,6 +10297,7 @@ def test_list_conversations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_answer_query_rest_bad_request(
@@ -10302,10 +10388,14 @@ def test_answer_query_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_answer_query"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_answer_query_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_answer_query"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.AnswerQueryRequest.pb(
             conversational_search_service.AnswerQueryRequest()
         )
@@ -10331,6 +10421,10 @@ def test_answer_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversational_search_service.AnswerQueryResponse()
+        post_with_metadata.return_value = (
+            conversational_search_service.AnswerQueryResponse(),
+            metadata,
+        )
 
         client.answer_query(
             request,
@@ -10342,6 +10436,7 @@ def test_answer_query_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_answer_rest_bad_request(
@@ -10442,10 +10537,14 @@ def test_get_answer_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_get_answer"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_get_answer_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_get_answer"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.GetAnswerRequest.pb(
             conversational_search_service.GetAnswerRequest()
         )
@@ -10469,6 +10568,7 @@ def test_get_answer_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = answer.Answer()
+        post_with_metadata.return_value = answer.Answer(), metadata
 
         client.get_answer(
             request,
@@ -10480,6 +10580,7 @@ def test_get_answer_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_session_rest_bad_request(
@@ -10650,10 +10751,14 @@ def test_create_session_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_create_session"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_create_session_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_create_session"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.CreateSessionRequest.pb(
             conversational_search_service.CreateSessionRequest()
         )
@@ -10677,6 +10782,7 @@ def test_create_session_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_session.Session()
+        post_with_metadata.return_value = gcd_session.Session(), metadata
 
         client.create_session(
             request,
@@ -10688,6 +10794,7 @@ def test_create_session_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_session_rest_bad_request(
@@ -10979,10 +11086,14 @@ def test_update_session_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_update_session"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_update_session_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_update_session"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.UpdateSessionRequest.pb(
             conversational_search_service.UpdateSessionRequest()
         )
@@ -11006,6 +11117,7 @@ def test_update_session_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_session.Session()
+        post_with_metadata.return_value = gcd_session.Session(), metadata
 
         client.update_session(
             request,
@@ -11017,6 +11129,7 @@ def test_update_session_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_session_rest_bad_request(
@@ -11109,10 +11222,14 @@ def test_get_session_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_get_session"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_get_session_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_get_session"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.GetSessionRequest.pb(
             conversational_search_service.GetSessionRequest()
         )
@@ -11136,6 +11253,7 @@ def test_get_session_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = session.Session()
+        post_with_metadata.return_value = session.Session(), metadata
 
         client.get_session(
             request,
@@ -11147,6 +11265,7 @@ def test_get_session_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_sessions_rest_bad_request(
@@ -11233,10 +11352,14 @@ def test_list_sessions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "post_list_sessions"
     ) as post, mock.patch.object(
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_list_sessions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConversationalSearchServiceRestInterceptor, "pre_list_sessions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = conversational_search_service.ListSessionsRequest.pb(
             conversational_search_service.ListSessionsRequest()
         )
@@ -11262,6 +11385,10 @@ def test_list_sessions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = conversational_search_service.ListSessionsResponse()
+        post_with_metadata.return_value = (
+            conversational_search_service.ListSessionsResponse(),
+            metadata,
+        )
 
         client.list_sessions(
             request,
@@ -11273,6 +11400,7 @@ def test_list_sessions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

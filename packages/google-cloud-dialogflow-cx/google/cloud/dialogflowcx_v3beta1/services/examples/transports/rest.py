@@ -133,11 +133,34 @@ class ExamplesRestInterceptor:
     ) -> gcdc_example.Example:
         """Post-rpc interceptor for create_example
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_example_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Examples server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_example` interceptor runs
+        before the `post_create_example_with_metadata` interceptor.
         """
         return response
+
+    def post_create_example_with_metadata(
+        self,
+        response: gcdc_example.Example,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_example.Example, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_example
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Examples server but before it is returned to user code.
+
+        We recommend only using this `post_create_example_with_metadata`
+        interceptor in new development instead of the `post_create_example` interceptor.
+        When both interceptors are used, this `post_create_example_with_metadata` interceptor runs after the
+        `post_create_example` interceptor. The (possibly modified) response returned by
+        `post_create_example` will be passed to
+        `post_create_example_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_example(
         self,
@@ -166,11 +189,34 @@ class ExamplesRestInterceptor:
     def post_get_example(self, response: example.Example) -> example.Example:
         """Post-rpc interceptor for get_example
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_example_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Examples server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_example` interceptor runs
+        before the `post_get_example_with_metadata` interceptor.
         """
         return response
+
+    def post_get_example_with_metadata(
+        self,
+        response: example.Example,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[example.Example, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_example
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Examples server but before it is returned to user code.
+
+        We recommend only using this `post_get_example_with_metadata`
+        interceptor in new development instead of the `post_get_example` interceptor.
+        When both interceptors are used, this `post_get_example_with_metadata` interceptor runs after the
+        `post_get_example` interceptor. The (possibly modified) response returned by
+        `post_get_example` will be passed to
+        `post_get_example_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_examples(
         self,
@@ -189,11 +235,34 @@ class ExamplesRestInterceptor:
     ) -> example.ListExamplesResponse:
         """Post-rpc interceptor for list_examples
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_examples_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Examples server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_examples` interceptor runs
+        before the `post_list_examples_with_metadata` interceptor.
         """
         return response
+
+    def post_list_examples_with_metadata(
+        self,
+        response: example.ListExamplesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[example.ListExamplesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_examples
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Examples server but before it is returned to user code.
+
+        We recommend only using this `post_list_examples_with_metadata`
+        interceptor in new development instead of the `post_list_examples` interceptor.
+        When both interceptors are used, this `post_list_examples_with_metadata` interceptor runs after the
+        `post_list_examples` interceptor. The (possibly modified) response returned by
+        `post_list_examples` will be passed to
+        `post_list_examples_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_example(
         self,
@@ -214,11 +283,34 @@ class ExamplesRestInterceptor:
     ) -> gcdc_example.Example:
         """Post-rpc interceptor for update_example
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_example_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Examples server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_example` interceptor runs
+        before the `post_update_example_with_metadata` interceptor.
         """
         return response
+
+    def post_update_example_with_metadata(
+        self,
+        response: gcdc_example.Example,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_example.Example, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_example
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Examples server but before it is returned to user code.
+
+        We recommend only using this `post_update_example_with_metadata`
+        interceptor in new development instead of the `post_update_example` interceptor.
+        When both interceptors are used, this `post_update_example_with_metadata` interceptor runs after the
+        `post_update_example` interceptor. The (possibly modified) response returned by
+        `post_update_example` will be passed to
+        `post_update_example_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -565,6 +657,10 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_example(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_example_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -825,6 +921,10 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_example(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_example_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -970,6 +1070,10 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_examples(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_examples_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1127,6 +1231,10 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_example(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_example_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -74,6 +74,13 @@ from google.cloud.developerconnect_v1.services.developer_connect import (
 )
 from google.cloud.developerconnect_v1.types import developer_connect
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -331,6 +338,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DeveloperConnectClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DeveloperConnectClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DeveloperConnectClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10820,10 +10870,14 @@ def test_list_connections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_list_connections"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_list_connections_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_list_connections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.ListConnectionsRequest.pb(
             developer_connect.ListConnectionsRequest()
         )
@@ -10849,6 +10903,10 @@ def test_list_connections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.ListConnectionsResponse()
+        post_with_metadata.return_value = (
+            developer_connect.ListConnectionsResponse(),
+            metadata,
+        )
 
         client.list_connections(
             request,
@@ -10860,6 +10918,7 @@ def test_list_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_connection_rest_bad_request(
@@ -10952,10 +11011,13 @@ def test_get_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_get_connection"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor, "post_get_connection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_get_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.GetConnectionRequest.pb(
             developer_connect.GetConnectionRequest()
         )
@@ -10981,6 +11043,7 @@ def test_get_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.Connection()
+        post_with_metadata.return_value = developer_connect.Connection(), metadata
 
         client.get_connection(
             request,
@@ -10992,6 +11055,7 @@ def test_get_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_connection_rest_bad_request(
@@ -11195,10 +11259,14 @@ def test_create_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_create_connection"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_create_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_create_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.CreateConnectionRequest.pb(
             developer_connect.CreateConnectionRequest()
         )
@@ -11222,6 +11290,7 @@ def test_create_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_connection(
             request,
@@ -11233,6 +11302,7 @@ def test_create_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_connection_rest_bad_request(
@@ -11440,10 +11510,14 @@ def test_update_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_update_connection"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_update_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_update_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.UpdateConnectionRequest.pb(
             developer_connect.UpdateConnectionRequest()
         )
@@ -11467,6 +11541,7 @@ def test_update_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_connection(
             request,
@@ -11478,6 +11553,7 @@ def test_update_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_connection_rest_bad_request(
@@ -11558,10 +11634,14 @@ def test_delete_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_delete_connection"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_delete_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_delete_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.DeleteConnectionRequest.pb(
             developer_connect.DeleteConnectionRequest()
         )
@@ -11585,6 +11665,7 @@ def test_delete_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_connection(
             request,
@@ -11596,6 +11677,7 @@ def test_delete_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_git_repository_link_rest_bad_request(
@@ -11758,10 +11840,14 @@ def test_create_git_repository_link_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_create_git_repository_link"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_create_git_repository_link_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_create_git_repository_link"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.CreateGitRepositoryLinkRequest.pb(
             developer_connect.CreateGitRepositoryLinkRequest()
         )
@@ -11785,6 +11871,7 @@ def test_create_git_repository_link_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_git_repository_link(
             request,
@@ -11796,6 +11883,7 @@ def test_create_git_repository_link_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_git_repository_link_rest_bad_request(
@@ -11880,10 +11968,14 @@ def test_delete_git_repository_link_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_delete_git_repository_link"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_delete_git_repository_link_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_delete_git_repository_link"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.DeleteGitRepositoryLinkRequest.pb(
             developer_connect.DeleteGitRepositoryLinkRequest()
         )
@@ -11907,6 +11999,7 @@ def test_delete_git_repository_link_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_git_repository_link(
             request,
@@ -11918,6 +12011,7 @@ def test_delete_git_repository_link_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_git_repository_links_rest_bad_request(
@@ -12004,10 +12098,14 @@ def test_list_git_repository_links_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_list_git_repository_links"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_list_git_repository_links_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_list_git_repository_links"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.ListGitRepositoryLinksRequest.pb(
             developer_connect.ListGitRepositoryLinksRequest()
         )
@@ -12033,6 +12131,10 @@ def test_list_git_repository_links_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.ListGitRepositoryLinksResponse()
+        post_with_metadata.return_value = (
+            developer_connect.ListGitRepositoryLinksResponse(),
+            metadata,
+        )
 
         client.list_git_repository_links(
             request,
@@ -12044,6 +12146,7 @@ def test_list_git_repository_links_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_git_repository_link_rest_bad_request(
@@ -12142,10 +12245,14 @@ def test_get_git_repository_link_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_get_git_repository_link"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_get_git_repository_link_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_get_git_repository_link"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.GetGitRepositoryLinkRequest.pb(
             developer_connect.GetGitRepositoryLinkRequest()
         )
@@ -12171,6 +12278,10 @@ def test_get_git_repository_link_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.GitRepositoryLink()
+        post_with_metadata.return_value = (
+            developer_connect.GitRepositoryLink(),
+            metadata,
+        )
 
         client.get_git_repository_link(
             request,
@@ -12182,6 +12293,7 @@ def test_get_git_repository_link_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_read_write_token_rest_bad_request(
@@ -12272,10 +12384,14 @@ def test_fetch_read_write_token_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_fetch_read_write_token"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_fetch_read_write_token_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_fetch_read_write_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.FetchReadWriteTokenRequest.pb(
             developer_connect.FetchReadWriteTokenRequest()
         )
@@ -12301,6 +12417,10 @@ def test_fetch_read_write_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.FetchReadWriteTokenResponse()
+        post_with_metadata.return_value = (
+            developer_connect.FetchReadWriteTokenResponse(),
+            metadata,
+        )
 
         client.fetch_read_write_token(
             request,
@@ -12312,6 +12432,7 @@ def test_fetch_read_write_token_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_read_token_rest_bad_request(
@@ -12402,10 +12523,14 @@ def test_fetch_read_token_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_fetch_read_token"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_fetch_read_token_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_fetch_read_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.FetchReadTokenRequest.pb(
             developer_connect.FetchReadTokenRequest()
         )
@@ -12431,6 +12556,10 @@ def test_fetch_read_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.FetchReadTokenResponse()
+        post_with_metadata.return_value = (
+            developer_connect.FetchReadTokenResponse(),
+            metadata,
+        )
 
         client.fetch_read_token(
             request,
@@ -12442,6 +12571,7 @@ def test_fetch_read_token_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_linkable_git_repositories_rest_bad_request(
@@ -12534,10 +12664,14 @@ def test_fetch_linkable_git_repositories_rest_interceptors(null_interceptor):
         "post_fetch_linkable_git_repositories",
     ) as post, mock.patch.object(
         transports.DeveloperConnectRestInterceptor,
+        "post_fetch_linkable_git_repositories_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
         "pre_fetch_linkable_git_repositories",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.FetchLinkableGitRepositoriesRequest.pb(
             developer_connect.FetchLinkableGitRepositoriesRequest()
         )
@@ -12563,6 +12697,10 @@ def test_fetch_linkable_git_repositories_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.FetchLinkableGitRepositoriesResponse()
+        post_with_metadata.return_value = (
+            developer_connect.FetchLinkableGitRepositoriesResponse(),
+            metadata,
+        )
 
         client.fetch_linkable_git_repositories(
             request,
@@ -12574,6 +12712,7 @@ def test_fetch_linkable_git_repositories_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_git_hub_installations_rest_bad_request(
@@ -12661,10 +12800,14 @@ def test_fetch_git_hub_installations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_fetch_git_hub_installations"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor,
+        "post_fetch_git_hub_installations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_fetch_git_hub_installations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.FetchGitHubInstallationsRequest.pb(
             developer_connect.FetchGitHubInstallationsRequest()
         )
@@ -12690,6 +12833,10 @@ def test_fetch_git_hub_installations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.FetchGitHubInstallationsResponse()
+        post_with_metadata.return_value = (
+            developer_connect.FetchGitHubInstallationsResponse(),
+            metadata,
+        )
 
         client.fetch_git_hub_installations(
             request,
@@ -12701,6 +12848,7 @@ def test_fetch_git_hub_installations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_git_refs_rest_bad_request(
@@ -12791,10 +12939,13 @@ def test_fetch_git_refs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "post_fetch_git_refs"
     ) as post, mock.patch.object(
+        transports.DeveloperConnectRestInterceptor, "post_fetch_git_refs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DeveloperConnectRestInterceptor, "pre_fetch_git_refs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = developer_connect.FetchGitRefsRequest.pb(
             developer_connect.FetchGitRefsRequest()
         )
@@ -12820,6 +12971,10 @@ def test_fetch_git_refs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = developer_connect.FetchGitRefsResponse()
+        post_with_metadata.return_value = (
+            developer_connect.FetchGitRefsResponse(),
+            metadata,
+        )
 
         client.fetch_git_refs(
             request,
@@ -12831,6 +12986,7 @@ def test_fetch_git_refs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
