@@ -138,11 +138,34 @@ class VpcFlowLogsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_vpc_flow_logs_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_vpc_flow_logs_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VpcFlowLogsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_vpc_flow_logs_config` interceptor runs
+        before the `post_create_vpc_flow_logs_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_vpc_flow_logs_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_vpc_flow_logs_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VpcFlowLogsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_vpc_flow_logs_config_with_metadata`
+        interceptor in new development instead of the `post_create_vpc_flow_logs_config` interceptor.
+        When both interceptors are used, this `post_create_vpc_flow_logs_config_with_metadata` interceptor runs after the
+        `post_create_vpc_flow_logs_config` interceptor. The (possibly modified) response returned by
+        `post_create_vpc_flow_logs_config` will be passed to
+        `post_create_vpc_flow_logs_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_vpc_flow_logs_config(
         self,
@@ -164,11 +187,34 @@ class VpcFlowLogsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_vpc_flow_logs_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_vpc_flow_logs_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VpcFlowLogsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_vpc_flow_logs_config` interceptor runs
+        before the `post_delete_vpc_flow_logs_config_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_vpc_flow_logs_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_vpc_flow_logs_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VpcFlowLogsService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_vpc_flow_logs_config_with_metadata`
+        interceptor in new development instead of the `post_delete_vpc_flow_logs_config` interceptor.
+        When both interceptors are used, this `post_delete_vpc_flow_logs_config_with_metadata` interceptor runs after the
+        `post_delete_vpc_flow_logs_config` interceptor. The (possibly modified) response returned by
+        `post_delete_vpc_flow_logs_config` will be passed to
+        `post_delete_vpc_flow_logs_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_vpc_flow_logs_config(
         self,
@@ -190,11 +236,36 @@ class VpcFlowLogsServiceRestInterceptor:
     ) -> vpc_flow_logs_config.VpcFlowLogsConfig:
         """Post-rpc interceptor for get_vpc_flow_logs_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_vpc_flow_logs_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VpcFlowLogsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_vpc_flow_logs_config` interceptor runs
+        before the `post_get_vpc_flow_logs_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_vpc_flow_logs_config_with_metadata(
+        self,
+        response: vpc_flow_logs_config.VpcFlowLogsConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vpc_flow_logs_config.VpcFlowLogsConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_vpc_flow_logs_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VpcFlowLogsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_vpc_flow_logs_config_with_metadata`
+        interceptor in new development instead of the `post_get_vpc_flow_logs_config` interceptor.
+        When both interceptors are used, this `post_get_vpc_flow_logs_config_with_metadata` interceptor runs after the
+        `post_get_vpc_flow_logs_config` interceptor. The (possibly modified) response returned by
+        `post_get_vpc_flow_logs_config` will be passed to
+        `post_get_vpc_flow_logs_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_vpc_flow_logs_configs(
         self,
@@ -216,11 +287,37 @@ class VpcFlowLogsServiceRestInterceptor:
     ) -> vpc_flow_logs.ListVpcFlowLogsConfigsResponse:
         """Post-rpc interceptor for list_vpc_flow_logs_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_vpc_flow_logs_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VpcFlowLogsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_vpc_flow_logs_configs` interceptor runs
+        before the `post_list_vpc_flow_logs_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_vpc_flow_logs_configs_with_metadata(
+        self,
+        response: vpc_flow_logs.ListVpcFlowLogsConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vpc_flow_logs.ListVpcFlowLogsConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_vpc_flow_logs_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VpcFlowLogsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_vpc_flow_logs_configs_with_metadata`
+        interceptor in new development instead of the `post_list_vpc_flow_logs_configs` interceptor.
+        When both interceptors are used, this `post_list_vpc_flow_logs_configs_with_metadata` interceptor runs after the
+        `post_list_vpc_flow_logs_configs` interceptor. The (possibly modified) response returned by
+        `post_list_vpc_flow_logs_configs` will be passed to
+        `post_list_vpc_flow_logs_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_vpc_flow_logs_config(
         self,
@@ -242,11 +339,34 @@ class VpcFlowLogsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_vpc_flow_logs_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_vpc_flow_logs_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VpcFlowLogsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_vpc_flow_logs_config` interceptor runs
+        before the `post_update_vpc_flow_logs_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_vpc_flow_logs_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_vpc_flow_logs_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VpcFlowLogsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_vpc_flow_logs_config_with_metadata`
+        interceptor in new development instead of the `post_update_vpc_flow_logs_config` interceptor.
+        When both interceptors are used, this `post_update_vpc_flow_logs_config_with_metadata` interceptor runs after the
+        `post_update_vpc_flow_logs_config` interceptor. The (possibly modified) response returned by
+        `post_update_vpc_flow_logs_config` will be passed to
+        `post_update_vpc_flow_logs_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -740,6 +860,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_vpc_flow_logs_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_vpc_flow_logs_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -887,6 +1011,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_vpc_flow_logs_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_vpc_flow_logs_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1034,6 +1162,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_vpc_flow_logs_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_vpc_flow_logs_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1182,6 +1314,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_vpc_flow_logs_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_vpc_flow_logs_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1337,6 +1473,10 @@ class VpcFlowLogsServiceRestTransport(_BaseVpcFlowLogsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_vpc_flow_logs_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_vpc_flow_logs_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

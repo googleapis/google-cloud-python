@@ -48,7 +48,7 @@ dependencies = [
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 extras = {}
-url = "https://github.com/googleapis/google-cloud-python"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-org-policy"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 

@@ -196,11 +196,34 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_os_policy_assignment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_os_policy_assignment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_os_policy_assignment` interceptor runs
+        before the `post_create_os_policy_assignment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_os_policy_assignment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_os_policy_assignment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_create_os_policy_assignment_with_metadata`
+        interceptor in new development instead of the `post_create_os_policy_assignment` interceptor.
+        When both interceptors are used, this `post_create_os_policy_assignment_with_metadata` interceptor runs after the
+        `post_create_os_policy_assignment` interceptor. The (possibly modified) response returned by
+        `post_create_os_policy_assignment` will be passed to
+        `post_create_os_policy_assignment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_os_policy_assignment(
         self,
@@ -222,11 +245,34 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_os_policy_assignment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_os_policy_assignment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_os_policy_assignment` interceptor runs
+        before the `post_delete_os_policy_assignment_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_os_policy_assignment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_os_policy_assignment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_os_policy_assignment_with_metadata`
+        interceptor in new development instead of the `post_delete_os_policy_assignment` interceptor.
+        When both interceptors are used, this `post_delete_os_policy_assignment_with_metadata` interceptor runs after the
+        `post_delete_os_policy_assignment` interceptor. The (possibly modified) response returned by
+        `post_delete_os_policy_assignment` will be passed to
+        `post_delete_os_policy_assignment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_inventory(
         self,
@@ -243,11 +289,34 @@ class OsConfigZonalServiceRestInterceptor:
     def post_get_inventory(self, response: inventory.Inventory) -> inventory.Inventory:
         """Post-rpc interceptor for get_inventory
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_inventory_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_inventory` interceptor runs
+        before the `post_get_inventory_with_metadata` interceptor.
         """
         return response
+
+    def post_get_inventory_with_metadata(
+        self,
+        response: inventory.Inventory,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[inventory.Inventory, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_inventory
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_get_inventory_with_metadata`
+        interceptor in new development instead of the `post_get_inventory` interceptor.
+        When both interceptors are used, this `post_get_inventory_with_metadata` interceptor runs after the
+        `post_get_inventory` interceptor. The (possibly modified) response returned by
+        `post_get_inventory` will be passed to
+        `post_get_inventory_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_os_policy_assignment(
         self,
@@ -269,11 +338,37 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> os_policy_assignments.OSPolicyAssignment:
         """Post-rpc interceptor for get_os_policy_assignment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_os_policy_assignment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_os_policy_assignment` interceptor runs
+        before the `post_get_os_policy_assignment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_os_policy_assignment_with_metadata(
+        self,
+        response: os_policy_assignments.OSPolicyAssignment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        os_policy_assignments.OSPolicyAssignment,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_os_policy_assignment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_get_os_policy_assignment_with_metadata`
+        interceptor in new development instead of the `post_get_os_policy_assignment` interceptor.
+        When both interceptors are used, this `post_get_os_policy_assignment_with_metadata` interceptor runs after the
+        `post_get_os_policy_assignment` interceptor. The (possibly modified) response returned by
+        `post_get_os_policy_assignment` will be passed to
+        `post_get_os_policy_assignment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_os_policy_assignment_report(
         self,
@@ -295,11 +390,37 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> os_policy_assignment_reports.OSPolicyAssignmentReport:
         """Post-rpc interceptor for get_os_policy_assignment_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_os_policy_assignment_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_os_policy_assignment_report` interceptor runs
+        before the `post_get_os_policy_assignment_report_with_metadata` interceptor.
         """
         return response
+
+    def post_get_os_policy_assignment_report_with_metadata(
+        self,
+        response: os_policy_assignment_reports.OSPolicyAssignmentReport,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        os_policy_assignment_reports.OSPolicyAssignmentReport,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_os_policy_assignment_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_get_os_policy_assignment_report_with_metadata`
+        interceptor in new development instead of the `post_get_os_policy_assignment_report` interceptor.
+        When both interceptors are used, this `post_get_os_policy_assignment_report_with_metadata` interceptor runs after the
+        `post_get_os_policy_assignment_report` interceptor. The (possibly modified) response returned by
+        `post_get_os_policy_assignment_report` will be passed to
+        `post_get_os_policy_assignment_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_vulnerability_report(
         self,
@@ -321,11 +442,36 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> vulnerability.VulnerabilityReport:
         """Post-rpc interceptor for get_vulnerability_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_vulnerability_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_vulnerability_report` interceptor runs
+        before the `post_get_vulnerability_report_with_metadata` interceptor.
         """
         return response
+
+    def post_get_vulnerability_report_with_metadata(
+        self,
+        response: vulnerability.VulnerabilityReport,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vulnerability.VulnerabilityReport, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_vulnerability_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_get_vulnerability_report_with_metadata`
+        interceptor in new development instead of the `post_get_vulnerability_report` interceptor.
+        When both interceptors are used, this `post_get_vulnerability_report_with_metadata` interceptor runs after the
+        `post_get_vulnerability_report` interceptor. The (possibly modified) response returned by
+        `post_get_vulnerability_report` will be passed to
+        `post_get_vulnerability_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_inventories(
         self,
@@ -346,11 +492,36 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> inventory.ListInventoriesResponse:
         """Post-rpc interceptor for list_inventories
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_inventories_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_inventories` interceptor runs
+        before the `post_list_inventories_with_metadata` interceptor.
         """
         return response
+
+    def post_list_inventories_with_metadata(
+        self,
+        response: inventory.ListInventoriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        inventory.ListInventoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_inventories
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_list_inventories_with_metadata`
+        interceptor in new development instead of the `post_list_inventories` interceptor.
+        When both interceptors are used, this `post_list_inventories_with_metadata` interceptor runs after the
+        `post_list_inventories` interceptor. The (possibly modified) response returned by
+        `post_list_inventories` will be passed to
+        `post_list_inventories_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_os_policy_assignment_reports(
         self,
@@ -373,11 +544,37 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse:
         """Post-rpc interceptor for list_os_policy_assignment_reports
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_os_policy_assignment_reports_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_os_policy_assignment_reports` interceptor runs
+        before the `post_list_os_policy_assignment_reports_with_metadata` interceptor.
         """
         return response
+
+    def post_list_os_policy_assignment_reports_with_metadata(
+        self,
+        response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_os_policy_assignment_reports
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_list_os_policy_assignment_reports_with_metadata`
+        interceptor in new development instead of the `post_list_os_policy_assignment_reports` interceptor.
+        When both interceptors are used, this `post_list_os_policy_assignment_reports_with_metadata` interceptor runs after the
+        `post_list_os_policy_assignment_reports` interceptor. The (possibly modified) response returned by
+        `post_list_os_policy_assignment_reports` will be passed to
+        `post_list_os_policy_assignment_reports_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_os_policy_assignment_revisions(
         self,
@@ -399,11 +596,37 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse:
         """Post-rpc interceptor for list_os_policy_assignment_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_os_policy_assignment_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_os_policy_assignment_revisions` interceptor runs
+        before the `post_list_os_policy_assignment_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_os_policy_assignment_revisions_with_metadata(
+        self,
+        response: os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_os_policy_assignment_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_list_os_policy_assignment_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_os_policy_assignment_revisions` interceptor.
+        When both interceptors are used, this `post_list_os_policy_assignment_revisions_with_metadata` interceptor runs after the
+        `post_list_os_policy_assignment_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_os_policy_assignment_revisions` will be passed to
+        `post_list_os_policy_assignment_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_os_policy_assignments(
         self,
@@ -425,11 +648,37 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> os_policy_assignments.ListOSPolicyAssignmentsResponse:
         """Post-rpc interceptor for list_os_policy_assignments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_os_policy_assignments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_os_policy_assignments` interceptor runs
+        before the `post_list_os_policy_assignments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_os_policy_assignments_with_metadata(
+        self,
+        response: os_policy_assignments.ListOSPolicyAssignmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        os_policy_assignments.ListOSPolicyAssignmentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_os_policy_assignments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_list_os_policy_assignments_with_metadata`
+        interceptor in new development instead of the `post_list_os_policy_assignments` interceptor.
+        When both interceptors are used, this `post_list_os_policy_assignments_with_metadata` interceptor runs after the
+        `post_list_os_policy_assignments` interceptor. The (possibly modified) response returned by
+        `post_list_os_policy_assignments` will be passed to
+        `post_list_os_policy_assignments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_vulnerability_reports(
         self,
@@ -451,11 +700,37 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> vulnerability.ListVulnerabilityReportsResponse:
         """Post-rpc interceptor for list_vulnerability_reports
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_vulnerability_reports_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_vulnerability_reports` interceptor runs
+        before the `post_list_vulnerability_reports_with_metadata` interceptor.
         """
         return response
+
+    def post_list_vulnerability_reports_with_metadata(
+        self,
+        response: vulnerability.ListVulnerabilityReportsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vulnerability.ListVulnerabilityReportsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_vulnerability_reports
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_list_vulnerability_reports_with_metadata`
+        interceptor in new development instead of the `post_list_vulnerability_reports` interceptor.
+        When both interceptors are used, this `post_list_vulnerability_reports_with_metadata` interceptor runs after the
+        `post_list_vulnerability_reports` interceptor. The (possibly modified) response returned by
+        `post_list_vulnerability_reports` will be passed to
+        `post_list_vulnerability_reports_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_os_policy_assignment(
         self,
@@ -477,11 +752,34 @@ class OsConfigZonalServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_os_policy_assignment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_os_policy_assignment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OsConfigZonalService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_os_policy_assignment` interceptor runs
+        before the `post_update_os_policy_assignment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_os_policy_assignment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_os_policy_assignment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OsConfigZonalService server but before it is returned to user code.
+
+        We recommend only using this `post_update_os_policy_assignment_with_metadata`
+        interceptor in new development instead of the `post_update_os_policy_assignment` interceptor.
+        When both interceptors are used, this `post_update_os_policy_assignment_with_metadata` interceptor runs after the
+        `post_update_os_policy_assignment` interceptor. The (possibly modified) response returned by
+        `post_update_os_policy_assignment` will be passed to
+        `post_update_os_policy_assignment_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -745,6 +1043,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_os_policy_assignment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_os_policy_assignment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -891,6 +1193,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_os_policy_assignment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_os_policy_assignment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1043,6 +1349,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_inventory(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_inventory_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1201,6 +1511,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_os_policy_assignment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_os_policy_assignment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1350,6 +1664,13 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_os_policy_assignment_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_os_policy_assignment_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1507,6 +1828,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_vulnerability_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_vulnerability_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1657,6 +1982,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_inventories(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_inventories_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1813,6 +2142,13 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_os_policy_assignment_reports(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_os_policy_assignment_reports_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1969,6 +2305,13 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_os_policy_assignment_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_os_policy_assignment_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2118,6 +2461,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_os_policy_assignments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_os_policy_assignments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2271,6 +2618,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_vulnerability_reports(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_vulnerability_reports_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2425,6 +2776,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_os_policy_assignment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_os_policy_assignment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

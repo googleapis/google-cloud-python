@@ -901,8 +901,6 @@ class SdpAdvancedConfig(proto.Message):
 class SanitizeUserPromptRequest(proto.Message):
     r"""Sanitize User Prompt request.
 
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
     Attributes:
         name (str):
             Required. Represents resource name of
@@ -910,22 +908,6 @@ class SanitizeUserPromptRequest(proto.Message):
             name=projects/sample-project/locations/us-central1/templates/templ01
         user_prompt_data (google.cloud.modelarmor_v1.types.DataItem):
             Required. User prompt data to sanitize.
-        filter_config (google.cloud.modelarmor_v1.types.FilterConfig):
-            Optional. Optional Filter configuration to Sanitize User
-            Prompt.
-
-            If below configuration is specified then Sanitization will
-            be performed using settings in this configuration along with
-            settings defined at template level (union of both).
-
-            If a filter setting overlaps, then the lowest threshold
-            value i.e. value with greater false positives will be
-            applied. For example, the ``filter_configuration`` defines
-            LOW_AND_ABOVE confidence level for TOXICITY, and template
-            defines HIGH confidence level, then Sanitization is
-            performed using LOW_AND_ABOVE confidence level.
-
-            This field is a member of `oneof`_ ``_filter_config``.
     """
 
     name: str = proto.Field(
@@ -937,18 +919,10 @@ class SanitizeUserPromptRequest(proto.Message):
         number=2,
         message="DataItem",
     )
-    filter_config: "FilterConfig" = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        optional=True,
-        message="FilterConfig",
-    )
 
 
 class SanitizeModelResponseRequest(proto.Message):
     r"""Sanitize Model Response request.
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -957,21 +931,6 @@ class SanitizeModelResponseRequest(proto.Message):
             name=projects/sample-project/locations/us-central1/templates/templ01
         model_response_data (google.cloud.modelarmor_v1.types.DataItem):
             Required. Model response data to sanitize.
-        filter_config (google.cloud.modelarmor_v1.types.FilterConfig):
-            Optional. Optional Filter configuration to Sanitize User
-            Prompt.
-
-            If below configuration is specified then Sanitization will
-            be performed using settings in this configuration along with
-            settings defined at template level (union of both).
-
-            If a filter overlaps, then the highest level of strictness
-            will be applied. For example, the filter_configuration
-            specifies LOW_AND_ABOVE confidence level for TOXICITY filter
-            and template uses HIGH confidence level, then Sanitization
-            is performed using LOW_AND_ABOVE confidence level.
-
-            This field is a member of `oneof`_ ``_filter_config``.
         user_prompt (str):
             Optional. User Prompt associated with Model
             response.
@@ -985,12 +944,6 @@ class SanitizeModelResponseRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="DataItem",
-    )
-    filter_config: "FilterConfig" = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        optional=True,
-        message="FilterConfig",
     )
     user_prompt: str = proto.Field(
         proto.STRING,

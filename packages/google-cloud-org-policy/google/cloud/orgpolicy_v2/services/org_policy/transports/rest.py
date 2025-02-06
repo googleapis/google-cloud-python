@@ -182,11 +182,34 @@ class OrgPolicyRestInterceptor:
     ) -> constraint.CustomConstraint:
         """Post-rpc interceptor for create_custom_constraint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_custom_constraint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_custom_constraint` interceptor runs
+        before the `post_create_custom_constraint_with_metadata` interceptor.
         """
         return response
+
+    def post_create_custom_constraint_with_metadata(
+        self,
+        response: constraint.CustomConstraint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[constraint.CustomConstraint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_custom_constraint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_create_custom_constraint_with_metadata`
+        interceptor in new development instead of the `post_create_custom_constraint` interceptor.
+        When both interceptors are used, this `post_create_custom_constraint_with_metadata` interceptor runs after the
+        `post_create_custom_constraint` interceptor. The (possibly modified) response returned by
+        `post_create_custom_constraint` will be passed to
+        `post_create_custom_constraint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_policy(
         self,
@@ -203,11 +226,34 @@ class OrgPolicyRestInterceptor:
     def post_create_policy(self, response: orgpolicy.Policy) -> orgpolicy.Policy:
         """Post-rpc interceptor for create_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_policy` interceptor runs
+        before the `post_create_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_policy_with_metadata(
+        self,
+        response: orgpolicy.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_create_policy_with_metadata`
+        interceptor in new development instead of the `post_create_policy` interceptor.
+        When both interceptors are used, this `post_create_policy_with_metadata` interceptor runs after the
+        `post_create_policy` interceptor. The (possibly modified) response returned by
+        `post_create_policy` will be passed to
+        `post_create_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_custom_constraint(
         self,
@@ -254,11 +300,34 @@ class OrgPolicyRestInterceptor:
     ) -> constraint.CustomConstraint:
         """Post-rpc interceptor for get_custom_constraint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_custom_constraint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_custom_constraint` interceptor runs
+        before the `post_get_custom_constraint_with_metadata` interceptor.
         """
         return response
+
+    def post_get_custom_constraint_with_metadata(
+        self,
+        response: constraint.CustomConstraint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[constraint.CustomConstraint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_custom_constraint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_get_custom_constraint_with_metadata`
+        interceptor in new development instead of the `post_get_custom_constraint` interceptor.
+        When both interceptors are used, this `post_get_custom_constraint_with_metadata` interceptor runs after the
+        `post_get_custom_constraint` interceptor. The (possibly modified) response returned by
+        `post_get_custom_constraint` will be passed to
+        `post_get_custom_constraint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_effective_policy(
         self,
@@ -277,11 +346,34 @@ class OrgPolicyRestInterceptor:
     def post_get_effective_policy(self, response: orgpolicy.Policy) -> orgpolicy.Policy:
         """Post-rpc interceptor for get_effective_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_effective_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_effective_policy` interceptor runs
+        before the `post_get_effective_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_effective_policy_with_metadata(
+        self,
+        response: orgpolicy.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_effective_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_get_effective_policy_with_metadata`
+        interceptor in new development instead of the `post_get_effective_policy` interceptor.
+        When both interceptors are used, this `post_get_effective_policy_with_metadata` interceptor runs after the
+        `post_get_effective_policy` interceptor. The (possibly modified) response returned by
+        `post_get_effective_policy` will be passed to
+        `post_get_effective_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_policy(
         self,
@@ -298,11 +390,34 @@ class OrgPolicyRestInterceptor:
     def post_get_policy(self, response: orgpolicy.Policy) -> orgpolicy.Policy:
         """Post-rpc interceptor for get_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_policy` interceptor runs
+        before the `post_get_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_policy_with_metadata(
+        self,
+        response: orgpolicy.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_get_policy_with_metadata`
+        interceptor in new development instead of the `post_get_policy` interceptor.
+        When both interceptors are used, this `post_get_policy_with_metadata` interceptor runs after the
+        `post_get_policy` interceptor. The (possibly modified) response returned by
+        `post_get_policy` will be passed to
+        `post_get_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_constraints(
         self,
@@ -323,11 +438,36 @@ class OrgPolicyRestInterceptor:
     ) -> orgpolicy.ListConstraintsResponse:
         """Post-rpc interceptor for list_constraints
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_constraints_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_constraints` interceptor runs
+        before the `post_list_constraints_with_metadata` interceptor.
         """
         return response
+
+    def post_list_constraints_with_metadata(
+        self,
+        response: orgpolicy.ListConstraintsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.ListConstraintsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_constraints
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_list_constraints_with_metadata`
+        interceptor in new development instead of the `post_list_constraints` interceptor.
+        When both interceptors are used, this `post_list_constraints_with_metadata` interceptor runs after the
+        `post_list_constraints` interceptor. The (possibly modified) response returned by
+        `post_list_constraints` will be passed to
+        `post_list_constraints_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_custom_constraints(
         self,
@@ -348,11 +488,36 @@ class OrgPolicyRestInterceptor:
     ) -> orgpolicy.ListCustomConstraintsResponse:
         """Post-rpc interceptor for list_custom_constraints
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_custom_constraints_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_custom_constraints` interceptor runs
+        before the `post_list_custom_constraints_with_metadata` interceptor.
         """
         return response
+
+    def post_list_custom_constraints_with_metadata(
+        self,
+        response: orgpolicy.ListCustomConstraintsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        orgpolicy.ListCustomConstraintsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_custom_constraints
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_list_custom_constraints_with_metadata`
+        interceptor in new development instead of the `post_list_custom_constraints` interceptor.
+        When both interceptors are used, this `post_list_custom_constraints_with_metadata` interceptor runs after the
+        `post_list_custom_constraints` interceptor. The (possibly modified) response returned by
+        `post_list_custom_constraints` will be passed to
+        `post_list_custom_constraints_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_policies(
         self,
@@ -371,11 +536,34 @@ class OrgPolicyRestInterceptor:
     ) -> orgpolicy.ListPoliciesResponse:
         """Post-rpc interceptor for list_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_policies` interceptor runs
+        before the `post_list_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_policies_with_metadata(
+        self,
+        response: orgpolicy.ListPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.ListPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_list_policies_with_metadata`
+        interceptor in new development instead of the `post_list_policies` interceptor.
+        When both interceptors are used, this `post_list_policies_with_metadata` interceptor runs after the
+        `post_list_policies` interceptor. The (possibly modified) response returned by
+        `post_list_policies` will be passed to
+        `post_list_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_custom_constraint(
         self,
@@ -396,11 +584,34 @@ class OrgPolicyRestInterceptor:
     ) -> constraint.CustomConstraint:
         """Post-rpc interceptor for update_custom_constraint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_custom_constraint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_custom_constraint` interceptor runs
+        before the `post_update_custom_constraint_with_metadata` interceptor.
         """
         return response
+
+    def post_update_custom_constraint_with_metadata(
+        self,
+        response: constraint.CustomConstraint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[constraint.CustomConstraint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_custom_constraint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_update_custom_constraint_with_metadata`
+        interceptor in new development instead of the `post_update_custom_constraint` interceptor.
+        When both interceptors are used, this `post_update_custom_constraint_with_metadata` interceptor runs after the
+        `post_update_custom_constraint` interceptor. The (possibly modified) response returned by
+        `post_update_custom_constraint` will be passed to
+        `post_update_custom_constraint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_policy(
         self,
@@ -417,11 +628,34 @@ class OrgPolicyRestInterceptor:
     def post_update_policy(self, response: orgpolicy.Policy) -> orgpolicy.Policy:
         """Post-rpc interceptor for update_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the OrgPolicy server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_policy` interceptor runs
+        before the `post_update_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_policy_with_metadata(
+        self,
+        response: orgpolicy.Policy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[orgpolicy.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicy server but before it is returned to user code.
+
+        We recommend only using this `post_update_policy_with_metadata`
+        interceptor in new development instead of the `post_update_policy` interceptor.
+        When both interceptors are used, this `post_update_policy_with_metadata` interceptor runs after the
+        `post_update_policy` interceptor. The (possibly modified) response returned by
+        `post_update_policy` will be passed to
+        `post_update_policy_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -666,6 +900,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_custom_constraint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_custom_constraint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -822,6 +1060,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1196,6 +1438,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_custom_constraint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_custom_constraint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1344,6 +1590,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_effective_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_effective_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1491,6 +1741,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1640,6 +1894,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_constraints(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_constraints_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1790,6 +2048,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_custom_constraints(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_custom_constraints_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1942,6 +2204,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2100,6 +2366,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_custom_constraint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_custom_constraint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2256,6 +2526,10 @@ class OrgPolicyRestTransport(_BaseOrgPolicyRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
