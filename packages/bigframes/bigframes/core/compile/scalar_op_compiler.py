@@ -1003,6 +1003,13 @@ def geo_area_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.GeoSpatialValue, x).area()
 
 
+@scalar_op_compiler.register_binary_op(ops.geo_st_geogpoint_op, pass_op=False)
+def geo_st_geogpoint_op_impl(x: ibis_types.Value, y: ibis_types.Value):
+    return typing.cast(ibis_types.NumericValue, x).point(
+        typing.cast(ibis_types.NumericValue, y)
+    )
+
+
 # Parameterized ops
 @scalar_op_compiler.register_unary_op(ops.StructFieldOp, pass_op=True)
 def struct_field_op_impl(x: ibis_types.Value, op: ops.StructFieldOp):

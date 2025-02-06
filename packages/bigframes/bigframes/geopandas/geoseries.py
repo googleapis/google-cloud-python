@@ -66,3 +66,12 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
         raise NotImplementedError(
             f"GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), instead. {constants.FEEDBACK_LINK}"
         )
+
+    @classmethod
+    def from_xy(cls, x, y, index=None, session=None, **kwargs) -> GeoSeries:
+        # TODO: if either x or y is local and the other is remote. Use the
+        # session from the remote object.
+        series_x = bigframes.series.Series(x, index=index, session=session, **kwargs)
+        series_y = bigframes.series.Series(y, index=index, session=session, **kwargs)
+
+        return cls(series_x._apply_binary_op(series_y, ops.geo_st_geogpoint_op))

@@ -122,6 +122,20 @@ class BinaryNumeric(BinaryTypeSignature):
 
 
 @dataclasses.dataclass
+class BinaryNumericGeo(BinaryTypeSignature):
+    """Type signature for geo functions like from_xy that can map ints to ints."""
+
+    def output_type(
+        self, left_type: ExpressionType, right_type: ExpressionType
+    ) -> ExpressionType:
+        if (left_type is not None) and not bigframes.dtypes.is_numeric(left_type):
+            raise TypeError(f"Type {left_type} is not numeric")
+        if (right_type is not None) and not bigframes.dtypes.is_numeric(right_type):
+            raise TypeError(f"Type {right_type} is not numeric")
+        return bigframes.dtypes.GEO_DTYPE
+
+
+@dataclasses.dataclass
 class BinaryRealNumeric(BinaryTypeSignature):
     """Type signature for real-valued functions like divide, arctan2, pow."""
 

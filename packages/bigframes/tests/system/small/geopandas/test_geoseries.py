@@ -87,3 +87,23 @@ def test_geo_area_not_supported():
         ),
     ):
         bf_series.area
+
+
+def test_geo_from_xy():
+    x = [2.5, 5, -3.0]
+    y = [0.5, 1, 1.5]
+    bf_result = (
+        bigframes.geopandas.GeoSeries.from_xy(x, y)
+        .astype(geopandas.array.GeometryDtype())
+        .to_pandas()
+    )
+    pd_result = geopandas.GeoSeries.from_xy(x, y, crs="EPSG:4326").astype(
+        geopandas.array.GeometryDtype()
+    )
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+        check_series_type=False,
+        check_index=False,
+    )

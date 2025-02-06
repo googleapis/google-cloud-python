@@ -90,3 +90,45 @@ class GeoSeries:
                 Return the y location (latitude) of point geometries.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @classmethod
+    def from_xy(cls, x, y, index=None, **kwargs) -> bigframes.geopandas.GeoSeries:
+        """
+        Alternate constructor to create a GeoSeries of Point geometries from
+        lists or arrays of x, y coordinates.
+
+        In case of geographic coordinates, it is assumed that longitude is
+        captured by x coordinates and latitude by y.
+
+          **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import bigframes.geopandas
+            >>> bpd.options.display.progress_bar = None
+
+            >>> x = [2.5, 5, -3.0]
+            >>> y = [0.5, 1, 1.5]
+
+            >>> s = bigframes.geopandas.GeoSeries.from_xy(x, y)
+            >>> s
+            0    POINT (2.5 0.5)
+            1        POINT (5 1)
+            2     POINT (-3 1.5)
+            dtype: geometry
+
+        Args:
+            x, y (array-like):
+                longitude is x coordinates and latitude y coordinates.
+
+            index (array-like or Index, optional):
+                The index for the GeoSeries. If not given and all coordinate
+                inputs are Series with an equal index, that index is used..
+
+            **kwargs:
+                Additional arguments passed to the Series constructor, e.g. `name`.
+
+        Returns:
+            bigframes.geopandas.GeoSeries:
+                A GeoSeries of Point geometries.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
