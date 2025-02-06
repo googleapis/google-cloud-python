@@ -78,6 +78,13 @@ from google.cloud.tpu_v2.services.tpu import (
 )
 from google.cloud.tpu_v2.types import cloud_tpu
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -287,6 +294,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TpuClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TpuClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TpuClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -12133,10 +12183,13 @@ def test_list_nodes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_list_nodes"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_list_nodes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_list_nodes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.ListNodesRequest.pb(cloud_tpu.ListNodesRequest())
         transcode.return_value = {
             "method": "post",
@@ -12160,6 +12213,7 @@ def test_list_nodes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.ListNodesResponse()
+        post_with_metadata.return_value = cloud_tpu.ListNodesResponse(), metadata
 
         client.list_nodes(
             request,
@@ -12171,6 +12225,7 @@ def test_list_nodes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_node_rest_bad_request(request_type=cloud_tpu.GetNodeRequest):
@@ -12275,10 +12330,13 @@ def test_get_node_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_get_node"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_get_node_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_get_node"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.GetNodeRequest.pb(cloud_tpu.GetNodeRequest())
         transcode.return_value = {
             "method": "post",
@@ -12300,6 +12358,7 @@ def test_get_node_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.Node()
+        post_with_metadata.return_value = cloud_tpu.Node(), metadata
 
         client.get_node(
             request,
@@ -12311,6 +12370,7 @@ def test_get_node_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_node_rest_bad_request(request_type=cloud_tpu.CreateNodeRequest):
@@ -12503,10 +12563,13 @@ def test_create_node_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_create_node"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_create_node_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_create_node"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.CreateNodeRequest.pb(cloud_tpu.CreateNodeRequest())
         transcode.return_value = {
             "method": "post",
@@ -12528,6 +12591,7 @@ def test_create_node_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_node(
             request,
@@ -12539,6 +12603,7 @@ def test_create_node_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_node_rest_bad_request(request_type=cloud_tpu.DeleteNodeRequest):
@@ -12615,10 +12680,13 @@ def test_delete_node_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_delete_node"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_delete_node_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_delete_node"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.DeleteNodeRequest.pb(cloud_tpu.DeleteNodeRequest())
         transcode.return_value = {
             "method": "post",
@@ -12640,6 +12708,7 @@ def test_delete_node_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_node(
             request,
@@ -12651,6 +12720,7 @@ def test_delete_node_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_node_rest_bad_request(request_type=cloud_tpu.StopNodeRequest):
@@ -12727,10 +12797,13 @@ def test_stop_node_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_stop_node"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_stop_node_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_stop_node"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.StopNodeRequest.pb(cloud_tpu.StopNodeRequest())
         transcode.return_value = {
             "method": "post",
@@ -12752,6 +12825,7 @@ def test_stop_node_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.stop_node(
             request,
@@ -12763,6 +12837,7 @@ def test_stop_node_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_node_rest_bad_request(request_type=cloud_tpu.StartNodeRequest):
@@ -12839,10 +12914,13 @@ def test_start_node_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_start_node"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_start_node_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_start_node"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.StartNodeRequest.pb(cloud_tpu.StartNodeRequest())
         transcode.return_value = {
             "method": "post",
@@ -12864,6 +12942,7 @@ def test_start_node_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.start_node(
             request,
@@ -12875,6 +12954,7 @@ def test_start_node_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_node_rest_bad_request(request_type=cloud_tpu.UpdateNodeRequest):
@@ -13071,10 +13151,13 @@ def test_update_node_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_update_node"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_update_node_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_update_node"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.UpdateNodeRequest.pb(cloud_tpu.UpdateNodeRequest())
         transcode.return_value = {
             "method": "post",
@@ -13096,6 +13179,7 @@ def test_update_node_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_node(
             request,
@@ -13107,6 +13191,7 @@ def test_update_node_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_queued_resources_rest_bad_request(
@@ -13191,10 +13276,13 @@ def test_list_queued_resources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_list_queued_resources"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_list_queued_resources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_list_queued_resources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.ListQueuedResourcesRequest.pb(
             cloud_tpu.ListQueuedResourcesRequest()
         )
@@ -13220,6 +13308,10 @@ def test_list_queued_resources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.ListQueuedResourcesResponse()
+        post_with_metadata.return_value = (
+            cloud_tpu.ListQueuedResourcesResponse(),
+            metadata,
+        )
 
         client.list_queued_resources(
             request,
@@ -13231,6 +13323,7 @@ def test_list_queued_resources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_queued_resource_rest_bad_request(
@@ -13319,10 +13412,13 @@ def test_get_queued_resource_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_get_queued_resource"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_get_queued_resource_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_get_queued_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.GetQueuedResourceRequest.pb(
             cloud_tpu.GetQueuedResourceRequest()
         )
@@ -13346,6 +13442,7 @@ def test_get_queued_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.QueuedResource()
+        post_with_metadata.return_value = cloud_tpu.QueuedResource(), metadata
 
         client.get_queued_resource(
             request,
@@ -13357,6 +13454,7 @@ def test_get_queued_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_queued_resource_rest_bad_request(
@@ -13607,10 +13705,13 @@ def test_create_queued_resource_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_create_queued_resource"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_create_queued_resource_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_create_queued_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.CreateQueuedResourceRequest.pb(
             cloud_tpu.CreateQueuedResourceRequest()
         )
@@ -13634,6 +13735,7 @@ def test_create_queued_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_queued_resource(
             request,
@@ -13645,6 +13747,7 @@ def test_create_queued_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_queued_resource_rest_bad_request(
@@ -13727,10 +13830,13 @@ def test_delete_queued_resource_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_delete_queued_resource"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_delete_queued_resource_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_delete_queued_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.DeleteQueuedResourceRequest.pb(
             cloud_tpu.DeleteQueuedResourceRequest()
         )
@@ -13754,6 +13860,7 @@ def test_delete_queued_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_queued_resource(
             request,
@@ -13765,6 +13872,7 @@ def test_delete_queued_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reset_queued_resource_rest_bad_request(
@@ -13847,10 +13955,13 @@ def test_reset_queued_resource_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TpuRestInterceptor, "post_reset_queued_resource"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_reset_queued_resource_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_reset_queued_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.ResetQueuedResourceRequest.pb(
             cloud_tpu.ResetQueuedResourceRequest()
         )
@@ -13874,6 +13985,7 @@ def test_reset_queued_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reset_queued_resource(
             request,
@@ -13885,6 +13997,7 @@ def test_reset_queued_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_service_identity_rest_bad_request(
@@ -13964,10 +14077,13 @@ def test_generate_service_identity_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_generate_service_identity"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_generate_service_identity_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_generate_service_identity"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.GenerateServiceIdentityRequest.pb(
             cloud_tpu.GenerateServiceIdentityRequest()
         )
@@ -13993,6 +14109,10 @@ def test_generate_service_identity_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.GenerateServiceIdentityResponse()
+        post_with_metadata.return_value = (
+            cloud_tpu.GenerateServiceIdentityResponse(),
+            metadata,
+        )
 
         client.generate_service_identity(
             request,
@@ -14004,6 +14124,7 @@ def test_generate_service_identity_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_accelerator_types_rest_bad_request(
@@ -14088,10 +14209,13 @@ def test_list_accelerator_types_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_list_accelerator_types"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_list_accelerator_types_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_list_accelerator_types"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.ListAcceleratorTypesRequest.pb(
             cloud_tpu.ListAcceleratorTypesRequest()
         )
@@ -14117,6 +14241,10 @@ def test_list_accelerator_types_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.ListAcceleratorTypesResponse()
+        post_with_metadata.return_value = (
+            cloud_tpu.ListAcceleratorTypesResponse(),
+            metadata,
+        )
 
         client.list_accelerator_types(
             request,
@@ -14128,6 +14256,7 @@ def test_list_accelerator_types_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_accelerator_type_rest_bad_request(
@@ -14216,10 +14345,13 @@ def test_get_accelerator_type_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_get_accelerator_type"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_get_accelerator_type_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_get_accelerator_type"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.GetAcceleratorTypeRequest.pb(
             cloud_tpu.GetAcceleratorTypeRequest()
         )
@@ -14243,6 +14375,7 @@ def test_get_accelerator_type_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.AcceleratorType()
+        post_with_metadata.return_value = cloud_tpu.AcceleratorType(), metadata
 
         client.get_accelerator_type(
             request,
@@ -14254,6 +14387,7 @@ def test_get_accelerator_type_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_runtime_versions_rest_bad_request(
@@ -14338,10 +14472,13 @@ def test_list_runtime_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_list_runtime_versions"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_list_runtime_versions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_list_runtime_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.ListRuntimeVersionsRequest.pb(
             cloud_tpu.ListRuntimeVersionsRequest()
         )
@@ -14367,6 +14504,10 @@ def test_list_runtime_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.ListRuntimeVersionsResponse()
+        post_with_metadata.return_value = (
+            cloud_tpu.ListRuntimeVersionsResponse(),
+            metadata,
+        )
 
         client.list_runtime_versions(
             request,
@@ -14378,6 +14519,7 @@ def test_list_runtime_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_runtime_version_rest_bad_request(
@@ -14466,10 +14608,13 @@ def test_get_runtime_version_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_get_runtime_version"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_get_runtime_version_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_get_runtime_version"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.GetRuntimeVersionRequest.pb(
             cloud_tpu.GetRuntimeVersionRequest()
         )
@@ -14493,6 +14638,7 @@ def test_get_runtime_version_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.RuntimeVersion()
+        post_with_metadata.return_value = cloud_tpu.RuntimeVersion(), metadata
 
         client.get_runtime_version(
             request,
@@ -14504,6 +14650,7 @@ def test_get_runtime_version_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_guest_attributes_rest_bad_request(
@@ -14583,10 +14730,13 @@ def test_get_guest_attributes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TpuRestInterceptor, "post_get_guest_attributes"
     ) as post, mock.patch.object(
+        transports.TpuRestInterceptor, "post_get_guest_attributes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TpuRestInterceptor, "pre_get_guest_attributes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_tpu.GetGuestAttributesRequest.pb(
             cloud_tpu.GetGuestAttributesRequest()
         )
@@ -14612,6 +14762,10 @@ def test_get_guest_attributes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_tpu.GetGuestAttributesResponse()
+        post_with_metadata.return_value = (
+            cloud_tpu.GetGuestAttributesResponse(),
+            metadata,
+        )
 
         client.get_guest_attributes(
             request,
@@ -14623,6 +14777,7 @@ def test_get_guest_attributes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

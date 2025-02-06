@@ -256,11 +256,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.EventThreatDetectionCustomModule:
         """Post-rpc interceptor for create_event_threat_detection_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_event_threat_detection_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_event_threat_detection_custom_module` interceptor runs
+        before the `post_create_event_threat_detection_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_create_event_threat_detection_custom_module_with_metadata(
+        self,
+        response: security_center_management.EventThreatDetectionCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.EventThreatDetectionCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_event_threat_detection_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_event_threat_detection_custom_module_with_metadata`
+        interceptor in new development instead of the `post_create_event_threat_detection_custom_module` interceptor.
+        When both interceptors are used, this `post_create_event_threat_detection_custom_module_with_metadata` interceptor runs after the
+        `post_create_event_threat_detection_custom_module` interceptor. The (possibly modified) response returned by
+        `post_create_event_threat_detection_custom_module` will be passed to
+        `post_create_event_threat_detection_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_security_health_analytics_custom_module(
         self,
@@ -282,11 +308,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.SecurityHealthAnalyticsCustomModule:
         """Post-rpc interceptor for create_security_health_analytics_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_security_health_analytics_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_security_health_analytics_custom_module` interceptor runs
+        before the `post_create_security_health_analytics_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_create_security_health_analytics_custom_module_with_metadata(
+        self,
+        response: security_center_management.SecurityHealthAnalyticsCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.SecurityHealthAnalyticsCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_security_health_analytics_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_security_health_analytics_custom_module_with_metadata`
+        interceptor in new development instead of the `post_create_security_health_analytics_custom_module` interceptor.
+        When both interceptors are used, this `post_create_security_health_analytics_custom_module_with_metadata` interceptor runs after the
+        `post_create_security_health_analytics_custom_module` interceptor. The (possibly modified) response returned by
+        `post_create_security_health_analytics_custom_module` will be passed to
+        `post_create_security_health_analytics_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_event_threat_detection_custom_module(
         self,
@@ -339,11 +391,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.EffectiveEventThreatDetectionCustomModule:
         """Post-rpc interceptor for get_effective_event_threat_detection_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_effective_event_threat_detection_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_effective_event_threat_detection_custom_module` interceptor runs
+        before the `post_get_effective_event_threat_detection_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_get_effective_event_threat_detection_custom_module_with_metadata(
+        self,
+        response: security_center_management.EffectiveEventThreatDetectionCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.EffectiveEventThreatDetectionCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_effective_event_threat_detection_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_effective_event_threat_detection_custom_module_with_metadata`
+        interceptor in new development instead of the `post_get_effective_event_threat_detection_custom_module` interceptor.
+        When both interceptors are used, this `post_get_effective_event_threat_detection_custom_module_with_metadata` interceptor runs after the
+        `post_get_effective_event_threat_detection_custom_module` interceptor. The (possibly modified) response returned by
+        `post_get_effective_event_threat_detection_custom_module` will be passed to
+        `post_get_effective_event_threat_detection_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_effective_security_health_analytics_custom_module(
         self,
@@ -366,11 +444,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.EffectiveSecurityHealthAnalyticsCustomModule:
         """Post-rpc interceptor for get_effective_security_health_analytics_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_effective_security_health_analytics_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_effective_security_health_analytics_custom_module` interceptor runs
+        before the `post_get_effective_security_health_analytics_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_get_effective_security_health_analytics_custom_module_with_metadata(
+        self,
+        response: security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_effective_security_health_analytics_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_effective_security_health_analytics_custom_module_with_metadata`
+        interceptor in new development instead of the `post_get_effective_security_health_analytics_custom_module` interceptor.
+        When both interceptors are used, this `post_get_effective_security_health_analytics_custom_module_with_metadata` interceptor runs after the
+        `post_get_effective_security_health_analytics_custom_module` interceptor. The (possibly modified) response returned by
+        `post_get_effective_security_health_analytics_custom_module` will be passed to
+        `post_get_effective_security_health_analytics_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_event_threat_detection_custom_module(
         self,
@@ -392,11 +496,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.EventThreatDetectionCustomModule:
         """Post-rpc interceptor for get_event_threat_detection_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_event_threat_detection_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_event_threat_detection_custom_module` interceptor runs
+        before the `post_get_event_threat_detection_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_get_event_threat_detection_custom_module_with_metadata(
+        self,
+        response: security_center_management.EventThreatDetectionCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.EventThreatDetectionCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_event_threat_detection_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_event_threat_detection_custom_module_with_metadata`
+        interceptor in new development instead of the `post_get_event_threat_detection_custom_module` interceptor.
+        When both interceptors are used, this `post_get_event_threat_detection_custom_module_with_metadata` interceptor runs after the
+        `post_get_event_threat_detection_custom_module` interceptor. The (possibly modified) response returned by
+        `post_get_event_threat_detection_custom_module` will be passed to
+        `post_get_event_threat_detection_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_security_center_service(
         self,
@@ -418,11 +548,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.SecurityCenterService:
         """Post-rpc interceptor for get_security_center_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_security_center_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_security_center_service` interceptor runs
+        before the `post_get_security_center_service_with_metadata` interceptor.
         """
         return response
+
+    def post_get_security_center_service_with_metadata(
+        self,
+        response: security_center_management.SecurityCenterService,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.SecurityCenterService,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_security_center_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_security_center_service_with_metadata`
+        interceptor in new development instead of the `post_get_security_center_service` interceptor.
+        When both interceptors are used, this `post_get_security_center_service_with_metadata` interceptor runs after the
+        `post_get_security_center_service` interceptor. The (possibly modified) response returned by
+        `post_get_security_center_service` will be passed to
+        `post_get_security_center_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_security_health_analytics_custom_module(
         self,
@@ -444,11 +600,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.SecurityHealthAnalyticsCustomModule:
         """Post-rpc interceptor for get_security_health_analytics_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_security_health_analytics_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_security_health_analytics_custom_module` interceptor runs
+        before the `post_get_security_health_analytics_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_get_security_health_analytics_custom_module_with_metadata(
+        self,
+        response: security_center_management.SecurityHealthAnalyticsCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.SecurityHealthAnalyticsCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_security_health_analytics_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_security_health_analytics_custom_module_with_metadata`
+        interceptor in new development instead of the `post_get_security_health_analytics_custom_module` interceptor.
+        When both interceptors are used, this `post_get_security_health_analytics_custom_module_with_metadata` interceptor runs after the
+        `post_get_security_health_analytics_custom_module` interceptor. The (possibly modified) response returned by
+        `post_get_security_health_analytics_custom_module` will be passed to
+        `post_get_security_health_analytics_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_descendant_event_threat_detection_custom_modules(
         self,
@@ -473,11 +655,37 @@ class SecurityCenterManagementRestInterceptor:
     ):
         """Post-rpc interceptor for list_descendant_event_threat_detection_custom_modules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_descendant_event_threat_detection_custom_modules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_descendant_event_threat_detection_custom_modules` interceptor runs
+        before the `post_list_descendant_event_threat_detection_custom_modules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_descendant_event_threat_detection_custom_modules_with_metadata(
+        self,
+        response: security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_descendant_event_threat_detection_custom_modules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_descendant_event_threat_detection_custom_modules_with_metadata`
+        interceptor in new development instead of the `post_list_descendant_event_threat_detection_custom_modules` interceptor.
+        When both interceptors are used, this `post_list_descendant_event_threat_detection_custom_modules_with_metadata` interceptor runs after the
+        `post_list_descendant_event_threat_detection_custom_modules` interceptor. The (possibly modified) response returned by
+        `post_list_descendant_event_threat_detection_custom_modules` will be passed to
+        `post_list_descendant_event_threat_detection_custom_modules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_descendant_security_health_analytics_custom_modules(
         self,
@@ -502,11 +710,37 @@ class SecurityCenterManagementRestInterceptor:
     ):
         """Post-rpc interceptor for list_descendant_security_health_analytics_custom_modules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_descendant_security_health_analytics_custom_modules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_descendant_security_health_analytics_custom_modules` interceptor runs
+        before the `post_list_descendant_security_health_analytics_custom_modules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_descendant_security_health_analytics_custom_modules_with_metadata(
+        self,
+        response: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_descendant_security_health_analytics_custom_modules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_descendant_security_health_analytics_custom_modules_with_metadata`
+        interceptor in new development instead of the `post_list_descendant_security_health_analytics_custom_modules` interceptor.
+        When both interceptors are used, this `post_list_descendant_security_health_analytics_custom_modules_with_metadata` interceptor runs after the
+        `post_list_descendant_security_health_analytics_custom_modules` interceptor. The (possibly modified) response returned by
+        `post_list_descendant_security_health_analytics_custom_modules` will be passed to
+        `post_list_descendant_security_health_analytics_custom_modules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_effective_event_threat_detection_custom_modules(
         self,
@@ -531,11 +765,37 @@ class SecurityCenterManagementRestInterceptor:
     ):
         """Post-rpc interceptor for list_effective_event_threat_detection_custom_modules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_effective_event_threat_detection_custom_modules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_effective_event_threat_detection_custom_modules` interceptor runs
+        before the `post_list_effective_event_threat_detection_custom_modules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_effective_event_threat_detection_custom_modules_with_metadata(
+        self,
+        response: security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_effective_event_threat_detection_custom_modules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_effective_event_threat_detection_custom_modules_with_metadata`
+        interceptor in new development instead of the `post_list_effective_event_threat_detection_custom_modules` interceptor.
+        When both interceptors are used, this `post_list_effective_event_threat_detection_custom_modules_with_metadata` interceptor runs after the
+        `post_list_effective_event_threat_detection_custom_modules` interceptor. The (possibly modified) response returned by
+        `post_list_effective_event_threat_detection_custom_modules` will be passed to
+        `post_list_effective_event_threat_detection_custom_modules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_effective_security_health_analytics_custom_modules(
         self,
@@ -560,11 +820,37 @@ class SecurityCenterManagementRestInterceptor:
     ):
         """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_effective_security_health_analytics_custom_modules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_effective_security_health_analytics_custom_modules` interceptor runs
+        before the `post_list_effective_security_health_analytics_custom_modules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_effective_security_health_analytics_custom_modules_with_metadata(
+        self,
+        response: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_effective_security_health_analytics_custom_modules_with_metadata`
+        interceptor in new development instead of the `post_list_effective_security_health_analytics_custom_modules` interceptor.
+        When both interceptors are used, this `post_list_effective_security_health_analytics_custom_modules_with_metadata` interceptor runs after the
+        `post_list_effective_security_health_analytics_custom_modules` interceptor. The (possibly modified) response returned by
+        `post_list_effective_security_health_analytics_custom_modules` will be passed to
+        `post_list_effective_security_health_analytics_custom_modules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_event_threat_detection_custom_modules(
         self,
@@ -587,11 +873,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.ListEventThreatDetectionCustomModulesResponse:
         """Post-rpc interceptor for list_event_threat_detection_custom_modules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_event_threat_detection_custom_modules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_event_threat_detection_custom_modules` interceptor runs
+        before the `post_list_event_threat_detection_custom_modules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_event_threat_detection_custom_modules_with_metadata(
+        self,
+        response: security_center_management.ListEventThreatDetectionCustomModulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ListEventThreatDetectionCustomModulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_event_threat_detection_custom_modules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_event_threat_detection_custom_modules_with_metadata`
+        interceptor in new development instead of the `post_list_event_threat_detection_custom_modules` interceptor.
+        When both interceptors are used, this `post_list_event_threat_detection_custom_modules_with_metadata` interceptor runs after the
+        `post_list_event_threat_detection_custom_modules` interceptor. The (possibly modified) response returned by
+        `post_list_event_threat_detection_custom_modules` will be passed to
+        `post_list_event_threat_detection_custom_modules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_security_center_services(
         self,
@@ -613,11 +925,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.ListSecurityCenterServicesResponse:
         """Post-rpc interceptor for list_security_center_services
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_security_center_services_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_security_center_services` interceptor runs
+        before the `post_list_security_center_services_with_metadata` interceptor.
         """
         return response
+
+    def post_list_security_center_services_with_metadata(
+        self,
+        response: security_center_management.ListSecurityCenterServicesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ListSecurityCenterServicesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_security_center_services
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_security_center_services_with_metadata`
+        interceptor in new development instead of the `post_list_security_center_services` interceptor.
+        When both interceptors are used, this `post_list_security_center_services_with_metadata` interceptor runs after the
+        `post_list_security_center_services` interceptor. The (possibly modified) response returned by
+        `post_list_security_center_services` will be passed to
+        `post_list_security_center_services_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_security_health_analytics_custom_modules(
         self,
@@ -640,11 +978,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse:
         """Post-rpc interceptor for list_security_health_analytics_custom_modules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_security_health_analytics_custom_modules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_security_health_analytics_custom_modules` interceptor runs
+        before the `post_list_security_health_analytics_custom_modules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_security_health_analytics_custom_modules_with_metadata(
+        self,
+        response: security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_security_health_analytics_custom_modules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_security_health_analytics_custom_modules_with_metadata`
+        interceptor in new development instead of the `post_list_security_health_analytics_custom_modules` interceptor.
+        When both interceptors are used, this `post_list_security_health_analytics_custom_modules_with_metadata` interceptor runs after the
+        `post_list_security_health_analytics_custom_modules` interceptor. The (possibly modified) response returned by
+        `post_list_security_health_analytics_custom_modules` will be passed to
+        `post_list_security_health_analytics_custom_modules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_simulate_security_health_analytics_custom_module(
         self,
@@ -667,11 +1031,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse:
         """Post-rpc interceptor for simulate_security_health_analytics_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_simulate_security_health_analytics_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_simulate_security_health_analytics_custom_module` interceptor runs
+        before the `post_simulate_security_health_analytics_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_simulate_security_health_analytics_custom_module_with_metadata(
+        self,
+        response: security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for simulate_security_health_analytics_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_simulate_security_health_analytics_custom_module_with_metadata`
+        interceptor in new development instead of the `post_simulate_security_health_analytics_custom_module` interceptor.
+        When both interceptors are used, this `post_simulate_security_health_analytics_custom_module_with_metadata` interceptor runs after the
+        `post_simulate_security_health_analytics_custom_module` interceptor. The (possibly modified) response returned by
+        `post_simulate_security_health_analytics_custom_module` will be passed to
+        `post_simulate_security_health_analytics_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_event_threat_detection_custom_module(
         self,
@@ -693,11 +1083,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.EventThreatDetectionCustomModule:
         """Post-rpc interceptor for update_event_threat_detection_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_event_threat_detection_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_event_threat_detection_custom_module` interceptor runs
+        before the `post_update_event_threat_detection_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_update_event_threat_detection_custom_module_with_metadata(
+        self,
+        response: security_center_management.EventThreatDetectionCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.EventThreatDetectionCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_event_threat_detection_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_event_threat_detection_custom_module_with_metadata`
+        interceptor in new development instead of the `post_update_event_threat_detection_custom_module` interceptor.
+        When both interceptors are used, this `post_update_event_threat_detection_custom_module_with_metadata` interceptor runs after the
+        `post_update_event_threat_detection_custom_module` interceptor. The (possibly modified) response returned by
+        `post_update_event_threat_detection_custom_module` will be passed to
+        `post_update_event_threat_detection_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_security_center_service(
         self,
@@ -719,11 +1135,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.SecurityCenterService:
         """Post-rpc interceptor for update_security_center_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_security_center_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_security_center_service` interceptor runs
+        before the `post_update_security_center_service_with_metadata` interceptor.
         """
         return response
+
+    def post_update_security_center_service_with_metadata(
+        self,
+        response: security_center_management.SecurityCenterService,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.SecurityCenterService,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_security_center_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_security_center_service_with_metadata`
+        interceptor in new development instead of the `post_update_security_center_service` interceptor.
+        When both interceptors are used, this `post_update_security_center_service_with_metadata` interceptor runs after the
+        `post_update_security_center_service` interceptor. The (possibly modified) response returned by
+        `post_update_security_center_service` will be passed to
+        `post_update_security_center_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_security_health_analytics_custom_module(
         self,
@@ -745,11 +1187,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.SecurityHealthAnalyticsCustomModule:
         """Post-rpc interceptor for update_security_health_analytics_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_security_health_analytics_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_security_health_analytics_custom_module` interceptor runs
+        before the `post_update_security_health_analytics_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_update_security_health_analytics_custom_module_with_metadata(
+        self,
+        response: security_center_management.SecurityHealthAnalyticsCustomModule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.SecurityHealthAnalyticsCustomModule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_security_health_analytics_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_security_health_analytics_custom_module_with_metadata`
+        interceptor in new development instead of the `post_update_security_health_analytics_custom_module` interceptor.
+        When both interceptors are used, this `post_update_security_health_analytics_custom_module_with_metadata` interceptor runs after the
+        `post_update_security_health_analytics_custom_module` interceptor. The (possibly modified) response returned by
+        `post_update_security_health_analytics_custom_module` will be passed to
+        `post_update_security_health_analytics_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_event_threat_detection_custom_module(
         self,
@@ -772,11 +1240,37 @@ class SecurityCenterManagementRestInterceptor:
     ) -> security_center_management.ValidateEventThreatDetectionCustomModuleResponse:
         """Post-rpc interceptor for validate_event_threat_detection_custom_module
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_event_threat_detection_custom_module_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SecurityCenterManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_event_threat_detection_custom_module` interceptor runs
+        before the `post_validate_event_threat_detection_custom_module_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_event_threat_detection_custom_module_with_metadata(
+        self,
+        response: security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for validate_event_threat_detection_custom_module
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecurityCenterManagement server but before it is returned to user code.
+
+        We recommend only using this `post_validate_event_threat_detection_custom_module_with_metadata`
+        interceptor in new development instead of the `post_validate_event_threat_detection_custom_module` interceptor.
+        When both interceptors are used, this `post_validate_event_threat_detection_custom_module_with_metadata` interceptor runs after the
+        `post_validate_event_threat_detection_custom_module` interceptor. The (possibly modified) response returned by
+        `post_validate_event_threat_detection_custom_module` will be passed to
+        `post_validate_event_threat_detection_custom_module_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1058,6 +1552,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_create_event_threat_detection_custom_module(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_event_threat_detection_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1231,6 +1732,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 self._interceptor.post_create_security_health_analytics_custom_module(
                     resp
                 )
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_security_health_analytics_custom_module_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1633,6 +2141,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_get_effective_event_threat_detection_custom_module(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_effective_event_threat_detection_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1801,6 +2316,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_get_effective_security_health_analytics_custom_module(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_effective_security_health_analytics_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1961,6 +2483,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_event_threat_detection_custom_module(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_event_threat_detection_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2120,6 +2649,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_security_center_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_security_center_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2288,6 +2821,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_get_security_health_analytics_custom_module(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_security_health_analytics_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2449,6 +2989,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_list_descendant_event_threat_detection_custom_modules(
                 resp
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_descendant_event_threat_detection_custom_modules_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2612,6 +3159,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_list_descendant_security_health_analytics_custom_modules(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_descendant_security_health_analytics_custom_modules_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2773,6 +3327,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_list_effective_event_threat_detection_custom_modules(
                 resp
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_effective_event_threat_detection_custom_modules_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2936,6 +3497,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_list_effective_security_health_analytics_custom_modules(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_effective_security_health_analytics_custom_modules_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3096,6 +3664,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_list_event_threat_detection_custom_modules(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_event_threat_detection_custom_modules_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3249,6 +3824,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_security_center_services(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_security_center_services_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3410,6 +3992,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_list_security_health_analytics_custom_modules(
                 resp
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_security_health_analytics_custom_modules_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3582,6 +4171,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     resp
                 )
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_simulate_security_health_analytics_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3750,6 +4346,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = self._interceptor.post_update_event_threat_detection_custom_module(
                 resp
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_event_threat_detection_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3915,6 +4518,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_security_center_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_security_center_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4091,6 +4701,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     resp
                 )
             )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_security_health_analytics_custom_module_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4258,6 +4875,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_validate_event_threat_detection_custom_module(
                 resp
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_validate_event_threat_detection_custom_module_with_metadata(
+                resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG

@@ -111,11 +111,34 @@ class SpeechRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for long_running_recognize
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_long_running_recognize_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_long_running_recognize` interceptor runs
+        before the `post_long_running_recognize_with_metadata` interceptor.
         """
         return response
+
+    def post_long_running_recognize_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for long_running_recognize
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_long_running_recognize_with_metadata`
+        interceptor in new development instead of the `post_long_running_recognize` interceptor.
+        When both interceptors are used, this `post_long_running_recognize_with_metadata` interceptor runs after the
+        `post_long_running_recognize` interceptor. The (possibly modified) response returned by
+        `post_long_running_recognize` will be passed to
+        `post_long_running_recognize_with_metadata`.
+        """
+        return response, metadata
 
     def pre_recognize(
         self,
@@ -134,11 +157,34 @@ class SpeechRestInterceptor:
     ) -> cloud_speech.RecognizeResponse:
         """Post-rpc interceptor for recognize
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_recognize_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Speech server but before
-        it is returned to user code.
+        it is returned to user code. This `post_recognize` interceptor runs
+        before the `post_recognize_with_metadata` interceptor.
         """
         return response
+
+    def post_recognize_with_metadata(
+        self,
+        response: cloud_speech.RecognizeResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloud_speech.RecognizeResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for recognize
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Speech server but before it is returned to user code.
+
+        We recommend only using this `post_recognize_with_metadata`
+        interceptor in new development instead of the `post_recognize` interceptor.
+        When both interceptors are used, this `post_recognize_with_metadata` interceptor runs after the
+        `post_recognize` interceptor. The (possibly modified) response returned by
+        `post_recognize` will be passed to
+        `post_recognize_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -445,6 +491,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_long_running_recognize(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_long_running_recognize_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -595,6 +645,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_recognize(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_recognize_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
