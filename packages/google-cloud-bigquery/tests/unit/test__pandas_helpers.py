@@ -16,6 +16,7 @@ import collections
 import datetime
 import decimal
 import functools
+import gc
 import operator
 import queue
 from typing import Union
@@ -1844,6 +1845,98 @@ def test__download_table_bqstorage(
     # to the thread pool.
     assert download_stream.call_count == stream_count  # once for each stream
     assert queue_used.maxsize == expected_maxsize
+
+
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test__download_table_bqstorage_shuts_down_workers(
+    monkeypatch,
+    module_under_test,
+):
+    """Regression test for https://github.com/googleapis/python-bigquery/issues/2032
+
+    Make sure that when the top-level iterator goes out of scope (is deleted),
+    the child threads are also stopped.
+    """
+    from google.cloud.bigquery import dataset
+    from google.cloud.bigquery import table
+    import google.cloud.bigquery_storage_v1.reader
+    import google.cloud.bigquery_storage_v1.types
+
+    monkeypatch.setattr(
+        _versions_helpers.BQ_STORAGE_VERSIONS, "_installed_version", None
+    )
+    monkeypatch.setattr(bigquery_storage, "__version__", "2.5.0")
+
+    # Create a fake stream with a decent number of rows.
+    arrow_schema = pyarrow.schema(
+        [
+            ("int_col", pyarrow.int64()),
+            ("str_col", pyarrow.string()),
+        ]
+    )
+    arrow_rows = pyarrow.record_batch(
+        [
+            pyarrow.array([0, 1, 2], type=pyarrow.int64()),
+            pyarrow.array(["a", "b", "c"], type=pyarrow.string()),
+        ],
+        schema=arrow_schema,
+    )
+    session = google.cloud.bigquery_storage_v1.types.ReadSession()
+    session.data_format = "ARROW"
+    session.arrow_schema = {"serialized_schema": arrow_schema.serialize().to_pybytes()}
+    session.streams = [
+        google.cloud.bigquery_storage_v1.types.ReadStream(name=name)
+        for name in ("stream/s0", "stream/s1", "stream/s2")
+    ]
+    bqstorage_client = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    reader = mock.create_autospec(
+        google.cloud.bigquery_storage_v1.reader.ReadRowsStream, instance=True
+    )
+    reader.__iter__.return_value = [
+        google.cloud.bigquery_storage_v1.types.ReadRowsResponse(
+            arrow_schema={"serialized_schema": arrow_schema.serialize().to_pybytes()},
+            arrow_record_batch={
+                "serialized_record_batch": arrow_rows.serialize().to_pybytes()
+            },
+        )
+        for _ in range(100)
+    ]
+    reader.rows.return_value = google.cloud.bigquery_storage_v1.reader.ReadRowsIterable(
+        reader, read_session=session
+    )
+    bqstorage_client.read_rows.return_value = reader
+    bqstorage_client.create_read_session.return_value = session
+    table_ref = table.TableReference(
+        dataset.DatasetReference("project-x", "dataset-y"),
+        "table-z",
+    )
+    download_state = module_under_test._DownloadState()
+    assert download_state.started_workers == 0
+    assert download_state.finished_workers == 0
+
+    result_gen = module_under_test._download_table_bqstorage(
+        "some-project",
+        table_ref,
+        bqstorage_client,
+        max_queue_size=1,
+        page_to_item=module_under_test._bqstorage_page_to_arrow,
+        download_state=download_state,
+    )
+
+    result_gen_iter = iter(result_gen)
+    next(result_gen_iter)
+    assert download_state.started_workers == 3
+    assert download_state.finished_workers == 0
+
+    # Stop iteration early and simulate the variables going out of scope
+    # to be doubly sure that the worker threads are supposed to be cleaned up.
+    del result_gen, result_gen_iter
+    gc.collect()
+
+    assert download_state.started_workers == 3
+    assert download_state.finished_workers == 3
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")

@@ -20,6 +20,7 @@ import functools
 from itertools import islice
 import logging
 import queue
+import threading
 import warnings
 from typing import Any, Union, Optional, Callable, Generator, List
 
@@ -119,6 +120,21 @@ class _DownloadState(object):
         # be an atomic operation in the Python language definition (enforced by
         # the global interpreter lock).
         self.done = False
+        # To assist with testing and understanding the behavior of the
+        # download, use this object as shared state to track how many worker
+        # threads have started and have gracefully shutdown.
+        self._started_workers_lock = threading.Lock()
+        self.started_workers = 0
+        self._finished_workers_lock = threading.Lock()
+        self.finished_workers = 0
+
+    def start(self):
+        with self._started_workers_lock:
+            self.started_workers += 1
+
+    def finish(self):
+        with self._finished_workers_lock:
+            self.finished_workers += 1
 
 
 BQ_FIELD_TYPE_TO_ARROW_FIELD_METADATA = {
@@ -786,25 +802,35 @@ def _bqstorage_page_to_dataframe(column_names, dtypes, page):
 def _download_table_bqstorage_stream(
     download_state, bqstorage_client, session, stream, worker_queue, page_to_item
 ):
-    reader = bqstorage_client.read_rows(stream.name)
+    download_state.start()
+    try:
+        reader = bqstorage_client.read_rows(stream.name)
 
-    # Avoid deprecation warnings for passing in unnecessary read session.
-    # https://github.com/googleapis/python-bigquery-storage/issues/229
-    if _versions_helpers.BQ_STORAGE_VERSIONS.is_read_session_optional:
-        rowstream = reader.rows()
-    else:
-        rowstream = reader.rows(session)
+        # Avoid deprecation warnings for passing in unnecessary read session.
+        # https://github.com/googleapis/python-bigquery-storage/issues/229
+        if _versions_helpers.BQ_STORAGE_VERSIONS.is_read_session_optional:
+            rowstream = reader.rows()
+        else:
+            rowstream = reader.rows(session)
 
-    for page in rowstream.pages:
-        item = page_to_item(page)
-        while True:
-            if download_state.done:
-                return
-            try:
-                worker_queue.put(item, timeout=_PROGRESS_INTERVAL)
-                break
-            except queue.Full:  # pragma: NO COVER
-                continue
+        for page in rowstream.pages:
+            item = page_to_item(page)
+
+            # Make sure we set a timeout on put() so that we give the worker
+            # thread opportunities to shutdown gracefully, for example if the
+            # parent thread shuts down or the parent generator object which
+            # collects rows from all workers goes out of scope. See:
+            # https://github.com/googleapis/python-bigquery/issues/2032
+            while True:
+                if download_state.done:
+                    return
+                try:
+                    worker_queue.put(item, timeout=_PROGRESS_INTERVAL)
+                    break
+                except queue.Full:
+                    continue
+    finally:
+        download_state.finish()
 
 
 def _nowait(futures):
@@ -830,6 +856,7 @@ def _download_table_bqstorage(
     page_to_item: Optional[Callable] = None,
     max_queue_size: Any = _MAX_QUEUE_SIZE_DEFAULT,
     max_stream_count: Optional[int] = None,
+    download_state: Optional[_DownloadState] = None,
 ) -> Generator[Any, None, None]:
     """Downloads a BigQuery table using the BigQuery Storage API.
 
@@ -857,6 +884,9 @@ def _download_table_bqstorage(
             is True, the requested streams are limited to 1 regardless of the
             `max_stream_count` value. If 0 or None, then the number of
             requested streams will be unbounded. Defaults to None.
+        download_state (Optional[_DownloadState]):
+            A threadsafe state object which can be used to observe the
+            behavior of the worker threads created by this method.
 
     Yields:
         pandas.DataFrame: Pandas DataFrames, one for each chunk of data
@@ -915,7 +945,8 @@ def _download_table_bqstorage(
 
     # Use _DownloadState to notify worker threads when to quit.
     # See: https://stackoverflow.com/a/29237343/101923
-    download_state = _DownloadState()
+    if download_state is None:
+        download_state = _DownloadState()
 
     # Create a queue to collect frames as they are created in each thread.
     #
