@@ -180,14 +180,10 @@ def pull_up_order(
                 col: bigframes.core.ids.ColumnId.unique()
                 for col in unselected_order_cols
             }
-            all_selections = (
-                *node.input_output_pairs,
-                *(
-                    (bigframes.core.expression.DerefOp(k), v)
-                    for k, v in new_selections.items()
-                ),
+            all_selections = node.input_output_pairs + tuple(
+                bigframes.core.nodes.AliasedRef(bigframes.core.expression.DerefOp(k), v)
+                for k, v in new_selections.items()
             )
-
             new_select_node = dataclasses.replace(
                 node, child=child_result, input_output_pairs=all_selections
             )
@@ -288,7 +284,7 @@ def pull_up_order(
             )
             selection = tuple(
                 (
-                    (bigframes.core.expression.DerefOp(id), id)
+                    bigframes.core.nodes.AliasedRef.identity(id)
                     for id in (*source.ids, table_id, offsets_id)
                 )
             )
@@ -396,7 +392,7 @@ def pull_up_order(
         if result.ids != node.ids:
             return bigframes.core.nodes.SelectionNode(
                 result,
-                tuple((bigframes.core.expression.DerefOp(id), id) for id in node.ids),
+                tuple(bigframes.core.nodes.AliasedRef.identity(id) for id in node.ids),
             )
         return result
 
@@ -428,7 +424,7 @@ def rename_cols(
     result_node = bigframes.core.nodes.SelectionNode(
         node,
         tuple(
-            (bigframes.core.expression.DerefOp(id), mappings.get(id, id))
+            bigframes.core.nodes.AliasedRef.identity(id).remap_vars(mappings)
             for id in node.ids
         ),
     )

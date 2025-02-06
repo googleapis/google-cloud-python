@@ -20,7 +20,7 @@ import datetime
 import functools
 import itertools
 import typing
-from typing import Callable, cast, Iterable, Mapping, Optional, Sequence, Tuple
+from typing import Callable, cast, Iterable, Mapping, Optional, Sequence, Tuple, TypeVar
 
 import google.cloud.bigquery as bq
 
@@ -43,6 +43,8 @@ if typing.TYPE_CHECKING:
 OVERHEAD_VARIABLES = 5
 
 COLUMN_SET = frozenset[bfet_ids.ColumnId]
+
+Self = TypeVar("Self")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -88,9 +90,16 @@ class BigFrameNode(abc.ABC):
         return None
 
     @abc.abstractmethod
+    def remap_vars(
+        self: Self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> Self:
+        """Remap defined (in this node only) variables."""
+        ...
+
+    @abc.abstractmethod
     def remap_refs(
-        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+        self: Self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> Self:
         """Remap variable references"""
         ...
 
@@ -99,6 +108,10 @@ class BigFrameNode(abc.ABC):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         """The variables defined in this node (as opposed to by child nodes)."""
         ...
+
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset()
 
     @functools.cached_property
     def session(self):
@@ -248,16 +261,9 @@ class BigFrameNode(abc.ABC):
 
     @abc.abstractmethod
     def transform_children(
-        self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
+        self: Self, t: Callable[[BigFrameNode], BigFrameNode]
+    ) -> Self:
         """Apply a function to each child node."""
-        ...
-
-    @abc.abstractmethod
-    def remap_vars(
-        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
-        """Remap defined (in this node only) variables."""
         ...
 
     @property
@@ -269,25 +275,12 @@ class BigFrameNode(abc.ABC):
         """
         return False
 
-    @functools.cached_property
-    def defined_variables(self) -> set[str]:
-        """Full set of variables defined in the namespace, even if not selected."""
-        self_defined_variables = set(self.schema.names)
-        if self.defines_namespace:
-            return self_defined_variables
-        return self_defined_variables.union(
-            *(child.defined_variables for child in self.child_nodes)
-        )
-
     def get_type(self, id: bfet_ids.ColumnId) -> bigframes.dtypes.Dtype:
         return self._dtype_lookup[id]
 
     @functools.cached_property
     def _dtype_lookup(self):
         return {field.id: field.dtype for field in self.fields}
-
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        return self.transform_children(lambda x: x.prune(used_cols))
 
 
 class AdditiveNode:
@@ -336,7 +329,7 @@ class UnaryNode(BigFrameNode):
 
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
+    ) -> UnaryNode:
         transformed = dataclasses.replace(self, child=t(self.child))
         if self == transformed:
             # reusing existing object speeds up eq, and saves a small amount of memory
@@ -406,12 +399,18 @@ class SliceNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return ()
 
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset()
+
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> SliceNode:
         return self
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> SliceNode:
         return self
 
 
@@ -484,15 +483,17 @@ class InNode(BigFrameNode, AdditiveNode):
         return (self.indicator_col,)
 
     @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset({self.left_col.id, self.right_col.id})
+
+    @property
     def additive_base(self) -> BigFrameNode:
         return self.left_child
 
     def replace_additive_base(self, node: BigFrameNode):
         return dataclasses.replace(self, left_child=node)
 
-    def transform_children(
-        self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
+    def transform_children(self, t: Callable[[BigFrameNode], BigFrameNode]) -> InNode:
         transformed = dataclasses.replace(
             self, left_child=t(self.left_child), right_child=t(self.right_child)
         )
@@ -501,17 +502,16 @@ class InNode(BigFrameNode, AdditiveNode):
             return self
         return transformed
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        return self
-
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> InNode:
         return dataclasses.replace(
             self, indicator_col=mappings.get(self.indicator_col, self.indicator_col)
         )
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> InNode:
         return dataclasses.replace(self, left_col=self.left_col.remap_column_refs(mappings, allow_partial_bindings=True), right_col=self.right_col.remap_column_refs(mappings, allow_partial_bindings=True))  # type: ignore
 
 
@@ -574,9 +574,20 @@ class JoinNode(BigFrameNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return ()
 
-    def transform_children(
-        self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset(
+            itertools.chain.from_iterable(
+                (*l_cond.column_references, *r_cond.column_references)
+                for l_cond, r_cond in self.conditions
+            )
+        )
+
+    @property
+    def consumed_ids(self) -> COLUMN_SET:
+        return frozenset(*self.ids, *self.referenced_ids)
+
+    def transform_children(self, t: Callable[[BigFrameNode], BigFrameNode]) -> JoinNode:
         transformed = dataclasses.replace(
             self, left_child=t(self.left_child), right_child=t(self.right_child)
         )
@@ -585,21 +596,14 @@ class JoinNode(BigFrameNode):
             return self
         return transformed
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        # If this is a cross join, make sure to select at least one column from each side
-        condition_cols = used_cols.union(
-            map(lambda x: x.id, itertools.chain.from_iterable(self.conditions))
-        )
-        return self.transform_children(
-            lambda x: x.prune(frozenset([*condition_cols, *used_cols]))
-        )
-
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> JoinNode:
         return self
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> JoinNode:
         new_conds = tuple(
             (
                 l_cond.remap_column_refs(mappings, allow_partial_bindings=True),
@@ -665,7 +669,7 @@ class ConcatNode(BigFrameNode):
 
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
+    ) -> ConcatNode:
         transformed = dataclasses.replace(
             self, children=tuple(t(child) for child in self.children)
         )
@@ -674,17 +678,15 @@ class ConcatNode(BigFrameNode):
             return self
         return transformed
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        # TODO: Make concat prunable, probably by redefining
-        return self
-
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> ConcatNode:
         new_ids = tuple(mappings.get(id, id) for id in self.output_ids)
         return dataclasses.replace(self, output_ids=new_ids)
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> ConcatNode:
         return self
 
 
@@ -735,25 +737,23 @@ class FromRangeNode(BigFrameNode):
 
     def transform_children(
         self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
+    ) -> FromRangeNode:
         transformed = dataclasses.replace(self, start=t(self.start), end=t(self.end))
         if self == transformed:
             # reusing existing object speeds up eq, and saves a small amount of memory
             return self
         return transformed
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        # TODO: Make FromRangeNode prunable (or convert to other node types)
-        return self
-
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> FromRangeNode:
         return dataclasses.replace(
             self, output_id=mappings.get(self.output_id, self.output_id)
         )
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> FromRangeNode:
         return self
 
 
@@ -774,9 +774,7 @@ class LeafNode(BigFrameNode):
     def fast_ordered_limit(self) -> bool:
         return False
 
-    def transform_children(
-        self, t: Callable[[BigFrameNode], BigFrameNode]
-    ) -> BigFrameNode:
+    def transform_children(self, t: Callable[[BigFrameNode], BigFrameNode]) -> LeafNode:
         return self
 
 
@@ -784,6 +782,9 @@ class ScanItem(typing.NamedTuple):
     id: bfet_ids.ColumnId
     dtype: bigframes.dtypes.Dtype  # Might be multiple logical types for a given physical source type
     source_id: str  # Flexible enough for both local data and bq data
+
+    def with_id(self, id: bfet_ids.ColumnId) -> ScanItem:
+        return ScanItem(id, self.dtype, self.source_id)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -841,25 +842,9 @@ class ReadLocalNode(LeafNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return tuple(item.id for item in self.fields)
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        # Don't preoduce empty scan list no matter what, will result in broken sql syntax
-        # TODO: Handle more elegantly
-        new_scan_list = ScanList(
-            tuple(item for item in self.scan_list.items if item.id in used_cols)
-            or (self.scan_list.items[0],)
-        )
-        return ReadLocalNode(
-            self.feather_bytes,
-            self.data_schema,
-            self.n_rows,
-            new_scan_list,
-            self.offsets_col,
-            self.session,
-        )
-
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> ReadLocalNode:
         new_scan_list = ScanList(
             tuple(
                 ScanItem(mappings.get(item.id, item.id), item.dtype, item.source_id)
@@ -875,7 +860,9 @@ class ReadLocalNode(LeafNode):
             self, scan_list=new_scan_list, offsets_col=new_offsets_col
         )
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> ReadLocalNode:
         return self
 
 
@@ -1003,16 +990,9 @@ class ReadTableNode(LeafNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return tuple(item.id for item in self.scan_list.items)
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        new_scan_list = ScanList(
-            tuple(item for item in self.scan_list.items if item.id in used_cols)
-            or (self.scan_list.items[0],)
-        )
-        return dataclasses.replace(self, scan_list=new_scan_list)
-
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> ReadTableNode:
         new_scan_list = ScanList(
             tuple(
                 ScanItem(mappings.get(item.id, item.id), item.dtype, item.source_id)
@@ -1021,7 +1001,9 @@ class ReadTableNode(LeafNode):
         )
         return dataclasses.replace(self, scan_list=new_scan_list)
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> ReadTableNode:
         return self
 
     def with_order_cols(self):
@@ -1090,6 +1072,10 @@ class PromoteOffsetsNode(UnaryNode, AdditiveNode):
         return (self.col_id,)
 
     @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset()
+
+    @property
     def added_fields(self) -> Tuple[Field, ...]:
         return (Field(self.col_id, bigframes.dtypes.INT_DTYPE),)
 
@@ -1097,22 +1083,17 @@ class PromoteOffsetsNode(UnaryNode, AdditiveNode):
     def additive_base(self) -> BigFrameNode:
         return self.child
 
-    def replace_additive_base(self, node: BigFrameNode):
+    def replace_additive_base(self, node: BigFrameNode) -> PromoteOffsetsNode:
         return dataclasses.replace(self, child=node)
-
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        if self.col_id not in used_cols:
-            return self.child.prune(used_cols)
-        else:
-            new_used = used_cols.difference([self.col_id])
-            return self.transform_children(lambda x: x.prune(new_used))
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> PromoteOffsetsNode:
         return dataclasses.replace(self, col_id=mappings.get(self.col_id, self.col_id))
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> PromoteOffsetsNode:
         return self
 
 
@@ -1136,17 +1117,22 @@ class FilterNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return ()
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        consumed_ids = used_cols.union(self.predicate.column_references)
-        pruned_child = self.child.prune(consumed_ids)
-        return FilterNode(pruned_child, self.predicate)
+    @property
+    def consumed_ids(self) -> COLUMN_SET:
+        return frozenset(self.ids) | self.referenced_ids
+
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset(self.predicate.column_references)
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> FilterNode:
         return self
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> FilterNode:
         return dataclasses.replace(
             self,
             predicate=self.predicate.remap_column_refs(
@@ -1183,20 +1169,24 @@ class OrderByNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return ()
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        ordering_cols = itertools.chain.from_iterable(
-            map(lambda x: x.referenced_columns, self.by)
+    @property
+    def consumed_ids(self) -> COLUMN_SET:
+        return frozenset(self.ids) | self.referenced_ids
+
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset(
+            itertools.chain.from_iterable(map(lambda x: x.referenced_columns, self.by))
         )
-        consumed_ids = used_cols.union(ordering_cols)
-        pruned_child = self.child.prune(consumed_ids)
-        return OrderByNode(pruned_child, self.by)
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> OrderByNode:
         return self
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> OrderByNode:
         all_refs = set(
             itertools.chain.from_iterable(map(lambda x: x.referenced_columns, self.by))
         )
@@ -1233,20 +1223,43 @@ class ReversedNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return ()
 
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset()
+
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> ReversedNode:
         return self
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> ReversedNode:
         return self
+
+
+class AliasedRef(typing.NamedTuple):
+    ref: ex.DerefOp
+    id: bfet_ids.ColumnId
+
+    @classmethod
+    def identity(cls, id: bfet_ids.ColumnId) -> AliasedRef:
+        return cls(ex.DerefOp(id), id)
+
+    def remap_vars(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> AliasedRef:
+        return AliasedRef(self.ref, mappings.get(self.id, self.id))
+
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> AliasedRef:
+        return AliasedRef(ex.DerefOp(mappings.get(self.ref.id, self.ref.id)), self.id)
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class SelectionNode(UnaryNode):
-    input_output_pairs: typing.Tuple[
-        typing.Tuple[ex.DerefOp, bigframes.core.identifiers.ColumnId], ...
-    ]
+    input_output_pairs: Tuple[AliasedRef, ...]
 
     def _validate(self):
         for ref, _ in self.input_output_pairs:
@@ -1280,33 +1293,26 @@ class SelectionNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return tuple(id for _, id in self.input_output_pairs)
 
+    @property
+    def consumed_ids(self) -> COLUMN_SET:
+        return frozenset(ref.id for ref, id in self.input_output_pairs)
+
     def get_id_mapping(self) -> dict[bfet_ids.ColumnId, bfet_ids.ColumnId]:
-        return {ref.id: out_id for ref, out_id in self.input_output_pairs}
-
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        pruned_selections = (
-            tuple(
-                select for select in self.input_output_pairs if select[1] in used_cols
-            )
-            or self.input_output_pairs[:1]
-        )
-        consumed_ids = frozenset(i[0].id for i in pruned_selections)
-
-        pruned_child = self.child.prune(consumed_ids)
-        return SelectionNode(pruned_child, pruned_selections)
+        return {ref.id: id for ref, id in self.input_output_pairs}
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
-        new_pairs = tuple(
-            (ref, mappings.get(id, id)) for ref, id in self.input_output_pairs
-        )
-        return dataclasses.replace(self, input_output_pairs=new_pairs)
-
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    ) -> SelectionNode:
         new_fields = tuple(
-            (ex.remap_column_refs(mappings, allow_partial_bindings=True), id)
-            for ex, id in self.input_output_pairs
+            item.remap_vars(mappings) for item in self.input_output_pairs
+        )
+        return dataclasses.replace(self, input_output_pairs=new_fields)
+
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> SelectionNode:
+        new_fields = tuple(
+            item.remap_refs(mappings) for item in self.input_output_pairs
         )
         return dataclasses.replace(self, input_output_pairs=new_fields)  # type: ignore
 
@@ -1354,29 +1360,37 @@ class ProjectionNode(UnaryNode, AdditiveNode):
         return tuple(id for _, id in self.assignments)
 
     @property
+    def consumed_ids(self) -> COLUMN_SET:
+        return frozenset(
+            itertools.chain.from_iterable(
+                i[0].column_references for i in self.assignments
+            )
+        )
+
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset(
+            itertools.chain.from_iterable(
+                ex.column_references for ex, id in self.assignments
+            )
+        )
+
+    @property
     def additive_base(self) -> BigFrameNode:
         return self.child
 
-    def replace_additive_base(self, node: BigFrameNode):
+    def replace_additive_base(self, node: BigFrameNode) -> ProjectionNode:
         return dataclasses.replace(self, child=node)
-
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        pruned_assignments = tuple(i for i in self.assignments if i[1] in used_cols)
-        if len(pruned_assignments) == 0:
-            return self.child.prune(used_cols)
-        consumed_ids = itertools.chain.from_iterable(
-            i[0].column_references for i in pruned_assignments
-        )
-        pruned_child = self.child.prune(used_cols.union(consumed_ids))
-        return ProjectionNode(pruned_child, pruned_assignments)
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> ProjectionNode:
         new_fields = tuple((ex, mappings.get(id, id)) for ex, id in self.assignments)
         return dataclasses.replace(self, assignments=new_fields)
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> ProjectionNode:
         new_fields = tuple(
             (ex.remap_column_refs(mappings, allow_partial_bindings=True), id)
             for ex, id in self.assignments
@@ -1418,16 +1432,18 @@ class RowCountNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return (self.col_id,)
 
+    @property
+    def consumed_ids(self) -> COLUMN_SET:
+        return frozenset()
+
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> RowCountNode:
         return dataclasses.replace(self, col_id=mappings.get(self.col_id, self.col_id))
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
-        return self
-
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        # TODO: Handle row count pruning
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> RowCountNode:
         return self
 
 
@@ -1487,33 +1503,31 @@ class AggregateNode(UnaryNode):
         return tuple(id for _, id in self.aggregations)
 
     @property
+    def consumed_ids(self) -> COLUMN_SET:
+        by_ids = (ref.id for ref in self.by_column_ids)
+        agg_inputs = itertools.chain.from_iterable(
+            agg.column_references for agg, _ in self.aggregations
+        )
+        order_ids = itertools.chain.from_iterable(
+            part.scalar_expression.column_references for part in self.order_by
+        )
+        return frozenset(itertools.chain(by_ids, agg_inputs, order_ids))
+
+    @property
     def has_ordered_ops(self) -> bool:
         return not all(
             aggregate.op.order_independent for aggregate, _ in self.aggregations
         )
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        by_ids = (ref.id for ref in self.by_column_ids)
-        pruned_aggs = (
-            tuple(agg for agg in self.aggregations if agg[1] in used_cols)
-            or self.aggregations[:1]
-        )
-        agg_inputs = itertools.chain.from_iterable(
-            agg.column_references for agg, _ in pruned_aggs
-        )
-        consumed_ids = frozenset(itertools.chain(by_ids, agg_inputs))
-        pruned_child = self.child.prune(consumed_ids)
-        return AggregateNode(
-            pruned_child, pruned_aggs, self.by_column_ids, dropna=self.dropna
-        )
-
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> AggregateNode:
         new_aggs = tuple((agg, mappings.get(id, id)) for agg, id in self.aggregations)
         return dataclasses.replace(self, aggregations=new_aggs)
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> AggregateNode:
         new_aggs = tuple(
             (agg.remap_column_refs(mappings, allow_partial_bindings=True), id)
             for agg, id in self.aggregations
@@ -1579,6 +1593,20 @@ class WindowOpNode(UnaryNode, AdditiveNode):
         return (self.output_name,)
 
     @property
+    def consumed_ids(self) -> COLUMN_SET:
+        return frozenset(
+            set(self.ids).difference([self.output_name]).union(self.referenced_ids)
+        )
+
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return (
+            frozenset()
+            .union(self.expression.column_references)
+            .union(self.window_spec.all_referenced_columns)
+        )
+
+    @property
     def inherits_order(self) -> bool:
         # does the op both use ordering at all? and if so, can it inherit order?
         op_inherits_order = (
@@ -1590,27 +1618,19 @@ class WindowOpNode(UnaryNode, AdditiveNode):
     def additive_base(self) -> BigFrameNode:
         return self.child
 
-    def replace_additive_base(self, node: BigFrameNode):
+    def replace_additive_base(self, node: BigFrameNode) -> WindowOpNode:
         return dataclasses.replace(self, child=node)
-
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        if self.output_name not in used_cols:
-            return self.child.prune(used_cols)
-        consumed_ids = (
-            used_cols.difference([self.output_name])
-            .union(self.expression.column_references)
-            .union(self.window_spec.all_referenced_columns)
-        )
-        return self.transform_children(lambda x: x.prune(consumed_ids))
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> WindowOpNode:
         return dataclasses.replace(
             self, output_name=mappings.get(self.output_name, self.output_name)
         )
 
-    def remap_refs(self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]):
+    def remap_refs(
+        self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
+    ) -> WindowOpNode:
         return dataclasses.replace(
             self,
             expression=self.expression.remap_column_refs(
@@ -1646,14 +1666,18 @@ class RandomSampleNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return ()
 
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset()
+
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> RandomSampleNode:
         return self
 
     def remap_refs(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> RandomSampleNode:
         return self
 
 
@@ -1703,21 +1727,20 @@ class ExplodeNode(UnaryNode):
     def node_defined_ids(self) -> Tuple[bfet_ids.ColumnId, ...]:
         return (self.offsets_col,) if (self.offsets_col is not None) else ()
 
-    def prune(self, used_cols: COLUMN_SET) -> BigFrameNode:
-        # Cannot prune explode op
-        consumed_ids = used_cols.union(ref.id for ref in self.column_ids)
-        return self.transform_children(lambda x: x.prune(consumed_ids))
+    @property
+    def referenced_ids(self) -> COLUMN_SET:
+        return frozenset(ref.id for ref in self.column_ids)
 
     def remap_vars(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> ExplodeNode:
         if (self.offsets_col is not None) and self.offsets_col in mappings:
             return dataclasses.replace(self, offsets_col=mappings[self.offsets_col])
         return self
 
     def remap_refs(
         self, mappings: Mapping[bfet_ids.ColumnId, bfet_ids.ColumnId]
-    ) -> BigFrameNode:
+    ) -> ExplodeNode:
         new_ids = tuple(id.remap_column_refs(mappings) for id in self.column_ids)
         return dataclasses.replace(self, column_ids=new_ids)  # type: ignore
 

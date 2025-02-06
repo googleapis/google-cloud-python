@@ -113,7 +113,7 @@ def try_row_join(
     r_node, r_selection = pull_up_selection(
         r_node, stop=divergent_node, rename_vars=True
     )  # Rename only right vars to avoid collisions with left vars
-    combined_selection = (*l_selection, *r_selection)
+    combined_selection = l_selection + r_selection
 
     def _linearize_trees(
         base_tree: bigframes.core.nodes.BigFrameNode,
@@ -139,10 +139,7 @@ def pull_up_selection(
     rename_vars: bool = False,
 ) -> Tuple[
     bigframes.core.nodes.BigFrameNode,
-    Tuple[
-        Tuple[bigframes.core.expression.DerefOp, bigframes.core.identifiers.ColumnId],
-        ...,
-    ],
+    Tuple[bigframes.core.nodes.AliasedRef, ...],
 ]:
     """Remove all selection nodes above the base node. Returns stripped tree.
 
@@ -157,8 +154,7 @@ def pull_up_selection(
     """
     if node == stop:  # base case
         return node, tuple(
-            (bigframes.core.expression.DerefOp(field.id), field.id)
-            for field in node.fields
+            bigframes.core.nodes.AliasedRef.identity(field.id) for field in node.fields
         )
     # InNode needs special handling, as its a binary node, but row identity is from left side only.
     # TODO: Merge code with unary op paths
@@ -179,11 +175,15 @@ def pull_up_selection(
                     {node.indicator_col: bigframes.core.identifiers.ColumnId.unique()}
                 ),
             )
-        added_selection = (
-            bigframes.core.expression.DerefOp(new_in_node.indicator_col),
-            node.indicator_col,
+        added_selection = tuple(
+            (
+                bigframes.core.nodes.AliasedRef(
+                    bigframes.core.expression.DerefOp(new_in_node.indicator_col),
+                    node.indicator_col,
+                ),
+            )
         )
-        new_selection = (*child_selections, added_selection)
+        new_selection = child_selections + added_selection
         return new_in_node, new_selection
 
     if isinstance(node, bigframes.core.nodes.AdditiveNode):
@@ -204,28 +204,20 @@ def pull_up_selection(
         else:
             var_renames = {}
         assert isinstance(new_node, bigframes.core.nodes.AdditiveNode)
-        added_selections = (
-            (
-                bigframes.core.expression.DerefOp(var_renames.get(field.id, field.id)),
-                field.id,
-            )
+        added_selections = tuple(
+            bigframes.core.nodes.AliasedRef.identity(field.id).remap_refs(var_renames)
             for field in node.added_fields
         )
-        new_selection = (*child_selections, *added_selections)
+        new_selection = child_selections + added_selections
         return new_node, new_selection
     elif isinstance(node, bigframes.core.nodes.SelectionNode):
         child_node, child_selections = pull_up_selection(
             node.child, stop, rename_vars=rename_vars
         )
         mapping = {out: ref.id for ref, out in child_selections}
-        new_selection = tuple(
-            (
-                bigframes.core.expression.DerefOp(mapping[ref.id]),
-                out,
-            )
-            for ref, out in node.input_output_pairs
+        return child_node, tuple(
+            ref.remap_refs(mapping) for ref in node.input_output_pairs
         )
-        return child_node, new_selection
     raise ValueError(f"Couldn't pull up select from node: {node}")
 
 

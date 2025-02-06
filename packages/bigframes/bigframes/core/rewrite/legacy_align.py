@@ -57,7 +57,7 @@ class SquashedSelect:
 
         if isinstance(node, nodes.SelectionNode):
             return cls.from_node_span(node.child, target).select(
-                node.input_output_pairs
+                tuple(node.input_output_pairs)
             )
         elif isinstance(node, nodes.ProjectionNode):
             return cls.from_node_span(node.child, target).project(node.assignments)
@@ -228,7 +228,9 @@ class SquashedSelect:
             root = nodes.FilterNode(child=root, predicate=self.predicate)
         if self.ordering:
             root = nodes.OrderByNode(child=root, by=self.ordering)
-        selection = tuple((scalar_exprs.DerefOp(id), id) for _, id in self.columns)
+        selection = tuple(
+            bigframes.core.nodes.AliasedRef.identity(id) for _, id in self.columns
+        )
         return nodes.SelectionNode(
             child=nodes.ProjectionNode(child=root, assignments=self.columns),
             input_output_pairs=selection,

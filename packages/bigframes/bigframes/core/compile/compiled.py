@@ -184,7 +184,7 @@ class UnorderedIR:
         # Special case for empty tables, since we can't create an empty
         # projection.
         if not self._columns:
-            return bigframes_vendored.ibis.memtable([])
+            return self._table.select([bigframes_vendored.ibis.literal(1)])
 
         table = self._table.select(self._columns)
         if fraction is not None:

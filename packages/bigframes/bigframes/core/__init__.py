@@ -304,18 +304,25 @@ class ArrayValue:
         if destination_id in self.column_ids:  # Mutate case
             exprs = [
                 (
-                    ex.deref(source_id if (col_id == destination_id) else col_id),
-                    ids.ColumnId(col_id),
+                    bigframes.core.nodes.AliasedRef(
+                        ex.deref(source_id if (col_id == destination_id) else col_id),
+                        ids.ColumnId(col_id),
+                    )
                 )
                 for col_id in self.column_ids
             ]
         else:  # append case
             self_projection = (
-                (ex.deref(col_id), ids.ColumnId(col_id)) for col_id in self.column_ids
+                bigframes.core.nodes.AliasedRef.identity(ids.ColumnId(col_id))
+                for col_id in self.column_ids
             )
             exprs = [
                 *self_projection,
-                (ex.deref(source_id), ids.ColumnId(destination_id)),
+                (
+                    bigframes.core.nodes.AliasedRef(
+                        ex.deref(source_id), ids.ColumnId(destination_id)
+                    )
+                ),
             ]
         return ArrayValue(
             nodes.SelectionNode(
@@ -337,7 +344,10 @@ class ArrayValue:
 
     def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
         # This basically just drops and reorders columns - logically a no-op except as a final step
-        selections = ((ex.deref(col_id), ids.ColumnId(col_id)) for col_id in column_ids)
+        selections = (
+            bigframes.core.nodes.AliasedRef.identity(ids.ColumnId(col_id))
+            for col_id in column_ids
+        )
         return ArrayValue(
             nodes.SelectionNode(
                 child=self.node,
@@ -488,7 +498,9 @@ class ArrayValue:
                 nodes.SelectionNode(
                     other.node,
                     tuple(
-                        (ex.deref(old_id), ids.ColumnId(new_id))
+                        bigframes.core.nodes.AliasedRef(
+                            ex.deref(old_id), ids.ColumnId(new_id)
+                        )
                         for old_id, new_id in r_mapping.items()
                     ),
                 ),
