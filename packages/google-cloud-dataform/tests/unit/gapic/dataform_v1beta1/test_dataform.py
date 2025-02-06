@@ -69,6 +69,13 @@ from google.cloud.dataform_v1beta1.services.dataform import (
 )
 from google.cloud.dataform_v1beta1.types import dataform
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -297,6 +304,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DataformClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DataformClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DataformClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -30348,10 +30398,13 @@ def test_list_repositories_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_list_repositories"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_list_repositories_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_list_repositories"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ListRepositoriesRequest.pb(
             dataform.ListRepositoriesRequest()
         )
@@ -30377,6 +30430,7 @@ def test_list_repositories_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ListRepositoriesResponse()
+        post_with_metadata.return_value = dataform.ListRepositoriesResponse(), metadata
 
         client.list_repositories(
             request,
@@ -30388,6 +30442,7 @@ def test_list_repositories_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_repository_rest_bad_request(request_type=dataform.GetRepositoryRequest):
@@ -30479,10 +30534,13 @@ def test_get_repository_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_get_repository"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_repository_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_get_repository"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.GetRepositoryRequest.pb(dataform.GetRepositoryRequest())
         transcode.return_value = {
             "method": "post",
@@ -30504,6 +30562,7 @@ def test_get_repository_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.Repository()
+        post_with_metadata.return_value = dataform.Repository(), metadata
 
         client.get_repository(
             request,
@@ -30515,6 +30574,7 @@ def test_get_repository_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_repository_rest_bad_request(
@@ -30698,10 +30758,13 @@ def test_create_repository_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_create_repository"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_create_repository_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_create_repository"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.CreateRepositoryRequest.pb(
             dataform.CreateRepositoryRequest()
         )
@@ -30725,6 +30788,7 @@ def test_create_repository_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.Repository()
+        post_with_metadata.return_value = dataform.Repository(), metadata
 
         client.create_repository(
             request,
@@ -30736,6 +30800,7 @@ def test_create_repository_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_repository_rest_bad_request(
@@ -30927,10 +30992,13 @@ def test_update_repository_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_update_repository"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_update_repository_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_update_repository"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.UpdateRepositoryRequest.pb(
             dataform.UpdateRepositoryRequest()
         )
@@ -30954,6 +31022,7 @@ def test_update_repository_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.Repository()
+        post_with_metadata.return_value = dataform.Repository(), metadata
 
         client.update_repository(
             request,
@@ -30965,6 +31034,7 @@ def test_update_repository_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_repository_rest_bad_request(
@@ -31261,10 +31331,13 @@ def test_read_repository_file_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_read_repository_file"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_read_repository_file_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_read_repository_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ReadRepositoryFileRequest.pb(
             dataform.ReadRepositoryFileRequest()
         )
@@ -31290,6 +31363,10 @@ def test_read_repository_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ReadRepositoryFileResponse()
+        post_with_metadata.return_value = (
+            dataform.ReadRepositoryFileResponse(),
+            metadata,
+        )
 
         client.read_repository_file(
             request,
@@ -31301,6 +31378,7 @@ def test_read_repository_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_repository_directory_contents_rest_bad_request(
@@ -31385,10 +31463,14 @@ def test_query_repository_directory_contents_rest_interceptors(null_interceptor)
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_query_repository_directory_contents"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_query_repository_directory_contents_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_query_repository_directory_contents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.QueryRepositoryDirectoryContentsRequest.pb(
             dataform.QueryRepositoryDirectoryContentsRequest()
         )
@@ -31414,6 +31496,10 @@ def test_query_repository_directory_contents_rest_interceptors(null_interceptor)
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.QueryRepositoryDirectoryContentsResponse()
+        post_with_metadata.return_value = (
+            dataform.QueryRepositoryDirectoryContentsResponse(),
+            metadata,
+        )
 
         client.query_repository_directory_contents(
             request,
@@ -31425,6 +31511,7 @@ def test_query_repository_directory_contents_rest_interceptors(null_interceptor)
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_repository_history_rest_bad_request(
@@ -31507,10 +31594,14 @@ def test_fetch_repository_history_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_fetch_repository_history"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_fetch_repository_history_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_fetch_repository_history"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.FetchRepositoryHistoryRequest.pb(
             dataform.FetchRepositoryHistoryRequest()
         )
@@ -31536,6 +31627,10 @@ def test_fetch_repository_history_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.FetchRepositoryHistoryResponse()
+        post_with_metadata.return_value = (
+            dataform.FetchRepositoryHistoryResponse(),
+            metadata,
+        )
 
         client.fetch_repository_history(
             request,
@@ -31547,6 +31642,7 @@ def test_fetch_repository_history_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_compute_repository_access_token_status_rest_bad_request(
@@ -31635,10 +31731,14 @@ def test_compute_repository_access_token_status_rest_interceptors(null_intercept
         transports.DataformRestInterceptor,
         "post_compute_repository_access_token_status",
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_compute_repository_access_token_status_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_compute_repository_access_token_status"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ComputeRepositoryAccessTokenStatusRequest.pb(
             dataform.ComputeRepositoryAccessTokenStatusRequest()
         )
@@ -31664,6 +31764,10 @@ def test_compute_repository_access_token_status_rest_interceptors(null_intercept
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ComputeRepositoryAccessTokenStatusResponse()
+        post_with_metadata.return_value = (
+            dataform.ComputeRepositoryAccessTokenStatusResponse(),
+            metadata,
+        )
 
         client.compute_repository_access_token_status(
             request,
@@ -31675,6 +31779,7 @@ def test_compute_repository_access_token_status_rest_interceptors(null_intercept
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_remote_branches_rest_bad_request(
@@ -31757,10 +31862,13 @@ def test_fetch_remote_branches_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_fetch_remote_branches"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_fetch_remote_branches_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_fetch_remote_branches"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.FetchRemoteBranchesRequest.pb(
             dataform.FetchRemoteBranchesRequest()
         )
@@ -31786,6 +31894,10 @@ def test_fetch_remote_branches_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.FetchRemoteBranchesResponse()
+        post_with_metadata.return_value = (
+            dataform.FetchRemoteBranchesResponse(),
+            metadata,
+        )
 
         client.fetch_remote_branches(
             request,
@@ -31797,6 +31909,7 @@ def test_fetch_remote_branches_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workspaces_rest_bad_request(request_type=dataform.ListWorkspacesRequest):
@@ -31879,10 +31992,13 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_list_workspaces"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_list_workspaces_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_list_workspaces"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ListWorkspacesRequest.pb(dataform.ListWorkspacesRequest())
         transcode.return_value = {
             "method": "post",
@@ -31906,6 +32022,7 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ListWorkspacesResponse()
+        post_with_metadata.return_value = dataform.ListWorkspacesResponse(), metadata
 
         client.list_workspaces(
             request,
@@ -31917,6 +32034,7 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_workspace_rest_bad_request(request_type=dataform.GetWorkspaceRequest):
@@ -32001,10 +32119,13 @@ def test_get_workspace_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_get_workspace"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_workspace_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_get_workspace"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.GetWorkspaceRequest.pb(dataform.GetWorkspaceRequest())
         transcode.return_value = {
             "method": "post",
@@ -32026,6 +32147,7 @@ def test_get_workspace_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.Workspace()
+        post_with_metadata.return_value = dataform.Workspace(), metadata
 
         client.get_workspace(
             request,
@@ -32037,6 +32159,7 @@ def test_get_workspace_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_workspace_rest_bad_request(
@@ -32187,10 +32310,13 @@ def test_create_workspace_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_create_workspace"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_create_workspace_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_create_workspace"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.CreateWorkspaceRequest.pb(
             dataform.CreateWorkspaceRequest()
         )
@@ -32214,6 +32340,7 @@ def test_create_workspace_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.Workspace()
+        post_with_metadata.return_value = dataform.Workspace(), metadata
 
         client.create_workspace(
             request,
@@ -32225,6 +32352,7 @@ def test_create_workspace_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_workspace_rest_bad_request(
@@ -32419,10 +32547,13 @@ def test_install_npm_packages_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_install_npm_packages"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_install_npm_packages_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_install_npm_packages"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.InstallNpmPackagesRequest.pb(
             dataform.InstallNpmPackagesRequest()
         )
@@ -32448,6 +32579,10 @@ def test_install_npm_packages_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.InstallNpmPackagesResponse()
+        post_with_metadata.return_value = (
+            dataform.InstallNpmPackagesResponse(),
+            metadata,
+        )
 
         client.install_npm_packages(
             request,
@@ -32459,6 +32594,7 @@ def test_install_npm_packages_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_pull_git_commits_rest_bad_request(request_type=dataform.PullGitCommitsRequest):
@@ -32756,10 +32892,13 @@ def test_fetch_file_git_statuses_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_fetch_file_git_statuses"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_fetch_file_git_statuses_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_fetch_file_git_statuses"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.FetchFileGitStatusesRequest.pb(
             dataform.FetchFileGitStatusesRequest()
         )
@@ -32785,6 +32924,10 @@ def test_fetch_file_git_statuses_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.FetchFileGitStatusesResponse()
+        post_with_metadata.return_value = (
+            dataform.FetchFileGitStatusesResponse(),
+            metadata,
+        )
 
         client.fetch_file_git_statuses(
             request,
@@ -32796,6 +32939,7 @@ def test_fetch_file_git_statuses_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_git_ahead_behind_rest_bad_request(
@@ -32884,10 +33028,13 @@ def test_fetch_git_ahead_behind_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_fetch_git_ahead_behind"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_fetch_git_ahead_behind_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_fetch_git_ahead_behind"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.FetchGitAheadBehindRequest.pb(
             dataform.FetchGitAheadBehindRequest()
         )
@@ -32913,6 +33060,10 @@ def test_fetch_git_ahead_behind_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.FetchGitAheadBehindResponse()
+        post_with_metadata.return_value = (
+            dataform.FetchGitAheadBehindResponse(),
+            metadata,
+        )
 
         client.fetch_git_ahead_behind(
             request,
@@ -32924,6 +33075,7 @@ def test_fetch_git_ahead_behind_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_commit_workspace_changes_rest_bad_request(
@@ -33230,10 +33382,13 @@ def test_fetch_file_diff_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_fetch_file_diff"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_fetch_file_diff_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_fetch_file_diff"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.FetchFileDiffRequest.pb(dataform.FetchFileDiffRequest())
         transcode.return_value = {
             "method": "post",
@@ -33257,6 +33412,7 @@ def test_fetch_file_diff_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.FetchFileDiffResponse()
+        post_with_metadata.return_value = dataform.FetchFileDiffResponse(), metadata
 
         client.fetch_file_diff(
             request,
@@ -33268,6 +33424,7 @@ def test_fetch_file_diff_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_directory_contents_rest_bad_request(
@@ -33354,10 +33511,14 @@ def test_query_directory_contents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_query_directory_contents"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_query_directory_contents_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_query_directory_contents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.QueryDirectoryContentsRequest.pb(
             dataform.QueryDirectoryContentsRequest()
         )
@@ -33383,6 +33544,10 @@ def test_query_directory_contents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.QueryDirectoryContentsResponse()
+        post_with_metadata.return_value = (
+            dataform.QueryDirectoryContentsResponse(),
+            metadata,
+        )
 
         client.query_directory_contents(
             request,
@@ -33394,6 +33559,7 @@ def test_query_directory_contents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_make_directory_rest_bad_request(request_type=dataform.MakeDirectoryRequest):
@@ -33475,10 +33641,13 @@ def test_make_directory_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_make_directory"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_make_directory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_make_directory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.MakeDirectoryRequest.pb(dataform.MakeDirectoryRequest())
         transcode.return_value = {
             "method": "post",
@@ -33502,6 +33671,7 @@ def test_make_directory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.MakeDirectoryResponse()
+        post_with_metadata.return_value = dataform.MakeDirectoryResponse(), metadata
 
         client.make_directory(
             request,
@@ -33513,6 +33683,7 @@ def test_make_directory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_directory_rest_bad_request(
@@ -33705,10 +33876,13 @@ def test_move_directory_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_move_directory"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_move_directory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_move_directory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.MoveDirectoryRequest.pb(dataform.MoveDirectoryRequest())
         transcode.return_value = {
             "method": "post",
@@ -33732,6 +33906,7 @@ def test_move_directory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.MoveDirectoryResponse()
+        post_with_metadata.return_value = dataform.MoveDirectoryResponse(), metadata
 
         client.move_directory(
             request,
@@ -33743,6 +33918,7 @@ def test_move_directory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_read_file_rest_bad_request(request_type=dataform.ReadFileRequest):
@@ -33827,10 +34003,13 @@ def test_read_file_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_read_file"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_read_file_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_read_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ReadFileRequest.pb(dataform.ReadFileRequest())
         transcode.return_value = {
             "method": "post",
@@ -33852,6 +34031,7 @@ def test_read_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ReadFileResponse()
+        post_with_metadata.return_value = dataform.ReadFileResponse(), metadata
 
         client.read_file(
             request,
@@ -33863,6 +34043,7 @@ def test_read_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_file_rest_bad_request(request_type=dataform.RemoveFileRequest):
@@ -34051,10 +34232,13 @@ def test_move_file_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_move_file"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_move_file_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_move_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.MoveFileRequest.pb(dataform.MoveFileRequest())
         transcode.return_value = {
             "method": "post",
@@ -34076,6 +34260,7 @@ def test_move_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.MoveFileResponse()
+        post_with_metadata.return_value = dataform.MoveFileResponse(), metadata
 
         client.move_file(
             request,
@@ -34087,6 +34272,7 @@ def test_move_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_write_file_rest_bad_request(request_type=dataform.WriteFileRequest):
@@ -34168,10 +34354,13 @@ def test_write_file_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_write_file"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_write_file_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_write_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.WriteFileRequest.pb(dataform.WriteFileRequest())
         transcode.return_value = {
             "method": "post",
@@ -34193,6 +34382,7 @@ def test_write_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.WriteFileResponse()
+        post_with_metadata.return_value = dataform.WriteFileResponse(), metadata
 
         client.write_file(
             request,
@@ -34204,6 +34394,7 @@ def test_write_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_release_configs_rest_bad_request(
@@ -34288,10 +34479,13 @@ def test_list_release_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_list_release_configs"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_list_release_configs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_list_release_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ListReleaseConfigsRequest.pb(
             dataform.ListReleaseConfigsRequest()
         )
@@ -34317,6 +34511,10 @@ def test_list_release_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ListReleaseConfigsResponse()
+        post_with_metadata.return_value = (
+            dataform.ListReleaseConfigsResponse(),
+            metadata,
+        )
 
         client.list_release_configs(
             request,
@@ -34328,6 +34526,7 @@ def test_list_release_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_release_config_rest_bad_request(
@@ -34422,10 +34621,13 @@ def test_get_release_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_get_release_config"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_release_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_get_release_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.GetReleaseConfigRequest.pb(
             dataform.GetReleaseConfigRequest()
         )
@@ -34449,6 +34651,7 @@ def test_get_release_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ReleaseConfig()
+        post_with_metadata.return_value = dataform.ReleaseConfig(), metadata
 
         client.get_release_config(
             request,
@@ -34460,6 +34663,7 @@ def test_get_release_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_release_config_rest_bad_request(
@@ -34650,10 +34854,13 @@ def test_create_release_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_create_release_config"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_create_release_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_create_release_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.CreateReleaseConfigRequest.pb(
             dataform.CreateReleaseConfigRequest()
         )
@@ -34677,6 +34884,7 @@ def test_create_release_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ReleaseConfig()
+        post_with_metadata.return_value = dataform.ReleaseConfig(), metadata
 
         client.create_release_config(
             request,
@@ -34688,6 +34896,7 @@ def test_create_release_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_release_config_rest_bad_request(
@@ -34886,10 +35095,13 @@ def test_update_release_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_update_release_config"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_update_release_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_update_release_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.UpdateReleaseConfigRequest.pb(
             dataform.UpdateReleaseConfigRequest()
         )
@@ -34913,6 +35125,7 @@ def test_update_release_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ReleaseConfig()
+        post_with_metadata.return_value = dataform.ReleaseConfig(), metadata
 
         client.update_release_config(
             request,
@@ -34924,6 +35137,7 @@ def test_update_release_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_release_config_rest_bad_request(
@@ -35119,10 +35333,14 @@ def test_list_compilation_results_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_list_compilation_results"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_list_compilation_results_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_list_compilation_results"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ListCompilationResultsRequest.pb(
             dataform.ListCompilationResultsRequest()
         )
@@ -35148,6 +35366,10 @@ def test_list_compilation_results_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ListCompilationResultsResponse()
+        post_with_metadata.return_value = (
+            dataform.ListCompilationResultsResponse(),
+            metadata,
+        )
 
         client.list_compilation_results(
             request,
@@ -35159,6 +35381,7 @@ def test_list_compilation_results_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_compilation_result_rest_bad_request(
@@ -35250,10 +35473,13 @@ def test_get_compilation_result_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_get_compilation_result"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_compilation_result_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_get_compilation_result"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.GetCompilationResultRequest.pb(
             dataform.GetCompilationResultRequest()
         )
@@ -35277,6 +35503,7 @@ def test_get_compilation_result_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.CompilationResult()
+        post_with_metadata.return_value = dataform.CompilationResult(), metadata
 
         client.get_compilation_result(
             request,
@@ -35288,6 +35515,7 @@ def test_get_compilation_result_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_compilation_result_rest_bad_request(
@@ -35474,10 +35702,14 @@ def test_create_compilation_result_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_create_compilation_result"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_create_compilation_result_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_create_compilation_result"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.CreateCompilationResultRequest.pb(
             dataform.CreateCompilationResultRequest()
         )
@@ -35501,6 +35733,7 @@ def test_create_compilation_result_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.CompilationResult()
+        post_with_metadata.return_value = dataform.CompilationResult(), metadata
 
         client.create_compilation_result(
             request,
@@ -35512,6 +35745,7 @@ def test_create_compilation_result_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_compilation_result_actions_rest_bad_request(
@@ -35598,10 +35832,14 @@ def test_query_compilation_result_actions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_query_compilation_result_actions"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_query_compilation_result_actions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_query_compilation_result_actions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.QueryCompilationResultActionsRequest.pb(
             dataform.QueryCompilationResultActionsRequest()
         )
@@ -35627,6 +35865,10 @@ def test_query_compilation_result_actions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.QueryCompilationResultActionsResponse()
+        post_with_metadata.return_value = (
+            dataform.QueryCompilationResultActionsResponse(),
+            metadata,
+        )
 
         client.query_compilation_result_actions(
             request,
@@ -35638,6 +35880,7 @@ def test_query_compilation_result_actions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workflow_configs_rest_bad_request(
@@ -35722,10 +35965,13 @@ def test_list_workflow_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_list_workflow_configs"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_list_workflow_configs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_list_workflow_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ListWorkflowConfigsRequest.pb(
             dataform.ListWorkflowConfigsRequest()
         )
@@ -35751,6 +35997,10 @@ def test_list_workflow_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ListWorkflowConfigsResponse()
+        post_with_metadata.return_value = (
+            dataform.ListWorkflowConfigsResponse(),
+            metadata,
+        )
 
         client.list_workflow_configs(
             request,
@@ -35762,6 +36012,7 @@ def test_list_workflow_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_workflow_config_rest_bad_request(
@@ -35854,10 +36105,13 @@ def test_get_workflow_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_get_workflow_config"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_workflow_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_get_workflow_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.GetWorkflowConfigRequest.pb(
             dataform.GetWorkflowConfigRequest()
         )
@@ -35881,6 +36135,7 @@ def test_get_workflow_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.WorkflowConfig()
+        post_with_metadata.return_value = dataform.WorkflowConfig(), metadata
 
         client.get_workflow_config(
             request,
@@ -35892,6 +36147,7 @@ def test_get_workflow_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_workflow_config_rest_bad_request(
@@ -36083,10 +36339,13 @@ def test_create_workflow_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_create_workflow_config"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_create_workflow_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_create_workflow_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.CreateWorkflowConfigRequest.pb(
             dataform.CreateWorkflowConfigRequest()
         )
@@ -36110,6 +36369,7 @@ def test_create_workflow_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.WorkflowConfig()
+        post_with_metadata.return_value = dataform.WorkflowConfig(), metadata
 
         client.create_workflow_config(
             request,
@@ -36121,6 +36381,7 @@ def test_create_workflow_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_workflow_config_rest_bad_request(
@@ -36320,10 +36581,13 @@ def test_update_workflow_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_update_workflow_config"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_update_workflow_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_update_workflow_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.UpdateWorkflowConfigRequest.pb(
             dataform.UpdateWorkflowConfigRequest()
         )
@@ -36347,6 +36611,7 @@ def test_update_workflow_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.WorkflowConfig()
+        post_with_metadata.return_value = dataform.WorkflowConfig(), metadata
 
         client.update_workflow_config(
             request,
@@ -36358,6 +36623,7 @@ def test_update_workflow_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_workflow_config_rest_bad_request(
@@ -36553,10 +36819,14 @@ def test_list_workflow_invocations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_list_workflow_invocations"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_list_workflow_invocations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_list_workflow_invocations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.ListWorkflowInvocationsRequest.pb(
             dataform.ListWorkflowInvocationsRequest()
         )
@@ -36582,6 +36852,10 @@ def test_list_workflow_invocations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.ListWorkflowInvocationsResponse()
+        post_with_metadata.return_value = (
+            dataform.ListWorkflowInvocationsResponse(),
+            metadata,
+        )
 
         client.list_workflow_invocations(
             request,
@@ -36593,6 +36867,7 @@ def test_list_workflow_invocations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_workflow_invocation_rest_bad_request(
@@ -36682,10 +36957,13 @@ def test_get_workflow_invocation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_get_workflow_invocation"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor, "post_get_workflow_invocation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_get_workflow_invocation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.GetWorkflowInvocationRequest.pb(
             dataform.GetWorkflowInvocationRequest()
         )
@@ -36711,6 +36989,7 @@ def test_get_workflow_invocation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.WorkflowInvocation()
+        post_with_metadata.return_value = dataform.WorkflowInvocation(), metadata
 
         client.get_workflow_invocation(
             request,
@@ -36722,6 +37001,7 @@ def test_get_workflow_invocation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_workflow_invocation_rest_bad_request(
@@ -36900,10 +37180,14 @@ def test_create_workflow_invocation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_create_workflow_invocation"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_create_workflow_invocation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_create_workflow_invocation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.CreateWorkflowInvocationRequest.pb(
             dataform.CreateWorkflowInvocationRequest()
         )
@@ -36929,6 +37213,7 @@ def test_create_workflow_invocation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.WorkflowInvocation()
+        post_with_metadata.return_value = dataform.WorkflowInvocation(), metadata
 
         client.create_workflow_invocation(
             request,
@@ -36940,6 +37225,7 @@ def test_create_workflow_invocation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_workflow_invocation_rest_bad_request(
@@ -37248,10 +37534,14 @@ def test_query_workflow_invocation_actions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataformRestInterceptor, "post_query_workflow_invocation_actions"
     ) as post, mock.patch.object(
+        transports.DataformRestInterceptor,
+        "post_query_workflow_invocation_actions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataformRestInterceptor, "pre_query_workflow_invocation_actions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = dataform.QueryWorkflowInvocationActionsRequest.pb(
             dataform.QueryWorkflowInvocationActionsRequest()
         )
@@ -37277,6 +37567,10 @@ def test_query_workflow_invocation_actions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = dataform.QueryWorkflowInvocationActionsResponse()
+        post_with_metadata.return_value = (
+            dataform.QueryWorkflowInvocationActionsResponse(),
+            metadata,
+        )
 
         client.query_workflow_invocation_actions(
             request,
@@ -37288,6 +37582,7 @@ def test_query_workflow_invocation_actions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

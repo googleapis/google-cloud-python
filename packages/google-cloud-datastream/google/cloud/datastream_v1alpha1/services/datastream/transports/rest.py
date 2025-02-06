@@ -263,11 +263,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connection_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_connection_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_connection_profile` interceptor runs
+        before the `post_create_connection_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_create_connection_profile_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_connection_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_create_connection_profile_with_metadata`
+        interceptor in new development instead of the `post_create_connection_profile` interceptor.
+        When both interceptors are used, this `post_create_connection_profile_with_metadata` interceptor runs after the
+        `post_create_connection_profile` interceptor. The (possibly modified) response returned by
+        `post_create_connection_profile` will be passed to
+        `post_create_connection_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_private_connection(
         self,
@@ -289,11 +312,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_private_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_private_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_private_connection` interceptor runs
+        before the `post_create_private_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_create_private_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_private_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_create_private_connection_with_metadata`
+        interceptor in new development instead of the `post_create_private_connection` interceptor.
+        When both interceptors are used, this `post_create_private_connection_with_metadata` interceptor runs after the
+        `post_create_private_connection` interceptor. The (possibly modified) response returned by
+        `post_create_private_connection` will be passed to
+        `post_create_private_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_route(
         self,
@@ -312,11 +358,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_route` interceptor runs
+        before the `post_create_route_with_metadata` interceptor.
         """
         return response
+
+    def post_create_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_create_route_with_metadata`
+        interceptor in new development instead of the `post_create_route` interceptor.
+        When both interceptors are used, this `post_create_route_with_metadata` interceptor runs after the
+        `post_create_route` interceptor. The (possibly modified) response returned by
+        `post_create_route` will be passed to
+        `post_create_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_stream(
         self,
@@ -335,11 +404,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_stream` interceptor runs
+        before the `post_create_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_create_stream_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_create_stream_with_metadata`
+        interceptor in new development instead of the `post_create_stream` interceptor.
+        When both interceptors are used, this `post_create_stream_with_metadata` interceptor runs after the
+        `post_create_stream` interceptor. The (possibly modified) response returned by
+        `post_create_stream` will be passed to
+        `post_create_stream_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_connection_profile(
         self,
@@ -361,11 +453,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connection_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_connection_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_connection_profile` interceptor runs
+        before the `post_delete_connection_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_connection_profile_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_connection_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_delete_connection_profile_with_metadata`
+        interceptor in new development instead of the `post_delete_connection_profile` interceptor.
+        When both interceptors are used, this `post_delete_connection_profile_with_metadata` interceptor runs after the
+        `post_delete_connection_profile` interceptor. The (possibly modified) response returned by
+        `post_delete_connection_profile` will be passed to
+        `post_delete_connection_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_private_connection(
         self,
@@ -387,11 +502,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_private_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_private_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_private_connection` interceptor runs
+        before the `post_delete_private_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_private_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_private_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_delete_private_connection_with_metadata`
+        interceptor in new development instead of the `post_delete_private_connection` interceptor.
+        When both interceptors are used, this `post_delete_private_connection_with_metadata` interceptor runs after the
+        `post_delete_private_connection` interceptor. The (possibly modified) response returned by
+        `post_delete_private_connection` will be passed to
+        `post_delete_private_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_route(
         self,
@@ -410,11 +548,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_route` interceptor runs
+        before the `post_delete_route_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_delete_route_with_metadata`
+        interceptor in new development instead of the `post_delete_route` interceptor.
+        When both interceptors are used, this `post_delete_route_with_metadata` interceptor runs after the
+        `post_delete_route` interceptor. The (possibly modified) response returned by
+        `post_delete_route` will be passed to
+        `post_delete_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_stream(
         self,
@@ -433,11 +594,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_stream` interceptor runs
+        before the `post_delete_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_stream_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_delete_stream_with_metadata`
+        interceptor in new development instead of the `post_delete_stream` interceptor.
+        When both interceptors are used, this `post_delete_stream_with_metadata` interceptor runs after the
+        `post_delete_stream` interceptor. The (possibly modified) response returned by
+        `post_delete_stream` will be passed to
+        `post_delete_stream_with_metadata`.
+        """
+        return response, metadata
 
     def pre_discover_connection_profile(
         self,
@@ -459,11 +643,37 @@ class DatastreamRestInterceptor:
     ) -> datastream.DiscoverConnectionProfileResponse:
         """Post-rpc interceptor for discover_connection_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_discover_connection_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_discover_connection_profile` interceptor runs
+        before the `post_discover_connection_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_discover_connection_profile_with_metadata(
+        self,
+        response: datastream.DiscoverConnectionProfileResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.DiscoverConnectionProfileResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for discover_connection_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_discover_connection_profile_with_metadata`
+        interceptor in new development instead of the `post_discover_connection_profile` interceptor.
+        When both interceptors are used, this `post_discover_connection_profile_with_metadata` interceptor runs after the
+        `post_discover_connection_profile` interceptor. The (possibly modified) response returned by
+        `post_discover_connection_profile` will be passed to
+        `post_discover_connection_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_errors(
         self,
@@ -482,11 +692,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for fetch_errors
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_errors_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_errors` interceptor runs
+        before the `post_fetch_errors_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_errors_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for fetch_errors
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_errors_with_metadata`
+        interceptor in new development instead of the `post_fetch_errors` interceptor.
+        When both interceptors are used, this `post_fetch_errors_with_metadata` interceptor runs after the
+        `post_fetch_errors` interceptor. The (possibly modified) response returned by
+        `post_fetch_errors` will be passed to
+        `post_fetch_errors_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_static_ips(
         self,
@@ -507,11 +740,36 @@ class DatastreamRestInterceptor:
     ) -> datastream.FetchStaticIpsResponse:
         """Post-rpc interceptor for fetch_static_ips
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_static_ips_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_static_ips` interceptor runs
+        before the `post_fetch_static_ips_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_static_ips_with_metadata(
+        self,
+        response: datastream.FetchStaticIpsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.FetchStaticIpsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_static_ips
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_static_ips_with_metadata`
+        interceptor in new development instead of the `post_fetch_static_ips` interceptor.
+        When both interceptors are used, this `post_fetch_static_ips_with_metadata` interceptor runs after the
+        `post_fetch_static_ips` interceptor. The (possibly modified) response returned by
+        `post_fetch_static_ips` will be passed to
+        `post_fetch_static_ips_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_connection_profile(
         self,
@@ -532,11 +790,36 @@ class DatastreamRestInterceptor:
     ) -> datastream_resources.ConnectionProfile:
         """Post-rpc interceptor for get_connection_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_connection_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_connection_profile` interceptor runs
+        before the `post_get_connection_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_get_connection_profile_with_metadata(
+        self,
+        response: datastream_resources.ConnectionProfile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream_resources.ConnectionProfile, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_connection_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_get_connection_profile_with_metadata`
+        interceptor in new development instead of the `post_get_connection_profile` interceptor.
+        When both interceptors are used, this `post_get_connection_profile_with_metadata` interceptor runs after the
+        `post_get_connection_profile` interceptor. The (possibly modified) response returned by
+        `post_get_connection_profile` will be passed to
+        `post_get_connection_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_private_connection(
         self,
@@ -557,11 +840,36 @@ class DatastreamRestInterceptor:
     ) -> datastream_resources.PrivateConnection:
         """Post-rpc interceptor for get_private_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_private_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_private_connection` interceptor runs
+        before the `post_get_private_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_get_private_connection_with_metadata(
+        self,
+        response: datastream_resources.PrivateConnection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream_resources.PrivateConnection, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_private_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_get_private_connection_with_metadata`
+        interceptor in new development instead of the `post_get_private_connection` interceptor.
+        When both interceptors are used, this `post_get_private_connection_with_metadata` interceptor runs after the
+        `post_get_private_connection` interceptor. The (possibly modified) response returned by
+        `post_get_private_connection` will be passed to
+        `post_get_private_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_route(
         self,
@@ -580,11 +888,34 @@ class DatastreamRestInterceptor:
     ) -> datastream_resources.Route:
         """Post-rpc interceptor for get_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_route` interceptor runs
+        before the `post_get_route_with_metadata` interceptor.
         """
         return response
+
+    def post_get_route_with_metadata(
+        self,
+        response: datastream_resources.Route,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream_resources.Route, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_get_route_with_metadata`
+        interceptor in new development instead of the `post_get_route` interceptor.
+        When both interceptors are used, this `post_get_route_with_metadata` interceptor runs after the
+        `post_get_route` interceptor. The (possibly modified) response returned by
+        `post_get_route` will be passed to
+        `post_get_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_stream(
         self,
@@ -603,11 +934,34 @@ class DatastreamRestInterceptor:
     ) -> datastream_resources.Stream:
         """Post-rpc interceptor for get_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_stream` interceptor runs
+        before the `post_get_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_get_stream_with_metadata(
+        self,
+        response: datastream_resources.Stream,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream_resources.Stream, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_get_stream_with_metadata`
+        interceptor in new development instead of the `post_get_stream` interceptor.
+        When both interceptors are used, this `post_get_stream_with_metadata` interceptor runs after the
+        `post_get_stream` interceptor. The (possibly modified) response returned by
+        `post_get_stream` will be passed to
+        `post_get_stream_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_connection_profiles(
         self,
@@ -629,11 +983,37 @@ class DatastreamRestInterceptor:
     ) -> datastream.ListConnectionProfilesResponse:
         """Post-rpc interceptor for list_connection_profiles
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_connection_profiles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_connection_profiles` interceptor runs
+        before the `post_list_connection_profiles_with_metadata` interceptor.
         """
         return response
+
+    def post_list_connection_profiles_with_metadata(
+        self,
+        response: datastream.ListConnectionProfilesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.ListConnectionProfilesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_connection_profiles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_list_connection_profiles_with_metadata`
+        interceptor in new development instead of the `post_list_connection_profiles` interceptor.
+        When both interceptors are used, this `post_list_connection_profiles_with_metadata` interceptor runs after the
+        `post_list_connection_profiles` interceptor. The (possibly modified) response returned by
+        `post_list_connection_profiles` will be passed to
+        `post_list_connection_profiles_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_private_connections(
         self,
@@ -655,11 +1035,37 @@ class DatastreamRestInterceptor:
     ) -> datastream.ListPrivateConnectionsResponse:
         """Post-rpc interceptor for list_private_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_private_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_private_connections` interceptor runs
+        before the `post_list_private_connections_with_metadata` interceptor.
         """
         return response
+
+    def post_list_private_connections_with_metadata(
+        self,
+        response: datastream.ListPrivateConnectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.ListPrivateConnectionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_private_connections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_list_private_connections_with_metadata`
+        interceptor in new development instead of the `post_list_private_connections` interceptor.
+        When both interceptors are used, this `post_list_private_connections_with_metadata` interceptor runs after the
+        `post_list_private_connections` interceptor. The (possibly modified) response returned by
+        `post_list_private_connections` will be passed to
+        `post_list_private_connections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_routes(
         self,
@@ -678,11 +1084,34 @@ class DatastreamRestInterceptor:
     ) -> datastream.ListRoutesResponse:
         """Post-rpc interceptor for list_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_routes` interceptor runs
+        before the `post_list_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_routes_with_metadata(
+        self,
+        response: datastream.ListRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.ListRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_list_routes_with_metadata`
+        interceptor in new development instead of the `post_list_routes` interceptor.
+        When both interceptors are used, this `post_list_routes_with_metadata` interceptor runs after the
+        `post_list_routes` interceptor. The (possibly modified) response returned by
+        `post_list_routes` will be passed to
+        `post_list_routes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_streams(
         self,
@@ -701,11 +1130,34 @@ class DatastreamRestInterceptor:
     ) -> datastream.ListStreamsResponse:
         """Post-rpc interceptor for list_streams
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_streams_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_streams` interceptor runs
+        before the `post_list_streams_with_metadata` interceptor.
         """
         return response
+
+    def post_list_streams_with_metadata(
+        self,
+        response: datastream.ListStreamsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.ListStreamsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_streams
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_list_streams_with_metadata`
+        interceptor in new development instead of the `post_list_streams` interceptor.
+        When both interceptors are used, this `post_list_streams_with_metadata` interceptor runs after the
+        `post_list_streams` interceptor. The (possibly modified) response returned by
+        `post_list_streams` will be passed to
+        `post_list_streams_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_connection_profile(
         self,
@@ -727,11 +1179,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connection_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_connection_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_connection_profile` interceptor runs
+        before the `post_update_connection_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_update_connection_profile_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_connection_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_update_connection_profile_with_metadata`
+        interceptor in new development instead of the `post_update_connection_profile` interceptor.
+        When both interceptors are used, this `post_update_connection_profile_with_metadata` interceptor runs after the
+        `post_update_connection_profile` interceptor. The (possibly modified) response returned by
+        `post_update_connection_profile` will be passed to
+        `post_update_connection_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_stream(
         self,
@@ -750,11 +1225,34 @@ class DatastreamRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Datastream server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_stream` interceptor runs
+        before the `post_update_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_update_stream_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Datastream server but before it is returned to user code.
+
+        We recommend only using this `post_update_stream_with_metadata`
+        interceptor in new development instead of the `post_update_stream` interceptor.
+        When both interceptors are used, this `post_update_stream_with_metadata` interceptor runs after the
+        `post_update_stream` interceptor. The (possibly modified) response returned by
+        `post_update_stream` will be passed to
+        `post_update_stream_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -1023,6 +1521,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_connection_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_connection_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1172,6 +1674,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_private_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_private_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1323,6 +1829,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1476,6 +1986,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1619,6 +2133,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_connection_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_connection_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1762,6 +2280,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_private_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_private_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1907,6 +2429,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2052,6 +2578,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2202,6 +2732,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_discover_connection_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_discover_connection_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2356,6 +2890,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_errors(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_errors_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2503,6 +3041,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_static_ips(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_static_ips_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2647,6 +3189,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_connection_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_connection_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2795,6 +3341,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_private_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_private_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2943,6 +3493,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3085,6 +3639,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3227,6 +3785,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_connection_profiles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_connection_profiles_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3371,6 +3933,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_private_connections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_private_connections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3515,6 +4081,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3659,6 +4229,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_streams(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_streams_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3808,6 +4382,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_connection_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_connection_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3961,6 +4539,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

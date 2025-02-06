@@ -136,11 +136,37 @@ class TransitionRouteGroupsRestInterceptor:
     ) -> gcdc_transition_route_group.TransitionRouteGroup:
         """Post-rpc interceptor for create_transition_route_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_transition_route_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TransitionRouteGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_transition_route_group` interceptor runs
+        before the `post_create_transition_route_group_with_metadata` interceptor.
         """
         return response
+
+    def post_create_transition_route_group_with_metadata(
+        self,
+        response: gcdc_transition_route_group.TransitionRouteGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_transition_route_group.TransitionRouteGroup,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_transition_route_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TransitionRouteGroups server but before it is returned to user code.
+
+        We recommend only using this `post_create_transition_route_group_with_metadata`
+        interceptor in new development instead of the `post_create_transition_route_group` interceptor.
+        When both interceptors are used, this `post_create_transition_route_group_with_metadata` interceptor runs after the
+        `post_create_transition_route_group` interceptor. The (possibly modified) response returned by
+        `post_create_transition_route_group` will be passed to
+        `post_create_transition_route_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_transition_route_group(
         self,
@@ -177,11 +203,37 @@ class TransitionRouteGroupsRestInterceptor:
     ) -> transition_route_group.TransitionRouteGroup:
         """Post-rpc interceptor for get_transition_route_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_transition_route_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TransitionRouteGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_transition_route_group` interceptor runs
+        before the `post_get_transition_route_group_with_metadata` interceptor.
         """
         return response
+
+    def post_get_transition_route_group_with_metadata(
+        self,
+        response: transition_route_group.TransitionRouteGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transition_route_group.TransitionRouteGroup,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_transition_route_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TransitionRouteGroups server but before it is returned to user code.
+
+        We recommend only using this `post_get_transition_route_group_with_metadata`
+        interceptor in new development instead of the `post_get_transition_route_group` interceptor.
+        When both interceptors are used, this `post_get_transition_route_group_with_metadata` interceptor runs after the
+        `post_get_transition_route_group` interceptor. The (possibly modified) response returned by
+        `post_get_transition_route_group` will be passed to
+        `post_get_transition_route_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_transition_route_groups(
         self,
@@ -203,11 +255,37 @@ class TransitionRouteGroupsRestInterceptor:
     ) -> transition_route_group.ListTransitionRouteGroupsResponse:
         """Post-rpc interceptor for list_transition_route_groups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_transition_route_groups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TransitionRouteGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_transition_route_groups` interceptor runs
+        before the `post_list_transition_route_groups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_transition_route_groups_with_metadata(
+        self,
+        response: transition_route_group.ListTransitionRouteGroupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transition_route_group.ListTransitionRouteGroupsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_transition_route_groups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TransitionRouteGroups server but before it is returned to user code.
+
+        We recommend only using this `post_list_transition_route_groups_with_metadata`
+        interceptor in new development instead of the `post_list_transition_route_groups` interceptor.
+        When both interceptors are used, this `post_list_transition_route_groups_with_metadata` interceptor runs after the
+        `post_list_transition_route_groups` interceptor. The (possibly modified) response returned by
+        `post_list_transition_route_groups` will be passed to
+        `post_list_transition_route_groups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_transition_route_group(
         self,
@@ -229,11 +307,37 @@ class TransitionRouteGroupsRestInterceptor:
     ) -> gcdc_transition_route_group.TransitionRouteGroup:
         """Post-rpc interceptor for update_transition_route_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_transition_route_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TransitionRouteGroups server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_transition_route_group` interceptor runs
+        before the `post_update_transition_route_group_with_metadata` interceptor.
         """
         return response
+
+    def post_update_transition_route_group_with_metadata(
+        self,
+        response: gcdc_transition_route_group.TransitionRouteGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_transition_route_group.TransitionRouteGroup,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_transition_route_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TransitionRouteGroups server but before it is returned to user code.
+
+        We recommend only using this `post_update_transition_route_group_with_metadata`
+        interceptor in new development instead of the `post_update_transition_route_group` interceptor.
+        When both interceptors are used, this `post_update_transition_route_group_with_metadata` interceptor runs after the
+        `post_update_transition_route_group` interceptor. The (possibly modified) response returned by
+        `post_update_transition_route_group` will be passed to
+        `post_update_transition_route_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -578,6 +682,13 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_transition_route_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_transition_route_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -842,6 +953,10 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_transition_route_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_transition_route_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -991,6 +1106,10 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_transition_route_groups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_transition_route_groups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1148,6 +1267,13 @@ class TransitionRouteGroupsRestTransport(_BaseTransitionRouteGroupsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_transition_route_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_transition_route_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

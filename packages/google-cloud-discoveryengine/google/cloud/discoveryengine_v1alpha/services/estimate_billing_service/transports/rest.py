@@ -104,11 +104,34 @@ class EstimateBillingServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for estimate_data_size
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_estimate_data_size_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EstimateBillingService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_estimate_data_size` interceptor runs
+        before the `post_estimate_data_size_with_metadata` interceptor.
         """
         return response
+
+    def post_estimate_data_size_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for estimate_data_size
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EstimateBillingService server but before it is returned to user code.
+
+        We recommend only using this `post_estimate_data_size_with_metadata`
+        interceptor in new development instead of the `post_estimate_data_size` interceptor.
+        When both interceptors are used, this `post_estimate_data_size_with_metadata` interceptor runs after the
+        `post_estimate_data_size` interceptor. The (possibly modified) response returned by
+        `post_estimate_data_size` will be passed to
+        `post_estimate_data_size_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -574,6 +597,10 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_estimate_data_size(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_estimate_data_size_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

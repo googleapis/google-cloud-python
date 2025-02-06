@@ -169,11 +169,34 @@ class FlowsRestInterceptor:
     def post_create_flow(self, response: gcdc_flow.Flow) -> gcdc_flow.Flow:
         """Post-rpc interceptor for create_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_flow` interceptor runs
+        before the `post_create_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_create_flow_with_metadata(
+        self,
+        response: gcdc_flow.Flow,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_create_flow_with_metadata`
+        interceptor in new development instead of the `post_create_flow` interceptor.
+        When both interceptors are used, this `post_create_flow_with_metadata` interceptor runs after the
+        `post_create_flow` interceptor. The (possibly modified) response returned by
+        `post_create_flow` will be passed to
+        `post_create_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_flow(
         self,
@@ -204,11 +227,34 @@ class FlowsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_flow` interceptor runs
+        before the `post_export_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_export_flow_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_export_flow_with_metadata`
+        interceptor in new development instead of the `post_export_flow` interceptor.
+        When both interceptors are used, this `post_export_flow_with_metadata` interceptor runs after the
+        `post_export_flow` interceptor. The (possibly modified) response returned by
+        `post_export_flow` will be passed to
+        `post_export_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_flow(
         self,
@@ -225,11 +271,32 @@ class FlowsRestInterceptor:
     def post_get_flow(self, response: flow.Flow) -> flow.Flow:
         """Post-rpc interceptor for get_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_flow` interceptor runs
+        before the `post_get_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_get_flow_with_metadata(
+        self, response: flow.Flow, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_get_flow_with_metadata`
+        interceptor in new development instead of the `post_get_flow` interceptor.
+        When both interceptors are used, this `post_get_flow_with_metadata` interceptor runs after the
+        `post_get_flow` interceptor. The (possibly modified) response returned by
+        `post_get_flow` will be passed to
+        `post_get_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_flow_validation_result(
         self,
@@ -250,11 +317,34 @@ class FlowsRestInterceptor:
     ) -> flow.FlowValidationResult:
         """Post-rpc interceptor for get_flow_validation_result
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_flow_validation_result_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_flow_validation_result` interceptor runs
+        before the `post_get_flow_validation_result_with_metadata` interceptor.
         """
         return response
+
+    def post_get_flow_validation_result_with_metadata(
+        self,
+        response: flow.FlowValidationResult,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[flow.FlowValidationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_flow_validation_result
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_get_flow_validation_result_with_metadata`
+        interceptor in new development instead of the `post_get_flow_validation_result` interceptor.
+        When both interceptors are used, this `post_get_flow_validation_result_with_metadata` interceptor runs after the
+        `post_get_flow_validation_result` interceptor. The (possibly modified) response returned by
+        `post_get_flow_validation_result` will be passed to
+        `post_get_flow_validation_result_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_flow(
         self,
@@ -273,11 +363,34 @@ class FlowsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_flow` interceptor runs
+        before the `post_import_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_import_flow_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_import_flow_with_metadata`
+        interceptor in new development instead of the `post_import_flow` interceptor.
+        When both interceptors are used, this `post_import_flow_with_metadata` interceptor runs after the
+        `post_import_flow` interceptor. The (possibly modified) response returned by
+        `post_import_flow` will be passed to
+        `post_import_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_flows(
         self,
@@ -296,11 +409,34 @@ class FlowsRestInterceptor:
     ) -> flow.ListFlowsResponse:
         """Post-rpc interceptor for list_flows
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_flows_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_flows` interceptor runs
+        before the `post_list_flows_with_metadata` interceptor.
         """
         return response
+
+    def post_list_flows_with_metadata(
+        self,
+        response: flow.ListFlowsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[flow.ListFlowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_flows
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_list_flows_with_metadata`
+        interceptor in new development instead of the `post_list_flows` interceptor.
+        When both interceptors are used, this `post_list_flows_with_metadata` interceptor runs after the
+        `post_list_flows` interceptor. The (possibly modified) response returned by
+        `post_list_flows` will be passed to
+        `post_list_flows_with_metadata`.
+        """
+        return response, metadata
 
     def pre_train_flow(
         self,
@@ -319,11 +455,34 @@ class FlowsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for train_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_train_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_train_flow` interceptor runs
+        before the `post_train_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_train_flow_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for train_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_train_flow_with_metadata`
+        interceptor in new development instead of the `post_train_flow` interceptor.
+        When both interceptors are used, this `post_train_flow_with_metadata` interceptor runs after the
+        `post_train_flow` interceptor. The (possibly modified) response returned by
+        `post_train_flow` will be passed to
+        `post_train_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_flow(
         self,
@@ -340,11 +499,34 @@ class FlowsRestInterceptor:
     def post_update_flow(self, response: gcdc_flow.Flow) -> gcdc_flow.Flow:
         """Post-rpc interceptor for update_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_flow` interceptor runs
+        before the `post_update_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_update_flow_with_metadata(
+        self,
+        response: gcdc_flow.Flow,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_flow.Flow, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_update_flow_with_metadata`
+        interceptor in new development instead of the `post_update_flow` interceptor.
+        When both interceptors are used, this `post_update_flow_with_metadata` interceptor runs after the
+        `post_update_flow` interceptor. The (possibly modified) response returned by
+        `post_update_flow` will be passed to
+        `post_update_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_flow(
         self,
@@ -363,11 +545,34 @@ class FlowsRestInterceptor:
     ) -> flow.FlowValidationResult:
         """Post-rpc interceptor for validate_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Flows server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_flow` interceptor runs
+        before the `post_validate_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_flow_with_metadata(
+        self,
+        response: flow.FlowValidationResult,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[flow.FlowValidationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for validate_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Flows server but before it is returned to user code.
+
+        We recommend only using this `post_validate_flow_with_metadata`
+        interceptor in new development instead of the `post_validate_flow` interceptor.
+        When both interceptors are used, this `post_validate_flow_with_metadata` interceptor runs after the
+        `post_validate_flow` interceptor. The (possibly modified) response returned by
+        `post_validate_flow` will be passed to
+        `post_validate_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -786,6 +991,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1041,6 +1250,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1203,6 +1416,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1349,6 +1566,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_flow_validation_result(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_flow_validation_result_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1497,6 +1718,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1640,6 +1865,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_flows(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_flows_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1788,6 +2017,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_train_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_train_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1958,6 +2191,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2107,6 +2344,10 @@ class FlowsRestTransport(_BaseFlowsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_validate_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_validate_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -75,6 +75,13 @@ from google.cloud.domains_v1beta1.services.domains import (
 )
 from google.cloud.domains_v1beta1.types import domains
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -296,6 +303,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DomainsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DomainsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DomainsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10424,10 +10474,13 @@ def test_search_domains_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DomainsRestInterceptor, "post_search_domains"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_search_domains_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_search_domains"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.SearchDomainsRequest.pb(domains.SearchDomainsRequest())
         transcode.return_value = {
             "method": "post",
@@ -10451,6 +10504,7 @@ def test_search_domains_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = domains.SearchDomainsResponse()
+        post_with_metadata.return_value = domains.SearchDomainsResponse(), metadata
 
         client.search_domains(
             request,
@@ -10462,6 +10516,7 @@ def test_search_domains_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_retrieve_register_parameters_rest_bad_request(
@@ -10541,10 +10596,14 @@ def test_retrieve_register_parameters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DomainsRestInterceptor, "post_retrieve_register_parameters"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor,
+        "post_retrieve_register_parameters_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_retrieve_register_parameters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.RetrieveRegisterParametersRequest.pb(
             domains.RetrieveRegisterParametersRequest()
         )
@@ -10570,6 +10629,10 @@ def test_retrieve_register_parameters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = domains.RetrieveRegisterParametersResponse()
+        post_with_metadata.return_value = (
+            domains.RetrieveRegisterParametersResponse(),
+            metadata,
+        )
 
         client.retrieve_register_parameters(
             request,
@@ -10581,6 +10644,7 @@ def test_retrieve_register_parameters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_register_domain_rest_bad_request(request_type=domains.RegisterDomainRequest):
@@ -10657,10 +10721,13 @@ def test_register_domain_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_register_domain"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_register_domain_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_register_domain"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.RegisterDomainRequest.pb(domains.RegisterDomainRequest())
         transcode.return_value = {
             "method": "post",
@@ -10682,6 +10749,7 @@ def test_register_domain_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.register_domain(
             request,
@@ -10693,6 +10761,7 @@ def test_register_domain_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_retrieve_transfer_parameters_rest_bad_request(
@@ -10772,10 +10841,14 @@ def test_retrieve_transfer_parameters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DomainsRestInterceptor, "post_retrieve_transfer_parameters"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor,
+        "post_retrieve_transfer_parameters_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_retrieve_transfer_parameters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.RetrieveTransferParametersRequest.pb(
             domains.RetrieveTransferParametersRequest()
         )
@@ -10801,6 +10874,10 @@ def test_retrieve_transfer_parameters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = domains.RetrieveTransferParametersResponse()
+        post_with_metadata.return_value = (
+            domains.RetrieveTransferParametersResponse(),
+            metadata,
+        )
 
         client.retrieve_transfer_parameters(
             request,
@@ -10812,6 +10889,7 @@ def test_retrieve_transfer_parameters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_transfer_domain_rest_bad_request(request_type=domains.TransferDomainRequest):
@@ -10888,10 +10966,13 @@ def test_transfer_domain_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_transfer_domain"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_transfer_domain_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_transfer_domain"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.TransferDomainRequest.pb(domains.TransferDomainRequest())
         transcode.return_value = {
             "method": "post",
@@ -10913,6 +10994,7 @@ def test_transfer_domain_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.transfer_domain(
             request,
@@ -10924,6 +11006,7 @@ def test_transfer_domain_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_registrations_rest_bad_request(
@@ -11006,10 +11089,13 @@ def test_list_registrations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DomainsRestInterceptor, "post_list_registrations"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_list_registrations_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_list_registrations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.ListRegistrationsRequest.pb(
             domains.ListRegistrationsRequest()
         )
@@ -11035,6 +11121,7 @@ def test_list_registrations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = domains.ListRegistrationsResponse()
+        post_with_metadata.return_value = domains.ListRegistrationsResponse(), metadata
 
         client.list_registrations(
             request,
@@ -11046,6 +11133,7 @@ def test_list_registrations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_registration_rest_bad_request(request_type=domains.GetRegistrationRequest):
@@ -11134,10 +11222,13 @@ def test_get_registration_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DomainsRestInterceptor, "post_get_registration"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_get_registration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_get_registration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.GetRegistrationRequest.pb(domains.GetRegistrationRequest())
         transcode.return_value = {
             "method": "post",
@@ -11159,6 +11250,7 @@ def test_get_registration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = domains.Registration()
+        post_with_metadata.return_value = domains.Registration(), metadata
 
         client.get_registration(
             request,
@@ -11170,6 +11262,7 @@ def test_get_registration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_registration_rest_bad_request(
@@ -11389,10 +11482,13 @@ def test_update_registration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_update_registration"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_update_registration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_update_registration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.UpdateRegistrationRequest.pb(
             domains.UpdateRegistrationRequest()
         )
@@ -11416,6 +11512,7 @@ def test_update_registration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_registration(
             request,
@@ -11427,6 +11524,7 @@ def test_update_registration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_configure_management_settings_rest_bad_request(
@@ -11509,10 +11607,14 @@ def test_configure_management_settings_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_configure_management_settings"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor,
+        "post_configure_management_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_configure_management_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.ConfigureManagementSettingsRequest.pb(
             domains.ConfigureManagementSettingsRequest()
         )
@@ -11536,6 +11638,7 @@ def test_configure_management_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.configure_management_settings(
             request,
@@ -11547,6 +11650,7 @@ def test_configure_management_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_configure_dns_settings_rest_bad_request(
@@ -11629,10 +11733,13 @@ def test_configure_dns_settings_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_configure_dns_settings"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_configure_dns_settings_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_configure_dns_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.ConfigureDnsSettingsRequest.pb(
             domains.ConfigureDnsSettingsRequest()
         )
@@ -11656,6 +11763,7 @@ def test_configure_dns_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.configure_dns_settings(
             request,
@@ -11667,6 +11775,7 @@ def test_configure_dns_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_configure_contact_settings_rest_bad_request(
@@ -11749,10 +11858,14 @@ def test_configure_contact_settings_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_configure_contact_settings"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor,
+        "post_configure_contact_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_configure_contact_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.ConfigureContactSettingsRequest.pb(
             domains.ConfigureContactSettingsRequest()
         )
@@ -11776,6 +11889,7 @@ def test_configure_contact_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.configure_contact_settings(
             request,
@@ -11787,6 +11901,7 @@ def test_configure_contact_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_registration_rest_bad_request(
@@ -11865,10 +11980,13 @@ def test_export_registration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_export_registration"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_export_registration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_export_registration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.ExportRegistrationRequest.pb(
             domains.ExportRegistrationRequest()
         )
@@ -11892,6 +12010,7 @@ def test_export_registration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_registration(
             request,
@@ -11903,6 +12022,7 @@ def test_export_registration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_registration_rest_bad_request(
@@ -11981,10 +12101,13 @@ def test_delete_registration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DomainsRestInterceptor, "post_delete_registration"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_delete_registration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_delete_registration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.DeleteRegistrationRequest.pb(
             domains.DeleteRegistrationRequest()
         )
@@ -12008,6 +12131,7 @@ def test_delete_registration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_registration(
             request,
@@ -12019,6 +12143,7 @@ def test_delete_registration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_retrieve_authorization_code_rest_bad_request(
@@ -12105,10 +12230,14 @@ def test_retrieve_authorization_code_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DomainsRestInterceptor, "post_retrieve_authorization_code"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor,
+        "post_retrieve_authorization_code_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_retrieve_authorization_code"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.RetrieveAuthorizationCodeRequest.pb(
             domains.RetrieveAuthorizationCodeRequest()
         )
@@ -12132,6 +12261,7 @@ def test_retrieve_authorization_code_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = domains.AuthorizationCode()
+        post_with_metadata.return_value = domains.AuthorizationCode(), metadata
 
         client.retrieve_authorization_code(
             request,
@@ -12143,6 +12273,7 @@ def test_retrieve_authorization_code_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reset_authorization_code_rest_bad_request(
@@ -12229,10 +12360,13 @@ def test_reset_authorization_code_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DomainsRestInterceptor, "post_reset_authorization_code"
     ) as post, mock.patch.object(
+        transports.DomainsRestInterceptor, "post_reset_authorization_code_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DomainsRestInterceptor, "pre_reset_authorization_code"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = domains.ResetAuthorizationCodeRequest.pb(
             domains.ResetAuthorizationCodeRequest()
         )
@@ -12256,6 +12390,7 @@ def test_reset_authorization_code_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = domains.AuthorizationCode()
+        post_with_metadata.return_value = domains.AuthorizationCode(), metadata
 
         client.reset_authorization_code(
             request,
@@ -12267,6 +12402,7 @@ def test_reset_authorization_code_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

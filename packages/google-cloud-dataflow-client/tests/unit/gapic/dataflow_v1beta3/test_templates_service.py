@@ -61,6 +61,13 @@ from google.cloud.dataflow_v1beta3.services.templates_service import (
 )
 from google.cloud.dataflow_v1beta3.types import environment, jobs, templates
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -318,6 +325,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TemplatesServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TemplatesServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TemplatesServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -2405,10 +2455,14 @@ def test_create_job_from_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TemplatesServiceRestInterceptor, "post_create_job_from_template"
     ) as post, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor,
+        "post_create_job_from_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TemplatesServiceRestInterceptor, "pre_create_job_from_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = templates.CreateJobFromTemplateRequest.pb(
             templates.CreateJobFromTemplateRequest()
         )
@@ -2432,6 +2486,7 @@ def test_create_job_from_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = jobs.Job()
+        post_with_metadata.return_value = jobs.Job(), metadata
 
         client.create_job_from_template(
             request,
@@ -2443,6 +2498,7 @@ def test_create_job_from_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_launch_template_rest_bad_request(request_type=templates.LaunchTemplateRequest):
@@ -2616,10 +2672,13 @@ def test_launch_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TemplatesServiceRestInterceptor, "post_launch_template"
     ) as post, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "post_launch_template_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TemplatesServiceRestInterceptor, "pre_launch_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = templates.LaunchTemplateRequest.pb(
             templates.LaunchTemplateRequest()
         )
@@ -2645,6 +2704,7 @@ def test_launch_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = templates.LaunchTemplateResponse()
+        post_with_metadata.return_value = templates.LaunchTemplateResponse(), metadata
 
         client.launch_template(
             request,
@@ -2656,6 +2716,7 @@ def test_launch_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_template_rest_bad_request(request_type=templates.GetTemplateRequest):
@@ -2738,10 +2799,13 @@ def test_get_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TemplatesServiceRestInterceptor, "post_get_template"
     ) as post, mock.patch.object(
+        transports.TemplatesServiceRestInterceptor, "post_get_template_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TemplatesServiceRestInterceptor, "pre_get_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = templates.GetTemplateRequest.pb(templates.GetTemplateRequest())
         transcode.return_value = {
             "method": "post",
@@ -2765,6 +2829,7 @@ def test_get_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = templates.GetTemplateResponse()
+        post_with_metadata.return_value = templates.GetTemplateResponse(), metadata
 
         client.get_template(
             request,
@@ -2776,6 +2841,7 @@ def test_get_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():
