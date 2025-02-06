@@ -24,7 +24,7 @@ import warnings
 from google.cloud import bigquery
 
 from bigframes import dataframe
-from bigframes.core import log_adapter
+from bigframes.core import log_adapter, nodes
 import bigframes.exceptions as bfe
 import bigframes.session
 
@@ -54,7 +54,7 @@ def _curate_df_doc(doc: Optional[str]):
 
 
 class StreamingBase:
-    sql: str
+    _appends_sql: str
     _session: bigframes.session.Session
 
     def to_bigtable(
@@ -124,7 +124,7 @@ class StreamingBase:
                 can be examined.
         """
         return _to_bigtable(
-            self.sql,
+            self._appends_sql,
             instance=instance,
             table=table,
             service_account_email=service_account_email,
@@ -181,7 +181,7 @@ class StreamingBase:
                 can be examined.
         """
         return _to_pubsub(
-            self.sql,
+            self._appends_sql,
             topic=topic,
             service_account_email=service_account_email,
             session=self._session,
@@ -217,6 +217,19 @@ class StreamingDataFrame(StreamingBase):
     @classmethod
     def _from_table_df(cls, df: dataframe.DataFrame) -> StreamingDataFrame:
         return cls(df, create_key=cls._create_key)
+
+    @property
+    def _original_table(self):
+        def traverse(node: nodes.BigFrameNode):
+            if isinstance(node, nodes.ReadTableNode):
+                return f"{node.source.table.project_id}.{node.source.table.dataset_id}.{node.source.table.table_id}"
+            for child in node.child_nodes:
+                original_table = traverse(child)
+                if original_table:
+                    return original_table
+            return None
+
+        return traverse(self._df._block._expr.node)
 
     def __getitem__(self, *args, **kwargs):
         return _return_type_wrapper(self._df.__getitem__, StreamingDataFrame)(
@@ -265,6 +278,17 @@ class StreamingDataFrame(StreamingBase):
         return sql_str
 
     sql.__doc__ = _curate_df_doc(inspect.getdoc(dataframe.DataFrame.sql))
+
+    # Patch for the required APPENDS clause
+    @property
+    def _appends_sql(self):
+        sql_str = self.sql
+        original_table = self._original_table
+        assert original_table is not None
+
+        appends_clause = f"APPENDS(TABLE `{original_table}`, NULL, NULL)"
+        sql_str = sql_str.replace(f"`{original_table}`", appends_clause)
+        return sql_str
 
     @property
     def _session(self):
