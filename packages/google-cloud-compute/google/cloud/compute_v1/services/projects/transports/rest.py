@@ -203,11 +203,34 @@ class ProjectsRestInterceptor:
     def post_disable_xpn_host(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for disable_xpn_host
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_disable_xpn_host_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_disable_xpn_host` interceptor runs
+        before the `post_disable_xpn_host_with_metadata` interceptor.
         """
         return response
+
+    def post_disable_xpn_host_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_xpn_host
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_disable_xpn_host_with_metadata`
+        interceptor in new development instead of the `post_disable_xpn_host` interceptor.
+        When both interceptors are used, this `post_disable_xpn_host_with_metadata` interceptor runs after the
+        `post_disable_xpn_host` interceptor. The (possibly modified) response returned by
+        `post_disable_xpn_host` will be passed to
+        `post_disable_xpn_host_with_metadata`.
+        """
+        return response, metadata
 
     def pre_disable_xpn_resource(
         self,
@@ -229,11 +252,34 @@ class ProjectsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for disable_xpn_resource
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_disable_xpn_resource_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_disable_xpn_resource` interceptor runs
+        before the `post_disable_xpn_resource_with_metadata` interceptor.
         """
         return response
+
+    def post_disable_xpn_resource_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_xpn_resource
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_disable_xpn_resource_with_metadata`
+        interceptor in new development instead of the `post_disable_xpn_resource` interceptor.
+        When both interceptors are used, this `post_disable_xpn_resource_with_metadata` interceptor runs after the
+        `post_disable_xpn_resource` interceptor. The (possibly modified) response returned by
+        `post_disable_xpn_resource` will be passed to
+        `post_disable_xpn_resource_with_metadata`.
+        """
+        return response, metadata
 
     def pre_enable_xpn_host(
         self,
@@ -252,11 +298,34 @@ class ProjectsRestInterceptor:
     def post_enable_xpn_host(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for enable_xpn_host
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_enable_xpn_host_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_enable_xpn_host` interceptor runs
+        before the `post_enable_xpn_host_with_metadata` interceptor.
         """
         return response
+
+    def post_enable_xpn_host_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_xpn_host
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_enable_xpn_host_with_metadata`
+        interceptor in new development instead of the `post_enable_xpn_host` interceptor.
+        When both interceptors are used, this `post_enable_xpn_host_with_metadata` interceptor runs after the
+        `post_enable_xpn_host` interceptor. The (possibly modified) response returned by
+        `post_enable_xpn_host` will be passed to
+        `post_enable_xpn_host_with_metadata`.
+        """
+        return response, metadata
 
     def pre_enable_xpn_resource(
         self,
@@ -277,11 +346,34 @@ class ProjectsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for enable_xpn_resource
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_enable_xpn_resource_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_enable_xpn_resource` interceptor runs
+        before the `post_enable_xpn_resource_with_metadata` interceptor.
         """
         return response
+
+    def post_enable_xpn_resource_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_xpn_resource
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_enable_xpn_resource_with_metadata`
+        interceptor in new development instead of the `post_enable_xpn_resource` interceptor.
+        When both interceptors are used, this `post_enable_xpn_resource_with_metadata` interceptor runs after the
+        `post_enable_xpn_resource` interceptor. The (possibly modified) response returned by
+        `post_enable_xpn_resource` will be passed to
+        `post_enable_xpn_resource_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get(
         self,
@@ -298,11 +390,34 @@ class ProjectsRestInterceptor:
     def post_get(self, response: compute.Project) -> compute.Project:
         """Post-rpc interceptor for get
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get` interceptor runs
+        before the `post_get_with_metadata` interceptor.
         """
         return response
+
+    def post_get_with_metadata(
+        self,
+        response: compute.Project,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_get_with_metadata`
+        interceptor in new development instead of the `post_get` interceptor.
+        When both interceptors are used, this `post_get_with_metadata` interceptor runs after the
+        `post_get` interceptor. The (possibly modified) response returned by
+        `post_get` will be passed to
+        `post_get_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_xpn_host(
         self,
@@ -321,11 +436,34 @@ class ProjectsRestInterceptor:
     def post_get_xpn_host(self, response: compute.Project) -> compute.Project:
         """Post-rpc interceptor for get_xpn_host
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_xpn_host_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_xpn_host` interceptor runs
+        before the `post_get_xpn_host_with_metadata` interceptor.
         """
         return response
+
+    def post_get_xpn_host_with_metadata(
+        self,
+        response: compute.Project,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Project, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_xpn_host
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_get_xpn_host_with_metadata`
+        interceptor in new development instead of the `post_get_xpn_host` interceptor.
+        When both interceptors are used, this `post_get_xpn_host_with_metadata` interceptor runs after the
+        `post_get_xpn_host` interceptor. The (possibly modified) response returned by
+        `post_get_xpn_host` will be passed to
+        `post_get_xpn_host_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_xpn_resources(
         self,
@@ -346,11 +484,36 @@ class ProjectsRestInterceptor:
     ) -> compute.ProjectsGetXpnResources:
         """Post-rpc interceptor for get_xpn_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_xpn_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_xpn_resources` interceptor runs
+        before the `post_get_xpn_resources_with_metadata` interceptor.
         """
         return response
+
+    def post_get_xpn_resources_with_metadata(
+        self,
+        response: compute.ProjectsGetXpnResources,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ProjectsGetXpnResources, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_xpn_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_get_xpn_resources_with_metadata`
+        interceptor in new development instead of the `post_get_xpn_resources` interceptor.
+        When both interceptors are used, this `post_get_xpn_resources_with_metadata` interceptor runs after the
+        `post_get_xpn_resources` interceptor. The (possibly modified) response returned by
+        `post_get_xpn_resources` will be passed to
+        `post_get_xpn_resources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_xpn_hosts(
         self,
@@ -369,11 +532,34 @@ class ProjectsRestInterceptor:
     def post_list_xpn_hosts(self, response: compute.XpnHostList) -> compute.XpnHostList:
         """Post-rpc interceptor for list_xpn_hosts
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_xpn_hosts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_xpn_hosts` interceptor runs
+        before the `post_list_xpn_hosts_with_metadata` interceptor.
         """
         return response
+
+    def post_list_xpn_hosts_with_metadata(
+        self,
+        response: compute.XpnHostList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.XpnHostList, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_xpn_hosts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_list_xpn_hosts_with_metadata`
+        interceptor in new development instead of the `post_list_xpn_hosts` interceptor.
+        When both interceptors are used, this `post_list_xpn_hosts_with_metadata` interceptor runs after the
+        `post_list_xpn_hosts` interceptor. The (possibly modified) response returned by
+        `post_list_xpn_hosts` will be passed to
+        `post_list_xpn_hosts_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move_disk(
         self,
@@ -390,11 +576,34 @@ class ProjectsRestInterceptor:
     def post_move_disk(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for move_disk
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_disk_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move_disk` interceptor runs
+        before the `post_move_disk_with_metadata` interceptor.
         """
         return response
+
+    def post_move_disk_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_disk
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_move_disk_with_metadata`
+        interceptor in new development instead of the `post_move_disk` interceptor.
+        When both interceptors are used, this `post_move_disk_with_metadata` interceptor runs after the
+        `post_move_disk` interceptor. The (possibly modified) response returned by
+        `post_move_disk` will be passed to
+        `post_move_disk_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move_instance(
         self,
@@ -413,11 +622,34 @@ class ProjectsRestInterceptor:
     def post_move_instance(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for move_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move_instance` interceptor runs
+        before the `post_move_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_move_instance_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_move_instance_with_metadata`
+        interceptor in new development instead of the `post_move_instance` interceptor.
+        When both interceptors are used, this `post_move_instance_with_metadata` interceptor runs after the
+        `post_move_instance` interceptor. The (possibly modified) response returned by
+        `post_move_instance` will be passed to
+        `post_move_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_cloud_armor_tier(
         self,
@@ -438,11 +670,34 @@ class ProjectsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_cloud_armor_tier
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_cloud_armor_tier_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_cloud_armor_tier` interceptor runs
+        before the `post_set_cloud_armor_tier_with_metadata` interceptor.
         """
         return response
+
+    def post_set_cloud_armor_tier_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_cloud_armor_tier
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_set_cloud_armor_tier_with_metadata`
+        interceptor in new development instead of the `post_set_cloud_armor_tier` interceptor.
+        When both interceptors are used, this `post_set_cloud_armor_tier_with_metadata` interceptor runs after the
+        `post_set_cloud_armor_tier` interceptor. The (possibly modified) response returned by
+        `post_set_cloud_armor_tier` will be passed to
+        `post_set_cloud_armor_tier_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_common_instance_metadata(
         self,
@@ -464,11 +719,34 @@ class ProjectsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_common_instance_metadata
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_common_instance_metadata_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_common_instance_metadata` interceptor runs
+        before the `post_set_common_instance_metadata_with_metadata` interceptor.
         """
         return response
+
+    def post_set_common_instance_metadata_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_common_instance_metadata
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_set_common_instance_metadata_with_metadata`
+        interceptor in new development instead of the `post_set_common_instance_metadata` interceptor.
+        When both interceptors are used, this `post_set_common_instance_metadata_with_metadata` interceptor runs after the
+        `post_set_common_instance_metadata` interceptor. The (possibly modified) response returned by
+        `post_set_common_instance_metadata` will be passed to
+        `post_set_common_instance_metadata_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_default_network_tier(
         self,
@@ -490,11 +768,34 @@ class ProjectsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_default_network_tier
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_default_network_tier_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_default_network_tier` interceptor runs
+        before the `post_set_default_network_tier_with_metadata` interceptor.
         """
         return response
+
+    def post_set_default_network_tier_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_default_network_tier
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_set_default_network_tier_with_metadata`
+        interceptor in new development instead of the `post_set_default_network_tier` interceptor.
+        When both interceptors are used, this `post_set_default_network_tier_with_metadata` interceptor runs after the
+        `post_set_default_network_tier` interceptor. The (possibly modified) response returned by
+        `post_set_default_network_tier` will be passed to
+        `post_set_default_network_tier_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_usage_export_bucket(
         self,
@@ -516,11 +817,34 @@ class ProjectsRestInterceptor:
     ) -> compute.Operation:
         """Post-rpc interceptor for set_usage_export_bucket
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_usage_export_bucket_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Projects server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_usage_export_bucket` interceptor runs
+        before the `post_set_usage_export_bucket_with_metadata` interceptor.
         """
         return response
+
+    def post_set_usage_export_bucket_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_usage_export_bucket
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Projects server but before it is returned to user code.
+
+        We recommend only using this `post_set_usage_export_bucket_with_metadata`
+        interceptor in new development instead of the `post_set_usage_export_bucket` interceptor.
+        When both interceptors are used, this `post_set_usage_export_bucket_with_metadata` interceptor runs after the
+        `post_set_usage_export_bucket` interceptor. The (possibly modified) response returned by
+        `post_set_usage_export_bucket` will be passed to
+        `post_set_usage_export_bucket_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -755,6 +1079,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_disable_xpn_host(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_disable_xpn_host_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -922,6 +1250,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_disable_xpn_resource(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_disable_xpn_resource_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1085,6 +1417,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_enable_xpn_host(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_enable_xpn_host_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1252,6 +1588,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_enable_xpn_resource(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_enable_xpn_resource_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1396,6 +1736,8 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1545,6 +1887,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_xpn_host(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_xpn_host_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1693,6 +2039,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_xpn_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_xpn_resources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1843,6 +2193,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_xpn_hosts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_xpn_hosts_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2008,6 +2362,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_move_disk(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_disk_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2175,6 +2533,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_move_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2342,6 +2704,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_cloud_armor_tier(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_cloud_armor_tier_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2510,6 +2876,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_common_instance_metadata(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_common_instance_metadata_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2677,6 +3047,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_default_network_tier(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_default_network_tier_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2844,6 +3218,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_usage_export_bucket(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_set_usage_export_bucket_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

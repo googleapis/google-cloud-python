@@ -62,6 +62,13 @@ from google.oauth2 import service_account
 from google.cloud.compute_v1.services.images import ImagesClient, pagers, transports
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -277,6 +284,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ImagesClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ImagesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ImagesClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4307,10 +4357,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteImageRequest.pb(compute.DeleteImageRequest())
         transcode.return_value = {
             "method": "post",
@@ -4332,6 +4385,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -4343,6 +4397,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deprecate_rest_bad_request(request_type=compute.DeprecateImageRequest):
@@ -4545,10 +4600,13 @@ def test_deprecate_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_deprecate"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_deprecate_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_deprecate"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeprecateImageRequest.pb(compute.DeprecateImageRequest())
         transcode.return_value = {
             "method": "post",
@@ -4570,6 +4628,7 @@ def test_deprecate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.deprecate(
             request,
@@ -4581,6 +4640,7 @@ def test_deprecate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetImageRequest):
@@ -4709,10 +4769,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetImageRequest.pb(compute.GetImageRequest())
         transcode.return_value = {
             "method": "post",
@@ -4734,6 +4797,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Image()
+        post_with_metadata.return_value = compute.Image(), metadata
 
         client.get(
             request,
@@ -4745,6 +4809,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_from_family_rest_bad_request(
@@ -4875,10 +4940,13 @@ def test_get_from_family_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_get_from_family"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_get_from_family_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_get_from_family"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetFromFamilyImageRequest.pb(
             compute.GetFromFamilyImageRequest()
         )
@@ -4902,6 +4970,7 @@ def test_get_from_family_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Image()
+        post_with_metadata.return_value = compute.Image(), metadata
 
         client.get_from_family(
             request,
@@ -4913,6 +4982,7 @@ def test_get_from_family_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(request_type=compute.GetIamPolicyImageRequest):
@@ -4997,10 +5067,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetIamPolicyImageRequest.pb(
             compute.GetIamPolicyImageRequest()
         )
@@ -5024,6 +5097,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -5035,6 +5109,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertImageRequest):
@@ -5281,10 +5356,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertImageRequest.pb(compute.InsertImageRequest())
         transcode.return_value = {
             "method": "post",
@@ -5306,6 +5384,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -5317,6 +5396,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListImagesRequest):
@@ -5403,10 +5483,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListImagesRequest.pb(compute.ListImagesRequest())
         transcode.return_value = {
             "method": "post",
@@ -5428,6 +5511,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.ImageList()
+        post_with_metadata.return_value = compute.ImageList(), metadata
 
         client.list(
             request,
@@ -5439,6 +5523,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchImageRequest):
@@ -5685,10 +5770,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchImageRequest.pb(compute.PatchImageRequest())
         transcode.return_value = {
             "method": "post",
@@ -5710,6 +5798,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -5721,6 +5810,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(request_type=compute.SetIamPolicyImageRequest):
@@ -5921,10 +6011,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetIamPolicyImageRequest.pb(
             compute.SetIamPolicyImageRequest()
         )
@@ -5948,6 +6041,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -5959,6 +6053,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_labels_rest_bad_request(request_type=compute.SetLabelsImageRequest):
@@ -6160,10 +6255,13 @@ def test_set_labels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_set_labels"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_set_labels_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_set_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetLabelsImageRequest.pb(compute.SetLabelsImageRequest())
         transcode.return_value = {
             "method": "post",
@@ -6185,6 +6283,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_labels(
             request,
@@ -6196,6 +6295,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -6356,10 +6456,13 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ImagesRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_test_iam_permissions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.TestIamPermissionsImageRequest.pb(
             compute.TestIamPermissionsImageRequest()
         )
@@ -6385,6 +6488,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TestPermissionsResponse()
+        post_with_metadata.return_value = compute.TestPermissionsResponse(), metadata
 
         client.test_iam_permissions(
             request,
@@ -6396,6 +6500,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

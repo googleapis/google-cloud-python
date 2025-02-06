@@ -62,6 +62,13 @@ from google.oauth2 import service_account
 from google.cloud.compute_v1.services.projects import ProjectsClient, pagers, transports
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -285,6 +292,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ProjectsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ProjectsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ProjectsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5918,10 +5968,13 @@ def test_disable_xpn_host_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_disable_xpn_host"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_disable_xpn_host_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_disable_xpn_host"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DisableXpnHostProjectRequest.pb(
             compute.DisableXpnHostProjectRequest()
         )
@@ -5945,6 +5998,7 @@ def test_disable_xpn_host_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.disable_xpn_host(
             request,
@@ -5956,6 +6010,7 @@ def test_disable_xpn_host_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_disable_xpn_resource_rest_bad_request(
@@ -6165,10 +6220,13 @@ def test_disable_xpn_resource_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_disable_xpn_resource"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_disable_xpn_resource_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_disable_xpn_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DisableXpnResourceProjectRequest.pb(
             compute.DisableXpnResourceProjectRequest()
         )
@@ -6192,6 +6250,7 @@ def test_disable_xpn_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.disable_xpn_resource(
             request,
@@ -6203,6 +6262,7 @@ def test_disable_xpn_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enable_xpn_host_rest_bad_request(
@@ -6327,10 +6387,13 @@ def test_enable_xpn_host_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_enable_xpn_host"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_enable_xpn_host_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_enable_xpn_host"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.EnableXpnHostProjectRequest.pb(
             compute.EnableXpnHostProjectRequest()
         )
@@ -6354,6 +6417,7 @@ def test_enable_xpn_host_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.enable_xpn_host(
             request,
@@ -6365,6 +6429,7 @@ def test_enable_xpn_host_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enable_xpn_resource_rest_bad_request(
@@ -6574,10 +6639,13 @@ def test_enable_xpn_resource_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_enable_xpn_resource"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_enable_xpn_resource_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_enable_xpn_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.EnableXpnResourceProjectRequest.pb(
             compute.EnableXpnResourceProjectRequest()
         )
@@ -6601,6 +6669,7 @@ def test_enable_xpn_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.enable_xpn_resource(
             request,
@@ -6612,6 +6681,7 @@ def test_enable_xpn_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetProjectRequest):
@@ -6714,10 +6784,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetProjectRequest.pb(compute.GetProjectRequest())
         transcode.return_value = {
             "method": "post",
@@ -6739,6 +6812,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Project()
+        post_with_metadata.return_value = compute.Project(), metadata
 
         client.get(
             request,
@@ -6750,6 +6824,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_xpn_host_rest_bad_request(request_type=compute.GetXpnHostProjectRequest):
@@ -6852,10 +6927,13 @@ def test_get_xpn_host_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_get_xpn_host"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_get_xpn_host_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_get_xpn_host"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetXpnHostProjectRequest.pb(
             compute.GetXpnHostProjectRequest()
         )
@@ -6879,6 +6957,7 @@ def test_get_xpn_host_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Project()
+        post_with_metadata.return_value = compute.Project(), metadata
 
         client.get_xpn_host(
             request,
@@ -6890,6 +6969,7 @@ def test_get_xpn_host_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_xpn_resources_rest_bad_request(
@@ -6974,10 +7054,13 @@ def test_get_xpn_resources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_get_xpn_resources"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_get_xpn_resources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_get_xpn_resources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetXpnResourcesProjectsRequest.pb(
             compute.GetXpnResourcesProjectsRequest()
         )
@@ -7003,6 +7086,7 @@ def test_get_xpn_resources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.ProjectsGetXpnResources()
+        post_with_metadata.return_value = compute.ProjectsGetXpnResources(), metadata
 
         client.get_xpn_resources(
             request,
@@ -7014,6 +7098,7 @@ def test_get_xpn_resources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_xpn_hosts_rest_bad_request(
@@ -7185,10 +7270,13 @@ def test_list_xpn_hosts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_list_xpn_hosts"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_list_xpn_hosts_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_list_xpn_hosts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListXpnHostsProjectsRequest.pb(
             compute.ListXpnHostsProjectsRequest()
         )
@@ -7212,6 +7300,7 @@ def test_list_xpn_hosts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.XpnHostList()
+        post_with_metadata.return_value = compute.XpnHostList(), metadata
 
         client.list_xpn_hosts(
             request,
@@ -7223,6 +7312,7 @@ def test_list_xpn_hosts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_move_disk_rest_bad_request(request_type=compute.MoveDiskProjectRequest):
@@ -7422,10 +7512,13 @@ def test_move_disk_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_move_disk"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_move_disk_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_move_disk"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.MoveDiskProjectRequest.pb(compute.MoveDiskProjectRequest())
         transcode.return_value = {
             "method": "post",
@@ -7447,6 +7540,7 @@ def test_move_disk_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.move_disk(
             request,
@@ -7458,6 +7552,7 @@ def test_move_disk_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_move_instance_rest_bad_request(
@@ -7661,10 +7756,13 @@ def test_move_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_move_instance"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_move_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_move_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.MoveInstanceProjectRequest.pb(
             compute.MoveInstanceProjectRequest()
         )
@@ -7688,6 +7786,7 @@ def test_move_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.move_instance(
             request,
@@ -7699,6 +7798,7 @@ def test_move_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_cloud_armor_tier_rest_bad_request(
@@ -7908,10 +8008,13 @@ def test_set_cloud_armor_tier_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_set_cloud_armor_tier"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_set_cloud_armor_tier_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_set_cloud_armor_tier"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetCloudArmorTierProjectRequest.pb(
             compute.SetCloudArmorTierProjectRequest()
         )
@@ -7935,6 +8038,7 @@ def test_set_cloud_armor_tier_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_cloud_armor_tier(
             request,
@@ -7946,6 +8050,7 @@ def test_set_cloud_armor_tier_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_common_instance_metadata_rest_bad_request(
@@ -8144,10 +8249,14 @@ def test_set_common_instance_metadata_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_set_common_instance_metadata"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor,
+        "post_set_common_instance_metadata_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_set_common_instance_metadata"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetCommonInstanceMetadataProjectRequest.pb(
             compute.SetCommonInstanceMetadataProjectRequest()
         )
@@ -8171,6 +8280,7 @@ def test_set_common_instance_metadata_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_common_instance_metadata(
             request,
@@ -8182,6 +8292,7 @@ def test_set_common_instance_metadata_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_default_network_tier_rest_bad_request(
@@ -8391,10 +8502,14 @@ def test_set_default_network_tier_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_set_default_network_tier"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor,
+        "post_set_default_network_tier_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_set_default_network_tier"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetDefaultNetworkTierProjectRequest.pb(
             compute.SetDefaultNetworkTierProjectRequest()
         )
@@ -8418,6 +8533,7 @@ def test_set_default_network_tier_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_default_network_tier(
             request,
@@ -8429,6 +8545,7 @@ def test_set_default_network_tier_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_usage_export_bucket_rest_bad_request(
@@ -8632,10 +8749,13 @@ def test_set_usage_export_bucket_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProjectsRestInterceptor, "post_set_usage_export_bucket"
     ) as post, mock.patch.object(
+        transports.ProjectsRestInterceptor, "post_set_usage_export_bucket_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProjectsRestInterceptor, "pre_set_usage_export_bucket"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetUsageExportBucketProjectRequest.pb(
             compute.SetUsageExportBucketProjectRequest()
         )
@@ -8659,6 +8779,7 @@ def test_set_usage_export_bucket_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_usage_export_bucket(
             request,
@@ -8670,6 +8791,7 @@ def test_set_usage_export_bucket_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

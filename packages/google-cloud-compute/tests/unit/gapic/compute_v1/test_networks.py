@@ -62,6 +62,13 @@ from google.oauth2 import service_account
 from google.cloud.compute_v1.services.networks import NetworksClient, pagers, transports
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -285,6 +292,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         NetworksClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = NetworksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = NetworksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4911,10 +4961,13 @@ def test_add_peering_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_add_peering"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_add_peering_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_add_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AddPeeringNetworkRequest.pb(
             compute.AddPeeringNetworkRequest()
         )
@@ -4938,6 +4991,7 @@ def test_add_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.add_peering(
             request,
@@ -4949,6 +5003,7 @@ def test_add_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteNetworkRequest):
@@ -5071,10 +5126,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteNetworkRequest.pb(compute.DeleteNetworkRequest())
         transcode.return_value = {
             "method": "post",
@@ -5096,6 +5154,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -5107,6 +5166,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetNetworkRequest):
@@ -5222,10 +5282,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetNetworkRequest.pb(compute.GetNetworkRequest())
         transcode.return_value = {
             "method": "post",
@@ -5247,6 +5310,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Network()
+        post_with_metadata.return_value = compute.Network(), metadata
 
         client.get(
             request,
@@ -5258,6 +5322,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_effective_firewalls_rest_bad_request(
@@ -5337,10 +5402,13 @@ def test_get_effective_firewalls_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_get_effective_firewalls"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_get_effective_firewalls_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_get_effective_firewalls"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetEffectiveFirewallsNetworkRequest.pb(
             compute.GetEffectiveFirewallsNetworkRequest()
         )
@@ -5366,6 +5434,10 @@ def test_get_effective_firewalls_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.NetworksGetEffectiveFirewallsResponse()
+        post_with_metadata.return_value = (
+            compute.NetworksGetEffectiveFirewallsResponse(),
+            metadata,
+        )
 
         client.get_effective_firewalls(
             request,
@@ -5377,6 +5449,7 @@ def test_get_effective_firewalls_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertNetworkRequest):
@@ -5609,10 +5682,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertNetworkRequest.pb(compute.InsertNetworkRequest())
         transcode.return_value = {
             "method": "post",
@@ -5634,6 +5710,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -5645,6 +5722,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListNetworksRequest):
@@ -5731,10 +5809,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListNetworksRequest.pb(compute.ListNetworksRequest())
         transcode.return_value = {
             "method": "post",
@@ -5756,6 +5837,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.NetworkList()
+        post_with_metadata.return_value = compute.NetworkList(), metadata
 
         client.list(
             request,
@@ -5767,6 +5849,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_peering_routes_rest_bad_request(
@@ -5855,10 +5938,13 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_list_peering_routes"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_list_peering_routes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_list_peering_routes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListPeeringRoutesNetworksRequest.pb(
             compute.ListPeeringRoutesNetworksRequest()
         )
@@ -5884,6 +5970,7 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.ExchangedPeeringRoutesList()
+        post_with_metadata.return_value = compute.ExchangedPeeringRoutesList(), metadata
 
         client.list_peering_routes(
             request,
@@ -5895,6 +5982,7 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchNetworkRequest):
@@ -6127,10 +6215,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchNetworkRequest.pb(compute.PatchNetworkRequest())
         transcode.return_value = {
             "method": "post",
@@ -6152,6 +6243,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -6163,6 +6255,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_peering_rest_bad_request(
@@ -6368,10 +6461,13 @@ def test_remove_peering_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_remove_peering"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_remove_peering_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_remove_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.RemovePeeringNetworkRequest.pb(
             compute.RemovePeeringNetworkRequest()
         )
@@ -6395,6 +6491,7 @@ def test_remove_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.remove_peering(
             request,
@@ -6406,6 +6503,7 @@ def test_remove_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_switch_to_custom_mode_rest_bad_request(
@@ -6530,10 +6628,13 @@ def test_switch_to_custom_mode_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_switch_to_custom_mode"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_switch_to_custom_mode_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_switch_to_custom_mode"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SwitchToCustomModeNetworkRequest.pb(
             compute.SwitchToCustomModeNetworkRequest()
         )
@@ -6557,6 +6658,7 @@ def test_switch_to_custom_mode_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.switch_to_custom_mode(
             request,
@@ -6568,6 +6670,7 @@ def test_switch_to_custom_mode_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_peering_rest_bad_request(
@@ -6788,10 +6891,13 @@ def test_update_peering_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworksRestInterceptor, "post_update_peering"
     ) as post, mock.patch.object(
+        transports.NetworksRestInterceptor, "post_update_peering_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworksRestInterceptor, "pre_update_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.UpdatePeeringNetworkRequest.pb(
             compute.UpdatePeeringNetworkRequest()
         )
@@ -6815,6 +6921,7 @@ def test_update_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.update_peering(
             request,
@@ -6826,6 +6933,7 @@ def test_update_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():
