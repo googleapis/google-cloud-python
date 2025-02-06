@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.26.1...v0.27.0) (2025-02-05)
+
+
+### Features
+
+* `to_gbq` can write non-string values to existing STRING columns in BigQuery ([#876](https://github.com/googleapis/python-bigquery-pandas/issues/876)) ([ee30a1e](https://github.com/googleapis/python-bigquery-pandas/commit/ee30a1e04a6731275846c04acad6e9646eb4f908))
+
 ## [0.26.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.26.0...v0.26.1) (2025-01-06)
 
 
