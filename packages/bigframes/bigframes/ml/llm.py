@@ -16,17 +16,19 @@
 
 from __future__ import annotations
 
-from typing import Callable, cast, Literal, Mapping, Optional
+from typing import Callable, cast, Iterable, Literal, Mapping, Optional, Union
 import warnings
 
 import bigframes_vendored.constants as constants
 from google.cloud import bigquery
 import typing_extensions
 
-from bigframes import clients, exceptions
+from bigframes import clients, dtypes, exceptions
+import bigframes.bigquery as bbq
 from bigframes.core import blocks, global_session, log_adapter
 import bigframes.dataframe
 from bigframes.ml import base, core, globals, utils
+import bigframes.series
 
 _BQML_PARAMS_MAPPING = {
     "max_iterations": "maxIterations",
@@ -82,6 +84,13 @@ _GEMINI_FINE_TUNE_SCORE_ENDPOINTS = (
     _GEMINI_PRO_ENDPOINT,
     _GEMINI_1P5_PRO_002_ENDPOINT,
     _GEMINI_1P5_FLASH_002_ENDPOINT,
+)
+_GEMINI_MULTIMODAL_ENDPOINTS = (
+    _GEMINI_1P5_PRO_001_ENDPOINT,
+    _GEMINI_1P5_PRO_002_ENDPOINT,
+    _GEMINI_1P5_FLASH_001_ENDPOINT,
+    _GEMINI_1P5_FLASH_002_ENDPOINT,
+    _GEMINI_2_FLASH_EXP_ENDPOINT,
 )
 
 _CLAUDE_3_SONNET_ENDPOINT = "claude-3-sonnet"
@@ -925,12 +934,13 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         top_p: float = 1.0,
         ground_with_google_search: bool = False,
         max_retries: int = 0,
+        prompt: Optional[Iterable[Union[str, bigframes.series.Series]]] = None,
     ) -> bigframes.dataframe.DataFrame:
         """Predict the result from input DataFrame.
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series or pandas.core.frame.DataFrame or pandas.core.series.Series):
-                Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, it must contain a "prompt" column for prediction.
+                Input DataFrame or Series, can contain one or more columns. If multiple columns are in the DataFrame, the "prompt" column, or created by "prompt" parameter, is used for prediction.
                 Prompts can include preamble, questions, suggestions, instructions, or examples.
 
             temperature (float, default 0.9):
@@ -966,6 +976,14 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             max_retries (int, default 0):
                 Max number of retries if the prediction for any rows failed. Each try needs to make progress (i.e. has successfully predicted rows) to continue the retry.
                 Each retry will append newly succeeded rows. When the max retries are reached, the remaining rows (the ones without successful predictions) will be appended to the end of the result.
+
+            prompt (Iterable of str or bigframes.series.Series, or None, default None):
+                .. note::
+                    BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+
+                Construct a prompt struct column for prediction based on the input. The input must be an Iterable that can take string literals,
+                such as "summarize", string column(s) of X, such as X["str_col"], or blob column(s) of X, such as X["blob_col"].
+                It creates a struct column of the items of the iterable, and use the concatenated result as the input prompt. No-op if set to None.
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
@@ -990,7 +1008,38 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                 f"max_retries must be larger than or equal to 0, but is {max_retries}."
             )
 
-        (X,) = utils.batch_convert_to_dataframe(X, session=self._bqml_model.session)
+        session = self._bqml_model.session
+        (X,) = utils.batch_convert_to_dataframe(X, session=session)
+
+        if prompt:
+            if not bigframes.options.experiments.blob:
+                raise NotImplementedError()
+
+            if self.model_name not in _GEMINI_MULTIMODAL_ENDPOINTS:
+                raise NotImplementedError(
+                    f"GeminiTextGenerator only supports model_name {', '.join(_GEMINI_MULTIMODAL_ENDPOINTS)} for Multimodal prompt."
+                )
+
+            df_prompt = X[[X.columns[0]]].rename(
+                columns={X.columns[0]: "bigframes_placeholder_col"}
+            )
+            for i, item in enumerate(prompt):
+                # must be distinct str column labels to construct a struct
+                if isinstance(item, str):
+                    label = f"input_{i}"
+                else:  # Series
+                    label = f"input_{i}_{item.name}"
+
+                # TODO(garrettwu): remove transform to ObjRefRuntime when BQML supports ObjRef as input
+                if (
+                    isinstance(item, bigframes.series.Series)
+                    and item.dtype == dtypes.OBJ_REF_DTYPE
+                ):
+                    item = item.blob._get_runtime("R", with_metadata=True)
+
+                df_prompt[label] = item
+            df_prompt = df_prompt.drop(columns="bigframes_placeholder_col")
+            X["prompt"] = bbq.struct(df_prompt)
 
         if len(X.columns) == 1:
             # BQML identified the column by name

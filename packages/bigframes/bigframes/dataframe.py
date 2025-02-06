@@ -84,7 +84,7 @@ if typing.TYPE_CHECKING:
 
     import bigframes.session
 
-    SingleItemValue = Union[bigframes.series.Series, int, float, Callable]
+    SingleItemValue = Union[bigframes.series.Series, int, float, str, Callable]
 
 LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
@@ -1953,7 +1953,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 result_block = result_block.drop_columns([src_col])
         return DataFrame(result_block)
 
-    def _assign_scalar(self, label: str, value: Union[int, float]) -> DataFrame:
+    def _assign_scalar(self, label: str, value: Union[int, float, str]) -> DataFrame:
         col_ids = self._block.cols_matching_label(label)
 
         block, constant_col_id = self._block.create_constant(value, label)
