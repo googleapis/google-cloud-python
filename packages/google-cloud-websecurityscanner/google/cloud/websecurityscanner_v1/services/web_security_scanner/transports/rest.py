@@ -200,11 +200,34 @@ class WebSecurityScannerRestInterceptor:
     ) -> scan_config.ScanConfig:
         """Post-rpc interceptor for create_scan_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_scan_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_scan_config` interceptor runs
+        before the `post_create_scan_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_scan_config_with_metadata(
+        self,
+        response: scan_config.ScanConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[scan_config.ScanConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_scan_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_create_scan_config_with_metadata`
+        interceptor in new development instead of the `post_create_scan_config` interceptor.
+        When both interceptors are used, this `post_create_scan_config_with_metadata` interceptor runs after the
+        `post_create_scan_config` interceptor. The (possibly modified) response returned by
+        `post_create_scan_config` will be passed to
+        `post_create_scan_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_scan_config(
         self,
@@ -238,11 +261,34 @@ class WebSecurityScannerRestInterceptor:
     def post_get_finding(self, response: finding.Finding) -> finding.Finding:
         """Post-rpc interceptor for get_finding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_finding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_finding` interceptor runs
+        before the `post_get_finding_with_metadata` interceptor.
         """
         return response
+
+    def post_get_finding_with_metadata(
+        self,
+        response: finding.Finding,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[finding.Finding, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_finding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_get_finding_with_metadata`
+        interceptor in new development instead of the `post_get_finding` interceptor.
+        When both interceptors are used, this `post_get_finding_with_metadata` interceptor runs after the
+        `post_get_finding` interceptor. The (possibly modified) response returned by
+        `post_get_finding` will be passed to
+        `post_get_finding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_scan_config(
         self,
@@ -264,11 +310,34 @@ class WebSecurityScannerRestInterceptor:
     ) -> scan_config.ScanConfig:
         """Post-rpc interceptor for get_scan_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_scan_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_scan_config` interceptor runs
+        before the `post_get_scan_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_scan_config_with_metadata(
+        self,
+        response: scan_config.ScanConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[scan_config.ScanConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_scan_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_get_scan_config_with_metadata`
+        interceptor in new development instead of the `post_get_scan_config` interceptor.
+        When both interceptors are used, this `post_get_scan_config_with_metadata` interceptor runs after the
+        `post_get_scan_config` interceptor. The (possibly modified) response returned by
+        `post_get_scan_config` will be passed to
+        `post_get_scan_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_scan_run(
         self,
@@ -287,11 +356,34 @@ class WebSecurityScannerRestInterceptor:
     def post_get_scan_run(self, response: scan_run.ScanRun) -> scan_run.ScanRun:
         """Post-rpc interceptor for get_scan_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_scan_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_scan_run` interceptor runs
+        before the `post_get_scan_run_with_metadata` interceptor.
         """
         return response
+
+    def post_get_scan_run_with_metadata(
+        self,
+        response: scan_run.ScanRun,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[scan_run.ScanRun, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_scan_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_get_scan_run_with_metadata`
+        interceptor in new development instead of the `post_get_scan_run` interceptor.
+        When both interceptors are used, this `post_get_scan_run_with_metadata` interceptor runs after the
+        `post_get_scan_run` interceptor. The (possibly modified) response returned by
+        `post_get_scan_run` will be passed to
+        `post_get_scan_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_crawled_urls(
         self,
@@ -313,11 +405,37 @@ class WebSecurityScannerRestInterceptor:
     ) -> web_security_scanner.ListCrawledUrlsResponse:
         """Post-rpc interceptor for list_crawled_urls
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_crawled_urls_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_crawled_urls` interceptor runs
+        before the `post_list_crawled_urls_with_metadata` interceptor.
         """
         return response
+
+    def post_list_crawled_urls_with_metadata(
+        self,
+        response: web_security_scanner.ListCrawledUrlsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        web_security_scanner.ListCrawledUrlsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_crawled_urls
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_list_crawled_urls_with_metadata`
+        interceptor in new development instead of the `post_list_crawled_urls` interceptor.
+        When both interceptors are used, this `post_list_crawled_urls_with_metadata` interceptor runs after the
+        `post_list_crawled_urls` interceptor. The (possibly modified) response returned by
+        `post_list_crawled_urls` will be passed to
+        `post_list_crawled_urls_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_findings(
         self,
@@ -339,11 +457,37 @@ class WebSecurityScannerRestInterceptor:
     ) -> web_security_scanner.ListFindingsResponse:
         """Post-rpc interceptor for list_findings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_findings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_findings` interceptor runs
+        before the `post_list_findings_with_metadata` interceptor.
         """
         return response
+
+    def post_list_findings_with_metadata(
+        self,
+        response: web_security_scanner.ListFindingsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        web_security_scanner.ListFindingsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_findings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_list_findings_with_metadata`
+        interceptor in new development instead of the `post_list_findings` interceptor.
+        When both interceptors are used, this `post_list_findings_with_metadata` interceptor runs after the
+        `post_list_findings` interceptor. The (possibly modified) response returned by
+        `post_list_findings` will be passed to
+        `post_list_findings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_finding_type_stats(
         self,
@@ -365,11 +509,37 @@ class WebSecurityScannerRestInterceptor:
     ) -> web_security_scanner.ListFindingTypeStatsResponse:
         """Post-rpc interceptor for list_finding_type_stats
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_finding_type_stats_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_finding_type_stats` interceptor runs
+        before the `post_list_finding_type_stats_with_metadata` interceptor.
         """
         return response
+
+    def post_list_finding_type_stats_with_metadata(
+        self,
+        response: web_security_scanner.ListFindingTypeStatsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        web_security_scanner.ListFindingTypeStatsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_finding_type_stats
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_list_finding_type_stats_with_metadata`
+        interceptor in new development instead of the `post_list_finding_type_stats` interceptor.
+        When both interceptors are used, this `post_list_finding_type_stats_with_metadata` interceptor runs after the
+        `post_list_finding_type_stats` interceptor. The (possibly modified) response returned by
+        `post_list_finding_type_stats` will be passed to
+        `post_list_finding_type_stats_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_scan_configs(
         self,
@@ -391,11 +561,37 @@ class WebSecurityScannerRestInterceptor:
     ) -> web_security_scanner.ListScanConfigsResponse:
         """Post-rpc interceptor for list_scan_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_scan_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_scan_configs` interceptor runs
+        before the `post_list_scan_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_scan_configs_with_metadata(
+        self,
+        response: web_security_scanner.ListScanConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        web_security_scanner.ListScanConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_scan_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_list_scan_configs_with_metadata`
+        interceptor in new development instead of the `post_list_scan_configs` interceptor.
+        When both interceptors are used, this `post_list_scan_configs_with_metadata` interceptor runs after the
+        `post_list_scan_configs` interceptor. The (possibly modified) response returned by
+        `post_list_scan_configs` will be passed to
+        `post_list_scan_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_scan_runs(
         self,
@@ -417,11 +613,37 @@ class WebSecurityScannerRestInterceptor:
     ) -> web_security_scanner.ListScanRunsResponse:
         """Post-rpc interceptor for list_scan_runs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_scan_runs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_scan_runs` interceptor runs
+        before the `post_list_scan_runs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_scan_runs_with_metadata(
+        self,
+        response: web_security_scanner.ListScanRunsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        web_security_scanner.ListScanRunsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_scan_runs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_list_scan_runs_with_metadata`
+        interceptor in new development instead of the `post_list_scan_runs` interceptor.
+        When both interceptors are used, this `post_list_scan_runs_with_metadata` interceptor runs after the
+        `post_list_scan_runs` interceptor. The (possibly modified) response returned by
+        `post_list_scan_runs` will be passed to
+        `post_list_scan_runs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_scan_run(
         self,
@@ -441,11 +663,34 @@ class WebSecurityScannerRestInterceptor:
     def post_start_scan_run(self, response: scan_run.ScanRun) -> scan_run.ScanRun:
         """Post-rpc interceptor for start_scan_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_scan_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_scan_run` interceptor runs
+        before the `post_start_scan_run_with_metadata` interceptor.
         """
         return response
+
+    def post_start_scan_run_with_metadata(
+        self,
+        response: scan_run.ScanRun,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[scan_run.ScanRun, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_scan_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_start_scan_run_with_metadata`
+        interceptor in new development instead of the `post_start_scan_run` interceptor.
+        When both interceptors are used, this `post_start_scan_run_with_metadata` interceptor runs after the
+        `post_start_scan_run` interceptor. The (possibly modified) response returned by
+        `post_start_scan_run` will be passed to
+        `post_start_scan_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop_scan_run(
         self,
@@ -464,11 +709,34 @@ class WebSecurityScannerRestInterceptor:
     def post_stop_scan_run(self, response: scan_run.ScanRun) -> scan_run.ScanRun:
         """Post-rpc interceptor for stop_scan_run
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_scan_run_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop_scan_run` interceptor runs
+        before the `post_stop_scan_run_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_scan_run_with_metadata(
+        self,
+        response: scan_run.ScanRun,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[scan_run.ScanRun, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop_scan_run
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_stop_scan_run_with_metadata`
+        interceptor in new development instead of the `post_stop_scan_run` interceptor.
+        When both interceptors are used, this `post_stop_scan_run_with_metadata` interceptor runs after the
+        `post_stop_scan_run` interceptor. The (possibly modified) response returned by
+        `post_stop_scan_run` will be passed to
+        `post_stop_scan_run_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_scan_config(
         self,
@@ -490,11 +758,34 @@ class WebSecurityScannerRestInterceptor:
     ) -> scan_config.ScanConfig:
         """Post-rpc interceptor for update_scan_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_scan_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebSecurityScanner server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_scan_config` interceptor runs
+        before the `post_update_scan_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_scan_config_with_metadata(
+        self,
+        response: scan_config.ScanConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[scan_config.ScanConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_scan_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebSecurityScanner server but before it is returned to user code.
+
+        We recommend only using this `post_update_scan_config_with_metadata`
+        interceptor in new development instead of the `post_update_scan_config` interceptor.
+        When both interceptors are used, this `post_update_scan_config_with_metadata` interceptor runs after the
+        `post_update_scan_config` interceptor. The (possibly modified) response returned by
+        `post_update_scan_config` will be passed to
+        `post_update_scan_config_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -714,6 +1005,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_scan_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_scan_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -966,6 +1261,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_finding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_finding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1109,6 +1408,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_scan_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_scan_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1252,6 +1555,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_scan_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_scan_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1395,6 +1702,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_crawled_urls(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_crawled_urls_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1538,6 +1849,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_findings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_findings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1685,6 +2000,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_finding_type_stats(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_finding_type_stats_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1832,6 +2151,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_scan_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_scan_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1975,6 +2298,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_scan_runs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_scan_runs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2127,6 +2454,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_scan_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_scan_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2277,6 +2608,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop_scan_run(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_scan_run_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2428,6 +2763,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_scan_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_scan_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

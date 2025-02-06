@@ -80,6 +80,13 @@ from google.cloud.vmmigration_v1.services.vm_migration import (
 )
 from google.cloud.vmmigration_v1.types import vmmigration
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -317,6 +324,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         VmMigrationClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = VmMigrationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = VmMigrationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -30633,10 +30683,13 @@ def test_list_sources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_sources"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_sources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_sources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListSourcesRequest.pb(vmmigration.ListSourcesRequest())
         transcode.return_value = {
             "method": "post",
@@ -30660,6 +30713,7 @@ def test_list_sources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListSourcesResponse()
+        post_with_metadata.return_value = vmmigration.ListSourcesResponse(), metadata
 
         client.list_sources(
             request,
@@ -30671,6 +30725,7 @@ def test_list_sources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_source_rest_bad_request(request_type=vmmigration.GetSourceRequest):
@@ -30755,10 +30810,13 @@ def test_get_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_source"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetSourceRequest.pb(vmmigration.GetSourceRequest())
         transcode.return_value = {
             "method": "post",
@@ -30780,6 +30838,7 @@ def test_get_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.Source()
+        post_with_metadata.return_value = vmmigration.Source(), metadata
 
         client.get_source(
             request,
@@ -30791,6 +30850,7 @@ def test_get_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_source_rest_bad_request(request_type=vmmigration.CreateSourceRequest):
@@ -30974,10 +31034,13 @@ def test_create_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_source"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateSourceRequest.pb(
             vmmigration.CreateSourceRequest()
         )
@@ -31001,6 +31064,7 @@ def test_create_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_source(
             request,
@@ -31012,6 +31076,7 @@ def test_create_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_source_rest_bad_request(request_type=vmmigration.UpdateSourceRequest):
@@ -31199,10 +31264,13 @@ def test_update_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_update_source"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_update_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_update_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.UpdateSourceRequest.pb(
             vmmigration.UpdateSourceRequest()
         )
@@ -31226,6 +31294,7 @@ def test_update_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_source(
             request,
@@ -31237,6 +31306,7 @@ def test_update_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_source_rest_bad_request(request_type=vmmigration.DeleteSourceRequest):
@@ -31315,10 +31385,13 @@ def test_delete_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_delete_source"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_delete_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.DeleteSourceRequest.pb(
             vmmigration.DeleteSourceRequest()
         )
@@ -31342,6 +31415,7 @@ def test_delete_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_source(
             request,
@@ -31353,6 +31427,7 @@ def test_delete_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_inventory_rest_bad_request(
@@ -31434,10 +31509,13 @@ def test_fetch_inventory_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_fetch_inventory"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_fetch_inventory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_fetch_inventory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.FetchInventoryRequest.pb(
             vmmigration.FetchInventoryRequest()
         )
@@ -31463,6 +31541,7 @@ def test_fetch_inventory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.FetchInventoryResponse()
+        post_with_metadata.return_value = vmmigration.FetchInventoryResponse(), metadata
 
         client.fetch_inventory(
             request,
@@ -31474,6 +31553,7 @@ def test_fetch_inventory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_utilization_reports_rest_bad_request(
@@ -31560,10 +31640,14 @@ def test_list_utilization_reports_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_utilization_reports"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_list_utilization_reports_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_utilization_reports"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListUtilizationReportsRequest.pb(
             vmmigration.ListUtilizationReportsRequest()
         )
@@ -31589,6 +31673,10 @@ def test_list_utilization_reports_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListUtilizationReportsResponse()
+        post_with_metadata.return_value = (
+            vmmigration.ListUtilizationReportsResponse(),
+            metadata,
+        )
 
         client.list_utilization_reports(
             request,
@@ -31600,6 +31688,7 @@ def test_list_utilization_reports_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_utilization_report_rest_bad_request(
@@ -31696,10 +31785,14 @@ def test_get_utilization_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_utilization_report"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_get_utilization_report_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_utilization_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetUtilizationReportRequest.pb(
             vmmigration.GetUtilizationReportRequest()
         )
@@ -31725,6 +31818,7 @@ def test_get_utilization_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.UtilizationReport()
+        post_with_metadata.return_value = vmmigration.UtilizationReport(), metadata
 
         client.get_utilization_report(
             request,
@@ -31736,6 +31830,7 @@ def test_get_utilization_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_utilization_report_rest_bad_request(
@@ -31934,10 +32029,14 @@ def test_create_utilization_report_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_utilization_report"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_create_utilization_report_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_utilization_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateUtilizationReportRequest.pb(
             vmmigration.CreateUtilizationReportRequest()
         )
@@ -31961,6 +32060,7 @@ def test_create_utilization_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_utilization_report(
             request,
@@ -31972,6 +32072,7 @@ def test_create_utilization_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_utilization_report_rest_bad_request(
@@ -32056,10 +32157,14 @@ def test_delete_utilization_report_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_delete_utilization_report"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_delete_utilization_report_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_delete_utilization_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.DeleteUtilizationReportRequest.pb(
             vmmigration.DeleteUtilizationReportRequest()
         )
@@ -32083,6 +32188,7 @@ def test_delete_utilization_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_utilization_report(
             request,
@@ -32094,6 +32200,7 @@ def test_delete_utilization_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_datacenter_connectors_rest_bad_request(
@@ -32180,10 +32287,14 @@ def test_list_datacenter_connectors_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_datacenter_connectors"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_list_datacenter_connectors_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_datacenter_connectors"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListDatacenterConnectorsRequest.pb(
             vmmigration.ListDatacenterConnectorsRequest()
         )
@@ -32209,6 +32320,10 @@ def test_list_datacenter_connectors_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListDatacenterConnectorsResponse()
+        post_with_metadata.return_value = (
+            vmmigration.ListDatacenterConnectorsResponse(),
+            metadata,
+        )
 
         client.list_datacenter_connectors(
             request,
@@ -32220,6 +32335,7 @@ def test_list_datacenter_connectors_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_datacenter_connector_rest_bad_request(
@@ -32325,10 +32441,14 @@ def test_get_datacenter_connector_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_datacenter_connector"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_get_datacenter_connector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_datacenter_connector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetDatacenterConnectorRequest.pb(
             vmmigration.GetDatacenterConnectorRequest()
         )
@@ -32354,6 +32474,7 @@ def test_get_datacenter_connector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.DatacenterConnector()
+        post_with_metadata.return_value = vmmigration.DatacenterConnector(), metadata
 
         client.get_datacenter_connector(
             request,
@@ -32365,6 +32486,7 @@ def test_get_datacenter_connector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_datacenter_connector_rest_bad_request(
@@ -32555,10 +32677,14 @@ def test_create_datacenter_connector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_datacenter_connector"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_create_datacenter_connector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_datacenter_connector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateDatacenterConnectorRequest.pb(
             vmmigration.CreateDatacenterConnectorRequest()
         )
@@ -32582,6 +32708,7 @@ def test_create_datacenter_connector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_datacenter_connector(
             request,
@@ -32593,6 +32720,7 @@ def test_create_datacenter_connector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_datacenter_connector_rest_bad_request(
@@ -32677,10 +32805,14 @@ def test_delete_datacenter_connector_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_delete_datacenter_connector"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_delete_datacenter_connector_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_delete_datacenter_connector"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.DeleteDatacenterConnectorRequest.pb(
             vmmigration.DeleteDatacenterConnectorRequest()
         )
@@ -32704,6 +32836,7 @@ def test_delete_datacenter_connector_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_datacenter_connector(
             request,
@@ -32715,6 +32848,7 @@ def test_delete_datacenter_connector_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_upgrade_appliance_rest_bad_request(
@@ -32799,10 +32933,13 @@ def test_upgrade_appliance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_upgrade_appliance"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_upgrade_appliance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_upgrade_appliance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.UpgradeApplianceRequest.pb(
             vmmigration.UpgradeApplianceRequest()
         )
@@ -32826,6 +32963,7 @@ def test_upgrade_appliance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.upgrade_appliance(
             request,
@@ -32837,6 +32975,7 @@ def test_upgrade_appliance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_migrating_vm_rest_bad_request(
@@ -33143,10 +33282,13 @@ def test_create_migrating_vm_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_migrating_vm"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_migrating_vm_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_migrating_vm"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateMigratingVmRequest.pb(
             vmmigration.CreateMigratingVmRequest()
         )
@@ -33170,6 +33312,7 @@ def test_create_migrating_vm_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_migrating_vm(
             request,
@@ -33181,6 +33324,7 @@ def test_create_migrating_vm_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_migrating_vms_rest_bad_request(
@@ -33267,10 +33411,13 @@ def test_list_migrating_vms_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_migrating_vms"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_migrating_vms_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_migrating_vms"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListMigratingVmsRequest.pb(
             vmmigration.ListMigratingVmsRequest()
         )
@@ -33296,6 +33443,10 @@ def test_list_migrating_vms_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListMigratingVmsResponse()
+        post_with_metadata.return_value = (
+            vmmigration.ListMigratingVmsResponse(),
+            metadata,
+        )
 
         client.list_migrating_vms(
             request,
@@ -33307,6 +33458,7 @@ def test_list_migrating_vms_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_migrating_vm_rest_bad_request(
@@ -33405,10 +33557,13 @@ def test_get_migrating_vm_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_migrating_vm"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_migrating_vm_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_migrating_vm"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetMigratingVmRequest.pb(
             vmmigration.GetMigratingVmRequest()
         )
@@ -33432,6 +33587,7 @@ def test_get_migrating_vm_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.MigratingVm()
+        post_with_metadata.return_value = vmmigration.MigratingVm(), metadata
 
         client.get_migrating_vm(
             request,
@@ -33443,6 +33599,7 @@ def test_get_migrating_vm_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_migrating_vm_rest_bad_request(
@@ -33757,10 +33914,13 @@ def test_update_migrating_vm_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_update_migrating_vm"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_update_migrating_vm_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_update_migrating_vm"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.UpdateMigratingVmRequest.pb(
             vmmigration.UpdateMigratingVmRequest()
         )
@@ -33784,6 +33944,7 @@ def test_update_migrating_vm_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_migrating_vm(
             request,
@@ -33795,6 +33956,7 @@ def test_update_migrating_vm_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_migrating_vm_rest_bad_request(
@@ -33879,10 +34041,13 @@ def test_delete_migrating_vm_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_delete_migrating_vm"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_migrating_vm_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_delete_migrating_vm"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.DeleteMigratingVmRequest.pb(
             vmmigration.DeleteMigratingVmRequest()
         )
@@ -33906,6 +34071,7 @@ def test_delete_migrating_vm_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_migrating_vm(
             request,
@@ -33917,6 +34083,7 @@ def test_delete_migrating_vm_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_migration_rest_bad_request(
@@ -34001,10 +34168,13 @@ def test_start_migration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_start_migration"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_start_migration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_start_migration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.StartMigrationRequest.pb(
             vmmigration.StartMigrationRequest()
         )
@@ -34028,6 +34198,7 @@ def test_start_migration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.start_migration(
             request,
@@ -34039,6 +34210,7 @@ def test_start_migration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resume_migration_rest_bad_request(
@@ -34123,10 +34295,13 @@ def test_resume_migration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_resume_migration"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_resume_migration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_resume_migration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ResumeMigrationRequest.pb(
             vmmigration.ResumeMigrationRequest()
         )
@@ -34150,6 +34325,7 @@ def test_resume_migration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.resume_migration(
             request,
@@ -34161,6 +34337,7 @@ def test_resume_migration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_pause_migration_rest_bad_request(
@@ -34245,10 +34422,13 @@ def test_pause_migration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_pause_migration"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_pause_migration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_pause_migration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.PauseMigrationRequest.pb(
             vmmigration.PauseMigrationRequest()
         )
@@ -34272,6 +34452,7 @@ def test_pause_migration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.pause_migration(
             request,
@@ -34283,6 +34464,7 @@ def test_pause_migration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_finalize_migration_rest_bad_request(
@@ -34367,10 +34549,13 @@ def test_finalize_migration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_finalize_migration"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_finalize_migration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_finalize_migration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.FinalizeMigrationRequest.pb(
             vmmigration.FinalizeMigrationRequest()
         )
@@ -34394,6 +34579,7 @@ def test_finalize_migration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.finalize_migration(
             request,
@@ -34405,6 +34591,7 @@ def test_finalize_migration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_clone_job_rest_bad_request(
@@ -34623,10 +34810,13 @@ def test_create_clone_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_clone_job"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_clone_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_clone_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateCloneJobRequest.pb(
             vmmigration.CreateCloneJobRequest()
         )
@@ -34650,6 +34840,7 @@ def test_create_clone_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_clone_job(
             request,
@@ -34661,6 +34852,7 @@ def test_create_clone_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_clone_job_rest_bad_request(
@@ -34745,10 +34937,13 @@ def test_cancel_clone_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_cancel_clone_job"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_cancel_clone_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_cancel_clone_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CancelCloneJobRequest.pb(
             vmmigration.CancelCloneJobRequest()
         )
@@ -34772,6 +34967,7 @@ def test_cancel_clone_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.cancel_clone_job(
             request,
@@ -34783,6 +34979,7 @@ def test_cancel_clone_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_clone_jobs_rest_bad_request(
@@ -34873,10 +35070,13 @@ def test_list_clone_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_clone_jobs"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_clone_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_clone_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListCloneJobsRequest.pb(
             vmmigration.ListCloneJobsRequest()
         )
@@ -34902,6 +35102,7 @@ def test_list_clone_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListCloneJobsResponse()
+        post_with_metadata.return_value = vmmigration.ListCloneJobsResponse(), metadata
 
         client.list_clone_jobs(
             request,
@@ -34913,6 +35114,7 @@ def test_list_clone_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_clone_job_rest_bad_request(request_type=vmmigration.GetCloneJobRequest):
@@ -35001,10 +35203,13 @@ def test_get_clone_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_clone_job"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_clone_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_clone_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetCloneJobRequest.pb(vmmigration.GetCloneJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -35026,6 +35231,7 @@ def test_get_clone_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.CloneJob()
+        post_with_metadata.return_value = vmmigration.CloneJob(), metadata
 
         client.get_clone_job(
             request,
@@ -35037,6 +35243,7 @@ def test_get_clone_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cutover_job_rest_bad_request(
@@ -35282,10 +35489,13 @@ def test_create_cutover_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_cutover_job"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_cutover_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_cutover_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateCutoverJobRequest.pb(
             vmmigration.CreateCutoverJobRequest()
         )
@@ -35309,6 +35519,7 @@ def test_create_cutover_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cutover_job(
             request,
@@ -35320,6 +35531,7 @@ def test_create_cutover_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_cutover_job_rest_bad_request(
@@ -35404,10 +35616,13 @@ def test_cancel_cutover_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_cancel_cutover_job"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_cancel_cutover_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_cancel_cutover_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CancelCutoverJobRequest.pb(
             vmmigration.CancelCutoverJobRequest()
         )
@@ -35431,6 +35646,7 @@ def test_cancel_cutover_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.cancel_cutover_job(
             request,
@@ -35442,6 +35658,7 @@ def test_cancel_cutover_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_cutover_jobs_rest_bad_request(
@@ -35532,10 +35749,13 @@ def test_list_cutover_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_cutover_jobs"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_cutover_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_cutover_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListCutoverJobsRequest.pb(
             vmmigration.ListCutoverJobsRequest()
         )
@@ -35561,6 +35781,10 @@ def test_list_cutover_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListCutoverJobsResponse()
+        post_with_metadata.return_value = (
+            vmmigration.ListCutoverJobsResponse(),
+            metadata,
+        )
 
         client.list_cutover_jobs(
             request,
@@ -35572,6 +35796,7 @@ def test_list_cutover_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cutover_job_rest_bad_request(
@@ -35666,10 +35891,13 @@ def test_get_cutover_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_cutover_job"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_cutover_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_cutover_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetCutoverJobRequest.pb(
             vmmigration.GetCutoverJobRequest()
         )
@@ -35693,6 +35921,7 @@ def test_get_cutover_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.CutoverJob()
+        post_with_metadata.return_value = vmmigration.CutoverJob(), metadata
 
         client.get_cutover_job(
             request,
@@ -35704,6 +35933,7 @@ def test_get_cutover_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_groups_rest_bad_request(request_type=vmmigration.ListGroupsRequest):
@@ -35788,10 +36018,13 @@ def test_list_groups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_groups"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_groups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_groups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListGroupsRequest.pb(vmmigration.ListGroupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -35815,6 +36048,7 @@ def test_list_groups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListGroupsResponse()
+        post_with_metadata.return_value = vmmigration.ListGroupsResponse(), metadata
 
         client.list_groups(
             request,
@@ -35826,6 +36060,7 @@ def test_list_groups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_group_rest_bad_request(request_type=vmmigration.GetGroupRequest):
@@ -35912,10 +36147,13 @@ def test_get_group_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_group"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetGroupRequest.pb(vmmigration.GetGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -35937,6 +36175,7 @@ def test_get_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.Group()
+        post_with_metadata.return_value = vmmigration.Group(), metadata
 
         client.get_group(
             request,
@@ -35948,6 +36187,7 @@ def test_get_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_group_rest_bad_request(request_type=vmmigration.CreateGroupRequest):
@@ -36100,10 +36340,13 @@ def test_create_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_group"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_create_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateGroupRequest.pb(vmmigration.CreateGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -36125,6 +36368,7 @@ def test_create_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_group(
             request,
@@ -36136,6 +36380,7 @@ def test_create_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_group_rest_bad_request(request_type=vmmigration.UpdateGroupRequest):
@@ -36292,10 +36537,13 @@ def test_update_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_update_group"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_update_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_update_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.UpdateGroupRequest.pb(vmmigration.UpdateGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -36317,6 +36565,7 @@ def test_update_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_group(
             request,
@@ -36328,6 +36577,7 @@ def test_update_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_group_rest_bad_request(request_type=vmmigration.DeleteGroupRequest):
@@ -36406,10 +36656,13 @@ def test_delete_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_delete_group"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_delete_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_delete_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.DeleteGroupRequest.pb(vmmigration.DeleteGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -36431,6 +36684,7 @@ def test_delete_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_group(
             request,
@@ -36442,6 +36696,7 @@ def test_delete_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_group_migration_rest_bad_request(
@@ -36522,10 +36777,13 @@ def test_add_group_migration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_add_group_migration"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_add_group_migration_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_add_group_migration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.AddGroupMigrationRequest.pb(
             vmmigration.AddGroupMigrationRequest()
         )
@@ -36549,6 +36807,7 @@ def test_add_group_migration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.add_group_migration(
             request,
@@ -36560,6 +36819,7 @@ def test_add_group_migration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_group_migration_rest_bad_request(
@@ -36640,10 +36900,14 @@ def test_remove_group_migration_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_remove_group_migration"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_remove_group_migration_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_remove_group_migration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.RemoveGroupMigrationRequest.pb(
             vmmigration.RemoveGroupMigrationRequest()
         )
@@ -36667,6 +36931,7 @@ def test_remove_group_migration_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.remove_group_migration(
             request,
@@ -36678,6 +36943,7 @@ def test_remove_group_migration_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_target_projects_rest_bad_request(
@@ -36764,10 +37030,13 @@ def test_list_target_projects_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_target_projects"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_list_target_projects_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_target_projects"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListTargetProjectsRequest.pb(
             vmmigration.ListTargetProjectsRequest()
         )
@@ -36793,6 +37062,10 @@ def test_list_target_projects_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListTargetProjectsResponse()
+        post_with_metadata.return_value = (
+            vmmigration.ListTargetProjectsResponse(),
+            metadata,
+        )
 
         client.list_target_projects(
             request,
@@ -36804,6 +37077,7 @@ def test_list_target_projects_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_target_project_rest_bad_request(
@@ -36892,10 +37166,13 @@ def test_get_target_project_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_target_project"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor, "post_get_target_project_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_target_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetTargetProjectRequest.pb(
             vmmigration.GetTargetProjectRequest()
         )
@@ -36919,6 +37196,7 @@ def test_get_target_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.TargetProject()
+        post_with_metadata.return_value = vmmigration.TargetProject(), metadata
 
         client.get_target_project(
             request,
@@ -36930,6 +37208,7 @@ def test_get_target_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_target_project_rest_bad_request(
@@ -37084,10 +37363,14 @@ def test_create_target_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_create_target_project"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_create_target_project_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_create_target_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.CreateTargetProjectRequest.pb(
             vmmigration.CreateTargetProjectRequest()
         )
@@ -37111,6 +37394,7 @@ def test_create_target_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_target_project(
             request,
@@ -37122,6 +37406,7 @@ def test_create_target_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_target_project_rest_bad_request(
@@ -37284,10 +37569,14 @@ def test_update_target_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_update_target_project"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_update_target_project_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_update_target_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.UpdateTargetProjectRequest.pb(
             vmmigration.UpdateTargetProjectRequest()
         )
@@ -37311,6 +37600,7 @@ def test_update_target_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_target_project(
             request,
@@ -37322,6 +37612,7 @@ def test_update_target_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_target_project_rest_bad_request(
@@ -37402,10 +37693,14 @@ def test_delete_target_project_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_delete_target_project"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_delete_target_project_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_delete_target_project"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.DeleteTargetProjectRequest.pb(
             vmmigration.DeleteTargetProjectRequest()
         )
@@ -37429,6 +37724,7 @@ def test_delete_target_project_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_target_project(
             request,
@@ -37440,6 +37736,7 @@ def test_delete_target_project_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_replication_cycles_rest_bad_request(
@@ -37530,10 +37827,14 @@ def test_list_replication_cycles_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_list_replication_cycles"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_list_replication_cycles_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_list_replication_cycles"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.ListReplicationCyclesRequest.pb(
             vmmigration.ListReplicationCyclesRequest()
         )
@@ -37559,6 +37860,10 @@ def test_list_replication_cycles_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ListReplicationCyclesResponse()
+        post_with_metadata.return_value = (
+            vmmigration.ListReplicationCyclesResponse(),
+            metadata,
+        )
 
         client.list_replication_cycles(
             request,
@@ -37570,6 +37875,7 @@ def test_list_replication_cycles_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_replication_cycle_rest_bad_request(
@@ -37664,10 +37970,14 @@ def test_get_replication_cycle_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmMigrationRestInterceptor, "post_get_replication_cycle"
     ) as post, mock.patch.object(
+        transports.VmMigrationRestInterceptor,
+        "post_get_replication_cycle_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmMigrationRestInterceptor, "pre_get_replication_cycle"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmmigration.GetReplicationCycleRequest.pb(
             vmmigration.GetReplicationCycleRequest()
         )
@@ -37693,6 +38003,7 @@ def test_get_replication_cycle_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmmigration.ReplicationCycle()
+        post_with_metadata.return_value = vmmigration.ReplicationCycle(), metadata
 
         client.get_replication_cycle(
             request,
@@ -37704,6 +38015,7 @@ def test_get_replication_cycle_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

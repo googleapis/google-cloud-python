@@ -175,11 +175,34 @@ class TranslationServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_translate_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_translate_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_translate_document` interceptor runs
+        before the `post_batch_translate_document_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_translate_document_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_translate_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_translate_document_with_metadata`
+        interceptor in new development instead of the `post_batch_translate_document` interceptor.
+        When both interceptors are used, this `post_batch_translate_document_with_metadata` interceptor runs after the
+        `post_batch_translate_document` interceptor. The (possibly modified) response returned by
+        `post_batch_translate_document` will be passed to
+        `post_batch_translate_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_batch_translate_text(
         self,
@@ -201,11 +224,34 @@ class TranslationServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_translate_text
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_translate_text_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_translate_text` interceptor runs
+        before the `post_batch_translate_text_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_translate_text_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_translate_text
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_translate_text_with_metadata`
+        interceptor in new development instead of the `post_batch_translate_text` interceptor.
+        When both interceptors are used, this `post_batch_translate_text_with_metadata` interceptor runs after the
+        `post_batch_translate_text` interceptor. The (possibly modified) response returned by
+        `post_batch_translate_text` will be passed to
+        `post_batch_translate_text_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_glossary(
         self,
@@ -227,11 +273,34 @@ class TranslationServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_glossary
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_glossary_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_glossary` interceptor runs
+        before the `post_create_glossary_with_metadata` interceptor.
         """
         return response
+
+    def post_create_glossary_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_glossary
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_create_glossary_with_metadata`
+        interceptor in new development instead of the `post_create_glossary` interceptor.
+        When both interceptors are used, this `post_create_glossary_with_metadata` interceptor runs after the
+        `post_create_glossary` interceptor. The (possibly modified) response returned by
+        `post_create_glossary` will be passed to
+        `post_create_glossary_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_glossary(
         self,
@@ -253,11 +322,34 @@ class TranslationServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_glossary
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_glossary_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_glossary` interceptor runs
+        before the `post_delete_glossary_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_glossary_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_glossary
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_glossary_with_metadata`
+        interceptor in new development instead of the `post_delete_glossary` interceptor.
+        When both interceptors are used, this `post_delete_glossary_with_metadata` interceptor runs after the
+        `post_delete_glossary` interceptor. The (possibly modified) response returned by
+        `post_delete_glossary` will be passed to
+        `post_delete_glossary_with_metadata`.
+        """
+        return response, metadata
 
     def pre_detect_language(
         self,
@@ -279,11 +371,37 @@ class TranslationServiceRestInterceptor:
     ) -> translation_service.DetectLanguageResponse:
         """Post-rpc interceptor for detect_language
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_detect_language_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_detect_language` interceptor runs
+        before the `post_detect_language_with_metadata` interceptor.
         """
         return response
+
+    def post_detect_language_with_metadata(
+        self,
+        response: translation_service.DetectLanguageResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.DetectLanguageResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for detect_language
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_detect_language_with_metadata`
+        interceptor in new development instead of the `post_detect_language` interceptor.
+        When both interceptors are used, this `post_detect_language_with_metadata` interceptor runs after the
+        `post_detect_language` interceptor. The (possibly modified) response returned by
+        `post_detect_language` will be passed to
+        `post_detect_language_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_glossary(
         self,
@@ -304,11 +422,34 @@ class TranslationServiceRestInterceptor:
     ) -> translation_service.Glossary:
         """Post-rpc interceptor for get_glossary
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_glossary_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_glossary` interceptor runs
+        before the `post_get_glossary_with_metadata` interceptor.
         """
         return response
+
+    def post_get_glossary_with_metadata(
+        self,
+        response: translation_service.Glossary,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[translation_service.Glossary, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_glossary
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_glossary_with_metadata`
+        interceptor in new development instead of the `post_get_glossary` interceptor.
+        When both interceptors are used, this `post_get_glossary_with_metadata` interceptor runs after the
+        `post_get_glossary` interceptor. The (possibly modified) response returned by
+        `post_get_glossary` will be passed to
+        `post_get_glossary_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_supported_languages(
         self,
@@ -330,11 +471,36 @@ class TranslationServiceRestInterceptor:
     ) -> translation_service.SupportedLanguages:
         """Post-rpc interceptor for get_supported_languages
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_supported_languages_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_supported_languages` interceptor runs
+        before the `post_get_supported_languages_with_metadata` interceptor.
         """
         return response
+
+    def post_get_supported_languages_with_metadata(
+        self,
+        response: translation_service.SupportedLanguages,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.SupportedLanguages, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_supported_languages
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_supported_languages_with_metadata`
+        interceptor in new development instead of the `post_get_supported_languages` interceptor.
+        When both interceptors are used, this `post_get_supported_languages_with_metadata` interceptor runs after the
+        `post_get_supported_languages` interceptor. The (possibly modified) response returned by
+        `post_get_supported_languages` will be passed to
+        `post_get_supported_languages_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_glossaries(
         self,
@@ -356,11 +522,37 @@ class TranslationServiceRestInterceptor:
     ) -> translation_service.ListGlossariesResponse:
         """Post-rpc interceptor for list_glossaries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_glossaries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_glossaries` interceptor runs
+        before the `post_list_glossaries_with_metadata` interceptor.
         """
         return response
+
+    def post_list_glossaries_with_metadata(
+        self,
+        response: translation_service.ListGlossariesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.ListGlossariesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_glossaries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_list_glossaries_with_metadata`
+        interceptor in new development instead of the `post_list_glossaries` interceptor.
+        When both interceptors are used, this `post_list_glossaries_with_metadata` interceptor runs after the
+        `post_list_glossaries` interceptor. The (possibly modified) response returned by
+        `post_list_glossaries` will be passed to
+        `post_list_glossaries_with_metadata`.
+        """
+        return response, metadata
 
     def pre_translate_document(
         self,
@@ -382,11 +574,37 @@ class TranslationServiceRestInterceptor:
     ) -> translation_service.TranslateDocumentResponse:
         """Post-rpc interceptor for translate_document
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_translate_document_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_translate_document` interceptor runs
+        before the `post_translate_document_with_metadata` interceptor.
         """
         return response
+
+    def post_translate_document_with_metadata(
+        self,
+        response: translation_service.TranslateDocumentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.TranslateDocumentResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for translate_document
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_translate_document_with_metadata`
+        interceptor in new development instead of the `post_translate_document` interceptor.
+        When both interceptors are used, this `post_translate_document_with_metadata` interceptor runs after the
+        `post_translate_document` interceptor. The (possibly modified) response returned by
+        `post_translate_document` will be passed to
+        `post_translate_document_with_metadata`.
+        """
+        return response, metadata
 
     def pre_translate_text(
         self,
@@ -408,11 +626,37 @@ class TranslationServiceRestInterceptor:
     ) -> translation_service.TranslateTextResponse:
         """Post-rpc interceptor for translate_text
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_translate_text_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranslationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_translate_text` interceptor runs
+        before the `post_translate_text_with_metadata` interceptor.
         """
         return response
+
+    def post_translate_text_with_metadata(
+        self,
+        response: translation_service.TranslateTextResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.TranslateTextResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for translate_text
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranslationService server but before it is returned to user code.
+
+        We recommend only using this `post_translate_text_with_metadata`
+        interceptor in new development instead of the `post_translate_text` interceptor.
+        When both interceptors are used, this `post_translate_text_with_metadata` interceptor runs after the
+        `post_translate_text` interceptor. The (possibly modified) response returned by
+        `post_translate_text` will be passed to
+        `post_translate_text_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -691,6 +935,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_translate_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_translate_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -843,6 +1091,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_translate_text(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_translate_text_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -991,6 +1243,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_glossary(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_glossary_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1133,6 +1389,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_glossary(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_glossary_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1283,6 +1543,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_detect_language(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_detect_language_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1428,6 +1692,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_glossary(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_glossary_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1576,6 +1844,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_supported_languages(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_supported_languages_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1719,6 +1991,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_glossaries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_glossaries_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1872,6 +2148,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_translate_document(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_translate_document_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2022,6 +2302,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_translate_text(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_translate_text_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

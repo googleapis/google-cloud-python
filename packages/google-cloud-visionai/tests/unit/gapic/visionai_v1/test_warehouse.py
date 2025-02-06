@@ -81,6 +81,13 @@ from google.cloud.visionai_v1.services.warehouse import (
 )
 from google.cloud.visionai_v1.types import warehouse
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -312,6 +319,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         WarehouseClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = WarehouseClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = WarehouseClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -38546,10 +38596,13 @@ def test_create_asset_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateAssetRequest.pb(warehouse.CreateAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -38571,6 +38624,7 @@ def test_create_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Asset()
+        post_with_metadata.return_value = warehouse.Asset(), metadata
 
         client.create_asset(
             request,
@@ -38582,6 +38636,7 @@ def test_create_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_asset_rest_bad_request(request_type=warehouse.UpdateAssetRequest):
@@ -38742,10 +38797,13 @@ def test_update_asset_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateAssetRequest.pb(warehouse.UpdateAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -38767,6 +38825,7 @@ def test_update_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Asset()
+        post_with_metadata.return_value = warehouse.Asset(), metadata
 
         client.update_asset(
             request,
@@ -38778,6 +38837,7 @@ def test_update_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_asset_rest_bad_request(request_type=warehouse.GetAssetRequest):
@@ -38862,10 +38922,13 @@ def test_get_asset_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetAssetRequest.pb(warehouse.GetAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -38887,6 +38950,7 @@ def test_get_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Asset()
+        post_with_metadata.return_value = warehouse.Asset(), metadata
 
         client.get_asset(
             request,
@@ -38898,6 +38962,7 @@ def test_get_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_assets_rest_bad_request(request_type=warehouse.ListAssetsRequest):
@@ -38978,10 +39043,13 @@ def test_list_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_assets"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListAssetsRequest.pb(warehouse.ListAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -39005,6 +39073,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListAssetsResponse()
+        post_with_metadata.return_value = warehouse.ListAssetsResponse(), metadata
 
         client.list_assets(
             request,
@@ -39016,6 +39085,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_asset_rest_bad_request(request_type=warehouse.DeleteAssetRequest):
@@ -39096,10 +39166,13 @@ def test_delete_asset_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_delete_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_delete_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_delete_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.DeleteAssetRequest.pb(warehouse.DeleteAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -39121,6 +39194,7 @@ def test_delete_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_asset(
             request,
@@ -39132,6 +39206,7 @@ def test_delete_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_upload_asset_rest_bad_request(request_type=warehouse.UploadAssetRequest):
@@ -39212,10 +39287,13 @@ def test_upload_asset_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_upload_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_upload_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_upload_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UploadAssetRequest.pb(warehouse.UploadAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -39237,6 +39315,7 @@ def test_upload_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.upload_asset(
             request,
@@ -39248,6 +39327,7 @@ def test_upload_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_retrieval_url_rest_bad_request(
@@ -39334,10 +39414,13 @@ def test_generate_retrieval_url_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_generate_retrieval_url"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_generate_retrieval_url_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_generate_retrieval_url"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GenerateRetrievalUrlRequest.pb(
             warehouse.GenerateRetrievalUrlRequest()
         )
@@ -39363,6 +39446,10 @@ def test_generate_retrieval_url_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.GenerateRetrievalUrlResponse()
+        post_with_metadata.return_value = (
+            warehouse.GenerateRetrievalUrlResponse(),
+            metadata,
+        )
 
         client.generate_retrieval_url(
             request,
@@ -39374,6 +39461,7 @@ def test_generate_retrieval_url_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_asset_rest_bad_request(request_type=warehouse.AnalyzeAssetRequest):
@@ -39454,10 +39542,13 @@ def test_analyze_asset_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_analyze_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_analyze_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_analyze_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.AnalyzeAssetRequest.pb(warehouse.AnalyzeAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -39479,6 +39570,7 @@ def test_analyze_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.analyze_asset(
             request,
@@ -39490,6 +39582,7 @@ def test_analyze_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_index_asset_rest_bad_request(request_type=warehouse.IndexAssetRequest):
@@ -39570,10 +39663,13 @@ def test_index_asset_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_index_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_index_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_index_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.IndexAssetRequest.pb(warehouse.IndexAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -39595,6 +39691,7 @@ def test_index_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.index_asset(
             request,
@@ -39606,6 +39703,7 @@ def test_index_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_index_asset_rest_bad_request(
@@ -39688,10 +39786,13 @@ def test_remove_index_asset_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_remove_index_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_remove_index_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_remove_index_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.RemoveIndexAssetRequest.pb(
             warehouse.RemoveIndexAssetRequest()
         )
@@ -39715,6 +39816,7 @@ def test_remove_index_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.remove_index_asset(
             request,
@@ -39726,6 +39828,7 @@ def test_remove_index_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_view_indexed_assets_rest_bad_request(
@@ -39812,10 +39915,13 @@ def test_view_indexed_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_view_indexed_assets"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_view_indexed_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_view_indexed_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ViewIndexedAssetsRequest.pb(
             warehouse.ViewIndexedAssetsRequest()
         )
@@ -39841,6 +39947,10 @@ def test_view_indexed_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ViewIndexedAssetsResponse()
+        post_with_metadata.return_value = (
+            warehouse.ViewIndexedAssetsResponse(),
+            metadata,
+        )
 
         client.view_indexed_assets(
             request,
@@ -39852,6 +39962,7 @@ def test_view_indexed_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_index_rest_bad_request(request_type=warehouse.CreateIndexRequest):
@@ -40007,10 +40118,13 @@ def test_create_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_index"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateIndexRequest.pb(warehouse.CreateIndexRequest())
         transcode.return_value = {
             "method": "post",
@@ -40032,6 +40146,7 @@ def test_create_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_index(
             request,
@@ -40043,6 +40158,7 @@ def test_create_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_index_rest_bad_request(request_type=warehouse.UpdateIndexRequest):
@@ -40206,10 +40322,13 @@ def test_update_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_index"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateIndexRequest.pb(warehouse.UpdateIndexRequest())
         transcode.return_value = {
             "method": "post",
@@ -40231,6 +40350,7 @@ def test_update_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_index(
             request,
@@ -40242,6 +40362,7 @@ def test_update_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_index_rest_bad_request(request_type=warehouse.GetIndexRequest):
@@ -40337,10 +40458,13 @@ def test_get_index_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_index"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetIndexRequest.pb(warehouse.GetIndexRequest())
         transcode.return_value = {
             "method": "post",
@@ -40362,6 +40486,7 @@ def test_get_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Index()
+        post_with_metadata.return_value = warehouse.Index(), metadata
 
         client.get_index(
             request,
@@ -40373,6 +40498,7 @@ def test_get_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_indexes_rest_bad_request(request_type=warehouse.ListIndexesRequest):
@@ -40453,10 +40579,13 @@ def test_list_indexes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_indexes"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_indexes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_indexes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListIndexesRequest.pb(warehouse.ListIndexesRequest())
         transcode.return_value = {
             "method": "post",
@@ -40480,6 +40609,7 @@ def test_list_indexes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListIndexesResponse()
+        post_with_metadata.return_value = warehouse.ListIndexesResponse(), metadata
 
         client.list_indexes(
             request,
@@ -40491,6 +40621,7 @@ def test_list_indexes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_index_rest_bad_request(request_type=warehouse.DeleteIndexRequest):
@@ -40571,10 +40702,13 @@ def test_delete_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_delete_index"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_delete_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_delete_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.DeleteIndexRequest.pb(warehouse.DeleteIndexRequest())
         transcode.return_value = {
             "method": "post",
@@ -40596,6 +40730,7 @@ def test_delete_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_index(
             request,
@@ -40607,6 +40742,7 @@ def test_delete_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_corpus_rest_bad_request(request_type=warehouse.CreateCorpusRequest):
@@ -40760,10 +40896,13 @@ def test_create_corpus_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_corpus"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateCorpusRequest.pb(warehouse.CreateCorpusRequest())
         transcode.return_value = {
             "method": "post",
@@ -40785,6 +40924,7 @@ def test_create_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_corpus(
             request,
@@ -40796,6 +40936,7 @@ def test_create_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_corpus_rest_bad_request(request_type=warehouse.GetCorpusRequest):
@@ -40886,10 +41027,13 @@ def test_get_corpus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_corpus"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetCorpusRequest.pb(warehouse.GetCorpusRequest())
         transcode.return_value = {
             "method": "post",
@@ -40911,6 +41055,7 @@ def test_get_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Corpus()
+        post_with_metadata.return_value = warehouse.Corpus(), metadata
 
         client.get_corpus(
             request,
@@ -40922,6 +41067,7 @@ def test_get_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_corpus_rest_bad_request(request_type=warehouse.UpdateCorpusRequest):
@@ -41093,10 +41239,13 @@ def test_update_corpus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_corpus"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateCorpusRequest.pb(warehouse.UpdateCorpusRequest())
         transcode.return_value = {
             "method": "post",
@@ -41118,6 +41267,7 @@ def test_update_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Corpus()
+        post_with_metadata.return_value = warehouse.Corpus(), metadata
 
         client.update_corpus(
             request,
@@ -41129,6 +41279,7 @@ def test_update_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_corpora_rest_bad_request(request_type=warehouse.ListCorporaRequest):
@@ -41209,10 +41360,13 @@ def test_list_corpora_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_corpora"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_corpora_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_corpora"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListCorporaRequest.pb(warehouse.ListCorporaRequest())
         transcode.return_value = {
             "method": "post",
@@ -41236,6 +41390,7 @@ def test_list_corpora_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListCorporaResponse()
+        post_with_metadata.return_value = warehouse.ListCorporaResponse(), metadata
 
         client.list_corpora(
             request,
@@ -41247,6 +41402,7 @@ def test_list_corpora_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_corpus_rest_bad_request(request_type=warehouse.DeleteCorpusRequest):
@@ -41426,10 +41582,13 @@ def test_analyze_corpus_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_analyze_corpus"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_analyze_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_analyze_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.AnalyzeCorpusRequest.pb(warehouse.AnalyzeCorpusRequest())
         transcode.return_value = {
             "method": "post",
@@ -41451,6 +41610,7 @@ def test_analyze_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.analyze_corpus(
             request,
@@ -41462,6 +41622,7 @@ def test_analyze_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_data_schema_rest_bad_request(
@@ -41631,10 +41792,13 @@ def test_create_data_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_data_schema"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_data_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_data_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateDataSchemaRequest.pb(
             warehouse.CreateDataSchemaRequest()
         )
@@ -41658,6 +41822,7 @@ def test_create_data_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.DataSchema()
+        post_with_metadata.return_value = warehouse.DataSchema(), metadata
 
         client.create_data_schema(
             request,
@@ -41669,6 +41834,7 @@ def test_create_data_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_data_schema_rest_bad_request(
@@ -41846,10 +42012,13 @@ def test_update_data_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_data_schema"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_data_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_data_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateDataSchemaRequest.pb(
             warehouse.UpdateDataSchemaRequest()
         )
@@ -41873,6 +42042,7 @@ def test_update_data_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.DataSchema()
+        post_with_metadata.return_value = warehouse.DataSchema(), metadata
 
         client.update_data_schema(
             request,
@@ -41884,6 +42054,7 @@ def test_update_data_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_data_schema_rest_bad_request(request_type=warehouse.GetDataSchemaRequest):
@@ -41970,10 +42141,13 @@ def test_get_data_schema_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_data_schema"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_data_schema_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_data_schema"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetDataSchemaRequest.pb(warehouse.GetDataSchemaRequest())
         transcode.return_value = {
             "method": "post",
@@ -41995,6 +42169,7 @@ def test_get_data_schema_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.DataSchema()
+        post_with_metadata.return_value = warehouse.DataSchema(), metadata
 
         client.get_data_schema(
             request,
@@ -42006,6 +42181,7 @@ def test_get_data_schema_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_data_schema_rest_bad_request(
@@ -42199,10 +42375,13 @@ def test_list_data_schemas_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_data_schemas"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_data_schemas_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_data_schemas"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListDataSchemasRequest.pb(
             warehouse.ListDataSchemasRequest()
         )
@@ -42228,6 +42407,7 @@ def test_list_data_schemas_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListDataSchemasResponse()
+        post_with_metadata.return_value = warehouse.ListDataSchemasResponse(), metadata
 
         client.list_data_schemas(
             request,
@@ -42239,6 +42419,7 @@ def test_list_data_schemas_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_annotation_rest_bad_request(
@@ -42429,10 +42610,13 @@ def test_create_annotation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_annotation"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_annotation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_annotation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateAnnotationRequest.pb(
             warehouse.CreateAnnotationRequest()
         )
@@ -42456,6 +42640,7 @@ def test_create_annotation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Annotation()
+        post_with_metadata.return_value = warehouse.Annotation(), metadata
 
         client.create_annotation(
             request,
@@ -42467,6 +42652,7 @@ def test_create_annotation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_annotation_rest_bad_request(request_type=warehouse.GetAnnotationRequest):
@@ -42551,10 +42737,13 @@ def test_get_annotation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_annotation"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_annotation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_annotation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetAnnotationRequest.pb(warehouse.GetAnnotationRequest())
         transcode.return_value = {
             "method": "post",
@@ -42576,6 +42765,7 @@ def test_get_annotation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Annotation()
+        post_with_metadata.return_value = warehouse.Annotation(), metadata
 
         client.get_annotation(
             request,
@@ -42587,6 +42777,7 @@ def test_get_annotation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_annotations_rest_bad_request(
@@ -42673,10 +42864,13 @@ def test_list_annotations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_annotations"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_annotations_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_annotations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListAnnotationsRequest.pb(
             warehouse.ListAnnotationsRequest()
         )
@@ -42702,6 +42896,7 @@ def test_list_annotations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListAnnotationsResponse()
+        post_with_metadata.return_value = warehouse.ListAnnotationsResponse(), metadata
 
         client.list_annotations(
             request,
@@ -42713,6 +42908,7 @@ def test_list_annotations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_annotation_rest_bad_request(
@@ -42907,10 +43103,13 @@ def test_update_annotation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_annotation"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_annotation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_annotation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateAnnotationRequest.pb(
             warehouse.UpdateAnnotationRequest()
         )
@@ -42934,6 +43133,7 @@ def test_update_annotation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Annotation()
+        post_with_metadata.return_value = warehouse.Annotation(), metadata
 
         client.update_annotation(
             request,
@@ -42945,6 +43145,7 @@ def test_update_annotation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_annotation_rest_bad_request(
@@ -43149,10 +43350,13 @@ def test_clip_asset_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_clip_asset"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_clip_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_clip_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ClipAssetRequest.pb(warehouse.ClipAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -43176,6 +43380,7 @@ def test_clip_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ClipAssetResponse()
+        post_with_metadata.return_value = warehouse.ClipAssetResponse(), metadata
 
         client.clip_asset(
             request,
@@ -43187,6 +43392,7 @@ def test_clip_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_hls_uri_rest_bad_request(
@@ -43273,10 +43479,13 @@ def test_generate_hls_uri_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_generate_hls_uri"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_generate_hls_uri_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_generate_hls_uri"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GenerateHlsUriRequest.pb(
             warehouse.GenerateHlsUriRequest()
         )
@@ -43302,6 +43511,7 @@ def test_generate_hls_uri_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.GenerateHlsUriResponse()
+        post_with_metadata.return_value = warehouse.GenerateHlsUriResponse(), metadata
 
         client.generate_hls_uri(
             request,
@@ -43313,6 +43523,7 @@ def test_generate_hls_uri_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_assets_rest_bad_request(request_type=warehouse.ImportAssetsRequest):
@@ -43389,10 +43600,13 @@ def test_import_assets_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_import_assets"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_import_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_import_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ImportAssetsRequest.pb(warehouse.ImportAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -43414,6 +43628,7 @@ def test_import_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_assets(
             request,
@@ -43425,6 +43640,7 @@ def test_import_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_search_config_rest_bad_request(
@@ -43607,10 +43823,13 @@ def test_create_search_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_search_config"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_search_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_search_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateSearchConfigRequest.pb(
             warehouse.CreateSearchConfigRequest()
         )
@@ -43634,6 +43853,7 @@ def test_create_search_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchConfig()
+        post_with_metadata.return_value = warehouse.SearchConfig(), metadata
 
         client.create_search_config(
             request,
@@ -43645,6 +43865,7 @@ def test_create_search_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_search_config_rest_bad_request(
@@ -43835,10 +44056,13 @@ def test_update_search_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_search_config"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_search_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_search_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateSearchConfigRequest.pb(
             warehouse.UpdateSearchConfigRequest()
         )
@@ -43862,6 +44086,7 @@ def test_update_search_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchConfig()
+        post_with_metadata.return_value = warehouse.SearchConfig(), metadata
 
         client.update_search_config(
             request,
@@ -43873,6 +44098,7 @@ def test_update_search_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_search_config_rest_bad_request(
@@ -43959,10 +44185,13 @@ def test_get_search_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_search_config"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_search_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_search_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetSearchConfigRequest.pb(
             warehouse.GetSearchConfigRequest()
         )
@@ -43986,6 +44215,7 @@ def test_get_search_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchConfig()
+        post_with_metadata.return_value = warehouse.SearchConfig(), metadata
 
         client.get_search_config(
             request,
@@ -43997,6 +44227,7 @@ def test_get_search_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_search_config_rest_bad_request(
@@ -44190,10 +44421,13 @@ def test_list_search_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_search_configs"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_search_configs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_search_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListSearchConfigsRequest.pb(
             warehouse.ListSearchConfigsRequest()
         )
@@ -44219,6 +44453,10 @@ def test_list_search_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListSearchConfigsResponse()
+        post_with_metadata.return_value = (
+            warehouse.ListSearchConfigsResponse(),
+            metadata,
+        )
 
         client.list_search_configs(
             request,
@@ -44230,6 +44468,7 @@ def test_list_search_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_search_hypernym_rest_bad_request(
@@ -44388,10 +44627,13 @@ def test_create_search_hypernym_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_search_hypernym"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_search_hypernym_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_search_hypernym"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateSearchHypernymRequest.pb(
             warehouse.CreateSearchHypernymRequest()
         )
@@ -44415,6 +44657,7 @@ def test_create_search_hypernym_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchHypernym()
+        post_with_metadata.return_value = warehouse.SearchHypernym(), metadata
 
         client.create_search_hypernym(
             request,
@@ -44426,6 +44669,7 @@ def test_create_search_hypernym_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_search_hypernym_rest_bad_request(
@@ -44592,10 +44836,13 @@ def test_update_search_hypernym_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_search_hypernym"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_search_hypernym_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_search_hypernym"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateSearchHypernymRequest.pb(
             warehouse.UpdateSearchHypernymRequest()
         )
@@ -44619,6 +44866,7 @@ def test_update_search_hypernym_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchHypernym()
+        post_with_metadata.return_value = warehouse.SearchHypernym(), metadata
 
         client.update_search_hypernym(
             request,
@@ -44630,6 +44878,7 @@ def test_update_search_hypernym_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_search_hypernym_rest_bad_request(
@@ -44720,10 +44969,13 @@ def test_get_search_hypernym_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_search_hypernym"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_search_hypernym_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_search_hypernym"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetSearchHypernymRequest.pb(
             warehouse.GetSearchHypernymRequest()
         )
@@ -44747,6 +44999,7 @@ def test_get_search_hypernym_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchHypernym()
+        post_with_metadata.return_value = warehouse.SearchHypernym(), metadata
 
         client.get_search_hypernym(
             request,
@@ -44758,6 +45011,7 @@ def test_get_search_hypernym_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_search_hypernym_rest_bad_request(
@@ -44951,10 +45205,13 @@ def test_list_search_hypernyms_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_search_hypernyms"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_search_hypernyms_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_search_hypernyms"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListSearchHypernymsRequest.pb(
             warehouse.ListSearchHypernymsRequest()
         )
@@ -44980,6 +45237,10 @@ def test_list_search_hypernyms_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListSearchHypernymsResponse()
+        post_with_metadata.return_value = (
+            warehouse.ListSearchHypernymsResponse(),
+            metadata,
+        )
 
         client.list_search_hypernyms(
             request,
@@ -44991,6 +45252,7 @@ def test_list_search_hypernyms_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_assets_rest_bad_request(request_type=warehouse.SearchAssetsRequest):
@@ -45071,10 +45333,13 @@ def test_search_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_search_assets"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_search_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_search_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.SearchAssetsRequest.pb(warehouse.SearchAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -45098,6 +45363,7 @@ def test_search_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchAssetsResponse()
+        post_with_metadata.return_value = warehouse.SearchAssetsResponse(), metadata
 
         client.search_assets(
             request,
@@ -45109,6 +45375,7 @@ def test_search_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_index_endpoint_rest_bad_request(
@@ -45195,10 +45462,13 @@ def test_search_index_endpoint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_search_index_endpoint"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_search_index_endpoint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_search_index_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.SearchIndexEndpointRequest.pb(
             warehouse.SearchIndexEndpointRequest()
         )
@@ -45224,6 +45494,10 @@ def test_search_index_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.SearchIndexEndpointResponse()
+        post_with_metadata.return_value = (
+            warehouse.SearchIndexEndpointResponse(),
+            metadata,
+        )
 
         client.search_index_endpoint(
             request,
@@ -45235,6 +45509,7 @@ def test_search_index_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_index_endpoint_rest_bad_request(
@@ -45392,10 +45667,13 @@ def test_create_index_endpoint_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_index_endpoint"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_index_endpoint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_index_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateIndexEndpointRequest.pb(
             warehouse.CreateIndexEndpointRequest()
         )
@@ -45419,6 +45697,7 @@ def test_create_index_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_index_endpoint(
             request,
@@ -45430,6 +45709,7 @@ def test_create_index_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_index_endpoint_rest_bad_request(
@@ -45522,10 +45802,13 @@ def test_get_index_endpoint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_index_endpoint"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_index_endpoint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_index_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetIndexEndpointRequest.pb(
             warehouse.GetIndexEndpointRequest()
         )
@@ -45549,6 +45832,7 @@ def test_get_index_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.IndexEndpoint()
+        post_with_metadata.return_value = warehouse.IndexEndpoint(), metadata
 
         client.get_index_endpoint(
             request,
@@ -45560,6 +45844,7 @@ def test_get_index_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_index_endpoints_rest_bad_request(
@@ -45642,10 +45927,13 @@ def test_list_index_endpoints_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_index_endpoints"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_index_endpoints_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_index_endpoints"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListIndexEndpointsRequest.pb(
             warehouse.ListIndexEndpointsRequest()
         )
@@ -45671,6 +45959,10 @@ def test_list_index_endpoints_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListIndexEndpointsResponse()
+        post_with_metadata.return_value = (
+            warehouse.ListIndexEndpointsResponse(),
+            metadata,
+        )
 
         client.list_index_endpoints(
             request,
@@ -45682,6 +45974,7 @@ def test_list_index_endpoints_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_index_endpoint_rest_bad_request(
@@ -45847,10 +46140,13 @@ def test_update_index_endpoint_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_index_endpoint"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_index_endpoint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_index_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateIndexEndpointRequest.pb(
             warehouse.UpdateIndexEndpointRequest()
         )
@@ -45874,6 +46170,7 @@ def test_update_index_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_index_endpoint(
             request,
@@ -45885,6 +46182,7 @@ def test_update_index_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_index_endpoint_rest_bad_request(
@@ -45963,10 +46261,13 @@ def test_delete_index_endpoint_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_delete_index_endpoint"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_delete_index_endpoint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_delete_index_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.DeleteIndexEndpointRequest.pb(
             warehouse.DeleteIndexEndpointRequest()
         )
@@ -45990,6 +46291,7 @@ def test_delete_index_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_index_endpoint(
             request,
@@ -46001,6 +46303,7 @@ def test_delete_index_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deploy_index_rest_bad_request(request_type=warehouse.DeployIndexRequest):
@@ -46081,10 +46384,13 @@ def test_deploy_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_deploy_index"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_deploy_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_deploy_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.DeployIndexRequest.pb(warehouse.DeployIndexRequest())
         transcode.return_value = {
             "method": "post",
@@ -46106,6 +46412,7 @@ def test_deploy_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.deploy_index(
             request,
@@ -46117,6 +46424,7 @@ def test_deploy_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undeploy_index_rest_bad_request(request_type=warehouse.UndeployIndexRequest):
@@ -46197,10 +46505,13 @@ def test_undeploy_index_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_undeploy_index"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_undeploy_index_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_undeploy_index"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UndeployIndexRequest.pb(warehouse.UndeployIndexRequest())
         transcode.return_value = {
             "method": "post",
@@ -46222,6 +46533,7 @@ def test_undeploy_index_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undeploy_index(
             request,
@@ -46233,6 +46545,7 @@ def test_undeploy_index_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_collection_rest_bad_request(
@@ -46383,10 +46696,13 @@ def test_create_collection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_create_collection"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_create_collection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_create_collection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.CreateCollectionRequest.pb(
             warehouse.CreateCollectionRequest()
         )
@@ -46410,6 +46726,7 @@ def test_create_collection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_collection(
             request,
@@ -46421,6 +46738,7 @@ def test_create_collection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_collection_rest_bad_request(
@@ -46503,10 +46821,13 @@ def test_delete_collection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WarehouseRestInterceptor, "post_delete_collection"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_delete_collection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_delete_collection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.DeleteCollectionRequest.pb(
             warehouse.DeleteCollectionRequest()
         )
@@ -46530,6 +46851,7 @@ def test_delete_collection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_collection(
             request,
@@ -46541,6 +46863,7 @@ def test_delete_collection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_collection_rest_bad_request(request_type=warehouse.GetCollectionRequest):
@@ -46629,10 +46952,13 @@ def test_get_collection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_get_collection"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_get_collection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_get_collection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.GetCollectionRequest.pb(warehouse.GetCollectionRequest())
         transcode.return_value = {
             "method": "post",
@@ -46654,6 +46980,7 @@ def test_get_collection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Collection()
+        post_with_metadata.return_value = warehouse.Collection(), metadata
 
         client.get_collection(
             request,
@@ -46665,6 +46992,7 @@ def test_get_collection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_collection_rest_bad_request(
@@ -46831,10 +47159,13 @@ def test_update_collection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_update_collection"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_update_collection_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_update_collection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.UpdateCollectionRequest.pb(
             warehouse.UpdateCollectionRequest()
         )
@@ -46858,6 +47189,7 @@ def test_update_collection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.Collection()
+        post_with_metadata.return_value = warehouse.Collection(), metadata
 
         client.update_collection(
             request,
@@ -46869,6 +47201,7 @@ def test_update_collection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_collections_rest_bad_request(
@@ -46951,10 +47284,13 @@ def test_list_collections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_list_collections"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_list_collections_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_list_collections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ListCollectionsRequest.pb(
             warehouse.ListCollectionsRequest()
         )
@@ -46980,6 +47316,7 @@ def test_list_collections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ListCollectionsResponse()
+        post_with_metadata.return_value = warehouse.ListCollectionsResponse(), metadata
 
         client.list_collections(
             request,
@@ -46991,6 +47328,7 @@ def test_list_collections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_collection_item_rest_bad_request(
@@ -47078,10 +47416,13 @@ def test_add_collection_item_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_add_collection_item"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_add_collection_item_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_add_collection_item"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.AddCollectionItemRequest.pb(
             warehouse.AddCollectionItemRequest()
         )
@@ -47107,6 +47448,10 @@ def test_add_collection_item_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.AddCollectionItemResponse()
+        post_with_metadata.return_value = (
+            warehouse.AddCollectionItemResponse(),
+            metadata,
+        )
 
         client.add_collection_item(
             request,
@@ -47118,6 +47463,7 @@ def test_add_collection_item_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_collection_item_rest_bad_request(
@@ -47205,10 +47551,13 @@ def test_remove_collection_item_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_remove_collection_item"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_remove_collection_item_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_remove_collection_item"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.RemoveCollectionItemRequest.pb(
             warehouse.RemoveCollectionItemRequest()
         )
@@ -47234,6 +47583,10 @@ def test_remove_collection_item_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.RemoveCollectionItemResponse()
+        post_with_metadata.return_value = (
+            warehouse.RemoveCollectionItemResponse(),
+            metadata,
+        )
 
         client.remove_collection_item(
             request,
@@ -47245,6 +47598,7 @@ def test_remove_collection_item_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_view_collection_items_rest_bad_request(
@@ -47331,10 +47685,13 @@ def test_view_collection_items_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WarehouseRestInterceptor, "post_view_collection_items"
     ) as post, mock.patch.object(
+        transports.WarehouseRestInterceptor, "post_view_collection_items_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WarehouseRestInterceptor, "pre_view_collection_items"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = warehouse.ViewCollectionItemsRequest.pb(
             warehouse.ViewCollectionItemsRequest()
         )
@@ -47360,6 +47717,10 @@ def test_view_collection_items_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = warehouse.ViewCollectionItemsResponse()
+        post_with_metadata.return_value = (
+            warehouse.ViewCollectionItemsResponse(),
+            metadata,
+        )
 
         client.view_collection_items(
             request,
@@ -47371,6 +47732,7 @@ def test_view_collection_items_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

@@ -79,6 +79,13 @@ from google.cloud.workstations_v1beta.services.workstations import (
 )
 from google.cloud.workstations_v1beta.types import workstations
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -320,6 +327,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         WorkstationsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = WorkstationsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = WorkstationsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -14715,10 +14765,14 @@ def test_get_workstation_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_get_workstation_cluster"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_get_workstation_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_get_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.GetWorkstationClusterRequest.pb(
             workstations.GetWorkstationClusterRequest()
         )
@@ -14744,6 +14798,7 @@ def test_get_workstation_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.WorkstationCluster()
+        post_with_metadata.return_value = workstations.WorkstationCluster(), metadata
 
         client.get_workstation_cluster(
             request,
@@ -14755,6 +14810,7 @@ def test_get_workstation_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workstation_clusters_rest_bad_request(
@@ -14841,10 +14897,14 @@ def test_list_workstation_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_list_workstation_clusters"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_list_workstation_clusters_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_workstation_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.ListWorkstationClustersRequest.pb(
             workstations.ListWorkstationClustersRequest()
         )
@@ -14870,6 +14930,10 @@ def test_list_workstation_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListWorkstationClustersResponse()
+        post_with_metadata.return_value = (
+            workstations.ListWorkstationClustersResponse(),
+            metadata,
+        )
 
         client.list_workstation_clusters(
             request,
@@ -14881,6 +14945,7 @@ def test_list_workstation_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_workstation_cluster_rest_bad_request(
@@ -15064,10 +15129,14 @@ def test_create_workstation_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_create_workstation_cluster"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_create_workstation_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_create_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.CreateWorkstationClusterRequest.pb(
             workstations.CreateWorkstationClusterRequest()
         )
@@ -15091,6 +15160,7 @@ def test_create_workstation_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_workstation_cluster(
             request,
@@ -15102,6 +15172,7 @@ def test_create_workstation_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_workstation_cluster_rest_bad_request(
@@ -15293,10 +15364,14 @@ def test_update_workstation_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_update_workstation_cluster"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_update_workstation_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_update_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.UpdateWorkstationClusterRequest.pb(
             workstations.UpdateWorkstationClusterRequest()
         )
@@ -15320,6 +15395,7 @@ def test_update_workstation_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_workstation_cluster(
             request,
@@ -15331,6 +15407,7 @@ def test_update_workstation_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_workstation_cluster_rest_bad_request(
@@ -15415,10 +15492,14 @@ def test_delete_workstation_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_delete_workstation_cluster"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_delete_workstation_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_delete_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.DeleteWorkstationClusterRequest.pb(
             workstations.DeleteWorkstationClusterRequest()
         )
@@ -15442,6 +15523,7 @@ def test_delete_workstation_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_workstation_cluster(
             request,
@@ -15453,6 +15535,7 @@ def test_delete_workstation_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_workstation_config_rest_bad_request(
@@ -15555,10 +15638,14 @@ def test_get_workstation_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_get_workstation_config"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_get_workstation_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_get_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.GetWorkstationConfigRequest.pb(
             workstations.GetWorkstationConfigRequest()
         )
@@ -15584,6 +15671,7 @@ def test_get_workstation_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.WorkstationConfig()
+        post_with_metadata.return_value = workstations.WorkstationConfig(), metadata
 
         client.get_workstation_config(
             request,
@@ -15595,6 +15683,7 @@ def test_get_workstation_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workstation_configs_rest_bad_request(
@@ -15685,10 +15774,14 @@ def test_list_workstation_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_list_workstation_configs"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_list_workstation_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_workstation_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.ListWorkstationConfigsRequest.pb(
             workstations.ListWorkstationConfigsRequest()
         )
@@ -15714,6 +15807,10 @@ def test_list_workstation_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListWorkstationConfigsResponse()
+        post_with_metadata.return_value = (
+            workstations.ListWorkstationConfigsResponse(),
+            metadata,
+        )
 
         client.list_workstation_configs(
             request,
@@ -15725,6 +15822,7 @@ def test_list_workstation_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_usable_workstation_configs_rest_bad_request(
@@ -15817,10 +15915,14 @@ def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_list_usable_workstation_configs"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_list_usable_workstation_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_usable_workstation_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.ListUsableWorkstationConfigsRequest.pb(
             workstations.ListUsableWorkstationConfigsRequest()
         )
@@ -15846,6 +15948,10 @@ def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListUsableWorkstationConfigsResponse()
+        post_with_metadata.return_value = (
+            workstations.ListUsableWorkstationConfigsResponse(),
+            metadata,
+        )
 
         client.list_usable_workstation_configs(
             request,
@@ -15857,6 +15963,7 @@ def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_workstation_config_rest_bad_request(
@@ -16098,10 +16205,14 @@ def test_create_workstation_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_create_workstation_config"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_create_workstation_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_create_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.CreateWorkstationConfigRequest.pb(
             workstations.CreateWorkstationConfigRequest()
         )
@@ -16125,6 +16236,7 @@ def test_create_workstation_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_workstation_config(
             request,
@@ -16136,6 +16248,7 @@ def test_create_workstation_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_workstation_config_rest_bad_request(
@@ -16381,10 +16494,14 @@ def test_update_workstation_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_update_workstation_config"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_update_workstation_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_update_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.UpdateWorkstationConfigRequest.pb(
             workstations.UpdateWorkstationConfigRequest()
         )
@@ -16408,6 +16525,7 @@ def test_update_workstation_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_workstation_config(
             request,
@@ -16419,6 +16537,7 @@ def test_update_workstation_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_workstation_config_rest_bad_request(
@@ -16503,10 +16622,14 @@ def test_delete_workstation_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_delete_workstation_config"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_delete_workstation_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_delete_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.DeleteWorkstationConfigRequest.pb(
             workstations.DeleteWorkstationConfigRequest()
         )
@@ -16530,6 +16653,7 @@ def test_delete_workstation_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_workstation_config(
             request,
@@ -16541,6 +16665,7 @@ def test_delete_workstation_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_workstation_rest_bad_request(
@@ -16641,10 +16766,13 @@ def test_get_workstation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_get_workstation"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_get_workstation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_get_workstation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.GetWorkstationRequest.pb(
             workstations.GetWorkstationRequest()
         )
@@ -16668,6 +16796,7 @@ def test_get_workstation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.Workstation()
+        post_with_metadata.return_value = workstations.Workstation(), metadata
 
         client.get_workstation(
             request,
@@ -16679,6 +16808,7 @@ def test_get_workstation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workstations_rest_bad_request(
@@ -16769,10 +16899,13 @@ def test_list_workstations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_list_workstations"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_workstations_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_workstations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.ListWorkstationsRequest.pb(
             workstations.ListWorkstationsRequest()
         )
@@ -16798,6 +16931,10 @@ def test_list_workstations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListWorkstationsResponse()
+        post_with_metadata.return_value = (
+            workstations.ListWorkstationsResponse(),
+            metadata,
+        )
 
         client.list_workstations(
             request,
@@ -16809,6 +16946,7 @@ def test_list_workstations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_usable_workstations_rest_bad_request(
@@ -16899,10 +17037,14 @@ def test_list_usable_workstations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_list_usable_workstations"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_list_usable_workstations_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_usable_workstations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.ListUsableWorkstationsRequest.pb(
             workstations.ListUsableWorkstationsRequest()
         )
@@ -16928,6 +17070,10 @@ def test_list_usable_workstations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListUsableWorkstationsResponse()
+        post_with_metadata.return_value = (
+            workstations.ListUsableWorkstationsResponse(),
+            metadata,
+        )
 
         client.list_usable_workstations(
             request,
@@ -16939,6 +17085,7 @@ def test_list_usable_workstations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_workstation_rest_bad_request(
@@ -17106,10 +17253,13 @@ def test_create_workstation_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_create_workstation"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_create_workstation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_create_workstation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.CreateWorkstationRequest.pb(
             workstations.CreateWorkstationRequest()
         )
@@ -17133,6 +17283,7 @@ def test_create_workstation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_workstation(
             request,
@@ -17144,6 +17295,7 @@ def test_create_workstation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_workstation_rest_bad_request(
@@ -17315,10 +17467,13 @@ def test_update_workstation_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_update_workstation"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_update_workstation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_update_workstation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.UpdateWorkstationRequest.pb(
             workstations.UpdateWorkstationRequest()
         )
@@ -17342,6 +17497,7 @@ def test_update_workstation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_workstation(
             request,
@@ -17353,6 +17509,7 @@ def test_update_workstation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_workstation_rest_bad_request(
@@ -17437,10 +17594,13 @@ def test_delete_workstation_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_delete_workstation"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_delete_workstation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_delete_workstation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.DeleteWorkstationRequest.pb(
             workstations.DeleteWorkstationRequest()
         )
@@ -17464,6 +17624,7 @@ def test_delete_workstation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_workstation(
             request,
@@ -17475,6 +17636,7 @@ def test_delete_workstation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_workstation_rest_bad_request(
@@ -17559,10 +17721,13 @@ def test_start_workstation_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_start_workstation"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_start_workstation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_start_workstation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.StartWorkstationRequest.pb(
             workstations.StartWorkstationRequest()
         )
@@ -17586,6 +17751,7 @@ def test_start_workstation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.start_workstation(
             request,
@@ -17597,6 +17763,7 @@ def test_start_workstation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_workstation_rest_bad_request(
@@ -17681,10 +17848,13 @@ def test_stop_workstation_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_stop_workstation"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_stop_workstation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_stop_workstation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.StopWorkstationRequest.pb(
             workstations.StopWorkstationRequest()
         )
@@ -17708,6 +17878,7 @@ def test_stop_workstation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.stop_workstation(
             request,
@@ -17719,6 +17890,7 @@ def test_stop_workstation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_access_token_rest_bad_request(
@@ -17807,10 +17979,14 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_generate_access_token"
     ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor,
+        "post_generate_access_token_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_generate_access_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = workstations.GenerateAccessTokenRequest.pb(
             workstations.GenerateAccessTokenRequest()
         )
@@ -17836,6 +18012,10 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.GenerateAccessTokenResponse()
+        post_with_metadata.return_value = (
+            workstations.GenerateAccessTokenResponse(),
+            metadata,
+        )
 
         client.generate_access_token(
             request,
@@ -17847,6 +18027,7 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(

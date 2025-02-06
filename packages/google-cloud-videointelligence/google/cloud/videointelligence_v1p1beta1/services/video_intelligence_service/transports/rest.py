@@ -102,11 +102,34 @@ class VideoIntelligenceServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for annotate_video
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_annotate_video_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VideoIntelligenceService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_annotate_video` interceptor runs
+        before the `post_annotate_video_with_metadata` interceptor.
         """
         return response
+
+    def post_annotate_video_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for annotate_video
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VideoIntelligenceService server but before it is returned to user code.
+
+        We recommend only using this `post_annotate_video_with_metadata`
+        interceptor in new development instead of the `post_annotate_video` interceptor.
+        When both interceptors are used, this `post_annotate_video_with_metadata` interceptor runs after the
+        `post_annotate_video` interceptor. The (possibly modified) response returned by
+        `post_annotate_video` will be passed to
+        `post_annotate_video_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -388,6 +411,10 @@ class VideoIntelligenceServiceRestTransport(_BaseVideoIntelligenceServiceRestTra
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_annotate_video(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_annotate_video_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

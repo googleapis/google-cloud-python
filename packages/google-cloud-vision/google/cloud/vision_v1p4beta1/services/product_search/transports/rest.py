@@ -243,11 +243,34 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.Product:
         """Post-rpc interceptor for create_product
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_product_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_product` interceptor runs
+        before the `post_create_product_with_metadata` interceptor.
         """
         return response
+
+    def post_create_product_with_metadata(
+        self,
+        response: product_search_service.Product,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[product_search_service.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_product
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_create_product_with_metadata`
+        interceptor in new development instead of the `post_create_product` interceptor.
+        When both interceptors are used, this `post_create_product_with_metadata` interceptor runs after the
+        `post_create_product` interceptor. The (possibly modified) response returned by
+        `post_create_product` will be passed to
+        `post_create_product_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_product_set(
         self,
@@ -269,11 +292,36 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ProductSet:
         """Post-rpc interceptor for create_product_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_product_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_product_set` interceptor runs
+        before the `post_create_product_set_with_metadata` interceptor.
         """
         return response
+
+    def post_create_product_set_with_metadata(
+        self,
+        response: product_search_service.ProductSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ProductSet, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_product_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_create_product_set_with_metadata`
+        interceptor in new development instead of the `post_create_product_set` interceptor.
+        When both interceptors are used, this `post_create_product_set_with_metadata` interceptor runs after the
+        `post_create_product_set` interceptor. The (possibly modified) response returned by
+        `post_create_product_set` will be passed to
+        `post_create_product_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_reference_image(
         self,
@@ -295,11 +343,36 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ReferenceImage:
         """Post-rpc interceptor for create_reference_image
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_reference_image_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_reference_image` interceptor runs
+        before the `post_create_reference_image_with_metadata` interceptor.
         """
         return response
+
+    def post_create_reference_image_with_metadata(
+        self,
+        response: product_search_service.ReferenceImage,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ReferenceImage, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_reference_image
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_create_reference_image_with_metadata`
+        interceptor in new development instead of the `post_create_reference_image` interceptor.
+        When both interceptors are used, this `post_create_reference_image_with_metadata` interceptor runs after the
+        `post_create_reference_image` interceptor. The (possibly modified) response returned by
+        `post_create_reference_image` will be passed to
+        `post_create_reference_image_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_product(
         self,
@@ -366,11 +439,34 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.Product:
         """Post-rpc interceptor for get_product
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_product_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_product` interceptor runs
+        before the `post_get_product_with_metadata` interceptor.
         """
         return response
+
+    def post_get_product_with_metadata(
+        self,
+        response: product_search_service.Product,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[product_search_service.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_product
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_get_product_with_metadata`
+        interceptor in new development instead of the `post_get_product` interceptor.
+        When both interceptors are used, this `post_get_product_with_metadata` interceptor runs after the
+        `post_get_product` interceptor. The (possibly modified) response returned by
+        `post_get_product` will be passed to
+        `post_get_product_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_product_set(
         self,
@@ -392,11 +488,36 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ProductSet:
         """Post-rpc interceptor for get_product_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_product_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_product_set` interceptor runs
+        before the `post_get_product_set_with_metadata` interceptor.
         """
         return response
+
+    def post_get_product_set_with_metadata(
+        self,
+        response: product_search_service.ProductSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ProductSet, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_product_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_get_product_set_with_metadata`
+        interceptor in new development instead of the `post_get_product_set` interceptor.
+        When both interceptors are used, this `post_get_product_set_with_metadata` interceptor runs after the
+        `post_get_product_set` interceptor. The (possibly modified) response returned by
+        `post_get_product_set` will be passed to
+        `post_get_product_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_reference_image(
         self,
@@ -418,11 +539,36 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ReferenceImage:
         """Post-rpc interceptor for get_reference_image
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_reference_image_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_reference_image` interceptor runs
+        before the `post_get_reference_image_with_metadata` interceptor.
         """
         return response
+
+    def post_get_reference_image_with_metadata(
+        self,
+        response: product_search_service.ReferenceImage,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ReferenceImage, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_reference_image
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_get_reference_image_with_metadata`
+        interceptor in new development instead of the `post_get_reference_image` interceptor.
+        When both interceptors are used, this `post_get_reference_image_with_metadata` interceptor runs after the
+        `post_get_reference_image` interceptor. The (possibly modified) response returned by
+        `post_get_reference_image` will be passed to
+        `post_get_reference_image_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_product_sets(
         self,
@@ -444,11 +590,34 @@ class ProductSearchRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_product_sets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_product_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_product_sets` interceptor runs
+        before the `post_import_product_sets_with_metadata` interceptor.
         """
         return response
+
+    def post_import_product_sets_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_product_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_import_product_sets_with_metadata`
+        interceptor in new development instead of the `post_import_product_sets` interceptor.
+        When both interceptors are used, this `post_import_product_sets_with_metadata` interceptor runs after the
+        `post_import_product_sets` interceptor. The (possibly modified) response returned by
+        `post_import_product_sets` will be passed to
+        `post_import_product_sets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_products(
         self,
@@ -470,11 +639,37 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ListProductsResponse:
         """Post-rpc interceptor for list_products
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_products_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_products` interceptor runs
+        before the `post_list_products_with_metadata` interceptor.
         """
         return response
+
+    def post_list_products_with_metadata(
+        self,
+        response: product_search_service.ListProductsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ListProductsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_products
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_list_products_with_metadata`
+        interceptor in new development instead of the `post_list_products` interceptor.
+        When both interceptors are used, this `post_list_products_with_metadata` interceptor runs after the
+        `post_list_products` interceptor. The (possibly modified) response returned by
+        `post_list_products` will be passed to
+        `post_list_products_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_product_sets(
         self,
@@ -496,11 +691,37 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ListProductSetsResponse:
         """Post-rpc interceptor for list_product_sets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_product_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_product_sets` interceptor runs
+        before the `post_list_product_sets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_product_sets_with_metadata(
+        self,
+        response: product_search_service.ListProductSetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ListProductSetsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_product_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_list_product_sets_with_metadata`
+        interceptor in new development instead of the `post_list_product_sets` interceptor.
+        When both interceptors are used, this `post_list_product_sets_with_metadata` interceptor runs after the
+        `post_list_product_sets` interceptor. The (possibly modified) response returned by
+        `post_list_product_sets` will be passed to
+        `post_list_product_sets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_products_in_product_set(
         self,
@@ -522,11 +743,37 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ListProductsInProductSetResponse:
         """Post-rpc interceptor for list_products_in_product_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_products_in_product_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_products_in_product_set` interceptor runs
+        before the `post_list_products_in_product_set_with_metadata` interceptor.
         """
         return response
+
+    def post_list_products_in_product_set_with_metadata(
+        self,
+        response: product_search_service.ListProductsInProductSetResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ListProductsInProductSetResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_products_in_product_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_list_products_in_product_set_with_metadata`
+        interceptor in new development instead of the `post_list_products_in_product_set` interceptor.
+        When both interceptors are used, this `post_list_products_in_product_set_with_metadata` interceptor runs after the
+        `post_list_products_in_product_set` interceptor. The (possibly modified) response returned by
+        `post_list_products_in_product_set` will be passed to
+        `post_list_products_in_product_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_reference_images(
         self,
@@ -548,11 +795,37 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ListReferenceImagesResponse:
         """Post-rpc interceptor for list_reference_images
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_reference_images_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_reference_images` interceptor runs
+        before the `post_list_reference_images_with_metadata` interceptor.
         """
         return response
+
+    def post_list_reference_images_with_metadata(
+        self,
+        response: product_search_service.ListReferenceImagesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ListReferenceImagesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_reference_images
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_list_reference_images_with_metadata`
+        interceptor in new development instead of the `post_list_reference_images` interceptor.
+        When both interceptors are used, this `post_list_reference_images_with_metadata` interceptor runs after the
+        `post_list_reference_images` interceptor. The (possibly modified) response returned by
+        `post_list_reference_images` will be passed to
+        `post_list_reference_images_with_metadata`.
+        """
+        return response, metadata
 
     def pre_purge_products(
         self,
@@ -574,11 +847,34 @@ class ProductSearchRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_products
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_purge_products_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_purge_products` interceptor runs
+        before the `post_purge_products_with_metadata` interceptor.
         """
         return response
+
+    def post_purge_products_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for purge_products
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_purge_products_with_metadata`
+        interceptor in new development instead of the `post_purge_products` interceptor.
+        When both interceptors are used, this `post_purge_products_with_metadata` interceptor runs after the
+        `post_purge_products` interceptor. The (possibly modified) response returned by
+        `post_purge_products` will be passed to
+        `post_purge_products_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_product_from_product_set(
         self,
@@ -615,11 +911,34 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.Product:
         """Post-rpc interceptor for update_product
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_product_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_product` interceptor runs
+        before the `post_update_product_with_metadata` interceptor.
         """
         return response
+
+    def post_update_product_with_metadata(
+        self,
+        response: product_search_service.Product,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[product_search_service.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_product
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_update_product_with_metadata`
+        interceptor in new development instead of the `post_update_product` interceptor.
+        When both interceptors are used, this `post_update_product_with_metadata` interceptor runs after the
+        `post_update_product` interceptor. The (possibly modified) response returned by
+        `post_update_product` will be passed to
+        `post_update_product_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_product_set(
         self,
@@ -641,11 +960,36 @@ class ProductSearchRestInterceptor:
     ) -> product_search_service.ProductSet:
         """Post-rpc interceptor for update_product_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_product_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ProductSearch server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_product_set` interceptor runs
+        before the `post_update_product_set_with_metadata` interceptor.
         """
         return response
+
+    def post_update_product_set_with_metadata(
+        self,
+        response: product_search_service.ProductSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ProductSet, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_product_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ProductSearch server but before it is returned to user code.
+
+        We recommend only using this `post_update_product_set_with_metadata`
+        interceptor in new development instead of the `post_update_product_set` interceptor.
+        When both interceptors are used, this `post_update_product_set_with_metadata` interceptor runs after the
+        `post_update_product_set` interceptor. The (possibly modified) response returned by
+        `post_update_product_set` will be passed to
+        `post_update_product_set_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -1021,6 +1365,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_product(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_product_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1174,6 +1522,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_product_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_product_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1326,6 +1678,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_reference_image(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_reference_image_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1794,6 +2150,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_product(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_product_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1939,6 +2299,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_product_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_product_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2085,6 +2449,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_reference_image(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_reference_image_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2236,6 +2604,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_product_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_product_sets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2376,6 +2748,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_products(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_products_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2520,6 +2896,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_product_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_product_sets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2671,6 +3051,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_products_in_product_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_products_in_product_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2817,6 +3201,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_reference_images(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_reference_images_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2968,6 +3356,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_purge_products(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_purge_products_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3233,6 +3625,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_product(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_product_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3386,6 +3782,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_product_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_product_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
