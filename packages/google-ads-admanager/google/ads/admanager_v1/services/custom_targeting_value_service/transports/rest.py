@@ -114,11 +114,37 @@ class CustomTargetingValueServiceRestInterceptor:
     ) -> custom_targeting_value_messages.CustomTargetingValue:
         """Post-rpc interceptor for get_custom_targeting_value
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_custom_targeting_value_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CustomTargetingValueService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_custom_targeting_value` interceptor runs
+        before the `post_get_custom_targeting_value_with_metadata` interceptor.
         """
         return response
+
+    def post_get_custom_targeting_value_with_metadata(
+        self,
+        response: custom_targeting_value_messages.CustomTargetingValue,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_messages.CustomTargetingValue,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_custom_targeting_value
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_get_custom_targeting_value_with_metadata`
+        interceptor in new development instead of the `post_get_custom_targeting_value` interceptor.
+        When both interceptors are used, this `post_get_custom_targeting_value_with_metadata` interceptor runs after the
+        `post_get_custom_targeting_value` interceptor. The (possibly modified) response returned by
+        `post_get_custom_targeting_value` will be passed to
+        `post_get_custom_targeting_value_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_custom_targeting_values(
         self,
@@ -140,11 +166,37 @@ class CustomTargetingValueServiceRestInterceptor:
     ) -> custom_targeting_value_service.ListCustomTargetingValuesResponse:
         """Post-rpc interceptor for list_custom_targeting_values
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_custom_targeting_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CustomTargetingValueService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_custom_targeting_values` interceptor runs
+        before the `post_list_custom_targeting_values_with_metadata` interceptor.
         """
         return response
+
+    def post_list_custom_targeting_values_with_metadata(
+        self,
+        response: custom_targeting_value_service.ListCustomTargetingValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        custom_targeting_value_service.ListCustomTargetingValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_custom_targeting_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CustomTargetingValueService server but before it is returned to user code.
+
+        We recommend only using this `post_list_custom_targeting_values_with_metadata`
+        interceptor in new development instead of the `post_list_custom_targeting_values` interceptor.
+        When both interceptors are used, this `post_list_custom_targeting_values_with_metadata` interceptor runs after the
+        `post_list_custom_targeting_values` interceptor. The (possibly modified) response returned by
+        `post_list_custom_targeting_values` will be passed to
+        `post_list_custom_targeting_values_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operation(
         self,
@@ -383,6 +435,10 @@ class CustomTargetingValueServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_custom_targeting_value(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_custom_targeting_value_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -539,6 +595,10 @@ class CustomTargetingValueServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_custom_targeting_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_custom_targeting_values_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

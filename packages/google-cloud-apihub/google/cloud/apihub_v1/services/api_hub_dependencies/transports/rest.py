@@ -132,11 +132,34 @@ class ApiHubDependenciesRestInterceptor:
     ) -> common_fields.Dependency:
         """Post-rpc interceptor for create_dependency
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_dependency_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHubDependencies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_dependency` interceptor runs
+        before the `post_create_dependency_with_metadata` interceptor.
         """
         return response
+
+    def post_create_dependency_with_metadata(
+        self,
+        response: common_fields.Dependency,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Dependency, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_dependency
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubDependencies server but before it is returned to user code.
+
+        We recommend only using this `post_create_dependency_with_metadata`
+        interceptor in new development instead of the `post_create_dependency` interceptor.
+        When both interceptors are used, this `post_create_dependency_with_metadata` interceptor runs after the
+        `post_create_dependency` interceptor. The (possibly modified) response returned by
+        `post_create_dependency` will be passed to
+        `post_create_dependency_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_dependency(
         self,
@@ -171,11 +194,34 @@ class ApiHubDependenciesRestInterceptor:
     ) -> common_fields.Dependency:
         """Post-rpc interceptor for get_dependency
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_dependency_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHubDependencies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_dependency` interceptor runs
+        before the `post_get_dependency_with_metadata` interceptor.
         """
         return response
+
+    def post_get_dependency_with_metadata(
+        self,
+        response: common_fields.Dependency,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Dependency, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_dependency
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubDependencies server but before it is returned to user code.
+
+        We recommend only using this `post_get_dependency_with_metadata`
+        interceptor in new development instead of the `post_get_dependency` interceptor.
+        When both interceptors are used, this `post_get_dependency_with_metadata` interceptor runs after the
+        `post_get_dependency` interceptor. The (possibly modified) response returned by
+        `post_get_dependency` will be passed to
+        `post_get_dependency_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_dependencies(
         self,
@@ -196,11 +242,36 @@ class ApiHubDependenciesRestInterceptor:
     ) -> apihub_service.ListDependenciesResponse:
         """Post-rpc interceptor for list_dependencies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_dependencies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHubDependencies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_dependencies` interceptor runs
+        before the `post_list_dependencies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_dependencies_with_metadata(
+        self,
+        response: apihub_service.ListDependenciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListDependenciesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_dependencies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubDependencies server but before it is returned to user code.
+
+        We recommend only using this `post_list_dependencies_with_metadata`
+        interceptor in new development instead of the `post_list_dependencies` interceptor.
+        When both interceptors are used, this `post_list_dependencies_with_metadata` interceptor runs after the
+        `post_list_dependencies` interceptor. The (possibly modified) response returned by
+        `post_list_dependencies` will be passed to
+        `post_list_dependencies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_dependency(
         self,
@@ -221,11 +292,34 @@ class ApiHubDependenciesRestInterceptor:
     ) -> common_fields.Dependency:
         """Post-rpc interceptor for update_dependency
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_dependency_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ApiHubDependencies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_dependency` interceptor runs
+        before the `post_update_dependency_with_metadata` interceptor.
         """
         return response
+
+    def post_update_dependency_with_metadata(
+        self,
+        response: common_fields.Dependency,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common_fields.Dependency, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_dependency
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ApiHubDependencies server but before it is returned to user code.
+
+        We recommend only using this `post_update_dependency_with_metadata`
+        interceptor in new development instead of the `post_update_dependency` interceptor.
+        When both interceptors are used, this `post_update_dependency_with_metadata` interceptor runs after the
+        `post_update_dependency` interceptor. The (possibly modified) response returned by
+        `post_update_dependency` will be passed to
+        `post_update_dependency_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -595,6 +689,10 @@ class ApiHubDependenciesRestTransport(_BaseApiHubDependenciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_dependency(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_dependency_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -854,6 +952,10 @@ class ApiHubDependenciesRestTransport(_BaseApiHubDependenciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_dependency(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_dependency_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1002,6 +1104,10 @@ class ApiHubDependenciesRestTransport(_BaseApiHubDependenciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_dependencies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_dependencies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1161,6 +1267,10 @@ class ApiHubDependenciesRestTransport(_BaseApiHubDependenciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_dependency(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_dependency_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

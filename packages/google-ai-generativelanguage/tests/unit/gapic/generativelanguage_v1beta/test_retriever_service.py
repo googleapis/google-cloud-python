@@ -63,6 +63,13 @@ from google.ai.generativelanguage_v1beta.services.retriever_service import (
 )
 from google.ai.generativelanguage_v1beta.types import retriever, retriever_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -320,6 +327,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         RetrieverServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = RetrieverServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = RetrieverServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -12157,10 +12207,13 @@ def test_create_corpus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_create_corpus"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_create_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_create_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.CreateCorpusRequest.pb(
             retriever_service.CreateCorpusRequest()
         )
@@ -12184,6 +12237,7 @@ def test_create_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Corpus()
+        post_with_metadata.return_value = retriever.Corpus(), metadata
 
         client.create_corpus(
             request,
@@ -12195,6 +12249,7 @@ def test_create_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_corpus_rest_bad_request(request_type=retriever_service.GetCorpusRequest):
@@ -12279,10 +12334,13 @@ def test_get_corpus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_get_corpus"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_get_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_get_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.GetCorpusRequest.pb(
             retriever_service.GetCorpusRequest()
         )
@@ -12306,6 +12364,7 @@ def test_get_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Corpus()
+        post_with_metadata.return_value = retriever.Corpus(), metadata
 
         client.get_corpus(
             request,
@@ -12317,6 +12376,7 @@ def test_get_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_corpus_rest_bad_request(
@@ -12476,10 +12536,13 @@ def test_update_corpus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_update_corpus"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_update_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_update_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.UpdateCorpusRequest.pb(
             retriever_service.UpdateCorpusRequest()
         )
@@ -12503,6 +12566,7 @@ def test_update_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Corpus()
+        post_with_metadata.return_value = retriever.Corpus(), metadata
 
         client.update_corpus(
             request,
@@ -12514,6 +12578,7 @@ def test_update_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_corpus_rest_bad_request(
@@ -12707,10 +12772,13 @@ def test_list_corpora_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_list_corpora"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_list_corpora_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_list_corpora"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.ListCorporaRequest.pb(
             retriever_service.ListCorporaRequest()
         )
@@ -12736,6 +12804,10 @@ def test_list_corpora_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever_service.ListCorporaResponse()
+        post_with_metadata.return_value = (
+            retriever_service.ListCorporaResponse(),
+            metadata,
+        )
 
         client.list_corpora(
             request,
@@ -12747,6 +12819,7 @@ def test_list_corpora_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_corpus_rest_bad_request(
@@ -12828,10 +12901,13 @@ def test_query_corpus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_query_corpus"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_query_corpus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_query_corpus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.QueryCorpusRequest.pb(
             retriever_service.QueryCorpusRequest()
         )
@@ -12857,6 +12933,10 @@ def test_query_corpus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever_service.QueryCorpusResponse()
+        post_with_metadata.return_value = (
+            retriever_service.QueryCorpusResponse(),
+            metadata,
+        )
 
         client.query_corpus(
             request,
@@ -12868,6 +12948,7 @@ def test_query_corpus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_document_rest_bad_request(
@@ -13035,10 +13116,13 @@ def test_create_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_create_document"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_create_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_create_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.CreateDocumentRequest.pb(
             retriever_service.CreateDocumentRequest()
         )
@@ -13062,6 +13146,7 @@ def test_create_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Document()
+        post_with_metadata.return_value = retriever.Document(), metadata
 
         client.create_document(
             request,
@@ -13073,6 +13158,7 @@ def test_create_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_document_rest_bad_request(
@@ -13159,10 +13245,13 @@ def test_get_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_get_document"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_get_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_get_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.GetDocumentRequest.pb(
             retriever_service.GetDocumentRequest()
         )
@@ -13186,6 +13275,7 @@ def test_get_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Document()
+        post_with_metadata.return_value = retriever.Document(), metadata
 
         client.get_document(
             request,
@@ -13197,6 +13287,7 @@ def test_get_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_document_rest_bad_request(
@@ -13364,10 +13455,13 @@ def test_update_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_update_document"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_update_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_update_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.UpdateDocumentRequest.pb(
             retriever_service.UpdateDocumentRequest()
         )
@@ -13391,6 +13485,7 @@ def test_update_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Document()
+        post_with_metadata.return_value = retriever.Document(), metadata
 
         client.update_document(
             request,
@@ -13402,6 +13497,7 @@ def test_update_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_document_rest_bad_request(
@@ -13595,10 +13691,13 @@ def test_list_documents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_list_documents"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_list_documents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_list_documents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.ListDocumentsRequest.pb(
             retriever_service.ListDocumentsRequest()
         )
@@ -13624,6 +13723,10 @@ def test_list_documents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever_service.ListDocumentsResponse()
+        post_with_metadata.return_value = (
+            retriever_service.ListDocumentsResponse(),
+            metadata,
+        )
 
         client.list_documents(
             request,
@@ -13635,6 +13738,7 @@ def test_list_documents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_document_rest_bad_request(
@@ -13716,10 +13820,13 @@ def test_query_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_query_document"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_query_document_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_query_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.QueryDocumentRequest.pb(
             retriever_service.QueryDocumentRequest()
         )
@@ -13745,6 +13852,10 @@ def test_query_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever_service.QueryDocumentResponse()
+        post_with_metadata.return_value = (
+            retriever_service.QueryDocumentResponse(),
+            metadata,
+        )
 
         client.query_document(
             request,
@@ -13756,6 +13867,7 @@ def test_query_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_chunk_rest_bad_request(
@@ -13924,10 +14036,13 @@ def test_create_chunk_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_create_chunk"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_create_chunk_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_create_chunk"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.CreateChunkRequest.pb(
             retriever_service.CreateChunkRequest()
         )
@@ -13951,6 +14066,7 @@ def test_create_chunk_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Chunk()
+        post_with_metadata.return_value = retriever.Chunk(), metadata
 
         client.create_chunk(
             request,
@@ -13962,6 +14078,7 @@ def test_create_chunk_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_create_chunks_rest_bad_request(
@@ -14043,10 +14160,14 @@ def test_batch_create_chunks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_batch_create_chunks"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor,
+        "post_batch_create_chunks_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_batch_create_chunks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.BatchCreateChunksRequest.pb(
             retriever_service.BatchCreateChunksRequest()
         )
@@ -14072,6 +14193,10 @@ def test_batch_create_chunks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever_service.BatchCreateChunksResponse()
+        post_with_metadata.return_value = (
+            retriever_service.BatchCreateChunksResponse(),
+            metadata,
+        )
 
         client.batch_create_chunks(
             request,
@@ -14083,6 +14208,7 @@ def test_batch_create_chunks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_chunk_rest_bad_request(request_type=retriever_service.GetChunkRequest):
@@ -14167,10 +14293,13 @@ def test_get_chunk_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_get_chunk"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_get_chunk_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_get_chunk"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.GetChunkRequest.pb(
             retriever_service.GetChunkRequest()
         )
@@ -14194,6 +14323,7 @@ def test_get_chunk_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Chunk()
+        post_with_metadata.return_value = retriever.Chunk(), metadata
 
         client.get_chunk(
             request,
@@ -14205,6 +14335,7 @@ def test_get_chunk_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_chunk_rest_bad_request(
@@ -14377,10 +14508,13 @@ def test_update_chunk_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_update_chunk"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_update_chunk_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_update_chunk"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.UpdateChunkRequest.pb(
             retriever_service.UpdateChunkRequest()
         )
@@ -14404,6 +14538,7 @@ def test_update_chunk_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever.Chunk()
+        post_with_metadata.return_value = retriever.Chunk(), metadata
 
         client.update_chunk(
             request,
@@ -14415,6 +14550,7 @@ def test_update_chunk_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_update_chunks_rest_bad_request(
@@ -14496,10 +14632,14 @@ def test_batch_update_chunks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_batch_update_chunks"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor,
+        "post_batch_update_chunks_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_batch_update_chunks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.BatchUpdateChunksRequest.pb(
             retriever_service.BatchUpdateChunksRequest()
         )
@@ -14525,6 +14665,10 @@ def test_batch_update_chunks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever_service.BatchUpdateChunksResponse()
+        post_with_metadata.return_value = (
+            retriever_service.BatchUpdateChunksResponse(),
+            metadata,
+        )
 
         client.batch_update_chunks(
             request,
@@ -14536,6 +14680,7 @@ def test_batch_update_chunks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_chunk_rest_bad_request(
@@ -14836,10 +14981,13 @@ def test_list_chunks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "post_list_chunks"
     ) as post, mock.patch.object(
+        transports.RetrieverServiceRestInterceptor, "post_list_chunks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RetrieverServiceRestInterceptor, "pre_list_chunks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = retriever_service.ListChunksRequest.pb(
             retriever_service.ListChunksRequest()
         )
@@ -14865,6 +15013,10 @@ def test_list_chunks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = retriever_service.ListChunksResponse()
+        post_with_metadata.return_value = (
+            retriever_service.ListChunksResponse(),
+            metadata,
+        )
 
         client.list_chunks(
             request,
@@ -14876,6 +15028,7 @@ def test_list_chunks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

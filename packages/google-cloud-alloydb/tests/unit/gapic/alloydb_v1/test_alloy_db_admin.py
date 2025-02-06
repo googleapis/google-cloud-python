@@ -80,6 +80,13 @@ from google.cloud.alloydb_v1.services.alloy_db_admin import (
 )
 from google.cloud.alloydb_v1.types import data_model, resources, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -321,6 +328,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AlloyDBAdminClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AlloyDBAdminClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AlloyDBAdminClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -22572,10 +22622,13 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_list_clusters"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_list_clusters_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_list_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListClustersRequest.pb(service.ListClustersRequest())
         transcode.return_value = {
             "method": "post",
@@ -22599,6 +22652,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListClustersResponse()
+        post_with_metadata.return_value = service.ListClustersResponse(), metadata
 
         client.list_clusters(
             request,
@@ -22610,6 +22664,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cluster_rest_bad_request(request_type=service.GetClusterRequest):
@@ -22712,10 +22767,13 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_get_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_get_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_get_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetClusterRequest.pb(service.GetClusterRequest())
         transcode.return_value = {
             "method": "post",
@@ -22737,6 +22795,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Cluster()
+        post_with_metadata.return_value = resources.Cluster(), metadata
 
         client.get_cluster(
             request,
@@ -22748,6 +22807,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cluster_rest_bad_request(request_type=service.CreateClusterRequest):
@@ -22978,10 +23038,13 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_create_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_create_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_create_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateClusterRequest.pb(service.CreateClusterRequest())
         transcode.return_value = {
             "method": "post",
@@ -23003,6 +23066,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cluster(
             request,
@@ -23014,6 +23078,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_cluster_rest_bad_request(request_type=service.UpdateClusterRequest):
@@ -23248,10 +23313,13 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_update_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_update_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_update_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateClusterRequest.pb(service.UpdateClusterRequest())
         transcode.return_value = {
             "method": "post",
@@ -23273,6 +23341,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_cluster(
             request,
@@ -23284,6 +23353,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cluster_rest_bad_request(request_type=service.DeleteClusterRequest):
@@ -23362,10 +23432,13 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_delete_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_delete_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_delete_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteClusterRequest.pb(service.DeleteClusterRequest())
         transcode.return_value = {
             "method": "post",
@@ -23387,6 +23460,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cluster(
             request,
@@ -23398,6 +23472,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_promote_cluster_rest_bad_request(request_type=service.PromoteClusterRequest):
@@ -23476,10 +23551,13 @@ def test_promote_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_promote_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_promote_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_promote_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.PromoteClusterRequest.pb(service.PromoteClusterRequest())
         transcode.return_value = {
             "method": "post",
@@ -23501,6 +23579,7 @@ def test_promote_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.promote_cluster(
             request,
@@ -23512,6 +23591,7 @@ def test_promote_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_switchover_cluster_rest_bad_request(
@@ -23592,10 +23672,13 @@ def test_switchover_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_switchover_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.SwitchoverClusterRequest.pb(
             service.SwitchoverClusterRequest()
         )
@@ -23619,6 +23702,7 @@ def test_switchover_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.switchover_cluster(
             request,
@@ -23630,6 +23714,7 @@ def test_switchover_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restore_cluster_rest_bad_request(request_type=service.RestoreClusterRequest):
@@ -23708,10 +23793,13 @@ def test_restore_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_restore_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_restore_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_restore_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.RestoreClusterRequest.pb(service.RestoreClusterRequest())
         transcode.return_value = {
             "method": "post",
@@ -23733,6 +23821,7 @@ def test_restore_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_cluster(
             request,
@@ -23744,6 +23833,7 @@ def test_restore_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_secondary_cluster_rest_bad_request(
@@ -23976,10 +24066,14 @@ def test_create_secondary_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_create_secondary_cluster"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor,
+        "post_create_secondary_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateSecondaryClusterRequest.pb(
             service.CreateSecondaryClusterRequest()
         )
@@ -24003,6 +24097,7 @@ def test_create_secondary_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_secondary_cluster(
             request,
@@ -24014,6 +24109,7 @@ def test_create_secondary_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_instances_rest_bad_request(request_type=service.ListInstancesRequest):
@@ -24098,10 +24194,13 @@ def test_list_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_list_instances"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_list_instances_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_list_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListInstancesRequest.pb(service.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -24125,6 +24224,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListInstancesResponse()
+        post_with_metadata.return_value = service.ListInstancesResponse(), metadata
 
         client.list_instances(
             request,
@@ -24136,6 +24236,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_instance_rest_bad_request(request_type=service.GetInstanceRequest):
@@ -24248,10 +24349,13 @@ def test_get_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_get_instance"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_get_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_get_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetInstanceRequest.pb(service.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -24273,6 +24377,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Instance()
+        post_with_metadata.return_value = resources.Instance(), metadata
 
         client.get_instance(
             request,
@@ -24284,6 +24389,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_instance_rest_bad_request(request_type=service.CreateInstanceRequest):
@@ -24485,10 +24591,13 @@ def test_create_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_create_instance"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_create_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_create_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateInstanceRequest.pb(service.CreateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -24510,6 +24619,7 @@ def test_create_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_instance(
             request,
@@ -24521,6 +24631,7 @@ def test_create_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_secondary_instance_rest_bad_request(
@@ -24724,10 +24835,14 @@ def test_create_secondary_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_create_secondary_instance"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor,
+        "post_create_secondary_instance_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateSecondaryInstanceRequest.pb(
             service.CreateSecondaryInstanceRequest()
         )
@@ -24751,6 +24866,7 @@ def test_create_secondary_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_secondary_instance(
             request,
@@ -24762,6 +24878,7 @@ def test_create_secondary_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_create_instances_rest_bad_request(
@@ -24977,10 +25094,14 @@ def test_batch_create_instances_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_batch_create_instances"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor,
+        "post_batch_create_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_batch_create_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.BatchCreateInstancesRequest.pb(
             service.BatchCreateInstancesRequest()
         )
@@ -25004,6 +25125,7 @@ def test_batch_create_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_create_instances(
             request,
@@ -25015,6 +25137,7 @@ def test_batch_create_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_instance_rest_bad_request(request_type=service.UpdateInstanceRequest):
@@ -25224,10 +25347,13 @@ def test_update_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_update_instance"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_update_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_update_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateInstanceRequest.pb(service.UpdateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -25249,6 +25375,7 @@ def test_update_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_instance(
             request,
@@ -25260,6 +25387,7 @@ def test_update_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_instance_rest_bad_request(request_type=service.DeleteInstanceRequest):
@@ -25342,10 +25470,13 @@ def test_delete_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_delete_instance"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_delete_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_delete_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteInstanceRequest.pb(service.DeleteInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -25367,6 +25498,7 @@ def test_delete_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_instance(
             request,
@@ -25378,6 +25510,7 @@ def test_delete_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_failover_instance_rest_bad_request(
@@ -25462,10 +25595,13 @@ def test_failover_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_failover_instance"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_failover_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_failover_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.FailoverInstanceRequest.pb(
             service.FailoverInstanceRequest()
         )
@@ -25489,6 +25625,7 @@ def test_failover_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.failover_instance(
             request,
@@ -25500,6 +25637,7 @@ def test_failover_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_inject_fault_rest_bad_request(request_type=service.InjectFaultRequest):
@@ -25582,10 +25720,13 @@ def test_inject_fault_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_inject_fault"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_inject_fault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_inject_fault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.InjectFaultRequest.pb(service.InjectFaultRequest())
         transcode.return_value = {
             "method": "post",
@@ -25607,6 +25748,7 @@ def test_inject_fault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.inject_fault(
             request,
@@ -25618,6 +25760,7 @@ def test_inject_fault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restart_instance_rest_bad_request(request_type=service.RestartInstanceRequest):
@@ -25700,10 +25843,13 @@ def test_restart_instance_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_restart_instance"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_restart_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_restart_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.RestartInstanceRequest.pb(service.RestartInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -25725,6 +25871,7 @@ def test_restart_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restart_instance(
             request,
@@ -25736,6 +25883,7 @@ def test_restart_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_execute_sql_rest_bad_request(request_type=service.ExecuteSqlRequest):
@@ -25819,10 +25967,13 @@ def test_execute_sql_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_execute_sql"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_execute_sql_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_execute_sql"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ExecuteSqlRequest.pb(service.ExecuteSqlRequest())
         transcode.return_value = {
             "method": "post",
@@ -25844,6 +25995,7 @@ def test_execute_sql_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ExecuteSqlResponse()
+        post_with_metadata.return_value = service.ExecuteSqlResponse(), metadata
 
         client.execute_sql(
             request,
@@ -25855,6 +26007,7 @@ def test_execute_sql_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backups_rest_bad_request(request_type=service.ListBackupsRequest):
@@ -25939,10 +26092,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListBackupsRequest.pb(service.ListBackupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -25966,6 +26122,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListBackupsResponse()
+        post_with_metadata.return_value = service.ListBackupsResponse(), metadata
 
         client.list_backups(
             request,
@@ -25977,6 +26134,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=service.GetBackupRequest):
@@ -26083,10 +26241,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetBackupRequest.pb(service.GetBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -26108,6 +26269,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Backup()
+        post_with_metadata.return_value = resources.Backup(), metadata
 
         client.get_backup(
             request,
@@ -26119,6 +26281,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_rest_bad_request(request_type=service.CreateBackupRequest):
@@ -26292,10 +26455,13 @@ def test_create_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_create_backup"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_create_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_create_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateBackupRequest.pb(service.CreateBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -26317,6 +26483,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup(
             request,
@@ -26328,6 +26495,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_rest_bad_request(request_type=service.UpdateBackupRequest):
@@ -26505,10 +26673,13 @@ def test_update_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_update_backup"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_update_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_update_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateBackupRequest.pb(service.UpdateBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -26530,6 +26701,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup(
             request,
@@ -26541,6 +26713,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(request_type=service.DeleteBackupRequest):
@@ -26619,10 +26792,13 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_delete_backup"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_delete_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_delete_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteBackupRequest.pb(service.DeleteBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -26644,6 +26820,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup(
             request,
@@ -26655,6 +26832,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_supported_database_flags_rest_bad_request(
@@ -26739,10 +26917,14 @@ def test_list_supported_database_flags_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_list_supported_database_flags"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor,
+        "post_list_supported_database_flags_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_list_supported_database_flags"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListSupportedDatabaseFlagsRequest.pb(
             service.ListSupportedDatabaseFlagsRequest()
         )
@@ -26768,6 +26950,10 @@ def test_list_supported_database_flags_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListSupportedDatabaseFlagsResponse()
+        post_with_metadata.return_value = (
+            service.ListSupportedDatabaseFlagsResponse(),
+            metadata,
+        )
 
         client.list_supported_database_flags(
             request,
@@ -26779,6 +26965,7 @@ def test_list_supported_database_flags_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_client_certificate_rest_bad_request(
@@ -26865,10 +27052,14 @@ def test_generate_client_certificate_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_generate_client_certificate"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor,
+        "post_generate_client_certificate_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_generate_client_certificate"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GenerateClientCertificateRequest.pb(
             service.GenerateClientCertificateRequest()
         )
@@ -26894,6 +27085,10 @@ def test_generate_client_certificate_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.GenerateClientCertificateResponse()
+        post_with_metadata.return_value = (
+            service.GenerateClientCertificateResponse(),
+            metadata,
+        )
 
         client.generate_client_certificate(
             request,
@@ -26905,6 +27100,7 @@ def test_generate_client_certificate_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_connection_info_rest_bad_request(
@@ -26999,10 +27195,13 @@ def test_get_connection_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_get_connection_info"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_get_connection_info_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_get_connection_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetConnectionInfoRequest.pb(
             service.GetConnectionInfoRequest()
         )
@@ -27026,6 +27225,7 @@ def test_get_connection_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ConnectionInfo()
+        post_with_metadata.return_value = resources.ConnectionInfo(), metadata
 
         client.get_connection_info(
             request,
@@ -27037,6 +27237,7 @@ def test_get_connection_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_users_rest_bad_request(request_type=service.ListUsersRequest):
@@ -27121,10 +27322,13 @@ def test_list_users_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_list_users"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_list_users_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_list_users"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListUsersRequest.pb(service.ListUsersRequest())
         transcode.return_value = {
             "method": "post",
@@ -27146,6 +27350,7 @@ def test_list_users_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListUsersResponse()
+        post_with_metadata.return_value = service.ListUsersResponse(), metadata
 
         client.list_users(
             request,
@@ -27157,6 +27362,7 @@ def test_list_users_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_user_rest_bad_request(request_type=service.GetUserRequest):
@@ -27251,10 +27457,13 @@ def test_get_user_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_get_user"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_get_user_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_get_user"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetUserRequest.pb(service.GetUserRequest())
         transcode.return_value = {
             "method": "post",
@@ -27276,6 +27485,7 @@ def test_get_user_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.User()
+        post_with_metadata.return_value = resources.User(), metadata
 
         client.get_user(
             request,
@@ -27287,6 +27497,7 @@ def test_get_user_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_user_rest_bad_request(request_type=service.CreateUserRequest):
@@ -27451,10 +27662,13 @@ def test_create_user_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_create_user"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_create_user_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_create_user"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateUserRequest.pb(service.CreateUserRequest())
         transcode.return_value = {
             "method": "post",
@@ -27476,6 +27690,7 @@ def test_create_user_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.User()
+        post_with_metadata.return_value = resources.User(), metadata
 
         client.create_user(
             request,
@@ -27487,6 +27702,7 @@ def test_create_user_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_user_rest_bad_request(request_type=service.UpdateUserRequest):
@@ -27659,10 +27875,13 @@ def test_update_user_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_update_user"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_update_user_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_update_user"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateUserRequest.pb(service.UpdateUserRequest())
         transcode.return_value = {
             "method": "post",
@@ -27684,6 +27903,7 @@ def test_update_user_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.User()
+        post_with_metadata.return_value = resources.User(), metadata
 
         client.update_user(
             request,
@@ -27695,6 +27915,7 @@ def test_update_user_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_user_rest_bad_request(request_type=service.DeleteUserRequest):
@@ -27886,10 +28107,13 @@ def test_list_databases_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "post_list_databases"
     ) as post, mock.patch.object(
+        transports.AlloyDBAdminRestInterceptor, "post_list_databases_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AlloyDBAdminRestInterceptor, "pre_list_databases"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListDatabasesRequest.pb(service.ListDatabasesRequest())
         transcode.return_value = {
             "method": "post",
@@ -27913,6 +28137,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListDatabasesResponse()
+        post_with_metadata.return_value = service.ListDatabasesResponse(), metadata
 
         client.list_databases(
             request,
@@ -27924,6 +28149,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

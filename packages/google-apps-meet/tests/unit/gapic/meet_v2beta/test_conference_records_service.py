@@ -61,6 +61,13 @@ from google.apps.meet_v2beta.services.conference_records_service import (
 )
 from google.apps.meet_v2beta.types import resource, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -334,6 +341,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ConferenceRecordsServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ConferenceRecordsServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ConferenceRecordsServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9519,10 +9569,14 @@ def test_get_conference_record_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_get_conference_record"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_get_conference_record_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_get_conference_record"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetConferenceRecordRequest.pb(
             service.GetConferenceRecordRequest()
         )
@@ -9546,6 +9600,7 @@ def test_get_conference_record_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.ConferenceRecord()
+        post_with_metadata.return_value = resource.ConferenceRecord(), metadata
 
         client.get_conference_record(
             request,
@@ -9557,6 +9612,7 @@ def test_get_conference_record_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_conference_records_rest_bad_request(
@@ -9643,10 +9699,14 @@ def test_list_conference_records_rest_interceptors(null_interceptor):
         "post_list_conference_records",
     ) as post, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor,
+        "post_list_conference_records_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
         "pre_list_conference_records",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListConferenceRecordsRequest.pb(
             service.ListConferenceRecordsRequest()
         )
@@ -9672,6 +9732,10 @@ def test_list_conference_records_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListConferenceRecordsResponse()
+        post_with_metadata.return_value = (
+            service.ListConferenceRecordsResponse(),
+            metadata,
+        )
 
         client.list_conference_records(
             request,
@@ -9683,6 +9747,7 @@ def test_list_conference_records_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_participant_rest_bad_request(request_type=service.GetParticipantRequest):
@@ -9765,10 +9830,14 @@ def test_get_participant_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_get_participant"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_get_participant_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_get_participant"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetParticipantRequest.pb(service.GetParticipantRequest())
         transcode.return_value = {
             "method": "post",
@@ -9790,6 +9859,7 @@ def test_get_participant_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Participant()
+        post_with_metadata.return_value = resource.Participant(), metadata
 
         client.get_participant(
             request,
@@ -9801,6 +9871,7 @@ def test_get_participant_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_participants_rest_bad_request(
@@ -9887,10 +9958,14 @@ def test_list_participants_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_list_participants"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_list_participants_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_list_participants"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListParticipantsRequest.pb(
             service.ListParticipantsRequest()
         )
@@ -9916,6 +9991,7 @@ def test_list_participants_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListParticipantsResponse()
+        post_with_metadata.return_value = service.ListParticipantsResponse(), metadata
 
         client.list_participants(
             request,
@@ -9927,6 +10003,7 @@ def test_list_participants_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_participant_session_rest_bad_request(
@@ -10017,10 +10094,14 @@ def test_get_participant_session_rest_interceptors(null_interceptor):
         "post_get_participant_session",
     ) as post, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor,
+        "post_get_participant_session_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
         "pre_get_participant_session",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetParticipantSessionRequest.pb(
             service.GetParticipantSessionRequest()
         )
@@ -10046,6 +10127,7 @@ def test_get_participant_session_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.ParticipantSession()
+        post_with_metadata.return_value = resource.ParticipantSession(), metadata
 
         client.get_participant_session(
             request,
@@ -10057,6 +10139,7 @@ def test_get_participant_session_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_participant_sessions_rest_bad_request(
@@ -10143,10 +10226,14 @@ def test_list_participant_sessions_rest_interceptors(null_interceptor):
         "post_list_participant_sessions",
     ) as post, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor,
+        "post_list_participant_sessions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
         "pre_list_participant_sessions",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListParticipantSessionsRequest.pb(
             service.ListParticipantSessionsRequest()
         )
@@ -10172,6 +10259,10 @@ def test_list_participant_sessions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListParticipantSessionsResponse()
+        post_with_metadata.return_value = (
+            service.ListParticipantSessionsResponse(),
+            metadata,
+        )
 
         client.list_participant_sessions(
             request,
@@ -10183,6 +10274,7 @@ def test_list_participant_sessions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_recording_rest_bad_request(request_type=service.GetRecordingRequest):
@@ -10267,10 +10359,14 @@ def test_get_recording_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_get_recording"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_get_recording_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_get_recording"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetRecordingRequest.pb(service.GetRecordingRequest())
         transcode.return_value = {
             "method": "post",
@@ -10292,6 +10388,7 @@ def test_get_recording_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Recording()
+        post_with_metadata.return_value = resource.Recording(), metadata
 
         client.get_recording(
             request,
@@ -10303,6 +10400,7 @@ def test_get_recording_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_recordings_rest_bad_request(request_type=service.ListRecordingsRequest):
@@ -10385,10 +10483,14 @@ def test_list_recordings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_list_recordings"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_list_recordings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_list_recordings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListRecordingsRequest.pb(service.ListRecordingsRequest())
         transcode.return_value = {
             "method": "post",
@@ -10412,6 +10514,7 @@ def test_list_recordings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListRecordingsResponse()
+        post_with_metadata.return_value = service.ListRecordingsResponse(), metadata
 
         client.list_recordings(
             request,
@@ -10423,6 +10526,7 @@ def test_list_recordings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_transcript_rest_bad_request(request_type=service.GetTranscriptRequest):
@@ -10507,10 +10611,14 @@ def test_get_transcript_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_get_transcript"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_get_transcript_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_get_transcript"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetTranscriptRequest.pb(service.GetTranscriptRequest())
         transcode.return_value = {
             "method": "post",
@@ -10532,6 +10640,7 @@ def test_get_transcript_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.Transcript()
+        post_with_metadata.return_value = resource.Transcript(), metadata
 
         client.get_transcript(
             request,
@@ -10543,6 +10652,7 @@ def test_get_transcript_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_transcripts_rest_bad_request(request_type=service.ListTranscriptsRequest):
@@ -10625,10 +10735,14 @@ def test_list_transcripts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_list_transcripts"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_list_transcripts_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_list_transcripts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListTranscriptsRequest.pb(service.ListTranscriptsRequest())
         transcode.return_value = {
             "method": "post",
@@ -10652,6 +10766,7 @@ def test_list_transcripts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListTranscriptsResponse()
+        post_with_metadata.return_value = service.ListTranscriptsResponse(), metadata
 
         client.list_transcripts(
             request,
@@ -10663,6 +10778,7 @@ def test_list_transcripts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_transcript_entry_rest_bad_request(
@@ -10757,10 +10873,14 @@ def test_get_transcript_entry_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "post_get_transcript_entry"
     ) as post, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
+        "post_get_transcript_entry_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor, "pre_get_transcript_entry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetTranscriptEntryRequest.pb(
             service.GetTranscriptEntryRequest()
         )
@@ -10784,6 +10904,7 @@ def test_get_transcript_entry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.TranscriptEntry()
+        post_with_metadata.return_value = resource.TranscriptEntry(), metadata
 
         client.get_transcript_entry(
             request,
@@ -10795,6 +10916,7 @@ def test_get_transcript_entry_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_transcript_entries_rest_bad_request(
@@ -10881,10 +11003,14 @@ def test_list_transcript_entries_rest_interceptors(null_interceptor):
         "post_list_transcript_entries",
     ) as post, mock.patch.object(
         transports.ConferenceRecordsServiceRestInterceptor,
+        "post_list_transcript_entries_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.ConferenceRecordsServiceRestInterceptor,
         "pre_list_transcript_entries",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListTranscriptEntriesRequest.pb(
             service.ListTranscriptEntriesRequest()
         )
@@ -10910,6 +11036,10 @@ def test_list_transcript_entries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListTranscriptEntriesResponse()
+        post_with_metadata.return_value = (
+            service.ListTranscriptEntriesResponse(),
+            metadata,
+        )
 
         client.list_transcript_entries(
             request,
@@ -10921,6 +11051,7 @@ def test_list_transcript_entries_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

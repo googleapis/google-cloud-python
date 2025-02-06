@@ -64,6 +64,13 @@ from google.ai.generativelanguage_v1beta.types import permission as gag_permissi
 from google.ai.generativelanguage_v1beta.types import permission
 from google.ai.generativelanguage_v1beta.types import permission_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -329,6 +336,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         PermissionServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = PermissionServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = PermissionServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4980,10 +5030,14 @@ def test_create_permission_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "post_create_permission"
     ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor,
+        "post_create_permission_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "pre_create_permission"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = permission_service.CreatePermissionRequest.pb(
             permission_service.CreatePermissionRequest()
         )
@@ -5007,6 +5061,7 @@ def test_create_permission_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gag_permission.Permission()
+        post_with_metadata.return_value = gag_permission.Permission(), metadata
 
         client.create_permission(
             request,
@@ -5018,6 +5073,7 @@ def test_create_permission_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_permission_rest_bad_request(
@@ -5108,10 +5164,13 @@ def test_get_permission_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "post_get_permission"
     ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "post_get_permission_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "pre_get_permission"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = permission_service.GetPermissionRequest.pb(
             permission_service.GetPermissionRequest()
         )
@@ -5135,6 +5194,7 @@ def test_get_permission_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = permission.Permission()
+        post_with_metadata.return_value = permission.Permission(), metadata
 
         client.get_permission(
             request,
@@ -5146,6 +5206,7 @@ def test_get_permission_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_permissions_rest_bad_request(
@@ -5230,10 +5291,14 @@ def test_list_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "post_list_permissions"
     ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor,
+        "post_list_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "pre_list_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = permission_service.ListPermissionsRequest.pb(
             permission_service.ListPermissionsRequest()
         )
@@ -5259,6 +5324,10 @@ def test_list_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = permission_service.ListPermissionsResponse()
+        post_with_metadata.return_value = (
+            permission_service.ListPermissionsResponse(),
+            metadata,
+        )
 
         client.list_permissions(
             request,
@@ -5270,6 +5339,7 @@ def test_list_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_permission_rest_bad_request(
@@ -5433,10 +5503,14 @@ def test_update_permission_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "post_update_permission"
     ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor,
+        "post_update_permission_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "pre_update_permission"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = permission_service.UpdatePermissionRequest.pb(
             permission_service.UpdatePermissionRequest()
         )
@@ -5460,6 +5534,7 @@ def test_update_permission_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gag_permission.Permission()
+        post_with_metadata.return_value = gag_permission.Permission(), metadata
 
         client.update_permission(
             request,
@@ -5471,6 +5546,7 @@ def test_update_permission_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_permission_rest_bad_request(
@@ -5661,10 +5737,14 @@ def test_transfer_ownership_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "post_transfer_ownership"
     ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor,
+        "post_transfer_ownership_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.PermissionServiceRestInterceptor, "pre_transfer_ownership"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = permission_service.TransferOwnershipRequest.pb(
             permission_service.TransferOwnershipRequest()
         )
@@ -5690,6 +5770,10 @@ def test_transfer_ownership_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = permission_service.TransferOwnershipResponse()
+        post_with_metadata.return_value = (
+            permission_service.TransferOwnershipResponse(),
+            metadata,
+        )
 
         client.transfer_ownership(
             request,
@@ -5701,6 +5785,7 @@ def test_transfer_ownership_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(

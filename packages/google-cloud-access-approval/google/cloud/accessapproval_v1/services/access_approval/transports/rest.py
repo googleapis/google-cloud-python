@@ -163,11 +163,34 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for approve_approval_request
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_approve_approval_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_approve_approval_request` interceptor runs
+        before the `post_approve_approval_request_with_metadata` interceptor.
         """
         return response
+
+    def post_approve_approval_request_with_metadata(
+        self,
+        response: accessapproval.ApprovalRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for approve_approval_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_approve_approval_request_with_metadata`
+        interceptor in new development instead of the `post_approve_approval_request` interceptor.
+        When both interceptors are used, this `post_approve_approval_request_with_metadata` interceptor runs after the
+        `post_approve_approval_request` interceptor. The (possibly modified) response returned by
+        `post_approve_approval_request` will be passed to
+        `post_approve_approval_request_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_access_approval_settings(
         self,
@@ -204,11 +227,34 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for dismiss_approval_request
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_dismiss_approval_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_dismiss_approval_request` interceptor runs
+        before the `post_dismiss_approval_request_with_metadata` interceptor.
         """
         return response
+
+    def post_dismiss_approval_request_with_metadata(
+        self,
+        response: accessapproval.ApprovalRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for dismiss_approval_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_dismiss_approval_request_with_metadata`
+        interceptor in new development instead of the `post_dismiss_approval_request` interceptor.
+        When both interceptors are used, this `post_dismiss_approval_request_with_metadata` interceptor runs after the
+        `post_dismiss_approval_request` interceptor. The (possibly modified) response returned by
+        `post_dismiss_approval_request` will be passed to
+        `post_dismiss_approval_request_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_access_approval_service_account(
         self,
@@ -230,11 +276,37 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.AccessApprovalServiceAccount:
         """Post-rpc interceptor for get_access_approval_service_account
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_access_approval_service_account_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_access_approval_service_account` interceptor runs
+        before the `post_get_access_approval_service_account_with_metadata` interceptor.
         """
         return response
+
+    def post_get_access_approval_service_account_with_metadata(
+        self,
+        response: accessapproval.AccessApprovalServiceAccount,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.AccessApprovalServiceAccount,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_access_approval_service_account
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_get_access_approval_service_account_with_metadata`
+        interceptor in new development instead of the `post_get_access_approval_service_account` interceptor.
+        When both interceptors are used, this `post_get_access_approval_service_account_with_metadata` interceptor runs after the
+        `post_get_access_approval_service_account` interceptor. The (possibly modified) response returned by
+        `post_get_access_approval_service_account` will be passed to
+        `post_get_access_approval_service_account_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_access_approval_settings(
         self,
@@ -256,11 +328,36 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.AccessApprovalSettings:
         """Post-rpc interceptor for get_access_approval_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_access_approval_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_access_approval_settings` interceptor runs
+        before the `post_get_access_approval_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_get_access_approval_settings_with_metadata(
+        self,
+        response: accessapproval.AccessApprovalSettings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.AccessApprovalSettings, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_access_approval_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_get_access_approval_settings_with_metadata`
+        interceptor in new development instead of the `post_get_access_approval_settings` interceptor.
+        When both interceptors are used, this `post_get_access_approval_settings_with_metadata` interceptor runs after the
+        `post_get_access_approval_settings` interceptor. The (possibly modified) response returned by
+        `post_get_access_approval_settings` will be passed to
+        `post_get_access_approval_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_approval_request(
         self,
@@ -282,11 +379,34 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for get_approval_request
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_approval_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_approval_request` interceptor runs
+        before the `post_get_approval_request_with_metadata` interceptor.
         """
         return response
+
+    def post_get_approval_request_with_metadata(
+        self,
+        response: accessapproval.ApprovalRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_approval_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_get_approval_request_with_metadata`
+        interceptor in new development instead of the `post_get_approval_request` interceptor.
+        When both interceptors are used, this `post_get_approval_request_with_metadata` interceptor runs after the
+        `post_get_approval_request` interceptor. The (possibly modified) response returned by
+        `post_get_approval_request` will be passed to
+        `post_get_approval_request_with_metadata`.
+        """
+        return response, metadata
 
     def pre_invalidate_approval_request(
         self,
@@ -308,11 +428,34 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.ApprovalRequest:
         """Post-rpc interceptor for invalidate_approval_request
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_invalidate_approval_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_invalidate_approval_request` interceptor runs
+        before the `post_invalidate_approval_request_with_metadata` interceptor.
         """
         return response
+
+    def post_invalidate_approval_request_with_metadata(
+        self,
+        response: accessapproval.ApprovalRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[accessapproval.ApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for invalidate_approval_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_invalidate_approval_request_with_metadata`
+        interceptor in new development instead of the `post_invalidate_approval_request` interceptor.
+        When both interceptors are used, this `post_invalidate_approval_request_with_metadata` interceptor runs after the
+        `post_invalidate_approval_request` interceptor. The (possibly modified) response returned by
+        `post_invalidate_approval_request` will be passed to
+        `post_invalidate_approval_request_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_approval_requests(
         self,
@@ -334,11 +477,37 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.ListApprovalRequestsResponse:
         """Post-rpc interceptor for list_approval_requests
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_approval_requests_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_approval_requests` interceptor runs
+        before the `post_list_approval_requests_with_metadata` interceptor.
         """
         return response
+
+    def post_list_approval_requests_with_metadata(
+        self,
+        response: accessapproval.ListApprovalRequestsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.ListApprovalRequestsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_approval_requests
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_list_approval_requests_with_metadata`
+        interceptor in new development instead of the `post_list_approval_requests` interceptor.
+        When both interceptors are used, this `post_list_approval_requests_with_metadata` interceptor runs after the
+        `post_list_approval_requests` interceptor. The (possibly modified) response returned by
+        `post_list_approval_requests` will be passed to
+        `post_list_approval_requests_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_access_approval_settings(
         self,
@@ -360,11 +529,36 @@ class AccessApprovalRestInterceptor:
     ) -> accessapproval.AccessApprovalSettings:
         """Post-rpc interceptor for update_access_approval_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_access_approval_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AccessApproval server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_access_approval_settings` interceptor runs
+        before the `post_update_access_approval_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_update_access_approval_settings_with_metadata(
+        self,
+        response: accessapproval.AccessApprovalSettings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.AccessApprovalSettings, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_access_approval_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AccessApproval server but before it is returned to user code.
+
+        We recommend only using this `post_update_access_approval_settings_with_metadata`
+        interceptor in new development instead of the `post_update_access_approval_settings` interceptor.
+        When both interceptors are used, this `post_update_access_approval_settings_with_metadata` interceptor runs after the
+        `post_update_access_approval_settings` interceptor. The (possibly modified) response returned by
+        `post_update_access_approval_settings` will be passed to
+        `post_update_access_approval_settings_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -618,6 +812,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_approve_approval_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_approve_approval_request_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -885,6 +1083,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_dismiss_approval_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_dismiss_approval_request_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1036,6 +1238,13 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_access_approval_service_account(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_access_approval_service_account_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1188,6 +1397,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_access_approval_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_access_approval_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1334,6 +1547,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_approval_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_approval_request_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1489,6 +1706,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_invalidate_approval_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_invalidate_approval_request_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1634,6 +1855,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_approval_requests(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_approval_requests_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1792,6 +2017,13 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_access_approval_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_access_approval_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
