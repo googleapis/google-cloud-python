@@ -110,11 +110,37 @@ class AddressValidationRestInterceptor:
     ) -> address_validation_service.ProvideValidationFeedbackResponse:
         """Post-rpc interceptor for provide_validation_feedback
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_provide_validation_feedback_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AddressValidation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_provide_validation_feedback` interceptor runs
+        before the `post_provide_validation_feedback_with_metadata` interceptor.
         """
         return response
+
+    def post_provide_validation_feedback_with_metadata(
+        self,
+        response: address_validation_service.ProvideValidationFeedbackResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        address_validation_service.ProvideValidationFeedbackResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for provide_validation_feedback
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AddressValidation server but before it is returned to user code.
+
+        We recommend only using this `post_provide_validation_feedback_with_metadata`
+        interceptor in new development instead of the `post_provide_validation_feedback` interceptor.
+        When both interceptors are used, this `post_provide_validation_feedback_with_metadata` interceptor runs after the
+        `post_provide_validation_feedback` interceptor. The (possibly modified) response returned by
+        `post_provide_validation_feedback` will be passed to
+        `post_provide_validation_feedback_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_address(
         self,
@@ -136,11 +162,37 @@ class AddressValidationRestInterceptor:
     ) -> address_validation_service.ValidateAddressResponse:
         """Post-rpc interceptor for validate_address
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_address_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AddressValidation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_address` interceptor runs
+        before the `post_validate_address_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_address_with_metadata(
+        self,
+        response: address_validation_service.ValidateAddressResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        address_validation_service.ValidateAddressResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for validate_address
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AddressValidation server but before it is returned to user code.
+
+        We recommend only using this `post_validate_address_with_metadata`
+        interceptor in new development instead of the `post_validate_address` interceptor.
+        When both interceptors are used, this `post_validate_address_with_metadata` interceptor runs after the
+        `post_validate_address` interceptor. The (possibly modified) response returned by
+        `post_validate_address` will be passed to
+        `post_validate_address_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -365,6 +417,10 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_provide_validation_feedback(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_provide_validation_feedback_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -519,6 +575,10 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_validate_address(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_validate_address_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

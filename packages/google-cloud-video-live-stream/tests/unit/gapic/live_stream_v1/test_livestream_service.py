@@ -78,6 +78,13 @@ from google.cloud.video.live_stream_v1.services.livestream_service import (
 )
 from google.cloud.video.live_stream_v1.types import outputs, resources, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -343,6 +350,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         LivestreamServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = LivestreamServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = LivestreamServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -17622,10 +17672,13 @@ def test_create_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_create_channel"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_create_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_create_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateChannelRequest.pb(service.CreateChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -17647,6 +17700,7 @@ def test_create_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_channel(
             request,
@@ -17658,6 +17712,7 @@ def test_create_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_channels_rest_bad_request(request_type=service.ListChannelsRequest):
@@ -17742,10 +17797,13 @@ def test_list_channels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_list_channels"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_list_channels_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_list_channels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListChannelsRequest.pb(service.ListChannelsRequest())
         transcode.return_value = {
             "method": "post",
@@ -17769,6 +17827,7 @@ def test_list_channels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListChannelsResponse()
+        post_with_metadata.return_value = service.ListChannelsResponse(), metadata
 
         client.list_channels(
             request,
@@ -17780,6 +17839,7 @@ def test_list_channels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_channel_rest_bad_request(request_type=service.GetChannelRequest):
@@ -17866,10 +17926,13 @@ def test_get_channel_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_get_channel"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_get_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_get_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetChannelRequest.pb(service.GetChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -17891,6 +17954,7 @@ def test_get_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Channel()
+        post_with_metadata.return_value = resources.Channel(), metadata
 
         client.get_channel(
             request,
@@ -17902,6 +17966,7 @@ def test_get_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_channel_rest_bad_request(request_type=service.DeleteChannelRequest):
@@ -17980,10 +18045,13 @@ def test_delete_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_delete_channel"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_delete_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_delete_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteChannelRequest.pb(service.DeleteChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -18005,6 +18073,7 @@ def test_delete_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_channel(
             request,
@@ -18016,6 +18085,7 @@ def test_delete_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_channel_rest_bad_request(request_type=service.UpdateChannelRequest):
@@ -18304,10 +18374,13 @@ def test_update_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_update_channel"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_update_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_update_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateChannelRequest.pb(service.UpdateChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -18329,6 +18402,7 @@ def test_update_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_channel(
             request,
@@ -18340,6 +18414,7 @@ def test_update_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_channel_rest_bad_request(request_type=service.StartChannelRequest):
@@ -18418,10 +18493,13 @@ def test_start_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_start_channel"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_start_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_start_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.StartChannelRequest.pb(service.StartChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -18443,6 +18521,7 @@ def test_start_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.start_channel(
             request,
@@ -18454,6 +18533,7 @@ def test_start_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_channel_rest_bad_request(request_type=service.StopChannelRequest):
@@ -18532,10 +18612,13 @@ def test_stop_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_stop_channel"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_stop_channel_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_stop_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.StopChannelRequest.pb(service.StopChannelRequest())
         transcode.return_value = {
             "method": "post",
@@ -18557,6 +18640,7 @@ def test_stop_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.stop_channel(
             request,
@@ -18568,6 +18652,7 @@ def test_stop_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_input_rest_bad_request(request_type=service.CreateInputRequest):
@@ -18765,10 +18850,13 @@ def test_create_input_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_create_input"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_create_input_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_create_input"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateInputRequest.pb(service.CreateInputRequest())
         transcode.return_value = {
             "method": "post",
@@ -18790,6 +18878,7 @@ def test_create_input_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_input(
             request,
@@ -18801,6 +18890,7 @@ def test_create_input_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_inputs_rest_bad_request(request_type=service.ListInputsRequest):
@@ -18885,10 +18975,13 @@ def test_list_inputs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_list_inputs"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_list_inputs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_list_inputs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListInputsRequest.pb(service.ListInputsRequest())
         transcode.return_value = {
             "method": "post",
@@ -18910,6 +19003,7 @@ def test_list_inputs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListInputsResponse()
+        post_with_metadata.return_value = service.ListInputsResponse(), metadata
 
         client.list_inputs(
             request,
@@ -18921,6 +19015,7 @@ def test_list_inputs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_input_rest_bad_request(request_type=service.GetInputRequest):
@@ -19009,10 +19104,13 @@ def test_get_input_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_get_input"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_get_input_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_get_input"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetInputRequest.pb(service.GetInputRequest())
         transcode.return_value = {
             "method": "post",
@@ -19034,6 +19132,7 @@ def test_get_input_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Input()
+        post_with_metadata.return_value = resources.Input(), metadata
 
         client.get_input(
             request,
@@ -19045,6 +19144,7 @@ def test_get_input_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_input_rest_bad_request(request_type=service.DeleteInputRequest):
@@ -19123,10 +19223,13 @@ def test_delete_input_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_delete_input"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_delete_input_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_delete_input"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteInputRequest.pb(service.DeleteInputRequest())
         transcode.return_value = {
             "method": "post",
@@ -19148,6 +19251,7 @@ def test_delete_input_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_input(
             request,
@@ -19159,6 +19263,7 @@ def test_delete_input_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_input_rest_bad_request(request_type=service.UpdateInputRequest):
@@ -19360,10 +19465,13 @@ def test_update_input_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_update_input"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_update_input_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_update_input"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateInputRequest.pb(service.UpdateInputRequest())
         transcode.return_value = {
             "method": "post",
@@ -19385,6 +19493,7 @@ def test_update_input_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_input(
             request,
@@ -19396,6 +19505,7 @@ def test_update_input_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_event_rest_bad_request(request_type=service.CreateEventRequest):
@@ -19574,10 +19684,13 @@ def test_create_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_create_event"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_create_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_create_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateEventRequest.pb(service.CreateEventRequest())
         transcode.return_value = {
             "method": "post",
@@ -19599,6 +19712,7 @@ def test_create_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Event()
+        post_with_metadata.return_value = resources.Event(), metadata
 
         client.create_event(
             request,
@@ -19610,6 +19724,7 @@ def test_create_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_events_rest_bad_request(request_type=service.ListEventsRequest):
@@ -19694,10 +19809,13 @@ def test_list_events_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_list_events"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_list_events_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_list_events"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListEventsRequest.pb(service.ListEventsRequest())
         transcode.return_value = {
             "method": "post",
@@ -19719,6 +19837,7 @@ def test_list_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListEventsResponse()
+        post_with_metadata.return_value = service.ListEventsResponse(), metadata
 
         client.list_events(
             request,
@@ -19730,6 +19849,7 @@ def test_list_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_event_rest_bad_request(request_type=service.GetEventRequest):
@@ -19820,10 +19940,13 @@ def test_get_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_get_event"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_get_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_get_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetEventRequest.pb(service.GetEventRequest())
         transcode.return_value = {
             "method": "post",
@@ -19845,6 +19968,7 @@ def test_get_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Event()
+        post_with_metadata.return_value = resources.Event(), metadata
 
         client.get_event(
             request,
@@ -19856,6 +19980,7 @@ def test_get_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_event_rest_bad_request(request_type=service.DeleteEventRequest):
@@ -20049,10 +20174,13 @@ def test_list_clips_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_list_clips"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_list_clips_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_list_clips"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListClipsRequest.pb(service.ListClipsRequest())
         transcode.return_value = {
             "method": "post",
@@ -20074,6 +20202,7 @@ def test_list_clips_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListClipsResponse()
+        post_with_metadata.return_value = service.ListClipsResponse(), metadata
 
         client.list_clips(
             request,
@@ -20085,6 +20214,7 @@ def test_list_clips_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_clip_rest_bad_request(request_type=service.GetClipRequest):
@@ -20175,10 +20305,13 @@ def test_get_clip_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_get_clip"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_get_clip_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_get_clip"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetClipRequest.pb(service.GetClipRequest())
         transcode.return_value = {
             "method": "post",
@@ -20200,6 +20333,7 @@ def test_get_clip_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Clip()
+        post_with_metadata.return_value = resources.Clip(), metadata
 
         client.get_clip(
             request,
@@ -20211,6 +20345,7 @@ def test_get_clip_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_clip_rest_bad_request(request_type=service.CreateClipRequest):
@@ -20379,10 +20514,13 @@ def test_create_clip_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_create_clip"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_create_clip_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_create_clip"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateClipRequest.pb(service.CreateClipRequest())
         transcode.return_value = {
             "method": "post",
@@ -20404,6 +20542,7 @@ def test_create_clip_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_clip(
             request,
@@ -20415,6 +20554,7 @@ def test_create_clip_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_clip_rest_bad_request(request_type=service.DeleteClipRequest):
@@ -20497,10 +20637,13 @@ def test_delete_clip_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_delete_clip"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_delete_clip_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_delete_clip"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteClipRequest.pb(service.DeleteClipRequest())
         transcode.return_value = {
             "method": "post",
@@ -20522,6 +20665,7 @@ def test_delete_clip_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_clip(
             request,
@@ -20533,6 +20677,7 @@ def test_delete_clip_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_asset_rest_bad_request(request_type=service.CreateAssetRequest):
@@ -20698,10 +20843,13 @@ def test_create_asset_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_create_asset"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_create_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_create_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateAssetRequest.pb(service.CreateAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -20723,6 +20871,7 @@ def test_create_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_asset(
             request,
@@ -20734,6 +20883,7 @@ def test_create_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_asset_rest_bad_request(request_type=service.DeleteAssetRequest):
@@ -20812,10 +20962,13 @@ def test_delete_asset_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_delete_asset"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_delete_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_delete_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteAssetRequest.pb(service.DeleteAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -20837,6 +20990,7 @@ def test_delete_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_asset(
             request,
@@ -20848,6 +21002,7 @@ def test_delete_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_asset_rest_bad_request(request_type=service.GetAssetRequest):
@@ -20934,10 +21089,13 @@ def test_get_asset_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_get_asset"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_get_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_get_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetAssetRequest.pb(service.GetAssetRequest())
         transcode.return_value = {
             "method": "post",
@@ -20959,6 +21117,7 @@ def test_get_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Asset()
+        post_with_metadata.return_value = resources.Asset(), metadata
 
         client.get_asset(
             request,
@@ -20970,6 +21129,7 @@ def test_get_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_assets_rest_bad_request(request_type=service.ListAssetsRequest):
@@ -21054,10 +21214,13 @@ def test_list_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_list_assets"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_list_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_list_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListAssetsRequest.pb(service.ListAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -21079,6 +21242,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListAssetsResponse()
+        post_with_metadata.return_value = service.ListAssetsResponse(), metadata
 
         client.list_assets(
             request,
@@ -21090,6 +21254,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_pool_rest_bad_request(request_type=service.GetPoolRequest):
@@ -21172,10 +21337,13 @@ def test_get_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_get_pool"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_get_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_get_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetPoolRequest.pb(service.GetPoolRequest())
         transcode.return_value = {
             "method": "post",
@@ -21197,6 +21365,7 @@ def test_get_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Pool()
+        post_with_metadata.return_value = resources.Pool(), metadata
 
         client.get_pool(
             request,
@@ -21208,6 +21377,7 @@ def test_get_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_pool_rest_bad_request(request_type=service.UpdatePoolRequest):
@@ -21364,10 +21534,13 @@ def test_update_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "post_update_pool"
     ) as post, mock.patch.object(
+        transports.LivestreamServiceRestInterceptor, "post_update_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LivestreamServiceRestInterceptor, "pre_update_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdatePoolRequest.pb(service.UpdatePoolRequest())
         transcode.return_value = {
             "method": "post",
@@ -21389,6 +21562,7 @@ def test_update_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_pool(
             request,
@@ -21400,6 +21574,7 @@ def test_update_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

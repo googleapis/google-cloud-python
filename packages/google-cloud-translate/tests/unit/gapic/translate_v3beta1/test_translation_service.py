@@ -71,6 +71,13 @@ from google.cloud.translate_v3beta1.services.translation_service import (
 )
 from google.cloud.translate_v3beta1.types import translation_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -340,6 +347,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TranslationServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TranslationServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TranslationServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7097,10 +7147,14 @@ def test_translate_text_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_translate_text"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_translate_text_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_translate_text"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.TranslateTextRequest.pb(
             translation_service.TranslateTextRequest()
         )
@@ -7126,6 +7180,10 @@ def test_translate_text_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = translation_service.TranslateTextResponse()
+        post_with_metadata.return_value = (
+            translation_service.TranslateTextResponse(),
+            metadata,
+        )
 
         client.translate_text(
             request,
@@ -7137,6 +7195,7 @@ def test_translate_text_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_detect_language_rest_bad_request(
@@ -7218,10 +7277,14 @@ def test_detect_language_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_detect_language"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_detect_language_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_detect_language"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.DetectLanguageRequest.pb(
             translation_service.DetectLanguageRequest()
         )
@@ -7247,6 +7310,10 @@ def test_detect_language_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = translation_service.DetectLanguageResponse()
+        post_with_metadata.return_value = (
+            translation_service.DetectLanguageResponse(),
+            metadata,
+        )
 
         client.detect_language(
             request,
@@ -7258,6 +7325,7 @@ def test_detect_language_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_supported_languages_rest_bad_request(
@@ -7339,10 +7407,14 @@ def test_get_supported_languages_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_get_supported_languages"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_get_supported_languages_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_get_supported_languages"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.GetSupportedLanguagesRequest.pb(
             translation_service.GetSupportedLanguagesRequest()
         )
@@ -7368,6 +7440,10 @@ def test_get_supported_languages_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = translation_service.SupportedLanguages()
+        post_with_metadata.return_value = (
+            translation_service.SupportedLanguages(),
+            metadata,
+        )
 
         client.get_supported_languages(
             request,
@@ -7379,6 +7455,7 @@ def test_get_supported_languages_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_translate_document_rest_bad_request(
@@ -7463,10 +7540,14 @@ def test_translate_document_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_translate_document"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_translate_document_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_translate_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.TranslateDocumentRequest.pb(
             translation_service.TranslateDocumentRequest()
         )
@@ -7492,6 +7573,10 @@ def test_translate_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = translation_service.TranslateDocumentResponse()
+        post_with_metadata.return_value = (
+            translation_service.TranslateDocumentResponse(),
+            metadata,
+        )
 
         client.translate_document(
             request,
@@ -7503,6 +7588,7 @@ def test_translate_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_translate_text_rest_bad_request(
@@ -7583,10 +7669,14 @@ def test_batch_translate_text_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_batch_translate_text"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_batch_translate_text_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_batch_translate_text"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.BatchTranslateTextRequest.pb(
             translation_service.BatchTranslateTextRequest()
         )
@@ -7610,6 +7700,7 @@ def test_batch_translate_text_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_translate_text(
             request,
@@ -7621,6 +7712,7 @@ def test_batch_translate_text_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_translate_document_rest_bad_request(
@@ -7701,10 +7793,14 @@ def test_batch_translate_document_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_batch_translate_document"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_batch_translate_document_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_batch_translate_document"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.BatchTranslateDocumentRequest.pb(
             translation_service.BatchTranslateDocumentRequest()
         )
@@ -7728,6 +7824,7 @@ def test_batch_translate_document_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_translate_document(
             request,
@@ -7739,6 +7836,7 @@ def test_batch_translate_document_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_glossary_rest_bad_request(
@@ -7900,10 +7998,14 @@ def test_create_glossary_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_create_glossary"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_create_glossary_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_create_glossary"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.CreateGlossaryRequest.pb(
             translation_service.CreateGlossaryRequest()
         )
@@ -7927,6 +8029,7 @@ def test_create_glossary_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_glossary(
             request,
@@ -7938,6 +8041,7 @@ def test_create_glossary_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_glossaries_rest_bad_request(
@@ -8022,10 +8126,14 @@ def test_list_glossaries_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_list_glossaries"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_list_glossaries_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_list_glossaries"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.ListGlossariesRequest.pb(
             translation_service.ListGlossariesRequest()
         )
@@ -8051,6 +8159,10 @@ def test_list_glossaries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = translation_service.ListGlossariesResponse()
+        post_with_metadata.return_value = (
+            translation_service.ListGlossariesResponse(),
+            metadata,
+        )
 
         client.list_glossaries(
             request,
@@ -8062,6 +8174,7 @@ def test_list_glossaries_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_glossary_rest_bad_request(
@@ -8148,10 +8261,13 @@ def test_get_glossary_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_get_glossary"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_glossary_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_get_glossary"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.GetGlossaryRequest.pb(
             translation_service.GetGlossaryRequest()
         )
@@ -8177,6 +8293,7 @@ def test_get_glossary_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = translation_service.Glossary()
+        post_with_metadata.return_value = translation_service.Glossary(), metadata
 
         client.get_glossary(
             request,
@@ -8188,6 +8305,7 @@ def test_get_glossary_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_glossary_rest_bad_request(
@@ -8268,10 +8386,14 @@ def test_delete_glossary_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.TranslationServiceRestInterceptor, "post_delete_glossary"
     ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor,
+        "post_delete_glossary_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranslationServiceRestInterceptor, "pre_delete_glossary"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = translation_service.DeleteGlossaryRequest.pb(
             translation_service.DeleteGlossaryRequest()
         )
@@ -8295,6 +8417,7 @@ def test_delete_glossary_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_glossary(
             request,
@@ -8306,6 +8429,7 @@ def test_delete_glossary_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

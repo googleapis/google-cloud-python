@@ -78,6 +78,13 @@ from google.cloud.visionai_v1.services.streams_service import (
 )
 from google.cloud.visionai_v1.types import common, streams_resources, streams_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -334,6 +341,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         StreamsServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = StreamsServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = StreamsServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -15713,10 +15763,13 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_list_clusters"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_list_clusters_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_list_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.ListClustersRequest.pb(
             streams_service.ListClustersRequest()
         )
@@ -15742,6 +15795,10 @@ def test_list_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_service.ListClustersResponse()
+        post_with_metadata.return_value = (
+            streams_service.ListClustersResponse(),
+            metadata,
+        )
 
         client.list_clusters(
             request,
@@ -15753,6 +15810,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cluster_rest_bad_request(request_type=streams_service.GetClusterRequest):
@@ -15841,10 +15899,13 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_get_cluster"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_get_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_get_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.GetClusterRequest.pb(
             streams_service.GetClusterRequest()
         )
@@ -15868,6 +15929,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = common.Cluster()
+        post_with_metadata.return_value = common.Cluster(), metadata
 
         client.get_cluster(
             request,
@@ -15879,6 +15941,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cluster_rest_bad_request(
@@ -16036,10 +16099,13 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_create_cluster"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_create_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_create_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.CreateClusterRequest.pb(
             streams_service.CreateClusterRequest()
         )
@@ -16063,6 +16129,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cluster(
             request,
@@ -16074,6 +16141,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_cluster_rest_bad_request(
@@ -16235,10 +16303,13 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_update_cluster"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_update_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_update_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.UpdateClusterRequest.pb(
             streams_service.UpdateClusterRequest()
         )
@@ -16262,6 +16333,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_cluster(
             request,
@@ -16273,6 +16345,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cluster_rest_bad_request(
@@ -16353,10 +16426,13 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_delete_cluster"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_delete_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_delete_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.DeleteClusterRequest.pb(
             streams_service.DeleteClusterRequest()
         )
@@ -16380,6 +16456,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cluster(
             request,
@@ -16391,6 +16468,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_streams_rest_bad_request(request_type=streams_service.ListStreamsRequest):
@@ -16475,10 +16553,13 @@ def test_list_streams_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_list_streams"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_list_streams_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_list_streams"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.ListStreamsRequest.pb(
             streams_service.ListStreamsRequest()
         )
@@ -16504,6 +16585,10 @@ def test_list_streams_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_service.ListStreamsResponse()
+        post_with_metadata.return_value = (
+            streams_service.ListStreamsResponse(),
+            metadata,
+        )
 
         client.list_streams(
             request,
@@ -16515,6 +16600,7 @@ def test_list_streams_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_stream_rest_bad_request(request_type=streams_service.GetStreamRequest):
@@ -16607,10 +16693,13 @@ def test_get_stream_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_get_stream"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_get_stream_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_get_stream"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.GetStreamRequest.pb(
             streams_service.GetStreamRequest()
         )
@@ -16634,6 +16723,7 @@ def test_get_stream_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_resources.Stream()
+        post_with_metadata.return_value = streams_resources.Stream(), metadata
 
         client.get_stream(
             request,
@@ -16645,6 +16735,7 @@ def test_get_stream_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_stream_rest_bad_request(
@@ -16802,10 +16893,13 @@ def test_create_stream_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_create_stream"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_create_stream_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_create_stream"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.CreateStreamRequest.pb(
             streams_service.CreateStreamRequest()
         )
@@ -16829,6 +16923,7 @@ def test_create_stream_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_stream(
             request,
@@ -16840,6 +16935,7 @@ def test_create_stream_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_stream_rest_bad_request(
@@ -17005,10 +17101,13 @@ def test_update_stream_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_update_stream"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_update_stream_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_update_stream"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.UpdateStreamRequest.pb(
             streams_service.UpdateStreamRequest()
         )
@@ -17032,6 +17131,7 @@ def test_update_stream_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_stream(
             request,
@@ -17043,6 +17143,7 @@ def test_update_stream_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_stream_rest_bad_request(
@@ -17127,10 +17228,13 @@ def test_delete_stream_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_delete_stream"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_delete_stream_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_delete_stream"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.DeleteStreamRequest.pb(
             streams_service.DeleteStreamRequest()
         )
@@ -17154,6 +17258,7 @@ def test_delete_stream_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_stream(
             request,
@@ -17165,6 +17270,7 @@ def test_delete_stream_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_stream_thumbnail_rest_bad_request(
@@ -17249,10 +17355,14 @@ def test_get_stream_thumbnail_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_get_stream_thumbnail"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor,
+        "post_get_stream_thumbnail_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_get_stream_thumbnail"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.GetStreamThumbnailRequest.pb(
             streams_service.GetStreamThumbnailRequest()
         )
@@ -17276,6 +17386,7 @@ def test_get_stream_thumbnail_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.get_stream_thumbnail(
             request,
@@ -17287,6 +17398,7 @@ def test_get_stream_thumbnail_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_stream_hls_token_rest_bad_request(
@@ -17375,10 +17487,14 @@ def test_generate_stream_hls_token_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_generate_stream_hls_token"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor,
+        "post_generate_stream_hls_token_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_generate_stream_hls_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.GenerateStreamHlsTokenRequest.pb(
             streams_service.GenerateStreamHlsTokenRequest()
         )
@@ -17404,6 +17520,10 @@ def test_generate_stream_hls_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_service.GenerateStreamHlsTokenResponse()
+        post_with_metadata.return_value = (
+            streams_service.GenerateStreamHlsTokenResponse(),
+            metadata,
+        )
 
         client.generate_stream_hls_token(
             request,
@@ -17415,6 +17535,7 @@ def test_generate_stream_hls_token_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_events_rest_bad_request(request_type=streams_service.ListEventsRequest):
@@ -17499,10 +17620,13 @@ def test_list_events_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_list_events"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_list_events_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_list_events"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.ListEventsRequest.pb(
             streams_service.ListEventsRequest()
         )
@@ -17528,6 +17652,7 @@ def test_list_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_service.ListEventsResponse()
+        post_with_metadata.return_value = streams_service.ListEventsResponse(), metadata
 
         client.list_events(
             request,
@@ -17539,6 +17664,7 @@ def test_list_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_event_rest_bad_request(request_type=streams_service.GetEventRequest):
@@ -17627,10 +17753,13 @@ def test_get_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_get_event"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_get_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_get_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.GetEventRequest.pb(
             streams_service.GetEventRequest()
         )
@@ -17654,6 +17783,7 @@ def test_get_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_resources.Event()
+        post_with_metadata.return_value = streams_resources.Event(), metadata
 
         client.get_event(
             request,
@@ -17665,6 +17795,7 @@ def test_get_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_event_rest_bad_request(request_type=streams_service.CreateEventRequest):
@@ -17819,10 +17950,13 @@ def test_create_event_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_create_event"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_create_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_create_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.CreateEventRequest.pb(
             streams_service.CreateEventRequest()
         )
@@ -17846,6 +17980,7 @@ def test_create_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_event(
             request,
@@ -17857,6 +17992,7 @@ def test_create_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_event_rest_bad_request(request_type=streams_service.UpdateEventRequest):
@@ -18019,10 +18155,13 @@ def test_update_event_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_update_event"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_update_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_update_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.UpdateEventRequest.pb(
             streams_service.UpdateEventRequest()
         )
@@ -18046,6 +18185,7 @@ def test_update_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_event(
             request,
@@ -18057,6 +18197,7 @@ def test_update_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_event_rest_bad_request(request_type=streams_service.DeleteEventRequest):
@@ -18139,10 +18280,13 @@ def test_delete_event_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_delete_event"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_delete_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_delete_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.DeleteEventRequest.pb(
             streams_service.DeleteEventRequest()
         )
@@ -18166,6 +18310,7 @@ def test_delete_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_event(
             request,
@@ -18177,6 +18322,7 @@ def test_delete_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_series_rest_bad_request(request_type=streams_service.ListSeriesRequest):
@@ -18261,10 +18407,13 @@ def test_list_series_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_list_series"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_list_series_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_list_series"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.ListSeriesRequest.pb(
             streams_service.ListSeriesRequest()
         )
@@ -18290,6 +18439,7 @@ def test_list_series_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_service.ListSeriesResponse()
+        post_with_metadata.return_value = streams_service.ListSeriesResponse(), metadata
 
         client.list_series(
             request,
@@ -18301,6 +18451,7 @@ def test_list_series_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_series_rest_bad_request(request_type=streams_service.GetSeriesRequest):
@@ -18391,10 +18542,13 @@ def test_get_series_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_get_series"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_get_series_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_get_series"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.GetSeriesRequest.pb(
             streams_service.GetSeriesRequest()
         )
@@ -18418,6 +18572,7 @@ def test_get_series_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = streams_resources.Series()
+        post_with_metadata.return_value = streams_resources.Series(), metadata
 
         client.get_series(
             request,
@@ -18429,6 +18584,7 @@ def test_get_series_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_series_rest_bad_request(
@@ -18585,10 +18741,13 @@ def test_create_series_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_create_series"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_create_series_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_create_series"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.CreateSeriesRequest.pb(
             streams_service.CreateSeriesRequest()
         )
@@ -18612,6 +18771,7 @@ def test_create_series_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_series(
             request,
@@ -18623,6 +18783,7 @@ def test_create_series_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_series_rest_bad_request(
@@ -18787,10 +18948,13 @@ def test_update_series_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_update_series"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_update_series_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_update_series"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.UpdateSeriesRequest.pb(
             streams_service.UpdateSeriesRequest()
         )
@@ -18814,6 +18978,7 @@ def test_update_series_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_series(
             request,
@@ -18825,6 +18990,7 @@ def test_update_series_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_series_rest_bad_request(
@@ -18909,10 +19075,13 @@ def test_delete_series_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_delete_series"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor, "post_delete_series_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_delete_series"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.DeleteSeriesRequest.pb(
             streams_service.DeleteSeriesRequest()
         )
@@ -18936,6 +19105,7 @@ def test_delete_series_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_series(
             request,
@@ -18947,6 +19117,7 @@ def test_delete_series_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_materialize_channel_rest_bad_request(
@@ -19103,10 +19274,14 @@ def test_materialize_channel_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.StreamsServiceRestInterceptor, "post_materialize_channel"
     ) as post, mock.patch.object(
+        transports.StreamsServiceRestInterceptor,
+        "post_materialize_channel_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.StreamsServiceRestInterceptor, "pre_materialize_channel"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = streams_service.MaterializeChannelRequest.pb(
             streams_service.MaterializeChannelRequest()
         )
@@ -19130,6 +19305,7 @@ def test_materialize_channel_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.materialize_channel(
             request,
@@ -19141,6 +19317,7 @@ def test_materialize_channel_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

@@ -1,2 +1,0 @@
-recursive-include google/cloud/videointelligence *.py
-recursive-include google/cloud/videointelligence_v1beta2 *.py

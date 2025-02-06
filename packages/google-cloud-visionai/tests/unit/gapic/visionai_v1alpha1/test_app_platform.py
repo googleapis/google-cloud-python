@@ -78,6 +78,13 @@ from google.cloud.visionai_v1alpha1.services.app_platform import (
 )
 from google.cloud.visionai_v1alpha1.types import annotations, common, platform
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -315,6 +322,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AppPlatformClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AppPlatformClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AppPlatformClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -17529,10 +17579,13 @@ def test_list_applications_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_list_applications"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_list_applications_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_list_applications"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.ListApplicationsRequest.pb(
             platform.ListApplicationsRequest()
         )
@@ -17558,6 +17611,7 @@ def test_list_applications_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.ListApplicationsResponse()
+        post_with_metadata.return_value = platform.ListApplicationsResponse(), metadata
 
         client.list_applications(
             request,
@@ -17569,6 +17623,7 @@ def test_list_applications_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_application_rest_bad_request(request_type=platform.GetApplicationRequest):
@@ -17657,10 +17712,13 @@ def test_get_application_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_get_application"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_get_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_get_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.GetApplicationRequest.pb(platform.GetApplicationRequest())
         transcode.return_value = {
             "method": "post",
@@ -17682,6 +17740,7 @@ def test_get_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.Application()
+        post_with_metadata.return_value = platform.Application(), metadata
 
         client.get_application(
             request,
@@ -17693,6 +17752,7 @@ def test_get_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_application_rest_bad_request(
@@ -17970,10 +18030,13 @@ def test_create_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_create_application"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_create_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_create_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.CreateApplicationRequest.pb(
             platform.CreateApplicationRequest()
         )
@@ -17997,6 +18060,7 @@ def test_create_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_application(
             request,
@@ -18008,6 +18072,7 @@ def test_create_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_application_rest_bad_request(
@@ -18293,10 +18358,13 @@ def test_update_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_update_application"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_update_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_update_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.UpdateApplicationRequest.pb(
             platform.UpdateApplicationRequest()
         )
@@ -18320,6 +18388,7 @@ def test_update_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_application(
             request,
@@ -18331,6 +18400,7 @@ def test_update_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_application_rest_bad_request(
@@ -18411,10 +18481,13 @@ def test_delete_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_delete_application"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_delete_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_delete_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.DeleteApplicationRequest.pb(
             platform.DeleteApplicationRequest()
         )
@@ -18438,6 +18511,7 @@ def test_delete_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_application(
             request,
@@ -18449,6 +18523,7 @@ def test_delete_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_deploy_application_rest_bad_request(
@@ -18529,10 +18604,13 @@ def test_deploy_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_deploy_application"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_deploy_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_deploy_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.DeployApplicationRequest.pb(
             platform.DeployApplicationRequest()
         )
@@ -18556,6 +18634,7 @@ def test_deploy_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.deploy_application(
             request,
@@ -18567,6 +18646,7 @@ def test_deploy_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undeploy_application_rest_bad_request(
@@ -18647,10 +18727,13 @@ def test_undeploy_application_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_undeploy_application"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_undeploy_application_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_undeploy_application"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.UndeployApplicationRequest.pb(
             platform.UndeployApplicationRequest()
         )
@@ -18674,6 +18757,7 @@ def test_undeploy_application_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undeploy_application(
             request,
@@ -18685,6 +18769,7 @@ def test_undeploy_application_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_application_stream_input_rest_bad_request(
@@ -18765,10 +18850,14 @@ def test_add_application_stream_input_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_add_application_stream_input"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor,
+        "post_add_application_stream_input_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_add_application_stream_input"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.AddApplicationStreamInputRequest.pb(
             platform.AddApplicationStreamInputRequest()
         )
@@ -18792,6 +18881,7 @@ def test_add_application_stream_input_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.add_application_stream_input(
             request,
@@ -18803,6 +18893,7 @@ def test_add_application_stream_input_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_application_stream_input_rest_bad_request(
@@ -18883,10 +18974,14 @@ def test_remove_application_stream_input_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_remove_application_stream_input"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor,
+        "post_remove_application_stream_input_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_remove_application_stream_input"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.RemoveApplicationStreamInputRequest.pb(
             platform.RemoveApplicationStreamInputRequest()
         )
@@ -18910,6 +19005,7 @@ def test_remove_application_stream_input_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.remove_application_stream_input(
             request,
@@ -18921,6 +19017,7 @@ def test_remove_application_stream_input_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_application_stream_input_rest_bad_request(
@@ -19001,10 +19098,14 @@ def test_update_application_stream_input_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_update_application_stream_input"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor,
+        "post_update_application_stream_input_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_update_application_stream_input"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.UpdateApplicationStreamInputRequest.pb(
             platform.UpdateApplicationStreamInputRequest()
         )
@@ -19028,6 +19129,7 @@ def test_update_application_stream_input_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_application_stream_input(
             request,
@@ -19039,6 +19141,7 @@ def test_update_application_stream_input_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_instances_rest_bad_request(request_type=platform.ListInstancesRequest):
@@ -19123,10 +19226,13 @@ def test_list_instances_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_list_instances"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_list_instances_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_list_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.ListInstancesRequest.pb(platform.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -19150,6 +19256,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.ListInstancesResponse()
+        post_with_metadata.return_value = platform.ListInstancesResponse(), metadata
 
         client.list_instances(
             request,
@@ -19161,6 +19268,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_instance_rest_bad_request(request_type=platform.GetInstanceRequest):
@@ -19253,10 +19361,13 @@ def test_get_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_get_instance"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_get_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_get_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.GetInstanceRequest.pb(platform.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -19278,6 +19389,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.Instance()
+        post_with_metadata.return_value = platform.Instance(), metadata
 
         client.get_instance(
             request,
@@ -19289,6 +19401,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_application_instances_rest_bad_request(
@@ -19369,10 +19482,14 @@ def test_create_application_instances_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_create_application_instances"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor,
+        "post_create_application_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_create_application_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.CreateApplicationInstancesRequest.pb(
             platform.CreateApplicationInstancesRequest()
         )
@@ -19396,6 +19513,7 @@ def test_create_application_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_application_instances(
             request,
@@ -19407,6 +19525,7 @@ def test_create_application_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_application_instances_rest_bad_request(
@@ -19487,10 +19606,14 @@ def test_delete_application_instances_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_delete_application_instances"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor,
+        "post_delete_application_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_delete_application_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.DeleteApplicationInstancesRequest.pb(
             platform.DeleteApplicationInstancesRequest()
         )
@@ -19514,6 +19637,7 @@ def test_delete_application_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_application_instances(
             request,
@@ -19525,6 +19649,7 @@ def test_delete_application_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_application_instances_rest_bad_request(
@@ -19605,10 +19730,14 @@ def test_update_application_instances_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_update_application_instances"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor,
+        "post_update_application_instances_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_update_application_instances"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.UpdateApplicationInstancesRequest.pb(
             platform.UpdateApplicationInstancesRequest()
         )
@@ -19632,6 +19761,7 @@ def test_update_application_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_application_instances(
             request,
@@ -19643,6 +19773,7 @@ def test_update_application_instances_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_drafts_rest_bad_request(request_type=platform.ListDraftsRequest):
@@ -19727,10 +19858,13 @@ def test_list_drafts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_list_drafts"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_list_drafts_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_list_drafts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.ListDraftsRequest.pb(platform.ListDraftsRequest())
         transcode.return_value = {
             "method": "post",
@@ -19754,6 +19888,7 @@ def test_list_drafts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.ListDraftsResponse()
+        post_with_metadata.return_value = platform.ListDraftsResponse(), metadata
 
         client.list_drafts(
             request,
@@ -19765,6 +19900,7 @@ def test_list_drafts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_draft_rest_bad_request(request_type=platform.GetDraftRequest):
@@ -19855,10 +19991,13 @@ def test_get_draft_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_get_draft"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_get_draft_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_get_draft"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.GetDraftRequest.pb(platform.GetDraftRequest())
         transcode.return_value = {
             "method": "post",
@@ -19880,6 +20019,7 @@ def test_get_draft_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.Draft()
+        post_with_metadata.return_value = platform.Draft(), metadata
 
         client.get_draft(
             request,
@@ -19891,6 +20031,7 @@ def test_get_draft_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_draft_rest_bad_request(request_type=platform.CreateDraftRequest):
@@ -20154,10 +20295,13 @@ def test_create_draft_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_create_draft"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_create_draft_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_create_draft"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.CreateDraftRequest.pb(platform.CreateDraftRequest())
         transcode.return_value = {
             "method": "post",
@@ -20179,6 +20323,7 @@ def test_create_draft_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_draft(
             request,
@@ -20190,6 +20335,7 @@ def test_create_draft_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_draft_rest_bad_request(request_type=platform.UpdateDraftRequest):
@@ -20461,10 +20607,13 @@ def test_update_draft_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_update_draft"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_update_draft_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_update_draft"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.UpdateDraftRequest.pb(platform.UpdateDraftRequest())
         transcode.return_value = {
             "method": "post",
@@ -20486,6 +20635,7 @@ def test_update_draft_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_draft(
             request,
@@ -20497,6 +20647,7 @@ def test_update_draft_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_draft_rest_bad_request(request_type=platform.DeleteDraftRequest):
@@ -20579,10 +20730,13 @@ def test_delete_draft_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_delete_draft"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_delete_draft_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_delete_draft"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.DeleteDraftRequest.pb(platform.DeleteDraftRequest())
         transcode.return_value = {
             "method": "post",
@@ -20604,6 +20758,7 @@ def test_delete_draft_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_draft(
             request,
@@ -20615,6 +20770,7 @@ def test_delete_draft_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_processors_rest_bad_request(request_type=platform.ListProcessorsRequest):
@@ -20699,10 +20855,13 @@ def test_list_processors_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_list_processors"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_list_processors_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_list_processors"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.ListProcessorsRequest.pb(platform.ListProcessorsRequest())
         transcode.return_value = {
             "method": "post",
@@ -20726,6 +20885,7 @@ def test_list_processors_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.ListProcessorsResponse()
+        post_with_metadata.return_value = platform.ListProcessorsResponse(), metadata
 
         client.list_processors(
             request,
@@ -20737,6 +20897,7 @@ def test_list_processors_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_prebuilt_processors_rest_bad_request(
@@ -20818,10 +20979,14 @@ def test_list_prebuilt_processors_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_list_prebuilt_processors"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor,
+        "post_list_prebuilt_processors_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_list_prebuilt_processors"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.ListPrebuiltProcessorsRequest.pb(
             platform.ListPrebuiltProcessorsRequest()
         )
@@ -20847,6 +21012,10 @@ def test_list_prebuilt_processors_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.ListPrebuiltProcessorsResponse()
+        post_with_metadata.return_value = (
+            platform.ListPrebuiltProcessorsResponse(),
+            metadata,
+        )
 
         client.list_prebuilt_processors(
             request,
@@ -20858,6 +21027,7 @@ def test_list_prebuilt_processors_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_processor_rest_bad_request(request_type=platform.GetProcessorRequest):
@@ -20960,10 +21130,13 @@ def test_get_processor_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_get_processor"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_get_processor_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_get_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.GetProcessorRequest.pb(platform.GetProcessorRequest())
         transcode.return_value = {
             "method": "post",
@@ -20985,6 +21158,7 @@ def test_get_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = platform.Processor()
+        post_with_metadata.return_value = platform.Processor(), metadata
 
         client.get_processor(
             request,
@@ -20996,6 +21170,7 @@ def test_get_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_processor_rest_bad_request(
@@ -21202,10 +21377,13 @@ def test_create_processor_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_create_processor"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_create_processor_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_create_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.CreateProcessorRequest.pb(
             platform.CreateProcessorRequest()
         )
@@ -21229,6 +21407,7 @@ def test_create_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_processor(
             request,
@@ -21240,6 +21419,7 @@ def test_create_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_processor_rest_bad_request(
@@ -21450,10 +21630,13 @@ def test_update_processor_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_update_processor"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_update_processor_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_update_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.UpdateProcessorRequest.pb(
             platform.UpdateProcessorRequest()
         )
@@ -21477,6 +21660,7 @@ def test_update_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_processor(
             request,
@@ -21488,6 +21672,7 @@ def test_update_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_processor_rest_bad_request(
@@ -21568,10 +21753,13 @@ def test_delete_processor_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AppPlatformRestInterceptor, "post_delete_processor"
     ) as post, mock.patch.object(
+        transports.AppPlatformRestInterceptor, "post_delete_processor_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AppPlatformRestInterceptor, "pre_delete_processor"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = platform.DeleteProcessorRequest.pb(
             platform.DeleteProcessorRequest()
         )
@@ -21595,6 +21783,7 @@ def test_delete_processor_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_processor(
             request,
@@ -21606,6 +21795,7 @@ def test_delete_processor_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

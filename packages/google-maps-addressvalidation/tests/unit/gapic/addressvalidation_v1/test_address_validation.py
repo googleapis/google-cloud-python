@@ -60,6 +60,13 @@ from google.maps.addressvalidation_v1.services.address_validation import (
 )
 from google.maps.addressvalidation_v1.types import address_validation_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -325,6 +332,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AddressValidationClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AddressValidationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AddressValidationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -2044,10 +2094,14 @@ def test_validate_address_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AddressValidationRestInterceptor, "post_validate_address"
     ) as post, mock.patch.object(
+        transports.AddressValidationRestInterceptor,
+        "post_validate_address_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AddressValidationRestInterceptor, "pre_validate_address"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = address_validation_service.ValidateAddressRequest.pb(
             address_validation_service.ValidateAddressRequest()
         )
@@ -2073,6 +2127,10 @@ def test_validate_address_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = address_validation_service.ValidateAddressResponse()
+        post_with_metadata.return_value = (
+            address_validation_service.ValidateAddressResponse(),
+            metadata,
+        )
 
         client.validate_address(
             request,
@@ -2084,6 +2142,7 @@ def test_validate_address_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_provide_validation_feedback_rest_bad_request(
@@ -2169,10 +2228,14 @@ def test_provide_validation_feedback_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AddressValidationRestInterceptor, "post_provide_validation_feedback"
     ) as post, mock.patch.object(
+        transports.AddressValidationRestInterceptor,
+        "post_provide_validation_feedback_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.AddressValidationRestInterceptor, "pre_provide_validation_feedback"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = address_validation_service.ProvideValidationFeedbackRequest.pb(
             address_validation_service.ProvideValidationFeedbackRequest()
         )
@@ -2202,6 +2265,10 @@ def test_provide_validation_feedback_rest_interceptors(null_interceptor):
         post.return_value = (
             address_validation_service.ProvideValidationFeedbackResponse()
         )
+        post_with_metadata.return_value = (
+            address_validation_service.ProvideValidationFeedbackResponse(),
+            metadata,
+        )
 
         client.provide_validation_feedback(
             request,
@@ -2213,6 +2280,7 @@ def test_provide_validation_feedback_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

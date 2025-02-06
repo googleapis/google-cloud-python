@@ -306,11 +306,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_application_stream_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_add_application_stream_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_add_application_stream_input` interceptor runs
+        before the `post_add_application_stream_input_with_metadata` interceptor.
         """
         return response
+
+    def post_add_application_stream_input_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_application_stream_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_add_application_stream_input_with_metadata`
+        interceptor in new development instead of the `post_add_application_stream_input` interceptor.
+        When both interceptors are used, this `post_add_application_stream_input_with_metadata` interceptor runs after the
+        `post_add_application_stream_input` interceptor. The (possibly modified) response returned by
+        `post_add_application_stream_input` will be passed to
+        `post_add_application_stream_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_application(
         self,
@@ -331,11 +354,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_application` interceptor runs
+        before the `post_create_application_with_metadata` interceptor.
         """
         return response
+
+    def post_create_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_create_application_with_metadata`
+        interceptor in new development instead of the `post_create_application` interceptor.
+        When both interceptors are used, this `post_create_application_with_metadata` interceptor runs after the
+        `post_create_application` interceptor. The (possibly modified) response returned by
+        `post_create_application` will be passed to
+        `post_create_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_application_instances(
         self,
@@ -357,11 +403,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_application_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_application_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_application_instances` interceptor runs
+        before the `post_create_application_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_create_application_instances_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_application_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_create_application_instances_with_metadata`
+        interceptor in new development instead of the `post_create_application_instances` interceptor.
+        When both interceptors are used, this `post_create_application_instances_with_metadata` interceptor runs after the
+        `post_create_application_instances` interceptor. The (possibly modified) response returned by
+        `post_create_application_instances` will be passed to
+        `post_create_application_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_draft(
         self,
@@ -380,11 +449,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_draft
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_draft_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_draft` interceptor runs
+        before the `post_create_draft_with_metadata` interceptor.
         """
         return response
+
+    def post_create_draft_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_draft
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_create_draft_with_metadata`
+        interceptor in new development instead of the `post_create_draft` interceptor.
+        When both interceptors are used, this `post_create_draft_with_metadata` interceptor runs after the
+        `post_create_draft` interceptor. The (possibly modified) response returned by
+        `post_create_draft` will be passed to
+        `post_create_draft_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_processor(
         self,
@@ -405,11 +497,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_processor` interceptor runs
+        before the `post_create_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_create_processor_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_create_processor_with_metadata`
+        interceptor in new development instead of the `post_create_processor` interceptor.
+        When both interceptors are used, this `post_create_processor_with_metadata` interceptor runs after the
+        `post_create_processor` interceptor. The (possibly modified) response returned by
+        `post_create_processor` will be passed to
+        `post_create_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_application(
         self,
@@ -430,11 +545,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_application` interceptor runs
+        before the `post_delete_application_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_application_with_metadata`
+        interceptor in new development instead of the `post_delete_application` interceptor.
+        When both interceptors are used, this `post_delete_application_with_metadata` interceptor runs after the
+        `post_delete_application` interceptor. The (possibly modified) response returned by
+        `post_delete_application` will be passed to
+        `post_delete_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_application_instances(
         self,
@@ -456,11 +594,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_application_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_application_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_application_instances` interceptor runs
+        before the `post_delete_application_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_application_instances_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_application_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_application_instances_with_metadata`
+        interceptor in new development instead of the `post_delete_application_instances` interceptor.
+        When both interceptors are used, this `post_delete_application_instances_with_metadata` interceptor runs after the
+        `post_delete_application_instances` interceptor. The (possibly modified) response returned by
+        `post_delete_application_instances` will be passed to
+        `post_delete_application_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_draft(
         self,
@@ -479,11 +640,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_draft
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_draft_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_draft` interceptor runs
+        before the `post_delete_draft_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_draft_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_draft
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_draft_with_metadata`
+        interceptor in new development instead of the `post_delete_draft` interceptor.
+        When both interceptors are used, this `post_delete_draft_with_metadata` interceptor runs after the
+        `post_delete_draft` interceptor. The (possibly modified) response returned by
+        `post_delete_draft` will be passed to
+        `post_delete_draft_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_processor(
         self,
@@ -504,11 +688,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_processor` interceptor runs
+        before the `post_delete_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_processor_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_processor_with_metadata`
+        interceptor in new development instead of the `post_delete_processor` interceptor.
+        When both interceptors are used, this `post_delete_processor_with_metadata` interceptor runs after the
+        `post_delete_processor` interceptor. The (possibly modified) response returned by
+        `post_delete_processor` will be passed to
+        `post_delete_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_deploy_application(
         self,
@@ -529,11 +736,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_deploy_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_deploy_application` interceptor runs
+        before the `post_deploy_application_with_metadata` interceptor.
         """
         return response
+
+    def post_deploy_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for deploy_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_deploy_application_with_metadata`
+        interceptor in new development instead of the `post_deploy_application` interceptor.
+        When both interceptors are used, this `post_deploy_application_with_metadata` interceptor runs after the
+        `post_deploy_application` interceptor. The (possibly modified) response returned by
+        `post_deploy_application` will be passed to
+        `post_deploy_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_application(
         self,
@@ -552,11 +782,34 @@ class AppPlatformRestInterceptor:
     ) -> platform.Application:
         """Post-rpc interceptor for get_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_application` interceptor runs
+        before the `post_get_application_with_metadata` interceptor.
         """
         return response
+
+    def post_get_application_with_metadata(
+        self,
+        response: platform.Application,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.Application, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_get_application_with_metadata`
+        interceptor in new development instead of the `post_get_application` interceptor.
+        When both interceptors are used, this `post_get_application_with_metadata` interceptor runs after the
+        `post_get_application` interceptor. The (possibly modified) response returned by
+        `post_get_application` will be passed to
+        `post_get_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_draft(
         self,
@@ -573,11 +826,34 @@ class AppPlatformRestInterceptor:
     def post_get_draft(self, response: platform.Draft) -> platform.Draft:
         """Post-rpc interceptor for get_draft
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_draft_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_draft` interceptor runs
+        before the `post_get_draft_with_metadata` interceptor.
         """
         return response
+
+    def post_get_draft_with_metadata(
+        self,
+        response: platform.Draft,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.Draft, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_draft
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_get_draft_with_metadata`
+        interceptor in new development instead of the `post_get_draft` interceptor.
+        When both interceptors are used, this `post_get_draft_with_metadata` interceptor runs after the
+        `post_get_draft` interceptor. The (possibly modified) response returned by
+        `post_get_draft` will be passed to
+        `post_get_draft_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance(
         self,
@@ -594,11 +870,34 @@ class AppPlatformRestInterceptor:
     def post_get_instance(self, response: platform.Instance) -> platform.Instance:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance` interceptor runs
+        before the `post_get_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_with_metadata(
+        self,
+        response: platform.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_with_metadata`
+        interceptor in new development instead of the `post_get_instance` interceptor.
+        When both interceptors are used, this `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` interceptor. The (possibly modified) response returned by
+        `post_get_instance` will be passed to
+        `post_get_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_processor(
         self,
@@ -615,11 +914,34 @@ class AppPlatformRestInterceptor:
     def post_get_processor(self, response: platform.Processor) -> platform.Processor:
         """Post-rpc interceptor for get_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_processor` interceptor runs
+        before the `post_get_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_get_processor_with_metadata(
+        self,
+        response: platform.Processor,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.Processor, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_get_processor_with_metadata`
+        interceptor in new development instead of the `post_get_processor` interceptor.
+        When both interceptors are used, this `post_get_processor_with_metadata` interceptor runs after the
+        `post_get_processor` interceptor. The (possibly modified) response returned by
+        `post_get_processor` will be passed to
+        `post_get_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_applications(
         self,
@@ -640,11 +962,36 @@ class AppPlatformRestInterceptor:
     ) -> platform.ListApplicationsResponse:
         """Post-rpc interceptor for list_applications
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_applications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_applications` interceptor runs
+        before the `post_list_applications_with_metadata` interceptor.
         """
         return response
+
+    def post_list_applications_with_metadata(
+        self,
+        response: platform.ListApplicationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.ListApplicationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_applications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_list_applications_with_metadata`
+        interceptor in new development instead of the `post_list_applications` interceptor.
+        When both interceptors are used, this `post_list_applications_with_metadata` interceptor runs after the
+        `post_list_applications` interceptor. The (possibly modified) response returned by
+        `post_list_applications` will be passed to
+        `post_list_applications_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_drafts(
         self,
@@ -663,11 +1010,34 @@ class AppPlatformRestInterceptor:
     ) -> platform.ListDraftsResponse:
         """Post-rpc interceptor for list_drafts
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_drafts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_drafts` interceptor runs
+        before the `post_list_drafts_with_metadata` interceptor.
         """
         return response
+
+    def post_list_drafts_with_metadata(
+        self,
+        response: platform.ListDraftsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.ListDraftsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_drafts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_list_drafts_with_metadata`
+        interceptor in new development instead of the `post_list_drafts` interceptor.
+        When both interceptors are used, this `post_list_drafts_with_metadata` interceptor runs after the
+        `post_list_drafts` interceptor. The (possibly modified) response returned by
+        `post_list_drafts` will be passed to
+        `post_list_drafts_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instances(
         self,
@@ -686,11 +1056,34 @@ class AppPlatformRestInterceptor:
     ) -> platform.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instances` interceptor runs
+        before the `post_list_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instances_with_metadata(
+        self,
+        response: platform.ListInstancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_list_instances_with_metadata`
+        interceptor in new development instead of the `post_list_instances` interceptor.
+        When both interceptors are used, this `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` interceptor. The (possibly modified) response returned by
+        `post_list_instances` will be passed to
+        `post_list_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_prebuilt_processors(
         self,
@@ -711,11 +1104,36 @@ class AppPlatformRestInterceptor:
     ) -> platform.ListPrebuiltProcessorsResponse:
         """Post-rpc interceptor for list_prebuilt_processors
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_prebuilt_processors_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_prebuilt_processors` interceptor runs
+        before the `post_list_prebuilt_processors_with_metadata` interceptor.
         """
         return response
+
+    def post_list_prebuilt_processors_with_metadata(
+        self,
+        response: platform.ListPrebuiltProcessorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.ListPrebuiltProcessorsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_prebuilt_processors
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_list_prebuilt_processors_with_metadata`
+        interceptor in new development instead of the `post_list_prebuilt_processors` interceptor.
+        When both interceptors are used, this `post_list_prebuilt_processors_with_metadata` interceptor runs after the
+        `post_list_prebuilt_processors` interceptor. The (possibly modified) response returned by
+        `post_list_prebuilt_processors` will be passed to
+        `post_list_prebuilt_processors_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_processors(
         self,
@@ -734,11 +1152,36 @@ class AppPlatformRestInterceptor:
     ) -> platform.ListProcessorsResponse:
         """Post-rpc interceptor for list_processors
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_processors_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_processors` interceptor runs
+        before the `post_list_processors_with_metadata` interceptor.
         """
         return response
+
+    def post_list_processors_with_metadata(
+        self,
+        response: platform.ListProcessorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.ListProcessorsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_processors
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_list_processors_with_metadata`
+        interceptor in new development instead of the `post_list_processors` interceptor.
+        When both interceptors are used, this `post_list_processors_with_metadata` interceptor runs after the
+        `post_list_processors` interceptor. The (possibly modified) response returned by
+        `post_list_processors` will be passed to
+        `post_list_processors_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_application_stream_input(
         self,
@@ -760,11 +1203,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_application_stream_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_remove_application_stream_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_remove_application_stream_input` interceptor runs
+        before the `post_remove_application_stream_input_with_metadata` interceptor.
         """
         return response
+
+    def post_remove_application_stream_input_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for remove_application_stream_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_remove_application_stream_input_with_metadata`
+        interceptor in new development instead of the `post_remove_application_stream_input` interceptor.
+        When both interceptors are used, this `post_remove_application_stream_input_with_metadata` interceptor runs after the
+        `post_remove_application_stream_input` interceptor. The (possibly modified) response returned by
+        `post_remove_application_stream_input` will be passed to
+        `post_remove_application_stream_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undeploy_application(
         self,
@@ -785,11 +1251,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undeploy_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undeploy_application` interceptor runs
+        before the `post_undeploy_application_with_metadata` interceptor.
         """
         return response
+
+    def post_undeploy_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undeploy_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_undeploy_application_with_metadata`
+        interceptor in new development instead of the `post_undeploy_application` interceptor.
+        When both interceptors are used, this `post_undeploy_application_with_metadata` interceptor runs after the
+        `post_undeploy_application` interceptor. The (possibly modified) response returned by
+        `post_undeploy_application` will be passed to
+        `post_undeploy_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_application(
         self,
@@ -810,11 +1299,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_application` interceptor runs
+        before the `post_update_application_with_metadata` interceptor.
         """
         return response
+
+    def post_update_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_update_application_with_metadata`
+        interceptor in new development instead of the `post_update_application` interceptor.
+        When both interceptors are used, this `post_update_application_with_metadata` interceptor runs after the
+        `post_update_application` interceptor. The (possibly modified) response returned by
+        `post_update_application` will be passed to
+        `post_update_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_application_instances(
         self,
@@ -836,11 +1348,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_application_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_application_instances` interceptor runs
+        before the `post_update_application_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_update_application_instances_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_application_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_update_application_instances_with_metadata`
+        interceptor in new development instead of the `post_update_application_instances` interceptor.
+        When both interceptors are used, this `post_update_application_instances_with_metadata` interceptor runs after the
+        `post_update_application_instances` interceptor. The (possibly modified) response returned by
+        `post_update_application_instances` will be passed to
+        `post_update_application_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_application_stream_input(
         self,
@@ -862,11 +1397,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application_stream_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_application_stream_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_application_stream_input` interceptor runs
+        before the `post_update_application_stream_input_with_metadata` interceptor.
         """
         return response
+
+    def post_update_application_stream_input_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_application_stream_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_update_application_stream_input_with_metadata`
+        interceptor in new development instead of the `post_update_application_stream_input` interceptor.
+        When both interceptors are used, this `post_update_application_stream_input_with_metadata` interceptor runs after the
+        `post_update_application_stream_input` interceptor. The (possibly modified) response returned by
+        `post_update_application_stream_input` will be passed to
+        `post_update_application_stream_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_draft(
         self,
@@ -885,11 +1443,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_draft
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_draft_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_draft` interceptor runs
+        before the `post_update_draft_with_metadata` interceptor.
         """
         return response
+
+    def post_update_draft_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_draft
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_update_draft_with_metadata`
+        interceptor in new development instead of the `post_update_draft` interceptor.
+        When both interceptors are used, this `post_update_draft_with_metadata` interceptor runs after the
+        `post_update_draft` interceptor. The (possibly modified) response returned by
+        `post_update_draft` will be passed to
+        `post_update_draft_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_processor(
         self,
@@ -910,11 +1491,34 @@ class AppPlatformRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_processor
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_processor_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppPlatform server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_processor` interceptor runs
+        before the `post_update_processor_with_metadata` interceptor.
         """
         return response
+
+    def post_update_processor_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_processor
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppPlatform server but before it is returned to user code.
+
+        We recommend only using this `post_update_processor_with_metadata`
+        interceptor in new development instead of the `post_update_processor` interceptor.
+        When both interceptors are used, this `post_update_processor_with_metadata` interceptor runs after the
+        `post_update_processor` interceptor. The (possibly modified) response returned by
+        `post_update_processor` will be passed to
+        `post_update_processor_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -1312,6 +1916,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_add_application_stream_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_application_stream_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1461,6 +2069,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1615,6 +2227,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_application_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_application_instances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1768,6 +2384,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_draft(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_draft_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1917,6 +2537,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2060,6 +2684,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2214,6 +2842,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_application_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_application_instances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2359,6 +2991,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_draft(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_draft_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2502,6 +3138,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2651,6 +3291,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_deploy_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_deploy_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2791,6 +3435,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2933,6 +3581,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_draft(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_draft_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3079,6 +3731,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3225,6 +3881,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3370,6 +4030,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_applications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_applications_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3519,6 +4183,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_drafts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_drafts_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3664,6 +4332,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3815,6 +4487,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_prebuilt_processors(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_prebuilt_processors_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3960,6 +4636,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_processors(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_processors_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4114,6 +4794,13 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_remove_application_stream_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_remove_application_stream_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4264,6 +4951,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undeploy_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undeploy_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4413,6 +5104,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4567,6 +5262,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_application_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_application_instances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4721,6 +5420,13 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_application_stream_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_application_stream_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4874,6 +5580,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_draft(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_draft_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5023,6 +5733,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_processor(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_processor_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -304,11 +304,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.ClipAssetResponse:
         """Post-rpc interceptor for clip_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_clip_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_clip_asset` interceptor runs
+        before the `post_clip_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_clip_asset_with_metadata(
+        self,
+        response: warehouse.ClipAssetResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.ClipAssetResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for clip_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_clip_asset_with_metadata`
+        interceptor in new development instead of the `post_clip_asset` interceptor.
+        When both interceptors are used, this `post_clip_asset_with_metadata` interceptor runs after the
+        `post_clip_asset` interceptor. The (possibly modified) response returned by
+        `post_clip_asset` will be passed to
+        `post_clip_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_annotation(
         self,
@@ -329,11 +352,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.Annotation:
         """Post-rpc interceptor for create_annotation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_annotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_annotation` interceptor runs
+        before the `post_create_annotation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_annotation_with_metadata(
+        self,
+        response: warehouse.Annotation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Annotation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_annotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_create_annotation_with_metadata`
+        interceptor in new development instead of the `post_create_annotation` interceptor.
+        When both interceptors are used, this `post_create_annotation_with_metadata` interceptor runs after the
+        `post_create_annotation` interceptor. The (possibly modified) response returned by
+        `post_create_annotation` will be passed to
+        `post_create_annotation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_asset(
         self,
@@ -350,11 +396,34 @@ class WarehouseRestInterceptor:
     def post_create_asset(self, response: warehouse.Asset) -> warehouse.Asset:
         """Post-rpc interceptor for create_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_asset` interceptor runs
+        before the `post_create_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_create_asset_with_metadata(
+        self,
+        response: warehouse.Asset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_create_asset_with_metadata`
+        interceptor in new development instead of the `post_create_asset` interceptor.
+        When both interceptors are used, this `post_create_asset_with_metadata` interceptor runs after the
+        `post_create_asset` interceptor. The (possibly modified) response returned by
+        `post_create_asset` will be passed to
+        `post_create_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_corpus(
         self,
@@ -373,11 +442,34 @@ class WarehouseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_corpus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_corpus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_corpus` interceptor runs
+        before the `post_create_corpus_with_metadata` interceptor.
         """
         return response
+
+    def post_create_corpus_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_corpus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_create_corpus_with_metadata`
+        interceptor in new development instead of the `post_create_corpus` interceptor.
+        When both interceptors are used, this `post_create_corpus_with_metadata` interceptor runs after the
+        `post_create_corpus` interceptor. The (possibly modified) response returned by
+        `post_create_corpus` will be passed to
+        `post_create_corpus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_data_schema(
         self,
@@ -398,11 +490,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.DataSchema:
         """Post-rpc interceptor for create_data_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_data_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_data_schema` interceptor runs
+        before the `post_create_data_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_create_data_schema_with_metadata(
+        self,
+        response: warehouse.DataSchema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.DataSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_data_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_create_data_schema_with_metadata`
+        interceptor in new development instead of the `post_create_data_schema` interceptor.
+        When both interceptors are used, this `post_create_data_schema_with_metadata` interceptor runs after the
+        `post_create_data_schema` interceptor. The (possibly modified) response returned by
+        `post_create_data_schema` will be passed to
+        `post_create_data_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_search_config(
         self,
@@ -423,11 +538,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.SearchConfig:
         """Post-rpc interceptor for create_search_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_search_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_search_config` interceptor runs
+        before the `post_create_search_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_search_config_with_metadata(
+        self,
+        response: warehouse.SearchConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.SearchConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_search_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_create_search_config_with_metadata`
+        interceptor in new development instead of the `post_create_search_config` interceptor.
+        When both interceptors are used, this `post_create_search_config_with_metadata` interceptor runs after the
+        `post_create_search_config` interceptor. The (possibly modified) response returned by
+        `post_create_search_config` will be passed to
+        `post_create_search_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_annotation(
         self,
@@ -460,11 +598,34 @@ class WarehouseRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_asset` interceptor runs
+        before the `post_delete_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_asset_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_delete_asset_with_metadata`
+        interceptor in new development instead of the `post_delete_asset` interceptor.
+        When both interceptors are used, this `post_delete_asset_with_metadata` interceptor runs after the
+        `post_delete_asset` interceptor. The (possibly modified) response returned by
+        `post_delete_asset` will be passed to
+        `post_delete_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_corpus(
         self,
@@ -525,11 +686,36 @@ class WarehouseRestInterceptor:
     ) -> warehouse.GenerateHlsUriResponse:
         """Post-rpc interceptor for generate_hls_uri
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_hls_uri_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_hls_uri` interceptor runs
+        before the `post_generate_hls_uri_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_hls_uri_with_metadata(
+        self,
+        response: warehouse.GenerateHlsUriResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.GenerateHlsUriResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for generate_hls_uri
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_generate_hls_uri_with_metadata`
+        interceptor in new development instead of the `post_generate_hls_uri` interceptor.
+        When both interceptors are used, this `post_generate_hls_uri_with_metadata` interceptor runs after the
+        `post_generate_hls_uri` interceptor. The (possibly modified) response returned by
+        `post_generate_hls_uri` will be passed to
+        `post_generate_hls_uri_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_annotation(
         self,
@@ -548,11 +734,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.Annotation:
         """Post-rpc interceptor for get_annotation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_annotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_annotation` interceptor runs
+        before the `post_get_annotation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_annotation_with_metadata(
+        self,
+        response: warehouse.Annotation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Annotation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_annotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_get_annotation_with_metadata`
+        interceptor in new development instead of the `post_get_annotation` interceptor.
+        When both interceptors are used, this `post_get_annotation_with_metadata` interceptor runs after the
+        `post_get_annotation` interceptor. The (possibly modified) response returned by
+        `post_get_annotation` will be passed to
+        `post_get_annotation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_asset(
         self,
@@ -569,11 +778,34 @@ class WarehouseRestInterceptor:
     def post_get_asset(self, response: warehouse.Asset) -> warehouse.Asset:
         """Post-rpc interceptor for get_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_asset` interceptor runs
+        before the `post_get_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_get_asset_with_metadata(
+        self,
+        response: warehouse.Asset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_get_asset_with_metadata`
+        interceptor in new development instead of the `post_get_asset` interceptor.
+        When both interceptors are used, this `post_get_asset_with_metadata` interceptor runs after the
+        `post_get_asset` interceptor. The (possibly modified) response returned by
+        `post_get_asset` will be passed to
+        `post_get_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_corpus(
         self,
@@ -590,11 +822,34 @@ class WarehouseRestInterceptor:
     def post_get_corpus(self, response: warehouse.Corpus) -> warehouse.Corpus:
         """Post-rpc interceptor for get_corpus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_corpus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_corpus` interceptor runs
+        before the `post_get_corpus_with_metadata` interceptor.
         """
         return response
+
+    def post_get_corpus_with_metadata(
+        self,
+        response: warehouse.Corpus,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_corpus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_get_corpus_with_metadata`
+        interceptor in new development instead of the `post_get_corpus` interceptor.
+        When both interceptors are used, this `post_get_corpus_with_metadata` interceptor runs after the
+        `post_get_corpus` interceptor. The (possibly modified) response returned by
+        `post_get_corpus` will be passed to
+        `post_get_corpus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_data_schema(
         self,
@@ -613,11 +868,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.DataSchema:
         """Post-rpc interceptor for get_data_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_data_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_data_schema` interceptor runs
+        before the `post_get_data_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_get_data_schema_with_metadata(
+        self,
+        response: warehouse.DataSchema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.DataSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_data_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_get_data_schema_with_metadata`
+        interceptor in new development instead of the `post_get_data_schema` interceptor.
+        When both interceptors are used, this `post_get_data_schema_with_metadata` interceptor runs after the
+        `post_get_data_schema` interceptor. The (possibly modified) response returned by
+        `post_get_data_schema` will be passed to
+        `post_get_data_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_search_config(
         self,
@@ -638,11 +916,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.SearchConfig:
         """Post-rpc interceptor for get_search_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_search_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_search_config` interceptor runs
+        before the `post_get_search_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_search_config_with_metadata(
+        self,
+        response: warehouse.SearchConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.SearchConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_search_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_get_search_config_with_metadata`
+        interceptor in new development instead of the `post_get_search_config` interceptor.
+        When both interceptors are used, this `post_get_search_config_with_metadata` interceptor runs after the
+        `post_get_search_config` interceptor. The (possibly modified) response returned by
+        `post_get_search_config` will be passed to
+        `post_get_search_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_annotations(
         self,
@@ -663,11 +964,36 @@ class WarehouseRestInterceptor:
     ) -> warehouse.ListAnnotationsResponse:
         """Post-rpc interceptor for list_annotations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_annotations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_annotations` interceptor runs
+        before the `post_list_annotations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_annotations_with_metadata(
+        self,
+        response: warehouse.ListAnnotationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.ListAnnotationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_annotations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_list_annotations_with_metadata`
+        interceptor in new development instead of the `post_list_annotations` interceptor.
+        When both interceptors are used, this `post_list_annotations_with_metadata` interceptor runs after the
+        `post_list_annotations` interceptor. The (possibly modified) response returned by
+        `post_list_annotations` will be passed to
+        `post_list_annotations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_assets(
         self,
@@ -686,11 +1012,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_assets` interceptor runs
+        before the `post_list_assets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_assets_with_metadata(
+        self,
+        response: warehouse.ListAssetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_list_assets_with_metadata`
+        interceptor in new development instead of the `post_list_assets` interceptor.
+        When both interceptors are used, this `post_list_assets_with_metadata` interceptor runs after the
+        `post_list_assets` interceptor. The (possibly modified) response returned by
+        `post_list_assets` will be passed to
+        `post_list_assets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_corpora(
         self,
@@ -709,11 +1058,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.ListCorporaResponse:
         """Post-rpc interceptor for list_corpora
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_corpora_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_corpora` interceptor runs
+        before the `post_list_corpora_with_metadata` interceptor.
         """
         return response
+
+    def post_list_corpora_with_metadata(
+        self,
+        response: warehouse.ListCorporaResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.ListCorporaResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_corpora
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_list_corpora_with_metadata`
+        interceptor in new development instead of the `post_list_corpora` interceptor.
+        When both interceptors are used, this `post_list_corpora_with_metadata` interceptor runs after the
+        `post_list_corpora` interceptor. The (possibly modified) response returned by
+        `post_list_corpora` will be passed to
+        `post_list_corpora_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_data_schemas(
         self,
@@ -734,11 +1106,36 @@ class WarehouseRestInterceptor:
     ) -> warehouse.ListDataSchemasResponse:
         """Post-rpc interceptor for list_data_schemas
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_data_schemas_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_data_schemas` interceptor runs
+        before the `post_list_data_schemas_with_metadata` interceptor.
         """
         return response
+
+    def post_list_data_schemas_with_metadata(
+        self,
+        response: warehouse.ListDataSchemasResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.ListDataSchemasResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_data_schemas
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_list_data_schemas_with_metadata`
+        interceptor in new development instead of the `post_list_data_schemas` interceptor.
+        When both interceptors are used, this `post_list_data_schemas_with_metadata` interceptor runs after the
+        `post_list_data_schemas` interceptor. The (possibly modified) response returned by
+        `post_list_data_schemas` will be passed to
+        `post_list_data_schemas_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_search_configs(
         self,
@@ -759,11 +1156,36 @@ class WarehouseRestInterceptor:
     ) -> warehouse.ListSearchConfigsResponse:
         """Post-rpc interceptor for list_search_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_search_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_search_configs` interceptor runs
+        before the `post_list_search_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_search_configs_with_metadata(
+        self,
+        response: warehouse.ListSearchConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        warehouse.ListSearchConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_search_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_list_search_configs_with_metadata`
+        interceptor in new development instead of the `post_list_search_configs` interceptor.
+        When both interceptors are used, this `post_list_search_configs_with_metadata` interceptor runs after the
+        `post_list_search_configs` interceptor. The (possibly modified) response returned by
+        `post_list_search_configs` will be passed to
+        `post_list_search_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_assets(
         self,
@@ -782,11 +1204,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.SearchAssetsResponse:
         """Post-rpc interceptor for search_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_assets` interceptor runs
+        before the `post_search_assets_with_metadata` interceptor.
         """
         return response
+
+    def post_search_assets_with_metadata(
+        self,
+        response: warehouse.SearchAssetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.SearchAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_search_assets_with_metadata`
+        interceptor in new development instead of the `post_search_assets` interceptor.
+        When both interceptors are used, this `post_search_assets_with_metadata` interceptor runs after the
+        `post_search_assets` interceptor. The (possibly modified) response returned by
+        `post_search_assets` will be passed to
+        `post_search_assets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_annotation(
         self,
@@ -807,11 +1252,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.Annotation:
         """Post-rpc interceptor for update_annotation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_annotation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_annotation` interceptor runs
+        before the `post_update_annotation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_annotation_with_metadata(
+        self,
+        response: warehouse.Annotation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Annotation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_annotation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_update_annotation_with_metadata`
+        interceptor in new development instead of the `post_update_annotation` interceptor.
+        When both interceptors are used, this `post_update_annotation_with_metadata` interceptor runs after the
+        `post_update_annotation` interceptor. The (possibly modified) response returned by
+        `post_update_annotation` will be passed to
+        `post_update_annotation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_asset(
         self,
@@ -828,11 +1296,34 @@ class WarehouseRestInterceptor:
     def post_update_asset(self, response: warehouse.Asset) -> warehouse.Asset:
         """Post-rpc interceptor for update_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_asset` interceptor runs
+        before the `post_update_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_update_asset_with_metadata(
+        self,
+        response: warehouse.Asset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_update_asset_with_metadata`
+        interceptor in new development instead of the `post_update_asset` interceptor.
+        When both interceptors are used, this `post_update_asset_with_metadata` interceptor runs after the
+        `post_update_asset` interceptor. The (possibly modified) response returned by
+        `post_update_asset` will be passed to
+        `post_update_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_corpus(
         self,
@@ -849,11 +1340,34 @@ class WarehouseRestInterceptor:
     def post_update_corpus(self, response: warehouse.Corpus) -> warehouse.Corpus:
         """Post-rpc interceptor for update_corpus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_corpus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_corpus` interceptor runs
+        before the `post_update_corpus_with_metadata` interceptor.
         """
         return response
+
+    def post_update_corpus_with_metadata(
+        self,
+        response: warehouse.Corpus,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_corpus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_update_corpus_with_metadata`
+        interceptor in new development instead of the `post_update_corpus` interceptor.
+        When both interceptors are used, this `post_update_corpus_with_metadata` interceptor runs after the
+        `post_update_corpus` interceptor. The (possibly modified) response returned by
+        `post_update_corpus` will be passed to
+        `post_update_corpus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_data_schema(
         self,
@@ -874,11 +1388,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.DataSchema:
         """Post-rpc interceptor for update_data_schema
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_data_schema_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_data_schema` interceptor runs
+        before the `post_update_data_schema_with_metadata` interceptor.
         """
         return response
+
+    def post_update_data_schema_with_metadata(
+        self,
+        response: warehouse.DataSchema,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.DataSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_data_schema
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_update_data_schema_with_metadata`
+        interceptor in new development instead of the `post_update_data_schema` interceptor.
+        When both interceptors are used, this `post_update_data_schema_with_metadata` interceptor runs after the
+        `post_update_data_schema` interceptor. The (possibly modified) response returned by
+        `post_update_data_schema` will be passed to
+        `post_update_data_schema_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_search_config(
         self,
@@ -899,11 +1436,34 @@ class WarehouseRestInterceptor:
     ) -> warehouse.SearchConfig:
         """Post-rpc interceptor for update_search_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_search_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Warehouse server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_search_config` interceptor runs
+        before the `post_update_search_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_search_config_with_metadata(
+        self,
+        response: warehouse.SearchConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[warehouse.SearchConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_search_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Warehouse server but before it is returned to user code.
+
+        We recommend only using this `post_update_search_config_with_metadata`
+        interceptor in new development instead of the `post_update_search_config` interceptor.
+        When both interceptors are used, this `post_update_search_config_with_metadata` interceptor runs after the
+        `post_update_search_config` interceptor. The (possibly modified) response returned by
+        `post_update_search_config` will be passed to
+        `post_update_search_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1397,6 +1957,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_clip_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_clip_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1548,6 +2112,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_annotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_annotation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1704,6 +2272,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1855,6 +2427,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_corpus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_corpus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2006,6 +2582,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_data_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_data_schema_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2158,6 +2738,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_search_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_search_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2410,6 +2994,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2894,6 +3482,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_hls_uri(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_hls_uri_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3044,6 +3636,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_annotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_annotation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3191,6 +3787,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3337,6 +3937,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_corpus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_corpus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3484,6 +4088,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_data_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_data_schema_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3631,6 +4239,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_search_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_search_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3794,6 +4406,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_annotations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_annotations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3938,6 +4554,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_assets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4080,6 +4700,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_corpora(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_corpora_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4224,6 +4848,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_data_schemas(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_data_schemas_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4371,6 +4999,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_search_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_search_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4523,6 +5155,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_assets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4675,6 +5311,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_annotation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_annotation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4830,6 +5470,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4984,6 +5628,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_corpus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_corpus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5135,6 +5783,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_data_schema(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_data_schema_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5287,6 +5939,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_search_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_search_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
