@@ -1,0 +1,2 @@
+recursive-include google/cloud/developerconnect *.py
+recursive-include google/cloud/developerconnect_v1 *.py
