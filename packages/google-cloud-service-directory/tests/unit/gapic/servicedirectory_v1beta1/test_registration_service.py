@@ -73,6 +73,13 @@ from google.cloud.servicedirectory_v1beta1.types import registration_service
 from google.cloud.servicedirectory_v1beta1.types import service
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -344,6 +351,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         RegistrationServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = RegistrationServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = RegistrationServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -12090,10 +12140,14 @@ def test_create_namespace_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_create_namespace"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_create_namespace_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_create_namespace"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.CreateNamespaceRequest.pb(
             registration_service.CreateNamespaceRequest()
         )
@@ -12117,6 +12171,7 @@ def test_create_namespace_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_namespace.Namespace()
+        post_with_metadata.return_value = gcs_namespace.Namespace(), metadata
 
         client.create_namespace(
             request,
@@ -12128,6 +12183,7 @@ def test_create_namespace_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_namespaces_rest_bad_request(
@@ -12212,10 +12268,14 @@ def test_list_namespaces_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_list_namespaces"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_list_namespaces_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_list_namespaces"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.ListNamespacesRequest.pb(
             registration_service.ListNamespacesRequest()
         )
@@ -12241,6 +12301,10 @@ def test_list_namespaces_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registration_service.ListNamespacesResponse()
+        post_with_metadata.return_value = (
+            registration_service.ListNamespacesResponse(),
+            metadata,
+        )
 
         client.list_namespaces(
             request,
@@ -12252,6 +12316,7 @@ def test_list_namespaces_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_namespace_rest_bad_request(
@@ -12338,10 +12403,14 @@ def test_get_namespace_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_get_namespace"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_get_namespace_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_get_namespace"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.GetNamespaceRequest.pb(
             registration_service.GetNamespaceRequest()
         )
@@ -12365,6 +12434,7 @@ def test_get_namespace_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = namespace.Namespace()
+        post_with_metadata.return_value = namespace.Namespace(), metadata
 
         client.get_namespace(
             request,
@@ -12376,6 +12446,7 @@ def test_get_namespace_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_namespace_rest_bad_request(
@@ -12540,10 +12611,14 @@ def test_update_namespace_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_update_namespace"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_update_namespace_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_update_namespace"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.UpdateNamespaceRequest.pb(
             registration_service.UpdateNamespaceRequest()
         )
@@ -12567,6 +12642,7 @@ def test_update_namespace_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_namespace.Namespace()
+        post_with_metadata.return_value = gcs_namespace.Namespace(), metadata
 
         client.update_namespace(
             request,
@@ -12578,6 +12654,7 @@ def test_update_namespace_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_namespace_rest_bad_request(
@@ -12859,10 +12936,14 @@ def test_create_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_create_service"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_create_service_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_create_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.CreateServiceRequest.pb(
             registration_service.CreateServiceRequest()
         )
@@ -12886,6 +12967,7 @@ def test_create_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_service.Service()
+        post_with_metadata.return_value = gcs_service.Service(), metadata
 
         client.create_service(
             request,
@@ -12897,6 +12979,7 @@ def test_create_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_services_rest_bad_request(
@@ -12981,10 +13064,14 @@ def test_list_services_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_list_services"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_list_services_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_list_services"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.ListServicesRequest.pb(
             registration_service.ListServicesRequest()
         )
@@ -13010,6 +13097,10 @@ def test_list_services_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registration_service.ListServicesResponse()
+        post_with_metadata.return_value = (
+            registration_service.ListServicesResponse(),
+            metadata,
+        )
 
         client.list_services(
             request,
@@ -13021,6 +13112,7 @@ def test_list_services_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_service_rest_bad_request(
@@ -13111,10 +13203,13 @@ def test_get_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_get_service"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor, "post_get_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_get_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.GetServiceRequest.pb(
             registration_service.GetServiceRequest()
         )
@@ -13138,6 +13233,7 @@ def test_get_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.Service()
+        post_with_metadata.return_value = service.Service(), metadata
 
         client.get_service(
             request,
@@ -13149,6 +13245,7 @@ def test_get_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_service_rest_bad_request(
@@ -13329,10 +13426,14 @@ def test_update_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_update_service"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_update_service_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_update_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.UpdateServiceRequest.pb(
             registration_service.UpdateServiceRequest()
         )
@@ -13356,6 +13457,7 @@ def test_update_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_service.Service()
+        post_with_metadata.return_value = gcs_service.Service(), metadata
 
         client.update_service(
             request,
@@ -13367,6 +13469,7 @@ def test_update_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_service_rest_bad_request(
@@ -13653,10 +13756,14 @@ def test_create_endpoint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_create_endpoint"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_create_endpoint_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_create_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.CreateEndpointRequest.pb(
             registration_service.CreateEndpointRequest()
         )
@@ -13680,6 +13787,7 @@ def test_create_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_endpoint.Endpoint()
+        post_with_metadata.return_value = gcs_endpoint.Endpoint(), metadata
 
         client.create_endpoint(
             request,
@@ -13691,6 +13799,7 @@ def test_create_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_endpoints_rest_bad_request(
@@ -13779,10 +13888,14 @@ def test_list_endpoints_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_list_endpoints"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_list_endpoints_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_list_endpoints"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.ListEndpointsRequest.pb(
             registration_service.ListEndpointsRequest()
         )
@@ -13808,6 +13921,10 @@ def test_list_endpoints_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = registration_service.ListEndpointsResponse()
+        post_with_metadata.return_value = (
+            registration_service.ListEndpointsResponse(),
+            metadata,
+        )
 
         client.list_endpoints(
             request,
@@ -13819,6 +13936,7 @@ def test_list_endpoints_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_endpoint_rest_bad_request(
@@ -13915,10 +14033,13 @@ def test_get_endpoint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_get_endpoint"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor, "post_get_endpoint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_get_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.GetEndpointRequest.pb(
             registration_service.GetEndpointRequest()
         )
@@ -13942,6 +14063,7 @@ def test_get_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = endpoint.Endpoint()
+        post_with_metadata.return_value = endpoint.Endpoint(), metadata
 
         client.get_endpoint(
             request,
@@ -13953,6 +14075,7 @@ def test_get_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_endpoint_rest_bad_request(
@@ -14130,10 +14253,14 @@ def test_update_endpoint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_update_endpoint"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_update_endpoint_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_update_endpoint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = registration_service.UpdateEndpointRequest.pb(
             registration_service.UpdateEndpointRequest()
         )
@@ -14157,6 +14284,7 @@ def test_update_endpoint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_endpoint.Endpoint()
+        post_with_metadata.return_value = gcs_endpoint.Endpoint(), metadata
 
         client.update_endpoint(
             request,
@@ -14168,6 +14296,7 @@ def test_update_endpoint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_endpoint_rest_bad_request(
@@ -14364,10 +14493,14 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_get_iam_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -14389,6 +14522,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -14400,6 +14534,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -14483,10 +14618,14 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_set_iam_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -14508,6 +14647,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -14519,6 +14659,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -14600,10 +14741,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.RegistrationServiceRestInterceptor,
+        "post_test_iam_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.RegistrationServiceRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -14627,6 +14772,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -14638,6 +14787,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

@@ -155,11 +155,32 @@ class CaseServiceRestInterceptor:
     def post_close_case(self, response: case.Case) -> case.Case:
         """Post-rpc interceptor for close_case
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_close_case_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_close_case` interceptor runs
+        before the `post_close_case_with_metadata` interceptor.
         """
         return response
+
+    def post_close_case_with_metadata(
+        self, response: case.Case, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case.Case, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for close_case
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_close_case_with_metadata`
+        interceptor in new development instead of the `post_close_case` interceptor.
+        When both interceptors are used, this `post_close_case_with_metadata` interceptor runs after the
+        `post_close_case` interceptor. The (possibly modified) response returned by
+        `post_close_case` will be passed to
+        `post_close_case_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_case(
         self,
@@ -176,11 +197,32 @@ class CaseServiceRestInterceptor:
     def post_create_case(self, response: gcs_case.Case) -> gcs_case.Case:
         """Post-rpc interceptor for create_case
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_case_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_case` interceptor runs
+        before the `post_create_case_with_metadata` interceptor.
         """
         return response
+
+    def post_create_case_with_metadata(
+        self, response: gcs_case.Case, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcs_case.Case, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_case
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_create_case_with_metadata`
+        interceptor in new development instead of the `post_create_case` interceptor.
+        When both interceptors are used, this `post_create_case_with_metadata` interceptor runs after the
+        `post_create_case` interceptor. The (possibly modified) response returned by
+        `post_create_case` will be passed to
+        `post_create_case_with_metadata`.
+        """
+        return response, metadata
 
     def pre_escalate_case(
         self,
@@ -199,11 +241,32 @@ class CaseServiceRestInterceptor:
     def post_escalate_case(self, response: case.Case) -> case.Case:
         """Post-rpc interceptor for escalate_case
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_escalate_case_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_escalate_case` interceptor runs
+        before the `post_escalate_case_with_metadata` interceptor.
         """
         return response
+
+    def post_escalate_case_with_metadata(
+        self, response: case.Case, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case.Case, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for escalate_case
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_escalate_case_with_metadata`
+        interceptor in new development instead of the `post_escalate_case` interceptor.
+        When both interceptors are used, this `post_escalate_case_with_metadata` interceptor runs after the
+        `post_escalate_case` interceptor. The (possibly modified) response returned by
+        `post_escalate_case` will be passed to
+        `post_escalate_case_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_case(
         self,
@@ -220,11 +283,32 @@ class CaseServiceRestInterceptor:
     def post_get_case(self, response: case.Case) -> case.Case:
         """Post-rpc interceptor for get_case
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_case_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_case` interceptor runs
+        before the `post_get_case_with_metadata` interceptor.
         """
         return response
+
+    def post_get_case_with_metadata(
+        self, response: case.Case, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case.Case, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_case
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_get_case_with_metadata`
+        interceptor in new development instead of the `post_get_case` interceptor.
+        When both interceptors are used, this `post_get_case_with_metadata` interceptor runs after the
+        `post_get_case` interceptor. The (possibly modified) response returned by
+        `post_get_case` will be passed to
+        `post_get_case_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_cases(
         self,
@@ -243,11 +327,34 @@ class CaseServiceRestInterceptor:
     ) -> case_service.ListCasesResponse:
         """Post-rpc interceptor for list_cases
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_cases_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_cases` interceptor runs
+        before the `post_list_cases_with_metadata` interceptor.
         """
         return response
+
+    def post_list_cases_with_metadata(
+        self,
+        response: case_service.ListCasesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[case_service.ListCasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_cases
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_list_cases_with_metadata`
+        interceptor in new development instead of the `post_list_cases` interceptor.
+        When both interceptors are used, this `post_list_cases_with_metadata` interceptor runs after the
+        `post_list_cases` interceptor. The (possibly modified) response returned by
+        `post_list_cases` will be passed to
+        `post_list_cases_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_case_classifications(
         self,
@@ -269,11 +376,37 @@ class CaseServiceRestInterceptor:
     ) -> case_service.SearchCaseClassificationsResponse:
         """Post-rpc interceptor for search_case_classifications
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_case_classifications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_case_classifications` interceptor runs
+        before the `post_search_case_classifications_with_metadata` interceptor.
         """
         return response
+
+    def post_search_case_classifications_with_metadata(
+        self,
+        response: case_service.SearchCaseClassificationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        case_service.SearchCaseClassificationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_case_classifications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_search_case_classifications_with_metadata`
+        interceptor in new development instead of the `post_search_case_classifications` interceptor.
+        When both interceptors are used, this `post_search_case_classifications_with_metadata` interceptor runs after the
+        `post_search_case_classifications` interceptor. The (possibly modified) response returned by
+        `post_search_case_classifications` will be passed to
+        `post_search_case_classifications_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_cases(
         self,
@@ -294,11 +427,36 @@ class CaseServiceRestInterceptor:
     ) -> case_service.SearchCasesResponse:
         """Post-rpc interceptor for search_cases
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_cases_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_cases` interceptor runs
+        before the `post_search_cases_with_metadata` interceptor.
         """
         return response
+
+    def post_search_cases_with_metadata(
+        self,
+        response: case_service.SearchCasesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        case_service.SearchCasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_cases
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_search_cases_with_metadata`
+        interceptor in new development instead of the `post_search_cases` interceptor.
+        When both interceptors are used, this `post_search_cases_with_metadata` interceptor runs after the
+        `post_search_cases` interceptor. The (possibly modified) response returned by
+        `post_search_cases` will be passed to
+        `post_search_cases_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_case(
         self,
@@ -315,11 +473,32 @@ class CaseServiceRestInterceptor:
     def post_update_case(self, response: gcs_case.Case) -> gcs_case.Case:
         """Post-rpc interceptor for update_case
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_case_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CaseService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_case` interceptor runs
+        before the `post_update_case_with_metadata` interceptor.
         """
         return response
+
+    def post_update_case_with_metadata(
+        self, response: gcs_case.Case, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcs_case.Case, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_case
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseService server but before it is returned to user code.
+
+        We recommend only using this `post_update_case_with_metadata`
+        interceptor in new development instead of the `post_update_case` interceptor.
+        When both interceptors are used, this `post_update_case_with_metadata` interceptor runs after the
+        `post_update_case` interceptor. The (possibly modified) response returned by
+        `post_update_case` will be passed to
+        `post_update_case_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -534,6 +713,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_close_case(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_close_case_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -685,6 +868,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_case(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_case_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -838,6 +1025,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_escalate_case(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_escalate_case_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -981,6 +1172,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_case(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_case_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1126,6 +1321,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_cases(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_cases_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1275,6 +1474,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_case_classifications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_case_classifications_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1424,6 +1627,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_cases(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_cases_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1577,6 +1784,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_case(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_case_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

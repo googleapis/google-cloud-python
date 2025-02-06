@@ -62,6 +62,13 @@ from google.cloud.speech_v1.services.adaptation import (
 )
 from google.cloud.speech_v1.types import cloud_speech_adaptation, resource
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -295,6 +302,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AdaptationClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AdaptationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AdaptationClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7549,10 +7599,13 @@ def test_create_phrase_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_create_phrase_set"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_create_phrase_set_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_create_phrase_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.CreatePhraseSetRequest.pb(
             cloud_speech_adaptation.CreatePhraseSetRequest()
         )
@@ -7576,6 +7629,7 @@ def test_create_phrase_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.PhraseSet()
+        post_with_metadata.return_value = resource.PhraseSet(), metadata
 
         client.create_phrase_set(
             request,
@@ -7587,6 +7641,7 @@ def test_create_phrase_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_phrase_set_rest_bad_request(
@@ -7673,10 +7728,13 @@ def test_get_phrase_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_get_phrase_set"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_get_phrase_set_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_get_phrase_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.GetPhraseSetRequest.pb(
             cloud_speech_adaptation.GetPhraseSetRequest()
         )
@@ -7700,6 +7758,7 @@ def test_get_phrase_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.PhraseSet()
+        post_with_metadata.return_value = resource.PhraseSet(), metadata
 
         client.get_phrase_set(
             request,
@@ -7711,6 +7770,7 @@ def test_get_phrase_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_phrase_set_rest_bad_request(
@@ -7795,10 +7855,13 @@ def test_list_phrase_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_list_phrase_set"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_list_phrase_set_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_list_phrase_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.ListPhraseSetRequest.pb(
             cloud_speech_adaptation.ListPhraseSetRequest()
         )
@@ -7824,6 +7887,10 @@ def test_list_phrase_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_speech_adaptation.ListPhraseSetResponse()
+        post_with_metadata.return_value = (
+            cloud_speech_adaptation.ListPhraseSetResponse(),
+            metadata,
+        )
 
         client.list_phrase_set(
             request,
@@ -7835,6 +7902,7 @@ def test_list_phrase_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_phrase_set_rest_bad_request(
@@ -7999,10 +8067,13 @@ def test_update_phrase_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_update_phrase_set"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_update_phrase_set_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_update_phrase_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.UpdatePhraseSetRequest.pb(
             cloud_speech_adaptation.UpdatePhraseSetRequest()
         )
@@ -8026,6 +8097,7 @@ def test_update_phrase_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.PhraseSet()
+        post_with_metadata.return_value = resource.PhraseSet(), metadata
 
         client.update_phrase_set(
             request,
@@ -8037,6 +8109,7 @@ def test_update_phrase_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_phrase_set_rest_bad_request(
@@ -8232,10 +8305,13 @@ def test_create_custom_class_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_create_custom_class"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_create_custom_class_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_create_custom_class"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.CreateCustomClassRequest.pb(
             cloud_speech_adaptation.CreateCustomClassRequest()
         )
@@ -8259,6 +8335,7 @@ def test_create_custom_class_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.CustomClass()
+        post_with_metadata.return_value = resource.CustomClass(), metadata
 
         client.create_custom_class(
             request,
@@ -8270,6 +8347,7 @@ def test_create_custom_class_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_custom_class_rest_bad_request(
@@ -8356,10 +8434,13 @@ def test_get_custom_class_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_get_custom_class"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_get_custom_class_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_get_custom_class"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.GetCustomClassRequest.pb(
             cloud_speech_adaptation.GetCustomClassRequest()
         )
@@ -8383,6 +8464,7 @@ def test_get_custom_class_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.CustomClass()
+        post_with_metadata.return_value = resource.CustomClass(), metadata
 
         client.get_custom_class(
             request,
@@ -8394,6 +8476,7 @@ def test_get_custom_class_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_custom_classes_rest_bad_request(
@@ -8480,10 +8563,13 @@ def test_list_custom_classes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_list_custom_classes"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_list_custom_classes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_list_custom_classes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.ListCustomClassesRequest.pb(
             cloud_speech_adaptation.ListCustomClassesRequest()
         )
@@ -8509,6 +8595,10 @@ def test_list_custom_classes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_speech_adaptation.ListCustomClassesResponse()
+        post_with_metadata.return_value = (
+            cloud_speech_adaptation.ListCustomClassesResponse(),
+            metadata,
+        )
 
         client.list_custom_classes(
             request,
@@ -8520,6 +8610,7 @@ def test_list_custom_classes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_custom_class_rest_bad_request(
@@ -8688,10 +8779,13 @@ def test_update_custom_class_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AdaptationRestInterceptor, "post_update_custom_class"
     ) as post, mock.patch.object(
+        transports.AdaptationRestInterceptor, "post_update_custom_class_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AdaptationRestInterceptor, "pre_update_custom_class"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_speech_adaptation.UpdateCustomClassRequest.pb(
             cloud_speech_adaptation.UpdateCustomClassRequest()
         )
@@ -8715,6 +8809,7 @@ def test_update_custom_class_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource.CustomClass()
+        post_with_metadata.return_value = resource.CustomClass(), metadata
 
         client.update_custom_class(
             request,
@@ -8726,6 +8821,7 @@ def test_update_custom_class_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_custom_class_rest_bad_request(

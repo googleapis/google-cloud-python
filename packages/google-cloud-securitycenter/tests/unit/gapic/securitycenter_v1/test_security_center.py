@@ -159,6 +159,13 @@ from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -415,6 +422,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         SecurityCenterClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = SecurityCenterClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = SecurityCenterClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -44260,10 +44310,14 @@ def test_bulk_mute_findings_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_bulk_mute_findings"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_bulk_mute_findings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_bulk_mute_findings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.BulkMuteFindingsRequest.pb(
             securitycenter_service.BulkMuteFindingsRequest()
         )
@@ -44287,6 +44341,7 @@ def test_bulk_mute_findings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.bulk_mute_findings(
             request,
@@ -44298,6 +44353,7 @@ def test_bulk_mute_findings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_security_health_analytics_custom_module_rest_bad_request(
@@ -44505,10 +44561,14 @@ def test_create_security_health_analytics_custom_module_rest_interceptors(
         "post_create_security_health_analytics_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_create_security_health_analytics_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_create_security_health_analytics_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.pb(
             securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest()
         )
@@ -44538,6 +44598,10 @@ def test_create_security_health_analytics_custom_module_rest_interceptors(
         post.return_value = (
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         )
+        post_with_metadata.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+            metadata,
+        )
 
         client.create_security_health_analytics_custom_module(
             request,
@@ -44549,6 +44613,7 @@ def test_create_security_health_analytics_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_source_rest_bad_request(
@@ -44712,10 +44777,13 @@ def test_create_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_create_source"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_create_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_create_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.CreateSourceRequest.pb(
             securitycenter_service.CreateSourceRequest()
         )
@@ -44739,6 +44807,7 @@ def test_create_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_source.Source()
+        post_with_metadata.return_value = gcs_source.Source(), metadata
 
         client.create_source(
             request,
@@ -44750,6 +44819,7 @@ def test_create_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_finding_rest_bad_request(
@@ -45249,10 +45319,13 @@ def test_create_finding_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_create_finding"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_create_finding_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_create_finding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.CreateFindingRequest.pb(
             securitycenter_service.CreateFindingRequest()
         )
@@ -45276,6 +45349,7 @@ def test_create_finding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_finding.Finding()
+        post_with_metadata.return_value = gcs_finding.Finding(), metadata
 
         client.create_finding(
             request,
@@ -45287,6 +45361,7 @@ def test_create_finding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_mute_config_rest_bad_request(
@@ -45461,10 +45536,14 @@ def test_create_mute_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_create_mute_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_create_mute_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_create_mute_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.CreateMuteConfigRequest.pb(
             securitycenter_service.CreateMuteConfigRequest()
         )
@@ -45488,6 +45567,7 @@ def test_create_mute_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_mute_config.MuteConfig()
+        post_with_metadata.return_value = gcs_mute_config.MuteConfig(), metadata
 
         client.create_mute_config(
             request,
@@ -45499,6 +45579,7 @@ def test_create_mute_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_notification_config_rest_bad_request(
@@ -45665,10 +45746,14 @@ def test_create_notification_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_create_notification_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_create_notification_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_create_notification_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.CreateNotificationConfigRequest.pb(
             securitycenter_service.CreateNotificationConfigRequest()
         )
@@ -45694,6 +45779,10 @@ def test_create_notification_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_notification_config.NotificationConfig()
+        post_with_metadata.return_value = (
+            gcs_notification_config.NotificationConfig(),
+            metadata,
+        )
 
         client.create_notification_config(
             request,
@@ -45705,6 +45794,7 @@ def test_create_notification_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_mute_config_rest_bad_request(
@@ -46127,10 +46217,13 @@ def test_get_simulation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_simulation"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_get_simulation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_simulation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetSimulationRequest.pb(
             securitycenter_service.GetSimulationRequest()
         )
@@ -46154,6 +46247,7 @@ def test_get_simulation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = simulation.Simulation()
+        post_with_metadata.return_value = simulation.Simulation(), metadata
 
         client.get_simulation(
             request,
@@ -46165,6 +46259,7 @@ def test_get_simulation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_valued_resource_rest_bad_request(
@@ -46266,10 +46361,14 @@ def test_get_valued_resource_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_valued_resource"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_valued_resource_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_valued_resource"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetValuedResourceRequest.pb(
             securitycenter_service.GetValuedResourceRequest()
         )
@@ -46295,6 +46394,7 @@ def test_get_valued_resource_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = valued_resource.ValuedResource()
+        post_with_metadata.return_value = valued_resource.ValuedResource(), metadata
 
         client.get_valued_resource(
             request,
@@ -46306,6 +46406,7 @@ def test_get_valued_resource_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_big_query_export_rest_bad_request(
@@ -46400,10 +46501,14 @@ def test_get_big_query_export_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_big_query_export"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_big_query_export_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_big_query_export"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetBigQueryExportRequest.pb(
             securitycenter_service.GetBigQueryExportRequest()
         )
@@ -46429,6 +46534,7 @@ def test_get_big_query_export_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = bigquery_export.BigQueryExport()
+        post_with_metadata.return_value = bigquery_export.BigQueryExport(), metadata
 
         client.get_big_query_export(
             request,
@@ -46440,6 +46546,7 @@ def test_get_big_query_export_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -46523,10 +46630,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.GetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -46548,6 +46658,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -46559,6 +46670,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_mute_config_rest_bad_request(
@@ -46653,10 +46765,13 @@ def test_get_mute_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_mute_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_get_mute_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_mute_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetMuteConfigRequest.pb(
             securitycenter_service.GetMuteConfigRequest()
         )
@@ -46680,6 +46795,7 @@ def test_get_mute_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = mute_config.MuteConfig()
+        post_with_metadata.return_value = mute_config.MuteConfig(), metadata
 
         client.get_mute_config(
             request,
@@ -46691,6 +46807,7 @@ def test_get_mute_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_notification_config_rest_bad_request(
@@ -46781,10 +46898,14 @@ def test_get_notification_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_notification_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_notification_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_notification_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetNotificationConfigRequest.pb(
             securitycenter_service.GetNotificationConfigRequest()
         )
@@ -46810,6 +46931,10 @@ def test_get_notification_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = notification_config.NotificationConfig()
+        post_with_metadata.return_value = (
+            notification_config.NotificationConfig(),
+            metadata,
+        )
 
         client.get_notification_config(
             request,
@@ -46821,6 +46946,7 @@ def test_get_notification_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_organization_settings_rest_bad_request(
@@ -46907,10 +47033,14 @@ def test_get_organization_settings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_organization_settings"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_organization_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_organization_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetOrganizationSettingsRequest.pb(
             securitycenter_service.GetOrganizationSettingsRequest()
         )
@@ -46936,6 +47066,10 @@ def test_get_organization_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = organization_settings.OrganizationSettings()
+        post_with_metadata.return_value = (
+            organization_settings.OrganizationSettings(),
+            metadata,
+        )
 
         client.get_organization_settings(
             request,
@@ -46947,6 +47081,7 @@ def test_get_organization_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_effective_security_health_analytics_custom_module_rest_bad_request(
@@ -47053,10 +47188,14 @@ def test_get_effective_security_health_analytics_custom_module_rest_interceptors
         "post_get_effective_security_health_analytics_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_get_effective_security_health_analytics_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_get_effective_security_health_analytics_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.pb(
             securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
         )
@@ -47086,6 +47225,10 @@ def test_get_effective_security_health_analytics_custom_module_rest_interceptors
         post.return_value = (
             effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
         )
+        post_with_metadata.return_value = (
+            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
+            metadata,
+        )
 
         client.get_effective_security_health_analytics_custom_module(
             request,
@@ -47097,6 +47240,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_interceptors
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_security_health_analytics_custom_module_rest_bad_request(
@@ -47205,10 +47349,14 @@ def test_get_security_health_analytics_custom_module_rest_interceptors(
         "post_get_security_health_analytics_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_get_security_health_analytics_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_get_security_health_analytics_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest.pb(
                 securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest()
@@ -47238,6 +47386,10 @@ def test_get_security_health_analytics_custom_module_rest_interceptors(
         post.return_value = (
             security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         )
+        post_with_metadata.return_value = (
+            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+            metadata,
+        )
 
         client.get_security_health_analytics_custom_module(
             request,
@@ -47249,6 +47401,7 @@ def test_get_security_health_analytics_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_source_rest_bad_request(
@@ -47339,10 +47492,13 @@ def test_get_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_source"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_get_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetSourceRequest.pb(
             securitycenter_service.GetSourceRequest()
         )
@@ -47366,6 +47522,7 @@ def test_get_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = source.Source()
+        post_with_metadata.return_value = source.Source(), metadata
 
         client.get_source(
             request,
@@ -47377,6 +47534,7 @@ def test_get_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_group_assets_rest_bad_request(
@@ -47463,10 +47621,13 @@ def test_group_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_group_assets"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_group_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_group_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GroupAssetsRequest.pb(
             securitycenter_service.GroupAssetsRequest()
         )
@@ -47492,6 +47653,10 @@ def test_group_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.GroupAssetsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.GroupAssetsResponse(),
+            metadata,
+        )
 
         client.group_assets(
             request,
@@ -47503,6 +47668,7 @@ def test_group_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_group_findings_rest_bad_request(
@@ -47589,10 +47755,13 @@ def test_group_findings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_group_findings"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_group_findings_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_group_findings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GroupFindingsRequest.pb(
             securitycenter_service.GroupFindingsRequest()
         )
@@ -47618,6 +47787,10 @@ def test_group_findings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.GroupFindingsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.GroupFindingsResponse(),
+            metadata,
+        )
 
         client.group_findings(
             request,
@@ -47629,6 +47802,7 @@ def test_group_findings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_assets_rest_bad_request(
@@ -47715,10 +47889,13 @@ def test_list_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_assets"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListAssetsRequest.pb(
             securitycenter_service.ListAssetsRequest()
         )
@@ -47744,6 +47921,10 @@ def test_list_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListAssetsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListAssetsResponse(),
+            metadata,
+        )
 
         client.list_assets(
             request,
@@ -47755,6 +47936,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_descendant_security_health_analytics_custom_modules_rest_bad_request(
@@ -47851,10 +48033,14 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_intercept
         "post_list_descendant_security_health_analytics_custom_modules",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_list_descendant_security_health_analytics_custom_modules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_list_descendant_security_health_analytics_custom_modules",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.pb(
             securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
         )
@@ -47884,6 +48070,10 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_intercept
         post.return_value = (
             securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(),
+            metadata,
+        )
 
         client.list_descendant_security_health_analytics_custom_modules(
             request,
@@ -47895,6 +48085,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_intercept
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_findings_rest_bad_request(
@@ -47981,10 +48172,13 @@ def test_list_findings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_findings"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_findings_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_findings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListFindingsRequest.pb(
             securitycenter_service.ListFindingsRequest()
         )
@@ -48010,6 +48204,10 @@ def test_list_findings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListFindingsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListFindingsResponse(),
+            metadata,
+        )
 
         client.list_findings(
             request,
@@ -48021,6 +48219,7 @@ def test_list_findings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_mute_configs_rest_bad_request(
@@ -48105,10 +48304,13 @@ def test_list_mute_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_mute_configs"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_mute_configs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_mute_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListMuteConfigsRequest.pb(
             securitycenter_service.ListMuteConfigsRequest()
         )
@@ -48134,6 +48336,10 @@ def test_list_mute_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListMuteConfigsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListMuteConfigsResponse(),
+            metadata,
+        )
 
         client.list_mute_configs(
             request,
@@ -48145,6 +48351,7 @@ def test_list_mute_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_notification_configs_rest_bad_request(
@@ -48231,10 +48438,14 @@ def test_list_notification_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_notification_configs"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_notification_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_notification_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListNotificationConfigsRequest.pb(
             securitycenter_service.ListNotificationConfigsRequest()
         )
@@ -48260,6 +48471,10 @@ def test_list_notification_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListNotificationConfigsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListNotificationConfigsResponse(),
+            metadata,
+        )
 
         client.list_notification_configs(
             request,
@@ -48271,6 +48486,7 @@ def test_list_notification_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_effective_security_health_analytics_custom_modules_rest_bad_request(
@@ -48367,10 +48583,14 @@ def test_list_effective_security_health_analytics_custom_modules_rest_intercepto
         "post_list_effective_security_health_analytics_custom_modules",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_list_effective_security_health_analytics_custom_modules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_list_effective_security_health_analytics_custom_modules",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.pb(
             securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
         )
@@ -48400,6 +48620,10 @@ def test_list_effective_security_health_analytics_custom_modules_rest_intercepto
         post.return_value = (
             securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(),
+            metadata,
+        )
 
         client.list_effective_security_health_analytics_custom_modules(
             request,
@@ -48411,6 +48635,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_intercepto
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_security_health_analytics_custom_modules_rest_bad_request(
@@ -48505,10 +48730,14 @@ def test_list_security_health_analytics_custom_modules_rest_interceptors(
         "post_list_security_health_analytics_custom_modules",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_list_security_health_analytics_custom_modules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_list_security_health_analytics_custom_modules",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest.pb(
                 securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest()
@@ -48540,6 +48769,10 @@ def test_list_security_health_analytics_custom_modules_rest_interceptors(
         post.return_value = (
             securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse(),
+            metadata,
+        )
 
         client.list_security_health_analytics_custom_modules(
             request,
@@ -48551,6 +48784,7 @@ def test_list_security_health_analytics_custom_modules_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_sources_rest_bad_request(
@@ -48635,10 +48869,13 @@ def test_list_sources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_sources"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_sources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_sources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListSourcesRequest.pb(
             securitycenter_service.ListSourcesRequest()
         )
@@ -48664,6 +48901,10 @@ def test_list_sources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListSourcesResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListSourcesResponse(),
+            metadata,
+        )
 
         client.list_sources(
             request,
@@ -48675,6 +48916,7 @@ def test_list_sources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_run_asset_discovery_rest_bad_request(
@@ -48755,10 +48997,14 @@ def test_run_asset_discovery_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_run_asset_discovery"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_run_asset_discovery_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_run_asset_discovery"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.RunAssetDiscoveryRequest.pb(
             securitycenter_service.RunAssetDiscoveryRequest()
         )
@@ -48782,6 +49028,7 @@ def test_run_asset_discovery_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.run_asset_discovery(
             request,
@@ -48793,6 +49040,7 @@ def test_run_asset_discovery_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_finding_state_rest_bad_request(
@@ -48905,10 +49153,13 @@ def test_set_finding_state_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_set_finding_state"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_set_finding_state_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_set_finding_state"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.SetFindingStateRequest.pb(
             securitycenter_service.SetFindingStateRequest()
         )
@@ -48932,6 +49183,7 @@ def test_set_finding_state_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = finding.Finding()
+        post_with_metadata.return_value = finding.Finding(), metadata
 
         client.set_finding_state(
             request,
@@ -48943,6 +49195,7 @@ def test_set_finding_state_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_mute_rest_bad_request(request_type=securitycenter_service.SetMuteRequest):
@@ -49053,10 +49306,13 @@ def test_set_mute_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_set_mute"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_set_mute_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_set_mute"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.SetMuteRequest.pb(
             securitycenter_service.SetMuteRequest()
         )
@@ -49080,6 +49336,7 @@ def test_set_mute_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = finding.Finding()
+        post_with_metadata.return_value = finding.Finding(), metadata
 
         client.set_mute(
             request,
@@ -49091,6 +49348,7 @@ def test_set_mute_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -49174,10 +49432,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.SetIamPolicyRequest()
         transcode.return_value = {
             "method": "post",
@@ -49199,6 +49460,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = policy_pb2.Policy()
+        post_with_metadata.return_value = policy_pb2.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -49210,6 +49472,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -49291,10 +49554,14 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_test_iam_permissions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = iam_policy_pb2.TestIamPermissionsRequest()
         transcode.return_value = {
             "method": "post",
@@ -49318,6 +49585,10 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        post_with_metadata.return_value = (
+            iam_policy_pb2.TestIamPermissionsResponse(),
+            metadata,
+        )
 
         client.test_iam_permissions(
             request,
@@ -49329,6 +49600,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_simulate_security_health_analytics_custom_module_rest_bad_request(
@@ -49423,10 +49695,14 @@ def test_simulate_security_health_analytics_custom_module_rest_interceptors(
         "post_simulate_security_health_analytics_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_simulate_security_health_analytics_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_simulate_security_health_analytics_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.pb(
             securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest()
         )
@@ -49456,6 +49732,10 @@ def test_simulate_security_health_analytics_custom_module_rest_interceptors(
         post.return_value = (
             securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse(),
+            metadata,
+        )
 
         client.simulate_security_health_analytics_custom_module(
             request,
@@ -49467,6 +49747,7 @@ def test_simulate_security_health_analytics_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_external_system_rest_bad_request(
@@ -49658,10 +49939,14 @@ def test_update_external_system_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_external_system"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_external_system_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_external_system"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateExternalSystemRequest.pb(
             securitycenter_service.UpdateExternalSystemRequest()
         )
@@ -49687,6 +49972,7 @@ def test_update_external_system_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_external_system.ExternalSystem()
+        post_with_metadata.return_value = gcs_external_system.ExternalSystem(), metadata
 
         client.update_external_system(
             request,
@@ -49698,6 +49984,7 @@ def test_update_external_system_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_finding_rest_bad_request(
@@ -50201,10 +50488,13 @@ def test_update_finding_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_finding"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_update_finding_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_finding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateFindingRequest.pb(
             securitycenter_service.UpdateFindingRequest()
         )
@@ -50228,6 +50518,7 @@ def test_update_finding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_finding.Finding()
+        post_with_metadata.return_value = gcs_finding.Finding(), metadata
 
         client.update_finding(
             request,
@@ -50239,6 +50530,7 @@ def test_update_finding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_mute_config_rest_bad_request(
@@ -50417,10 +50709,14 @@ def test_update_mute_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_mute_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_mute_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_mute_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateMuteConfigRequest.pb(
             securitycenter_service.UpdateMuteConfigRequest()
         )
@@ -50444,6 +50740,7 @@ def test_update_mute_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_mute_config.MuteConfig()
+        post_with_metadata.return_value = gcs_mute_config.MuteConfig(), metadata
 
         client.update_mute_config(
             request,
@@ -50455,6 +50752,7 @@ def test_update_mute_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_notification_config_rest_bad_request(
@@ -50629,10 +50927,14 @@ def test_update_notification_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_notification_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_notification_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_notification_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateNotificationConfigRequest.pb(
             securitycenter_service.UpdateNotificationConfigRequest()
         )
@@ -50658,6 +50960,10 @@ def test_update_notification_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_notification_config.NotificationConfig()
+        post_with_metadata.return_value = (
+            gcs_notification_config.NotificationConfig(),
+            metadata,
+        )
 
         client.update_notification_config(
             request,
@@ -50669,6 +50975,7 @@ def test_update_notification_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_organization_settings_rest_bad_request(
@@ -50839,10 +51146,14 @@ def test_update_organization_settings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_organization_settings"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_organization_settings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_organization_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateOrganizationSettingsRequest.pb(
             securitycenter_service.UpdateOrganizationSettingsRequest()
         )
@@ -50868,6 +51179,10 @@ def test_update_organization_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_organization_settings.OrganizationSettings()
+        post_with_metadata.return_value = (
+            gcs_organization_settings.OrganizationSettings(),
+            metadata,
+        )
 
         client.update_organization_settings(
             request,
@@ -50879,6 +51194,7 @@ def test_update_organization_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_security_health_analytics_custom_module_rest_bad_request(
@@ -51094,10 +51410,14 @@ def test_update_security_health_analytics_custom_module_rest_interceptors(
         "post_update_security_health_analytics_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_update_security_health_analytics_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_update_security_health_analytics_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.pb(
             securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest()
         )
@@ -51127,6 +51447,10 @@ def test_update_security_health_analytics_custom_module_rest_interceptors(
         post.return_value = (
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         )
+        post_with_metadata.return_value = (
+            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
+            metadata,
+        )
 
         client.update_security_health_analytics_custom_module(
             request,
@@ -51138,6 +51462,7 @@ def test_update_security_health_analytics_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_source_rest_bad_request(
@@ -51301,10 +51626,13 @@ def test_update_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_source"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_update_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateSourceRequest.pb(
             securitycenter_service.UpdateSourceRequest()
         )
@@ -51328,6 +51656,7 @@ def test_update_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_source.Source()
+        post_with_metadata.return_value = gcs_source.Source(), metadata
 
         client.update_source(
             request,
@@ -51339,6 +51668,7 @@ def test_update_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_security_marks_rest_bad_request(
@@ -51503,10 +51833,14 @@ def test_update_security_marks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_security_marks"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_security_marks_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_security_marks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateSecurityMarksRequest.pb(
             securitycenter_service.UpdateSecurityMarksRequest()
         )
@@ -51532,6 +51866,7 @@ def test_update_security_marks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_security_marks.SecurityMarks()
+        post_with_metadata.return_value = gcs_security_marks.SecurityMarks(), metadata
 
         client.update_security_marks(
             request,
@@ -51543,6 +51878,7 @@ def test_update_security_marks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_big_query_export_rest_bad_request(
@@ -51716,10 +52052,14 @@ def test_create_big_query_export_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_create_big_query_export"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_create_big_query_export_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_create_big_query_export"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.CreateBigQueryExportRequest.pb(
             securitycenter_service.CreateBigQueryExportRequest()
         )
@@ -51745,6 +52085,7 @@ def test_create_big_query_export_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = bigquery_export.BigQueryExport()
+        post_with_metadata.return_value = bigquery_export.BigQueryExport(), metadata
 
         client.create_big_query_export(
             request,
@@ -51756,6 +52097,7 @@ def test_create_big_query_export_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_big_query_export_rest_bad_request(
@@ -52042,10 +52384,14 @@ def test_update_big_query_export_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_big_query_export"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_big_query_export_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_big_query_export"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateBigQueryExportRequest.pb(
             securitycenter_service.UpdateBigQueryExportRequest()
         )
@@ -52071,6 +52417,7 @@ def test_update_big_query_export_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = bigquery_export.BigQueryExport()
+        post_with_metadata.return_value = bigquery_export.BigQueryExport(), metadata
 
         client.update_big_query_export(
             request,
@@ -52082,6 +52429,7 @@ def test_update_big_query_export_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_big_query_exports_rest_bad_request(
@@ -52168,10 +52516,14 @@ def test_list_big_query_exports_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_big_query_exports"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_big_query_exports_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_big_query_exports"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListBigQueryExportsRequest.pb(
             securitycenter_service.ListBigQueryExportsRequest()
         )
@@ -52197,6 +52549,10 @@ def test_list_big_query_exports_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListBigQueryExportsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListBigQueryExportsResponse(),
+            metadata,
+        )
 
         client.list_big_query_exports(
             request,
@@ -52208,6 +52564,7 @@ def test_list_big_query_exports_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_event_threat_detection_custom_module_rest_bad_request(
@@ -52404,10 +52761,14 @@ def test_create_event_threat_detection_custom_module_rest_interceptors(
         "post_create_event_threat_detection_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_create_event_threat_detection_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_create_event_threat_detection_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.pb(
                 securitycenter_service.CreateEventThreatDetectionCustomModuleRequest()
@@ -52437,6 +52798,10 @@ def test_create_event_threat_detection_custom_module_rest_interceptors(
         post.return_value = (
             gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
         )
+        post_with_metadata.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+            metadata,
+        )
 
         client.create_event_threat_detection_custom_module(
             request,
@@ -52448,6 +52813,7 @@ def test_create_event_threat_detection_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_event_threat_detection_custom_module_rest_bad_request(
@@ -52677,10 +53043,14 @@ def test_get_event_threat_detection_custom_module_rest_interceptors(null_interce
         "post_get_event_threat_detection_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_get_event_threat_detection_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_get_event_threat_detection_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             securitycenter_service.GetEventThreatDetectionCustomModuleRequest.pb(
                 securitycenter_service.GetEventThreatDetectionCustomModuleRequest()
@@ -52710,6 +53080,10 @@ def test_get_event_threat_detection_custom_module_rest_interceptors(null_interce
         post.return_value = (
             event_threat_detection_custom_module.EventThreatDetectionCustomModule()
         )
+        post_with_metadata.return_value = (
+            event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+            metadata,
+        )
 
         client.get_event_threat_detection_custom_module(
             request,
@@ -52721,6 +53095,7 @@ def test_get_event_threat_detection_custom_module_rest_interceptors(null_interce
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_descendant_event_threat_detection_custom_modules_rest_bad_request(
@@ -52815,10 +53190,14 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_interceptors
         "post_list_descendant_event_threat_detection_custom_modules",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_list_descendant_event_threat_detection_custom_modules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_list_descendant_event_threat_detection_custom_modules",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest.pb(
             securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
         )
@@ -52848,6 +53227,10 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_interceptors
         post.return_value = (
             securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(),
+            metadata,
+        )
 
         client.list_descendant_event_threat_detection_custom_modules(
             request,
@@ -52859,6 +53242,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_interceptors
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_event_threat_detection_custom_modules_rest_bad_request(
@@ -52951,10 +53335,14 @@ def test_list_event_threat_detection_custom_modules_rest_interceptors(null_inter
         "post_list_event_threat_detection_custom_modules",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_list_event_threat_detection_custom_modules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_list_event_threat_detection_custom_modules",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             securitycenter_service.ListEventThreatDetectionCustomModulesRequest.pb(
                 securitycenter_service.ListEventThreatDetectionCustomModulesRequest()
@@ -52984,6 +53372,10 @@ def test_list_event_threat_detection_custom_modules_rest_interceptors(null_inter
         post.return_value = (
             securitycenter_service.ListEventThreatDetectionCustomModulesResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.ListEventThreatDetectionCustomModulesResponse(),
+            metadata,
+        )
 
         client.list_event_threat_detection_custom_modules(
             request,
@@ -52995,6 +53387,7 @@ def test_list_event_threat_detection_custom_modules_rest_interceptors(null_inter
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_event_threat_detection_custom_module_rest_bad_request(
@@ -53199,10 +53592,14 @@ def test_update_event_threat_detection_custom_module_rest_interceptors(
         "post_update_event_threat_detection_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_update_event_threat_detection_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_update_event_threat_detection_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.pb(
                 securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest()
@@ -53232,6 +53629,10 @@ def test_update_event_threat_detection_custom_module_rest_interceptors(
         post.return_value = (
             gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule()
         )
+        post_with_metadata.return_value = (
+            gcs_event_threat_detection_custom_module.EventThreatDetectionCustomModule(),
+            metadata,
+        )
 
         client.update_event_threat_detection_custom_module(
             request,
@@ -53243,6 +53644,7 @@ def test_update_event_threat_detection_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_validate_event_threat_detection_custom_module_rest_bad_request(
@@ -53337,10 +53739,14 @@ def test_validate_event_threat_detection_custom_module_rest_interceptors(
         "post_validate_event_threat_detection_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_validate_event_threat_detection_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_validate_event_threat_detection_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = (
             securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest.pb(
                 securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest()
@@ -53372,6 +53778,10 @@ def test_validate_event_threat_detection_custom_module_rest_interceptors(
         post.return_value = (
             securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.ValidateEventThreatDetectionCustomModuleResponse(),
+            metadata,
+        )
 
         client.validate_event_threat_detection_custom_module(
             request,
@@ -53383,6 +53793,7 @@ def test_validate_event_threat_detection_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_effective_event_threat_detection_custom_module_rest_bad_request(
@@ -53493,10 +53904,14 @@ def test_get_effective_event_threat_detection_custom_module_rest_interceptors(
         "post_get_effective_event_threat_detection_custom_module",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_get_effective_event_threat_detection_custom_module_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_get_effective_event_threat_detection_custom_module",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest.pb(
             securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest()
         )
@@ -53526,6 +53941,10 @@ def test_get_effective_event_threat_detection_custom_module_rest_interceptors(
         post.return_value = (
             effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
         )
+        post_with_metadata.return_value = (
+            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
+            metadata,
+        )
 
         client.get_effective_event_threat_detection_custom_module(
             request,
@@ -53537,6 +53956,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_effective_event_threat_detection_custom_modules_rest_bad_request(
@@ -53631,10 +54051,14 @@ def test_list_effective_event_threat_detection_custom_modules_rest_interceptors(
         "post_list_effective_event_threat_detection_custom_modules",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_list_effective_event_threat_detection_custom_modules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_list_effective_event_threat_detection_custom_modules",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest.pb(
             securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
         )
@@ -53664,6 +54088,10 @@ def test_list_effective_event_threat_detection_custom_modules_rest_interceptors(
         post.return_value = (
             securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(),
+            metadata,
+        )
 
         client.list_effective_event_threat_detection_custom_modules(
             request,
@@ -53675,6 +54103,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_interceptors(
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_create_resource_value_configs_rest_bad_request(
@@ -53764,10 +54193,14 @@ def test_batch_create_resource_value_configs_rest_interceptors(null_interceptor)
         "post_batch_create_resource_value_configs",
     ) as post, mock.patch.object(
         transports.SecurityCenterRestInterceptor,
+        "post_batch_create_resource_value_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
         "pre_batch_create_resource_value_configs",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.BatchCreateResourceValueConfigsRequest.pb(
             securitycenter_service.BatchCreateResourceValueConfigsRequest()
         )
@@ -53797,6 +54230,10 @@ def test_batch_create_resource_value_configs_rest_interceptors(null_interceptor)
         post.return_value = (
             securitycenter_service.BatchCreateResourceValueConfigsResponse()
         )
+        post_with_metadata.return_value = (
+            securitycenter_service.BatchCreateResourceValueConfigsResponse(),
+            metadata,
+        )
 
         client.batch_create_resource_value_configs(
             request,
@@ -53808,6 +54245,7 @@ def test_batch_create_resource_value_configs_rest_interceptors(null_interceptor)
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_resource_value_config_rest_bad_request(
@@ -54013,10 +54451,14 @@ def test_get_resource_value_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_get_resource_value_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_get_resource_value_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_get_resource_value_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.GetResourceValueConfigRequest.pb(
             securitycenter_service.GetResourceValueConfigRequest()
         )
@@ -54042,6 +54484,10 @@ def test_get_resource_value_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resource_value_config.ResourceValueConfig()
+        post_with_metadata.return_value = (
+            resource_value_config.ResourceValueConfig(),
+            metadata,
+        )
 
         client.get_resource_value_config(
             request,
@@ -54053,6 +54499,7 @@ def test_get_resource_value_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_resource_value_configs_rest_bad_request(
@@ -54139,10 +54586,14 @@ def test_list_resource_value_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_resource_value_configs"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_resource_value_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_resource_value_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListResourceValueConfigsRequest.pb(
             securitycenter_service.ListResourceValueConfigsRequest()
         )
@@ -54168,6 +54619,10 @@ def test_list_resource_value_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListResourceValueConfigsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListResourceValueConfigsResponse(),
+            metadata,
+        )
 
         client.list_resource_value_configs(
             request,
@@ -54179,6 +54634,7 @@ def test_list_resource_value_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_resource_value_config_rest_bad_request(
@@ -54370,10 +54826,14 @@ def test_update_resource_value_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_update_resource_value_config"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_update_resource_value_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_update_resource_value_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.UpdateResourceValueConfigRequest.pb(
             securitycenter_service.UpdateResourceValueConfigRequest()
         )
@@ -54399,6 +54859,10 @@ def test_update_resource_value_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcs_resource_value_config.ResourceValueConfig()
+        post_with_metadata.return_value = (
+            gcs_resource_value_config.ResourceValueConfig(),
+            metadata,
+        )
 
         client.update_resource_value_config(
             request,
@@ -54410,6 +54874,7 @@ def test_update_resource_value_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_valued_resources_rest_bad_request(
@@ -54498,10 +54963,14 @@ def test_list_valued_resources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_valued_resources"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor,
+        "post_list_valued_resources_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_valued_resources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListValuedResourcesRequest.pb(
             securitycenter_service.ListValuedResourcesRequest()
         )
@@ -54527,6 +54996,10 @@ def test_list_valued_resources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListValuedResourcesResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListValuedResourcesResponse(),
+            metadata,
+        )
 
         client.list_valued_resources(
             request,
@@ -54538,6 +55011,7 @@ def test_list_valued_resources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_attack_paths_rest_bad_request(
@@ -54622,10 +55096,13 @@ def test_list_attack_paths_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "post_list_attack_paths"
     ) as post, mock.patch.object(
+        transports.SecurityCenterRestInterceptor, "post_list_attack_paths_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.SecurityCenterRestInterceptor, "pre_list_attack_paths"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = securitycenter_service.ListAttackPathsRequest.pb(
             securitycenter_service.ListAttackPathsRequest()
         )
@@ -54651,6 +55128,10 @@ def test_list_attack_paths_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = securitycenter_service.ListAttackPathsResponse()
+        post_with_metadata.return_value = (
+            securitycenter_service.ListAttackPathsResponse(),
+            metadata,
+        )
 
         client.list_attack_paths(
             request,
@@ -54662,6 +55143,7 @@ def test_list_attack_paths_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

@@ -376,11 +376,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Deployment:
         """Post-rpc interceptor for apply_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_apply_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_apply_deployment` interceptor runs
+        before the `post_apply_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_apply_deployment_with_metadata(
+        self,
+        response: telcoautomation.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for apply_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_apply_deployment_with_metadata`
+        interceptor in new development instead of the `post_apply_deployment` interceptor.
+        When both interceptors are used, this `post_apply_deployment_with_metadata` interceptor runs after the
+        `post_apply_deployment` interceptor. The (possibly modified) response returned by
+        `post_apply_deployment` will be passed to
+        `post_apply_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_apply_hydrated_deployment(
         self,
@@ -402,11 +425,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.HydratedDeployment:
         """Post-rpc interceptor for apply_hydrated_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_apply_hydrated_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_apply_hydrated_deployment` interceptor runs
+        before the `post_apply_hydrated_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_apply_hydrated_deployment_with_metadata(
+        self,
+        response: telcoautomation.HydratedDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for apply_hydrated_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_apply_hydrated_deployment_with_metadata`
+        interceptor in new development instead of the `post_apply_hydrated_deployment` interceptor.
+        When both interceptors are used, this `post_apply_hydrated_deployment_with_metadata` interceptor runs after the
+        `post_apply_hydrated_deployment` interceptor. The (possibly modified) response returned by
+        `post_apply_hydrated_deployment` will be passed to
+        `post_apply_hydrated_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_approve_blueprint(
         self,
@@ -427,11 +475,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for approve_blueprint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_approve_blueprint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_approve_blueprint` interceptor runs
+        before the `post_approve_blueprint_with_metadata` interceptor.
         """
         return response
+
+    def post_approve_blueprint_with_metadata(
+        self,
+        response: telcoautomation.Blueprint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for approve_blueprint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_approve_blueprint_with_metadata`
+        interceptor in new development instead of the `post_approve_blueprint` interceptor.
+        When both interceptors are used, this `post_approve_blueprint_with_metadata` interceptor runs after the
+        `post_approve_blueprint` interceptor. The (possibly modified) response returned by
+        `post_approve_blueprint` will be passed to
+        `post_approve_blueprint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_compute_deployment_status(
         self,
@@ -453,11 +524,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ComputeDeploymentStatusResponse:
         """Post-rpc interceptor for compute_deployment_status
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compute_deployment_status_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compute_deployment_status` interceptor runs
+        before the `post_compute_deployment_status_with_metadata` interceptor.
         """
         return response
+
+    def post_compute_deployment_status_with_metadata(
+        self,
+        response: telcoautomation.ComputeDeploymentStatusResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ComputeDeploymentStatusResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for compute_deployment_status
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_compute_deployment_status_with_metadata`
+        interceptor in new development instead of the `post_compute_deployment_status` interceptor.
+        When both interceptors are used, this `post_compute_deployment_status_with_metadata` interceptor runs after the
+        `post_compute_deployment_status` interceptor. The (possibly modified) response returned by
+        `post_compute_deployment_status` will be passed to
+        `post_compute_deployment_status_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_blueprint(
         self,
@@ -478,11 +575,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for create_blueprint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_blueprint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_blueprint` interceptor runs
+        before the `post_create_blueprint_with_metadata` interceptor.
         """
         return response
+
+    def post_create_blueprint_with_metadata(
+        self,
+        response: telcoautomation.Blueprint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_blueprint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_create_blueprint_with_metadata`
+        interceptor in new development instead of the `post_create_blueprint` interceptor.
+        When both interceptors are used, this `post_create_blueprint_with_metadata` interceptor runs after the
+        `post_create_blueprint` interceptor. The (possibly modified) response returned by
+        `post_create_blueprint` will be passed to
+        `post_create_blueprint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_deployment(
         self,
@@ -503,11 +623,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Deployment:
         """Post-rpc interceptor for create_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_deployment` interceptor runs
+        before the `post_create_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_deployment_with_metadata(
+        self,
+        response: telcoautomation.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_create_deployment_with_metadata`
+        interceptor in new development instead of the `post_create_deployment` interceptor.
+        When both interceptors are used, this `post_create_deployment_with_metadata` interceptor runs after the
+        `post_create_deployment` interceptor. The (possibly modified) response returned by
+        `post_create_deployment` will be passed to
+        `post_create_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_edge_slm(
         self,
@@ -528,11 +671,34 @@ class TelcoAutomationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_edge_slm
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_edge_slm_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_edge_slm` interceptor runs
+        before the `post_create_edge_slm_with_metadata` interceptor.
         """
         return response
+
+    def post_create_edge_slm_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_edge_slm
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_create_edge_slm_with_metadata`
+        interceptor in new development instead of the `post_create_edge_slm` interceptor.
+        When both interceptors are used, this `post_create_edge_slm_with_metadata` interceptor runs after the
+        `post_create_edge_slm` interceptor. The (possibly modified) response returned by
+        `post_create_edge_slm` will be passed to
+        `post_create_edge_slm_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_orchestration_cluster(
         self,
@@ -554,11 +720,34 @@ class TelcoAutomationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_orchestration_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_orchestration_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_orchestration_cluster` interceptor runs
+        before the `post_create_orchestration_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_orchestration_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_orchestration_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_create_orchestration_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_orchestration_cluster` interceptor.
+        When both interceptors are used, this `post_create_orchestration_cluster_with_metadata` interceptor runs after the
+        `post_create_orchestration_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_orchestration_cluster` will be passed to
+        `post_create_orchestration_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_blueprint(
         self,
@@ -593,11 +782,34 @@ class TelcoAutomationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_edge_slm
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_edge_slm_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_edge_slm` interceptor runs
+        before the `post_delete_edge_slm_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_edge_slm_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_edge_slm
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_delete_edge_slm_with_metadata`
+        interceptor in new development instead of the `post_delete_edge_slm` interceptor.
+        When both interceptors are used, this `post_delete_edge_slm_with_metadata` interceptor runs after the
+        `post_delete_edge_slm` interceptor. The (possibly modified) response returned by
+        `post_delete_edge_slm` will be passed to
+        `post_delete_edge_slm_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_orchestration_cluster(
         self,
@@ -619,11 +831,34 @@ class TelcoAutomationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_orchestration_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_orchestration_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_orchestration_cluster` interceptor runs
+        before the `post_delete_orchestration_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_orchestration_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_orchestration_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_delete_orchestration_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_orchestration_cluster` interceptor.
+        When both interceptors are used, this `post_delete_orchestration_cluster_with_metadata` interceptor runs after the
+        `post_delete_orchestration_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_orchestration_cluster` will be passed to
+        `post_delete_orchestration_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_discard_blueprint_changes(
         self,
@@ -645,11 +880,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.DiscardBlueprintChangesResponse:
         """Post-rpc interceptor for discard_blueprint_changes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_discard_blueprint_changes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_discard_blueprint_changes` interceptor runs
+        before the `post_discard_blueprint_changes_with_metadata` interceptor.
         """
         return response
+
+    def post_discard_blueprint_changes_with_metadata(
+        self,
+        response: telcoautomation.DiscardBlueprintChangesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.DiscardBlueprintChangesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for discard_blueprint_changes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_discard_blueprint_changes_with_metadata`
+        interceptor in new development instead of the `post_discard_blueprint_changes` interceptor.
+        When both interceptors are used, this `post_discard_blueprint_changes_with_metadata` interceptor runs after the
+        `post_discard_blueprint_changes` interceptor. The (possibly modified) response returned by
+        `post_discard_blueprint_changes` will be passed to
+        `post_discard_blueprint_changes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_discard_deployment_changes(
         self,
@@ -671,11 +932,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.DiscardDeploymentChangesResponse:
         """Post-rpc interceptor for discard_deployment_changes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_discard_deployment_changes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_discard_deployment_changes` interceptor runs
+        before the `post_discard_deployment_changes_with_metadata` interceptor.
         """
         return response
+
+    def post_discard_deployment_changes_with_metadata(
+        self,
+        response: telcoautomation.DiscardDeploymentChangesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.DiscardDeploymentChangesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for discard_deployment_changes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_discard_deployment_changes_with_metadata`
+        interceptor in new development instead of the `post_discard_deployment_changes` interceptor.
+        When both interceptors are used, this `post_discard_deployment_changes_with_metadata` interceptor runs after the
+        `post_discard_deployment_changes` interceptor. The (possibly modified) response returned by
+        `post_discard_deployment_changes` will be passed to
+        `post_discard_deployment_changes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_blueprint(
         self,
@@ -696,11 +983,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for get_blueprint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_blueprint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_blueprint` interceptor runs
+        before the `post_get_blueprint_with_metadata` interceptor.
         """
         return response
+
+    def post_get_blueprint_with_metadata(
+        self,
+        response: telcoautomation.Blueprint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_blueprint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_get_blueprint_with_metadata`
+        interceptor in new development instead of the `post_get_blueprint` interceptor.
+        When both interceptors are used, this `post_get_blueprint_with_metadata` interceptor runs after the
+        `post_get_blueprint` interceptor. The (possibly modified) response returned by
+        `post_get_blueprint` will be passed to
+        `post_get_blueprint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_deployment(
         self,
@@ -721,11 +1031,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Deployment:
         """Post-rpc interceptor for get_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_deployment` interceptor runs
+        before the `post_get_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_deployment_with_metadata(
+        self,
+        response: telcoautomation.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_get_deployment_with_metadata`
+        interceptor in new development instead of the `post_get_deployment` interceptor.
+        When both interceptors are used, this `post_get_deployment_with_metadata` interceptor runs after the
+        `post_get_deployment` interceptor. The (possibly modified) response returned by
+        `post_get_deployment` will be passed to
+        `post_get_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_edge_slm(
         self,
@@ -746,11 +1079,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.EdgeSlm:
         """Post-rpc interceptor for get_edge_slm
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_edge_slm_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_edge_slm` interceptor runs
+        before the `post_get_edge_slm_with_metadata` interceptor.
         """
         return response
+
+    def post_get_edge_slm_with_metadata(
+        self,
+        response: telcoautomation.EdgeSlm,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.EdgeSlm, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_edge_slm
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_get_edge_slm_with_metadata`
+        interceptor in new development instead of the `post_get_edge_slm` interceptor.
+        When both interceptors are used, this `post_get_edge_slm_with_metadata` interceptor runs after the
+        `post_get_edge_slm` interceptor. The (possibly modified) response returned by
+        `post_get_edge_slm` will be passed to
+        `post_get_edge_slm_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_hydrated_deployment(
         self,
@@ -772,11 +1128,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.HydratedDeployment:
         """Post-rpc interceptor for get_hydrated_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_hydrated_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_hydrated_deployment` interceptor runs
+        before the `post_get_hydrated_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_hydrated_deployment_with_metadata(
+        self,
+        response: telcoautomation.HydratedDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_hydrated_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_get_hydrated_deployment_with_metadata`
+        interceptor in new development instead of the `post_get_hydrated_deployment` interceptor.
+        When both interceptors are used, this `post_get_hydrated_deployment_with_metadata` interceptor runs after the
+        `post_get_hydrated_deployment` interceptor. The (possibly modified) response returned by
+        `post_get_hydrated_deployment` will be passed to
+        `post_get_hydrated_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_orchestration_cluster(
         self,
@@ -798,11 +1179,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.OrchestrationCluster:
         """Post-rpc interceptor for get_orchestration_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_orchestration_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_orchestration_cluster` interceptor runs
+        before the `post_get_orchestration_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_orchestration_cluster_with_metadata(
+        self,
+        response: telcoautomation.OrchestrationCluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.OrchestrationCluster, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_orchestration_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_get_orchestration_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_orchestration_cluster` interceptor.
+        When both interceptors are used, this `post_get_orchestration_cluster_with_metadata` interceptor runs after the
+        `post_get_orchestration_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_orchestration_cluster` will be passed to
+        `post_get_orchestration_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_public_blueprint(
         self,
@@ -824,11 +1230,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.PublicBlueprint:
         """Post-rpc interceptor for get_public_blueprint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_public_blueprint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_public_blueprint` interceptor runs
+        before the `post_get_public_blueprint_with_metadata` interceptor.
         """
         return response
+
+    def post_get_public_blueprint_with_metadata(
+        self,
+        response: telcoautomation.PublicBlueprint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.PublicBlueprint, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_public_blueprint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_get_public_blueprint_with_metadata`
+        interceptor in new development instead of the `post_get_public_blueprint` interceptor.
+        When both interceptors are used, this `post_get_public_blueprint_with_metadata` interceptor runs after the
+        `post_get_public_blueprint` interceptor. The (possibly modified) response returned by
+        `post_get_public_blueprint` will be passed to
+        `post_get_public_blueprint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_blueprint_revisions(
         self,
@@ -850,11 +1281,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListBlueprintRevisionsResponse:
         """Post-rpc interceptor for list_blueprint_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_blueprint_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_blueprint_revisions` interceptor runs
+        before the `post_list_blueprint_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_blueprint_revisions_with_metadata(
+        self,
+        response: telcoautomation.ListBlueprintRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListBlueprintRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_blueprint_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_blueprint_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_blueprint_revisions` interceptor.
+        When both interceptors are used, this `post_list_blueprint_revisions_with_metadata` interceptor runs after the
+        `post_list_blueprint_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_blueprint_revisions` will be passed to
+        `post_list_blueprint_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_blueprints(
         self,
@@ -875,11 +1332,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListBlueprintsResponse:
         """Post-rpc interceptor for list_blueprints
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_blueprints_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_blueprints` interceptor runs
+        before the `post_list_blueprints_with_metadata` interceptor.
         """
         return response
+
+    def post_list_blueprints_with_metadata(
+        self,
+        response: telcoautomation.ListBlueprintsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListBlueprintsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_blueprints
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_blueprints_with_metadata`
+        interceptor in new development instead of the `post_list_blueprints` interceptor.
+        When both interceptors are used, this `post_list_blueprints_with_metadata` interceptor runs after the
+        `post_list_blueprints` interceptor. The (possibly modified) response returned by
+        `post_list_blueprints` will be passed to
+        `post_list_blueprints_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_deployment_revisions(
         self,
@@ -901,11 +1383,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListDeploymentRevisionsResponse:
         """Post-rpc interceptor for list_deployment_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_deployment_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_deployment_revisions` interceptor runs
+        before the `post_list_deployment_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_deployment_revisions_with_metadata(
+        self,
+        response: telcoautomation.ListDeploymentRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListDeploymentRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_deployment_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_deployment_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_deployment_revisions` interceptor.
+        When both interceptors are used, this `post_list_deployment_revisions_with_metadata` interceptor runs after the
+        `post_list_deployment_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_deployment_revisions` will be passed to
+        `post_list_deployment_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_deployments(
         self,
@@ -926,11 +1434,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListDeploymentsResponse:
         """Post-rpc interceptor for list_deployments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_deployments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_deployments` interceptor runs
+        before the `post_list_deployments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_deployments_with_metadata(
+        self,
+        response: telcoautomation.ListDeploymentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_deployments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_deployments_with_metadata`
+        interceptor in new development instead of the `post_list_deployments` interceptor.
+        When both interceptors are used, this `post_list_deployments_with_metadata` interceptor runs after the
+        `post_list_deployments` interceptor. The (possibly modified) response returned by
+        `post_list_deployments` will be passed to
+        `post_list_deployments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_edge_slms(
         self,
@@ -951,11 +1484,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListEdgeSlmsResponse:
         """Post-rpc interceptor for list_edge_slms
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_edge_slms_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_edge_slms` interceptor runs
+        before the `post_list_edge_slms_with_metadata` interceptor.
         """
         return response
+
+    def post_list_edge_slms_with_metadata(
+        self,
+        response: telcoautomation.ListEdgeSlmsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListEdgeSlmsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_edge_slms
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_edge_slms_with_metadata`
+        interceptor in new development instead of the `post_list_edge_slms` interceptor.
+        When both interceptors are used, this `post_list_edge_slms_with_metadata` interceptor runs after the
+        `post_list_edge_slms` interceptor. The (possibly modified) response returned by
+        `post_list_edge_slms` will be passed to
+        `post_list_edge_slms_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_hydrated_deployments(
         self,
@@ -977,11 +1535,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListHydratedDeploymentsResponse:
         """Post-rpc interceptor for list_hydrated_deployments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_hydrated_deployments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_hydrated_deployments` interceptor runs
+        before the `post_list_hydrated_deployments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_hydrated_deployments_with_metadata(
+        self,
+        response: telcoautomation.ListHydratedDeploymentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListHydratedDeploymentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_hydrated_deployments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_hydrated_deployments_with_metadata`
+        interceptor in new development instead of the `post_list_hydrated_deployments` interceptor.
+        When both interceptors are used, this `post_list_hydrated_deployments_with_metadata` interceptor runs after the
+        `post_list_hydrated_deployments` interceptor. The (possibly modified) response returned by
+        `post_list_hydrated_deployments` will be passed to
+        `post_list_hydrated_deployments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_orchestration_clusters(
         self,
@@ -1003,11 +1587,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListOrchestrationClustersResponse:
         """Post-rpc interceptor for list_orchestration_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_orchestration_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_orchestration_clusters` interceptor runs
+        before the `post_list_orchestration_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_orchestration_clusters_with_metadata(
+        self,
+        response: telcoautomation.ListOrchestrationClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListOrchestrationClustersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_orchestration_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_orchestration_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_orchestration_clusters` interceptor.
+        When both interceptors are used, this `post_list_orchestration_clusters_with_metadata` interceptor runs after the
+        `post_list_orchestration_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_orchestration_clusters` will be passed to
+        `post_list_orchestration_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_public_blueprints(
         self,
@@ -1029,11 +1639,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.ListPublicBlueprintsResponse:
         """Post-rpc interceptor for list_public_blueprints
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_public_blueprints_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_public_blueprints` interceptor runs
+        before the `post_list_public_blueprints_with_metadata` interceptor.
         """
         return response
+
+    def post_list_public_blueprints_with_metadata(
+        self,
+        response: telcoautomation.ListPublicBlueprintsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListPublicBlueprintsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_public_blueprints
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_list_public_blueprints_with_metadata`
+        interceptor in new development instead of the `post_list_public_blueprints` interceptor.
+        When both interceptors are used, this `post_list_public_blueprints_with_metadata` interceptor runs after the
+        `post_list_public_blueprints` interceptor. The (possibly modified) response returned by
+        `post_list_public_blueprints` will be passed to
+        `post_list_public_blueprints_with_metadata`.
+        """
+        return response, metadata
 
     def pre_propose_blueprint(
         self,
@@ -1054,11 +1690,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for propose_blueprint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_propose_blueprint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_propose_blueprint` interceptor runs
+        before the `post_propose_blueprint_with_metadata` interceptor.
         """
         return response
+
+    def post_propose_blueprint_with_metadata(
+        self,
+        response: telcoautomation.Blueprint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for propose_blueprint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_propose_blueprint_with_metadata`
+        interceptor in new development instead of the `post_propose_blueprint` interceptor.
+        When both interceptors are used, this `post_propose_blueprint_with_metadata` interceptor runs after the
+        `post_propose_blueprint` interceptor. The (possibly modified) response returned by
+        `post_propose_blueprint` will be passed to
+        `post_propose_blueprint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reject_blueprint(
         self,
@@ -1079,11 +1738,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for reject_blueprint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reject_blueprint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reject_blueprint` interceptor runs
+        before the `post_reject_blueprint_with_metadata` interceptor.
         """
         return response
+
+    def post_reject_blueprint_with_metadata(
+        self,
+        response: telcoautomation.Blueprint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reject_blueprint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_reject_blueprint_with_metadata`
+        interceptor in new development instead of the `post_reject_blueprint` interceptor.
+        When both interceptors are used, this `post_reject_blueprint_with_metadata` interceptor runs after the
+        `post_reject_blueprint` interceptor. The (possibly modified) response returned by
+        `post_reject_blueprint` will be passed to
+        `post_reject_blueprint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_deployment(
         self,
@@ -1119,11 +1801,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Deployment:
         """Post-rpc interceptor for rollback_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rollback_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rollback_deployment` interceptor runs
+        before the `post_rollback_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_rollback_deployment_with_metadata(
+        self,
+        response: telcoautomation.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rollback_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_rollback_deployment_with_metadata`
+        interceptor in new development instead of the `post_rollback_deployment` interceptor.
+        When both interceptors are used, this `post_rollback_deployment_with_metadata` interceptor runs after the
+        `post_rollback_deployment` interceptor. The (possibly modified) response returned by
+        `post_rollback_deployment` will be passed to
+        `post_rollback_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_blueprint_revisions(
         self,
@@ -1145,11 +1850,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.SearchBlueprintRevisionsResponse:
         """Post-rpc interceptor for search_blueprint_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_blueprint_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_blueprint_revisions` interceptor runs
+        before the `post_search_blueprint_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_search_blueprint_revisions_with_metadata(
+        self,
+        response: telcoautomation.SearchBlueprintRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.SearchBlueprintRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_blueprint_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_search_blueprint_revisions_with_metadata`
+        interceptor in new development instead of the `post_search_blueprint_revisions` interceptor.
+        When both interceptors are used, this `post_search_blueprint_revisions_with_metadata` interceptor runs after the
+        `post_search_blueprint_revisions` interceptor. The (possibly modified) response returned by
+        `post_search_blueprint_revisions` will be passed to
+        `post_search_blueprint_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_deployment_revisions(
         self,
@@ -1171,11 +1902,37 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.SearchDeploymentRevisionsResponse:
         """Post-rpc interceptor for search_deployment_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_deployment_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_deployment_revisions` interceptor runs
+        before the `post_search_deployment_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_search_deployment_revisions_with_metadata(
+        self,
+        response: telcoautomation.SearchDeploymentRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.SearchDeploymentRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_deployment_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_search_deployment_revisions_with_metadata`
+        interceptor in new development instead of the `post_search_deployment_revisions` interceptor.
+        When both interceptors are used, this `post_search_deployment_revisions_with_metadata` interceptor runs after the
+        `post_search_deployment_revisions` interceptor. The (possibly modified) response returned by
+        `post_search_deployment_revisions` will be passed to
+        `post_search_deployment_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_blueprint(
         self,
@@ -1196,11 +1953,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for update_blueprint
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_blueprint_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_blueprint` interceptor runs
+        before the `post_update_blueprint_with_metadata` interceptor.
         """
         return response
+
+    def post_update_blueprint_with_metadata(
+        self,
+        response: telcoautomation.Blueprint,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_blueprint
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_update_blueprint_with_metadata`
+        interceptor in new development instead of the `post_update_blueprint` interceptor.
+        When both interceptors are used, this `post_update_blueprint_with_metadata` interceptor runs after the
+        `post_update_blueprint` interceptor. The (possibly modified) response returned by
+        `post_update_blueprint` will be passed to
+        `post_update_blueprint_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_deployment(
         self,
@@ -1221,11 +2001,34 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.Deployment:
         """Post-rpc interceptor for update_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_deployment` interceptor runs
+        before the `post_update_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_deployment_with_metadata(
+        self,
+        response: telcoautomation.Deployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_update_deployment_with_metadata`
+        interceptor in new development instead of the `post_update_deployment` interceptor.
+        When both interceptors are used, this `post_update_deployment_with_metadata` interceptor runs after the
+        `post_update_deployment` interceptor. The (possibly modified) response returned by
+        `post_update_deployment` will be passed to
+        `post_update_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_hydrated_deployment(
         self,
@@ -1247,11 +2050,36 @@ class TelcoAutomationRestInterceptor:
     ) -> telcoautomation.HydratedDeployment:
         """Post-rpc interceptor for update_hydrated_deployment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_hydrated_deployment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TelcoAutomation server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_hydrated_deployment` interceptor runs
+        before the `post_update_hydrated_deployment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_hydrated_deployment_with_metadata(
+        self,
+        response: telcoautomation.HydratedDeployment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_hydrated_deployment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TelcoAutomation server but before it is returned to user code.
+
+        We recommend only using this `post_update_hydrated_deployment_with_metadata`
+        interceptor in new development instead of the `post_update_hydrated_deployment` interceptor.
+        When both interceptors are used, this `post_update_hydrated_deployment_with_metadata` interceptor runs after the
+        `post_update_hydrated_deployment` interceptor. The (possibly modified) response returned by
+        `post_update_hydrated_deployment` will be passed to
+        `post_update_hydrated_deployment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1676,6 +2504,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_apply_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_apply_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1832,6 +2664,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_apply_hydrated_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_apply_hydrated_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1994,6 +2830,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_approve_blueprint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_approve_blueprint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2139,6 +2979,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_compute_deployment_status(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_compute_deployment_status_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2303,6 +3147,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_blueprint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_blueprint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2456,6 +3304,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2603,6 +3455,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_edge_slm(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_edge_slm_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2757,6 +3613,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_orchestration_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_orchestration_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3006,6 +3866,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_edge_slm(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_edge_slm_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3154,6 +4018,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_orchestration_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_orchestration_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3305,6 +4173,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_discard_blueprint_changes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_discard_blueprint_changes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3461,6 +4333,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_discard_deployment_changes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_discard_deployment_changes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3617,6 +4493,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_blueprint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_blueprint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3762,6 +4642,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3907,6 +4791,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_edge_slm(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_edge_slm_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4056,6 +4944,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_hydrated_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_hydrated_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4207,6 +5099,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_orchestration_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_orchestration_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4361,6 +5257,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_public_blueprint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_public_blueprint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4506,6 +5406,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_blueprint_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_blueprint_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4648,6 +5552,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_blueprints(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_blueprints_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4798,6 +5706,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_deployment_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_deployment_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4944,6 +5856,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_deployments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_deployments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5089,6 +6005,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_edge_slms(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_edge_slms_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5236,6 +6156,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_hydrated_deployments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_hydrated_deployments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5389,6 +6313,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_orchestration_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_orchestration_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5536,6 +6464,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_public_blueprints(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_public_blueprints_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5698,6 +6630,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_propose_blueprint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_propose_blueprint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5858,6 +6794,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reject_blueprint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reject_blueprint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6126,6 +7066,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rollback_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rollback_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6272,6 +7216,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_blueprint_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_blueprint_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6422,6 +7370,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_deployment_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_deployment_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6586,6 +7538,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_blueprint(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_blueprint_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6739,6 +7695,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6895,6 +7855,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_hydrated_deployment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_hydrated_deployment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

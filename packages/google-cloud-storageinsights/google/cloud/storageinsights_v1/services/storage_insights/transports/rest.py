@@ -149,11 +149,34 @@ class StorageInsightsRestInterceptor:
     ) -> storageinsights.ReportConfig:
         """Post-rpc interceptor for create_report_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_report_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_report_config` interceptor runs
+        before the `post_create_report_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_report_config_with_metadata(
+        self,
+        response: storageinsights.ReportConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storageinsights.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_report_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_report_config_with_metadata`
+        interceptor in new development instead of the `post_create_report_config` interceptor.
+        When both interceptors are used, this `post_create_report_config_with_metadata` interceptor runs after the
+        `post_create_report_config` interceptor. The (possibly modified) response returned by
+        `post_create_report_config` will be passed to
+        `post_create_report_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_report_config(
         self,
@@ -189,11 +212,34 @@ class StorageInsightsRestInterceptor:
     ) -> storageinsights.ReportConfig:
         """Post-rpc interceptor for get_report_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_report_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_report_config` interceptor runs
+        before the `post_get_report_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_report_config_with_metadata(
+        self,
+        response: storageinsights.ReportConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storageinsights.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_report_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_report_config_with_metadata`
+        interceptor in new development instead of the `post_get_report_config` interceptor.
+        When both interceptors are used, this `post_get_report_config_with_metadata` interceptor runs after the
+        `post_get_report_config` interceptor. The (possibly modified) response returned by
+        `post_get_report_config` will be passed to
+        `post_get_report_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_report_detail(
         self,
@@ -214,11 +260,34 @@ class StorageInsightsRestInterceptor:
     ) -> storageinsights.ReportDetail:
         """Post-rpc interceptor for get_report_detail
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_report_detail_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_report_detail` interceptor runs
+        before the `post_get_report_detail_with_metadata` interceptor.
         """
         return response
+
+    def post_get_report_detail_with_metadata(
+        self,
+        response: storageinsights.ReportDetail,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storageinsights.ReportDetail, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_report_detail
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_report_detail_with_metadata`
+        interceptor in new development instead of the `post_get_report_detail` interceptor.
+        When both interceptors are used, this `post_get_report_detail_with_metadata` interceptor runs after the
+        `post_get_report_detail` interceptor. The (possibly modified) response returned by
+        `post_get_report_detail` will be passed to
+        `post_get_report_detail_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_report_configs(
         self,
@@ -240,11 +309,37 @@ class StorageInsightsRestInterceptor:
     ) -> storageinsights.ListReportConfigsResponse:
         """Post-rpc interceptor for list_report_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_report_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_report_configs` interceptor runs
+        before the `post_list_report_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_report_configs_with_metadata(
+        self,
+        response: storageinsights.ListReportConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.ListReportConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_report_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_report_configs_with_metadata`
+        interceptor in new development instead of the `post_list_report_configs` interceptor.
+        When both interceptors are used, this `post_list_report_configs_with_metadata` interceptor runs after the
+        `post_list_report_configs` interceptor. The (possibly modified) response returned by
+        `post_list_report_configs` will be passed to
+        `post_list_report_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_report_details(
         self,
@@ -266,11 +361,37 @@ class StorageInsightsRestInterceptor:
     ) -> storageinsights.ListReportDetailsResponse:
         """Post-rpc interceptor for list_report_details
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_report_details_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_report_details` interceptor runs
+        before the `post_list_report_details_with_metadata` interceptor.
         """
         return response
+
+    def post_list_report_details_with_metadata(
+        self,
+        response: storageinsights.ListReportDetailsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.ListReportDetailsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_report_details
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_report_details_with_metadata`
+        interceptor in new development instead of the `post_list_report_details` interceptor.
+        When both interceptors are used, this `post_list_report_details_with_metadata` interceptor runs after the
+        `post_list_report_details` interceptor. The (possibly modified) response returned by
+        `post_list_report_details` will be passed to
+        `post_list_report_details_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_report_config(
         self,
@@ -292,11 +413,34 @@ class StorageInsightsRestInterceptor:
     ) -> storageinsights.ReportConfig:
         """Post-rpc interceptor for update_report_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_report_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_report_config` interceptor runs
+        before the `post_update_report_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_report_config_with_metadata(
+        self,
+        response: storageinsights.ReportConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storageinsights.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_report_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_report_config_with_metadata`
+        interceptor in new development instead of the `post_update_report_config` interceptor.
+        When both interceptors are used, this `post_update_report_config_with_metadata` interceptor runs after the
+        `post_update_report_config` interceptor. The (possibly modified) response returned by
+        `post_update_report_config` will be passed to
+        `post_update_report_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -663,6 +807,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_report_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_report_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -920,6 +1068,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_report_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_report_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1066,6 +1218,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_report_detail(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_report_detail_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1212,6 +1368,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_report_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_report_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1360,6 +1520,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_report_details(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_report_details_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1517,6 +1681,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_report_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_report_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

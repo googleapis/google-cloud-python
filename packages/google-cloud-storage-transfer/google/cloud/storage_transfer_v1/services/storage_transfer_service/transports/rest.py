@@ -191,11 +191,34 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer_types.AgentPool:
         """Post-rpc interceptor for create_agent_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_agent_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_agent_pool` interceptor runs
+        before the `post_create_agent_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_create_agent_pool_with_metadata(
+        self,
+        response: transfer_types.AgentPool,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer_types.AgentPool, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_agent_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_create_agent_pool_with_metadata`
+        interceptor in new development instead of the `post_create_agent_pool` interceptor.
+        When both interceptors are used, this `post_create_agent_pool_with_metadata` interceptor runs after the
+        `post_create_agent_pool` interceptor. The (possibly modified) response returned by
+        `post_create_agent_pool` will be passed to
+        `post_create_agent_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_transfer_job(
         self,
@@ -216,11 +239,34 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer_types.TransferJob:
         """Post-rpc interceptor for create_transfer_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_transfer_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_transfer_job` interceptor runs
+        before the `post_create_transfer_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_transfer_job_with_metadata(
+        self,
+        response: transfer_types.TransferJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer_types.TransferJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_transfer_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_create_transfer_job_with_metadata`
+        interceptor in new development instead of the `post_create_transfer_job` interceptor.
+        When both interceptors are used, this `post_create_transfer_job_with_metadata` interceptor runs after the
+        `post_create_transfer_job` interceptor. The (possibly modified) response returned by
+        `post_create_transfer_job` will be passed to
+        `post_create_transfer_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_agent_pool(
         self,
@@ -267,11 +313,34 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer_types.AgentPool:
         """Post-rpc interceptor for get_agent_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_agent_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_agent_pool` interceptor runs
+        before the `post_get_agent_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_get_agent_pool_with_metadata(
+        self,
+        response: transfer_types.AgentPool,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer_types.AgentPool, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_agent_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_get_agent_pool_with_metadata`
+        interceptor in new development instead of the `post_get_agent_pool` interceptor.
+        When both interceptors are used, this `post_get_agent_pool_with_metadata` interceptor runs after the
+        `post_get_agent_pool` interceptor. The (possibly modified) response returned by
+        `post_get_agent_pool` will be passed to
+        `post_get_agent_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_google_service_account(
         self,
@@ -292,11 +361,36 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer_types.GoogleServiceAccount:
         """Post-rpc interceptor for get_google_service_account
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_google_service_account_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_google_service_account` interceptor runs
+        before the `post_get_google_service_account_with_metadata` interceptor.
         """
         return response
+
+    def post_get_google_service_account_with_metadata(
+        self,
+        response: transfer_types.GoogleServiceAccount,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer_types.GoogleServiceAccount, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_google_service_account
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_get_google_service_account_with_metadata`
+        interceptor in new development instead of the `post_get_google_service_account` interceptor.
+        When both interceptors are used, this `post_get_google_service_account_with_metadata` interceptor runs after the
+        `post_get_google_service_account` interceptor. The (possibly modified) response returned by
+        `post_get_google_service_account` will be passed to
+        `post_get_google_service_account_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_transfer_job(
         self,
@@ -315,11 +409,34 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer_types.TransferJob:
         """Post-rpc interceptor for get_transfer_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_transfer_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_transfer_job` interceptor runs
+        before the `post_get_transfer_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_transfer_job_with_metadata(
+        self,
+        response: transfer_types.TransferJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer_types.TransferJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_transfer_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_get_transfer_job_with_metadata`
+        interceptor in new development instead of the `post_get_transfer_job` interceptor.
+        When both interceptors are used, this `post_get_transfer_job_with_metadata` interceptor runs after the
+        `post_get_transfer_job` interceptor. The (possibly modified) response returned by
+        `post_get_transfer_job` will be passed to
+        `post_get_transfer_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_agent_pools(
         self,
@@ -338,11 +455,36 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer.ListAgentPoolsResponse:
         """Post-rpc interceptor for list_agent_pools
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_agent_pools_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_agent_pools` interceptor runs
+        before the `post_list_agent_pools_with_metadata` interceptor.
         """
         return response
+
+    def post_list_agent_pools_with_metadata(
+        self,
+        response: transfer.ListAgentPoolsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.ListAgentPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_agent_pools
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_list_agent_pools_with_metadata`
+        interceptor in new development instead of the `post_list_agent_pools` interceptor.
+        When both interceptors are used, this `post_list_agent_pools_with_metadata` interceptor runs after the
+        `post_list_agent_pools` interceptor. The (possibly modified) response returned by
+        `post_list_agent_pools` will be passed to
+        `post_list_agent_pools_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_transfer_jobs(
         self,
@@ -363,11 +505,36 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer.ListTransferJobsResponse:
         """Post-rpc interceptor for list_transfer_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_transfer_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_transfer_jobs` interceptor runs
+        before the `post_list_transfer_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_transfer_jobs_with_metadata(
+        self,
+        response: transfer.ListTransferJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.ListTransferJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_transfer_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_list_transfer_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_transfer_jobs` interceptor.
+        When both interceptors are used, this `post_list_transfer_jobs_with_metadata` interceptor runs after the
+        `post_list_transfer_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_transfer_jobs` will be passed to
+        `post_list_transfer_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_pause_transfer_operation(
         self,
@@ -414,11 +581,34 @@ class StorageTransferServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_transfer_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_transfer_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_transfer_job` interceptor runs
+        before the `post_run_transfer_job_with_metadata` interceptor.
         """
         return response
+
+    def post_run_transfer_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for run_transfer_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_run_transfer_job_with_metadata`
+        interceptor in new development instead of the `post_run_transfer_job` interceptor.
+        When both interceptors are used, this `post_run_transfer_job_with_metadata` interceptor runs after the
+        `post_run_transfer_job` interceptor. The (possibly modified) response returned by
+        `post_run_transfer_job` will be passed to
+        `post_run_transfer_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_agent_pool(
         self,
@@ -439,11 +629,34 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer_types.AgentPool:
         """Post-rpc interceptor for update_agent_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_agent_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_agent_pool` interceptor runs
+        before the `post_update_agent_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_update_agent_pool_with_metadata(
+        self,
+        response: transfer_types.AgentPool,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer_types.AgentPool, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_agent_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_update_agent_pool_with_metadata`
+        interceptor in new development instead of the `post_update_agent_pool` interceptor.
+        When both interceptors are used, this `post_update_agent_pool_with_metadata` interceptor runs after the
+        `post_update_agent_pool` interceptor. The (possibly modified) response returned by
+        `post_update_agent_pool` will be passed to
+        `post_update_agent_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_transfer_job(
         self,
@@ -464,11 +677,34 @@ class StorageTransferServiceRestInterceptor:
     ) -> transfer_types.TransferJob:
         """Post-rpc interceptor for update_transfer_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_transfer_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StorageTransferService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_transfer_job` interceptor runs
+        before the `post_update_transfer_job_with_metadata` interceptor.
         """
         return response
+
+    def post_update_transfer_job_with_metadata(
+        self,
+        response: transfer_types.TransferJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer_types.TransferJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_transfer_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageTransferService server but before it is returned to user code.
+
+        We recommend only using this `post_update_transfer_job_with_metadata`
+        interceptor in new development instead of the `post_update_transfer_job` interceptor.
+        When both interceptors are used, this `post_update_transfer_job_with_metadata` interceptor runs after the
+        `post_update_transfer_job` interceptor. The (possibly modified) response returned by
+        `post_update_transfer_job` will be passed to
+        `post_update_transfer_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -809,6 +1045,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_agent_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_agent_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -963,6 +1203,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_transfer_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_transfer_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1328,6 +1572,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_agent_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_agent_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1473,6 +1721,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_google_service_account(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_google_service_account_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1623,6 +1875,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_transfer_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_transfer_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1768,6 +2024,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_agent_pools(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_agent_pools_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1915,6 +2175,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_transfer_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_transfer_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2301,6 +2565,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_run_transfer_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_transfer_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2453,6 +2721,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_agent_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_agent_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2607,6 +2879,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_transfer_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_transfer_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -62,6 +62,13 @@ from google.cloud.servicehealth_v1.services.service_health import (
 )
 from google.cloud.servicehealth_v1.types import event_resources
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -314,6 +321,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ServiceHealthClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ServiceHealthClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ServiceHealthClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5650,10 +5700,13 @@ def test_list_events_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "post_list_events"
     ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_list_events_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "pre_list_events"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = event_resources.ListEventsRequest.pb(
             event_resources.ListEventsRequest()
         )
@@ -5679,6 +5732,7 @@ def test_list_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = event_resources.ListEventsResponse()
+        post_with_metadata.return_value = event_resources.ListEventsResponse(), metadata
 
         client.list_events(
             request,
@@ -5690,6 +5744,7 @@ def test_list_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_event_rest_bad_request(request_type=event_resources.GetEventRequest):
@@ -5791,10 +5846,13 @@ def test_get_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "post_get_event"
     ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_get_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "pre_get_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = event_resources.GetEventRequest.pb(
             event_resources.GetEventRequest()
         )
@@ -5818,6 +5876,7 @@ def test_get_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = event_resources.Event()
+        post_with_metadata.return_value = event_resources.Event(), metadata
 
         client.get_event(
             request,
@@ -5829,6 +5888,7 @@ def test_get_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_organization_events_rest_bad_request(
@@ -5915,10 +5975,14 @@ def test_list_organization_events_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "post_list_organization_events"
     ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor,
+        "post_list_organization_events_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "pre_list_organization_events"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = event_resources.ListOrganizationEventsRequest.pb(
             event_resources.ListOrganizationEventsRequest()
         )
@@ -5944,6 +6008,10 @@ def test_list_organization_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = event_resources.ListOrganizationEventsResponse()
+        post_with_metadata.return_value = (
+            event_resources.ListOrganizationEventsResponse(),
+            metadata,
+        )
 
         client.list_organization_events(
             request,
@@ -5955,6 +6023,7 @@ def test_list_organization_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_organization_event_rest_bad_request(
@@ -6063,10 +6132,14 @@ def test_get_organization_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "post_get_organization_event"
     ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor,
+        "post_get_organization_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "pre_get_organization_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = event_resources.GetOrganizationEventRequest.pb(
             event_resources.GetOrganizationEventRequest()
         )
@@ -6092,6 +6165,7 @@ def test_get_organization_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = event_resources.OrganizationEvent()
+        post_with_metadata.return_value = event_resources.OrganizationEvent(), metadata
 
         client.get_organization_event(
             request,
@@ -6103,6 +6177,7 @@ def test_get_organization_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_organization_impacts_rest_bad_request(
@@ -6189,10 +6264,14 @@ def test_list_organization_impacts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "post_list_organization_impacts"
     ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor,
+        "post_list_organization_impacts_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "pre_list_organization_impacts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = event_resources.ListOrganizationImpactsRequest.pb(
             event_resources.ListOrganizationImpactsRequest()
         )
@@ -6218,6 +6297,10 @@ def test_list_organization_impacts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = event_resources.ListOrganizationImpactsResponse()
+        post_with_metadata.return_value = (
+            event_resources.ListOrganizationImpactsResponse(),
+            metadata,
+        )
 
         client.list_organization_impacts(
             request,
@@ -6229,6 +6312,7 @@ def test_list_organization_impacts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_organization_impact_rest_bad_request(
@@ -6319,10 +6403,14 @@ def test_get_organization_impact_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "post_get_organization_impact"
     ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor,
+        "post_get_organization_impact_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceHealthRestInterceptor, "pre_get_organization_impact"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = event_resources.GetOrganizationImpactRequest.pb(
             event_resources.GetOrganizationImpactRequest()
         )
@@ -6348,6 +6436,7 @@ def test_get_organization_impact_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = event_resources.OrganizationImpact()
+        post_with_metadata.return_value = event_resources.OrganizationImpact(), metadata
 
         client.get_organization_impact(
             request,
@@ -6359,6 +6448,7 @@ def test_get_organization_impact_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
