@@ -465,11 +465,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_group_migration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_add_group_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_add_group_migration` interceptor runs
+        before the `post_add_group_migration_with_metadata` interceptor.
         """
         return response
+
+    def post_add_group_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_group_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_add_group_migration_with_metadata`
+        interceptor in new development instead of the `post_add_group_migration` interceptor.
+        When both interceptors are used, this `post_add_group_migration_with_metadata` interceptor runs after the
+        `post_add_group_migration` interceptor. The (possibly modified) response returned by
+        `post_add_group_migration` will be passed to
+        `post_add_group_migration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_clone_job(
         self,
@@ -490,11 +513,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_clone_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_cancel_clone_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_cancel_clone_job` interceptor runs
+        before the `post_cancel_clone_job_with_metadata` interceptor.
         """
         return response
+
+    def post_cancel_clone_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for cancel_clone_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_clone_job_with_metadata`
+        interceptor in new development instead of the `post_cancel_clone_job` interceptor.
+        When both interceptors are used, this `post_cancel_clone_job_with_metadata` interceptor runs after the
+        `post_cancel_clone_job` interceptor. The (possibly modified) response returned by
+        `post_cancel_clone_job` will be passed to
+        `post_cancel_clone_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_cutover_job(
         self,
@@ -515,11 +561,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_cutover_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_cancel_cutover_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_cancel_cutover_job` interceptor runs
+        before the `post_cancel_cutover_job_with_metadata` interceptor.
         """
         return response
+
+    def post_cancel_cutover_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for cancel_cutover_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_cutover_job_with_metadata`
+        interceptor in new development instead of the `post_cancel_cutover_job` interceptor.
+        When both interceptors are used, this `post_cancel_cutover_job_with_metadata` interceptor runs after the
+        `post_cancel_cutover_job` interceptor. The (possibly modified) response returned by
+        `post_cancel_cutover_job` will be passed to
+        `post_cancel_cutover_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_clone_job(
         self,
@@ -540,11 +609,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_clone_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_clone_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_clone_job` interceptor runs
+        before the `post_create_clone_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_clone_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_clone_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_clone_job_with_metadata`
+        interceptor in new development instead of the `post_create_clone_job` interceptor.
+        When both interceptors are used, this `post_create_clone_job_with_metadata` interceptor runs after the
+        `post_create_clone_job` interceptor. The (possibly modified) response returned by
+        `post_create_clone_job` will be passed to
+        `post_create_clone_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_cutover_job(
         self,
@@ -565,11 +657,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cutover_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cutover_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cutover_job` interceptor runs
+        before the `post_create_cutover_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cutover_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cutover_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_cutover_job_with_metadata`
+        interceptor in new development instead of the `post_create_cutover_job` interceptor.
+        When both interceptors are used, this `post_create_cutover_job_with_metadata` interceptor runs after the
+        `post_create_cutover_job` interceptor. The (possibly modified) response returned by
+        `post_create_cutover_job` will be passed to
+        `post_create_cutover_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_datacenter_connector(
         self,
@@ -591,11 +706,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_datacenter_connector
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_datacenter_connector_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_datacenter_connector` interceptor runs
+        before the `post_create_datacenter_connector_with_metadata` interceptor.
         """
         return response
+
+    def post_create_datacenter_connector_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_datacenter_connector
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_datacenter_connector_with_metadata`
+        interceptor in new development instead of the `post_create_datacenter_connector` interceptor.
+        When both interceptors are used, this `post_create_datacenter_connector_with_metadata` interceptor runs after the
+        `post_create_datacenter_connector` interceptor. The (possibly modified) response returned by
+        `post_create_datacenter_connector` will be passed to
+        `post_create_datacenter_connector_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_group(
         self,
@@ -614,11 +752,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_group` interceptor runs
+        before the `post_create_group_with_metadata` interceptor.
         """
         return response
+
+    def post_create_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_group_with_metadata`
+        interceptor in new development instead of the `post_create_group` interceptor.
+        When both interceptors are used, this `post_create_group_with_metadata` interceptor runs after the
+        `post_create_group` interceptor. The (possibly modified) response returned by
+        `post_create_group` will be passed to
+        `post_create_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_migrating_vm(
         self,
@@ -639,11 +800,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_migrating_vm
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_migrating_vm_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_migrating_vm` interceptor runs
+        before the `post_create_migrating_vm_with_metadata` interceptor.
         """
         return response
+
+    def post_create_migrating_vm_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_migrating_vm
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_migrating_vm_with_metadata`
+        interceptor in new development instead of the `post_create_migrating_vm` interceptor.
+        When both interceptors are used, this `post_create_migrating_vm_with_metadata` interceptor runs after the
+        `post_create_migrating_vm` interceptor. The (possibly modified) response returned by
+        `post_create_migrating_vm` will be passed to
+        `post_create_migrating_vm_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_source(
         self,
@@ -664,11 +848,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_source` interceptor runs
+        before the `post_create_source_with_metadata` interceptor.
         """
         return response
+
+    def post_create_source_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_source_with_metadata`
+        interceptor in new development instead of the `post_create_source` interceptor.
+        When both interceptors are used, this `post_create_source_with_metadata` interceptor runs after the
+        `post_create_source` interceptor. The (possibly modified) response returned by
+        `post_create_source` will be passed to
+        `post_create_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_target_project(
         self,
@@ -689,11 +896,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_target_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_target_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_target_project` interceptor runs
+        before the `post_create_target_project_with_metadata` interceptor.
         """
         return response
+
+    def post_create_target_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_target_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_target_project_with_metadata`
+        interceptor in new development instead of the `post_create_target_project` interceptor.
+        When both interceptors are used, this `post_create_target_project_with_metadata` interceptor runs after the
+        `post_create_target_project` interceptor. The (possibly modified) response returned by
+        `post_create_target_project` will be passed to
+        `post_create_target_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_utilization_report(
         self,
@@ -715,11 +945,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_utilization_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_utilization_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_utilization_report` interceptor runs
+        before the `post_create_utilization_report_with_metadata` interceptor.
         """
         return response
+
+    def post_create_utilization_report_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_utilization_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_create_utilization_report_with_metadata`
+        interceptor in new development instead of the `post_create_utilization_report` interceptor.
+        When both interceptors are used, this `post_create_utilization_report_with_metadata` interceptor runs after the
+        `post_create_utilization_report` interceptor. The (possibly modified) response returned by
+        `post_create_utilization_report` will be passed to
+        `post_create_utilization_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_datacenter_connector(
         self,
@@ -741,11 +994,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_datacenter_connector
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_datacenter_connector_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_datacenter_connector` interceptor runs
+        before the `post_delete_datacenter_connector_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_datacenter_connector_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_datacenter_connector
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_delete_datacenter_connector_with_metadata`
+        interceptor in new development instead of the `post_delete_datacenter_connector` interceptor.
+        When both interceptors are used, this `post_delete_datacenter_connector_with_metadata` interceptor runs after the
+        `post_delete_datacenter_connector` interceptor. The (possibly modified) response returned by
+        `post_delete_datacenter_connector` will be passed to
+        `post_delete_datacenter_connector_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_group(
         self,
@@ -764,11 +1040,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_group` interceptor runs
+        before the `post_delete_group_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_delete_group_with_metadata`
+        interceptor in new development instead of the `post_delete_group` interceptor.
+        When both interceptors are used, this `post_delete_group_with_metadata` interceptor runs after the
+        `post_delete_group` interceptor. The (possibly modified) response returned by
+        `post_delete_group` will be passed to
+        `post_delete_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_migrating_vm(
         self,
@@ -789,11 +1088,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_migrating_vm
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_migrating_vm_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_migrating_vm` interceptor runs
+        before the `post_delete_migrating_vm_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_migrating_vm_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_migrating_vm
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_delete_migrating_vm_with_metadata`
+        interceptor in new development instead of the `post_delete_migrating_vm` interceptor.
+        When both interceptors are used, this `post_delete_migrating_vm_with_metadata` interceptor runs after the
+        `post_delete_migrating_vm` interceptor. The (possibly modified) response returned by
+        `post_delete_migrating_vm` will be passed to
+        `post_delete_migrating_vm_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_source(
         self,
@@ -814,11 +1136,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_source` interceptor runs
+        before the `post_delete_source_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_source_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_delete_source_with_metadata`
+        interceptor in new development instead of the `post_delete_source` interceptor.
+        When both interceptors are used, this `post_delete_source_with_metadata` interceptor runs after the
+        `post_delete_source` interceptor. The (possibly modified) response returned by
+        `post_delete_source` will be passed to
+        `post_delete_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_target_project(
         self,
@@ -839,11 +1184,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_target_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_target_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_target_project` interceptor runs
+        before the `post_delete_target_project_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_target_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_target_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_delete_target_project_with_metadata`
+        interceptor in new development instead of the `post_delete_target_project` interceptor.
+        When both interceptors are used, this `post_delete_target_project_with_metadata` interceptor runs after the
+        `post_delete_target_project` interceptor. The (possibly modified) response returned by
+        `post_delete_target_project` will be passed to
+        `post_delete_target_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_utilization_report(
         self,
@@ -865,11 +1233,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_utilization_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_utilization_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_utilization_report` interceptor runs
+        before the `post_delete_utilization_report_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_utilization_report_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_utilization_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_delete_utilization_report_with_metadata`
+        interceptor in new development instead of the `post_delete_utilization_report` interceptor.
+        When both interceptors are used, this `post_delete_utilization_report_with_metadata` interceptor runs after the
+        `post_delete_utilization_report` interceptor. The (possibly modified) response returned by
+        `post_delete_utilization_report` will be passed to
+        `post_delete_utilization_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_inventory(
         self,
@@ -890,11 +1281,36 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.FetchInventoryResponse:
         """Post-rpc interceptor for fetch_inventory
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_inventory_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_inventory` interceptor runs
+        before the `post_fetch_inventory_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_inventory_with_metadata(
+        self,
+        response: vmmigration.FetchInventoryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.FetchInventoryResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_inventory
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_inventory_with_metadata`
+        interceptor in new development instead of the `post_fetch_inventory` interceptor.
+        When both interceptors are used, this `post_fetch_inventory_with_metadata` interceptor runs after the
+        `post_fetch_inventory` interceptor. The (possibly modified) response returned by
+        `post_fetch_inventory` will be passed to
+        `post_fetch_inventory_with_metadata`.
+        """
+        return response, metadata
 
     def pre_finalize_migration(
         self,
@@ -915,11 +1331,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for finalize_migration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_finalize_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_finalize_migration` interceptor runs
+        before the `post_finalize_migration_with_metadata` interceptor.
         """
         return response
+
+    def post_finalize_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for finalize_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_finalize_migration_with_metadata`
+        interceptor in new development instead of the `post_finalize_migration` interceptor.
+        When both interceptors are used, this `post_finalize_migration_with_metadata` interceptor runs after the
+        `post_finalize_migration` interceptor. The (possibly modified) response returned by
+        `post_finalize_migration` will be passed to
+        `post_finalize_migration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_clone_job(
         self,
@@ -938,11 +1377,34 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.CloneJob:
         """Post-rpc interceptor for get_clone_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_clone_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_clone_job` interceptor runs
+        before the `post_get_clone_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_clone_job_with_metadata(
+        self,
+        response: vmmigration.CloneJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.CloneJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_clone_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_clone_job_with_metadata`
+        interceptor in new development instead of the `post_get_clone_job` interceptor.
+        When both interceptors are used, this `post_get_clone_job_with_metadata` interceptor runs after the
+        `post_get_clone_job` interceptor. The (possibly modified) response returned by
+        `post_get_clone_job` will be passed to
+        `post_get_clone_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cutover_job(
         self,
@@ -963,11 +1425,34 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.CutoverJob:
         """Post-rpc interceptor for get_cutover_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cutover_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cutover_job` interceptor runs
+        before the `post_get_cutover_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cutover_job_with_metadata(
+        self,
+        response: vmmigration.CutoverJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.CutoverJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cutover_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_cutover_job_with_metadata`
+        interceptor in new development instead of the `post_get_cutover_job` interceptor.
+        When both interceptors are used, this `post_get_cutover_job_with_metadata` interceptor runs after the
+        `post_get_cutover_job` interceptor. The (possibly modified) response returned by
+        `post_get_cutover_job` will be passed to
+        `post_get_cutover_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_datacenter_connector(
         self,
@@ -989,11 +1474,36 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.DatacenterConnector:
         """Post-rpc interceptor for get_datacenter_connector
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_datacenter_connector_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_datacenter_connector` interceptor runs
+        before the `post_get_datacenter_connector_with_metadata` interceptor.
         """
         return response
+
+    def post_get_datacenter_connector_with_metadata(
+        self,
+        response: vmmigration.DatacenterConnector,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.DatacenterConnector, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_datacenter_connector
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_datacenter_connector_with_metadata`
+        interceptor in new development instead of the `post_get_datacenter_connector` interceptor.
+        When both interceptors are used, this `post_get_datacenter_connector_with_metadata` interceptor runs after the
+        `post_get_datacenter_connector` interceptor. The (possibly modified) response returned by
+        `post_get_datacenter_connector` will be passed to
+        `post_get_datacenter_connector_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_group(
         self,
@@ -1010,11 +1520,34 @@ class VmMigrationRestInterceptor:
     def post_get_group(self, response: vmmigration.Group) -> vmmigration.Group:
         """Post-rpc interceptor for get_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_group` interceptor runs
+        before the `post_get_group_with_metadata` interceptor.
         """
         return response
+
+    def post_get_group_with_metadata(
+        self,
+        response: vmmigration.Group,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.Group, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_group_with_metadata`
+        interceptor in new development instead of the `post_get_group` interceptor.
+        When both interceptors are used, this `post_get_group_with_metadata` interceptor runs after the
+        `post_get_group` interceptor. The (possibly modified) response returned by
+        `post_get_group` will be passed to
+        `post_get_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_migrating_vm(
         self,
@@ -1035,11 +1568,34 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.MigratingVm:
         """Post-rpc interceptor for get_migrating_vm
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_migrating_vm_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_migrating_vm` interceptor runs
+        before the `post_get_migrating_vm_with_metadata` interceptor.
         """
         return response
+
+    def post_get_migrating_vm_with_metadata(
+        self,
+        response: vmmigration.MigratingVm,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.MigratingVm, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_migrating_vm
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_migrating_vm_with_metadata`
+        interceptor in new development instead of the `post_get_migrating_vm` interceptor.
+        When both interceptors are used, this `post_get_migrating_vm_with_metadata` interceptor runs after the
+        `post_get_migrating_vm` interceptor. The (possibly modified) response returned by
+        `post_get_migrating_vm` will be passed to
+        `post_get_migrating_vm_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_replication_cycle(
         self,
@@ -1060,11 +1616,34 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ReplicationCycle:
         """Post-rpc interceptor for get_replication_cycle
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_replication_cycle_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_replication_cycle` interceptor runs
+        before the `post_get_replication_cycle_with_metadata` interceptor.
         """
         return response
+
+    def post_get_replication_cycle_with_metadata(
+        self,
+        response: vmmigration.ReplicationCycle,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.ReplicationCycle, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_replication_cycle
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_replication_cycle_with_metadata`
+        interceptor in new development instead of the `post_get_replication_cycle` interceptor.
+        When both interceptors are used, this `post_get_replication_cycle_with_metadata` interceptor runs after the
+        `post_get_replication_cycle` interceptor. The (possibly modified) response returned by
+        `post_get_replication_cycle` will be passed to
+        `post_get_replication_cycle_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_source(
         self,
@@ -1081,11 +1660,34 @@ class VmMigrationRestInterceptor:
     def post_get_source(self, response: vmmigration.Source) -> vmmigration.Source:
         """Post-rpc interceptor for get_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_source` interceptor runs
+        before the `post_get_source_with_metadata` interceptor.
         """
         return response
+
+    def post_get_source_with_metadata(
+        self,
+        response: vmmigration.Source,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.Source, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_source_with_metadata`
+        interceptor in new development instead of the `post_get_source` interceptor.
+        When both interceptors are used, this `post_get_source_with_metadata` interceptor runs after the
+        `post_get_source` interceptor. The (possibly modified) response returned by
+        `post_get_source` will be passed to
+        `post_get_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_target_project(
         self,
@@ -1106,11 +1708,34 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.TargetProject:
         """Post-rpc interceptor for get_target_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_target_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_target_project` interceptor runs
+        before the `post_get_target_project_with_metadata` interceptor.
         """
         return response
+
+    def post_get_target_project_with_metadata(
+        self,
+        response: vmmigration.TargetProject,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.TargetProject, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_target_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_target_project_with_metadata`
+        interceptor in new development instead of the `post_get_target_project` interceptor.
+        When both interceptors are used, this `post_get_target_project_with_metadata` interceptor runs after the
+        `post_get_target_project` interceptor. The (possibly modified) response returned by
+        `post_get_target_project` will be passed to
+        `post_get_target_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_utilization_report(
         self,
@@ -1131,11 +1756,34 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.UtilizationReport:
         """Post-rpc interceptor for get_utilization_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_utilization_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_utilization_report` interceptor runs
+        before the `post_get_utilization_report_with_metadata` interceptor.
         """
         return response
+
+    def post_get_utilization_report_with_metadata(
+        self,
+        response: vmmigration.UtilizationReport,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.UtilizationReport, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_utilization_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_get_utilization_report_with_metadata`
+        interceptor in new development instead of the `post_get_utilization_report` interceptor.
+        When both interceptors are used, this `post_get_utilization_report_with_metadata` interceptor runs after the
+        `post_get_utilization_report` interceptor. The (possibly modified) response returned by
+        `post_get_utilization_report` will be passed to
+        `post_get_utilization_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clone_jobs(
         self,
@@ -1156,11 +1804,36 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListCloneJobsResponse:
         """Post-rpc interceptor for list_clone_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clone_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clone_jobs` interceptor runs
+        before the `post_list_clone_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clone_jobs_with_metadata(
+        self,
+        response: vmmigration.ListCloneJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListCloneJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_clone_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_clone_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_clone_jobs` interceptor.
+        When both interceptors are used, this `post_list_clone_jobs_with_metadata` interceptor runs after the
+        `post_list_clone_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_clone_jobs` will be passed to
+        `post_list_clone_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_cutover_jobs(
         self,
@@ -1181,11 +1854,36 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListCutoverJobsResponse:
         """Post-rpc interceptor for list_cutover_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_cutover_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_cutover_jobs` interceptor runs
+        before the `post_list_cutover_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_cutover_jobs_with_metadata(
+        self,
+        response: vmmigration.ListCutoverJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListCutoverJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_cutover_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_cutover_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_cutover_jobs` interceptor.
+        When both interceptors are used, this `post_list_cutover_jobs_with_metadata` interceptor runs after the
+        `post_list_cutover_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_cutover_jobs` will be passed to
+        `post_list_cutover_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_datacenter_connectors(
         self,
@@ -1207,11 +1905,37 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListDatacenterConnectorsResponse:
         """Post-rpc interceptor for list_datacenter_connectors
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_datacenter_connectors_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_datacenter_connectors` interceptor runs
+        before the `post_list_datacenter_connectors_with_metadata` interceptor.
         """
         return response
+
+    def post_list_datacenter_connectors_with_metadata(
+        self,
+        response: vmmigration.ListDatacenterConnectorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListDatacenterConnectorsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_datacenter_connectors
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_datacenter_connectors_with_metadata`
+        interceptor in new development instead of the `post_list_datacenter_connectors` interceptor.
+        When both interceptors are used, this `post_list_datacenter_connectors_with_metadata` interceptor runs after the
+        `post_list_datacenter_connectors` interceptor. The (possibly modified) response returned by
+        `post_list_datacenter_connectors` will be passed to
+        `post_list_datacenter_connectors_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_groups(
         self,
@@ -1230,11 +1954,34 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListGroupsResponse:
         """Post-rpc interceptor for list_groups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_groups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_groups` interceptor runs
+        before the `post_list_groups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_groups_with_metadata(
+        self,
+        response: vmmigration.ListGroupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmmigration.ListGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_groups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_groups_with_metadata`
+        interceptor in new development instead of the `post_list_groups` interceptor.
+        When both interceptors are used, this `post_list_groups_with_metadata` interceptor runs after the
+        `post_list_groups` interceptor. The (possibly modified) response returned by
+        `post_list_groups` will be passed to
+        `post_list_groups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_migrating_vms(
         self,
@@ -1255,11 +2002,36 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListMigratingVmsResponse:
         """Post-rpc interceptor for list_migrating_vms
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_migrating_vms_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_migrating_vms` interceptor runs
+        before the `post_list_migrating_vms_with_metadata` interceptor.
         """
         return response
+
+    def post_list_migrating_vms_with_metadata(
+        self,
+        response: vmmigration.ListMigratingVmsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListMigratingVmsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_migrating_vms
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_migrating_vms_with_metadata`
+        interceptor in new development instead of the `post_list_migrating_vms` interceptor.
+        When both interceptors are used, this `post_list_migrating_vms_with_metadata` interceptor runs after the
+        `post_list_migrating_vms` interceptor. The (possibly modified) response returned by
+        `post_list_migrating_vms` will be passed to
+        `post_list_migrating_vms_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_replication_cycles(
         self,
@@ -1281,11 +2053,37 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListReplicationCyclesResponse:
         """Post-rpc interceptor for list_replication_cycles
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_replication_cycles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_replication_cycles` interceptor runs
+        before the `post_list_replication_cycles_with_metadata` interceptor.
         """
         return response
+
+    def post_list_replication_cycles_with_metadata(
+        self,
+        response: vmmigration.ListReplicationCyclesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListReplicationCyclesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_replication_cycles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_replication_cycles_with_metadata`
+        interceptor in new development instead of the `post_list_replication_cycles` interceptor.
+        When both interceptors are used, this `post_list_replication_cycles_with_metadata` interceptor runs after the
+        `post_list_replication_cycles` interceptor. The (possibly modified) response returned by
+        `post_list_replication_cycles` will be passed to
+        `post_list_replication_cycles_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_sources(
         self,
@@ -1304,11 +2102,36 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListSourcesResponse:
         """Post-rpc interceptor for list_sources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_sources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_sources` interceptor runs
+        before the `post_list_sources_with_metadata` interceptor.
         """
         return response
+
+    def post_list_sources_with_metadata(
+        self,
+        response: vmmigration.ListSourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_sources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_sources_with_metadata`
+        interceptor in new development instead of the `post_list_sources` interceptor.
+        When both interceptors are used, this `post_list_sources_with_metadata` interceptor runs after the
+        `post_list_sources` interceptor. The (possibly modified) response returned by
+        `post_list_sources` will be passed to
+        `post_list_sources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_target_projects(
         self,
@@ -1329,11 +2152,36 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListTargetProjectsResponse:
         """Post-rpc interceptor for list_target_projects
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_target_projects_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_target_projects` interceptor runs
+        before the `post_list_target_projects_with_metadata` interceptor.
         """
         return response
+
+    def post_list_target_projects_with_metadata(
+        self,
+        response: vmmigration.ListTargetProjectsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListTargetProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_target_projects
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_target_projects_with_metadata`
+        interceptor in new development instead of the `post_list_target_projects` interceptor.
+        When both interceptors are used, this `post_list_target_projects_with_metadata` interceptor runs after the
+        `post_list_target_projects` interceptor. The (possibly modified) response returned by
+        `post_list_target_projects` will be passed to
+        `post_list_target_projects_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_utilization_reports(
         self,
@@ -1355,11 +2203,37 @@ class VmMigrationRestInterceptor:
     ) -> vmmigration.ListUtilizationReportsResponse:
         """Post-rpc interceptor for list_utilization_reports
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_utilization_reports_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_utilization_reports` interceptor runs
+        before the `post_list_utilization_reports_with_metadata` interceptor.
         """
         return response
+
+    def post_list_utilization_reports_with_metadata(
+        self,
+        response: vmmigration.ListUtilizationReportsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmmigration.ListUtilizationReportsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_utilization_reports
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_list_utilization_reports_with_metadata`
+        interceptor in new development instead of the `post_list_utilization_reports` interceptor.
+        When both interceptors are used, this `post_list_utilization_reports_with_metadata` interceptor runs after the
+        `post_list_utilization_reports` interceptor. The (possibly modified) response returned by
+        `post_list_utilization_reports` will be passed to
+        `post_list_utilization_reports_with_metadata`.
+        """
+        return response, metadata
 
     def pre_pause_migration(
         self,
@@ -1380,11 +2254,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for pause_migration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_pause_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_pause_migration` interceptor runs
+        before the `post_pause_migration_with_metadata` interceptor.
         """
         return response
+
+    def post_pause_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for pause_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_pause_migration_with_metadata`
+        interceptor in new development instead of the `post_pause_migration` interceptor.
+        When both interceptors are used, this `post_pause_migration_with_metadata` interceptor runs after the
+        `post_pause_migration` interceptor. The (possibly modified) response returned by
+        `post_pause_migration` will be passed to
+        `post_pause_migration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_group_migration(
         self,
@@ -1405,11 +2302,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_group_migration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_remove_group_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_remove_group_migration` interceptor runs
+        before the `post_remove_group_migration_with_metadata` interceptor.
         """
         return response
+
+    def post_remove_group_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for remove_group_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_remove_group_migration_with_metadata`
+        interceptor in new development instead of the `post_remove_group_migration` interceptor.
+        When both interceptors are used, this `post_remove_group_migration_with_metadata` interceptor runs after the
+        `post_remove_group_migration` interceptor. The (possibly modified) response returned by
+        `post_remove_group_migration` will be passed to
+        `post_remove_group_migration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_resume_migration(
         self,
@@ -1430,11 +2350,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for resume_migration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_resume_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_resume_migration` interceptor runs
+        before the `post_resume_migration_with_metadata` interceptor.
         """
         return response
+
+    def post_resume_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for resume_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_resume_migration_with_metadata`
+        interceptor in new development instead of the `post_resume_migration` interceptor.
+        When both interceptors are used, this `post_resume_migration_with_metadata` interceptor runs after the
+        `post_resume_migration` interceptor. The (possibly modified) response returned by
+        `post_resume_migration` will be passed to
+        `post_resume_migration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_migration(
         self,
@@ -1455,11 +2398,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_migration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_migration` interceptor runs
+        before the `post_start_migration_with_metadata` interceptor.
         """
         return response
+
+    def post_start_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_start_migration_with_metadata`
+        interceptor in new development instead of the `post_start_migration` interceptor.
+        When both interceptors are used, this `post_start_migration_with_metadata` interceptor runs after the
+        `post_start_migration` interceptor. The (possibly modified) response returned by
+        `post_start_migration` will be passed to
+        `post_start_migration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_group(
         self,
@@ -1478,11 +2444,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_group` interceptor runs
+        before the `post_update_group_with_metadata` interceptor.
         """
         return response
+
+    def post_update_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_update_group_with_metadata`
+        interceptor in new development instead of the `post_update_group` interceptor.
+        When both interceptors are used, this `post_update_group_with_metadata` interceptor runs after the
+        `post_update_group` interceptor. The (possibly modified) response returned by
+        `post_update_group` will be passed to
+        `post_update_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_migrating_vm(
         self,
@@ -1503,11 +2492,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_migrating_vm
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_migrating_vm_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_migrating_vm` interceptor runs
+        before the `post_update_migrating_vm_with_metadata` interceptor.
         """
         return response
+
+    def post_update_migrating_vm_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_migrating_vm
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_update_migrating_vm_with_metadata`
+        interceptor in new development instead of the `post_update_migrating_vm` interceptor.
+        When both interceptors are used, this `post_update_migrating_vm_with_metadata` interceptor runs after the
+        `post_update_migrating_vm` interceptor. The (possibly modified) response returned by
+        `post_update_migrating_vm` will be passed to
+        `post_update_migrating_vm_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_source(
         self,
@@ -1528,11 +2540,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_source` interceptor runs
+        before the `post_update_source_with_metadata` interceptor.
         """
         return response
+
+    def post_update_source_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_update_source_with_metadata`
+        interceptor in new development instead of the `post_update_source` interceptor.
+        When both interceptors are used, this `post_update_source_with_metadata` interceptor runs after the
+        `post_update_source` interceptor. The (possibly modified) response returned by
+        `post_update_source` will be passed to
+        `post_update_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_target_project(
         self,
@@ -1553,11 +2588,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_target_project
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_target_project_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_target_project` interceptor runs
+        before the `post_update_target_project_with_metadata` interceptor.
         """
         return response
+
+    def post_update_target_project_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_target_project
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_update_target_project_with_metadata`
+        interceptor in new development instead of the `post_update_target_project` interceptor.
+        When both interceptors are used, this `post_update_target_project_with_metadata` interceptor runs after the
+        `post_update_target_project` interceptor. The (possibly modified) response returned by
+        `post_update_target_project` will be passed to
+        `post_update_target_project_with_metadata`.
+        """
+        return response, metadata
 
     def pre_upgrade_appliance(
         self,
@@ -1578,11 +2636,34 @@ class VmMigrationRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_appliance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_upgrade_appliance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmMigration server but before
-        it is returned to user code.
+        it is returned to user code. This `post_upgrade_appliance` interceptor runs
+        before the `post_upgrade_appliance_with_metadata` interceptor.
         """
         return response
+
+    def post_upgrade_appliance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for upgrade_appliance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmMigration server but before it is returned to user code.
+
+        We recommend only using this `post_upgrade_appliance_with_metadata`
+        interceptor in new development instead of the `post_upgrade_appliance` interceptor.
+        When both interceptors are used, this `post_upgrade_appliance_with_metadata` interceptor runs after the
+        `post_upgrade_appliance` interceptor. The (possibly modified) response returned by
+        `post_upgrade_appliance` will be passed to
+        `post_upgrade_appliance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1998,6 +3079,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_add_group_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_group_migration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2148,6 +3233,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_cancel_clone_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_clone_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2298,6 +3387,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_cancel_cutover_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_cutover_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2448,6 +3541,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_clone_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_clone_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2598,6 +3695,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cutover_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cutover_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2752,6 +3853,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_datacenter_connector(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_datacenter_connector_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2906,6 +4011,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3056,6 +4165,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_migrating_vm(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_migrating_vm_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3210,6 +4323,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3360,6 +4477,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_target_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_target_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3510,6 +4631,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_utilization_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_utilization_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3658,6 +4783,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_datacenter_connector(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_datacenter_connector_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3804,6 +4933,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3948,6 +5081,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_migrating_vm(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_migrating_vm_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4094,6 +5231,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4238,6 +5379,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_target_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_target_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4382,6 +5527,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_utilization_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_utilization_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4525,6 +5674,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_inventory(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_inventory_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4677,6 +5830,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_finalize_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_finalize_migration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4835,6 +5992,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_clone_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_clone_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4984,6 +6145,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cutover_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cutover_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5134,6 +6299,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_datacenter_connector(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_datacenter_connector_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5280,6 +6449,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5426,6 +6599,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_migrating_vm(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_migrating_vm_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5572,6 +6749,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_replication_cycle(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_replication_cycle_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5719,6 +6900,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5865,6 +7050,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_target_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_target_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6011,6 +7200,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_utilization_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_utilization_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6156,6 +7349,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clone_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clone_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6303,6 +7500,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_cutover_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_cutover_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6451,6 +7652,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_datacenter_connectors(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_datacenter_connectors_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6600,6 +7805,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_groups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_groups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6745,6 +7954,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_migrating_vms(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_migrating_vms_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6892,6 +8105,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_replication_cycles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_replication_cycles_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7041,6 +8258,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_sources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7186,6 +8407,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_target_projects(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_target_projects_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7333,6 +8558,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_utilization_reports(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_utilization_reports_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7483,6 +8712,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_pause_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_pause_migration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7633,6 +8866,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_remove_group_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_group_migration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7783,6 +9020,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_resume_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_resume_migration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7931,6 +9172,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_migration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8085,6 +9330,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8235,6 +9484,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_migrating_vm(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_migrating_vm_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8389,6 +9642,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8539,6 +9796,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_target_project(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_target_project_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8689,6 +9950,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_upgrade_appliance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_upgrade_appliance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

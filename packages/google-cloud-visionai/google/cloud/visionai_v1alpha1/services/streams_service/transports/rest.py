@@ -277,11 +277,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cluster` interceptor runs
+        before the `post_create_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_cluster` interceptor.
+        When both interceptors are used, this `post_create_cluster_with_metadata` interceptor runs after the
+        `post_create_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_cluster` will be passed to
+        `post_create_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_event(
         self,
@@ -302,11 +325,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_event` interceptor runs
+        before the `post_create_event_with_metadata` interceptor.
         """
         return response
+
+    def post_create_event_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_event_with_metadata`
+        interceptor in new development instead of the `post_create_event` interceptor.
+        When both interceptors are used, this `post_create_event_with_metadata` interceptor runs after the
+        `post_create_event` interceptor. The (possibly modified) response returned by
+        `post_create_event` will be passed to
+        `post_create_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_series(
         self,
@@ -327,11 +373,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_series
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_series_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_series` interceptor runs
+        before the `post_create_series_with_metadata` interceptor.
         """
         return response
+
+    def post_create_series_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_series
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_series_with_metadata`
+        interceptor in new development instead of the `post_create_series` interceptor.
+        When both interceptors are used, this `post_create_series_with_metadata` interceptor runs after the
+        `post_create_series` interceptor. The (possibly modified) response returned by
+        `post_create_series` will be passed to
+        `post_create_series_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_stream(
         self,
@@ -352,11 +421,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_stream` interceptor runs
+        before the `post_create_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_create_stream_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_create_stream_with_metadata`
+        interceptor in new development instead of the `post_create_stream` interceptor.
+        When both interceptors are used, this `post_create_stream_with_metadata` interceptor runs after the
+        `post_create_stream` interceptor. The (possibly modified) response returned by
+        `post_create_stream` will be passed to
+        `post_create_stream_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cluster(
         self,
@@ -377,11 +469,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cluster` interceptor runs
+        before the `post_delete_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_cluster` interceptor.
+        When both interceptors are used, this `post_delete_cluster_with_metadata` interceptor runs after the
+        `post_delete_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_cluster` will be passed to
+        `post_delete_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_event(
         self,
@@ -402,11 +517,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_event` interceptor runs
+        before the `post_delete_event_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_event_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_event_with_metadata`
+        interceptor in new development instead of the `post_delete_event` interceptor.
+        When both interceptors are used, this `post_delete_event_with_metadata` interceptor runs after the
+        `post_delete_event` interceptor. The (possibly modified) response returned by
+        `post_delete_event` will be passed to
+        `post_delete_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_series(
         self,
@@ -427,11 +565,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_series
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_series_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_series` interceptor runs
+        before the `post_delete_series_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_series_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_series
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_series_with_metadata`
+        interceptor in new development instead of the `post_delete_series` interceptor.
+        When both interceptors are used, this `post_delete_series_with_metadata` interceptor runs after the
+        `post_delete_series` interceptor. The (possibly modified) response returned by
+        `post_delete_series` will be passed to
+        `post_delete_series_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_stream(
         self,
@@ -452,11 +613,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_stream` interceptor runs
+        before the `post_delete_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_stream_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_stream_with_metadata`
+        interceptor in new development instead of the `post_delete_stream` interceptor.
+        When both interceptors are used, this `post_delete_stream_with_metadata` interceptor runs after the
+        `post_delete_stream` interceptor. The (possibly modified) response returned by
+        `post_delete_stream` will be passed to
+        `post_delete_stream_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_stream_hls_token(
         self,
@@ -478,11 +662,37 @@ class StreamsServiceRestInterceptor:
     ) -> streams_service.GenerateStreamHlsTokenResponse:
         """Post-rpc interceptor for generate_stream_hls_token
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_stream_hls_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_stream_hls_token` interceptor runs
+        before the `post_generate_stream_hls_token_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_stream_hls_token_with_metadata(
+        self,
+        response: streams_service.GenerateStreamHlsTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.GenerateStreamHlsTokenResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_stream_hls_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_generate_stream_hls_token_with_metadata`
+        interceptor in new development instead of the `post_generate_stream_hls_token` interceptor.
+        When both interceptors are used, this `post_generate_stream_hls_token_with_metadata` interceptor runs after the
+        `post_generate_stream_hls_token` interceptor. The (possibly modified) response returned by
+        `post_generate_stream_hls_token` will be passed to
+        `post_generate_stream_hls_token_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cluster(
         self,
@@ -501,11 +711,34 @@ class StreamsServiceRestInterceptor:
     def post_get_cluster(self, response: common.Cluster) -> common.Cluster:
         """Post-rpc interceptor for get_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cluster` interceptor runs
+        before the `post_get_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cluster_with_metadata(
+        self,
+        response: common.Cluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[common.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_cluster` interceptor.
+        When both interceptors are used, this `post_get_cluster_with_metadata` interceptor runs after the
+        `post_get_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_cluster` will be passed to
+        `post_get_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_event(
         self,
@@ -526,11 +759,34 @@ class StreamsServiceRestInterceptor:
     ) -> streams_resources.Event:
         """Post-rpc interceptor for get_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_event` interceptor runs
+        before the `post_get_event_with_metadata` interceptor.
         """
         return response
+
+    def post_get_event_with_metadata(
+        self,
+        response: streams_resources.Event,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[streams_resources.Event, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_event_with_metadata`
+        interceptor in new development instead of the `post_get_event` interceptor.
+        When both interceptors are used, this `post_get_event_with_metadata` interceptor runs after the
+        `post_get_event` interceptor. The (possibly modified) response returned by
+        `post_get_event` will be passed to
+        `post_get_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_series(
         self,
@@ -551,11 +807,34 @@ class StreamsServiceRestInterceptor:
     ) -> streams_resources.Series:
         """Post-rpc interceptor for get_series
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_series_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_series` interceptor runs
+        before the `post_get_series_with_metadata` interceptor.
         """
         return response
+
+    def post_get_series_with_metadata(
+        self,
+        response: streams_resources.Series,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[streams_resources.Series, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_series
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_series_with_metadata`
+        interceptor in new development instead of the `post_get_series` interceptor.
+        When both interceptors are used, this `post_get_series_with_metadata` interceptor runs after the
+        `post_get_series` interceptor. The (possibly modified) response returned by
+        `post_get_series` will be passed to
+        `post_get_series_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_stream(
         self,
@@ -576,11 +855,34 @@ class StreamsServiceRestInterceptor:
     ) -> streams_resources.Stream:
         """Post-rpc interceptor for get_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_stream` interceptor runs
+        before the `post_get_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_get_stream_with_metadata(
+        self,
+        response: streams_resources.Stream,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[streams_resources.Stream, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_get_stream_with_metadata`
+        interceptor in new development instead of the `post_get_stream` interceptor.
+        When both interceptors are used, this `post_get_stream_with_metadata` interceptor runs after the
+        `post_get_stream` interceptor. The (possibly modified) response returned by
+        `post_get_stream` will be passed to
+        `post_get_stream_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clusters(
         self,
@@ -601,11 +903,36 @@ class StreamsServiceRestInterceptor:
     ) -> streams_service.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clusters` interceptor runs
+        before the `post_list_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clusters_with_metadata(
+        self,
+        response: streams_service.ListClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_clusters` interceptor.
+        When both interceptors are used, this `post_list_clusters_with_metadata` interceptor runs after the
+        `post_list_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_clusters` will be passed to
+        `post_list_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_events(
         self,
@@ -626,11 +953,36 @@ class StreamsServiceRestInterceptor:
     ) -> streams_service.ListEventsResponse:
         """Post-rpc interceptor for list_events
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_events_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_events` interceptor runs
+        before the `post_list_events_with_metadata` interceptor.
         """
         return response
+
+    def post_list_events_with_metadata(
+        self,
+        response: streams_service.ListEventsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_events
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_events_with_metadata`
+        interceptor in new development instead of the `post_list_events` interceptor.
+        When both interceptors are used, this `post_list_events_with_metadata` interceptor runs after the
+        `post_list_events` interceptor. The (possibly modified) response returned by
+        `post_list_events` will be passed to
+        `post_list_events_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_series(
         self,
@@ -651,11 +1003,36 @@ class StreamsServiceRestInterceptor:
     ) -> streams_service.ListSeriesResponse:
         """Post-rpc interceptor for list_series
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_series_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_series` interceptor runs
+        before the `post_list_series_with_metadata` interceptor.
         """
         return response
+
+    def post_list_series_with_metadata(
+        self,
+        response: streams_service.ListSeriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListSeriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_series
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_series_with_metadata`
+        interceptor in new development instead of the `post_list_series` interceptor.
+        When both interceptors are used, this `post_list_series_with_metadata` interceptor runs after the
+        `post_list_series` interceptor. The (possibly modified) response returned by
+        `post_list_series` will be passed to
+        `post_list_series_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_streams(
         self,
@@ -676,11 +1053,36 @@ class StreamsServiceRestInterceptor:
     ) -> streams_service.ListStreamsResponse:
         """Post-rpc interceptor for list_streams
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_streams_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_streams` interceptor runs
+        before the `post_list_streams_with_metadata` interceptor.
         """
         return response
+
+    def post_list_streams_with_metadata(
+        self,
+        response: streams_service.ListStreamsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streams_service.ListStreamsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_streams
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_list_streams_with_metadata`
+        interceptor in new development instead of the `post_list_streams` interceptor.
+        When both interceptors are used, this `post_list_streams_with_metadata` interceptor runs after the
+        `post_list_streams` interceptor. The (possibly modified) response returned by
+        `post_list_streams` will be passed to
+        `post_list_streams_with_metadata`.
+        """
+        return response, metadata
 
     def pre_materialize_channel(
         self,
@@ -702,11 +1104,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for materialize_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_materialize_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_materialize_channel` interceptor runs
+        before the `post_materialize_channel_with_metadata` interceptor.
         """
         return response
+
+    def post_materialize_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for materialize_channel
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_materialize_channel_with_metadata`
+        interceptor in new development instead of the `post_materialize_channel` interceptor.
+        When both interceptors are used, this `post_materialize_channel_with_metadata` interceptor runs after the
+        `post_materialize_channel` interceptor. The (possibly modified) response returned by
+        `post_materialize_channel` will be passed to
+        `post_materialize_channel_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_cluster(
         self,
@@ -727,11 +1152,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_cluster` interceptor runs
+        before the `post_update_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_update_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_cluster_with_metadata`
+        interceptor in new development instead of the `post_update_cluster` interceptor.
+        When both interceptors are used, this `post_update_cluster_with_metadata` interceptor runs after the
+        `post_update_cluster` interceptor. The (possibly modified) response returned by
+        `post_update_cluster` will be passed to
+        `post_update_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_event(
         self,
@@ -752,11 +1200,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_event` interceptor runs
+        before the `post_update_event_with_metadata` interceptor.
         """
         return response
+
+    def post_update_event_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_event_with_metadata`
+        interceptor in new development instead of the `post_update_event` interceptor.
+        When both interceptors are used, this `post_update_event_with_metadata` interceptor runs after the
+        `post_update_event` interceptor. The (possibly modified) response returned by
+        `post_update_event` will be passed to
+        `post_update_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_series(
         self,
@@ -777,11 +1248,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_series
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_series_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_series` interceptor runs
+        before the `post_update_series_with_metadata` interceptor.
         """
         return response
+
+    def post_update_series_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_series
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_series_with_metadata`
+        interceptor in new development instead of the `post_update_series` interceptor.
+        When both interceptors are used, this `post_update_series_with_metadata` interceptor runs after the
+        `post_update_series` interceptor. The (possibly modified) response returned by
+        `post_update_series` will be passed to
+        `post_update_series_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_stream(
         self,
@@ -802,11 +1296,34 @@ class StreamsServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_stream
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_stream_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamsService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_stream` interceptor runs
+        before the `post_update_stream_with_metadata` interceptor.
         """
         return response
+
+    def post_update_stream_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_stream
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamsService server but before it is returned to user code.
+
+        We recommend only using this `post_update_stream_with_metadata`
+        interceptor in new development instead of the `post_update_stream` interceptor.
+        When both interceptors are used, this `post_update_stream_with_metadata` interceptor runs after the
+        `post_update_stream` interceptor. The (possibly modified) response returned by
+        `post_update_stream` will be passed to
+        `post_update_stream_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1303,6 +1820,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1450,6 +1971,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1597,6 +2122,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_series(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_series_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1744,6 +2273,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1885,6 +2418,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2026,6 +2563,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2167,6 +2708,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_series(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_series_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2308,6 +2853,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2462,6 +3011,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_stream_hls_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_stream_hls_token_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2608,6 +3161,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2752,6 +3309,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2896,6 +3457,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_series(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_series_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3046,6 +3611,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3189,6 +3758,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3336,6 +3909,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_events(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_events_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3483,6 +4060,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_series(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_series_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3628,6 +4209,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_streams(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_streams_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3779,6 +4364,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_materialize_channel(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_materialize_channel_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3926,6 +4515,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4073,6 +4666,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4220,6 +4817,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_series(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_series_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4367,6 +4968,10 @@ class StreamsServiceRestTransport(_BaseStreamsServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_stream(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_stream_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

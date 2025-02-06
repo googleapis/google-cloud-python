@@ -75,6 +75,13 @@ from google.cloud.vision_v1p4beta1.services.product_search import (
 )
 from google.cloud.vision_v1p4beta1.types import geometry, product_search_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -327,6 +334,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ProductSearchClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ProductSearchClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ProductSearchClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -13512,10 +13562,13 @@ def test_create_product_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_create_product_set"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_create_product_set_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_create_product_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.CreateProductSetRequest.pb(
             product_search_service.CreateProductSetRequest()
         )
@@ -13541,6 +13594,7 @@ def test_create_product_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ProductSet()
+        post_with_metadata.return_value = product_search_service.ProductSet(), metadata
 
         client.create_product_set(
             request,
@@ -13552,6 +13606,7 @@ def test_create_product_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_product_sets_rest_bad_request(
@@ -13636,10 +13691,13 @@ def test_list_product_sets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_list_product_sets"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_list_product_sets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_list_product_sets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.ListProductSetsRequest.pb(
             product_search_service.ListProductSetsRequest()
         )
@@ -13665,6 +13723,10 @@ def test_list_product_sets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ListProductSetsResponse()
+        post_with_metadata.return_value = (
+            product_search_service.ListProductSetsResponse(),
+            metadata,
+        )
 
         client.list_product_sets(
             request,
@@ -13676,6 +13738,7 @@ def test_list_product_sets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_product_set_rest_bad_request(
@@ -13762,10 +13825,13 @@ def test_get_product_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_get_product_set"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_get_product_set_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_get_product_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.GetProductSetRequest.pb(
             product_search_service.GetProductSetRequest()
         )
@@ -13791,6 +13857,7 @@ def test_get_product_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ProductSet()
+        post_with_metadata.return_value = product_search_service.ProductSet(), metadata
 
         client.get_product_set(
             request,
@@ -13802,6 +13869,7 @@ def test_get_product_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_product_set_rest_bad_request(
@@ -13980,10 +14048,13 @@ def test_update_product_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_update_product_set"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_update_product_set_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_update_product_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.UpdateProductSetRequest.pb(
             product_search_service.UpdateProductSetRequest()
         )
@@ -14009,6 +14080,7 @@ def test_update_product_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ProductSet()
+        post_with_metadata.return_value = product_search_service.ProductSet(), metadata
 
         client.update_product_set(
             request,
@@ -14020,6 +14092,7 @@ def test_update_product_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_product_set_rest_bad_request(
@@ -14293,10 +14366,13 @@ def test_create_product_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_create_product"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_create_product_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_create_product"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.CreateProductRequest.pb(
             product_search_service.CreateProductRequest()
         )
@@ -14322,6 +14398,7 @@ def test_create_product_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.Product()
+        post_with_metadata.return_value = product_search_service.Product(), metadata
 
         client.create_product(
             request,
@@ -14333,6 +14410,7 @@ def test_create_product_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_products_rest_bad_request(
@@ -14417,10 +14495,13 @@ def test_list_products_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_list_products"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_list_products_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_list_products"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.ListProductsRequest.pb(
             product_search_service.ListProductsRequest()
         )
@@ -14446,6 +14527,10 @@ def test_list_products_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ListProductsResponse()
+        post_with_metadata.return_value = (
+            product_search_service.ListProductsResponse(),
+            metadata,
+        )
 
         client.list_products(
             request,
@@ -14457,6 +14542,7 @@ def test_list_products_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_product_rest_bad_request(
@@ -14547,10 +14633,13 @@ def test_get_product_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_get_product"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_get_product_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_get_product"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.GetProductRequest.pb(
             product_search_service.GetProductRequest()
         )
@@ -14576,6 +14665,7 @@ def test_get_product_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.Product()
+        post_with_metadata.return_value = product_search_service.Product(), metadata
 
         client.get_product(
             request,
@@ -14587,6 +14677,7 @@ def test_get_product_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_product_rest_bad_request(
@@ -14755,10 +14846,13 @@ def test_update_product_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_update_product"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_update_product_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_update_product"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.UpdateProductRequest.pb(
             product_search_service.UpdateProductRequest()
         )
@@ -14784,6 +14878,7 @@ def test_update_product_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.Product()
+        post_with_metadata.return_value = product_search_service.Product(), metadata
 
         client.update_product(
             request,
@@ -14795,6 +14890,7 @@ def test_update_product_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_product_rest_bad_request(
@@ -15069,10 +15165,14 @@ def test_create_reference_image_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_create_reference_image"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor,
+        "post_create_reference_image_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_create_reference_image"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.CreateReferenceImageRequest.pb(
             product_search_service.CreateReferenceImageRequest()
         )
@@ -15098,6 +15198,10 @@ def test_create_reference_image_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ReferenceImage()
+        post_with_metadata.return_value = (
+            product_search_service.ReferenceImage(),
+            metadata,
+        )
 
         client.create_reference_image(
             request,
@@ -15109,6 +15213,7 @@ def test_create_reference_image_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_reference_image_rest_bad_request(
@@ -15310,10 +15415,14 @@ def test_list_reference_images_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_list_reference_images"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor,
+        "post_list_reference_images_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_list_reference_images"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.ListReferenceImagesRequest.pb(
             product_search_service.ListReferenceImagesRequest()
         )
@@ -15339,6 +15448,10 @@ def test_list_reference_images_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ListReferenceImagesResponse()
+        post_with_metadata.return_value = (
+            product_search_service.ListReferenceImagesResponse(),
+            metadata,
+        )
 
         client.list_reference_images(
             request,
@@ -15350,6 +15463,7 @@ def test_list_reference_images_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_reference_image_rest_bad_request(
@@ -15440,10 +15554,14 @@ def test_get_reference_image_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_get_reference_image"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor,
+        "post_get_reference_image_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_get_reference_image"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.GetReferenceImageRequest.pb(
             product_search_service.GetReferenceImageRequest()
         )
@@ -15469,6 +15587,10 @@ def test_get_reference_image_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ReferenceImage()
+        post_with_metadata.return_value = (
+            product_search_service.ReferenceImage(),
+            metadata,
+        )
 
         client.get_reference_image(
             request,
@@ -15480,6 +15602,7 @@ def test_get_reference_image_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_product_to_product_set_rest_bad_request(
@@ -15784,10 +15907,14 @@ def test_list_products_in_product_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_list_products_in_product_set"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor,
+        "post_list_products_in_product_set_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_list_products_in_product_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.ListProductsInProductSetRequest.pb(
             product_search_service.ListProductsInProductSetRequest()
         )
@@ -15813,6 +15940,10 @@ def test_list_products_in_product_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = product_search_service.ListProductsInProductSetResponse()
+        post_with_metadata.return_value = (
+            product_search_service.ListProductsInProductSetResponse(),
+            metadata,
+        )
 
         client.list_products_in_product_set(
             request,
@@ -15824,6 +15955,7 @@ def test_list_products_in_product_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_product_sets_rest_bad_request(
@@ -15904,10 +16036,14 @@ def test_import_product_sets_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_import_product_sets"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor,
+        "post_import_product_sets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_import_product_sets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.ImportProductSetsRequest.pb(
             product_search_service.ImportProductSetsRequest()
         )
@@ -15931,6 +16067,7 @@ def test_import_product_sets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_product_sets(
             request,
@@ -15942,6 +16079,7 @@ def test_import_product_sets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_purge_products_rest_bad_request(
@@ -16022,10 +16160,13 @@ def test_purge_products_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ProductSearchRestInterceptor, "post_purge_products"
     ) as post, mock.patch.object(
+        transports.ProductSearchRestInterceptor, "post_purge_products_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ProductSearchRestInterceptor, "pre_purge_products"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = product_search_service.PurgeProductsRequest.pb(
             product_search_service.PurgeProductsRequest()
         )
@@ -16049,6 +16190,7 @@ def test_purge_products_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.purge_products(
             request,
@@ -16060,6 +16202,7 @@ def test_purge_products_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

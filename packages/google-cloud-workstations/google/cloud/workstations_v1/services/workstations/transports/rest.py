@@ -257,11 +257,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_workstation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workstation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workstation` interceptor runs
+        before the `post_create_workstation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workstation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workstation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_create_workstation_with_metadata`
+        interceptor in new development instead of the `post_create_workstation` interceptor.
+        When both interceptors are used, this `post_create_workstation_with_metadata` interceptor runs after the
+        `post_create_workstation` interceptor. The (possibly modified) response returned by
+        `post_create_workstation` will be passed to
+        `post_create_workstation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_workstation_cluster(
         self,
@@ -283,11 +306,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_workstation_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workstation_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workstation_cluster` interceptor runs
+        before the `post_create_workstation_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workstation_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workstation_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_create_workstation_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_workstation_cluster` interceptor.
+        When both interceptors are used, this `post_create_workstation_cluster_with_metadata` interceptor runs after the
+        `post_create_workstation_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_workstation_cluster` will be passed to
+        `post_create_workstation_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_workstation_config(
         self,
@@ -309,11 +355,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_workstation_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workstation_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workstation_config` interceptor runs
+        before the `post_create_workstation_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workstation_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workstation_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_create_workstation_config_with_metadata`
+        interceptor in new development instead of the `post_create_workstation_config` interceptor.
+        When both interceptors are used, this `post_create_workstation_config_with_metadata` interceptor runs after the
+        `post_create_workstation_config` interceptor. The (possibly modified) response returned by
+        `post_create_workstation_config` will be passed to
+        `post_create_workstation_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_workstation(
         self,
@@ -334,11 +403,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_workstation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_workstation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_workstation` interceptor runs
+        before the `post_delete_workstation_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_workstation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_workstation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_delete_workstation_with_metadata`
+        interceptor in new development instead of the `post_delete_workstation` interceptor.
+        When both interceptors are used, this `post_delete_workstation_with_metadata` interceptor runs after the
+        `post_delete_workstation` interceptor. The (possibly modified) response returned by
+        `post_delete_workstation` will be passed to
+        `post_delete_workstation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_workstation_cluster(
         self,
@@ -360,11 +452,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_workstation_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_workstation_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_workstation_cluster` interceptor runs
+        before the `post_delete_workstation_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_workstation_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_workstation_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_delete_workstation_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_workstation_cluster` interceptor.
+        When both interceptors are used, this `post_delete_workstation_cluster_with_metadata` interceptor runs after the
+        `post_delete_workstation_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_workstation_cluster` will be passed to
+        `post_delete_workstation_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_workstation_config(
         self,
@@ -386,11 +501,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_workstation_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_workstation_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_workstation_config` interceptor runs
+        before the `post_delete_workstation_config_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_workstation_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_workstation_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_delete_workstation_config_with_metadata`
+        interceptor in new development instead of the `post_delete_workstation_config` interceptor.
+        When both interceptors are used, this `post_delete_workstation_config_with_metadata` interceptor runs after the
+        `post_delete_workstation_config` interceptor. The (possibly modified) response returned by
+        `post_delete_workstation_config` will be passed to
+        `post_delete_workstation_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_access_token(
         self,
@@ -411,11 +549,37 @@ class WorkstationsRestInterceptor:
     ) -> workstations.GenerateAccessTokenResponse:
         """Post-rpc interceptor for generate_access_token
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_access_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_access_token` interceptor runs
+        before the `post_generate_access_token_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_access_token_with_metadata(
+        self,
+        response: workstations.GenerateAccessTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.GenerateAccessTokenResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_access_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_generate_access_token_with_metadata`
+        interceptor in new development instead of the `post_generate_access_token` interceptor.
+        When both interceptors are used, this `post_generate_access_token_with_metadata` interceptor runs after the
+        `post_generate_access_token` interceptor. The (possibly modified) response returned by
+        `post_generate_access_token` will be passed to
+        `post_generate_access_token_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workstation(
         self,
@@ -436,11 +600,34 @@ class WorkstationsRestInterceptor:
     ) -> workstations.Workstation:
         """Post-rpc interceptor for get_workstation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workstation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workstation` interceptor runs
+        before the `post_get_workstation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workstation_with_metadata(
+        self,
+        response: workstations.Workstation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[workstations.Workstation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workstation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_get_workstation_with_metadata`
+        interceptor in new development instead of the `post_get_workstation` interceptor.
+        When both interceptors are used, this `post_get_workstation_with_metadata` interceptor runs after the
+        `post_get_workstation` interceptor. The (possibly modified) response returned by
+        `post_get_workstation` will be passed to
+        `post_get_workstation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workstation_cluster(
         self,
@@ -462,11 +649,36 @@ class WorkstationsRestInterceptor:
     ) -> workstations.WorkstationCluster:
         """Post-rpc interceptor for get_workstation_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workstation_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workstation_cluster` interceptor runs
+        before the `post_get_workstation_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workstation_cluster_with_metadata(
+        self,
+        response: workstations.WorkstationCluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.WorkstationCluster, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_workstation_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_get_workstation_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_workstation_cluster` interceptor.
+        When both interceptors are used, this `post_get_workstation_cluster_with_metadata` interceptor runs after the
+        `post_get_workstation_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_workstation_cluster` will be passed to
+        `post_get_workstation_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workstation_config(
         self,
@@ -488,11 +700,34 @@ class WorkstationsRestInterceptor:
     ) -> workstations.WorkstationConfig:
         """Post-rpc interceptor for get_workstation_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workstation_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workstation_config` interceptor runs
+        before the `post_get_workstation_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workstation_config_with_metadata(
+        self,
+        response: workstations.WorkstationConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[workstations.WorkstationConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workstation_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_get_workstation_config_with_metadata`
+        interceptor in new development instead of the `post_get_workstation_config` interceptor.
+        When both interceptors are used, this `post_get_workstation_config_with_metadata` interceptor runs after the
+        `post_get_workstation_config` interceptor. The (possibly modified) response returned by
+        `post_get_workstation_config` will be passed to
+        `post_get_workstation_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_usable_workstation_configs(
         self,
@@ -514,11 +749,37 @@ class WorkstationsRestInterceptor:
     ) -> workstations.ListUsableWorkstationConfigsResponse:
         """Post-rpc interceptor for list_usable_workstation_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_usable_workstation_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_usable_workstation_configs` interceptor runs
+        before the `post_list_usable_workstation_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_usable_workstation_configs_with_metadata(
+        self,
+        response: workstations.ListUsableWorkstationConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListUsableWorkstationConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_usable_workstation_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_list_usable_workstation_configs_with_metadata`
+        interceptor in new development instead of the `post_list_usable_workstation_configs` interceptor.
+        When both interceptors are used, this `post_list_usable_workstation_configs_with_metadata` interceptor runs after the
+        `post_list_usable_workstation_configs` interceptor. The (possibly modified) response returned by
+        `post_list_usable_workstation_configs` will be passed to
+        `post_list_usable_workstation_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_usable_workstations(
         self,
@@ -540,11 +801,37 @@ class WorkstationsRestInterceptor:
     ) -> workstations.ListUsableWorkstationsResponse:
         """Post-rpc interceptor for list_usable_workstations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_usable_workstations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_usable_workstations` interceptor runs
+        before the `post_list_usable_workstations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_usable_workstations_with_metadata(
+        self,
+        response: workstations.ListUsableWorkstationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListUsableWorkstationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_usable_workstations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_list_usable_workstations_with_metadata`
+        interceptor in new development instead of the `post_list_usable_workstations` interceptor.
+        When both interceptors are used, this `post_list_usable_workstations_with_metadata` interceptor runs after the
+        `post_list_usable_workstations` interceptor. The (possibly modified) response returned by
+        `post_list_usable_workstations` will be passed to
+        `post_list_usable_workstations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workstation_clusters(
         self,
@@ -566,11 +853,37 @@ class WorkstationsRestInterceptor:
     ) -> workstations.ListWorkstationClustersResponse:
         """Post-rpc interceptor for list_workstation_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workstation_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workstation_clusters` interceptor runs
+        before the `post_list_workstation_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workstation_clusters_with_metadata(
+        self,
+        response: workstations.ListWorkstationClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListWorkstationClustersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_workstation_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_list_workstation_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_workstation_clusters` interceptor.
+        When both interceptors are used, this `post_list_workstation_clusters_with_metadata` interceptor runs after the
+        `post_list_workstation_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_workstation_clusters` will be passed to
+        `post_list_workstation_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workstation_configs(
         self,
@@ -592,11 +905,37 @@ class WorkstationsRestInterceptor:
     ) -> workstations.ListWorkstationConfigsResponse:
         """Post-rpc interceptor for list_workstation_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workstation_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workstation_configs` interceptor runs
+        before the `post_list_workstation_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workstation_configs_with_metadata(
+        self,
+        response: workstations.ListWorkstationConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListWorkstationConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_workstation_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_list_workstation_configs_with_metadata`
+        interceptor in new development instead of the `post_list_workstation_configs` interceptor.
+        When both interceptors are used, this `post_list_workstation_configs_with_metadata` interceptor runs after the
+        `post_list_workstation_configs` interceptor. The (possibly modified) response returned by
+        `post_list_workstation_configs` will be passed to
+        `post_list_workstation_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workstations(
         self,
@@ -617,11 +956,36 @@ class WorkstationsRestInterceptor:
     ) -> workstations.ListWorkstationsResponse:
         """Post-rpc interceptor for list_workstations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workstations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workstations` interceptor runs
+        before the `post_list_workstations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workstations_with_metadata(
+        self,
+        response: workstations.ListWorkstationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListWorkstationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_workstations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_list_workstations_with_metadata`
+        interceptor in new development instead of the `post_list_workstations` interceptor.
+        When both interceptors are used, this `post_list_workstations_with_metadata` interceptor runs after the
+        `post_list_workstations` interceptor. The (possibly modified) response returned by
+        `post_list_workstations` will be passed to
+        `post_list_workstations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_workstation(
         self,
@@ -642,11 +1006,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_workstation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_workstation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_workstation` interceptor runs
+        before the `post_start_workstation_with_metadata` interceptor.
         """
         return response
+
+    def post_start_workstation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_workstation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_start_workstation_with_metadata`
+        interceptor in new development instead of the `post_start_workstation` interceptor.
+        When both interceptors are used, this `post_start_workstation_with_metadata` interceptor runs after the
+        `post_start_workstation` interceptor. The (possibly modified) response returned by
+        `post_start_workstation` will be passed to
+        `post_start_workstation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop_workstation(
         self,
@@ -667,11 +1054,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_workstation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_workstation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop_workstation` interceptor runs
+        before the `post_stop_workstation_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_workstation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop_workstation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_stop_workstation_with_metadata`
+        interceptor in new development instead of the `post_stop_workstation` interceptor.
+        When both interceptors are used, this `post_stop_workstation_with_metadata` interceptor runs after the
+        `post_stop_workstation` interceptor. The (possibly modified) response returned by
+        `post_stop_workstation` will be passed to
+        `post_stop_workstation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_workstation(
         self,
@@ -692,11 +1102,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_workstation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_workstation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_workstation` interceptor runs
+        before the `post_update_workstation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_workstation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_workstation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_update_workstation_with_metadata`
+        interceptor in new development instead of the `post_update_workstation` interceptor.
+        When both interceptors are used, this `post_update_workstation_with_metadata` interceptor runs after the
+        `post_update_workstation` interceptor. The (possibly modified) response returned by
+        `post_update_workstation` will be passed to
+        `post_update_workstation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_workstation_cluster(
         self,
@@ -718,11 +1151,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_workstation_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_workstation_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_workstation_cluster` interceptor runs
+        before the `post_update_workstation_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_update_workstation_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_workstation_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_update_workstation_cluster_with_metadata`
+        interceptor in new development instead of the `post_update_workstation_cluster` interceptor.
+        When both interceptors are used, this `post_update_workstation_cluster_with_metadata` interceptor runs after the
+        `post_update_workstation_cluster` interceptor. The (possibly modified) response returned by
+        `post_update_workstation_cluster` will be passed to
+        `post_update_workstation_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_workstation_config(
         self,
@@ -744,11 +1200,34 @@ class WorkstationsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_workstation_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_workstation_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Workstations server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_workstation_config` interceptor runs
+        before the `post_update_workstation_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_workstation_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_workstation_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Workstations server but before it is returned to user code.
+
+        We recommend only using this `post_update_workstation_config_with_metadata`
+        interceptor in new development instead of the `post_update_workstation_config` interceptor.
+        When both interceptors are used, this `post_update_workstation_config_with_metadata` interceptor runs after the
+        `post_update_workstation_config` interceptor. The (possibly modified) response returned by
+        `post_update_workstation_config` will be passed to
+        `post_update_workstation_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -1186,6 +1665,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workstation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workstation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1340,6 +1823,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workstation_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workstation_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1491,6 +1978,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workstation_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workstation_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1635,6 +2126,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_workstation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_workstation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1783,6 +2278,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_workstation_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_workstation_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1928,6 +2427,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_workstation_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_workstation_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2079,6 +2582,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_access_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_access_token_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2224,6 +2731,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workstation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workstation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2372,6 +2883,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workstation_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workstation_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2528,6 +3043,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workstation_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workstation_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2677,6 +3196,13 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_usable_workstation_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_usable_workstation_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2826,6 +3352,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_usable_workstations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_usable_workstations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2974,6 +3504,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workstation_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workstation_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3121,6 +3655,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workstation_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workstation_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3267,6 +3805,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workstations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workstations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3418,6 +3960,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_workstation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_workstation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3567,6 +4113,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop_workstation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_workstation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3717,6 +4267,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_workstation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_workstation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3871,6 +4425,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_workstation_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_workstation_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4022,6 +4580,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_workstation_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_workstation_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

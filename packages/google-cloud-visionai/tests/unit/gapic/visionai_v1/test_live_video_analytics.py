@@ -77,6 +77,13 @@ from google.cloud.visionai_v1.services.live_video_analytics import (
 )
 from google.cloud.visionai_v1.types import common, lva, lva_resources, lva_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -346,6 +353,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         LiveVideoAnalyticsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = LiveVideoAnalyticsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = LiveVideoAnalyticsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -12830,10 +12880,14 @@ def test_list_public_operators_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_list_public_operators"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_list_public_operators_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_list_public_operators"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.ListPublicOperatorsRequest.pb(
             lva_service.ListPublicOperatorsRequest()
         )
@@ -12859,6 +12913,10 @@ def test_list_public_operators_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_service.ListPublicOperatorsResponse()
+        post_with_metadata.return_value = (
+            lva_service.ListPublicOperatorsResponse(),
+            metadata,
+        )
 
         client.list_public_operators(
             request,
@@ -12870,6 +12928,7 @@ def test_list_public_operators_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resolve_operator_info_rest_bad_request(
@@ -12951,10 +13010,14 @@ def test_resolve_operator_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_resolve_operator_info"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_resolve_operator_info_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_resolve_operator_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.ResolveOperatorInfoRequest.pb(
             lva_service.ResolveOperatorInfoRequest()
         )
@@ -12980,6 +13043,10 @@ def test_resolve_operator_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_service.ResolveOperatorInfoResponse()
+        post_with_metadata.return_value = (
+            lva_service.ResolveOperatorInfoResponse(),
+            metadata,
+        )
 
         client.resolve_operator_info(
             request,
@@ -12991,6 +13058,7 @@ def test_resolve_operator_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_operators_rest_bad_request(request_type=lva_service.ListOperatorsRequest):
@@ -13075,10 +13143,14 @@ def test_list_operators_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_list_operators"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_list_operators_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_list_operators"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.ListOperatorsRequest.pb(
             lva_service.ListOperatorsRequest()
         )
@@ -13104,6 +13176,7 @@ def test_list_operators_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_service.ListOperatorsResponse()
+        post_with_metadata.return_value = lva_service.ListOperatorsResponse(), metadata
 
         client.list_operators(
             request,
@@ -13115,6 +13188,7 @@ def test_list_operators_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operator_rest_bad_request(request_type=lva_service.GetOperatorRequest):
@@ -13199,10 +13273,13 @@ def test_get_operator_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_get_operator"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor, "post_get_operator_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_get_operator"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.GetOperatorRequest.pb(lva_service.GetOperatorRequest())
         transcode.return_value = {
             "method": "post",
@@ -13224,6 +13301,7 @@ def test_get_operator_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_resources.Operator()
+        post_with_metadata.return_value = lva_resources.Operator(), metadata
 
         client.get_operator(
             request,
@@ -13235,6 +13313,7 @@ def test_get_operator_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_operator_rest_bad_request(
@@ -13416,10 +13495,14 @@ def test_create_operator_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_create_operator"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_create_operator_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_create_operator"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.CreateOperatorRequest.pb(
             lva_service.CreateOperatorRequest()
         )
@@ -13443,6 +13526,7 @@ def test_create_operator_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_operator(
             request,
@@ -13454,6 +13538,7 @@ def test_create_operator_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_operator_rest_bad_request(
@@ -13639,10 +13724,14 @@ def test_update_operator_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_update_operator"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_update_operator_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_update_operator"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.UpdateOperatorRequest.pb(
             lva_service.UpdateOperatorRequest()
         )
@@ -13666,6 +13755,7 @@ def test_update_operator_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_operator(
             request,
@@ -13677,6 +13767,7 @@ def test_update_operator_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_operator_rest_bad_request(
@@ -13757,10 +13848,14 @@ def test_delete_operator_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_delete_operator"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_delete_operator_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_delete_operator"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.DeleteOperatorRequest.pb(
             lva_service.DeleteOperatorRequest()
         )
@@ -13784,6 +13879,7 @@ def test_delete_operator_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_operator(
             request,
@@ -13795,6 +13891,7 @@ def test_delete_operator_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_analyses_rest_bad_request(request_type=lva_service.ListAnalysesRequest):
@@ -13879,10 +13976,13 @@ def test_list_analyses_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_list_analyses"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor, "post_list_analyses_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_list_analyses"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.ListAnalysesRequest.pb(
             lva_service.ListAnalysesRequest()
         )
@@ -13908,6 +14008,7 @@ def test_list_analyses_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_service.ListAnalysesResponse()
+        post_with_metadata.return_value = lva_service.ListAnalysesResponse(), metadata
 
         client.list_analyses(
             request,
@@ -13919,6 +14020,7 @@ def test_list_analyses_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_analysis_rest_bad_request(request_type=lva_service.GetAnalysisRequest):
@@ -14007,10 +14109,13 @@ def test_get_analysis_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_get_analysis"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor, "post_get_analysis_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_get_analysis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.GetAnalysisRequest.pb(lva_service.GetAnalysisRequest())
         transcode.return_value = {
             "method": "post",
@@ -14032,6 +14137,7 @@ def test_get_analysis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_resources.Analysis()
+        post_with_metadata.return_value = lva_resources.Analysis(), metadata
 
         client.get_analysis(
             request,
@@ -14043,6 +14149,7 @@ def test_get_analysis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_analysis_rest_bad_request(
@@ -14214,10 +14321,14 @@ def test_create_analysis_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_create_analysis"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_create_analysis_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_create_analysis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.CreateAnalysisRequest.pb(
             lva_service.CreateAnalysisRequest()
         )
@@ -14241,6 +14352,7 @@ def test_create_analysis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_analysis(
             request,
@@ -14252,6 +14364,7 @@ def test_create_analysis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_analysis_rest_bad_request(
@@ -14431,10 +14544,14 @@ def test_update_analysis_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_update_analysis"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_update_analysis_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_update_analysis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.UpdateAnalysisRequest.pb(
             lva_service.UpdateAnalysisRequest()
         )
@@ -14458,6 +14575,7 @@ def test_update_analysis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_analysis(
             request,
@@ -14469,6 +14587,7 @@ def test_update_analysis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_analysis_rest_bad_request(
@@ -14553,10 +14672,14 @@ def test_delete_analysis_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_delete_analysis"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_delete_analysis_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_delete_analysis"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.DeleteAnalysisRequest.pb(
             lva_service.DeleteAnalysisRequest()
         )
@@ -14580,6 +14703,7 @@ def test_delete_analysis_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_analysis(
             request,
@@ -14591,6 +14715,7 @@ def test_delete_analysis_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_processes_rest_bad_request(request_type=lva_service.ListProcessesRequest):
@@ -14675,10 +14800,14 @@ def test_list_processes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_list_processes"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_list_processes_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_list_processes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.ListProcessesRequest.pb(
             lva_service.ListProcessesRequest()
         )
@@ -14704,6 +14833,7 @@ def test_list_processes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_service.ListProcessesResponse()
+        post_with_metadata.return_value = lva_service.ListProcessesResponse(), metadata
 
         client.list_processes(
             request,
@@ -14715,6 +14845,7 @@ def test_list_processes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_process_rest_bad_request(request_type=lva_service.GetProcessRequest):
@@ -14813,10 +14944,13 @@ def test_get_process_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_get_process"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor, "post_get_process_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_get_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.GetProcessRequest.pb(lva_service.GetProcessRequest())
         transcode.return_value = {
             "method": "post",
@@ -14838,6 +14972,7 @@ def test_get_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lva_resources.Process()
+        post_with_metadata.return_value = lva_resources.Process(), metadata
 
         client.get_process(
             request,
@@ -14849,6 +14984,7 @@ def test_get_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_process_rest_bad_request(request_type=lva_service.CreateProcessRequest):
@@ -15009,10 +15145,14 @@ def test_create_process_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_create_process"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_create_process_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_create_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.CreateProcessRequest.pb(
             lva_service.CreateProcessRequest()
         )
@@ -15036,6 +15176,7 @@ def test_create_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_process(
             request,
@@ -15047,6 +15188,7 @@ def test_create_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_process_rest_bad_request(request_type=lva_service.UpdateProcessRequest):
@@ -15215,10 +15357,14 @@ def test_update_process_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_update_process"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_update_process_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_update_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.UpdateProcessRequest.pb(
             lva_service.UpdateProcessRequest()
         )
@@ -15242,6 +15388,7 @@ def test_update_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_process(
             request,
@@ -15253,6 +15400,7 @@ def test_update_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_process_rest_bad_request(request_type=lva_service.DeleteProcessRequest):
@@ -15335,10 +15483,14 @@ def test_delete_process_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_delete_process"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_delete_process_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_delete_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.DeleteProcessRequest.pb(
             lva_service.DeleteProcessRequest()
         )
@@ -15362,6 +15514,7 @@ def test_delete_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_process(
             request,
@@ -15373,6 +15526,7 @@ def test_delete_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_run_process_rest_bad_request(
@@ -15453,10 +15607,14 @@ def test_batch_run_process_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "post_batch_run_process"
     ) as post, mock.patch.object(
+        transports.LiveVideoAnalyticsRestInterceptor,
+        "post_batch_run_process_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LiveVideoAnalyticsRestInterceptor, "pre_batch_run_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lva_service.BatchRunProcessRequest.pb(
             lva_service.BatchRunProcessRequest()
         )
@@ -15480,6 +15638,7 @@ def test_batch_run_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.batch_run_process(
             request,
@@ -15491,6 +15650,7 @@ def test_batch_run_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

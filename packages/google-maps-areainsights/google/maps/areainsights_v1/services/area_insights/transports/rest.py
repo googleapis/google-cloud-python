@@ -102,11 +102,37 @@ class AreaInsightsRestInterceptor:
     ) -> area_insights_service.ComputeInsightsResponse:
         """Post-rpc interceptor for compute_insights
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compute_insights_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AreaInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compute_insights` interceptor runs
+        before the `post_compute_insights_with_metadata` interceptor.
         """
         return response
+
+    def post_compute_insights_with_metadata(
+        self,
+        response: area_insights_service.ComputeInsightsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        area_insights_service.ComputeInsightsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for compute_insights
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AreaInsights server but before it is returned to user code.
+
+        We recommend only using this `post_compute_insights_with_metadata`
+        interceptor in new development instead of the `post_compute_insights` interceptor.
+        When both interceptors are used, this `post_compute_insights_with_metadata` interceptor runs after the
+        `post_compute_insights` interceptor. The (possibly modified) response returned by
+        `post_compute_insights` will be passed to
+        `post_compute_insights_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -320,6 +346,10 @@ class AreaInsightsRestTransport(_BaseAreaInsightsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_compute_insights(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_compute_insights_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -121,11 +121,34 @@ class StreamingServiceRestInterceptor:
     ) -> streaming_service.Lease:
         """Post-rpc interceptor for acquire_lease
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_acquire_lease_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamingService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_acquire_lease` interceptor runs
+        before the `post_acquire_lease_with_metadata` interceptor.
         """
         return response
+
+    def post_acquire_lease_with_metadata(
+        self,
+        response: streaming_service.Lease,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[streaming_service.Lease, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for acquire_lease
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamingService server but before it is returned to user code.
+
+        We recommend only using this `post_acquire_lease_with_metadata`
+        interceptor in new development instead of the `post_acquire_lease` interceptor.
+        When both interceptors are used, this `post_acquire_lease_with_metadata` interceptor runs after the
+        `post_acquire_lease` interceptor. The (possibly modified) response returned by
+        `post_acquire_lease` will be passed to
+        `post_acquire_lease_with_metadata`.
+        """
+        return response, metadata
 
     def pre_release_lease(
         self,
@@ -146,11 +169,36 @@ class StreamingServiceRestInterceptor:
     ) -> streaming_service.ReleaseLeaseResponse:
         """Post-rpc interceptor for release_lease
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_release_lease_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamingService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_release_lease` interceptor runs
+        before the `post_release_lease_with_metadata` interceptor.
         """
         return response
+
+    def post_release_lease_with_metadata(
+        self,
+        response: streaming_service.ReleaseLeaseResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        streaming_service.ReleaseLeaseResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for release_lease
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamingService server but before it is returned to user code.
+
+        We recommend only using this `post_release_lease_with_metadata`
+        interceptor in new development instead of the `post_release_lease` interceptor.
+        When both interceptors are used, this `post_release_lease_with_metadata` interceptor runs after the
+        `post_release_lease` interceptor. The (possibly modified) response returned by
+        `post_release_lease` will be passed to
+        `post_release_lease_with_metadata`.
+        """
+        return response, metadata
 
     def pre_renew_lease(
         self,
@@ -171,11 +219,34 @@ class StreamingServiceRestInterceptor:
     ) -> streaming_service.Lease:
         """Post-rpc interceptor for renew_lease
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_renew_lease_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the StreamingService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_renew_lease` interceptor runs
+        before the `post_renew_lease_with_metadata` interceptor.
         """
         return response
+
+    def post_renew_lease_with_metadata(
+        self,
+        response: streaming_service.Lease,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[streaming_service.Lease, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for renew_lease
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StreamingService server but before it is returned to user code.
+
+        We recommend only using this `post_renew_lease_with_metadata`
+        interceptor in new development instead of the `post_renew_lease` interceptor.
+        When both interceptors are used, this `post_renew_lease_with_metadata` interceptor runs after the
+        `post_renew_lease` interceptor. The (possibly modified) response returned by
+        `post_renew_lease` will be passed to
+        `post_renew_lease_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -484,6 +555,10 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_acquire_lease(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_acquire_lease_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -666,6 +741,10 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_release_lease(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_release_lease_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -814,6 +893,10 @@ class StreamingServiceRestTransport(_BaseStreamingServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_renew_lease(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_renew_lease_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

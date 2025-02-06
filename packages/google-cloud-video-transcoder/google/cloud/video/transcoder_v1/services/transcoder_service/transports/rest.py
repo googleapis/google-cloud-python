@@ -146,11 +146,32 @@ class TranscoderServiceRestInterceptor:
     def post_create_job(self, response: resources.Job) -> resources.Job:
         """Post-rpc interceptor for create_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranscoderService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_job` interceptor runs
+        before the `post_create_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_job_with_metadata(
+        self, response: resources.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[resources.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranscoderService server but before it is returned to user code.
+
+        We recommend only using this `post_create_job_with_metadata`
+        interceptor in new development instead of the `post_create_job` interceptor.
+        When both interceptors are used, this `post_create_job_with_metadata` interceptor runs after the
+        `post_create_job` interceptor. The (possibly modified) response returned by
+        `post_create_job` will be passed to
+        `post_create_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_job_template(
         self,
@@ -171,11 +192,34 @@ class TranscoderServiceRestInterceptor:
     ) -> resources.JobTemplate:
         """Post-rpc interceptor for create_job_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_job_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranscoderService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_job_template` interceptor runs
+        before the `post_create_job_template_with_metadata` interceptor.
         """
         return response
+
+    def post_create_job_template_with_metadata(
+        self,
+        response: resources.JobTemplate,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.JobTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_job_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranscoderService server but before it is returned to user code.
+
+        We recommend only using this `post_create_job_template_with_metadata`
+        interceptor in new development instead of the `post_create_job_template` interceptor.
+        When both interceptors are used, this `post_create_job_template_with_metadata` interceptor runs after the
+        `post_create_job_template` interceptor. The (possibly modified) response returned by
+        `post_create_job_template` will be passed to
+        `post_create_job_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_job(
         self,
@@ -218,11 +262,32 @@ class TranscoderServiceRestInterceptor:
     def post_get_job(self, response: resources.Job) -> resources.Job:
         """Post-rpc interceptor for get_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranscoderService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_job` interceptor runs
+        before the `post_get_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_job_with_metadata(
+        self, response: resources.Job, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[resources.Job, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranscoderService server but before it is returned to user code.
+
+        We recommend only using this `post_get_job_with_metadata`
+        interceptor in new development instead of the `post_get_job` interceptor.
+        When both interceptors are used, this `post_get_job_with_metadata` interceptor runs after the
+        `post_get_job` interceptor. The (possibly modified) response returned by
+        `post_get_job` will be passed to
+        `post_get_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_job_template(
         self,
@@ -241,11 +306,34 @@ class TranscoderServiceRestInterceptor:
     ) -> resources.JobTemplate:
         """Post-rpc interceptor for get_job_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_job_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranscoderService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_job_template` interceptor runs
+        before the `post_get_job_template_with_metadata` interceptor.
         """
         return response
+
+    def post_get_job_template_with_metadata(
+        self,
+        response: resources.JobTemplate,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.JobTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_job_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranscoderService server but before it is returned to user code.
+
+        We recommend only using this `post_get_job_template_with_metadata`
+        interceptor in new development instead of the `post_get_job_template` interceptor.
+        When both interceptors are used, this `post_get_job_template_with_metadata` interceptor runs after the
+        `post_get_job_template` interceptor. The (possibly modified) response returned by
+        `post_get_job_template` will be passed to
+        `post_get_job_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_jobs(
         self,
@@ -264,11 +352,34 @@ class TranscoderServiceRestInterceptor:
     ) -> services.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranscoderService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_jobs` interceptor runs
+        before the `post_list_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_jobs_with_metadata(
+        self,
+        response: services.ListJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[services.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranscoderService server but before it is returned to user code.
+
+        We recommend only using this `post_list_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_jobs` interceptor.
+        When both interceptors are used, this `post_list_jobs_with_metadata` interceptor runs after the
+        `post_list_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_jobs` will be passed to
+        `post_list_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_job_templates(
         self,
@@ -289,11 +400,36 @@ class TranscoderServiceRestInterceptor:
     ) -> services.ListJobTemplatesResponse:
         """Post-rpc interceptor for list_job_templates
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_job_templates_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TranscoderService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_job_templates` interceptor runs
+        before the `post_list_job_templates_with_metadata` interceptor.
         """
         return response
+
+    def post_list_job_templates_with_metadata(
+        self,
+        response: services.ListJobTemplatesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        services.ListJobTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_job_templates
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TranscoderService server but before it is returned to user code.
+
+        We recommend only using this `post_list_job_templates_with_metadata`
+        interceptor in new development instead of the `post_list_job_templates` interceptor.
+        When both interceptors are used, this `post_list_job_templates_with_metadata` interceptor runs after the
+        `post_list_job_templates` interceptor. The (possibly modified) response returned by
+        `post_list_job_templates` will be passed to
+        `post_list_job_templates_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -511,6 +647,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -661,6 +801,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_job_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_job_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1021,6 +1165,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1165,6 +1313,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_job_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_job_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1307,6 +1459,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1453,6 +1609,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_job_templates(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_job_templates_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
