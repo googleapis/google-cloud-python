@@ -1,2 +1,0 @@
-recursive-include google/cloud/alloydb/connectors *.py
-recursive-include google/cloud/alloydb/connectors_v1 *.py

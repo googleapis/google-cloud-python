@@ -67,6 +67,13 @@ from google.ai.generativelanguage_v1beta.types import (
 from google.ai.generativelanguage_v1beta.types import content
 from google.ai.generativelanguage_v1beta.types import content as gag_content
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -332,6 +339,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         GenerativeServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = GenerativeServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = GenerativeServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4831,10 +4881,14 @@ def test_generate_content_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "post_generate_content"
     ) as post, mock.patch.object(
+        transports.GenerativeServiceRestInterceptor,
+        "post_generate_content_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "pre_generate_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_service.GenerateContentRequest.pb(
             generative_service.GenerateContentRequest()
         )
@@ -4860,6 +4914,10 @@ def test_generate_content_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = generative_service.GenerateContentResponse()
+        post_with_metadata.return_value = (
+            generative_service.GenerateContentResponse(),
+            metadata,
+        )
 
         client.generate_content(
             request,
@@ -4871,6 +4929,7 @@ def test_generate_content_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_answer_rest_bad_request(
@@ -4955,10 +5014,14 @@ def test_generate_answer_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "post_generate_answer"
     ) as post, mock.patch.object(
+        transports.GenerativeServiceRestInterceptor,
+        "post_generate_answer_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "pre_generate_answer"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_service.GenerateAnswerRequest.pb(
             generative_service.GenerateAnswerRequest()
         )
@@ -4984,6 +5047,10 @@ def test_generate_answer_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = generative_service.GenerateAnswerResponse()
+        post_with_metadata.return_value = (
+            generative_service.GenerateAnswerResponse(),
+            metadata,
+        )
 
         client.generate_answer(
             request,
@@ -4995,6 +5062,7 @@ def test_generate_answer_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stream_generate_content_rest_bad_request(
@@ -5083,10 +5151,14 @@ def test_stream_generate_content_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "post_stream_generate_content"
     ) as post, mock.patch.object(
+        transports.GenerativeServiceRestInterceptor,
+        "post_stream_generate_content_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "pre_stream_generate_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_service.GenerateContentRequest.pb(
             generative_service.GenerateContentRequest()
         )
@@ -5112,6 +5184,10 @@ def test_stream_generate_content_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = generative_service.GenerateContentResponse()
+        post_with_metadata.return_value = (
+            generative_service.GenerateContentResponse(),
+            metadata,
+        )
 
         client.stream_generate_content(
             request,
@@ -5123,6 +5199,7 @@ def test_stream_generate_content_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_embed_content_rest_bad_request(
@@ -5204,10 +5281,13 @@ def test_embed_content_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "post_embed_content"
     ) as post, mock.patch.object(
+        transports.GenerativeServiceRestInterceptor, "post_embed_content_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "pre_embed_content"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_service.EmbedContentRequest.pb(
             generative_service.EmbedContentRequest()
         )
@@ -5233,6 +5313,10 @@ def test_embed_content_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = generative_service.EmbedContentResponse()
+        post_with_metadata.return_value = (
+            generative_service.EmbedContentResponse(),
+            metadata,
+        )
 
         client.embed_content(
             request,
@@ -5244,6 +5328,7 @@ def test_embed_content_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_embed_contents_rest_bad_request(
@@ -5325,10 +5410,14 @@ def test_batch_embed_contents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "post_batch_embed_contents"
     ) as post, mock.patch.object(
+        transports.GenerativeServiceRestInterceptor,
+        "post_batch_embed_contents_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "pre_batch_embed_contents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_service.BatchEmbedContentsRequest.pb(
             generative_service.BatchEmbedContentsRequest()
         )
@@ -5354,6 +5443,10 @@ def test_batch_embed_contents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = generative_service.BatchEmbedContentsResponse()
+        post_with_metadata.return_value = (
+            generative_service.BatchEmbedContentsResponse(),
+            metadata,
+        )
 
         client.batch_embed_contents(
             request,
@@ -5365,6 +5458,7 @@ def test_batch_embed_contents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_count_tokens_rest_bad_request(
@@ -5451,10 +5545,13 @@ def test_count_tokens_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "post_count_tokens"
     ) as post, mock.patch.object(
+        transports.GenerativeServiceRestInterceptor, "post_count_tokens_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GenerativeServiceRestInterceptor, "pre_count_tokens"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = generative_service.CountTokensRequest.pb(
             generative_service.CountTokensRequest()
         )
@@ -5480,6 +5577,10 @@ def test_count_tokens_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = generative_service.CountTokensResponse()
+        post_with_metadata.return_value = (
+            generative_service.CountTokensResponse(),
+            metadata,
+        )
 
         client.count_tokens(
             request,
@@ -5491,6 +5592,7 @@ def test_count_tokens_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(
