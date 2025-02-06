@@ -763,7 +763,7 @@ def test_to_datetime_timestamp_inputs(arg, utc, output_in_utc):
         "micros",
     ],
 )
-def test_to_timedelta_with_bf_series(session, unit):
+def test_to_timedelta_with_bf_integer_series(session, unit):
     bf_series = bpd.Series([1, 2, 3], session=session)
     pd_series = pd.Series([1, 2, 3])
 
@@ -774,6 +774,42 @@ def test_to_timedelta_with_bf_series(session, unit):
     )
 
     expected_result = pd.to_timedelta(pd_series, unit)
+    pd.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+def test_to_timedelta_with_bf_float_series_value_rounded_down(session):
+    bf_series = bpd.Series([1.2, 2.9], session=session)
+
+    actual_result = (
+        typing.cast(bpd.Series, bpd.to_timedelta(bf_series, "us"))
+        .to_pandas()
+        .astype("timedelta64[ns]")
+    )
+
+    expected_result = pd.Series([pd.Timedelta(1, "us"), pd.Timedelta(2, "us")])
+    pd.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input",
+    [
+        pytest.param([1, 2, 3], id="list"),
+        pytest.param((1, 2, 3), id="tuple"),
+        pytest.param(pd.Series([1, 2, 3]), id="pandas-series"),
+    ],
+)
+def test_to_timedelta_with_list_like_input(session, input):
+    actual_result = (
+        typing.cast(bpd.Series, bpd.to_timedelta(input, "s", session=session))
+        .to_pandas()
+        .astype("timedelta64[ns]")
+    )
+
+    expected_result = pd.Series(pd.to_timedelta(input, "s"))
     pd.testing.assert_series_equal(
         actual_result, expected_result, check_index_type=False
     )

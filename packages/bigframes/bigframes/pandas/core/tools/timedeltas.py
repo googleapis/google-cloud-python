@@ -18,20 +18,26 @@ from bigframes_vendored.pandas.core.tools import (
     timedeltas as vendored_pandas_timedeltas,
 )
 import pandas as pd
+import pandas.api.types as pdtypes
 
 from bigframes import operations as ops
-from bigframes import series
+from bigframes import series, session
 
 
 def to_timedelta(
-    arg: typing.Union[series.Series, str, int, float],
+    arg,
     unit: typing.Optional[vendored_pandas_timedeltas.UnitChoices] = None,
-) -> typing.Union[series.Series, pd.Timedelta]:
-    if not isinstance(arg, series.Series):
-        return pd.to_timedelta(arg, unit)
+    *,
+    session: typing.Optional[session.Session] = None,
+):
+    if isinstance(arg, series.Series):
+        canonical_unit = "us" if unit is None else _canonicalize_unit(unit)
+        return arg._apply_unary_op(ops.ToTimedeltaOp(canonical_unit))
 
-    canonical_unit = "us" if unit is None else _canonicalize_unit(unit)
-    return arg._apply_unary_op(ops.ToTimedeltaOp(canonical_unit))
+    if pdtypes.is_list_like(arg):
+        return to_timedelta(series.Series(arg), unit, session=session)
+
+    return pd.to_timedelta(arg, unit)
 
 
 to_timedelta.__doc__ = vendored_pandas_timedeltas.to_timedelta.__doc__
