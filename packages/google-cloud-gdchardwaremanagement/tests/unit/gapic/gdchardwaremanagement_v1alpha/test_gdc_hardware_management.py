@@ -79,6 +79,13 @@ from google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management
 )
 from google.cloud.gdchardwaremanagement_v1alpha.types import resources, service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -352,6 +359,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         GDCHardwareManagementClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = GDCHardwareManagementClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = GDCHardwareManagementClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -23747,10 +23797,14 @@ def test_list_orders_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_orders"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_list_orders_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_orders"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListOrdersRequest.pb(service.ListOrdersRequest())
         transcode.return_value = {
             "method": "post",
@@ -23772,6 +23826,7 @@ def test_list_orders_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListOrdersResponse()
+        post_with_metadata.return_value = service.ListOrdersResponse(), metadata
 
         client.list_orders(
             request,
@@ -23783,6 +23838,7 @@ def test_list_orders_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_order_rest_bad_request(request_type=service.GetOrderRequest):
@@ -23881,10 +23937,13 @@ def test_get_order_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_order"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_get_order_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_order"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetOrderRequest.pb(service.GetOrderRequest())
         transcode.return_value = {
             "method": "post",
@@ -23906,6 +23965,7 @@ def test_get_order_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Order()
+        post_with_metadata.return_value = resources.Order(), metadata
 
         client.get_order(
             request,
@@ -23917,6 +23977,7 @@ def test_get_order_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_order_rest_bad_request(request_type=service.CreateOrderRequest):
@@ -24123,10 +24184,14 @@ def test_create_order_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_create_order"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_create_order_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_create_order"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateOrderRequest.pb(service.CreateOrderRequest())
         transcode.return_value = {
             "method": "post",
@@ -24148,6 +24213,7 @@ def test_create_order_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_order(
             request,
@@ -24159,6 +24225,7 @@ def test_create_order_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_order_rest_bad_request(request_type=service.UpdateOrderRequest):
@@ -24369,10 +24436,14 @@ def test_update_order_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_update_order"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_update_order_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_update_order"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateOrderRequest.pb(service.UpdateOrderRequest())
         transcode.return_value = {
             "method": "post",
@@ -24394,6 +24465,7 @@ def test_update_order_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_order(
             request,
@@ -24405,6 +24477,7 @@ def test_update_order_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_order_rest_bad_request(request_type=service.DeleteOrderRequest):
@@ -24483,10 +24556,14 @@ def test_delete_order_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_delete_order"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_delete_order_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_delete_order"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteOrderRequest.pb(service.DeleteOrderRequest())
         transcode.return_value = {
             "method": "post",
@@ -24508,6 +24585,7 @@ def test_delete_order_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_order(
             request,
@@ -24519,6 +24597,7 @@ def test_delete_order_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_submit_order_rest_bad_request(request_type=service.SubmitOrderRequest):
@@ -24597,10 +24676,14 @@ def test_submit_order_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_submit_order"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_submit_order_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_submit_order"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.SubmitOrderRequest.pb(service.SubmitOrderRequest())
         transcode.return_value = {
             "method": "post",
@@ -24622,6 +24705,7 @@ def test_submit_order_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.submit_order(
             request,
@@ -24633,6 +24717,7 @@ def test_submit_order_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_sites_rest_bad_request(request_type=service.ListSitesRequest):
@@ -24717,10 +24802,13 @@ def test_list_sites_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_sites"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_list_sites_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_sites"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListSitesRequest.pb(service.ListSitesRequest())
         transcode.return_value = {
             "method": "post",
@@ -24742,6 +24830,7 @@ def test_list_sites_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListSitesResponse()
+        post_with_metadata.return_value = service.ListSitesResponse(), metadata
 
         client.list_sites(
             request,
@@ -24753,6 +24842,7 @@ def test_list_sites_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_site_rest_bad_request(request_type=service.GetSiteRequest):
@@ -24845,10 +24935,13 @@ def test_get_site_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_site"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_get_site_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetSiteRequest.pb(service.GetSiteRequest())
         transcode.return_value = {
             "method": "post",
@@ -24870,6 +24963,7 @@ def test_get_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Site()
+        post_with_metadata.return_value = resources.Site(), metadata
 
         client.get_site(
             request,
@@ -24881,6 +24975,7 @@ def test_get_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_site_rest_bad_request(request_type=service.CreateSiteRequest):
@@ -25076,10 +25171,14 @@ def test_create_site_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_create_site"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_create_site_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_create_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateSiteRequest.pb(service.CreateSiteRequest())
         transcode.return_value = {
             "method": "post",
@@ -25101,6 +25200,7 @@ def test_create_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_site(
             request,
@@ -25112,6 +25212,7 @@ def test_create_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_site_rest_bad_request(request_type=service.UpdateSiteRequest):
@@ -25311,10 +25412,14 @@ def test_update_site_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_update_site"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_update_site_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_update_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateSiteRequest.pb(service.UpdateSiteRequest())
         transcode.return_value = {
             "method": "post",
@@ -25336,6 +25441,7 @@ def test_update_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_site(
             request,
@@ -25347,6 +25453,7 @@ def test_update_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_site_rest_bad_request(request_type=service.DeleteSiteRequest):
@@ -25425,10 +25532,14 @@ def test_delete_site_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_delete_site"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_delete_site_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_delete_site"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteSiteRequest.pb(service.DeleteSiteRequest())
         transcode.return_value = {
             "method": "post",
@@ -25450,6 +25561,7 @@ def test_delete_site_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_site(
             request,
@@ -25461,6 +25573,7 @@ def test_delete_site_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_hardware_groups_rest_bad_request(
@@ -25547,10 +25660,14 @@ def test_list_hardware_groups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_hardware_groups"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_list_hardware_groups_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_hardware_groups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListHardwareGroupsRequest.pb(
             service.ListHardwareGroupsRequest()
         )
@@ -25576,6 +25693,7 @@ def test_list_hardware_groups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListHardwareGroupsResponse()
+        post_with_metadata.return_value = service.ListHardwareGroupsResponse(), metadata
 
         client.list_hardware_groups(
             request,
@@ -25587,6 +25705,7 @@ def test_list_hardware_groups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_hardware_group_rest_bad_request(
@@ -25683,10 +25802,14 @@ def test_get_hardware_group_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_hardware_group"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_get_hardware_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_hardware_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetHardwareGroupRequest.pb(
             service.GetHardwareGroupRequest()
         )
@@ -25710,6 +25833,7 @@ def test_get_hardware_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.HardwareGroup()
+        post_with_metadata.return_value = resources.HardwareGroup(), metadata
 
         client.get_hardware_group(
             request,
@@ -25721,6 +25845,7 @@ def test_get_hardware_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_hardware_group_rest_bad_request(
@@ -25884,10 +26009,14 @@ def test_create_hardware_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_create_hardware_group"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_create_hardware_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_create_hardware_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateHardwareGroupRequest.pb(
             service.CreateHardwareGroupRequest()
         )
@@ -25911,6 +26040,7 @@ def test_create_hardware_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_hardware_group(
             request,
@@ -25922,6 +26052,7 @@ def test_create_hardware_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_hardware_group_rest_bad_request(
@@ -26093,10 +26224,14 @@ def test_update_hardware_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_update_hardware_group"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_update_hardware_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_update_hardware_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateHardwareGroupRequest.pb(
             service.UpdateHardwareGroupRequest()
         )
@@ -26120,6 +26255,7 @@ def test_update_hardware_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_hardware_group(
             request,
@@ -26131,6 +26267,7 @@ def test_update_hardware_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_hardware_group_rest_bad_request(
@@ -26215,10 +26352,14 @@ def test_delete_hardware_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_delete_hardware_group"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_delete_hardware_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_delete_hardware_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteHardwareGroupRequest.pb(
             service.DeleteHardwareGroupRequest()
         )
@@ -26242,6 +26383,7 @@ def test_delete_hardware_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_hardware_group(
             request,
@@ -26253,6 +26395,7 @@ def test_delete_hardware_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_hardware_rest_bad_request(request_type=service.ListHardwareRequest):
@@ -26337,10 +26480,14 @@ def test_list_hardware_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_hardware"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_list_hardware_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_hardware"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListHardwareRequest.pb(service.ListHardwareRequest())
         transcode.return_value = {
             "method": "post",
@@ -26364,6 +26511,7 @@ def test_list_hardware_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListHardwareResponse()
+        post_with_metadata.return_value = service.ListHardwareResponse(), metadata
 
         client.list_hardware(
             request,
@@ -26375,6 +26523,7 @@ def test_list_hardware_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_hardware_rest_bad_request(request_type=service.GetHardwareRequest):
@@ -26471,10 +26620,14 @@ def test_get_hardware_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_hardware"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_get_hardware_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_hardware"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetHardwareRequest.pb(service.GetHardwareRequest())
         transcode.return_value = {
             "method": "post",
@@ -26496,6 +26649,7 @@ def test_get_hardware_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Hardware()
+        post_with_metadata.return_value = resources.Hardware(), metadata
 
         client.get_hardware(
             request,
@@ -26507,6 +26661,7 @@ def test_get_hardware_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_hardware_rest_bad_request(request_type=service.CreateHardwareRequest):
@@ -26714,10 +26869,14 @@ def test_create_hardware_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_create_hardware"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_create_hardware_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_create_hardware"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateHardwareRequest.pb(service.CreateHardwareRequest())
         transcode.return_value = {
             "method": "post",
@@ -26739,6 +26898,7 @@ def test_create_hardware_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_hardware(
             request,
@@ -26750,6 +26910,7 @@ def test_create_hardware_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_hardware_rest_bad_request(request_type=service.UpdateHardwareRequest):
@@ -26961,10 +27122,14 @@ def test_update_hardware_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_update_hardware"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_update_hardware_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_update_hardware"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateHardwareRequest.pb(service.UpdateHardwareRequest())
         transcode.return_value = {
             "method": "post",
@@ -26986,6 +27151,7 @@ def test_update_hardware_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_hardware(
             request,
@@ -26997,6 +27163,7 @@ def test_update_hardware_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_hardware_rest_bad_request(request_type=service.DeleteHardwareRequest):
@@ -27075,10 +27242,14 @@ def test_delete_hardware_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_delete_hardware"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_delete_hardware_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_delete_hardware"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteHardwareRequest.pb(service.DeleteHardwareRequest())
         transcode.return_value = {
             "method": "post",
@@ -27100,6 +27271,7 @@ def test_delete_hardware_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_hardware(
             request,
@@ -27111,6 +27283,7 @@ def test_delete_hardware_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_comments_rest_bad_request(request_type=service.ListCommentsRequest):
@@ -27195,10 +27368,14 @@ def test_list_comments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_comments"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_list_comments_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_comments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListCommentsRequest.pb(service.ListCommentsRequest())
         transcode.return_value = {
             "method": "post",
@@ -27222,6 +27399,7 @@ def test_list_comments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListCommentsResponse()
+        post_with_metadata.return_value = service.ListCommentsResponse(), metadata
 
         client.list_comments(
             request,
@@ -27233,6 +27411,7 @@ def test_list_comments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_comment_rest_bad_request(request_type=service.GetCommentRequest):
@@ -27325,10 +27504,14 @@ def test_get_comment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_comment"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_get_comment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_comment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetCommentRequest.pb(service.GetCommentRequest())
         transcode.return_value = {
             "method": "post",
@@ -27350,6 +27533,7 @@ def test_get_comment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Comment()
+        post_with_metadata.return_value = resources.Comment(), metadata
 
         client.get_comment(
             request,
@@ -27361,6 +27545,7 @@ def test_get_comment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_comment_rest_bad_request(request_type=service.CreateCommentRequest):
@@ -27515,10 +27700,14 @@ def test_create_comment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_create_comment"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_create_comment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_create_comment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateCommentRequest.pb(service.CreateCommentRequest())
         transcode.return_value = {
             "method": "post",
@@ -27540,6 +27729,7 @@ def test_create_comment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_comment(
             request,
@@ -27551,6 +27741,7 @@ def test_create_comment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_record_action_on_comment_rest_bad_request(
@@ -27645,10 +27836,14 @@ def test_record_action_on_comment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_record_action_on_comment"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_record_action_on_comment_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_record_action_on_comment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.RecordActionOnCommentRequest.pb(
             service.RecordActionOnCommentRequest()
         )
@@ -27672,6 +27867,7 @@ def test_record_action_on_comment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Comment()
+        post_with_metadata.return_value = resources.Comment(), metadata
 
         client.record_action_on_comment(
             request,
@@ -27683,6 +27879,7 @@ def test_record_action_on_comment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_change_log_entries_rest_bad_request(
@@ -27769,10 +27966,14 @@ def test_list_change_log_entries_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_change_log_entries"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_list_change_log_entries_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_change_log_entries"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListChangeLogEntriesRequest.pb(
             service.ListChangeLogEntriesRequest()
         )
@@ -27798,6 +27999,10 @@ def test_list_change_log_entries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListChangeLogEntriesResponse()
+        post_with_metadata.return_value = (
+            service.ListChangeLogEntriesResponse(),
+            metadata,
+        )
 
         client.list_change_log_entries(
             request,
@@ -27809,6 +28014,7 @@ def test_list_change_log_entries_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_change_log_entry_rest_bad_request(
@@ -27899,10 +28105,14 @@ def test_get_change_log_entry_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_change_log_entry"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_get_change_log_entry_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_change_log_entry"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetChangeLogEntryRequest.pb(
             service.GetChangeLogEntryRequest()
         )
@@ -27926,6 +28136,7 @@ def test_get_change_log_entry_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ChangeLogEntry()
+        post_with_metadata.return_value = resources.ChangeLogEntry(), metadata
 
         client.get_change_log_entry(
             request,
@@ -27937,6 +28148,7 @@ def test_get_change_log_entry_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_skus_rest_bad_request(request_type=service.ListSkusRequest):
@@ -28021,10 +28233,13 @@ def test_list_skus_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_skus"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_list_skus_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_skus"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListSkusRequest.pb(service.ListSkusRequest())
         transcode.return_value = {
             "method": "post",
@@ -28046,6 +28261,7 @@ def test_list_skus_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListSkusResponse()
+        post_with_metadata.return_value = service.ListSkusResponse(), metadata
 
         client.list_skus(
             request,
@@ -28057,6 +28273,7 @@ def test_list_skus_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_sku_rest_bad_request(request_type=service.GetSkuRequest):
@@ -28151,10 +28368,13 @@ def test_get_sku_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_sku"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_get_sku_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_sku"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetSkuRequest.pb(service.GetSkuRequest())
         transcode.return_value = {
             "method": "post",
@@ -28176,6 +28396,7 @@ def test_get_sku_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Sku()
+        post_with_metadata.return_value = resources.Sku(), metadata
 
         client.get_sku(
             request,
@@ -28187,6 +28408,7 @@ def test_get_sku_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_zones_rest_bad_request(request_type=service.ListZonesRequest):
@@ -28271,10 +28493,13 @@ def test_list_zones_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_list_zones"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_list_zones_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_list_zones"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.ListZonesRequest.pb(service.ListZonesRequest())
         transcode.return_value = {
             "method": "post",
@@ -28296,6 +28521,7 @@ def test_list_zones_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service.ListZonesResponse()
+        post_with_metadata.return_value = service.ListZonesResponse(), metadata
 
         client.list_zones(
             request,
@@ -28307,6 +28533,7 @@ def test_list_zones_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_zone_rest_bad_request(request_type=service.GetZoneRequest):
@@ -28402,10 +28629,13 @@ def test_get_zone_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_get_zone"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor, "post_get_zone_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_get_zone"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.GetZoneRequest.pb(service.GetZoneRequest())
         transcode.return_value = {
             "method": "post",
@@ -28427,6 +28657,7 @@ def test_get_zone_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Zone()
+        post_with_metadata.return_value = resources.Zone(), metadata
 
         client.get_zone(
             request,
@@ -28438,6 +28669,7 @@ def test_get_zone_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_zone_rest_bad_request(request_type=service.CreateZoneRequest):
@@ -28637,10 +28869,14 @@ def test_create_zone_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_create_zone"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_create_zone_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_create_zone"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.CreateZoneRequest.pb(service.CreateZoneRequest())
         transcode.return_value = {
             "method": "post",
@@ -28662,6 +28898,7 @@ def test_create_zone_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_zone(
             request,
@@ -28673,6 +28910,7 @@ def test_create_zone_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_zone_rest_bad_request(request_type=service.UpdateZoneRequest):
@@ -28876,10 +29114,14 @@ def test_update_zone_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_update_zone"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_update_zone_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_update_zone"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.UpdateZoneRequest.pb(service.UpdateZoneRequest())
         transcode.return_value = {
             "method": "post",
@@ -28901,6 +29143,7 @@ def test_update_zone_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_zone(
             request,
@@ -28912,6 +29155,7 @@ def test_update_zone_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_zone_rest_bad_request(request_type=service.DeleteZoneRequest):
@@ -28990,10 +29234,14 @@ def test_delete_zone_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_delete_zone"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_delete_zone_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_delete_zone"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.DeleteZoneRequest.pb(service.DeleteZoneRequest())
         transcode.return_value = {
             "method": "post",
@@ -29015,6 +29263,7 @@ def test_delete_zone_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_zone(
             request,
@@ -29026,6 +29275,7 @@ def test_delete_zone_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_signal_zone_state_rest_bad_request(
@@ -29106,10 +29356,14 @@ def test_signal_zone_state_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "post_signal_zone_state"
     ) as post, mock.patch.object(
+        transports.GDCHardwareManagementRestInterceptor,
+        "post_signal_zone_state_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.GDCHardwareManagementRestInterceptor, "pre_signal_zone_state"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = service.SignalZoneStateRequest.pb(service.SignalZoneStateRequest())
         transcode.return_value = {
             "method": "post",
@@ -29131,6 +29385,7 @@ def test_signal_zone_state_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.signal_zone_state(
             request,
@@ -29142,6 +29397,7 @@ def test_signal_zone_state_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
