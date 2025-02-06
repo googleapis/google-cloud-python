@@ -147,11 +147,34 @@ class IntentsRestInterceptor:
     def post_create_intent(self, response: gcdc_intent.Intent) -> gcdc_intent.Intent:
         """Post-rpc interceptor for create_intent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_intent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Intents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_intent` interceptor runs
+        before the `post_create_intent_with_metadata` interceptor.
         """
         return response
+
+    def post_create_intent_with_metadata(
+        self,
+        response: gcdc_intent.Intent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_intent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Intents server but before it is returned to user code.
+
+        We recommend only using this `post_create_intent_with_metadata`
+        interceptor in new development instead of the `post_create_intent` interceptor.
+        When both interceptors are used, this `post_create_intent_with_metadata` interceptor runs after the
+        `post_create_intent` interceptor. The (possibly modified) response returned by
+        `post_create_intent` will be passed to
+        `post_create_intent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_intent(
         self,
@@ -182,11 +205,34 @@ class IntentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_intents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_intents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Intents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_intents` interceptor runs
+        before the `post_export_intents_with_metadata` interceptor.
         """
         return response
+
+    def post_export_intents_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_intents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Intents server but before it is returned to user code.
+
+        We recommend only using this `post_export_intents_with_metadata`
+        interceptor in new development instead of the `post_export_intents` interceptor.
+        When both interceptors are used, this `post_export_intents_with_metadata` interceptor runs after the
+        `post_export_intents` interceptor. The (possibly modified) response returned by
+        `post_export_intents` will be passed to
+        `post_export_intents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_intent(
         self,
@@ -203,11 +249,32 @@ class IntentsRestInterceptor:
     def post_get_intent(self, response: intent.Intent) -> intent.Intent:
         """Post-rpc interceptor for get_intent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_intent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Intents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_intent` interceptor runs
+        before the `post_get_intent_with_metadata` interceptor.
         """
         return response
+
+    def post_get_intent_with_metadata(
+        self, response: intent.Intent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_intent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Intents server but before it is returned to user code.
+
+        We recommend only using this `post_get_intent_with_metadata`
+        interceptor in new development instead of the `post_get_intent` interceptor.
+        When both interceptors are used, this `post_get_intent_with_metadata` interceptor runs after the
+        `post_get_intent` interceptor. The (possibly modified) response returned by
+        `post_get_intent` will be passed to
+        `post_get_intent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_intents(
         self,
@@ -226,11 +293,34 @@ class IntentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_intents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_intents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Intents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_intents` interceptor runs
+        before the `post_import_intents_with_metadata` interceptor.
         """
         return response
+
+    def post_import_intents_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_intents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Intents server but before it is returned to user code.
+
+        We recommend only using this `post_import_intents_with_metadata`
+        interceptor in new development instead of the `post_import_intents` interceptor.
+        When both interceptors are used, this `post_import_intents_with_metadata` interceptor runs after the
+        `post_import_intents` interceptor. The (possibly modified) response returned by
+        `post_import_intents` will be passed to
+        `post_import_intents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_intents(
         self,
@@ -249,11 +339,34 @@ class IntentsRestInterceptor:
     ) -> intent.ListIntentsResponse:
         """Post-rpc interceptor for list_intents
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_intents_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Intents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_intents` interceptor runs
+        before the `post_list_intents_with_metadata` interceptor.
         """
         return response
+
+    def post_list_intents_with_metadata(
+        self,
+        response: intent.ListIntentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[intent.ListIntentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_intents
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Intents server but before it is returned to user code.
+
+        We recommend only using this `post_list_intents_with_metadata`
+        interceptor in new development instead of the `post_list_intents` interceptor.
+        When both interceptors are used, this `post_list_intents_with_metadata` interceptor runs after the
+        `post_list_intents` interceptor. The (possibly modified) response returned by
+        `post_list_intents` will be passed to
+        `post_list_intents_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_intent(
         self,
@@ -272,11 +385,34 @@ class IntentsRestInterceptor:
     def post_update_intent(self, response: gcdc_intent.Intent) -> gcdc_intent.Intent:
         """Post-rpc interceptor for update_intent
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_intent_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Intents server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_intent` interceptor runs
+        before the `post_update_intent_with_metadata` interceptor.
         """
         return response
+
+    def post_update_intent_with_metadata(
+        self,
+        response: gcdc_intent.Intent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_intent
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Intents server but before it is returned to user code.
+
+        We recommend only using this `post_update_intent_with_metadata`
+        interceptor in new development instead of the `post_update_intent` interceptor.
+        When both interceptors are used, this `post_update_intent_with_metadata` interceptor runs after the
+        `post_update_intent` interceptor. The (possibly modified) response returned by
+        `post_update_intent` will be passed to
+        `post_update_intent_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -681,6 +817,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_intent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_intent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -940,6 +1080,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_intents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_intents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1088,6 +1232,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_intent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_intent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1238,6 +1386,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_intents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_intents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1383,6 +1535,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_intents(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_intents_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1539,6 +1695,10 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_intent(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_intent_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

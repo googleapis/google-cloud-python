@@ -123,11 +123,34 @@ class BatchControllerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_batch
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_batch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_batch` interceptor runs
+        before the `post_create_batch_with_metadata` interceptor.
         """
         return response
+
+    def post_create_batch_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_batch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchController server but before it is returned to user code.
+
+        We recommend only using this `post_create_batch_with_metadata`
+        interceptor in new development instead of the `post_create_batch` interceptor.
+        When both interceptors are used, this `post_create_batch_with_metadata` interceptor runs after the
+        `post_create_batch` interceptor. The (possibly modified) response returned by
+        `post_create_batch` will be passed to
+        `post_create_batch_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_batch(
         self,
@@ -156,11 +179,32 @@ class BatchControllerRestInterceptor:
     def post_get_batch(self, response: batches.Batch) -> batches.Batch:
         """Post-rpc interceptor for get_batch
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_batch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_batch` interceptor runs
+        before the `post_get_batch_with_metadata` interceptor.
         """
         return response
+
+    def post_get_batch_with_metadata(
+        self, response: batches.Batch, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[batches.Batch, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_batch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchController server but before it is returned to user code.
+
+        We recommend only using this `post_get_batch_with_metadata`
+        interceptor in new development instead of the `post_get_batch` interceptor.
+        When both interceptors are used, this `post_get_batch_with_metadata` interceptor runs after the
+        `post_get_batch` interceptor. The (possibly modified) response returned by
+        `post_get_batch` will be passed to
+        `post_get_batch_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_batches(
         self,
@@ -179,11 +223,34 @@ class BatchControllerRestInterceptor:
     ) -> batches.ListBatchesResponse:
         """Post-rpc interceptor for list_batches
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_batches_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BatchController server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_batches` interceptor runs
+        before the `post_list_batches_with_metadata` interceptor.
         """
         return response
+
+    def post_list_batches_with_metadata(
+        self,
+        response: batches.ListBatchesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[batches.ListBatchesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_batches
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BatchController server but before it is returned to user code.
+
+        We recommend only using this `post_list_batches_with_metadata`
+        interceptor in new development instead of the `post_list_batches` interceptor.
+        When both interceptors are used, this `post_list_batches_with_metadata` interceptor runs after the
+        `post_list_batches` interceptor. The (possibly modified) response returned by
+        `post_list_batches` will be passed to
+        `post_list_batches_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_iam_policy(
         self,
@@ -634,6 +701,10 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_batch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_batch_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -887,6 +958,10 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_batch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_batch_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1028,6 +1103,10 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_batches(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_batches_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

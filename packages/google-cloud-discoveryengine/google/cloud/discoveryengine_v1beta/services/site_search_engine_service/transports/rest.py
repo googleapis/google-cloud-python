@@ -219,11 +219,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_create_target_sites
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_create_target_sites_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_create_target_sites` interceptor runs
+        before the `post_batch_create_target_sites_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_create_target_sites_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_create_target_sites
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_target_sites_with_metadata`
+        interceptor in new development instead of the `post_batch_create_target_sites` interceptor.
+        When both interceptors are used, this `post_batch_create_target_sites_with_metadata` interceptor runs after the
+        `post_batch_create_target_sites` interceptor. The (possibly modified) response returned by
+        `post_batch_create_target_sites` will be passed to
+        `post_batch_create_target_sites_with_metadata`.
+        """
+        return response, metadata
 
     def pre_batch_verify_target_sites(
         self,
@@ -245,11 +268,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_verify_target_sites
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_verify_target_sites_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_verify_target_sites` interceptor runs
+        before the `post_batch_verify_target_sites_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_verify_target_sites_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_verify_target_sites
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_verify_target_sites_with_metadata`
+        interceptor in new development instead of the `post_batch_verify_target_sites` interceptor.
+        When both interceptors are used, this `post_batch_verify_target_sites_with_metadata` interceptor runs after the
+        `post_batch_verify_target_sites` interceptor. The (possibly modified) response returned by
+        `post_batch_verify_target_sites` will be passed to
+        `post_batch_verify_target_sites_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_sitemap(
         self,
@@ -271,11 +317,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_sitemap
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_sitemap_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_sitemap` interceptor runs
+        before the `post_create_sitemap_with_metadata` interceptor.
         """
         return response
+
+    def post_create_sitemap_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_sitemap
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_create_sitemap_with_metadata`
+        interceptor in new development instead of the `post_create_sitemap` interceptor.
+        When both interceptors are used, this `post_create_sitemap_with_metadata` interceptor runs after the
+        `post_create_sitemap` interceptor. The (possibly modified) response returned by
+        `post_create_sitemap` will be passed to
+        `post_create_sitemap_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_target_site(
         self,
@@ -297,11 +366,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_target_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_target_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_target_site` interceptor runs
+        before the `post_create_target_site_with_metadata` interceptor.
         """
         return response
+
+    def post_create_target_site_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_target_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_create_target_site_with_metadata`
+        interceptor in new development instead of the `post_create_target_site` interceptor.
+        When both interceptors are used, this `post_create_target_site_with_metadata` interceptor runs after the
+        `post_create_target_site` interceptor. The (possibly modified) response returned by
+        `post_create_target_site` will be passed to
+        `post_create_target_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_sitemap(
         self,
@@ -323,11 +415,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_sitemap
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_sitemap_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_sitemap` interceptor runs
+        before the `post_delete_sitemap_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_sitemap_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_sitemap
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_sitemap_with_metadata`
+        interceptor in new development instead of the `post_delete_sitemap` interceptor.
+        When both interceptors are used, this `post_delete_sitemap_with_metadata` interceptor runs after the
+        `post_delete_sitemap` interceptor. The (possibly modified) response returned by
+        `post_delete_sitemap` will be passed to
+        `post_delete_sitemap_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_target_site(
         self,
@@ -349,11 +464,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_target_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_target_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_target_site` interceptor runs
+        before the `post_delete_target_site_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_target_site_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_target_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_target_site_with_metadata`
+        interceptor in new development instead of the `post_delete_target_site` interceptor.
+        When both interceptors are used, this `post_delete_target_site_with_metadata` interceptor runs after the
+        `post_delete_target_site` interceptor. The (possibly modified) response returned by
+        `post_delete_target_site` will be passed to
+        `post_delete_target_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_disable_advanced_site_search(
         self,
@@ -375,11 +513,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_advanced_site_search
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_disable_advanced_site_search_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_disable_advanced_site_search` interceptor runs
+        before the `post_disable_advanced_site_search_with_metadata` interceptor.
         """
         return response
+
+    def post_disable_advanced_site_search_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_advanced_site_search
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_disable_advanced_site_search_with_metadata`
+        interceptor in new development instead of the `post_disable_advanced_site_search` interceptor.
+        When both interceptors are used, this `post_disable_advanced_site_search_with_metadata` interceptor runs after the
+        `post_disable_advanced_site_search` interceptor. The (possibly modified) response returned by
+        `post_disable_advanced_site_search` will be passed to
+        `post_disable_advanced_site_search_with_metadata`.
+        """
+        return response, metadata
 
     def pre_enable_advanced_site_search(
         self,
@@ -401,11 +562,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_advanced_site_search
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_enable_advanced_site_search_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_enable_advanced_site_search` interceptor runs
+        before the `post_enable_advanced_site_search_with_metadata` interceptor.
         """
         return response
+
+    def post_enable_advanced_site_search_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_advanced_site_search
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_enable_advanced_site_search_with_metadata`
+        interceptor in new development instead of the `post_enable_advanced_site_search` interceptor.
+        When both interceptors are used, this `post_enable_advanced_site_search_with_metadata` interceptor runs after the
+        `post_enable_advanced_site_search` interceptor. The (possibly modified) response returned by
+        `post_enable_advanced_site_search` will be passed to
+        `post_enable_advanced_site_search_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_domain_verification_status(
         self,
@@ -427,11 +611,37 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> site_search_engine_service.FetchDomainVerificationStatusResponse:
         """Post-rpc interceptor for fetch_domain_verification_status
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_domain_verification_status_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_domain_verification_status` interceptor runs
+        before the `post_fetch_domain_verification_status_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_domain_verification_status_with_metadata(
+        self,
+        response: site_search_engine_service.FetchDomainVerificationStatusResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        site_search_engine_service.FetchDomainVerificationStatusResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_domain_verification_status
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_domain_verification_status_with_metadata`
+        interceptor in new development instead of the `post_fetch_domain_verification_status` interceptor.
+        When both interceptors are used, this `post_fetch_domain_verification_status_with_metadata` interceptor runs after the
+        `post_fetch_domain_verification_status` interceptor. The (possibly modified) response returned by
+        `post_fetch_domain_verification_status` will be passed to
+        `post_fetch_domain_verification_status_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_sitemaps(
         self,
@@ -453,11 +663,37 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> site_search_engine_service.FetchSitemapsResponse:
         """Post-rpc interceptor for fetch_sitemaps
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_sitemaps_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_sitemaps` interceptor runs
+        before the `post_fetch_sitemaps_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_sitemaps_with_metadata(
+        self,
+        response: site_search_engine_service.FetchSitemapsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        site_search_engine_service.FetchSitemapsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_sitemaps
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_sitemaps_with_metadata`
+        interceptor in new development instead of the `post_fetch_sitemaps` interceptor.
+        When both interceptors are used, this `post_fetch_sitemaps_with_metadata` interceptor runs after the
+        `post_fetch_sitemaps` interceptor. The (possibly modified) response returned by
+        `post_fetch_sitemaps` will be passed to
+        `post_fetch_sitemaps_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_site_search_engine(
         self,
@@ -479,11 +715,36 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> site_search_engine.SiteSearchEngine:
         """Post-rpc interceptor for get_site_search_engine
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_site_search_engine_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_site_search_engine` interceptor runs
+        before the `post_get_site_search_engine_with_metadata` interceptor.
         """
         return response
+
+    def post_get_site_search_engine_with_metadata(
+        self,
+        response: site_search_engine.SiteSearchEngine,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        site_search_engine.SiteSearchEngine, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_site_search_engine
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_get_site_search_engine_with_metadata`
+        interceptor in new development instead of the `post_get_site_search_engine` interceptor.
+        When both interceptors are used, this `post_get_site_search_engine_with_metadata` interceptor runs after the
+        `post_get_site_search_engine` interceptor. The (possibly modified) response returned by
+        `post_get_site_search_engine` will be passed to
+        `post_get_site_search_engine_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_target_site(
         self,
@@ -505,11 +766,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> site_search_engine.TargetSite:
         """Post-rpc interceptor for get_target_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_target_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_target_site` interceptor runs
+        before the `post_get_target_site_with_metadata` interceptor.
         """
         return response
+
+    def post_get_target_site_with_metadata(
+        self,
+        response: site_search_engine.TargetSite,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[site_search_engine.TargetSite, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_target_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_get_target_site_with_metadata`
+        interceptor in new development instead of the `post_get_target_site` interceptor.
+        When both interceptors are used, this `post_get_target_site_with_metadata` interceptor runs after the
+        `post_get_target_site` interceptor. The (possibly modified) response returned by
+        `post_get_target_site` will be passed to
+        `post_get_target_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_target_sites(
         self,
@@ -531,11 +815,37 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> site_search_engine_service.ListTargetSitesResponse:
         """Post-rpc interceptor for list_target_sites
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_target_sites_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_target_sites` interceptor runs
+        before the `post_list_target_sites_with_metadata` interceptor.
         """
         return response
+
+    def post_list_target_sites_with_metadata(
+        self,
+        response: site_search_engine_service.ListTargetSitesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        site_search_engine_service.ListTargetSitesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_target_sites
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_list_target_sites_with_metadata`
+        interceptor in new development instead of the `post_list_target_sites` interceptor.
+        When both interceptors are used, this `post_list_target_sites_with_metadata` interceptor runs after the
+        `post_list_target_sites` interceptor. The (possibly modified) response returned by
+        `post_list_target_sites` will be passed to
+        `post_list_target_sites_with_metadata`.
+        """
+        return response, metadata
 
     def pre_recrawl_uris(
         self,
@@ -557,11 +867,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for recrawl_uris
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_recrawl_uris_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_recrawl_uris` interceptor runs
+        before the `post_recrawl_uris_with_metadata` interceptor.
         """
         return response
+
+    def post_recrawl_uris_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for recrawl_uris
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_recrawl_uris_with_metadata`
+        interceptor in new development instead of the `post_recrawl_uris` interceptor.
+        When both interceptors are used, this `post_recrawl_uris_with_metadata` interceptor runs after the
+        `post_recrawl_uris` interceptor. The (possibly modified) response returned by
+        `post_recrawl_uris` will be passed to
+        `post_recrawl_uris_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_target_site(
         self,
@@ -583,11 +916,34 @@ class SiteSearchEngineServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_target_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_target_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SiteSearchEngineService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_target_site` interceptor runs
+        before the `post_update_target_site_with_metadata` interceptor.
         """
         return response
+
+    def post_update_target_site_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_target_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SiteSearchEngineService server but before it is returned to user code.
+
+        We recommend only using this `post_update_target_site_with_metadata`
+        interceptor in new development instead of the `post_update_target_site` interceptor.
+        When both interceptors are used, this `post_update_target_site_with_metadata` interceptor runs after the
+        `post_update_target_site` interceptor. The (possibly modified) response returned by
+        `post_update_target_site` will be passed to
+        `post_update_target_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -1043,6 +1399,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_create_target_sites(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_target_sites_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1195,6 +1555,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_verify_target_sites(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_verify_target_sites_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1347,6 +1711,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_sitemap(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_sitemap_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1501,6 +1869,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_target_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_target_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1647,6 +2019,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_sitemap(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_sitemap_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1795,6 +2171,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_target_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_target_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1950,6 +2330,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_disable_advanced_site_search(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_disable_advanced_site_search_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2103,6 +2487,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_enable_advanced_site_search(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_enable_advanced_site_search_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2258,6 +2646,13 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_domain_verification_status(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_fetch_domain_verification_status_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2408,6 +2803,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_sitemaps(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_sitemaps_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2563,6 +2962,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_site_search_engine(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_site_search_engine_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2712,6 +3115,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_target_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_target_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2862,6 +3269,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_target_sites(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_target_sites_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3016,6 +3427,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_recrawl_uris(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_recrawl_uris_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3170,6 +3585,10 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_target_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_target_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

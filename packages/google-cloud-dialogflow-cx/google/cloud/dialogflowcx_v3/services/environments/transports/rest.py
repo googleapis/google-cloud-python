@@ -166,11 +166,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_environment` interceptor runs
+        before the `post_create_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_environment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_create_environment_with_metadata`
+        interceptor in new development instead of the `post_create_environment` interceptor.
+        When both interceptors are used, this `post_create_environment_with_metadata` interceptor runs after the
+        `post_create_environment` interceptor. The (possibly modified) response returned by
+        `post_create_environment` will be passed to
+        `post_create_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_environment(
         self,
@@ -203,11 +226,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_flow
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_deploy_flow_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_deploy_flow` interceptor runs
+        before the `post_deploy_flow_with_metadata` interceptor.
         """
         return response
+
+    def post_deploy_flow_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for deploy_flow
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_deploy_flow_with_metadata`
+        interceptor in new development instead of the `post_deploy_flow` interceptor.
+        When both interceptors are used, this `post_deploy_flow_with_metadata` interceptor runs after the
+        `post_deploy_flow` interceptor. The (possibly modified) response returned by
+        `post_deploy_flow` will be passed to
+        `post_deploy_flow_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_environment(
         self,
@@ -228,11 +274,34 @@ class EnvironmentsRestInterceptor:
     ) -> environment.Environment:
         """Post-rpc interceptor for get_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_environment` interceptor runs
+        before the `post_get_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_environment_with_metadata(
+        self,
+        response: environment.Environment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[environment.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_get_environment_with_metadata`
+        interceptor in new development instead of the `post_get_environment` interceptor.
+        When both interceptors are used, this `post_get_environment_with_metadata` interceptor runs after the
+        `post_get_environment` interceptor. The (possibly modified) response returned by
+        `post_get_environment` will be passed to
+        `post_get_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_continuous_test_results(
         self,
@@ -254,11 +323,37 @@ class EnvironmentsRestInterceptor:
     ) -> environment.ListContinuousTestResultsResponse:
         """Post-rpc interceptor for list_continuous_test_results
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_continuous_test_results_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_continuous_test_results` interceptor runs
+        before the `post_list_continuous_test_results_with_metadata` interceptor.
         """
         return response
+
+    def post_list_continuous_test_results_with_metadata(
+        self,
+        response: environment.ListContinuousTestResultsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environment.ListContinuousTestResultsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_continuous_test_results
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_list_continuous_test_results_with_metadata`
+        interceptor in new development instead of the `post_list_continuous_test_results` interceptor.
+        When both interceptors are used, this `post_list_continuous_test_results_with_metadata` interceptor runs after the
+        `post_list_continuous_test_results` interceptor. The (possibly modified) response returned by
+        `post_list_continuous_test_results` will be passed to
+        `post_list_continuous_test_results_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_environments(
         self,
@@ -279,11 +374,36 @@ class EnvironmentsRestInterceptor:
     ) -> environment.ListEnvironmentsResponse:
         """Post-rpc interceptor for list_environments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_environments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_environments` interceptor runs
+        before the `post_list_environments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_environments_with_metadata(
+        self,
+        response: environment.ListEnvironmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environment.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_environments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_list_environments_with_metadata`
+        interceptor in new development instead of the `post_list_environments` interceptor.
+        When both interceptors are used, this `post_list_environments_with_metadata` interceptor runs after the
+        `post_list_environments` interceptor. The (possibly modified) response returned by
+        `post_list_environments` will be passed to
+        `post_list_environments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_lookup_environment_history(
         self,
@@ -305,11 +425,37 @@ class EnvironmentsRestInterceptor:
     ) -> environment.LookupEnvironmentHistoryResponse:
         """Post-rpc interceptor for lookup_environment_history
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_lookup_environment_history_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_lookup_environment_history` interceptor runs
+        before the `post_lookup_environment_history_with_metadata` interceptor.
         """
         return response
+
+    def post_lookup_environment_history_with_metadata(
+        self,
+        response: environment.LookupEnvironmentHistoryResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environment.LookupEnvironmentHistoryResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for lookup_environment_history
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_lookup_environment_history_with_metadata`
+        interceptor in new development instead of the `post_lookup_environment_history` interceptor.
+        When both interceptors are used, this `post_lookup_environment_history_with_metadata` interceptor runs after the
+        `post_lookup_environment_history` interceptor. The (possibly modified) response returned by
+        `post_lookup_environment_history` will be passed to
+        `post_lookup_environment_history_with_metadata`.
+        """
+        return response, metadata
 
     def pre_run_continuous_test(
         self,
@@ -330,11 +476,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_continuous_test
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_continuous_test_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_continuous_test` interceptor runs
+        before the `post_run_continuous_test_with_metadata` interceptor.
         """
         return response
+
+    def post_run_continuous_test_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for run_continuous_test
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_run_continuous_test_with_metadata`
+        interceptor in new development instead of the `post_run_continuous_test` interceptor.
+        When both interceptors are used, this `post_run_continuous_test_with_metadata` interceptor runs after the
+        `post_run_continuous_test` interceptor. The (possibly modified) response returned by
+        `post_run_continuous_test` will be passed to
+        `post_run_continuous_test_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_environment(
         self,
@@ -356,11 +525,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_environment` interceptor runs
+        before the `post_update_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_environment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_update_environment_with_metadata`
+        interceptor in new development instead of the `post_update_environment` interceptor.
+        When both interceptors are used, this `post_update_environment_with_metadata` interceptor runs after the
+        `post_update_environment` interceptor. The (possibly modified) response returned by
+        `post_update_environment` will be passed to
+        `post_update_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -759,6 +951,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1022,6 +1218,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_deploy_flow(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_deploy_flow_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1178,6 +1378,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1327,6 +1531,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_continuous_test_results(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_continuous_test_results_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1474,6 +1682,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_environments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_environments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1625,6 +1837,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_lookup_environment_history(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_lookup_environment_history_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1777,6 +1993,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_run_continuous_test(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_continuous_test_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1927,6 +2147,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
