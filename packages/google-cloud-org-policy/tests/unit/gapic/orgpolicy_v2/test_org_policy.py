@@ -63,6 +63,13 @@ from google.cloud.orgpolicy_v2.services.org_policy import (
 )
 from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -294,6 +301,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         OrgPolicyClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = OrgPolicyClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = OrgPolicyClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -8875,10 +8925,13 @@ def test_list_constraints_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_list_constraints"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_list_constraints_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_list_constraints"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.ListConstraintsRequest.pb(
             orgpolicy.ListConstraintsRequest()
         )
@@ -8904,6 +8957,7 @@ def test_list_constraints_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = orgpolicy.ListConstraintsResponse()
+        post_with_metadata.return_value = orgpolicy.ListConstraintsResponse(), metadata
 
         client.list_constraints(
             request,
@@ -8915,6 +8969,7 @@ def test_list_constraints_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_policies_rest_bad_request(request_type=orgpolicy.ListPoliciesRequest):
@@ -8995,10 +9050,13 @@ def test_list_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_list_policies"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_list_policies_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_list_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.ListPoliciesRequest.pb(orgpolicy.ListPoliciesRequest())
         transcode.return_value = {
             "method": "post",
@@ -9022,6 +9080,7 @@ def test_list_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = orgpolicy.ListPoliciesResponse()
+        post_with_metadata.return_value = orgpolicy.ListPoliciesResponse(), metadata
 
         client.list_policies(
             request,
@@ -9033,6 +9092,7 @@ def test_list_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_policy_rest_bad_request(request_type=orgpolicy.GetPolicyRequest):
@@ -9115,10 +9175,13 @@ def test_get_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_get_policy"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_get_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_get_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.GetPolicyRequest.pb(orgpolicy.GetPolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -9140,6 +9203,7 @@ def test_get_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = orgpolicy.Policy()
+        post_with_metadata.return_value = orgpolicy.Policy(), metadata
 
         client.get_policy(
             request,
@@ -9151,6 +9215,7 @@ def test_get_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_effective_policy_rest_bad_request(
@@ -9235,10 +9300,13 @@ def test_get_effective_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_get_effective_policy"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_get_effective_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_get_effective_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.GetEffectivePolicyRequest.pb(
             orgpolicy.GetEffectivePolicyRequest()
         )
@@ -9262,6 +9330,7 @@ def test_get_effective_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = orgpolicy.Policy()
+        post_with_metadata.return_value = orgpolicy.Policy(), metadata
 
         client.get_effective_policy(
             request,
@@ -9273,6 +9342,7 @@ def test_get_effective_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_policy_rest_bad_request(request_type=orgpolicy.CreatePolicyRequest):
@@ -9457,10 +9527,13 @@ def test_create_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_create_policy"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_create_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_create_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.CreatePolicyRequest.pb(orgpolicy.CreatePolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -9482,6 +9555,7 @@ def test_create_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = orgpolicy.Policy()
+        post_with_metadata.return_value = orgpolicy.Policy(), metadata
 
         client.create_policy(
             request,
@@ -9493,6 +9567,7 @@ def test_create_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_policy_rest_bad_request(request_type=orgpolicy.UpdatePolicyRequest):
@@ -9677,10 +9752,13 @@ def test_update_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_update_policy"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_update_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_update_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.UpdatePolicyRequest.pb(orgpolicy.UpdatePolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -9702,6 +9780,7 @@ def test_update_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = orgpolicy.Policy()
+        post_with_metadata.return_value = orgpolicy.Policy(), metadata
 
         client.update_policy(
             request,
@@ -9713,6 +9792,7 @@ def test_update_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_policy_rest_bad_request(request_type=orgpolicy.DeletePolicyRequest):
@@ -9989,10 +10069,14 @@ def test_create_custom_constraint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_create_custom_constraint"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor,
+        "post_create_custom_constraint_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_create_custom_constraint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.CreateCustomConstraintRequest.pb(
             orgpolicy.CreateCustomConstraintRequest()
         )
@@ -10018,6 +10102,7 @@ def test_create_custom_constraint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = constraint.CustomConstraint()
+        post_with_metadata.return_value = constraint.CustomConstraint(), metadata
 
         client.create_custom_constraint(
             request,
@@ -10029,6 +10114,7 @@ def test_create_custom_constraint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_custom_constraint_rest_bad_request(
@@ -10206,10 +10292,14 @@ def test_update_custom_constraint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_update_custom_constraint"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor,
+        "post_update_custom_constraint_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_update_custom_constraint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.UpdateCustomConstraintRequest.pb(
             orgpolicy.UpdateCustomConstraintRequest()
         )
@@ -10235,6 +10325,7 @@ def test_update_custom_constraint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = constraint.CustomConstraint()
+        post_with_metadata.return_value = constraint.CustomConstraint(), metadata
 
         client.update_custom_constraint(
             request,
@@ -10246,6 +10337,7 @@ def test_update_custom_constraint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_custom_constraint_rest_bad_request(
@@ -10340,10 +10432,13 @@ def test_get_custom_constraint_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_get_custom_constraint"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor, "post_get_custom_constraint_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_get_custom_constraint"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.GetCustomConstraintRequest.pb(
             orgpolicy.GetCustomConstraintRequest()
         )
@@ -10369,6 +10464,7 @@ def test_get_custom_constraint_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = constraint.CustomConstraint()
+        post_with_metadata.return_value = constraint.CustomConstraint(), metadata
 
         client.get_custom_constraint(
             request,
@@ -10380,6 +10476,7 @@ def test_get_custom_constraint_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_custom_constraints_rest_bad_request(
@@ -10462,10 +10559,14 @@ def test_list_custom_constraints_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "post_list_custom_constraints"
     ) as post, mock.patch.object(
+        transports.OrgPolicyRestInterceptor,
+        "post_list_custom_constraints_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OrgPolicyRestInterceptor, "pre_list_custom_constraints"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = orgpolicy.ListCustomConstraintsRequest.pb(
             orgpolicy.ListCustomConstraintsRequest()
         )
@@ -10491,6 +10592,10 @@ def test_list_custom_constraints_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = orgpolicy.ListCustomConstraintsResponse()
+        post_with_metadata.return_value = (
+            orgpolicy.ListCustomConstraintsResponse(),
+            metadata,
+        )
 
         client.list_custom_constraints(
             request,
@@ -10502,6 +10607,7 @@ def test_list_custom_constraints_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_custom_constraint_rest_bad_request(

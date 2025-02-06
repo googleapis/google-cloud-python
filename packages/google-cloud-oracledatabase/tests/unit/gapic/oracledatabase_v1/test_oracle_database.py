@@ -94,6 +94,13 @@ from google.cloud.oracledatabase_v1.types import (
 )
 from google.cloud.oracledatabase_v1.types import autonomous_database
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -345,6 +352,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         OracleDatabaseClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = OracleDatabaseClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = OracleDatabaseClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6262,10 +6312,14 @@ def test_list_cloud_exadata_infrastructures_rest_interceptors(null_interceptor):
         "post_list_cloud_exadata_infrastructures",
     ) as post, mock.patch.object(
         transports.OracleDatabaseRestInterceptor,
+        "post_list_cloud_exadata_infrastructures_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
         "pre_list_cloud_exadata_infrastructures",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListCloudExadataInfrastructuresRequest.pb(
             oracledatabase.ListCloudExadataInfrastructuresRequest()
         )
@@ -6291,6 +6345,10 @@ def test_list_cloud_exadata_infrastructures_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListCloudExadataInfrastructuresResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListCloudExadataInfrastructuresResponse(),
+            metadata,
+        )
 
         client.list_cloud_exadata_infrastructures(
             request,
@@ -6302,6 +6360,7 @@ def test_list_cloud_exadata_infrastructures_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cloud_exadata_infrastructure_rest_bad_request(
@@ -6397,10 +6456,14 @@ def test_get_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
         transports.OracleDatabaseRestInterceptor,
         "post_get_cloud_exadata_infrastructure",
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_get_cloud_exadata_infrastructure_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_get_cloud_exadata_infrastructure"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.GetCloudExadataInfrastructureRequest.pb(
             oracledatabase.GetCloudExadataInfrastructureRequest()
         )
@@ -6426,6 +6489,10 @@ def test_get_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = exadata_infra.CloudExadataInfrastructure()
+        post_with_metadata.return_value = (
+            exadata_infra.CloudExadataInfrastructure(),
+            metadata,
+        )
 
         client.get_cloud_exadata_infrastructure(
             request,
@@ -6437,6 +6504,7 @@ def test_get_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cloud_exadata_infrastructure_rest_bad_request(
@@ -6639,10 +6707,14 @@ def test_create_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
         "post_create_cloud_exadata_infrastructure",
     ) as post, mock.patch.object(
         transports.OracleDatabaseRestInterceptor,
+        "post_create_cloud_exadata_infrastructure_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
         "pre_create_cloud_exadata_infrastructure",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.CreateCloudExadataInfrastructureRequest.pb(
             oracledatabase.CreateCloudExadataInfrastructureRequest()
         )
@@ -6666,6 +6738,7 @@ def test_create_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cloud_exadata_infrastructure(
             request,
@@ -6677,6 +6750,7 @@ def test_create_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cloud_exadata_infrastructure_rest_bad_request(
@@ -6763,10 +6837,14 @@ def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
         "post_delete_cloud_exadata_infrastructure",
     ) as post, mock.patch.object(
         transports.OracleDatabaseRestInterceptor,
+        "post_delete_cloud_exadata_infrastructure_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
         "pre_delete_cloud_exadata_infrastructure",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.DeleteCloudExadataInfrastructureRequest.pb(
             oracledatabase.DeleteCloudExadataInfrastructureRequest()
         )
@@ -6790,6 +6868,7 @@ def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cloud_exadata_infrastructure(
             request,
@@ -6801,6 +6880,7 @@ def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor)
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_cloud_vm_clusters_rest_bad_request(
@@ -6885,10 +6965,14 @@ def test_list_cloud_vm_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_cloud_vm_clusters"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_list_cloud_vm_clusters_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_cloud_vm_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListCloudVmClustersRequest.pb(
             oracledatabase.ListCloudVmClustersRequest()
         )
@@ -6914,6 +6998,10 @@ def test_list_cloud_vm_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListCloudVmClustersResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListCloudVmClustersResponse(),
+            metadata,
+        )
 
         client.list_cloud_vm_clusters(
             request,
@@ -6925,6 +7013,7 @@ def test_list_cloud_vm_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cloud_vm_cluster_rest_bad_request(
@@ -7025,10 +7114,14 @@ def test_get_cloud_vm_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_get_cloud_vm_cluster"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_get_cloud_vm_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_get_cloud_vm_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.GetCloudVmClusterRequest.pb(
             oracledatabase.GetCloudVmClusterRequest()
         )
@@ -7052,6 +7145,7 @@ def test_get_cloud_vm_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vm_cluster.CloudVmCluster()
+        post_with_metadata.return_value = vm_cluster.CloudVmCluster(), metadata
 
         client.get_cloud_vm_cluster(
             request,
@@ -7063,6 +7157,7 @@ def test_get_cloud_vm_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cloud_vm_cluster_rest_bad_request(
@@ -7261,10 +7356,14 @@ def test_create_cloud_vm_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_create_cloud_vm_cluster"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_create_cloud_vm_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_create_cloud_vm_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.CreateCloudVmClusterRequest.pb(
             oracledatabase.CreateCloudVmClusterRequest()
         )
@@ -7288,6 +7387,7 @@ def test_create_cloud_vm_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cloud_vm_cluster(
             request,
@@ -7299,6 +7399,7 @@ def test_create_cloud_vm_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cloud_vm_cluster_rest_bad_request(
@@ -7383,10 +7484,14 @@ def test_delete_cloud_vm_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_delete_cloud_vm_cluster"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_delete_cloud_vm_cluster_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_delete_cloud_vm_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.DeleteCloudVmClusterRequest.pb(
             oracledatabase.DeleteCloudVmClusterRequest()
         )
@@ -7410,6 +7515,7 @@ def test_delete_cloud_vm_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cloud_vm_cluster(
             request,
@@ -7421,6 +7527,7 @@ def test_delete_cloud_vm_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_entitlements_rest_bad_request(
@@ -7505,10 +7612,13 @@ def test_list_entitlements_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_entitlements"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_entitlements_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_entitlements"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListEntitlementsRequest.pb(
             oracledatabase.ListEntitlementsRequest()
         )
@@ -7534,6 +7644,10 @@ def test_list_entitlements_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListEntitlementsResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListEntitlementsResponse(),
+            metadata,
+        )
 
         client.list_entitlements(
             request,
@@ -7545,6 +7659,7 @@ def test_list_entitlements_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_db_servers_rest_bad_request(
@@ -7633,10 +7748,13 @@ def test_list_db_servers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_db_servers"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_db_servers_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_db_servers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListDbServersRequest.pb(
             oracledatabase.ListDbServersRequest()
         )
@@ -7662,6 +7780,10 @@ def test_list_db_servers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListDbServersResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListDbServersResponse(),
+            metadata,
+        )
 
         client.list_db_servers(
             request,
@@ -7673,6 +7795,7 @@ def test_list_db_servers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_db_nodes_rest_bad_request(request_type=oracledatabase.ListDbNodesRequest):
@@ -7759,10 +7882,13 @@ def test_list_db_nodes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_db_nodes"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_db_nodes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_db_nodes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListDbNodesRequest.pb(
             oracledatabase.ListDbNodesRequest()
         )
@@ -7788,6 +7914,7 @@ def test_list_db_nodes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListDbNodesResponse()
+        post_with_metadata.return_value = oracledatabase.ListDbNodesResponse(), metadata
 
         client.list_db_nodes(
             request,
@@ -7799,6 +7926,7 @@ def test_list_db_nodes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_gi_versions_rest_bad_request(
@@ -7883,10 +8011,13 @@ def test_list_gi_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_gi_versions"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_gi_versions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_gi_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListGiVersionsRequest.pb(
             oracledatabase.ListGiVersionsRequest()
         )
@@ -7912,6 +8043,10 @@ def test_list_gi_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListGiVersionsResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListGiVersionsResponse(),
+            metadata,
+        )
 
         client.list_gi_versions(
             request,
@@ -7923,6 +8058,7 @@ def test_list_gi_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_db_system_shapes_rest_bad_request(
@@ -8007,10 +8143,14 @@ def test_list_db_system_shapes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_db_system_shapes"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_list_db_system_shapes_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_db_system_shapes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListDbSystemShapesRequest.pb(
             oracledatabase.ListDbSystemShapesRequest()
         )
@@ -8036,6 +8176,10 @@ def test_list_db_system_shapes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListDbSystemShapesResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListDbSystemShapesResponse(),
+            metadata,
+        )
 
         client.list_db_system_shapes(
             request,
@@ -8047,6 +8191,7 @@ def test_list_db_system_shapes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_autonomous_databases_rest_bad_request(
@@ -8131,10 +8276,14 @@ def test_list_autonomous_databases_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_autonomous_databases"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_list_autonomous_databases_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_databases"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListAutonomousDatabasesRequest.pb(
             oracledatabase.ListAutonomousDatabasesRequest()
         )
@@ -8160,6 +8309,10 @@ def test_list_autonomous_databases_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListAutonomousDatabasesResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListAutonomousDatabasesResponse(),
+            metadata,
+        )
 
         client.list_autonomous_databases(
             request,
@@ -8171,6 +8324,7 @@ def test_list_autonomous_databases_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_autonomous_database_rest_bad_request(
@@ -8271,10 +8425,14 @@ def test_get_autonomous_database_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_get_autonomous_database"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_get_autonomous_database_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_get_autonomous_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.GetAutonomousDatabaseRequest.pb(
             oracledatabase.GetAutonomousDatabaseRequest()
         )
@@ -8300,6 +8458,10 @@ def test_get_autonomous_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = autonomous_database.AutonomousDatabase()
+        post_with_metadata.return_value = (
+            autonomous_database.AutonomousDatabase(),
+            metadata,
+        )
 
         client.get_autonomous_database(
             request,
@@ -8311,6 +8473,7 @@ def test_get_autonomous_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_autonomous_database_rest_bad_request(
@@ -8588,10 +8751,14 @@ def test_create_autonomous_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_create_autonomous_database"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_create_autonomous_database_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_create_autonomous_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.CreateAutonomousDatabaseRequest.pb(
             oracledatabase.CreateAutonomousDatabaseRequest()
         )
@@ -8615,6 +8782,7 @@ def test_create_autonomous_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_autonomous_database(
             request,
@@ -8626,6 +8794,7 @@ def test_create_autonomous_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_autonomous_database_rest_bad_request(
@@ -8710,10 +8879,14 @@ def test_delete_autonomous_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_delete_autonomous_database"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_delete_autonomous_database_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_delete_autonomous_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.DeleteAutonomousDatabaseRequest.pb(
             oracledatabase.DeleteAutonomousDatabaseRequest()
         )
@@ -8737,6 +8910,7 @@ def test_delete_autonomous_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_autonomous_database(
             request,
@@ -8748,6 +8922,7 @@ def test_delete_autonomous_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restore_autonomous_database_rest_bad_request(
@@ -8832,10 +9007,14 @@ def test_restore_autonomous_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_restore_autonomous_database"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_restore_autonomous_database_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_restore_autonomous_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.RestoreAutonomousDatabaseRequest.pb(
             oracledatabase.RestoreAutonomousDatabaseRequest()
         )
@@ -8859,6 +9038,7 @@ def test_restore_autonomous_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_autonomous_database(
             request,
@@ -8870,6 +9050,7 @@ def test_restore_autonomous_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_autonomous_database_wallet_rest_bad_request(
@@ -8962,10 +9143,14 @@ def test_generate_autonomous_database_wallet_rest_interceptors(null_interceptor)
         "post_generate_autonomous_database_wallet",
     ) as post, mock.patch.object(
         transports.OracleDatabaseRestInterceptor,
+        "post_generate_autonomous_database_wallet_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
         "pre_generate_autonomous_database_wallet",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.GenerateAutonomousDatabaseWalletRequest.pb(
             oracledatabase.GenerateAutonomousDatabaseWalletRequest()
         )
@@ -8991,6 +9176,10 @@ def test_generate_autonomous_database_wallet_rest_interceptors(null_interceptor)
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.GenerateAutonomousDatabaseWalletResponse(),
+            metadata,
+        )
 
         client.generate_autonomous_database_wallet(
             request,
@@ -9002,6 +9191,7 @@ def test_generate_autonomous_database_wallet_rest_interceptors(null_interceptor)
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_autonomous_db_versions_rest_bad_request(
@@ -9086,10 +9276,14 @@ def test_list_autonomous_db_versions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "post_list_autonomous_db_versions"
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_list_autonomous_db_versions_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_db_versions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListAutonomousDbVersionsRequest.pb(
             oracledatabase.ListAutonomousDbVersionsRequest()
         )
@@ -9115,6 +9309,10 @@ def test_list_autonomous_db_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListAutonomousDbVersionsResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListAutonomousDbVersionsResponse(),
+            metadata,
+        )
 
         client.list_autonomous_db_versions(
             request,
@@ -9126,6 +9324,7 @@ def test_list_autonomous_db_versions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_autonomous_database_character_sets_rest_bad_request(
@@ -9214,10 +9413,14 @@ def test_list_autonomous_database_character_sets_rest_interceptors(null_intercep
         "post_list_autonomous_database_character_sets",
     ) as post, mock.patch.object(
         transports.OracleDatabaseRestInterceptor,
+        "post_list_autonomous_database_character_sets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
         "pre_list_autonomous_database_character_sets",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest.pb(
             oracledatabase.ListAutonomousDatabaseCharacterSetsRequest()
         )
@@ -9245,6 +9448,10 @@ def test_list_autonomous_database_character_sets_rest_interceptors(null_intercep
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(),
+            metadata,
+        )
 
         client.list_autonomous_database_character_sets(
             request,
@@ -9256,6 +9463,7 @@ def test_list_autonomous_database_character_sets_rest_interceptors(null_intercep
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_autonomous_database_backups_rest_bad_request(
@@ -9343,10 +9551,14 @@ def test_list_autonomous_database_backups_rest_interceptors(null_interceptor):
         transports.OracleDatabaseRestInterceptor,
         "post_list_autonomous_database_backups",
     ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_list_autonomous_database_backups_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_database_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = oracledatabase.ListAutonomousDatabaseBackupsRequest.pb(
             oracledatabase.ListAutonomousDatabaseBackupsRequest()
         )
@@ -9372,6 +9584,10 @@ def test_list_autonomous_database_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse()
+        post_with_metadata.return_value = (
+            oracledatabase.ListAutonomousDatabaseBackupsResponse(),
+            metadata,
+        )
 
         client.list_autonomous_database_backups(
             request,
@@ -9383,6 +9599,7 @@ def test_list_autonomous_database_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

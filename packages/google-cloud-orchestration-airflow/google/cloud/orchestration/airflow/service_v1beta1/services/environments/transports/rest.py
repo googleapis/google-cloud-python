@@ -287,11 +287,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for check_upgrade
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_check_upgrade_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_check_upgrade` interceptor runs
+        before the `post_check_upgrade_with_metadata` interceptor.
         """
         return response
+
+    def post_check_upgrade_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for check_upgrade
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_check_upgrade_with_metadata`
+        interceptor in new development instead of the `post_check_upgrade` interceptor.
+        When both interceptors are used, this `post_check_upgrade_with_metadata` interceptor runs after the
+        `post_check_upgrade` interceptor. The (possibly modified) response returned by
+        `post_check_upgrade` will be passed to
+        `post_check_upgrade_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_environment(
         self,
@@ -312,11 +335,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_environment` interceptor runs
+        before the `post_create_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_environment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_create_environment_with_metadata`
+        interceptor in new development instead of the `post_create_environment` interceptor.
+        When both interceptors are used, this `post_create_environment_with_metadata` interceptor runs after the
+        `post_create_environment` interceptor. The (possibly modified) response returned by
+        `post_create_environment` will be passed to
+        `post_create_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_user_workloads_config_map(
         self,
@@ -338,11 +384,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.UserWorkloadsConfigMap:
         """Post-rpc interceptor for create_user_workloads_config_map
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_user_workloads_config_map_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_user_workloads_config_map` interceptor runs
+        before the `post_create_user_workloads_config_map_with_metadata` interceptor.
         """
         return response
+
+    def post_create_user_workloads_config_map_with_metadata(
+        self,
+        response: environments.UserWorkloadsConfigMap,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.UserWorkloadsConfigMap, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_user_workloads_config_map
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_create_user_workloads_config_map_with_metadata`
+        interceptor in new development instead of the `post_create_user_workloads_config_map` interceptor.
+        When both interceptors are used, this `post_create_user_workloads_config_map_with_metadata` interceptor runs after the
+        `post_create_user_workloads_config_map` interceptor. The (possibly modified) response returned by
+        `post_create_user_workloads_config_map` will be passed to
+        `post_create_user_workloads_config_map_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_user_workloads_secret(
         self,
@@ -364,11 +435,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.UserWorkloadsSecret:
         """Post-rpc interceptor for create_user_workloads_secret
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_user_workloads_secret_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_user_workloads_secret` interceptor runs
+        before the `post_create_user_workloads_secret_with_metadata` interceptor.
         """
         return response
+
+    def post_create_user_workloads_secret_with_metadata(
+        self,
+        response: environments.UserWorkloadsSecret,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.UserWorkloadsSecret, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_user_workloads_secret
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_create_user_workloads_secret_with_metadata`
+        interceptor in new development instead of the `post_create_user_workloads_secret` interceptor.
+        When both interceptors are used, this `post_create_user_workloads_secret_with_metadata` interceptor runs after the
+        `post_create_user_workloads_secret` interceptor. The (possibly modified) response returned by
+        `post_create_user_workloads_secret` will be passed to
+        `post_create_user_workloads_secret_with_metadata`.
+        """
+        return response, metadata
 
     def pre_database_failover(
         self,
@@ -389,11 +485,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for database_failover
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_database_failover_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_database_failover` interceptor runs
+        before the `post_database_failover_with_metadata` interceptor.
         """
         return response
+
+    def post_database_failover_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for database_failover
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_database_failover_with_metadata`
+        interceptor in new development instead of the `post_database_failover` interceptor.
+        When both interceptors are used, this `post_database_failover_with_metadata` interceptor runs after the
+        `post_database_failover` interceptor. The (possibly modified) response returned by
+        `post_database_failover` will be passed to
+        `post_database_failover_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_environment(
         self,
@@ -414,11 +533,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_environment` interceptor runs
+        before the `post_delete_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_environment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_delete_environment_with_metadata`
+        interceptor in new development instead of the `post_delete_environment` interceptor.
+        When both interceptors are used, this `post_delete_environment_with_metadata` interceptor runs after the
+        `post_delete_environment` interceptor. The (possibly modified) response returned by
+        `post_delete_environment` will be passed to
+        `post_delete_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_user_workloads_config_map(
         self,
@@ -470,11 +612,37 @@ class EnvironmentsRestInterceptor:
     ) -> environments.ExecuteAirflowCommandResponse:
         """Post-rpc interceptor for execute_airflow_command
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_execute_airflow_command_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_execute_airflow_command` interceptor runs
+        before the `post_execute_airflow_command_with_metadata` interceptor.
         """
         return response
+
+    def post_execute_airflow_command_with_metadata(
+        self,
+        response: environments.ExecuteAirflowCommandResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ExecuteAirflowCommandResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for execute_airflow_command
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_execute_airflow_command_with_metadata`
+        interceptor in new development instead of the `post_execute_airflow_command` interceptor.
+        When both interceptors are used, this `post_execute_airflow_command_with_metadata` interceptor runs after the
+        `post_execute_airflow_command` interceptor. The (possibly modified) response returned by
+        `post_execute_airflow_command` will be passed to
+        `post_execute_airflow_command_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_database_properties(
         self,
@@ -496,11 +664,37 @@ class EnvironmentsRestInterceptor:
     ) -> environments.FetchDatabasePropertiesResponse:
         """Post-rpc interceptor for fetch_database_properties
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_database_properties_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_database_properties` interceptor runs
+        before the `post_fetch_database_properties_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_database_properties_with_metadata(
+        self,
+        response: environments.FetchDatabasePropertiesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.FetchDatabasePropertiesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_database_properties
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_database_properties_with_metadata`
+        interceptor in new development instead of the `post_fetch_database_properties` interceptor.
+        When both interceptors are used, this `post_fetch_database_properties_with_metadata` interceptor runs after the
+        `post_fetch_database_properties` interceptor. The (possibly modified) response returned by
+        `post_fetch_database_properties` will be passed to
+        `post_fetch_database_properties_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_environment(
         self,
@@ -521,11 +715,34 @@ class EnvironmentsRestInterceptor:
     ) -> environments.Environment:
         """Post-rpc interceptor for get_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_environment` interceptor runs
+        before the `post_get_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_environment_with_metadata(
+        self,
+        response: environments.Environment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[environments.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_get_environment_with_metadata`
+        interceptor in new development instead of the `post_get_environment` interceptor.
+        When both interceptors are used, this `post_get_environment_with_metadata` interceptor runs after the
+        `post_get_environment` interceptor. The (possibly modified) response returned by
+        `post_get_environment` will be passed to
+        `post_get_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_user_workloads_config_map(
         self,
@@ -547,11 +764,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.UserWorkloadsConfigMap:
         """Post-rpc interceptor for get_user_workloads_config_map
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_user_workloads_config_map_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_user_workloads_config_map` interceptor runs
+        before the `post_get_user_workloads_config_map_with_metadata` interceptor.
         """
         return response
+
+    def post_get_user_workloads_config_map_with_metadata(
+        self,
+        response: environments.UserWorkloadsConfigMap,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.UserWorkloadsConfigMap, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_user_workloads_config_map
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_get_user_workloads_config_map_with_metadata`
+        interceptor in new development instead of the `post_get_user_workloads_config_map` interceptor.
+        When both interceptors are used, this `post_get_user_workloads_config_map_with_metadata` interceptor runs after the
+        `post_get_user_workloads_config_map` interceptor. The (possibly modified) response returned by
+        `post_get_user_workloads_config_map` will be passed to
+        `post_get_user_workloads_config_map_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_user_workloads_secret(
         self,
@@ -573,11 +815,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.UserWorkloadsSecret:
         """Post-rpc interceptor for get_user_workloads_secret
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_user_workloads_secret_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_user_workloads_secret` interceptor runs
+        before the `post_get_user_workloads_secret_with_metadata` interceptor.
         """
         return response
+
+    def post_get_user_workloads_secret_with_metadata(
+        self,
+        response: environments.UserWorkloadsSecret,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.UserWorkloadsSecret, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_user_workloads_secret
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_get_user_workloads_secret_with_metadata`
+        interceptor in new development instead of the `post_get_user_workloads_secret` interceptor.
+        When both interceptors are used, this `post_get_user_workloads_secret_with_metadata` interceptor runs after the
+        `post_get_user_workloads_secret` interceptor. The (possibly modified) response returned by
+        `post_get_user_workloads_secret` will be passed to
+        `post_get_user_workloads_secret_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_environments(
         self,
@@ -598,11 +865,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.ListEnvironmentsResponse:
         """Post-rpc interceptor for list_environments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_environments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_environments` interceptor runs
+        before the `post_list_environments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_environments_with_metadata(
+        self,
+        response: environments.ListEnvironmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_environments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_list_environments_with_metadata`
+        interceptor in new development instead of the `post_list_environments` interceptor.
+        When both interceptors are used, this `post_list_environments_with_metadata` interceptor runs after the
+        `post_list_environments` interceptor. The (possibly modified) response returned by
+        `post_list_environments` will be passed to
+        `post_list_environments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_user_workloads_config_maps(
         self,
@@ -624,11 +916,37 @@ class EnvironmentsRestInterceptor:
     ) -> environments.ListUserWorkloadsConfigMapsResponse:
         """Post-rpc interceptor for list_user_workloads_config_maps
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_user_workloads_config_maps_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_user_workloads_config_maps` interceptor runs
+        before the `post_list_user_workloads_config_maps_with_metadata` interceptor.
         """
         return response
+
+    def post_list_user_workloads_config_maps_with_metadata(
+        self,
+        response: environments.ListUserWorkloadsConfigMapsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ListUserWorkloadsConfigMapsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_user_workloads_config_maps
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_list_user_workloads_config_maps_with_metadata`
+        interceptor in new development instead of the `post_list_user_workloads_config_maps` interceptor.
+        When both interceptors are used, this `post_list_user_workloads_config_maps_with_metadata` interceptor runs after the
+        `post_list_user_workloads_config_maps` interceptor. The (possibly modified) response returned by
+        `post_list_user_workloads_config_maps` will be passed to
+        `post_list_user_workloads_config_maps_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_user_workloads_secrets(
         self,
@@ -650,11 +968,37 @@ class EnvironmentsRestInterceptor:
     ) -> environments.ListUserWorkloadsSecretsResponse:
         """Post-rpc interceptor for list_user_workloads_secrets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_user_workloads_secrets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_user_workloads_secrets` interceptor runs
+        before the `post_list_user_workloads_secrets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_user_workloads_secrets_with_metadata(
+        self,
+        response: environments.ListUserWorkloadsSecretsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ListUserWorkloadsSecretsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_user_workloads_secrets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_list_user_workloads_secrets_with_metadata`
+        interceptor in new development instead of the `post_list_user_workloads_secrets` interceptor.
+        When both interceptors are used, this `post_list_user_workloads_secrets_with_metadata` interceptor runs after the
+        `post_list_user_workloads_secrets` interceptor. The (possibly modified) response returned by
+        `post_list_user_workloads_secrets` will be passed to
+        `post_list_user_workloads_secrets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workloads(
         self,
@@ -675,11 +1019,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.ListWorkloadsResponse:
         """Post-rpc interceptor for list_workloads
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workloads_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workloads` interceptor runs
+        before the `post_list_workloads_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workloads_with_metadata(
+        self,
+        response: environments.ListWorkloadsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ListWorkloadsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_workloads
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_list_workloads_with_metadata`
+        interceptor in new development instead of the `post_list_workloads` interceptor.
+        When both interceptors are used, this `post_list_workloads_with_metadata` interceptor runs after the
+        `post_list_workloads` interceptor. The (possibly modified) response returned by
+        `post_list_workloads` will be passed to
+        `post_list_workloads_with_metadata`.
+        """
+        return response, metadata
 
     def pre_load_snapshot(
         self,
@@ -700,11 +1069,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for load_snapshot
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_load_snapshot_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_load_snapshot` interceptor runs
+        before the `post_load_snapshot_with_metadata` interceptor.
         """
         return response
+
+    def post_load_snapshot_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for load_snapshot
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_load_snapshot_with_metadata`
+        interceptor in new development instead of the `post_load_snapshot` interceptor.
+        When both interceptors are used, this `post_load_snapshot_with_metadata` interceptor runs after the
+        `post_load_snapshot` interceptor. The (possibly modified) response returned by
+        `post_load_snapshot` will be passed to
+        `post_load_snapshot_with_metadata`.
+        """
+        return response, metadata
 
     def pre_poll_airflow_command(
         self,
@@ -725,11 +1117,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.PollAirflowCommandResponse:
         """Post-rpc interceptor for poll_airflow_command
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_poll_airflow_command_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_poll_airflow_command` interceptor runs
+        before the `post_poll_airflow_command_with_metadata` interceptor.
         """
         return response
+
+    def post_poll_airflow_command_with_metadata(
+        self,
+        response: environments.PollAirflowCommandResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.PollAirflowCommandResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for poll_airflow_command
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_poll_airflow_command_with_metadata`
+        interceptor in new development instead of the `post_poll_airflow_command` interceptor.
+        When both interceptors are used, this `post_poll_airflow_command_with_metadata` interceptor runs after the
+        `post_poll_airflow_command` interceptor. The (possibly modified) response returned by
+        `post_poll_airflow_command` will be passed to
+        `post_poll_airflow_command_with_metadata`.
+        """
+        return response, metadata
 
     def pre_restart_web_server(
         self,
@@ -750,11 +1167,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for restart_web_server
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restart_web_server_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restart_web_server` interceptor runs
+        before the `post_restart_web_server_with_metadata` interceptor.
         """
         return response
+
+    def post_restart_web_server_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restart_web_server
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_restart_web_server_with_metadata`
+        interceptor in new development instead of the `post_restart_web_server` interceptor.
+        When both interceptors are used, this `post_restart_web_server_with_metadata` interceptor runs after the
+        `post_restart_web_server` interceptor. The (possibly modified) response returned by
+        `post_restart_web_server` will be passed to
+        `post_restart_web_server_with_metadata`.
+        """
+        return response, metadata
 
     def pre_save_snapshot(
         self,
@@ -775,11 +1215,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for save_snapshot
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_save_snapshot_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_save_snapshot` interceptor runs
+        before the `post_save_snapshot_with_metadata` interceptor.
         """
         return response
+
+    def post_save_snapshot_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for save_snapshot
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_save_snapshot_with_metadata`
+        interceptor in new development instead of the `post_save_snapshot` interceptor.
+        When both interceptors are used, this `post_save_snapshot_with_metadata` interceptor runs after the
+        `post_save_snapshot` interceptor. The (possibly modified) response returned by
+        `post_save_snapshot` will be passed to
+        `post_save_snapshot_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop_airflow_command(
         self,
@@ -800,11 +1263,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.StopAirflowCommandResponse:
         """Post-rpc interceptor for stop_airflow_command
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_airflow_command_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop_airflow_command` interceptor runs
+        before the `post_stop_airflow_command_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_airflow_command_with_metadata(
+        self,
+        response: environments.StopAirflowCommandResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.StopAirflowCommandResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for stop_airflow_command
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_stop_airflow_command_with_metadata`
+        interceptor in new development instead of the `post_stop_airflow_command` interceptor.
+        When both interceptors are used, this `post_stop_airflow_command_with_metadata` interceptor runs after the
+        `post_stop_airflow_command` interceptor. The (possibly modified) response returned by
+        `post_stop_airflow_command` will be passed to
+        `post_stop_airflow_command_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_environment(
         self,
@@ -825,11 +1313,34 @@ class EnvironmentsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_environment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_environment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_environment` interceptor runs
+        before the `post_update_environment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_environment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_environment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_update_environment_with_metadata`
+        interceptor in new development instead of the `post_update_environment` interceptor.
+        When both interceptors are used, this `post_update_environment_with_metadata` interceptor runs after the
+        `post_update_environment` interceptor. The (possibly modified) response returned by
+        `post_update_environment` will be passed to
+        `post_update_environment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_user_workloads_config_map(
         self,
@@ -851,11 +1362,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.UserWorkloadsConfigMap:
         """Post-rpc interceptor for update_user_workloads_config_map
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_user_workloads_config_map_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_user_workloads_config_map` interceptor runs
+        before the `post_update_user_workloads_config_map_with_metadata` interceptor.
         """
         return response
+
+    def post_update_user_workloads_config_map_with_metadata(
+        self,
+        response: environments.UserWorkloadsConfigMap,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.UserWorkloadsConfigMap, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_user_workloads_config_map
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_update_user_workloads_config_map_with_metadata`
+        interceptor in new development instead of the `post_update_user_workloads_config_map` interceptor.
+        When both interceptors are used, this `post_update_user_workloads_config_map_with_metadata` interceptor runs after the
+        `post_update_user_workloads_config_map` interceptor. The (possibly modified) response returned by
+        `post_update_user_workloads_config_map` will be passed to
+        `post_update_user_workloads_config_map_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_user_workloads_secret(
         self,
@@ -877,11 +1413,36 @@ class EnvironmentsRestInterceptor:
     ) -> environments.UserWorkloadsSecret:
         """Post-rpc interceptor for update_user_workloads_secret
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_user_workloads_secret_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Environments server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_user_workloads_secret` interceptor runs
+        before the `post_update_user_workloads_secret_with_metadata` interceptor.
         """
         return response
+
+    def post_update_user_workloads_secret_with_metadata(
+        self,
+        response: environments.UserWorkloadsSecret,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.UserWorkloadsSecret, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_user_workloads_secret
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Environments server but before it is returned to user code.
+
+        We recommend only using this `post_update_user_workloads_secret_with_metadata`
+        interceptor in new development instead of the `post_update_user_workloads_secret` interceptor.
+        When both interceptors are used, this `post_update_user_workloads_secret_with_metadata` interceptor runs after the
+        `post_update_user_workloads_secret` interceptor. The (possibly modified) response returned by
+        `post_update_user_workloads_secret` will be passed to
+        `post_update_user_workloads_secret_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_operation(
         self,
@@ -1219,6 +1780,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_check_upgrade(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_check_upgrade_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1368,6 +1933,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1524,6 +2093,13 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_user_workloads_config_map(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_user_workloads_config_map_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1681,6 +2257,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_user_workloads_secret(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_user_workloads_secret_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1834,6 +2414,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_database_failover(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_database_failover_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1977,6 +2561,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2352,6 +2940,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_execute_airflow_command(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_execute_airflow_command_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2500,6 +3092,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_database_properties(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_database_properties_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2644,6 +3240,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2793,6 +3393,13 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_user_workloads_config_map(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_user_workloads_config_map_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2940,6 +3547,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_user_workloads_secret(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_user_workloads_secret_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3087,6 +3698,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_environments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_environments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3238,6 +3853,13 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_user_workloads_config_maps(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_user_workloads_config_maps_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3390,6 +4012,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_user_workloads_secrets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_user_workloads_secrets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3533,6 +4159,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workloads(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workloads_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3687,6 +4317,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_load_snapshot(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_load_snapshot_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3837,6 +4471,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_poll_airflow_command(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_poll_airflow_command_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3988,6 +4626,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_restart_web_server(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restart_web_server_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4140,6 +4782,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_save_snapshot(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_save_snapshot_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4290,6 +4936,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop_airflow_command(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_airflow_command_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4441,6 +5091,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_environment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_environment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4597,6 +5251,13 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_user_workloads_config_map(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_user_workloads_config_map_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4754,6 +5415,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_user_workloads_secret(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_user_workloads_secret_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

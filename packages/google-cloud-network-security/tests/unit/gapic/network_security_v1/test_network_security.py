@@ -90,6 +90,13 @@ from google.cloud.network_security_v1.types import common
 from google.cloud.network_security_v1.types import server_tls_policy
 from google.cloud.network_security_v1.types import tls
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -346,6 +353,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         NetworkSecurityClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = NetworkSecurityClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = NetworkSecurityClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -11127,10 +11177,14 @@ def test_list_authorization_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_list_authorization_policies"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_list_authorization_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_list_authorization_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = authorization_policy.ListAuthorizationPoliciesRequest.pb(
             authorization_policy.ListAuthorizationPoliciesRequest()
         )
@@ -11156,6 +11210,10 @@ def test_list_authorization_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = authorization_policy.ListAuthorizationPoliciesResponse()
+        post_with_metadata.return_value = (
+            authorization_policy.ListAuthorizationPoliciesResponse(),
+            metadata,
+        )
 
         client.list_authorization_policies(
             request,
@@ -11167,6 +11225,7 @@ def test_list_authorization_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_authorization_policy_rest_bad_request(
@@ -11259,10 +11318,14 @@ def test_get_authorization_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_get_authorization_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_get_authorization_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_get_authorization_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = authorization_policy.GetAuthorizationPolicyRequest.pb(
             authorization_policy.GetAuthorizationPolicyRequest()
         )
@@ -11288,6 +11351,10 @@ def test_get_authorization_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = authorization_policy.AuthorizationPolicy()
+        post_with_metadata.return_value = (
+            authorization_policy.AuthorizationPolicy(),
+            metadata,
+        )
 
         client.get_authorization_policy(
             request,
@@ -11299,6 +11366,7 @@ def test_get_authorization_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_authorization_policy_rest_bad_request(
@@ -11479,10 +11547,14 @@ def test_create_authorization_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_create_authorization_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_create_authorization_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_create_authorization_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_authorization_policy.CreateAuthorizationPolicyRequest.pb(
             gcn_authorization_policy.CreateAuthorizationPolicyRequest()
         )
@@ -11506,6 +11578,7 @@ def test_create_authorization_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_authorization_policy(
             request,
@@ -11517,6 +11590,7 @@ def test_create_authorization_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_authorization_policy_rest_bad_request(
@@ -11705,10 +11779,14 @@ def test_update_authorization_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_update_authorization_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_update_authorization_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_update_authorization_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_authorization_policy.UpdateAuthorizationPolicyRequest.pb(
             gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
         )
@@ -11732,6 +11810,7 @@ def test_update_authorization_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_authorization_policy(
             request,
@@ -11743,6 +11822,7 @@ def test_update_authorization_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_authorization_policy_rest_bad_request(
@@ -11827,10 +11907,14 @@ def test_delete_authorization_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_delete_authorization_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_delete_authorization_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_delete_authorization_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = authorization_policy.DeleteAuthorizationPolicyRequest.pb(
             authorization_policy.DeleteAuthorizationPolicyRequest()
         )
@@ -11854,6 +11938,7 @@ def test_delete_authorization_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_authorization_policy(
             request,
@@ -11865,6 +11950,7 @@ def test_delete_authorization_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_server_tls_policies_rest_bad_request(
@@ -11949,10 +12035,14 @@ def test_list_server_tls_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_list_server_tls_policies"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_list_server_tls_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_list_server_tls_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = server_tls_policy.ListServerTlsPoliciesRequest.pb(
             server_tls_policy.ListServerTlsPoliciesRequest()
         )
@@ -11978,6 +12068,10 @@ def test_list_server_tls_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = server_tls_policy.ListServerTlsPoliciesResponse()
+        post_with_metadata.return_value = (
+            server_tls_policy.ListServerTlsPoliciesResponse(),
+            metadata,
+        )
 
         client.list_server_tls_policies(
             request,
@@ -11989,6 +12083,7 @@ def test_list_server_tls_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_server_tls_policy_rest_bad_request(
@@ -12081,10 +12176,14 @@ def test_get_server_tls_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_get_server_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_get_server_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_get_server_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = server_tls_policy.GetServerTlsPolicyRequest.pb(
             server_tls_policy.GetServerTlsPolicyRequest()
         )
@@ -12110,6 +12209,7 @@ def test_get_server_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = server_tls_policy.ServerTlsPolicy()
+        post_with_metadata.return_value = server_tls_policy.ServerTlsPolicy(), metadata
 
         client.get_server_tls_policy(
             request,
@@ -12121,6 +12221,7 @@ def test_get_server_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_server_tls_policy_rest_bad_request(
@@ -12289,10 +12390,14 @@ def test_create_server_tls_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_create_server_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_create_server_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_create_server_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_server_tls_policy.CreateServerTlsPolicyRequest.pb(
             gcn_server_tls_policy.CreateServerTlsPolicyRequest()
         )
@@ -12316,6 +12421,7 @@ def test_create_server_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_server_tls_policy(
             request,
@@ -12327,6 +12433,7 @@ def test_create_server_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_server_tls_policy_rest_bad_request(
@@ -12503,10 +12610,14 @@ def test_update_server_tls_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_update_server_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_update_server_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_update_server_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_server_tls_policy.UpdateServerTlsPolicyRequest.pb(
             gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
         )
@@ -12530,6 +12641,7 @@ def test_update_server_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_server_tls_policy(
             request,
@@ -12541,6 +12653,7 @@ def test_update_server_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_server_tls_policy_rest_bad_request(
@@ -12625,10 +12738,14 @@ def test_delete_server_tls_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_delete_server_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_delete_server_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_delete_server_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = server_tls_policy.DeleteServerTlsPolicyRequest.pb(
             server_tls_policy.DeleteServerTlsPolicyRequest()
         )
@@ -12652,6 +12769,7 @@ def test_delete_server_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_server_tls_policy(
             request,
@@ -12663,6 +12781,7 @@ def test_delete_server_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_client_tls_policies_rest_bad_request(
@@ -12747,10 +12866,14 @@ def test_list_client_tls_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_list_client_tls_policies"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_list_client_tls_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_list_client_tls_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = client_tls_policy.ListClientTlsPoliciesRequest.pb(
             client_tls_policy.ListClientTlsPoliciesRequest()
         )
@@ -12776,6 +12899,10 @@ def test_list_client_tls_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = client_tls_policy.ListClientTlsPoliciesResponse()
+        post_with_metadata.return_value = (
+            client_tls_policy.ListClientTlsPoliciesResponse(),
+            metadata,
+        )
 
         client.list_client_tls_policies(
             request,
@@ -12787,6 +12914,7 @@ def test_list_client_tls_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_client_tls_policy_rest_bad_request(
@@ -12879,10 +13007,14 @@ def test_get_client_tls_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_get_client_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_get_client_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_get_client_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = client_tls_policy.GetClientTlsPolicyRequest.pb(
             client_tls_policy.GetClientTlsPolicyRequest()
         )
@@ -12908,6 +13040,7 @@ def test_get_client_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = client_tls_policy.ClientTlsPolicy()
+        post_with_metadata.return_value = client_tls_policy.ClientTlsPolicy(), metadata
 
         client.get_client_tls_policy(
             request,
@@ -12919,6 +13052,7 @@ def test_get_client_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_client_tls_policy_rest_bad_request(
@@ -13085,10 +13219,14 @@ def test_create_client_tls_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_create_client_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_create_client_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_create_client_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_client_tls_policy.CreateClientTlsPolicyRequest.pb(
             gcn_client_tls_policy.CreateClientTlsPolicyRequest()
         )
@@ -13112,6 +13250,7 @@ def test_create_client_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_client_tls_policy(
             request,
@@ -13123,6 +13262,7 @@ def test_create_client_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_client_tls_policy_rest_bad_request(
@@ -13297,10 +13437,14 @@ def test_update_client_tls_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_update_client_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_update_client_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_update_client_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_client_tls_policy.UpdateClientTlsPolicyRequest.pb(
             gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
         )
@@ -13324,6 +13468,7 @@ def test_update_client_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_client_tls_policy(
             request,
@@ -13335,6 +13480,7 @@ def test_update_client_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_client_tls_policy_rest_bad_request(
@@ -13419,10 +13565,14 @@ def test_delete_client_tls_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "post_delete_client_tls_policy"
     ) as post, mock.patch.object(
+        transports.NetworkSecurityRestInterceptor,
+        "post_delete_client_tls_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetworkSecurityRestInterceptor, "pre_delete_client_tls_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = client_tls_policy.DeleteClientTlsPolicyRequest.pb(
             client_tls_policy.DeleteClientTlsPolicyRequest()
         )
@@ -13446,6 +13596,7 @@ def test_delete_client_tls_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_client_tls_policy(
             request,
@@ -13457,6 +13608,7 @@ def test_delete_client_tls_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

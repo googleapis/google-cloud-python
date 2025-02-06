@@ -159,11 +159,34 @@ class ModelArmorRestInterceptor:
     def post_create_template(self, response: service.Template) -> service.Template:
         """Post-rpc interceptor for create_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_template` interceptor runs
+        before the `post_create_template_with_metadata` interceptor.
         """
         return response
+
+    def post_create_template_with_metadata(
+        self,
+        response: service.Template,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Template, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_create_template_with_metadata`
+        interceptor in new development instead of the `post_create_template` interceptor.
+        When both interceptors are used, this `post_create_template_with_metadata` interceptor runs after the
+        `post_create_template` interceptor. The (possibly modified) response returned by
+        `post_create_template` will be passed to
+        `post_create_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_template(
         self,
@@ -194,11 +217,34 @@ class ModelArmorRestInterceptor:
     ) -> service.FloorSetting:
         """Post-rpc interceptor for get_floor_setting
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_floor_setting_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_floor_setting` interceptor runs
+        before the `post_get_floor_setting_with_metadata` interceptor.
         """
         return response
+
+    def post_get_floor_setting_with_metadata(
+        self,
+        response: service.FloorSetting,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.FloorSetting, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_floor_setting
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_get_floor_setting_with_metadata`
+        interceptor in new development instead of the `post_get_floor_setting` interceptor.
+        When both interceptors are used, this `post_get_floor_setting_with_metadata` interceptor runs after the
+        `post_get_floor_setting` interceptor. The (possibly modified) response returned by
+        `post_get_floor_setting` will be passed to
+        `post_get_floor_setting_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_template(
         self,
@@ -215,11 +261,34 @@ class ModelArmorRestInterceptor:
     def post_get_template(self, response: service.Template) -> service.Template:
         """Post-rpc interceptor for get_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_template` interceptor runs
+        before the `post_get_template_with_metadata` interceptor.
         """
         return response
+
+    def post_get_template_with_metadata(
+        self,
+        response: service.Template,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Template, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_get_template_with_metadata`
+        interceptor in new development instead of the `post_get_template` interceptor.
+        When both interceptors are used, this `post_get_template_with_metadata` interceptor runs after the
+        `post_get_template` interceptor. The (possibly modified) response returned by
+        `post_get_template` will be passed to
+        `post_get_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_templates(
         self,
@@ -238,11 +307,34 @@ class ModelArmorRestInterceptor:
     ) -> service.ListTemplatesResponse:
         """Post-rpc interceptor for list_templates
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_templates_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_templates` interceptor runs
+        before the `post_list_templates_with_metadata` interceptor.
         """
         return response
+
+    def post_list_templates_with_metadata(
+        self,
+        response: service.ListTemplatesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_templates
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_list_templates_with_metadata`
+        interceptor in new development instead of the `post_list_templates` interceptor.
+        When both interceptors are used, this `post_list_templates_with_metadata` interceptor runs after the
+        `post_list_templates` interceptor. The (possibly modified) response returned by
+        `post_list_templates` will be passed to
+        `post_list_templates_with_metadata`.
+        """
+        return response, metadata
 
     def pre_sanitize_model_response(
         self,
@@ -263,11 +355,36 @@ class ModelArmorRestInterceptor:
     ) -> service.SanitizeModelResponseResponse:
         """Post-rpc interceptor for sanitize_model_response
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_sanitize_model_response_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_sanitize_model_response` interceptor runs
+        before the `post_sanitize_model_response_with_metadata` interceptor.
         """
         return response
+
+    def post_sanitize_model_response_with_metadata(
+        self,
+        response: service.SanitizeModelResponseResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.SanitizeModelResponseResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for sanitize_model_response
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_sanitize_model_response_with_metadata`
+        interceptor in new development instead of the `post_sanitize_model_response` interceptor.
+        When both interceptors are used, this `post_sanitize_model_response_with_metadata` interceptor runs after the
+        `post_sanitize_model_response` interceptor. The (possibly modified) response returned by
+        `post_sanitize_model_response` will be passed to
+        `post_sanitize_model_response_with_metadata`.
+        """
+        return response, metadata
 
     def pre_sanitize_user_prompt(
         self,
@@ -288,11 +405,36 @@ class ModelArmorRestInterceptor:
     ) -> service.SanitizeUserPromptResponse:
         """Post-rpc interceptor for sanitize_user_prompt
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_sanitize_user_prompt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_sanitize_user_prompt` interceptor runs
+        before the `post_sanitize_user_prompt_with_metadata` interceptor.
         """
         return response
+
+    def post_sanitize_user_prompt_with_metadata(
+        self,
+        response: service.SanitizeUserPromptResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.SanitizeUserPromptResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for sanitize_user_prompt
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_sanitize_user_prompt_with_metadata`
+        interceptor in new development instead of the `post_sanitize_user_prompt` interceptor.
+        When both interceptors are used, this `post_sanitize_user_prompt_with_metadata` interceptor runs after the
+        `post_sanitize_user_prompt` interceptor. The (possibly modified) response returned by
+        `post_sanitize_user_prompt` will be passed to
+        `post_sanitize_user_prompt_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_floor_setting(
         self,
@@ -313,11 +455,34 @@ class ModelArmorRestInterceptor:
     ) -> service.FloorSetting:
         """Post-rpc interceptor for update_floor_setting
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_floor_setting_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_floor_setting` interceptor runs
+        before the `post_update_floor_setting_with_metadata` interceptor.
         """
         return response
+
+    def post_update_floor_setting_with_metadata(
+        self,
+        response: service.FloorSetting,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.FloorSetting, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_floor_setting
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_update_floor_setting_with_metadata`
+        interceptor in new development instead of the `post_update_floor_setting` interceptor.
+        When both interceptors are used, this `post_update_floor_setting_with_metadata` interceptor runs after the
+        `post_update_floor_setting` interceptor. The (possibly modified) response returned by
+        `post_update_floor_setting` will be passed to
+        `post_update_floor_setting_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_template(
         self,
@@ -334,11 +499,34 @@ class ModelArmorRestInterceptor:
     def post_update_template(self, response: service.Template) -> service.Template:
         """Post-rpc interceptor for update_template
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_template_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ModelArmor server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_template` interceptor runs
+        before the `post_update_template_with_metadata` interceptor.
         """
         return response
+
+    def post_update_template_with_metadata(
+        self,
+        response: service.Template,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Template, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_template
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ModelArmor server but before it is returned to user code.
+
+        We recommend only using this `post_update_template_with_metadata`
+        interceptor in new development instead of the `post_update_template` interceptor.
+        When both interceptors are used, this `post_update_template_with_metadata` interceptor runs after the
+        `post_update_template` interceptor. The (possibly modified) response returned by
+        `post_update_template` will be passed to
+        `post_update_template_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -604,6 +792,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -856,6 +1048,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_floor_setting(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_floor_setting_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1000,6 +1196,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1147,6 +1347,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_templates(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_templates_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1295,6 +1499,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_sanitize_model_response(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_sanitize_model_response_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1445,6 +1653,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_sanitize_user_prompt(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_sanitize_user_prompt_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1597,6 +1809,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_floor_setting(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_floor_setting_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1747,6 +1963,10 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_template(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_template_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

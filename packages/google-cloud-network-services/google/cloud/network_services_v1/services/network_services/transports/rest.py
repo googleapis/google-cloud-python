@@ -429,11 +429,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_endpoint_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_endpoint_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_endpoint_policy` interceptor runs
+        before the `post_create_endpoint_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_endpoint_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_endpoint_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_endpoint_policy_with_metadata`
+        interceptor in new development instead of the `post_create_endpoint_policy` interceptor.
+        When both interceptors are used, this `post_create_endpoint_policy_with_metadata` interceptor runs after the
+        `post_create_endpoint_policy` interceptor. The (possibly modified) response returned by
+        `post_create_endpoint_policy` will be passed to
+        `post_create_endpoint_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_gateway(
         self,
@@ -454,11 +477,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_gateway` interceptor runs
+        before the `post_create_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_create_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_gateway_with_metadata`
+        interceptor in new development instead of the `post_create_gateway` interceptor.
+        When both interceptors are used, this `post_create_gateway_with_metadata` interceptor runs after the
+        `post_create_gateway` interceptor. The (possibly modified) response returned by
+        `post_create_gateway` will be passed to
+        `post_create_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_grpc_route(
         self,
@@ -479,11 +525,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_grpc_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_grpc_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_grpc_route` interceptor runs
+        before the `post_create_grpc_route_with_metadata` interceptor.
         """
         return response
+
+    def post_create_grpc_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_grpc_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_grpc_route_with_metadata`
+        interceptor in new development instead of the `post_create_grpc_route` interceptor.
+        When both interceptors are used, this `post_create_grpc_route_with_metadata` interceptor runs after the
+        `post_create_grpc_route` interceptor. The (possibly modified) response returned by
+        `post_create_grpc_route` will be passed to
+        `post_create_grpc_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_http_route(
         self,
@@ -504,11 +573,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_http_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_http_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_http_route` interceptor runs
+        before the `post_create_http_route_with_metadata` interceptor.
         """
         return response
+
+    def post_create_http_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_http_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_http_route_with_metadata`
+        interceptor in new development instead of the `post_create_http_route` interceptor.
+        When both interceptors are used, this `post_create_http_route_with_metadata` interceptor runs after the
+        `post_create_http_route` interceptor. The (possibly modified) response returned by
+        `post_create_http_route` will be passed to
+        `post_create_http_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_mesh(
         self,
@@ -527,11 +619,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_mesh
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_mesh_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_mesh` interceptor runs
+        before the `post_create_mesh_with_metadata` interceptor.
         """
         return response
+
+    def post_create_mesh_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_mesh
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_mesh_with_metadata`
+        interceptor in new development instead of the `post_create_mesh` interceptor.
+        When both interceptors are used, this `post_create_mesh_with_metadata` interceptor runs after the
+        `post_create_mesh` interceptor. The (possibly modified) response returned by
+        `post_create_mesh` will be passed to
+        `post_create_mesh_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_service_binding(
         self,
@@ -553,11 +668,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_service_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_service_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_service_binding` interceptor runs
+        before the `post_create_service_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_create_service_binding_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_service_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_service_binding_with_metadata`
+        interceptor in new development instead of the `post_create_service_binding` interceptor.
+        When both interceptors are used, this `post_create_service_binding_with_metadata` interceptor runs after the
+        `post_create_service_binding` interceptor. The (possibly modified) response returned by
+        `post_create_service_binding` will be passed to
+        `post_create_service_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_tcp_route(
         self,
@@ -578,11 +716,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_tcp_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_tcp_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_tcp_route` interceptor runs
+        before the `post_create_tcp_route_with_metadata` interceptor.
         """
         return response
+
+    def post_create_tcp_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_tcp_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_tcp_route_with_metadata`
+        interceptor in new development instead of the `post_create_tcp_route` interceptor.
+        When both interceptors are used, this `post_create_tcp_route_with_metadata` interceptor runs after the
+        `post_create_tcp_route` interceptor. The (possibly modified) response returned by
+        `post_create_tcp_route` will be passed to
+        `post_create_tcp_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_tls_route(
         self,
@@ -603,11 +764,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_tls_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_tls_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_tls_route` interceptor runs
+        before the `post_create_tls_route_with_metadata` interceptor.
         """
         return response
+
+    def post_create_tls_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_tls_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_tls_route_with_metadata`
+        interceptor in new development instead of the `post_create_tls_route` interceptor.
+        When both interceptors are used, this `post_create_tls_route_with_metadata` interceptor runs after the
+        `post_create_tls_route` interceptor. The (possibly modified) response returned by
+        `post_create_tls_route` will be passed to
+        `post_create_tls_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_endpoint_policy(
         self,
@@ -629,11 +813,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_endpoint_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_endpoint_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_endpoint_policy` interceptor runs
+        before the `post_delete_endpoint_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_endpoint_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_endpoint_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_endpoint_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_endpoint_policy` interceptor.
+        When both interceptors are used, this `post_delete_endpoint_policy_with_metadata` interceptor runs after the
+        `post_delete_endpoint_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_endpoint_policy` will be passed to
+        `post_delete_endpoint_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_gateway(
         self,
@@ -652,11 +859,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_gateway` interceptor runs
+        before the `post_delete_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_gateway_with_metadata`
+        interceptor in new development instead of the `post_delete_gateway` interceptor.
+        When both interceptors are used, this `post_delete_gateway_with_metadata` interceptor runs after the
+        `post_delete_gateway` interceptor. The (possibly modified) response returned by
+        `post_delete_gateway` will be passed to
+        `post_delete_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_grpc_route(
         self,
@@ -677,11 +907,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_grpc_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_grpc_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_grpc_route` interceptor runs
+        before the `post_delete_grpc_route_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_grpc_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_grpc_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_grpc_route_with_metadata`
+        interceptor in new development instead of the `post_delete_grpc_route` interceptor.
+        When both interceptors are used, this `post_delete_grpc_route_with_metadata` interceptor runs after the
+        `post_delete_grpc_route` interceptor. The (possibly modified) response returned by
+        `post_delete_grpc_route` will be passed to
+        `post_delete_grpc_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_http_route(
         self,
@@ -702,11 +955,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_http_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_http_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_http_route` interceptor runs
+        before the `post_delete_http_route_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_http_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_http_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_http_route_with_metadata`
+        interceptor in new development instead of the `post_delete_http_route` interceptor.
+        When both interceptors are used, this `post_delete_http_route_with_metadata` interceptor runs after the
+        `post_delete_http_route` interceptor. The (possibly modified) response returned by
+        `post_delete_http_route` will be passed to
+        `post_delete_http_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_mesh(
         self,
@@ -725,11 +1001,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_mesh
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_mesh_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_mesh` interceptor runs
+        before the `post_delete_mesh_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_mesh_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_mesh
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_mesh_with_metadata`
+        interceptor in new development instead of the `post_delete_mesh` interceptor.
+        When both interceptors are used, this `post_delete_mesh_with_metadata` interceptor runs after the
+        `post_delete_mesh` interceptor. The (possibly modified) response returned by
+        `post_delete_mesh` will be passed to
+        `post_delete_mesh_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_service_binding(
         self,
@@ -751,11 +1050,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_service_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_service_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_service_binding` interceptor runs
+        before the `post_delete_service_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_service_binding_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_service_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_service_binding_with_metadata`
+        interceptor in new development instead of the `post_delete_service_binding` interceptor.
+        When both interceptors are used, this `post_delete_service_binding_with_metadata` interceptor runs after the
+        `post_delete_service_binding` interceptor. The (possibly modified) response returned by
+        `post_delete_service_binding` will be passed to
+        `post_delete_service_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_tcp_route(
         self,
@@ -776,11 +1098,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_tcp_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_tcp_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_tcp_route` interceptor runs
+        before the `post_delete_tcp_route_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_tcp_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_tcp_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_tcp_route_with_metadata`
+        interceptor in new development instead of the `post_delete_tcp_route` interceptor.
+        When both interceptors are used, this `post_delete_tcp_route_with_metadata` interceptor runs after the
+        `post_delete_tcp_route` interceptor. The (possibly modified) response returned by
+        `post_delete_tcp_route` will be passed to
+        `post_delete_tcp_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_tls_route(
         self,
@@ -801,11 +1146,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_tls_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_tls_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_tls_route` interceptor runs
+        before the `post_delete_tls_route_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_tls_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_tls_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_tls_route_with_metadata`
+        interceptor in new development instead of the `post_delete_tls_route` interceptor.
+        When both interceptors are used, this `post_delete_tls_route_with_metadata` interceptor runs after the
+        `post_delete_tls_route` interceptor. The (possibly modified) response returned by
+        `post_delete_tls_route` will be passed to
+        `post_delete_tls_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_endpoint_policy(
         self,
@@ -827,11 +1195,34 @@ class NetworkServicesRestInterceptor:
     ) -> endpoint_policy.EndpointPolicy:
         """Post-rpc interceptor for get_endpoint_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_endpoint_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_endpoint_policy` interceptor runs
+        before the `post_get_endpoint_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_endpoint_policy_with_metadata(
+        self,
+        response: endpoint_policy.EndpointPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[endpoint_policy.EndpointPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_endpoint_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_endpoint_policy_with_metadata`
+        interceptor in new development instead of the `post_get_endpoint_policy` interceptor.
+        When both interceptors are used, this `post_get_endpoint_policy_with_metadata` interceptor runs after the
+        `post_get_endpoint_policy` interceptor. The (possibly modified) response returned by
+        `post_get_endpoint_policy` will be passed to
+        `post_get_endpoint_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_gateway(
         self,
@@ -848,11 +1239,34 @@ class NetworkServicesRestInterceptor:
     def post_get_gateway(self, response: gateway.Gateway) -> gateway.Gateway:
         """Post-rpc interceptor for get_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_gateway` interceptor runs
+        before the `post_get_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_get_gateway_with_metadata(
+        self,
+        response: gateway.Gateway,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gateway.Gateway, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_gateway_with_metadata`
+        interceptor in new development instead of the `post_get_gateway` interceptor.
+        When both interceptors are used, this `post_get_gateway_with_metadata` interceptor runs after the
+        `post_get_gateway` interceptor. The (possibly modified) response returned by
+        `post_get_gateway` will be passed to
+        `post_get_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_grpc_route(
         self,
@@ -871,11 +1285,34 @@ class NetworkServicesRestInterceptor:
     ) -> grpc_route.GrpcRoute:
         """Post-rpc interceptor for get_grpc_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_grpc_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_grpc_route` interceptor runs
+        before the `post_get_grpc_route_with_metadata` interceptor.
         """
         return response
+
+    def post_get_grpc_route_with_metadata(
+        self,
+        response: grpc_route.GrpcRoute,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grpc_route.GrpcRoute, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_grpc_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_grpc_route_with_metadata`
+        interceptor in new development instead of the `post_get_grpc_route` interceptor.
+        When both interceptors are used, this `post_get_grpc_route_with_metadata` interceptor runs after the
+        `post_get_grpc_route` interceptor. The (possibly modified) response returned by
+        `post_get_grpc_route` will be passed to
+        `post_get_grpc_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_http_route(
         self,
@@ -894,11 +1331,34 @@ class NetworkServicesRestInterceptor:
     ) -> http_route.HttpRoute:
         """Post-rpc interceptor for get_http_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_http_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_http_route` interceptor runs
+        before the `post_get_http_route_with_metadata` interceptor.
         """
         return response
+
+    def post_get_http_route_with_metadata(
+        self,
+        response: http_route.HttpRoute,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[http_route.HttpRoute, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_http_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_http_route_with_metadata`
+        interceptor in new development instead of the `post_get_http_route` interceptor.
+        When both interceptors are used, this `post_get_http_route_with_metadata` interceptor runs after the
+        `post_get_http_route` interceptor. The (possibly modified) response returned by
+        `post_get_http_route` will be passed to
+        `post_get_http_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_mesh(
         self,
@@ -915,11 +1375,32 @@ class NetworkServicesRestInterceptor:
     def post_get_mesh(self, response: mesh.Mesh) -> mesh.Mesh:
         """Post-rpc interceptor for get_mesh
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_mesh_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_mesh` interceptor runs
+        before the `post_get_mesh_with_metadata` interceptor.
         """
         return response
+
+    def post_get_mesh_with_metadata(
+        self, response: mesh.Mesh, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mesh.Mesh, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_mesh
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_mesh_with_metadata`
+        interceptor in new development instead of the `post_get_mesh` interceptor.
+        When both interceptors are used, this `post_get_mesh_with_metadata` interceptor runs after the
+        `post_get_mesh` interceptor. The (possibly modified) response returned by
+        `post_get_mesh` will be passed to
+        `post_get_mesh_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_service_binding(
         self,
@@ -941,11 +1422,34 @@ class NetworkServicesRestInterceptor:
     ) -> service_binding.ServiceBinding:
         """Post-rpc interceptor for get_service_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_service_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_service_binding` interceptor runs
+        before the `post_get_service_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_get_service_binding_with_metadata(
+        self,
+        response: service_binding.ServiceBinding,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service_binding.ServiceBinding, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_service_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_service_binding_with_metadata`
+        interceptor in new development instead of the `post_get_service_binding` interceptor.
+        When both interceptors are used, this `post_get_service_binding_with_metadata` interceptor runs after the
+        `post_get_service_binding` interceptor. The (possibly modified) response returned by
+        `post_get_service_binding` will be passed to
+        `post_get_service_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_tcp_route(
         self,
@@ -962,11 +1466,34 @@ class NetworkServicesRestInterceptor:
     def post_get_tcp_route(self, response: tcp_route.TcpRoute) -> tcp_route.TcpRoute:
         """Post-rpc interceptor for get_tcp_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_tcp_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_tcp_route` interceptor runs
+        before the `post_get_tcp_route_with_metadata` interceptor.
         """
         return response
+
+    def post_get_tcp_route_with_metadata(
+        self,
+        response: tcp_route.TcpRoute,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tcp_route.TcpRoute, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_tcp_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_tcp_route_with_metadata`
+        interceptor in new development instead of the `post_get_tcp_route` interceptor.
+        When both interceptors are used, this `post_get_tcp_route_with_metadata` interceptor runs after the
+        `post_get_tcp_route` interceptor. The (possibly modified) response returned by
+        `post_get_tcp_route` will be passed to
+        `post_get_tcp_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_tls_route(
         self,
@@ -983,11 +1510,34 @@ class NetworkServicesRestInterceptor:
     def post_get_tls_route(self, response: tls_route.TlsRoute) -> tls_route.TlsRoute:
         """Post-rpc interceptor for get_tls_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_tls_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_tls_route` interceptor runs
+        before the `post_get_tls_route_with_metadata` interceptor.
         """
         return response
+
+    def post_get_tls_route_with_metadata(
+        self,
+        response: tls_route.TlsRoute,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tls_route.TlsRoute, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_tls_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_tls_route_with_metadata`
+        interceptor in new development instead of the `post_get_tls_route` interceptor.
+        When both interceptors are used, this `post_get_tls_route_with_metadata` interceptor runs after the
+        `post_get_tls_route` interceptor. The (possibly modified) response returned by
+        `post_get_tls_route` will be passed to
+        `post_get_tls_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_endpoint_policies(
         self,
@@ -1009,11 +1559,37 @@ class NetworkServicesRestInterceptor:
     ) -> endpoint_policy.ListEndpointPoliciesResponse:
         """Post-rpc interceptor for list_endpoint_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_endpoint_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_endpoint_policies` interceptor runs
+        before the `post_list_endpoint_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_endpoint_policies_with_metadata(
+        self,
+        response: endpoint_policy.ListEndpointPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        endpoint_policy.ListEndpointPoliciesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_endpoint_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_endpoint_policies_with_metadata`
+        interceptor in new development instead of the `post_list_endpoint_policies` interceptor.
+        When both interceptors are used, this `post_list_endpoint_policies_with_metadata` interceptor runs after the
+        `post_list_endpoint_policies` interceptor. The (possibly modified) response returned by
+        `post_list_endpoint_policies` will be passed to
+        `post_list_endpoint_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_gateways(
         self,
@@ -1032,11 +1608,34 @@ class NetworkServicesRestInterceptor:
     ) -> gateway.ListGatewaysResponse:
         """Post-rpc interceptor for list_gateways
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_gateways_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_gateways` interceptor runs
+        before the `post_list_gateways_with_metadata` interceptor.
         """
         return response
+
+    def post_list_gateways_with_metadata(
+        self,
+        response: gateway.ListGatewaysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gateway.ListGatewaysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_gateways
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_gateways_with_metadata`
+        interceptor in new development instead of the `post_list_gateways` interceptor.
+        When both interceptors are used, this `post_list_gateways_with_metadata` interceptor runs after the
+        `post_list_gateways` interceptor. The (possibly modified) response returned by
+        `post_list_gateways` will be passed to
+        `post_list_gateways_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_grpc_routes(
         self,
@@ -1057,11 +1656,36 @@ class NetworkServicesRestInterceptor:
     ) -> grpc_route.ListGrpcRoutesResponse:
         """Post-rpc interceptor for list_grpc_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_grpc_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_grpc_routes` interceptor runs
+        before the `post_list_grpc_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_grpc_routes_with_metadata(
+        self,
+        response: grpc_route.ListGrpcRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grpc_route.ListGrpcRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_grpc_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_grpc_routes_with_metadata`
+        interceptor in new development instead of the `post_list_grpc_routes` interceptor.
+        When both interceptors are used, this `post_list_grpc_routes_with_metadata` interceptor runs after the
+        `post_list_grpc_routes` interceptor. The (possibly modified) response returned by
+        `post_list_grpc_routes` will be passed to
+        `post_list_grpc_routes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_http_routes(
         self,
@@ -1082,11 +1706,36 @@ class NetworkServicesRestInterceptor:
     ) -> http_route.ListHttpRoutesResponse:
         """Post-rpc interceptor for list_http_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_http_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_http_routes` interceptor runs
+        before the `post_list_http_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_http_routes_with_metadata(
+        self,
+        response: http_route.ListHttpRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        http_route.ListHttpRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_http_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_http_routes_with_metadata`
+        interceptor in new development instead of the `post_list_http_routes` interceptor.
+        When both interceptors are used, this `post_list_http_routes_with_metadata` interceptor runs after the
+        `post_list_http_routes` interceptor. The (possibly modified) response returned by
+        `post_list_http_routes` will be passed to
+        `post_list_http_routes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_meshes(
         self,
@@ -1105,11 +1754,34 @@ class NetworkServicesRestInterceptor:
     ) -> mesh.ListMeshesResponse:
         """Post-rpc interceptor for list_meshes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_meshes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_meshes` interceptor runs
+        before the `post_list_meshes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_meshes_with_metadata(
+        self,
+        response: mesh.ListMeshesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[mesh.ListMeshesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_meshes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_meshes_with_metadata`
+        interceptor in new development instead of the `post_list_meshes` interceptor.
+        When both interceptors are used, this `post_list_meshes_with_metadata` interceptor runs after the
+        `post_list_meshes` interceptor. The (possibly modified) response returned by
+        `post_list_meshes` will be passed to
+        `post_list_meshes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_service_bindings(
         self,
@@ -1131,11 +1803,37 @@ class NetworkServicesRestInterceptor:
     ) -> service_binding.ListServiceBindingsResponse:
         """Post-rpc interceptor for list_service_bindings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_service_bindings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_service_bindings` interceptor runs
+        before the `post_list_service_bindings_with_metadata` interceptor.
         """
         return response
+
+    def post_list_service_bindings_with_metadata(
+        self,
+        response: service_binding.ListServiceBindingsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service_binding.ListServiceBindingsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_service_bindings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_service_bindings_with_metadata`
+        interceptor in new development instead of the `post_list_service_bindings` interceptor.
+        When both interceptors are used, this `post_list_service_bindings_with_metadata` interceptor runs after the
+        `post_list_service_bindings` interceptor. The (possibly modified) response returned by
+        `post_list_service_bindings` will be passed to
+        `post_list_service_bindings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tcp_routes(
         self,
@@ -1154,11 +1852,36 @@ class NetworkServicesRestInterceptor:
     ) -> tcp_route.ListTcpRoutesResponse:
         """Post-rpc interceptor for list_tcp_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tcp_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tcp_routes` interceptor runs
+        before the `post_list_tcp_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tcp_routes_with_metadata(
+        self,
+        response: tcp_route.ListTcpRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tcp_route.ListTcpRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_tcp_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_tcp_routes_with_metadata`
+        interceptor in new development instead of the `post_list_tcp_routes` interceptor.
+        When both interceptors are used, this `post_list_tcp_routes_with_metadata` interceptor runs after the
+        `post_list_tcp_routes` interceptor. The (possibly modified) response returned by
+        `post_list_tcp_routes` will be passed to
+        `post_list_tcp_routes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tls_routes(
         self,
@@ -1177,11 +1900,36 @@ class NetworkServicesRestInterceptor:
     ) -> tls_route.ListTlsRoutesResponse:
         """Post-rpc interceptor for list_tls_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tls_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tls_routes` interceptor runs
+        before the `post_list_tls_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tls_routes_with_metadata(
+        self,
+        response: tls_route.ListTlsRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tls_route.ListTlsRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_tls_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_tls_routes_with_metadata`
+        interceptor in new development instead of the `post_list_tls_routes` interceptor.
+        When both interceptors are used, this `post_list_tls_routes_with_metadata` interceptor runs after the
+        `post_list_tls_routes` interceptor. The (possibly modified) response returned by
+        `post_list_tls_routes` will be passed to
+        `post_list_tls_routes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_endpoint_policy(
         self,
@@ -1203,11 +1951,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_endpoint_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_endpoint_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_endpoint_policy` interceptor runs
+        before the `post_update_endpoint_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_endpoint_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_endpoint_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_endpoint_policy_with_metadata`
+        interceptor in new development instead of the `post_update_endpoint_policy` interceptor.
+        When both interceptors are used, this `post_update_endpoint_policy_with_metadata` interceptor runs after the
+        `post_update_endpoint_policy` interceptor. The (possibly modified) response returned by
+        `post_update_endpoint_policy` will be passed to
+        `post_update_endpoint_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_gateway(
         self,
@@ -1228,11 +1999,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_gateway
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_gateway_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_gateway` interceptor runs
+        before the `post_update_gateway_with_metadata` interceptor.
         """
         return response
+
+    def post_update_gateway_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_gateway
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_gateway_with_metadata`
+        interceptor in new development instead of the `post_update_gateway` interceptor.
+        When both interceptors are used, this `post_update_gateway_with_metadata` interceptor runs after the
+        `post_update_gateway` interceptor. The (possibly modified) response returned by
+        `post_update_gateway` will be passed to
+        `post_update_gateway_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_grpc_route(
         self,
@@ -1253,11 +2047,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_grpc_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_grpc_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_grpc_route` interceptor runs
+        before the `post_update_grpc_route_with_metadata` interceptor.
         """
         return response
+
+    def post_update_grpc_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_grpc_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_grpc_route_with_metadata`
+        interceptor in new development instead of the `post_update_grpc_route` interceptor.
+        When both interceptors are used, this `post_update_grpc_route_with_metadata` interceptor runs after the
+        `post_update_grpc_route` interceptor. The (possibly modified) response returned by
+        `post_update_grpc_route` will be passed to
+        `post_update_grpc_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_http_route(
         self,
@@ -1278,11 +2095,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_http_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_http_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_http_route` interceptor runs
+        before the `post_update_http_route_with_metadata` interceptor.
         """
         return response
+
+    def post_update_http_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_http_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_http_route_with_metadata`
+        interceptor in new development instead of the `post_update_http_route` interceptor.
+        When both interceptors are used, this `post_update_http_route_with_metadata` interceptor runs after the
+        `post_update_http_route` interceptor. The (possibly modified) response returned by
+        `post_update_http_route` will be passed to
+        `post_update_http_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_mesh(
         self,
@@ -1301,11 +2141,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_mesh
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_mesh_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_mesh` interceptor runs
+        before the `post_update_mesh_with_metadata` interceptor.
         """
         return response
+
+    def post_update_mesh_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_mesh
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_mesh_with_metadata`
+        interceptor in new development instead of the `post_update_mesh` interceptor.
+        When both interceptors are used, this `post_update_mesh_with_metadata` interceptor runs after the
+        `post_update_mesh` interceptor. The (possibly modified) response returned by
+        `post_update_mesh` will be passed to
+        `post_update_mesh_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_tcp_route(
         self,
@@ -1326,11 +2189,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_tcp_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_tcp_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_tcp_route` interceptor runs
+        before the `post_update_tcp_route_with_metadata` interceptor.
         """
         return response
+
+    def post_update_tcp_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_tcp_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_tcp_route_with_metadata`
+        interceptor in new development instead of the `post_update_tcp_route` interceptor.
+        When both interceptors are used, this `post_update_tcp_route_with_metadata` interceptor runs after the
+        `post_update_tcp_route` interceptor. The (possibly modified) response returned by
+        `post_update_tcp_route` will be passed to
+        `post_update_tcp_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_tls_route(
         self,
@@ -1351,11 +2237,34 @@ class NetworkServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_tls_route
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_tls_route_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the NetworkServices server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_tls_route` interceptor runs
+        before the `post_update_tls_route_with_metadata` interceptor.
         """
         return response
+
+    def post_update_tls_route_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_tls_route
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_tls_route_with_metadata`
+        interceptor in new development instead of the `post_update_tls_route` interceptor.
+        When both interceptors are used, this `post_update_tls_route_with_metadata` interceptor runs after the
+        `post_update_tls_route` interceptor. The (possibly modified) response returned by
+        `post_update_tls_route` will be passed to
+        `post_update_tls_route_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1844,6 +2753,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_endpoint_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_endpoint_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1992,6 +2905,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2142,6 +3059,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_grpc_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_grpc_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2291,6 +3212,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_http_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_http_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2439,6 +3364,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_mesh(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_mesh_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2590,6 +3519,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_service_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_service_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2739,6 +3672,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_tcp_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_tcp_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2888,6 +3825,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_tls_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_tls_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3033,6 +3974,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_endpoint_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_endpoint_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3175,6 +4120,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3319,6 +4268,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_grpc_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_grpc_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3463,6 +4416,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_http_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_http_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3605,6 +4562,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_mesh(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_mesh_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3750,6 +4711,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_service_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_service_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3894,6 +4859,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_tcp_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_tcp_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4038,6 +5007,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_tls_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_tls_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4188,6 +5161,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_endpoint_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_endpoint_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4337,6 +5314,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4481,6 +5462,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_grpc_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_grpc_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4625,6 +5610,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_http_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_http_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4775,6 +5764,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_mesh(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_mesh_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4922,6 +5915,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_service_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_service_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5066,6 +6063,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_tcp_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_tcp_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5210,6 +6211,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_tls_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_tls_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5356,6 +6361,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_endpoint_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_endpoint_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5501,6 +6510,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_gateways(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_gateways_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5646,6 +6659,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_grpc_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_grpc_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5793,6 +6810,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_http_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_http_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5938,6 +6959,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_meshes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_meshes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6084,6 +7109,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_service_bindings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_service_bindings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6229,6 +7258,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tcp_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tcp_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6372,6 +7405,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tls_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tls_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6523,6 +7560,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_endpoint_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_endpoint_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6671,6 +7712,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_gateway(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_gateway_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6821,6 +7866,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_grpc_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_grpc_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6971,6 +8020,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_http_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_http_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7119,6 +8172,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_mesh(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_mesh_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7269,6 +8326,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_tcp_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_tcp_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7419,6 +8480,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_tls_route(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_tls_route_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

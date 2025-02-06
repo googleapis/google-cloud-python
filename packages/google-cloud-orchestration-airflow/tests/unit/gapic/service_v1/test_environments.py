@@ -73,6 +73,13 @@ from google.cloud.orchestration.airflow.service_v1.services.environments import 
 )
 from google.cloud.orchestration.airflow.service_v1.types import environments, operations
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -314,6 +321,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         EnvironmentsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = EnvironmentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = EnvironmentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -14253,10 +14303,13 @@ def test_create_environment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_create_environment"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_create_environment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_create_environment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.CreateEnvironmentRequest.pb(
             environments.CreateEnvironmentRequest()
         )
@@ -14280,6 +14333,7 @@ def test_create_environment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_environment(
             request,
@@ -14291,6 +14345,7 @@ def test_create_environment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_environment_rest_bad_request(
@@ -14383,10 +14438,13 @@ def test_get_environment_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_get_environment"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_get_environment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_get_environment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.GetEnvironmentRequest.pb(
             environments.GetEnvironmentRequest()
         )
@@ -14410,6 +14468,7 @@ def test_get_environment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.Environment()
+        post_with_metadata.return_value = environments.Environment(), metadata
 
         client.get_environment(
             request,
@@ -14421,6 +14480,7 @@ def test_get_environment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_environments_rest_bad_request(
@@ -14505,10 +14565,13 @@ def test_list_environments_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_list_environments"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_list_environments_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_list_environments"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.ListEnvironmentsRequest.pb(
             environments.ListEnvironmentsRequest()
         )
@@ -14534,6 +14597,10 @@ def test_list_environments_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.ListEnvironmentsResponse()
+        post_with_metadata.return_value = (
+            environments.ListEnvironmentsResponse(),
+            metadata,
+        )
 
         client.list_environments(
             request,
@@ -14545,6 +14612,7 @@ def test_list_environments_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_environment_rest_bad_request(
@@ -14822,10 +14890,13 @@ def test_update_environment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_update_environment"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_update_environment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_update_environment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.UpdateEnvironmentRequest.pb(
             environments.UpdateEnvironmentRequest()
         )
@@ -14849,6 +14920,7 @@ def test_update_environment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_environment(
             request,
@@ -14860,6 +14932,7 @@ def test_update_environment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_environment_rest_bad_request(
@@ -14940,10 +15013,13 @@ def test_delete_environment_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_delete_environment"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_delete_environment_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_delete_environment"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.DeleteEnvironmentRequest.pb(
             environments.DeleteEnvironmentRequest()
         )
@@ -14967,6 +15043,7 @@ def test_delete_environment_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_environment(
             request,
@@ -14978,6 +15055,7 @@ def test_delete_environment_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_execute_airflow_command_rest_bad_request(
@@ -15072,10 +15150,14 @@ def test_execute_airflow_command_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_execute_airflow_command"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_execute_airflow_command_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_execute_airflow_command"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.ExecuteAirflowCommandRequest.pb(
             environments.ExecuteAirflowCommandRequest()
         )
@@ -15101,6 +15183,10 @@ def test_execute_airflow_command_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.ExecuteAirflowCommandResponse()
+        post_with_metadata.return_value = (
+            environments.ExecuteAirflowCommandResponse(),
+            metadata,
+        )
 
         client.execute_airflow_command(
             request,
@@ -15112,6 +15198,7 @@ def test_execute_airflow_command_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_airflow_command_rest_bad_request(
@@ -15202,10 +15289,14 @@ def test_stop_airflow_command_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_stop_airflow_command"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_stop_airflow_command_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_stop_airflow_command"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.StopAirflowCommandRequest.pb(
             environments.StopAirflowCommandRequest()
         )
@@ -15231,6 +15322,10 @@ def test_stop_airflow_command_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.StopAirflowCommandResponse()
+        post_with_metadata.return_value = (
+            environments.StopAirflowCommandResponse(),
+            metadata,
+        )
 
         client.stop_airflow_command(
             request,
@@ -15242,6 +15337,7 @@ def test_stop_airflow_command_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_poll_airflow_command_rest_bad_request(
@@ -15330,10 +15426,14 @@ def test_poll_airflow_command_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_poll_airflow_command"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_poll_airflow_command_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_poll_airflow_command"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.PollAirflowCommandRequest.pb(
             environments.PollAirflowCommandRequest()
         )
@@ -15359,6 +15459,10 @@ def test_poll_airflow_command_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.PollAirflowCommandResponse()
+        post_with_metadata.return_value = (
+            environments.PollAirflowCommandResponse(),
+            metadata,
+        )
 
         client.poll_airflow_command(
             request,
@@ -15370,6 +15474,7 @@ def test_poll_airflow_command_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_workloads_rest_bad_request(
@@ -15454,10 +15559,13 @@ def test_list_workloads_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_list_workloads"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_list_workloads_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_list_workloads"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.ListWorkloadsRequest.pb(
             environments.ListWorkloadsRequest()
         )
@@ -15483,6 +15591,7 @@ def test_list_workloads_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.ListWorkloadsResponse()
+        post_with_metadata.return_value = environments.ListWorkloadsResponse(), metadata
 
         client.list_workloads(
             request,
@@ -15494,6 +15603,7 @@ def test_list_workloads_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_check_upgrade_rest_bad_request(request_type=environments.CheckUpgradeRequest):
@@ -15576,10 +15686,13 @@ def test_check_upgrade_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_check_upgrade"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_check_upgrade_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_check_upgrade"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.CheckUpgradeRequest.pb(
             environments.CheckUpgradeRequest()
         )
@@ -15603,6 +15716,7 @@ def test_check_upgrade_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.check_upgrade(
             request,
@@ -15614,6 +15728,7 @@ def test_check_upgrade_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_user_workloads_secret_rest_bad_request(
@@ -15770,10 +15885,14 @@ def test_create_user_workloads_secret_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_create_user_workloads_secret"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_create_user_workloads_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_create_user_workloads_secret"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.CreateUserWorkloadsSecretRequest.pb(
             environments.CreateUserWorkloadsSecretRequest()
         )
@@ -15799,6 +15918,7 @@ def test_create_user_workloads_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.UserWorkloadsSecret()
+        post_with_metadata.return_value = environments.UserWorkloadsSecret(), metadata
 
         client.create_user_workloads_secret(
             request,
@@ -15810,6 +15930,7 @@ def test_create_user_workloads_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_user_workloads_secret_rest_bad_request(
@@ -15898,10 +16019,14 @@ def test_get_user_workloads_secret_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_get_user_workloads_secret"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_get_user_workloads_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_get_user_workloads_secret"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.GetUserWorkloadsSecretRequest.pb(
             environments.GetUserWorkloadsSecretRequest()
         )
@@ -15927,6 +16052,7 @@ def test_get_user_workloads_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.UserWorkloadsSecret()
+        post_with_metadata.return_value = environments.UserWorkloadsSecret(), metadata
 
         client.get_user_workloads_secret(
             request,
@@ -15938,6 +16064,7 @@ def test_get_user_workloads_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_user_workloads_secrets_rest_bad_request(
@@ -16022,10 +16149,14 @@ def test_list_user_workloads_secrets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_list_user_workloads_secrets"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_list_user_workloads_secrets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_list_user_workloads_secrets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.ListUserWorkloadsSecretsRequest.pb(
             environments.ListUserWorkloadsSecretsRequest()
         )
@@ -16051,6 +16182,10 @@ def test_list_user_workloads_secrets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.ListUserWorkloadsSecretsResponse()
+        post_with_metadata.return_value = (
+            environments.ListUserWorkloadsSecretsResponse(),
+            metadata,
+        )
 
         client.list_user_workloads_secrets(
             request,
@@ -16062,6 +16197,7 @@ def test_list_user_workloads_secrets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_user_workloads_secret_rest_bad_request(
@@ -16229,10 +16365,14 @@ def test_update_user_workloads_secret_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_update_user_workloads_secret"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_update_user_workloads_secret_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_update_user_workloads_secret"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.UpdateUserWorkloadsSecretRequest.pb(
             environments.UpdateUserWorkloadsSecretRequest()
         )
@@ -16258,6 +16398,7 @@ def test_update_user_workloads_secret_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.UserWorkloadsSecret()
+        post_with_metadata.return_value = environments.UserWorkloadsSecret(), metadata
 
         client.update_user_workloads_secret(
             request,
@@ -16269,6 +16410,7 @@ def test_update_user_workloads_secret_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_user_workloads_secret_rest_bad_request(
@@ -16540,10 +16682,14 @@ def test_create_user_workloads_config_map_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_create_user_workloads_config_map"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_create_user_workloads_config_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_create_user_workloads_config_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.CreateUserWorkloadsConfigMapRequest.pb(
             environments.CreateUserWorkloadsConfigMapRequest()
         )
@@ -16569,6 +16715,10 @@ def test_create_user_workloads_config_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.UserWorkloadsConfigMap()
+        post_with_metadata.return_value = (
+            environments.UserWorkloadsConfigMap(),
+            metadata,
+        )
 
         client.create_user_workloads_config_map(
             request,
@@ -16580,6 +16730,7 @@ def test_create_user_workloads_config_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_user_workloads_config_map_rest_bad_request(
@@ -16668,10 +16819,14 @@ def test_get_user_workloads_config_map_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_get_user_workloads_config_map"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_get_user_workloads_config_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_get_user_workloads_config_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.GetUserWorkloadsConfigMapRequest.pb(
             environments.GetUserWorkloadsConfigMapRequest()
         )
@@ -16697,6 +16852,10 @@ def test_get_user_workloads_config_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.UserWorkloadsConfigMap()
+        post_with_metadata.return_value = (
+            environments.UserWorkloadsConfigMap(),
+            metadata,
+        )
 
         client.get_user_workloads_config_map(
             request,
@@ -16708,6 +16867,7 @@ def test_get_user_workloads_config_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_user_workloads_config_maps_rest_bad_request(
@@ -16792,10 +16952,14 @@ def test_list_user_workloads_config_maps_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_list_user_workloads_config_maps"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_list_user_workloads_config_maps_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_list_user_workloads_config_maps"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.ListUserWorkloadsConfigMapsRequest.pb(
             environments.ListUserWorkloadsConfigMapsRequest()
         )
@@ -16821,6 +16985,10 @@ def test_list_user_workloads_config_maps_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.ListUserWorkloadsConfigMapsResponse()
+        post_with_metadata.return_value = (
+            environments.ListUserWorkloadsConfigMapsResponse(),
+            metadata,
+        )
 
         client.list_user_workloads_config_maps(
             request,
@@ -16832,6 +17000,7 @@ def test_list_user_workloads_config_maps_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_user_workloads_config_map_rest_bad_request(
@@ -17001,10 +17170,14 @@ def test_update_user_workloads_config_map_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_update_user_workloads_config_map"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_update_user_workloads_config_map_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_update_user_workloads_config_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.UpdateUserWorkloadsConfigMapRequest.pb(
             environments.UpdateUserWorkloadsConfigMapRequest()
         )
@@ -17030,6 +17203,10 @@ def test_update_user_workloads_config_map_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.UserWorkloadsConfigMap()
+        post_with_metadata.return_value = (
+            environments.UserWorkloadsConfigMap(),
+            metadata,
+        )
 
         client.update_user_workloads_config_map(
             request,
@@ -17041,6 +17218,7 @@ def test_update_user_workloads_config_map_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_user_workloads_config_map_rest_bad_request(
@@ -17236,10 +17414,13 @@ def test_save_snapshot_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_save_snapshot"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_save_snapshot_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_save_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.SaveSnapshotRequest.pb(
             environments.SaveSnapshotRequest()
         )
@@ -17263,6 +17444,7 @@ def test_save_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.save_snapshot(
             request,
@@ -17274,6 +17456,7 @@ def test_save_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_load_snapshot_rest_bad_request(request_type=environments.LoadSnapshotRequest):
@@ -17356,10 +17539,13 @@ def test_load_snapshot_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_load_snapshot"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_load_snapshot_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_load_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.LoadSnapshotRequest.pb(
             environments.LoadSnapshotRequest()
         )
@@ -17383,6 +17569,7 @@ def test_load_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.load_snapshot(
             request,
@@ -17394,6 +17581,7 @@ def test_load_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_database_failover_rest_bad_request(
@@ -17478,10 +17666,13 @@ def test_database_failover_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_database_failover"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor, "post_database_failover_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_database_failover"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.DatabaseFailoverRequest.pb(
             environments.DatabaseFailoverRequest()
         )
@@ -17505,6 +17696,7 @@ def test_database_failover_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.database_failover(
             request,
@@ -17516,6 +17708,7 @@ def test_database_failover_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_database_properties_rest_bad_request(
@@ -17608,10 +17801,14 @@ def test_fetch_database_properties_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "post_fetch_database_properties"
     ) as post, mock.patch.object(
+        transports.EnvironmentsRestInterceptor,
+        "post_fetch_database_properties_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.EnvironmentsRestInterceptor, "pre_fetch_database_properties"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = environments.FetchDatabasePropertiesRequest.pb(
             environments.FetchDatabasePropertiesRequest()
         )
@@ -17637,6 +17834,10 @@ def test_fetch_database_properties_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = environments.FetchDatabasePropertiesResponse()
+        post_with_metadata.return_value = (
+            environments.FetchDatabasePropertiesResponse(),
+            metadata,
+        )
 
         client.fetch_database_properties(
             request,
@@ -17648,6 +17849,7 @@ def test_fetch_database_properties_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_operation_rest_bad_request(

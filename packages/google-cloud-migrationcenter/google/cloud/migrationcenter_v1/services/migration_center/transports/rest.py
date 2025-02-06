@@ -472,11 +472,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_assets_to_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_add_assets_to_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_add_assets_to_group` interceptor runs
+        before the `post_add_assets_to_group_with_metadata` interceptor.
         """
         return response
+
+    def post_add_assets_to_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_assets_to_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_add_assets_to_group_with_metadata`
+        interceptor in new development instead of the `post_add_assets_to_group` interceptor.
+        When both interceptors are used, this `post_add_assets_to_group_with_metadata` interceptor runs after the
+        `post_add_assets_to_group` interceptor. The (possibly modified) response returned by
+        `post_add_assets_to_group` will be passed to
+        `post_add_assets_to_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_aggregate_assets_values(
         self,
@@ -498,11 +521,37 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.AggregateAssetsValuesResponse:
         """Post-rpc interceptor for aggregate_assets_values
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_aggregate_assets_values_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_aggregate_assets_values` interceptor runs
+        before the `post_aggregate_assets_values_with_metadata` interceptor.
         """
         return response
+
+    def post_aggregate_assets_values_with_metadata(
+        self,
+        response: migrationcenter.AggregateAssetsValuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.AggregateAssetsValuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for aggregate_assets_values
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_aggregate_assets_values_with_metadata`
+        interceptor in new development instead of the `post_aggregate_assets_values` interceptor.
+        When both interceptors are used, this `post_aggregate_assets_values_with_metadata` interceptor runs after the
+        `post_aggregate_assets_values` interceptor. The (possibly modified) response returned by
+        `post_aggregate_assets_values` will be passed to
+        `post_aggregate_assets_values_with_metadata`.
+        """
+        return response, metadata
 
     def pre_batch_delete_assets(
         self,
@@ -539,11 +588,37 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.BatchUpdateAssetsResponse:
         """Post-rpc interceptor for batch_update_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_update_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_update_assets` interceptor runs
+        before the `post_batch_update_assets_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_update_assets_with_metadata(
+        self,
+        response: migrationcenter.BatchUpdateAssetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.BatchUpdateAssetsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_assets_with_metadata`
+        interceptor in new development instead of the `post_batch_update_assets` interceptor.
+        When both interceptors are used, this `post_batch_update_assets_with_metadata` interceptor runs after the
+        `post_batch_update_assets` interceptor. The (possibly modified) response returned by
+        `post_batch_update_assets` will be passed to
+        `post_batch_update_assets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_group(
         self,
@@ -564,11 +639,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_group` interceptor runs
+        before the `post_create_group_with_metadata` interceptor.
         """
         return response
+
+    def post_create_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_create_group_with_metadata`
+        interceptor in new development instead of the `post_create_group` interceptor.
+        When both interceptors are used, this `post_create_group_with_metadata` interceptor runs after the
+        `post_create_group` interceptor. The (possibly modified) response returned by
+        `post_create_group` will be passed to
+        `post_create_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_import_data_file(
         self,
@@ -590,11 +688,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_import_data_file
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_import_data_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_import_data_file` interceptor runs
+        before the `post_create_import_data_file_with_metadata` interceptor.
         """
         return response
+
+    def post_create_import_data_file_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_import_data_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_create_import_data_file_with_metadata`
+        interceptor in new development instead of the `post_create_import_data_file` interceptor.
+        When both interceptors are used, this `post_create_import_data_file_with_metadata` interceptor runs after the
+        `post_create_import_data_file` interceptor. The (possibly modified) response returned by
+        `post_create_import_data_file` will be passed to
+        `post_create_import_data_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_import_job(
         self,
@@ -615,11 +736,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_import_job` interceptor runs
+        before the `post_create_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_create_import_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_create_import_job_with_metadata`
+        interceptor in new development instead of the `post_create_import_job` interceptor.
+        When both interceptors are used, this `post_create_import_job_with_metadata` interceptor runs after the
+        `post_create_import_job` interceptor. The (possibly modified) response returned by
+        `post_create_import_job` will be passed to
+        `post_create_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_preference_set(
         self,
@@ -641,11 +785,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_preference_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_preference_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_preference_set` interceptor runs
+        before the `post_create_preference_set_with_metadata` interceptor.
         """
         return response
+
+    def post_create_preference_set_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_preference_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_create_preference_set_with_metadata`
+        interceptor in new development instead of the `post_create_preference_set` interceptor.
+        When both interceptors are used, this `post_create_preference_set_with_metadata` interceptor runs after the
+        `post_create_preference_set` interceptor. The (possibly modified) response returned by
+        `post_create_preference_set` will be passed to
+        `post_create_preference_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_report(
         self,
@@ -666,11 +833,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_report` interceptor runs
+        before the `post_create_report_with_metadata` interceptor.
         """
         return response
+
+    def post_create_report_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_create_report_with_metadata`
+        interceptor in new development instead of the `post_create_report` interceptor.
+        When both interceptors are used, this `post_create_report_with_metadata` interceptor runs after the
+        `post_create_report` interceptor. The (possibly modified) response returned by
+        `post_create_report` will be passed to
+        `post_create_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_report_config(
         self,
@@ -692,11 +882,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_report_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_report_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_report_config` interceptor runs
+        before the `post_create_report_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_report_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_report_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_create_report_config_with_metadata`
+        interceptor in new development instead of the `post_create_report_config` interceptor.
+        When both interceptors are used, this `post_create_report_config_with_metadata` interceptor runs after the
+        `post_create_report_config` interceptor. The (possibly modified) response returned by
+        `post_create_report_config` will be passed to
+        `post_create_report_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_source(
         self,
@@ -717,11 +930,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_source` interceptor runs
+        before the `post_create_source_with_metadata` interceptor.
         """
         return response
+
+    def post_create_source_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_create_source_with_metadata`
+        interceptor in new development instead of the `post_create_source` interceptor.
+        When both interceptors are used, this `post_create_source_with_metadata` interceptor runs after the
+        `post_create_source` interceptor. The (possibly modified) response returned by
+        `post_create_source` will be passed to
+        `post_create_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_asset(
         self,
@@ -756,11 +992,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_group` interceptor runs
+        before the `post_delete_group_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_delete_group_with_metadata`
+        interceptor in new development instead of the `post_delete_group` interceptor.
+        When both interceptors are used, this `post_delete_group_with_metadata` interceptor runs after the
+        `post_delete_group` interceptor. The (possibly modified) response returned by
+        `post_delete_group` will be passed to
+        `post_delete_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_import_data_file(
         self,
@@ -782,11 +1041,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_import_data_file
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_import_data_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_import_data_file` interceptor runs
+        before the `post_delete_import_data_file_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_import_data_file_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_import_data_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_delete_import_data_file_with_metadata`
+        interceptor in new development instead of the `post_delete_import_data_file` interceptor.
+        When both interceptors are used, this `post_delete_import_data_file_with_metadata` interceptor runs after the
+        `post_delete_import_data_file` interceptor. The (possibly modified) response returned by
+        `post_delete_import_data_file` will be passed to
+        `post_delete_import_data_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_import_job(
         self,
@@ -807,11 +1089,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_import_job` interceptor runs
+        before the `post_delete_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_import_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_delete_import_job_with_metadata`
+        interceptor in new development instead of the `post_delete_import_job` interceptor.
+        When both interceptors are used, this `post_delete_import_job_with_metadata` interceptor runs after the
+        `post_delete_import_job` interceptor. The (possibly modified) response returned by
+        `post_delete_import_job` will be passed to
+        `post_delete_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_preference_set(
         self,
@@ -833,11 +1138,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_preference_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_preference_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_preference_set` interceptor runs
+        before the `post_delete_preference_set_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_preference_set_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_preference_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_delete_preference_set_with_metadata`
+        interceptor in new development instead of the `post_delete_preference_set` interceptor.
+        When both interceptors are used, this `post_delete_preference_set_with_metadata` interceptor runs after the
+        `post_delete_preference_set` interceptor. The (possibly modified) response returned by
+        `post_delete_preference_set` will be passed to
+        `post_delete_preference_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_report(
         self,
@@ -858,11 +1186,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_report` interceptor runs
+        before the `post_delete_report_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_report_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_delete_report_with_metadata`
+        interceptor in new development instead of the `post_delete_report` interceptor.
+        When both interceptors are used, this `post_delete_report_with_metadata` interceptor runs after the
+        `post_delete_report` interceptor. The (possibly modified) response returned by
+        `post_delete_report` will be passed to
+        `post_delete_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_report_config(
         self,
@@ -884,11 +1235,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_report_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_report_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_report_config` interceptor runs
+        before the `post_delete_report_config_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_report_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_report_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_delete_report_config_with_metadata`
+        interceptor in new development instead of the `post_delete_report_config` interceptor.
+        When both interceptors are used, this `post_delete_report_config_with_metadata` interceptor runs after the
+        `post_delete_report_config` interceptor. The (possibly modified) response returned by
+        `post_delete_report_config` will be passed to
+        `post_delete_report_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_source(
         self,
@@ -909,11 +1283,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_source` interceptor runs
+        before the `post_delete_source_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_source_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_delete_source_with_metadata`
+        interceptor in new development instead of the `post_delete_source` interceptor.
+        When both interceptors are used, this `post_delete_source_with_metadata` interceptor runs after the
+        `post_delete_source` interceptor. The (possibly modified) response returned by
+        `post_delete_source` will be passed to
+        `post_delete_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_asset(
         self,
@@ -932,11 +1329,34 @@ class MigrationCenterRestInterceptor:
     def post_get_asset(self, response: migrationcenter.Asset) -> migrationcenter.Asset:
         """Post-rpc interceptor for get_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_asset` interceptor runs
+        before the `post_get_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_get_asset_with_metadata(
+        self,
+        response: migrationcenter.Asset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_asset_with_metadata`
+        interceptor in new development instead of the `post_get_asset` interceptor.
+        When both interceptors are used, this `post_get_asset_with_metadata` interceptor runs after the
+        `post_get_asset` interceptor. The (possibly modified) response returned by
+        `post_get_asset` will be passed to
+        `post_get_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_error_frame(
         self,
@@ -957,11 +1377,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ErrorFrame:
         """Post-rpc interceptor for get_error_frame
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_error_frame_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_error_frame` interceptor runs
+        before the `post_get_error_frame_with_metadata` interceptor.
         """
         return response
+
+    def post_get_error_frame_with_metadata(
+        self,
+        response: migrationcenter.ErrorFrame,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.ErrorFrame, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_error_frame
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_error_frame_with_metadata`
+        interceptor in new development instead of the `post_get_error_frame` interceptor.
+        When both interceptors are used, this `post_get_error_frame_with_metadata` interceptor runs after the
+        `post_get_error_frame` interceptor. The (possibly modified) response returned by
+        `post_get_error_frame` will be passed to
+        `post_get_error_frame_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_group(
         self,
@@ -980,11 +1423,34 @@ class MigrationCenterRestInterceptor:
     def post_get_group(self, response: migrationcenter.Group) -> migrationcenter.Group:
         """Post-rpc interceptor for get_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_group` interceptor runs
+        before the `post_get_group_with_metadata` interceptor.
         """
         return response
+
+    def post_get_group_with_metadata(
+        self,
+        response: migrationcenter.Group,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.Group, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_group_with_metadata`
+        interceptor in new development instead of the `post_get_group` interceptor.
+        When both interceptors are used, this `post_get_group_with_metadata` interceptor runs after the
+        `post_get_group` interceptor. The (possibly modified) response returned by
+        `post_get_group` will be passed to
+        `post_get_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_import_data_file(
         self,
@@ -1006,11 +1472,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ImportDataFile:
         """Post-rpc interceptor for get_import_data_file
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_import_data_file_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_import_data_file` interceptor runs
+        before the `post_get_import_data_file_with_metadata` interceptor.
         """
         return response
+
+    def post_get_import_data_file_with_metadata(
+        self,
+        response: migrationcenter.ImportDataFile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.ImportDataFile, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_import_data_file
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_import_data_file_with_metadata`
+        interceptor in new development instead of the `post_get_import_data_file` interceptor.
+        When both interceptors are used, this `post_get_import_data_file_with_metadata` interceptor runs after the
+        `post_get_import_data_file` interceptor. The (possibly modified) response returned by
+        `post_get_import_data_file` will be passed to
+        `post_get_import_data_file_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_import_job(
         self,
@@ -1031,11 +1520,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ImportJob:
         """Post-rpc interceptor for get_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_import_job` interceptor runs
+        before the `post_get_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_get_import_job_with_metadata(
+        self,
+        response: migrationcenter.ImportJob,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.ImportJob, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_import_job_with_metadata`
+        interceptor in new development instead of the `post_get_import_job` interceptor.
+        When both interceptors are used, this `post_get_import_job_with_metadata` interceptor runs after the
+        `post_get_import_job` interceptor. The (possibly modified) response returned by
+        `post_get_import_job` will be passed to
+        `post_get_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_preference_set(
         self,
@@ -1056,11 +1568,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.PreferenceSet:
         """Post-rpc interceptor for get_preference_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_preference_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_preference_set` interceptor runs
+        before the `post_get_preference_set_with_metadata` interceptor.
         """
         return response
+
+    def post_get_preference_set_with_metadata(
+        self,
+        response: migrationcenter.PreferenceSet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.PreferenceSet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_preference_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_preference_set_with_metadata`
+        interceptor in new development instead of the `post_get_preference_set` interceptor.
+        When both interceptors are used, this `post_get_preference_set_with_metadata` interceptor runs after the
+        `post_get_preference_set` interceptor. The (possibly modified) response returned by
+        `post_get_preference_set` will be passed to
+        `post_get_preference_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_report(
         self,
@@ -1081,11 +1616,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.Report:
         """Post-rpc interceptor for get_report
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_report_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_report` interceptor runs
+        before the `post_get_report_with_metadata` interceptor.
         """
         return response
+
+    def post_get_report_with_metadata(
+        self,
+        response: migrationcenter.Report,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_report
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_report_with_metadata`
+        interceptor in new development instead of the `post_get_report` interceptor.
+        When both interceptors are used, this `post_get_report_with_metadata` interceptor runs after the
+        `post_get_report` interceptor. The (possibly modified) response returned by
+        `post_get_report` will be passed to
+        `post_get_report_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_report_config(
         self,
@@ -1106,11 +1664,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ReportConfig:
         """Post-rpc interceptor for get_report_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_report_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_report_config` interceptor runs
+        before the `post_get_report_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_report_config_with_metadata(
+        self,
+        response: migrationcenter.ReportConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_report_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_report_config_with_metadata`
+        interceptor in new development instead of the `post_get_report_config` interceptor.
+        When both interceptors are used, this `post_get_report_config_with_metadata` interceptor runs after the
+        `post_get_report_config` interceptor. The (possibly modified) response returned by
+        `post_get_report_config` will be passed to
+        `post_get_report_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_settings(
         self,
@@ -1131,11 +1712,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.Settings:
         """Post-rpc interceptor for get_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_settings` interceptor runs
+        before the `post_get_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_get_settings_with_metadata(
+        self,
+        response: migrationcenter.Settings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_settings_with_metadata`
+        interceptor in new development instead of the `post_get_settings` interceptor.
+        When both interceptors are used, this `post_get_settings_with_metadata` interceptor runs after the
+        `post_get_settings` interceptor. The (possibly modified) response returned by
+        `post_get_settings` will be passed to
+        `post_get_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_source(
         self,
@@ -1156,11 +1760,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.Source:
         """Post-rpc interceptor for get_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_source` interceptor runs
+        before the `post_get_source_with_metadata` interceptor.
         """
         return response
+
+    def post_get_source_with_metadata(
+        self,
+        response: migrationcenter.Source,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.Source, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_get_source_with_metadata`
+        interceptor in new development instead of the `post_get_source` interceptor.
+        When both interceptors are used, this `post_get_source_with_metadata` interceptor runs after the
+        `post_get_source` interceptor. The (possibly modified) response returned by
+        `post_get_source` will be passed to
+        `post_get_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_assets(
         self,
@@ -1181,11 +1808,36 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_assets` interceptor runs
+        before the `post_list_assets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_assets_with_metadata(
+        self,
+        response: migrationcenter.ListAssetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_assets_with_metadata`
+        interceptor in new development instead of the `post_list_assets` interceptor.
+        When both interceptors are used, this `post_list_assets_with_metadata` interceptor runs after the
+        `post_list_assets` interceptor. The (possibly modified) response returned by
+        `post_list_assets` will be passed to
+        `post_list_assets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_error_frames(
         self,
@@ -1206,11 +1858,36 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListErrorFramesResponse:
         """Post-rpc interceptor for list_error_frames
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_error_frames_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_error_frames` interceptor runs
+        before the `post_list_error_frames_with_metadata` interceptor.
         """
         return response
+
+    def post_list_error_frames_with_metadata(
+        self,
+        response: migrationcenter.ListErrorFramesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListErrorFramesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_error_frames
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_error_frames_with_metadata`
+        interceptor in new development instead of the `post_list_error_frames` interceptor.
+        When both interceptors are used, this `post_list_error_frames_with_metadata` interceptor runs after the
+        `post_list_error_frames` interceptor. The (possibly modified) response returned by
+        `post_list_error_frames` will be passed to
+        `post_list_error_frames_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_groups(
         self,
@@ -1231,11 +1908,36 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListGroupsResponse:
         """Post-rpc interceptor for list_groups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_groups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_groups` interceptor runs
+        before the `post_list_groups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_groups_with_metadata(
+        self,
+        response: migrationcenter.ListGroupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_groups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_groups_with_metadata`
+        interceptor in new development instead of the `post_list_groups` interceptor.
+        When both interceptors are used, this `post_list_groups_with_metadata` interceptor runs after the
+        `post_list_groups` interceptor. The (possibly modified) response returned by
+        `post_list_groups` will be passed to
+        `post_list_groups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_import_data_files(
         self,
@@ -1257,11 +1959,37 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListImportDataFilesResponse:
         """Post-rpc interceptor for list_import_data_files
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_import_data_files_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_import_data_files` interceptor runs
+        before the `post_list_import_data_files_with_metadata` interceptor.
         """
         return response
+
+    def post_list_import_data_files_with_metadata(
+        self,
+        response: migrationcenter.ListImportDataFilesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListImportDataFilesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_import_data_files
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_import_data_files_with_metadata`
+        interceptor in new development instead of the `post_list_import_data_files` interceptor.
+        When both interceptors are used, this `post_list_import_data_files_with_metadata` interceptor runs after the
+        `post_list_import_data_files` interceptor. The (possibly modified) response returned by
+        `post_list_import_data_files` will be passed to
+        `post_list_import_data_files_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_import_jobs(
         self,
@@ -1282,11 +2010,36 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListImportJobsResponse:
         """Post-rpc interceptor for list_import_jobs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_import_jobs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_import_jobs` interceptor runs
+        before the `post_list_import_jobs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_import_jobs_with_metadata(
+        self,
+        response: migrationcenter.ListImportJobsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListImportJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_import_jobs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_import_jobs_with_metadata`
+        interceptor in new development instead of the `post_list_import_jobs` interceptor.
+        When both interceptors are used, this `post_list_import_jobs_with_metadata` interceptor runs after the
+        `post_list_import_jobs` interceptor. The (possibly modified) response returned by
+        `post_list_import_jobs` will be passed to
+        `post_list_import_jobs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_preference_sets(
         self,
@@ -1308,11 +2061,37 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListPreferenceSetsResponse:
         """Post-rpc interceptor for list_preference_sets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_preference_sets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_preference_sets` interceptor runs
+        before the `post_list_preference_sets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_preference_sets_with_metadata(
+        self,
+        response: migrationcenter.ListPreferenceSetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListPreferenceSetsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_preference_sets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_preference_sets_with_metadata`
+        interceptor in new development instead of the `post_list_preference_sets` interceptor.
+        When both interceptors are used, this `post_list_preference_sets_with_metadata` interceptor runs after the
+        `post_list_preference_sets` interceptor. The (possibly modified) response returned by
+        `post_list_preference_sets` will be passed to
+        `post_list_preference_sets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_report_configs(
         self,
@@ -1334,11 +2113,37 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListReportConfigsResponse:
         """Post-rpc interceptor for list_report_configs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_report_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_report_configs` interceptor runs
+        before the `post_list_report_configs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_report_configs_with_metadata(
+        self,
+        response: migrationcenter.ListReportConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListReportConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_report_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_report_configs_with_metadata`
+        interceptor in new development instead of the `post_list_report_configs` interceptor.
+        When both interceptors are used, this `post_list_report_configs_with_metadata` interceptor runs after the
+        `post_list_report_configs` interceptor. The (possibly modified) response returned by
+        `post_list_report_configs` will be passed to
+        `post_list_report_configs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_reports(
         self,
@@ -1359,11 +2164,36 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListReportsResponse:
         """Post-rpc interceptor for list_reports
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_reports_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_reports` interceptor runs
+        before the `post_list_reports_with_metadata` interceptor.
         """
         return response
+
+    def post_list_reports_with_metadata(
+        self,
+        response: migrationcenter.ListReportsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_reports
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_reports_with_metadata`
+        interceptor in new development instead of the `post_list_reports` interceptor.
+        When both interceptors are used, this `post_list_reports_with_metadata` interceptor runs after the
+        `post_list_reports` interceptor. The (possibly modified) response returned by
+        `post_list_reports` will be passed to
+        `post_list_reports_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_sources(
         self,
@@ -1384,11 +2214,36 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ListSourcesResponse:
         """Post-rpc interceptor for list_sources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_sources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_sources` interceptor runs
+        before the `post_list_sources_with_metadata` interceptor.
         """
         return response
+
+    def post_list_sources_with_metadata(
+        self,
+        response: migrationcenter.ListSourcesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_sources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_list_sources_with_metadata`
+        interceptor in new development instead of the `post_list_sources` interceptor.
+        When both interceptors are used, this `post_list_sources_with_metadata` interceptor runs after the
+        `post_list_sources` interceptor. The (possibly modified) response returned by
+        `post_list_sources` will be passed to
+        `post_list_sources_with_metadata`.
+        """
+        return response, metadata
 
     def pre_remove_assets_from_group(
         self,
@@ -1410,11 +2265,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_assets_from_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_remove_assets_from_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_remove_assets_from_group` interceptor runs
+        before the `post_remove_assets_from_group_with_metadata` interceptor.
         """
         return response
+
+    def post_remove_assets_from_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for remove_assets_from_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_remove_assets_from_group_with_metadata`
+        interceptor in new development instead of the `post_remove_assets_from_group` interceptor.
+        When both interceptors are used, this `post_remove_assets_from_group_with_metadata` interceptor runs after the
+        `post_remove_assets_from_group` interceptor. The (possibly modified) response returned by
+        `post_remove_assets_from_group` will be passed to
+        `post_remove_assets_from_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_report_asset_frames(
         self,
@@ -1436,11 +2314,37 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.ReportAssetFramesResponse:
         """Post-rpc interceptor for report_asset_frames
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_report_asset_frames_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_report_asset_frames` interceptor runs
+        before the `post_report_asset_frames_with_metadata` interceptor.
         """
         return response
+
+    def post_report_asset_frames_with_metadata(
+        self,
+        response: migrationcenter.ReportAssetFramesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ReportAssetFramesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for report_asset_frames
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_report_asset_frames_with_metadata`
+        interceptor in new development instead of the `post_report_asset_frames` interceptor.
+        When both interceptors are used, this `post_report_asset_frames_with_metadata` interceptor runs after the
+        `post_report_asset_frames` interceptor. The (possibly modified) response returned by
+        `post_report_asset_frames` will be passed to
+        `post_report_asset_frames_with_metadata`.
+        """
+        return response, metadata
 
     def pre_run_import_job(
         self,
@@ -1461,11 +2365,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_run_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_run_import_job` interceptor runs
+        before the `post_run_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_run_import_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for run_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_run_import_job_with_metadata`
+        interceptor in new development instead of the `post_run_import_job` interceptor.
+        When both interceptors are used, this `post_run_import_job_with_metadata` interceptor runs after the
+        `post_run_import_job` interceptor. The (possibly modified) response returned by
+        `post_run_import_job` will be passed to
+        `post_run_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_asset(
         self,
@@ -1486,11 +2413,34 @@ class MigrationCenterRestInterceptor:
     ) -> migrationcenter.Asset:
         """Post-rpc interceptor for update_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_asset` interceptor runs
+        before the `post_update_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_update_asset_with_metadata(
+        self,
+        response: migrationcenter.Asset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[migrationcenter.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_update_asset_with_metadata`
+        interceptor in new development instead of the `post_update_asset` interceptor.
+        When both interceptors are used, this `post_update_asset_with_metadata` interceptor runs after the
+        `post_update_asset` interceptor. The (possibly modified) response returned by
+        `post_update_asset` will be passed to
+        `post_update_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_group(
         self,
@@ -1511,11 +2461,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_group` interceptor runs
+        before the `post_update_group_with_metadata` interceptor.
         """
         return response
+
+    def post_update_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_update_group_with_metadata`
+        interceptor in new development instead of the `post_update_group` interceptor.
+        When both interceptors are used, this `post_update_group_with_metadata` interceptor runs after the
+        `post_update_group` interceptor. The (possibly modified) response returned by
+        `post_update_group` will be passed to
+        `post_update_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_import_job(
         self,
@@ -1536,11 +2509,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_import_job` interceptor runs
+        before the `post_update_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_update_import_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_update_import_job_with_metadata`
+        interceptor in new development instead of the `post_update_import_job` interceptor.
+        When both interceptors are used, this `post_update_import_job_with_metadata` interceptor runs after the
+        `post_update_import_job` interceptor. The (possibly modified) response returned by
+        `post_update_import_job` will be passed to
+        `post_update_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_preference_set(
         self,
@@ -1562,11 +2558,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_preference_set
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_preference_set_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_preference_set` interceptor runs
+        before the `post_update_preference_set_with_metadata` interceptor.
         """
         return response
+
+    def post_update_preference_set_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_preference_set
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_update_preference_set_with_metadata`
+        interceptor in new development instead of the `post_update_preference_set` interceptor.
+        When both interceptors are used, this `post_update_preference_set_with_metadata` interceptor runs after the
+        `post_update_preference_set` interceptor. The (possibly modified) response returned by
+        `post_update_preference_set` will be passed to
+        `post_update_preference_set_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_settings(
         self,
@@ -1587,11 +2606,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_settings` interceptor runs
+        before the `post_update_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_update_settings_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_update_settings_with_metadata`
+        interceptor in new development instead of the `post_update_settings` interceptor.
+        When both interceptors are used, this `post_update_settings_with_metadata` interceptor runs after the
+        `post_update_settings` interceptor. The (possibly modified) response returned by
+        `post_update_settings` will be passed to
+        `post_update_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_source(
         self,
@@ -1612,11 +2654,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_source
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_source_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_source` interceptor runs
+        before the `post_update_source_with_metadata` interceptor.
         """
         return response
+
+    def post_update_source_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_source
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_update_source_with_metadata`
+        interceptor in new development instead of the `post_update_source` interceptor.
+        When both interceptors are used, this `post_update_source_with_metadata` interceptor runs after the
+        `post_update_source` interceptor. The (possibly modified) response returned by
+        `post_update_source` will be passed to
+        `post_update_source_with_metadata`.
+        """
+        return response, metadata
 
     def pre_validate_import_job(
         self,
@@ -1638,11 +2703,34 @@ class MigrationCenterRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for validate_import_job
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_validate_import_job_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the MigrationCenter server but before
-        it is returned to user code.
+        it is returned to user code. This `post_validate_import_job` interceptor runs
+        before the `post_validate_import_job_with_metadata` interceptor.
         """
         return response
+
+    def post_validate_import_job_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for validate_import_job
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the MigrationCenter server but before it is returned to user code.
+
+        We recommend only using this `post_validate_import_job_with_metadata`
+        interceptor in new development instead of the `post_validate_import_job` interceptor.
+        When both interceptors are used, this `post_validate_import_job_with_metadata` interceptor runs after the
+        `post_validate_import_job` interceptor. The (possibly modified) response returned by
+        `post_validate_import_job` will be passed to
+        `post_validate_import_job_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -2057,6 +3145,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_add_assets_to_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_assets_to_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2211,6 +3303,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_aggregate_assets_values(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_aggregate_assets_values_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2479,6 +3575,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_update_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_assets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2628,6 +3728,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2778,6 +3882,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_import_data_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_import_data_file_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2927,6 +4035,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3077,6 +4189,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_preference_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_preference_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3224,6 +4340,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3374,6 +4494,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_report_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_report_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3521,6 +4645,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3768,6 +4896,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3912,6 +5044,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_import_data_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_import_data_file_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4055,6 +5191,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4199,6 +5339,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_preference_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_preference_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4340,6 +5484,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4484,6 +5632,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_report_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_report_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4625,6 +5777,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4772,6 +5928,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4914,6 +6074,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_error_frame(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_error_frame_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5064,6 +6228,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5209,6 +6377,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_import_data_file(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_import_data_file_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5352,6 +6524,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5496,6 +6672,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_preference_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_preference_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5640,6 +6820,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_report(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_report_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5784,6 +6968,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_report_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_report_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5926,6 +7114,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6071,6 +7263,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6212,6 +7408,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_assets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6357,6 +7557,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_error_frames(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_error_frames_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6499,6 +7703,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_groups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_groups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6647,6 +7855,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_import_data_files(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_import_data_files_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6791,6 +8003,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_import_jobs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_import_jobs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6938,6 +8154,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_preference_sets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_preference_sets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7085,6 +8305,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_report_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_report_configs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7227,6 +8451,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_reports(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_reports_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7369,6 +8597,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_sources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sources_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7524,6 +8756,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_remove_assets_from_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_remove_assets_from_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7674,6 +8910,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_report_asset_frames(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_report_asset_frames_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7823,6 +9063,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_run_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_run_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7972,6 +9216,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8119,6 +9367,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8268,6 +9520,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8418,6 +9674,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_preference_set(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_preference_set_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8565,6 +9825,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8712,6 +9976,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_source(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_source_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8862,6 +10130,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_validate_import_job(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_validate_import_job_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

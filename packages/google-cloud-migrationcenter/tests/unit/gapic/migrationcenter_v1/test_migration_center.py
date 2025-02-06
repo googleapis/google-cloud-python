@@ -76,6 +76,13 @@ from google.cloud.migrationcenter_v1.services.migration_center import (
 )
 from google.cloud.migrationcenter_v1.types import migrationcenter
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -332,6 +339,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         MigrationCenterClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = MigrationCenterClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = MigrationCenterClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -31579,10 +31629,13 @@ def test_list_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_assets"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_list_assets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListAssetsRequest.pb(
             migrationcenter.ListAssetsRequest()
         )
@@ -31608,6 +31661,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListAssetsResponse()
+        post_with_metadata.return_value = migrationcenter.ListAssetsResponse(), metadata
 
         client.list_assets(
             request,
@@ -31619,6 +31673,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_asset_rest_bad_request(request_type=migrationcenter.GetAssetRequest):
@@ -31705,10 +31760,13 @@ def test_get_asset_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_asset"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_get_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetAssetRequest.pb(
             migrationcenter.GetAssetRequest()
         )
@@ -31732,6 +31790,7 @@ def test_get_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.Asset()
+        post_with_metadata.return_value = migrationcenter.Asset(), metadata
 
         client.get_asset(
             request,
@@ -31743,6 +31802,7 @@ def test_get_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_asset_rest_bad_request(request_type=migrationcenter.UpdateAssetRequest):
@@ -32166,10 +32226,13 @@ def test_update_asset_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_update_asset"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_update_asset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_update_asset"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.UpdateAssetRequest.pb(
             migrationcenter.UpdateAssetRequest()
         )
@@ -32193,6 +32256,7 @@ def test_update_asset_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.Asset()
+        post_with_metadata.return_value = migrationcenter.Asset(), metadata
 
         client.update_asset(
             request,
@@ -32204,6 +32268,7 @@ def test_update_asset_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_update_assets_rest_bad_request(
@@ -32285,10 +32350,14 @@ def test_batch_update_assets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_batch_update_assets"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_batch_update_assets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_batch_update_assets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.BatchUpdateAssetsRequest.pb(
             migrationcenter.BatchUpdateAssetsRequest()
         )
@@ -32314,6 +32383,10 @@ def test_batch_update_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.BatchUpdateAssetsResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.BatchUpdateAssetsResponse(),
+            metadata,
+        )
 
         client.batch_update_assets(
             request,
@@ -32325,6 +32398,7 @@ def test_batch_update_assets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_asset_rest_bad_request(request_type=migrationcenter.DeleteAssetRequest):
@@ -32922,10 +32996,14 @@ def test_report_asset_frames_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_report_asset_frames"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_report_asset_frames_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_report_asset_frames"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ReportAssetFramesRequest.pb(
             migrationcenter.ReportAssetFramesRequest()
         )
@@ -32951,6 +33029,10 @@ def test_report_asset_frames_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ReportAssetFramesResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ReportAssetFramesResponse(),
+            metadata,
+        )
 
         client.report_asset_frames(
             request,
@@ -32962,6 +33044,7 @@ def test_report_asset_frames_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_aggregate_assets_values_rest_bad_request(
@@ -33043,10 +33126,14 @@ def test_aggregate_assets_values_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_aggregate_assets_values"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_aggregate_assets_values_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_aggregate_assets_values"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.AggregateAssetsValuesRequest.pb(
             migrationcenter.AggregateAssetsValuesRequest()
         )
@@ -33072,6 +33159,10 @@ def test_aggregate_assets_values_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.AggregateAssetsValuesResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.AggregateAssetsValuesResponse(),
+            metadata,
+        )
 
         client.aggregate_assets_values(
             request,
@@ -33083,6 +33174,7 @@ def test_aggregate_assets_values_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_import_job_rest_bad_request(
@@ -33265,10 +33357,14 @@ def test_create_import_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_create_import_job"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_create_import_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_create_import_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.CreateImportJobRequest.pb(
             migrationcenter.CreateImportJobRequest()
         )
@@ -33292,6 +33388,7 @@ def test_create_import_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_import_job(
             request,
@@ -33303,6 +33400,7 @@ def test_create_import_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_import_jobs_rest_bad_request(
@@ -33389,10 +33487,13 @@ def test_list_import_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_import_jobs"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_list_import_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_import_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListImportJobsRequest.pb(
             migrationcenter.ListImportJobsRequest()
         )
@@ -33418,6 +33519,10 @@ def test_list_import_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListImportJobsResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ListImportJobsResponse(),
+            metadata,
+        )
 
         client.list_import_jobs(
             request,
@@ -33429,6 +33534,7 @@ def test_list_import_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_import_job_rest_bad_request(
@@ -33522,10 +33628,13 @@ def test_get_import_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_import_job"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_get_import_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_import_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetImportJobRequest.pb(
             migrationcenter.GetImportJobRequest()
         )
@@ -33549,6 +33658,7 @@ def test_get_import_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ImportJob()
+        post_with_metadata.return_value = migrationcenter.ImportJob(), metadata
 
         client.get_import_job(
             request,
@@ -33560,6 +33670,7 @@ def test_get_import_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_import_job_rest_bad_request(
@@ -33640,10 +33751,14 @@ def test_delete_import_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_delete_import_job"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_delete_import_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_delete_import_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.DeleteImportJobRequest.pb(
             migrationcenter.DeleteImportJobRequest()
         )
@@ -33667,6 +33782,7 @@ def test_delete_import_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_import_job(
             request,
@@ -33678,6 +33794,7 @@ def test_delete_import_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_import_job_rest_bad_request(
@@ -33864,10 +33981,14 @@ def test_update_import_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_update_import_job"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_update_import_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_update_import_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.UpdateImportJobRequest.pb(
             migrationcenter.UpdateImportJobRequest()
         )
@@ -33891,6 +34012,7 @@ def test_update_import_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_import_job(
             request,
@@ -33902,6 +34024,7 @@ def test_update_import_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_validate_import_job_rest_bad_request(
@@ -33982,10 +34105,14 @@ def test_validate_import_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_validate_import_job"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_validate_import_job_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_validate_import_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ValidateImportJobRequest.pb(
             migrationcenter.ValidateImportJobRequest()
         )
@@ -34009,6 +34136,7 @@ def test_validate_import_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.validate_import_job(
             request,
@@ -34020,6 +34148,7 @@ def test_validate_import_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_run_import_job_rest_bad_request(
@@ -34100,10 +34229,13 @@ def test_run_import_job_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_run_import_job"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_run_import_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_run_import_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.RunImportJobRequest.pb(
             migrationcenter.RunImportJobRequest()
         )
@@ -34127,6 +34259,7 @@ def test_run_import_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.run_import_job(
             request,
@@ -34138,6 +34271,7 @@ def test_run_import_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_import_data_file_rest_bad_request(
@@ -34235,10 +34369,14 @@ def test_get_import_data_file_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_import_data_file"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_get_import_data_file_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_import_data_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetImportDataFileRequest.pb(
             migrationcenter.GetImportDataFileRequest()
         )
@@ -34264,6 +34402,7 @@ def test_get_import_data_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ImportDataFile()
+        post_with_metadata.return_value = migrationcenter.ImportDataFile(), metadata
 
         client.get_import_data_file(
             request,
@@ -34275,6 +34414,7 @@ def test_get_import_data_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_import_data_files_rest_bad_request(
@@ -34361,10 +34501,14 @@ def test_list_import_data_files_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_import_data_files"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_list_import_data_files_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_import_data_files"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListImportDataFilesRequest.pb(
             migrationcenter.ListImportDataFilesRequest()
         )
@@ -34390,6 +34534,10 @@ def test_list_import_data_files_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListImportDataFilesResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ListImportDataFilesResponse(),
+            metadata,
+        )
 
         client.list_import_data_files(
             request,
@@ -34401,6 +34549,7 @@ def test_list_import_data_files_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_import_data_file_rest_bad_request(
@@ -34562,10 +34711,14 @@ def test_create_import_data_file_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_create_import_data_file"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_create_import_data_file_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_create_import_data_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.CreateImportDataFileRequest.pb(
             migrationcenter.CreateImportDataFileRequest()
         )
@@ -34589,6 +34742,7 @@ def test_create_import_data_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_import_data_file(
             request,
@@ -34600,6 +34754,7 @@ def test_create_import_data_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_import_data_file_rest_bad_request(
@@ -34684,10 +34839,14 @@ def test_delete_import_data_file_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_delete_import_data_file"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_delete_import_data_file_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_delete_import_data_file"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.DeleteImportDataFileRequest.pb(
             migrationcenter.DeleteImportDataFileRequest()
         )
@@ -34711,6 +34870,7 @@ def test_delete_import_data_file_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_import_data_file(
             request,
@@ -34722,6 +34882,7 @@ def test_delete_import_data_file_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_groups_rest_bad_request(request_type=migrationcenter.ListGroupsRequest):
@@ -34806,10 +34967,13 @@ def test_list_groups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_groups"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_list_groups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_groups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListGroupsRequest.pb(
             migrationcenter.ListGroupsRequest()
         )
@@ -34835,6 +34999,7 @@ def test_list_groups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListGroupsResponse()
+        post_with_metadata.return_value = migrationcenter.ListGroupsResponse(), metadata
 
         client.list_groups(
             request,
@@ -34846,6 +35011,7 @@ def test_list_groups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_group_rest_bad_request(request_type=migrationcenter.GetGroupRequest):
@@ -34932,10 +35098,13 @@ def test_get_group_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_group"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_get_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetGroupRequest.pb(
             migrationcenter.GetGroupRequest()
         )
@@ -34959,6 +35128,7 @@ def test_get_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.Group()
+        post_with_metadata.return_value = migrationcenter.Group(), metadata
 
         client.get_group(
             request,
@@ -34970,6 +35140,7 @@ def test_get_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_group_rest_bad_request(request_type=migrationcenter.CreateGroupRequest):
@@ -35123,10 +35294,13 @@ def test_create_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_create_group"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_create_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_create_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.CreateGroupRequest.pb(
             migrationcenter.CreateGroupRequest()
         )
@@ -35150,6 +35324,7 @@ def test_create_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_group(
             request,
@@ -35161,6 +35336,7 @@ def test_create_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_group_rest_bad_request(request_type=migrationcenter.UpdateGroupRequest):
@@ -35318,10 +35494,13 @@ def test_update_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_update_group"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_update_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_update_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.UpdateGroupRequest.pb(
             migrationcenter.UpdateGroupRequest()
         )
@@ -35345,6 +35524,7 @@ def test_update_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_group(
             request,
@@ -35356,6 +35536,7 @@ def test_update_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_group_rest_bad_request(request_type=migrationcenter.DeleteGroupRequest):
@@ -35434,10 +35615,13 @@ def test_delete_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_delete_group"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_delete_group_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_delete_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.DeleteGroupRequest.pb(
             migrationcenter.DeleteGroupRequest()
         )
@@ -35461,6 +35645,7 @@ def test_delete_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_group(
             request,
@@ -35472,6 +35657,7 @@ def test_delete_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_assets_to_group_rest_bad_request(
@@ -35552,10 +35738,14 @@ def test_add_assets_to_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_add_assets_to_group"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_add_assets_to_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_add_assets_to_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.AddAssetsToGroupRequest.pb(
             migrationcenter.AddAssetsToGroupRequest()
         )
@@ -35579,6 +35769,7 @@ def test_add_assets_to_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.add_assets_to_group(
             request,
@@ -35590,6 +35781,7 @@ def test_add_assets_to_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_assets_from_group_rest_bad_request(
@@ -35670,10 +35862,14 @@ def test_remove_assets_from_group_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_remove_assets_from_group"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_remove_assets_from_group_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_remove_assets_from_group"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.RemoveAssetsFromGroupRequest.pb(
             migrationcenter.RemoveAssetsFromGroupRequest()
         )
@@ -35697,6 +35893,7 @@ def test_remove_assets_from_group_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.remove_assets_from_group(
             request,
@@ -35708,6 +35905,7 @@ def test_remove_assets_from_group_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_error_frames_rest_bad_request(
@@ -35794,10 +35992,14 @@ def test_list_error_frames_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_error_frames"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_list_error_frames_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_error_frames"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListErrorFramesRequest.pb(
             migrationcenter.ListErrorFramesRequest()
         )
@@ -35823,6 +36025,10 @@ def test_list_error_frames_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListErrorFramesResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ListErrorFramesResponse(),
+            metadata,
+        )
 
         client.list_error_frames(
             request,
@@ -35834,6 +36040,7 @@ def test_list_error_frames_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_error_frame_rest_bad_request(
@@ -35922,10 +36129,13 @@ def test_get_error_frame_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_error_frame"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_get_error_frame_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_error_frame"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetErrorFrameRequest.pb(
             migrationcenter.GetErrorFrameRequest()
         )
@@ -35949,6 +36159,7 @@ def test_get_error_frame_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ErrorFrame()
+        post_with_metadata.return_value = migrationcenter.ErrorFrame(), metadata
 
         client.get_error_frame(
             request,
@@ -35960,6 +36171,7 @@ def test_get_error_frame_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_sources_rest_bad_request(request_type=migrationcenter.ListSourcesRequest):
@@ -36044,10 +36256,13 @@ def test_list_sources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_sources"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_list_sources_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_sources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListSourcesRequest.pb(
             migrationcenter.ListSourcesRequest()
         )
@@ -36073,6 +36288,10 @@ def test_list_sources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListSourcesResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ListSourcesResponse(),
+            metadata,
+        )
 
         client.list_sources(
             request,
@@ -36084,6 +36303,7 @@ def test_list_sources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_source_rest_bad_request(request_type=migrationcenter.GetSourceRequest):
@@ -36182,10 +36402,13 @@ def test_get_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_source"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_get_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetSourceRequest.pb(
             migrationcenter.GetSourceRequest()
         )
@@ -36209,6 +36432,7 @@ def test_get_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.Source()
+        post_with_metadata.return_value = migrationcenter.Source(), metadata
 
         client.get_source(
             request,
@@ -36220,6 +36444,7 @@ def test_get_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_source_rest_bad_request(
@@ -36380,10 +36605,13 @@ def test_create_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_create_source"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_create_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_create_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.CreateSourceRequest.pb(
             migrationcenter.CreateSourceRequest()
         )
@@ -36407,6 +36635,7 @@ def test_create_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_source(
             request,
@@ -36418,6 +36647,7 @@ def test_create_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_source_rest_bad_request(
@@ -36582,10 +36812,13 @@ def test_update_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_update_source"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_update_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_update_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.UpdateSourceRequest.pb(
             migrationcenter.UpdateSourceRequest()
         )
@@ -36609,6 +36842,7 @@ def test_update_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_source(
             request,
@@ -36620,6 +36854,7 @@ def test_update_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_source_rest_bad_request(
@@ -36700,10 +36935,13 @@ def test_delete_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_delete_source"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_delete_source_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_delete_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.DeleteSourceRequest.pb(
             migrationcenter.DeleteSourceRequest()
         )
@@ -36727,6 +36965,7 @@ def test_delete_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_source(
             request,
@@ -36738,6 +36977,7 @@ def test_delete_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_preference_sets_rest_bad_request(
@@ -36824,10 +37064,14 @@ def test_list_preference_sets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_preference_sets"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_list_preference_sets_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_preference_sets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListPreferenceSetsRequest.pb(
             migrationcenter.ListPreferenceSetsRequest()
         )
@@ -36853,6 +37097,10 @@ def test_list_preference_sets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListPreferenceSetsResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ListPreferenceSetsResponse(),
+            metadata,
+        )
 
         client.list_preference_sets(
             request,
@@ -36864,6 +37112,7 @@ def test_list_preference_sets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_preference_set_rest_bad_request(
@@ -36952,10 +37201,14 @@ def test_get_preference_set_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_preference_set"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_get_preference_set_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_preference_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetPreferenceSetRequest.pb(
             migrationcenter.GetPreferenceSetRequest()
         )
@@ -36981,6 +37234,7 @@ def test_get_preference_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.PreferenceSet()
+        post_with_metadata.return_value = migrationcenter.PreferenceSet(), metadata
 
         client.get_preference_set(
             request,
@@ -36992,6 +37246,7 @@ def test_get_preference_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_preference_set_rest_bad_request(
@@ -37177,10 +37432,14 @@ def test_create_preference_set_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_create_preference_set"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_create_preference_set_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_create_preference_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.CreatePreferenceSetRequest.pb(
             migrationcenter.CreatePreferenceSetRequest()
         )
@@ -37204,6 +37463,7 @@ def test_create_preference_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_preference_set(
             request,
@@ -37215,6 +37475,7 @@ def test_create_preference_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_preference_set_rest_bad_request(
@@ -37408,10 +37669,14 @@ def test_update_preference_set_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_update_preference_set"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_update_preference_set_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_update_preference_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.UpdatePreferenceSetRequest.pb(
             migrationcenter.UpdatePreferenceSetRequest()
         )
@@ -37435,6 +37700,7 @@ def test_update_preference_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_preference_set(
             request,
@@ -37446,6 +37712,7 @@ def test_update_preference_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_preference_set_rest_bad_request(
@@ -37526,10 +37793,14 @@ def test_delete_preference_set_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_delete_preference_set"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_delete_preference_set_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_delete_preference_set"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.DeletePreferenceSetRequest.pb(
             migrationcenter.DeletePreferenceSetRequest()
         )
@@ -37553,6 +37824,7 @@ def test_delete_preference_set_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_preference_set(
             request,
@@ -37564,6 +37836,7 @@ def test_delete_preference_set_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_settings_rest_bad_request(request_type=migrationcenter.GetSettingsRequest):
@@ -37648,10 +37921,13 @@ def test_get_settings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_settings"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_get_settings_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetSettingsRequest.pb(
             migrationcenter.GetSettingsRequest()
         )
@@ -37675,6 +37951,7 @@ def test_get_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.Settings()
+        post_with_metadata.return_value = migrationcenter.Settings(), metadata
 
         client.get_settings(
             request,
@@ -37686,6 +37963,7 @@ def test_get_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_settings_rest_bad_request(
@@ -37837,10 +38115,13 @@ def test_update_settings_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_update_settings"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_update_settings_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_update_settings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.UpdateSettingsRequest.pb(
             migrationcenter.UpdateSettingsRequest()
         )
@@ -37864,6 +38145,7 @@ def test_update_settings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_settings(
             request,
@@ -37875,6 +38157,7 @@ def test_update_settings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_report_config_rest_bad_request(
@@ -38032,10 +38315,14 @@ def test_create_report_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_create_report_config"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_create_report_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_create_report_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.CreateReportConfigRequest.pb(
             migrationcenter.CreateReportConfigRequest()
         )
@@ -38059,6 +38346,7 @@ def test_create_report_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_report_config(
             request,
@@ -38070,6 +38358,7 @@ def test_create_report_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_report_config_rest_bad_request(
@@ -38158,10 +38447,14 @@ def test_get_report_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_report_config"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_get_report_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_report_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetReportConfigRequest.pb(
             migrationcenter.GetReportConfigRequest()
         )
@@ -38187,6 +38480,7 @@ def test_get_report_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ReportConfig()
+        post_with_metadata.return_value = migrationcenter.ReportConfig(), metadata
 
         client.get_report_config(
             request,
@@ -38198,6 +38492,7 @@ def test_get_report_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_report_configs_rest_bad_request(
@@ -38284,10 +38579,14 @@ def test_list_report_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_report_configs"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_list_report_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_report_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListReportConfigsRequest.pb(
             migrationcenter.ListReportConfigsRequest()
         )
@@ -38313,6 +38612,10 @@ def test_list_report_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListReportConfigsResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ListReportConfigsResponse(),
+            metadata,
+        )
 
         client.list_report_configs(
             request,
@@ -38324,6 +38627,7 @@ def test_list_report_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_report_config_rest_bad_request(
@@ -38404,10 +38708,14 @@ def test_delete_report_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_delete_report_config"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor,
+        "post_delete_report_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_delete_report_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.DeleteReportConfigRequest.pb(
             migrationcenter.DeleteReportConfigRequest()
         )
@@ -38431,6 +38739,7 @@ def test_delete_report_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_report_config(
             request,
@@ -38442,6 +38751,7 @@ def test_delete_report_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_report_rest_bad_request(
@@ -38719,10 +39029,13 @@ def test_create_report_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_create_report"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_create_report_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_create_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.CreateReportRequest.pb(
             migrationcenter.CreateReportRequest()
         )
@@ -38746,6 +39059,7 @@ def test_create_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_report(
             request,
@@ -38757,6 +39071,7 @@ def test_create_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_report_rest_bad_request(request_type=migrationcenter.GetReportRequest):
@@ -38851,10 +39166,13 @@ def test_get_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_get_report"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_get_report_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_get_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.GetReportRequest.pb(
             migrationcenter.GetReportRequest()
         )
@@ -38878,6 +39196,7 @@ def test_get_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.Report()
+        post_with_metadata.return_value = migrationcenter.Report(), metadata
 
         client.get_report(
             request,
@@ -38889,6 +39208,7 @@ def test_get_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_reports_rest_bad_request(request_type=migrationcenter.ListReportsRequest):
@@ -38977,10 +39297,13 @@ def test_list_reports_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_list_reports"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_list_reports_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_list_reports"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.ListReportsRequest.pb(
             migrationcenter.ListReportsRequest()
         )
@@ -39006,6 +39329,10 @@ def test_list_reports_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = migrationcenter.ListReportsResponse()
+        post_with_metadata.return_value = (
+            migrationcenter.ListReportsResponse(),
+            metadata,
+        )
 
         client.list_reports(
             request,
@@ -39017,6 +39344,7 @@ def test_list_reports_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_report_rest_bad_request(
@@ -39101,10 +39429,13 @@ def test_delete_report_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.MigrationCenterRestInterceptor, "post_delete_report"
     ) as post, mock.patch.object(
+        transports.MigrationCenterRestInterceptor, "post_delete_report_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MigrationCenterRestInterceptor, "pre_delete_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = migrationcenter.DeleteReportRequest.pb(
             migrationcenter.DeleteReportRequest()
         )
@@ -39128,6 +39459,7 @@ def test_delete_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_report(
             request,
@@ -39139,6 +39471,7 @@ def test_delete_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

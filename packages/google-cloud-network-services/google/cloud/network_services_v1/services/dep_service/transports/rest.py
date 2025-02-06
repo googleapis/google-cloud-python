@@ -177,11 +177,34 @@ class DepServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_lb_route_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_lb_route_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_lb_route_extension` interceptor runs
+        before the `post_create_lb_route_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_create_lb_route_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_lb_route_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_create_lb_route_extension_with_metadata`
+        interceptor in new development instead of the `post_create_lb_route_extension` interceptor.
+        When both interceptors are used, this `post_create_lb_route_extension_with_metadata` interceptor runs after the
+        `post_create_lb_route_extension` interceptor. The (possibly modified) response returned by
+        `post_create_lb_route_extension` will be passed to
+        `post_create_lb_route_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_lb_traffic_extension(
         self,
@@ -202,11 +225,34 @@ class DepServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_lb_traffic_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_lb_traffic_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_lb_traffic_extension` interceptor runs
+        before the `post_create_lb_traffic_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_create_lb_traffic_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_lb_traffic_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_create_lb_traffic_extension_with_metadata`
+        interceptor in new development instead of the `post_create_lb_traffic_extension` interceptor.
+        When both interceptors are used, this `post_create_lb_traffic_extension_with_metadata` interceptor runs after the
+        `post_create_lb_traffic_extension` interceptor. The (possibly modified) response returned by
+        `post_create_lb_traffic_extension` will be passed to
+        `post_create_lb_traffic_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_lb_route_extension(
         self,
@@ -227,11 +273,34 @@ class DepServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_lb_route_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_lb_route_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_lb_route_extension` interceptor runs
+        before the `post_delete_lb_route_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_lb_route_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_lb_route_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_lb_route_extension_with_metadata`
+        interceptor in new development instead of the `post_delete_lb_route_extension` interceptor.
+        When both interceptors are used, this `post_delete_lb_route_extension_with_metadata` interceptor runs after the
+        `post_delete_lb_route_extension` interceptor. The (possibly modified) response returned by
+        `post_delete_lb_route_extension` will be passed to
+        `post_delete_lb_route_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_lb_traffic_extension(
         self,
@@ -252,11 +321,34 @@ class DepServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_lb_traffic_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_lb_traffic_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_lb_traffic_extension` interceptor runs
+        before the `post_delete_lb_traffic_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_lb_traffic_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_lb_traffic_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_lb_traffic_extension_with_metadata`
+        interceptor in new development instead of the `post_delete_lb_traffic_extension` interceptor.
+        When both interceptors are used, this `post_delete_lb_traffic_extension_with_metadata` interceptor runs after the
+        `post_delete_lb_traffic_extension` interceptor. The (possibly modified) response returned by
+        `post_delete_lb_traffic_extension` will be passed to
+        `post_delete_lb_traffic_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_lb_route_extension(
         self,
@@ -275,11 +367,34 @@ class DepServiceRestInterceptor:
     ) -> dep.LbRouteExtension:
         """Post-rpc interceptor for get_lb_route_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_lb_route_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_lb_route_extension` interceptor runs
+        before the `post_get_lb_route_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_get_lb_route_extension_with_metadata(
+        self,
+        response: dep.LbRouteExtension,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dep.LbRouteExtension, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_lb_route_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_get_lb_route_extension_with_metadata`
+        interceptor in new development instead of the `post_get_lb_route_extension` interceptor.
+        When both interceptors are used, this `post_get_lb_route_extension_with_metadata` interceptor runs after the
+        `post_get_lb_route_extension` interceptor. The (possibly modified) response returned by
+        `post_get_lb_route_extension` will be passed to
+        `post_get_lb_route_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_lb_traffic_extension(
         self,
@@ -300,11 +415,34 @@ class DepServiceRestInterceptor:
     ) -> dep.LbTrafficExtension:
         """Post-rpc interceptor for get_lb_traffic_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_lb_traffic_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_lb_traffic_extension` interceptor runs
+        before the `post_get_lb_traffic_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_get_lb_traffic_extension_with_metadata(
+        self,
+        response: dep.LbTrafficExtension,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dep.LbTrafficExtension, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_lb_traffic_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_get_lb_traffic_extension_with_metadata`
+        interceptor in new development instead of the `post_get_lb_traffic_extension` interceptor.
+        When both interceptors are used, this `post_get_lb_traffic_extension_with_metadata` interceptor runs after the
+        `post_get_lb_traffic_extension` interceptor. The (possibly modified) response returned by
+        `post_get_lb_traffic_extension` will be passed to
+        `post_get_lb_traffic_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_lb_route_extensions(
         self,
@@ -325,11 +463,36 @@ class DepServiceRestInterceptor:
     ) -> dep.ListLbRouteExtensionsResponse:
         """Post-rpc interceptor for list_lb_route_extensions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_lb_route_extensions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_lb_route_extensions` interceptor runs
+        before the `post_list_lb_route_extensions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_lb_route_extensions_with_metadata(
+        self,
+        response: dep.ListLbRouteExtensionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dep.ListLbRouteExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_lb_route_extensions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_list_lb_route_extensions_with_metadata`
+        interceptor in new development instead of the `post_list_lb_route_extensions` interceptor.
+        When both interceptors are used, this `post_list_lb_route_extensions_with_metadata` interceptor runs after the
+        `post_list_lb_route_extensions` interceptor. The (possibly modified) response returned by
+        `post_list_lb_route_extensions` will be passed to
+        `post_list_lb_route_extensions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_lb_traffic_extensions(
         self,
@@ -350,11 +513,36 @@ class DepServiceRestInterceptor:
     ) -> dep.ListLbTrafficExtensionsResponse:
         """Post-rpc interceptor for list_lb_traffic_extensions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_lb_traffic_extensions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_lb_traffic_extensions` interceptor runs
+        before the `post_list_lb_traffic_extensions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_lb_traffic_extensions_with_metadata(
+        self,
+        response: dep.ListLbTrafficExtensionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dep.ListLbTrafficExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_lb_traffic_extensions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_list_lb_traffic_extensions_with_metadata`
+        interceptor in new development instead of the `post_list_lb_traffic_extensions` interceptor.
+        When both interceptors are used, this `post_list_lb_traffic_extensions_with_metadata` interceptor runs after the
+        `post_list_lb_traffic_extensions` interceptor. The (possibly modified) response returned by
+        `post_list_lb_traffic_extensions` will be passed to
+        `post_list_lb_traffic_extensions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_lb_route_extension(
         self,
@@ -375,11 +563,34 @@ class DepServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_lb_route_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_lb_route_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_lb_route_extension` interceptor runs
+        before the `post_update_lb_route_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_update_lb_route_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_lb_route_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_update_lb_route_extension_with_metadata`
+        interceptor in new development instead of the `post_update_lb_route_extension` interceptor.
+        When both interceptors are used, this `post_update_lb_route_extension_with_metadata` interceptor runs after the
+        `post_update_lb_route_extension` interceptor. The (possibly modified) response returned by
+        `post_update_lb_route_extension` will be passed to
+        `post_update_lb_route_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_lb_traffic_extension(
         self,
@@ -400,11 +611,34 @@ class DepServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_lb_traffic_extension
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_lb_traffic_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DepService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_lb_traffic_extension` interceptor runs
+        before the `post_update_lb_traffic_extension_with_metadata` interceptor.
         """
         return response
+
+    def post_update_lb_traffic_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_lb_traffic_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_update_lb_traffic_extension_with_metadata`
+        interceptor in new development instead of the `post_update_lb_traffic_extension` interceptor.
+        When both interceptors are used, this `post_update_lb_traffic_extension_with_metadata` interceptor runs after the
+        `post_update_lb_traffic_extension` interceptor. The (possibly modified) response returned by
+        `post_update_lb_traffic_extension` will be passed to
+        `post_update_lb_traffic_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -891,6 +1125,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_lb_route_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_lb_route_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1041,6 +1279,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_lb_traffic_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_lb_traffic_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1184,6 +1426,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_lb_route_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_lb_route_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1328,6 +1574,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_lb_traffic_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_lb_traffic_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1472,6 +1722,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_lb_route_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_lb_route_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1619,6 +1873,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_lb_traffic_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_lb_traffic_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1764,6 +2022,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_lb_route_extensions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_lb_route_extensions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1912,6 +2174,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_lb_traffic_extensions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_lb_traffic_extensions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2063,6 +2329,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_lb_route_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_lb_route_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2213,6 +2483,10 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_lb_traffic_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_lb_traffic_extension_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
