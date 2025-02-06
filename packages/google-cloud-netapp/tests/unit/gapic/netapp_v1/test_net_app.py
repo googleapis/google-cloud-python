@@ -93,6 +93,13 @@ from google.cloud.netapp_v1.types import storage_pool as gcn_storage_pool
 from google.cloud.netapp_v1.types import volume
 from google.cloud.netapp_v1.types import volume as gcn_volume
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -313,6 +320,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         NetAppClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = NetAppClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = NetAppClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -37932,10 +37982,13 @@ def test_list_storage_pools_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_storage_pools"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_storage_pools_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_storage_pools"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = storage_pool.ListStoragePoolsRequest.pb(
             storage_pool.ListStoragePoolsRequest()
         )
@@ -37961,6 +38014,10 @@ def test_list_storage_pools_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = storage_pool.ListStoragePoolsResponse()
+        post_with_metadata.return_value = (
+            storage_pool.ListStoragePoolsResponse(),
+            metadata,
+        )
 
         client.list_storage_pools(
             request,
@@ -37972,6 +38029,7 @@ def test_list_storage_pools_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_storage_pool_rest_bad_request(
@@ -38141,10 +38199,13 @@ def test_create_storage_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_storage_pool"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_storage_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_storage_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_storage_pool.CreateStoragePoolRequest.pb(
             gcn_storage_pool.CreateStoragePoolRequest()
         )
@@ -38168,6 +38229,7 @@ def test_create_storage_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_storage_pool(
             request,
@@ -38179,6 +38241,7 @@ def test_create_storage_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_storage_pool_rest_bad_request(
@@ -38299,10 +38362,13 @@ def test_get_storage_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_storage_pool"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_storage_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_storage_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = storage_pool.GetStoragePoolRequest.pb(
             storage_pool.GetStoragePoolRequest()
         )
@@ -38326,6 +38392,7 @@ def test_get_storage_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = storage_pool.StoragePool()
+        post_with_metadata.return_value = storage_pool.StoragePool(), metadata
 
         client.get_storage_pool(
             request,
@@ -38337,6 +38404,7 @@ def test_get_storage_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_storage_pool_rest_bad_request(
@@ -38514,10 +38582,13 @@ def test_update_storage_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_storage_pool"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_storage_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_storage_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_storage_pool.UpdateStoragePoolRequest.pb(
             gcn_storage_pool.UpdateStoragePoolRequest()
         )
@@ -38541,6 +38612,7 @@ def test_update_storage_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_storage_pool(
             request,
@@ -38552,6 +38624,7 @@ def test_update_storage_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_storage_pool_rest_bad_request(
@@ -38630,10 +38703,13 @@ def test_delete_storage_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_storage_pool"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_storage_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_storage_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = storage_pool.DeleteStoragePoolRequest.pb(
             storage_pool.DeleteStoragePoolRequest()
         )
@@ -38657,6 +38733,7 @@ def test_delete_storage_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_storage_pool(
             request,
@@ -38668,6 +38745,7 @@ def test_delete_storage_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_validate_directory_service_rest_bad_request(
@@ -38746,10 +38824,14 @@ def test_validate_directory_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_validate_directory_service"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor,
+        "post_validate_directory_service_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_validate_directory_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = storage_pool.ValidateDirectoryServiceRequest.pb(
             storage_pool.ValidateDirectoryServiceRequest()
         )
@@ -38773,6 +38855,7 @@ def test_validate_directory_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.validate_directory_service(
             request,
@@ -38784,6 +38867,7 @@ def test_validate_directory_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_switch_active_replica_zone_rest_bad_request(
@@ -38862,10 +38946,14 @@ def test_switch_active_replica_zone_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_switch_active_replica_zone"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor,
+        "post_switch_active_replica_zone_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_switch_active_replica_zone"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = storage_pool.SwitchActiveReplicaZoneRequest.pb(
             storage_pool.SwitchActiveReplicaZoneRequest()
         )
@@ -38889,6 +38977,7 @@ def test_switch_active_replica_zone_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.switch_active_replica_zone(
             request,
@@ -38900,6 +38989,7 @@ def test_switch_active_replica_zone_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_volumes_rest_bad_request(request_type=volume.ListVolumesRequest):
@@ -38982,10 +39072,13 @@ def test_list_volumes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_volumes"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_volumes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_volumes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.ListVolumesRequest.pb(volume.ListVolumesRequest())
         transcode.return_value = {
             "method": "post",
@@ -39007,6 +39100,7 @@ def test_list_volumes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume.ListVolumesResponse()
+        post_with_metadata.return_value = volume.ListVolumesResponse(), metadata
 
         client.list_volumes(
             request,
@@ -39018,6 +39112,7 @@ def test_list_volumes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_volume_rest_bad_request(request_type=volume.GetVolumeRequest):
@@ -39154,10 +39249,13 @@ def test_get_volume_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_volume"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.GetVolumeRequest.pb(volume.GetVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -39179,6 +39277,7 @@ def test_get_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = volume.Volume()
+        post_with_metadata.return_value = volume.Volume(), metadata
 
         client.get_volume(
             request,
@@ -39190,6 +39289,7 @@ def test_get_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_volume_rest_bad_request(request_type=gcn_volume.CreateVolumeRequest):
@@ -39440,10 +39540,13 @@ def test_create_volume_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_volume"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_volume.CreateVolumeRequest.pb(gcn_volume.CreateVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -39465,6 +39568,7 @@ def test_create_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_volume(
             request,
@@ -39476,6 +39580,7 @@ def test_create_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_volume_rest_bad_request(request_type=gcn_volume.UpdateVolumeRequest):
@@ -39730,10 +39835,13 @@ def test_update_volume_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_volume"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_volume.UpdateVolumeRequest.pb(gcn_volume.UpdateVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -39755,6 +39863,7 @@ def test_update_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_volume(
             request,
@@ -39766,6 +39875,7 @@ def test_update_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_volume_rest_bad_request(request_type=volume.DeleteVolumeRequest):
@@ -39842,10 +39952,13 @@ def test_delete_volume_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_volume"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.DeleteVolumeRequest.pb(volume.DeleteVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -39867,6 +39980,7 @@ def test_delete_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_volume(
             request,
@@ -39878,6 +39992,7 @@ def test_delete_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_revert_volume_rest_bad_request(request_type=volume.RevertVolumeRequest):
@@ -39954,10 +40069,13 @@ def test_revert_volume_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_revert_volume"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_revert_volume_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_revert_volume"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = volume.RevertVolumeRequest.pb(volume.RevertVolumeRequest())
         transcode.return_value = {
             "method": "post",
@@ -39979,6 +40097,7 @@ def test_revert_volume_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.revert_volume(
             request,
@@ -39990,6 +40109,7 @@ def test_revert_volume_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_snapshots_rest_bad_request(request_type=snapshot.ListSnapshotsRequest):
@@ -40072,10 +40192,13 @@ def test_list_snapshots_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_snapshots"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_snapshots_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_snapshots"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = snapshot.ListSnapshotsRequest.pb(snapshot.ListSnapshotsRequest())
         transcode.return_value = {
             "method": "post",
@@ -40099,6 +40222,7 @@ def test_list_snapshots_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = snapshot.ListSnapshotsResponse()
+        post_with_metadata.return_value = snapshot.ListSnapshotsResponse(), metadata
 
         client.list_snapshots(
             request,
@@ -40110,6 +40234,7 @@ def test_list_snapshots_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_snapshot_rest_bad_request(request_type=snapshot.GetSnapshotRequest):
@@ -40202,10 +40327,13 @@ def test_get_snapshot_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_snapshot"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_snapshot_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = snapshot.GetSnapshotRequest.pb(snapshot.GetSnapshotRequest())
         transcode.return_value = {
             "method": "post",
@@ -40227,6 +40355,7 @@ def test_get_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = snapshot.Snapshot()
+        post_with_metadata.return_value = snapshot.Snapshot(), metadata
 
         client.get_snapshot(
             request,
@@ -40238,6 +40367,7 @@ def test_get_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_snapshot_rest_bad_request(
@@ -40392,10 +40522,13 @@ def test_create_snapshot_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_snapshot"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_snapshot_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_snapshot.CreateSnapshotRequest.pb(
             gcn_snapshot.CreateSnapshotRequest()
         )
@@ -40419,6 +40552,7 @@ def test_create_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_snapshot(
             request,
@@ -40430,6 +40564,7 @@ def test_create_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_snapshot_rest_bad_request(request_type=snapshot.DeleteSnapshotRequest):
@@ -40510,10 +40645,13 @@ def test_delete_snapshot_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_snapshot"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_snapshot_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = snapshot.DeleteSnapshotRequest.pb(snapshot.DeleteSnapshotRequest())
         transcode.return_value = {
             "method": "post",
@@ -40535,6 +40673,7 @@ def test_delete_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_snapshot(
             request,
@@ -40546,6 +40685,7 @@ def test_delete_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_snapshot_rest_bad_request(
@@ -40708,10 +40848,13 @@ def test_update_snapshot_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_snapshot"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_snapshot_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_snapshot.UpdateSnapshotRequest.pb(
             gcn_snapshot.UpdateSnapshotRequest()
         )
@@ -40735,6 +40878,7 @@ def test_update_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_snapshot(
             request,
@@ -40746,6 +40890,7 @@ def test_update_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_active_directories_rest_bad_request(
@@ -40830,10 +40975,13 @@ def test_list_active_directories_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_active_directories"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_active_directories_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_active_directories"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = active_directory.ListActiveDirectoriesRequest.pb(
             active_directory.ListActiveDirectoriesRequest()
         )
@@ -40859,6 +41007,10 @@ def test_list_active_directories_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = active_directory.ListActiveDirectoriesResponse()
+        post_with_metadata.return_value = (
+            active_directory.ListActiveDirectoriesResponse(),
+            metadata,
+        )
 
         client.list_active_directories(
             request,
@@ -40870,6 +41022,7 @@ def test_list_active_directories_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_active_directory_rest_bad_request(
@@ -40994,10 +41147,13 @@ def test_get_active_directory_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_active_directory"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_active_directory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_active_directory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = active_directory.GetActiveDirectoryRequest.pb(
             active_directory.GetActiveDirectoryRequest()
         )
@@ -41023,6 +41179,7 @@ def test_get_active_directory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = active_directory.ActiveDirectory()
+        post_with_metadata.return_value = active_directory.ActiveDirectory(), metadata
 
         client.get_active_directory(
             request,
@@ -41034,6 +41191,7 @@ def test_get_active_directory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_active_directory_rest_bad_request(
@@ -41208,10 +41366,13 @@ def test_create_active_directory_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_active_directory"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_active_directory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_active_directory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_active_directory.CreateActiveDirectoryRequest.pb(
             gcn_active_directory.CreateActiveDirectoryRequest()
         )
@@ -41235,6 +41396,7 @@ def test_create_active_directory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_active_directory(
             request,
@@ -41246,6 +41408,7 @@ def test_create_active_directory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_active_directory_rest_bad_request(
@@ -41428,10 +41591,13 @@ def test_update_active_directory_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_active_directory"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_active_directory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_active_directory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_active_directory.UpdateActiveDirectoryRequest.pb(
             gcn_active_directory.UpdateActiveDirectoryRequest()
         )
@@ -41455,6 +41621,7 @@ def test_update_active_directory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_active_directory(
             request,
@@ -41466,6 +41633,7 @@ def test_update_active_directory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_active_directory_rest_bad_request(
@@ -41548,10 +41716,13 @@ def test_delete_active_directory_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_active_directory"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_active_directory_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_active_directory"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = active_directory.DeleteActiveDirectoryRequest.pb(
             active_directory.DeleteActiveDirectoryRequest()
         )
@@ -41575,6 +41746,7 @@ def test_delete_active_directory_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_active_directory(
             request,
@@ -41586,6 +41758,7 @@ def test_delete_active_directory_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_kms_configs_rest_bad_request(request_type=kms.ListKmsConfigsRequest):
@@ -41668,10 +41841,13 @@ def test_list_kms_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_kms_configs"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_kms_configs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_kms_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = kms.ListKmsConfigsRequest.pb(kms.ListKmsConfigsRequest())
         transcode.return_value = {
             "method": "post",
@@ -41693,6 +41869,7 @@ def test_list_kms_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = kms.ListKmsConfigsResponse()
+        post_with_metadata.return_value = kms.ListKmsConfigsResponse(), metadata
 
         client.list_kms_configs(
             request,
@@ -41704,6 +41881,7 @@ def test_list_kms_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_kms_config_rest_bad_request(request_type=kms.CreateKmsConfigRequest):
@@ -41858,10 +42036,13 @@ def test_create_kms_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_kms_config"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_kms_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_kms_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = kms.CreateKmsConfigRequest.pb(kms.CreateKmsConfigRequest())
         transcode.return_value = {
             "method": "post",
@@ -41883,6 +42064,7 @@ def test_create_kms_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_kms_config(
             request,
@@ -41894,6 +42076,7 @@ def test_create_kms_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_kms_config_rest_bad_request(request_type=kms.GetKmsConfigRequest):
@@ -41986,10 +42169,13 @@ def test_get_kms_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_kms_config"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_kms_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_kms_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = kms.GetKmsConfigRequest.pb(kms.GetKmsConfigRequest())
         transcode.return_value = {
             "method": "post",
@@ -42011,6 +42197,7 @@ def test_get_kms_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = kms.KmsConfig()
+        post_with_metadata.return_value = kms.KmsConfig(), metadata
 
         client.get_kms_config(
             request,
@@ -42022,6 +42209,7 @@ def test_get_kms_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_kms_config_rest_bad_request(request_type=kms.UpdateKmsConfigRequest):
@@ -42180,10 +42368,13 @@ def test_update_kms_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_kms_config"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_kms_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_kms_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = kms.UpdateKmsConfigRequest.pb(kms.UpdateKmsConfigRequest())
         transcode.return_value = {
             "method": "post",
@@ -42205,6 +42396,7 @@ def test_update_kms_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_kms_config(
             request,
@@ -42216,6 +42408,7 @@ def test_update_kms_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_encrypt_volumes_rest_bad_request(request_type=kms.EncryptVolumesRequest):
@@ -42292,10 +42485,13 @@ def test_encrypt_volumes_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_encrypt_volumes"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_encrypt_volumes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_encrypt_volumes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = kms.EncryptVolumesRequest.pb(kms.EncryptVolumesRequest())
         transcode.return_value = {
             "method": "post",
@@ -42317,6 +42513,7 @@ def test_encrypt_volumes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.encrypt_volumes(
             request,
@@ -42328,6 +42525,7 @@ def test_encrypt_volumes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_verify_kms_config_rest_bad_request(request_type=kms.VerifyKmsConfigRequest):
@@ -42412,10 +42610,13 @@ def test_verify_kms_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_verify_kms_config"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_verify_kms_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_verify_kms_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = kms.VerifyKmsConfigRequest.pb(kms.VerifyKmsConfigRequest())
         transcode.return_value = {
             "method": "post",
@@ -42439,6 +42640,7 @@ def test_verify_kms_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = kms.VerifyKmsConfigResponse()
+        post_with_metadata.return_value = kms.VerifyKmsConfigResponse(), metadata
 
         client.verify_kms_config(
             request,
@@ -42450,6 +42652,7 @@ def test_verify_kms_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_kms_config_rest_bad_request(request_type=kms.DeleteKmsConfigRequest):
@@ -42526,10 +42729,13 @@ def test_delete_kms_config_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_kms_config"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_kms_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_kms_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = kms.DeleteKmsConfigRequest.pb(kms.DeleteKmsConfigRequest())
         transcode.return_value = {
             "method": "post",
@@ -42551,6 +42757,7 @@ def test_delete_kms_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_kms_config(
             request,
@@ -42562,6 +42769,7 @@ def test_delete_kms_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_replications_rest_bad_request(
@@ -42646,10 +42854,13 @@ def test_list_replications_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_replications"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_replications_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_replications"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.ListReplicationsRequest.pb(
             replication.ListReplicationsRequest()
         )
@@ -42675,6 +42886,10 @@ def test_list_replications_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = replication.ListReplicationsResponse()
+        post_with_metadata.return_value = (
+            replication.ListReplicationsResponse(),
+            metadata,
+        )
 
         client.list_replications(
             request,
@@ -42686,6 +42901,7 @@ def test_list_replications_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_replication_rest_bad_request(
@@ -42800,10 +43016,13 @@ def test_get_replication_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_replication"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.GetReplicationRequest.pb(
             replication.GetReplicationRequest()
         )
@@ -42827,6 +43046,7 @@ def test_get_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = replication.Replication()
+        post_with_metadata.return_value = replication.Replication(), metadata
 
         client.get_replication(
             request,
@@ -42838,6 +43058,7 @@ def test_get_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_replication_rest_bad_request(
@@ -43025,10 +43246,13 @@ def test_create_replication_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_replication"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_replication.CreateReplicationRequest.pb(
             gcn_replication.CreateReplicationRequest()
         )
@@ -43052,6 +43276,7 @@ def test_create_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_replication(
             request,
@@ -43063,6 +43288,7 @@ def test_create_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_replication_rest_bad_request(
@@ -43145,10 +43371,13 @@ def test_delete_replication_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_replication"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.DeleteReplicationRequest.pb(
             replication.DeleteReplicationRequest()
         )
@@ -43172,6 +43401,7 @@ def test_delete_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_replication(
             request,
@@ -43183,6 +43413,7 @@ def test_delete_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_replication_rest_bad_request(
@@ -43378,10 +43609,13 @@ def test_update_replication_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_replication"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_replication.UpdateReplicationRequest.pb(
             gcn_replication.UpdateReplicationRequest()
         )
@@ -43405,6 +43639,7 @@ def test_update_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_replication(
             request,
@@ -43416,6 +43651,7 @@ def test_update_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_replication_rest_bad_request(
@@ -43498,10 +43734,13 @@ def test_stop_replication_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_stop_replication"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_stop_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_stop_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.StopReplicationRequest.pb(
             replication.StopReplicationRequest()
         )
@@ -43525,6 +43764,7 @@ def test_stop_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.stop_replication(
             request,
@@ -43536,6 +43776,7 @@ def test_stop_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resume_replication_rest_bad_request(
@@ -43618,10 +43859,13 @@ def test_resume_replication_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_resume_replication"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_resume_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_resume_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.ResumeReplicationRequest.pb(
             replication.ResumeReplicationRequest()
         )
@@ -43645,6 +43889,7 @@ def test_resume_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.resume_replication(
             request,
@@ -43656,6 +43901,7 @@ def test_resume_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reverse_replication_direction_rest_bad_request(
@@ -43738,10 +43984,14 @@ def test_reverse_replication_direction_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_reverse_replication_direction"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor,
+        "post_reverse_replication_direction_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_reverse_replication_direction"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.ReverseReplicationDirectionRequest.pb(
             replication.ReverseReplicationDirectionRequest()
         )
@@ -43765,6 +44015,7 @@ def test_reverse_replication_direction_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reverse_replication_direction(
             request,
@@ -43776,6 +44027,7 @@ def test_reverse_replication_direction_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_establish_peering_rest_bad_request(
@@ -43858,10 +44110,13 @@ def test_establish_peering_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_establish_peering"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_establish_peering_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_establish_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.EstablishPeeringRequest.pb(
             replication.EstablishPeeringRequest()
         )
@@ -43885,6 +44140,7 @@ def test_establish_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.establish_peering(
             request,
@@ -43896,6 +44152,7 @@ def test_establish_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_sync_replication_rest_bad_request(
@@ -43978,10 +44235,13 @@ def test_sync_replication_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_sync_replication"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_sync_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_sync_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = replication.SyncReplicationRequest.pb(
             replication.SyncReplicationRequest()
         )
@@ -44005,6 +44265,7 @@ def test_sync_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.sync_replication(
             request,
@@ -44016,6 +44277,7 @@ def test_sync_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_vault_rest_bad_request(
@@ -44168,10 +44430,13 @@ def test_create_backup_vault_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_backup_vault"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_backup_vault.CreateBackupVaultRequest.pb(
             gcn_backup_vault.CreateBackupVaultRequest()
         )
@@ -44195,6 +44460,7 @@ def test_create_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup_vault(
             request,
@@ -44206,6 +44472,7 @@ def test_create_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_vault_rest_bad_request(
@@ -44292,10 +44559,13 @@ def test_get_backup_vault_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_backup_vault"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_vault.GetBackupVaultRequest.pb(
             backup_vault.GetBackupVaultRequest()
         )
@@ -44319,6 +44589,7 @@ def test_get_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup_vault.BackupVault()
+        post_with_metadata.return_value = backup_vault.BackupVault(), metadata
 
         client.get_backup_vault(
             request,
@@ -44330,6 +44601,7 @@ def test_get_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_vaults_rest_bad_request(
@@ -44414,10 +44686,13 @@ def test_list_backup_vaults_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_backup_vaults"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_backup_vaults_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_backup_vaults"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_vault.ListBackupVaultsRequest.pb(
             backup_vault.ListBackupVaultsRequest()
         )
@@ -44443,6 +44718,10 @@ def test_list_backup_vaults_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup_vault.ListBackupVaultsResponse()
+        post_with_metadata.return_value = (
+            backup_vault.ListBackupVaultsResponse(),
+            metadata,
+        )
 
         client.list_backup_vaults(
             request,
@@ -44454,6 +44733,7 @@ def test_list_backup_vaults_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_vault_rest_bad_request(
@@ -44614,10 +44894,13 @@ def test_update_backup_vault_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_backup_vault"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_backup_vault.UpdateBackupVaultRequest.pb(
             gcn_backup_vault.UpdateBackupVaultRequest()
         )
@@ -44641,6 +44924,7 @@ def test_update_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup_vault(
             request,
@@ -44652,6 +44936,7 @@ def test_update_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_vault_rest_bad_request(
@@ -44730,10 +45015,13 @@ def test_delete_backup_vault_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_backup_vault"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_backup_vault_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_backup_vault"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_vault.DeleteBackupVaultRequest.pb(
             backup_vault.DeleteBackupVaultRequest()
         )
@@ -44757,6 +45045,7 @@ def test_delete_backup_vault_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup_vault(
             request,
@@ -44768,6 +45057,7 @@ def test_delete_backup_vault_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_rest_bad_request(request_type=gcn_backup.CreateBackupRequest):
@@ -44925,10 +45215,13 @@ def test_create_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_backup"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_backup.CreateBackupRequest.pb(gcn_backup.CreateBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -44950,6 +45243,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup(
             request,
@@ -44961,6 +45255,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=backup.GetBackupRequest):
@@ -45063,10 +45358,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup.GetBackupRequest.pb(backup.GetBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -45088,6 +45386,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup.Backup()
+        post_with_metadata.return_value = backup.Backup(), metadata
 
         client.get_backup(
             request,
@@ -45099,6 +45398,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backups_rest_bad_request(request_type=backup.ListBackupsRequest):
@@ -45181,10 +45481,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup.ListBackupsRequest.pb(backup.ListBackupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -45206,6 +45509,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup.ListBackupsResponse()
+        post_with_metadata.return_value = backup.ListBackupsResponse(), metadata
 
         client.list_backups(
             request,
@@ -45217,6 +45521,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(request_type=backup.DeleteBackupRequest):
@@ -45297,10 +45602,13 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_backup"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup.DeleteBackupRequest.pb(backup.DeleteBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -45322,6 +45630,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup(
             request,
@@ -45333,6 +45642,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_rest_bad_request(request_type=gcn_backup.UpdateBackupRequest):
@@ -45498,10 +45808,13 @@ def test_update_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_backup"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_backup.UpdateBackupRequest.pb(gcn_backup.UpdateBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -45523,6 +45836,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup(
             request,
@@ -45534,6 +45848,7 @@ def test_update_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_policy_rest_bad_request(
@@ -45693,10 +46008,13 @@ def test_create_backup_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_backup_policy"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_backup_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_backup_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_backup_policy.CreateBackupPolicyRequest.pb(
             gcn_backup_policy.CreateBackupPolicyRequest()
         )
@@ -45720,6 +46038,7 @@ def test_create_backup_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup_policy(
             request,
@@ -45731,6 +46050,7 @@ def test_create_backup_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_policy_rest_bad_request(
@@ -45827,10 +46147,13 @@ def test_get_backup_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_backup_policy"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_backup_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_backup_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_policy.GetBackupPolicyRequest.pb(
             backup_policy.GetBackupPolicyRequest()
         )
@@ -45854,6 +46177,7 @@ def test_get_backup_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup_policy.BackupPolicy()
+        post_with_metadata.return_value = backup_policy.BackupPolicy(), metadata
 
         client.get_backup_policy(
             request,
@@ -45865,6 +46189,7 @@ def test_get_backup_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backup_policies_rest_bad_request(
@@ -45949,10 +46274,13 @@ def test_list_backup_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_backup_policies"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_backup_policies_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_backup_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_policy.ListBackupPoliciesRequest.pb(
             backup_policy.ListBackupPoliciesRequest()
         )
@@ -45978,6 +46306,10 @@ def test_list_backup_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = backup_policy.ListBackupPoliciesResponse()
+        post_with_metadata.return_value = (
+            backup_policy.ListBackupPoliciesResponse(),
+            metadata,
+        )
 
         client.list_backup_policies(
             request,
@@ -45989,6 +46321,7 @@ def test_list_backup_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_backup_policy_rest_bad_request(
@@ -46156,10 +46489,13 @@ def test_update_backup_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_backup_policy"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_backup_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_backup_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_backup_policy.UpdateBackupPolicyRequest.pb(
             gcn_backup_policy.UpdateBackupPolicyRequest()
         )
@@ -46183,6 +46519,7 @@ def test_update_backup_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_backup_policy(
             request,
@@ -46194,6 +46531,7 @@ def test_update_backup_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_policy_rest_bad_request(
@@ -46272,10 +46610,13 @@ def test_delete_backup_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_backup_policy"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_backup_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_backup_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = backup_policy.DeleteBackupPolicyRequest.pb(
             backup_policy.DeleteBackupPolicyRequest()
         )
@@ -46299,6 +46640,7 @@ def test_delete_backup_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup_policy(
             request,
@@ -46310,6 +46652,7 @@ def test_delete_backup_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_quota_rules_rest_bad_request(
@@ -46394,10 +46737,13 @@ def test_list_quota_rules_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_list_quota_rules"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_list_quota_rules_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_list_quota_rules"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = quota_rule.ListQuotaRulesRequest.pb(
             quota_rule.ListQuotaRulesRequest()
         )
@@ -46423,6 +46769,7 @@ def test_list_quota_rules_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = quota_rule.ListQuotaRulesResponse()
+        post_with_metadata.return_value = quota_rule.ListQuotaRulesResponse(), metadata
 
         client.list_quota_rules(
             request,
@@ -46434,6 +46781,7 @@ def test_list_quota_rules_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_quota_rule_rest_bad_request(request_type=quota_rule.GetQuotaRuleRequest):
@@ -46530,10 +46878,13 @@ def test_get_quota_rule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NetAppRestInterceptor, "post_get_quota_rule"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_get_quota_rule_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_get_quota_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = quota_rule.GetQuotaRuleRequest.pb(quota_rule.GetQuotaRuleRequest())
         transcode.return_value = {
             "method": "post",
@@ -46555,6 +46906,7 @@ def test_get_quota_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = quota_rule.QuotaRule()
+        post_with_metadata.return_value = quota_rule.QuotaRule(), metadata
 
         client.get_quota_rule(
             request,
@@ -46566,6 +46918,7 @@ def test_get_quota_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_quota_rule_rest_bad_request(
@@ -46722,10 +47075,13 @@ def test_create_quota_rule_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_create_quota_rule"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_create_quota_rule_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_create_quota_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_quota_rule.CreateQuotaRuleRequest.pb(
             gcn_quota_rule.CreateQuotaRuleRequest()
         )
@@ -46749,6 +47105,7 @@ def test_create_quota_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_quota_rule(
             request,
@@ -46760,6 +47117,7 @@ def test_create_quota_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_quota_rule_rest_bad_request(
@@ -46924,10 +47282,13 @@ def test_update_quota_rule_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_update_quota_rule"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_update_quota_rule_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_update_quota_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcn_quota_rule.UpdateQuotaRuleRequest.pb(
             gcn_quota_rule.UpdateQuotaRuleRequest()
         )
@@ -46951,6 +47312,7 @@ def test_update_quota_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_quota_rule(
             request,
@@ -46962,6 +47324,7 @@ def test_update_quota_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_quota_rule_rest_bad_request(
@@ -47044,10 +47407,13 @@ def test_delete_quota_rule_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.NetAppRestInterceptor, "post_delete_quota_rule"
     ) as post, mock.patch.object(
+        transports.NetAppRestInterceptor, "post_delete_quota_rule_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NetAppRestInterceptor, "pre_delete_quota_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = quota_rule.DeleteQuotaRuleRequest.pb(
             quota_rule.DeleteQuotaRuleRequest()
         )
@@ -47071,6 +47437,7 @@ def test_delete_quota_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_quota_rule(
             request,
@@ -47082,6 +47449,7 @@ def test_delete_quota_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
