@@ -75,6 +75,7 @@ _BQML_ENDPOINT_TYPE_MAPPING = MappingProxyType(
         llm._TEXT_EMBEDDING_005_ENDPOINT: llm.TextEmbeddingGenerator,
         llm._TEXT_EMBEDDING_004_ENDPOINT: llm.TextEmbeddingGenerator,
         llm._TEXT_MULTILINGUAL_EMBEDDING_002_ENDPOINT: llm.TextEmbeddingGenerator,
+        llm._MULTIMODAL_EMBEDDING_001_ENDPOINT: llm.MultimodalEmbeddingGenerator,
     }
 )
 
@@ -98,6 +99,7 @@ def from_bq(
     llm.PaLM2TextEmbeddingGenerator,
     llm.Claude3TextGenerator,
     llm.TextEmbeddingGenerator,
+    llm.MultimodalEmbeddingGenerator,
     pipeline.Pipeline,
     compose.ColumnTransformer,
     preprocessing.PreprocessingType,

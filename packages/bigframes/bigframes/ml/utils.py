@@ -100,6 +100,9 @@ def parse_model_endpoint(model_endpoint: str) -> tuple[str, Optional[str]]:
     model_name = model_endpoint
     version = None
 
+    if model_endpoint.startswith("multimodalembedding"):
+        return model_name, version
+
     at_idx = model_endpoint.find("@")
     if at_idx != -1:
         version = model_endpoint[at_idx + 1 :]
