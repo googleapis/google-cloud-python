@@ -41,6 +41,7 @@ __protobuf__ = proto.module(
         "HTTPHeader",
         "TCPSocketAction",
         "GRPCAction",
+        "BuildInfo",
     },
 )
 
@@ -105,6 +106,14 @@ class Container(proto.Message):
         depends_on (MutableSequence[str]):
             Names of the containers that must start
             before this container.
+        base_image_uri (str):
+            Base image for this container. Only supported
+            for services. If set, it indicates that the
+            service is enrolled into automatic base image
+            update.
+        build_info (google.cloud.run_v2.types.BuildInfo):
+            Output only. The build info of the container
+            image.
     """
 
     name: str = proto.Field(
@@ -160,6 +169,15 @@ class Container(proto.Message):
     depends_on: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=12,
+    )
+    base_image_uri: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    build_info: "BuildInfo" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="BuildInfo",
     )
 
 
@@ -846,6 +864,28 @@ class GRPCAction(proto.Message):
         number=1,
     )
     service: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BuildInfo(proto.Message):
+    r"""Build information of the image.
+
+    Attributes:
+        function_target (str):
+            Output only. Entry point of the function when
+            the image is a Cloud Run function.
+        source_location (str):
+            Output only. Source code location of the
+            image.
+    """
+
+    function_target: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_location: str = proto.Field(
         proto.STRING,
         number=2,
     )
