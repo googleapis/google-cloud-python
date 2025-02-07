@@ -35,7 +35,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 class PlacesTransport(abc.ABC):
     """Abstract transport class for Places."""
 
-    AUTH_SCOPES = ()
+    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
     DEFAULT_HOST: str = "places.googleapis.com"
 

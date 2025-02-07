@@ -44,6 +44,7 @@ from google.cloud.netapp_v1.types import (
     backup_policy,
     backup_vault,
     kms,
+    quota_rule,
     replication,
     snapshot,
     storage_pool,
@@ -1451,6 +1452,162 @@ class ListBackupPoliciesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.backup_policies:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQuotaRulesPager:
+    """A pager for iterating through ``list_quota_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListQuotaRulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``quota_rules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListQuotaRules`` requests and continue to iterate
+    through the ``quota_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListQuotaRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., quota_rule.ListQuotaRulesResponse],
+        request: quota_rule.ListQuotaRulesRequest,
+        response: quota_rule.ListQuotaRulesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListQuotaRulesRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListQuotaRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = quota_rule.ListQuotaRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[quota_rule.ListQuotaRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[quota_rule.QuotaRule]:
+        for page in self.pages:
+            yield from page.quota_rules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListQuotaRulesAsyncPager:
+    """A pager for iterating through ``list_quota_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.netapp_v1.types.ListQuotaRulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``quota_rules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListQuotaRules`` requests and continue to iterate
+    through the ``quota_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.netapp_v1.types.ListQuotaRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[quota_rule.ListQuotaRulesResponse]],
+        request: quota_rule.ListQuotaRulesRequest,
+        response: quota_rule.ListQuotaRulesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.netapp_v1.types.ListQuotaRulesRequest):
+                The initial request object.
+            response (google.cloud.netapp_v1.types.ListQuotaRulesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = quota_rule.ListQuotaRulesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[quota_rule.ListQuotaRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[quota_rule.QuotaRule]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.quota_rules:
                     yield response
 
         return async_generator()
