@@ -801,8 +801,9 @@ class Entry(proto.Message):
             -  If the aspect is attached to an entry's path:
                ``{project_id_or_number}.{location_id}.{aspect_type_id}@{path}``
         parent_entry (str):
-            Optional. Immutable. The resource name of the
-            parent entry.
+            Optional. Immutable. The resource name of the parent entry,
+            in the format
+            ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}``.
         fully_qualified_name (str):
             Optional. A name for the entry that can be referenced by an
             external system. For more information, see `Fully qualified
@@ -2408,10 +2409,15 @@ class MetadataJob(proto.Message):
                     are modified. Use this mode to modify a subset
                     of resources while leaving unreferenced
                     resources unchanged.
+                NONE (3):
+                    If entry sync mode is NONE, then the entry-specific fields
+                    (apart from aspects) are not modified and the aspects are
+                    modified according to the aspect_sync_mode
             """
             SYNC_MODE_UNSPECIFIED = 0
             FULL = 1
             INCREMENTAL = 2
+            NONE = 3
 
         class LogLevel(proto.Enum):
             r"""The level of logs to write to Cloud Logging for this job.
