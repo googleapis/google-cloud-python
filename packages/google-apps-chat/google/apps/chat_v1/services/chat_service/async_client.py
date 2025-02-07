@@ -3170,8 +3170,8 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gc_reaction.Reaction:
-        r"""Creates a reaction and adds it to a message. Only unicode emojis
-        are supported. For an example, see `Add a reaction to a
+        r"""Creates a reaction and adds it to a message. For an example, see
+        `Add a reaction to a
         message <https://developers.google.com/workspace/chat/create-reactions>`__.
 
         Requires `user
@@ -3420,8 +3420,7 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a reaction to a message. Only unicode emojis are
-        supported. For an example, see `Delete a
+        r"""Deletes a reaction to a message. For an example, see `Delete a
         reaction <https://developers.google.com/workspace/chat/delete-reactions>`__.
 
         Requires `user
