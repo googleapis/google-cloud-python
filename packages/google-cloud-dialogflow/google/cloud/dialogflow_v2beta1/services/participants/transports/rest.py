@@ -184,11 +184,36 @@ class ParticipantsRestInterceptor:
     ) -> gcd_participant.AnalyzeContentResponse:
         """Post-rpc interceptor for analyze_content
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_analyze_content_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_content` interceptor runs
+        before the `post_analyze_content_with_metadata` interceptor.
         """
         return response
+
+    def post_analyze_content_with_metadata(
+        self,
+        response: gcd_participant.AnalyzeContentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_participant.AnalyzeContentResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for analyze_content
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_analyze_content_with_metadata`
+        interceptor in new development instead of the `post_analyze_content` interceptor.
+        When both interceptors are used, this `post_analyze_content_with_metadata` interceptor runs after the
+        `post_analyze_content` interceptor. The (possibly modified) response returned by
+        `post_analyze_content` will be passed to
+        `post_analyze_content_with_metadata`.
+        """
+        return response, metadata
 
     def pre_compile_suggestion(
         self,
@@ -209,11 +234,36 @@ class ParticipantsRestInterceptor:
     ) -> participant.CompileSuggestionResponse:
         """Post-rpc interceptor for compile_suggestion
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compile_suggestion_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compile_suggestion` interceptor runs
+        before the `post_compile_suggestion_with_metadata` interceptor.
         """
         return response
+
+    def post_compile_suggestion_with_metadata(
+        self,
+        response: participant.CompileSuggestionResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.CompileSuggestionResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for compile_suggestion
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_compile_suggestion_with_metadata`
+        interceptor in new development instead of the `post_compile_suggestion` interceptor.
+        When both interceptors are used, this `post_compile_suggestion_with_metadata` interceptor runs after the
+        `post_compile_suggestion` interceptor. The (possibly modified) response returned by
+        `post_compile_suggestion` will be passed to
+        `post_compile_suggestion_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_participant(
         self,
@@ -235,11 +285,34 @@ class ParticipantsRestInterceptor:
     ) -> gcd_participant.Participant:
         """Post-rpc interceptor for create_participant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_participant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_participant` interceptor runs
+        before the `post_create_participant_with_metadata` interceptor.
         """
         return response
+
+    def post_create_participant_with_metadata(
+        self,
+        response: gcd_participant.Participant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_participant.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_participant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_create_participant_with_metadata`
+        interceptor in new development instead of the `post_create_participant` interceptor.
+        When both interceptors are used, this `post_create_participant_with_metadata` interceptor runs after the
+        `post_create_participant` interceptor. The (possibly modified) response returned by
+        `post_create_participant` will be passed to
+        `post_create_participant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_participant(
         self,
@@ -260,11 +333,34 @@ class ParticipantsRestInterceptor:
     ) -> participant.Participant:
         """Post-rpc interceptor for get_participant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_participant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_participant` interceptor runs
+        before the `post_get_participant_with_metadata` interceptor.
         """
         return response
+
+    def post_get_participant_with_metadata(
+        self,
+        response: participant.Participant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[participant.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_participant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_get_participant_with_metadata`
+        interceptor in new development instead of the `post_get_participant` interceptor.
+        When both interceptors are used, this `post_get_participant_with_metadata` interceptor runs after the
+        `post_get_participant` interceptor. The (possibly modified) response returned by
+        `post_get_participant` will be passed to
+        `post_get_participant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_participants(
         self,
@@ -285,11 +381,36 @@ class ParticipantsRestInterceptor:
     ) -> participant.ListParticipantsResponse:
         """Post-rpc interceptor for list_participants
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_participants_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_participants` interceptor runs
+        before the `post_list_participants_with_metadata` interceptor.
         """
         return response
+
+    def post_list_participants_with_metadata(
+        self,
+        response: participant.ListParticipantsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.ListParticipantsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_participants
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_list_participants_with_metadata`
+        interceptor in new development instead of the `post_list_participants` interceptor.
+        When both interceptors are used, this `post_list_participants_with_metadata` interceptor runs after the
+        `post_list_participants` interceptor. The (possibly modified) response returned by
+        `post_list_participants` will be passed to
+        `post_list_participants_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_suggestions(
         self,
@@ -310,11 +431,36 @@ class ParticipantsRestInterceptor:
     ) -> participant.ListSuggestionsResponse:
         """Post-rpc interceptor for list_suggestions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_suggestions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_suggestions` interceptor runs
+        before the `post_list_suggestions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_suggestions_with_metadata(
+        self,
+        response: participant.ListSuggestionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.ListSuggestionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_suggestions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_list_suggestions_with_metadata`
+        interceptor in new development instead of the `post_list_suggestions` interceptor.
+        When both interceptors are used, this `post_list_suggestions_with_metadata` interceptor runs after the
+        `post_list_suggestions` interceptor. The (possibly modified) response returned by
+        `post_list_suggestions` will be passed to
+        `post_list_suggestions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_suggest_articles(
         self,
@@ -335,11 +481,36 @@ class ParticipantsRestInterceptor:
     ) -> participant.SuggestArticlesResponse:
         """Post-rpc interceptor for suggest_articles
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_suggest_articles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_suggest_articles` interceptor runs
+        before the `post_suggest_articles_with_metadata` interceptor.
         """
         return response
+
+    def post_suggest_articles_with_metadata(
+        self,
+        response: participant.SuggestArticlesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestArticlesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for suggest_articles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_suggest_articles_with_metadata`
+        interceptor in new development instead of the `post_suggest_articles` interceptor.
+        When both interceptors are used, this `post_suggest_articles_with_metadata` interceptor runs after the
+        `post_suggest_articles` interceptor. The (possibly modified) response returned by
+        `post_suggest_articles` will be passed to
+        `post_suggest_articles_with_metadata`.
+        """
+        return response, metadata
 
     def pre_suggest_faq_answers(
         self,
@@ -360,11 +531,36 @@ class ParticipantsRestInterceptor:
     ) -> participant.SuggestFaqAnswersResponse:
         """Post-rpc interceptor for suggest_faq_answers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_suggest_faq_answers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_suggest_faq_answers` interceptor runs
+        before the `post_suggest_faq_answers_with_metadata` interceptor.
         """
         return response
+
+    def post_suggest_faq_answers_with_metadata(
+        self,
+        response: participant.SuggestFaqAnswersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestFaqAnswersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for suggest_faq_answers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_suggest_faq_answers_with_metadata`
+        interceptor in new development instead of the `post_suggest_faq_answers` interceptor.
+        When both interceptors are used, this `post_suggest_faq_answers_with_metadata` interceptor runs after the
+        `post_suggest_faq_answers` interceptor. The (possibly modified) response returned by
+        `post_suggest_faq_answers` will be passed to
+        `post_suggest_faq_answers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_suggest_knowledge_assist(
         self,
@@ -386,11 +582,37 @@ class ParticipantsRestInterceptor:
     ) -> participant.SuggestKnowledgeAssistResponse:
         """Post-rpc interceptor for suggest_knowledge_assist
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_suggest_knowledge_assist_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_suggest_knowledge_assist` interceptor runs
+        before the `post_suggest_knowledge_assist_with_metadata` interceptor.
         """
         return response
+
+    def post_suggest_knowledge_assist_with_metadata(
+        self,
+        response: participant.SuggestKnowledgeAssistResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestKnowledgeAssistResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for suggest_knowledge_assist
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_suggest_knowledge_assist_with_metadata`
+        interceptor in new development instead of the `post_suggest_knowledge_assist` interceptor.
+        When both interceptors are used, this `post_suggest_knowledge_assist_with_metadata` interceptor runs after the
+        `post_suggest_knowledge_assist` interceptor. The (possibly modified) response returned by
+        `post_suggest_knowledge_assist` will be passed to
+        `post_suggest_knowledge_assist_with_metadata`.
+        """
+        return response, metadata
 
     def pre_suggest_smart_replies(
         self,
@@ -411,11 +633,36 @@ class ParticipantsRestInterceptor:
     ) -> participant.SuggestSmartRepliesResponse:
         """Post-rpc interceptor for suggest_smart_replies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_suggest_smart_replies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_suggest_smart_replies` interceptor runs
+        before the `post_suggest_smart_replies_with_metadata` interceptor.
         """
         return response
+
+    def post_suggest_smart_replies_with_metadata(
+        self,
+        response: participant.SuggestSmartRepliesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        participant.SuggestSmartRepliesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for suggest_smart_replies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_suggest_smart_replies_with_metadata`
+        interceptor in new development instead of the `post_suggest_smart_replies` interceptor.
+        When both interceptors are used, this `post_suggest_smart_replies_with_metadata` interceptor runs after the
+        `post_suggest_smart_replies` interceptor. The (possibly modified) response returned by
+        `post_suggest_smart_replies` will be passed to
+        `post_suggest_smart_replies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_participant(
         self,
@@ -437,11 +684,34 @@ class ParticipantsRestInterceptor:
     ) -> gcd_participant.Participant:
         """Post-rpc interceptor for update_participant
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_participant_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Participants server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_participant` interceptor runs
+        before the `post_update_participant_with_metadata` interceptor.
         """
         return response
+
+    def post_update_participant_with_metadata(
+        self,
+        response: gcd_participant.Participant,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_participant.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_participant
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Participants server but before it is returned to user code.
+
+        We recommend only using this `post_update_participant_with_metadata`
+        interceptor in new development instead of the `post_update_participant` interceptor.
+        When both interceptors are used, this `post_update_participant_with_metadata` interceptor runs after the
+        `post_update_participant` interceptor. The (possibly modified) response returned by
+        `post_update_participant` will be passed to
+        `post_update_participant_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -780,6 +1050,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_analyze_content(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_analyze_content_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -933,6 +1207,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_compile_suggestion(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_compile_suggestion_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1086,6 +1364,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_participant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_participant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1229,6 +1511,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_participant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_participant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1374,6 +1660,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_participants(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_participants_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1521,6 +1811,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_suggestions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_suggestions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1693,6 +1987,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_suggest_articles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_suggest_articles_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1846,6 +2144,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_suggest_faq_answers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_suggest_faq_answers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1999,6 +2301,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_suggest_knowledge_assist(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_suggest_knowledge_assist_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2152,6 +2458,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_suggest_smart_replies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_suggest_smart_replies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2305,6 +2615,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_participant(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_participant_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

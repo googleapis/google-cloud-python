@@ -76,6 +76,13 @@ from google.cloud.dialogflow_v2beta1.types import agent
 from google.cloud.dialogflow_v2beta1.types import agent as gcd_agent
 from google.cloud.dialogflow_v2beta1.types import validation_result
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -296,6 +303,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         AgentsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AgentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AgentsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6126,10 +6176,13 @@ def test_get_agent_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AgentsRestInterceptor, "post_get_agent"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_get_agent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_get_agent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = agent.GetAgentRequest.pb(agent.GetAgentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6151,6 +6204,7 @@ def test_get_agent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = agent.Agent()
+        post_with_metadata.return_value = agent.Agent(), metadata
 
         client.get_agent(
             request,
@@ -6162,6 +6216,7 @@ def test_get_agent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_agent_rest_bad_request(request_type=gcd_agent.SetAgentRequest):
@@ -6350,10 +6405,13 @@ def test_set_agent_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AgentsRestInterceptor, "post_set_agent"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_set_agent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_set_agent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = gcd_agent.SetAgentRequest.pb(gcd_agent.SetAgentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6375,6 +6433,7 @@ def test_set_agent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcd_agent.Agent()
+        post_with_metadata.return_value = gcd_agent.Agent(), metadata
 
         client.set_agent(
             request,
@@ -6386,6 +6445,7 @@ def test_set_agent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_agent_rest_bad_request(request_type=agent.DeleteAgentRequest):
@@ -6569,10 +6629,13 @@ def test_search_agents_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AgentsRestInterceptor, "post_search_agents"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_search_agents_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_search_agents"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = agent.SearchAgentsRequest.pb(agent.SearchAgentsRequest())
         transcode.return_value = {
             "method": "post",
@@ -6594,6 +6657,7 @@ def test_search_agents_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = agent.SearchAgentsResponse()
+        post_with_metadata.return_value = agent.SearchAgentsResponse(), metadata
 
         client.search_agents(
             request,
@@ -6605,6 +6669,7 @@ def test_search_agents_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_train_agent_rest_bad_request(request_type=agent.TrainAgentRequest):
@@ -6681,10 +6746,13 @@ def test_train_agent_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AgentsRestInterceptor, "post_train_agent"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_train_agent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_train_agent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = agent.TrainAgentRequest.pb(agent.TrainAgentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6706,6 +6774,7 @@ def test_train_agent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.train_agent(
             request,
@@ -6717,6 +6786,7 @@ def test_train_agent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_agent_rest_bad_request(request_type=agent.ExportAgentRequest):
@@ -6793,10 +6863,13 @@ def test_export_agent_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AgentsRestInterceptor, "post_export_agent"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_export_agent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_export_agent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = agent.ExportAgentRequest.pb(agent.ExportAgentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6818,6 +6891,7 @@ def test_export_agent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_agent(
             request,
@@ -6829,6 +6903,7 @@ def test_export_agent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_agent_rest_bad_request(request_type=agent.ImportAgentRequest):
@@ -6905,10 +6980,13 @@ def test_import_agent_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AgentsRestInterceptor, "post_import_agent"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_import_agent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_import_agent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = agent.ImportAgentRequest.pb(agent.ImportAgentRequest())
         transcode.return_value = {
             "method": "post",
@@ -6930,6 +7008,7 @@ def test_import_agent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_agent(
             request,
@@ -6941,6 +7020,7 @@ def test_import_agent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restore_agent_rest_bad_request(request_type=agent.RestoreAgentRequest):
@@ -7017,10 +7097,13 @@ def test_restore_agent_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.AgentsRestInterceptor, "post_restore_agent"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_restore_agent_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_restore_agent"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = agent.RestoreAgentRequest.pb(agent.RestoreAgentRequest())
         transcode.return_value = {
             "method": "post",
@@ -7042,6 +7125,7 @@ def test_restore_agent_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_agent(
             request,
@@ -7053,6 +7137,7 @@ def test_restore_agent_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_validation_result_rest_bad_request(
@@ -7132,10 +7217,13 @@ def test_get_validation_result_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.AgentsRestInterceptor, "post_get_validation_result"
     ) as post, mock.patch.object(
+        transports.AgentsRestInterceptor, "post_get_validation_result_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.AgentsRestInterceptor, "pre_get_validation_result"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = agent.GetValidationResultRequest.pb(
             agent.GetValidationResultRequest()
         )
@@ -7161,6 +7249,7 @@ def test_get_validation_result_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = validation_result.ValidationResult()
+        post_with_metadata.return_value = validation_result.ValidationResult(), metadata
 
         client.get_validation_result(
             request,
@@ -7172,6 +7261,7 @@ def test_get_validation_result_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
