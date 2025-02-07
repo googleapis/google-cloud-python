@@ -413,17 +413,17 @@ class LinkProposalState(proto.Enum):
 
 
 class PropertyType(proto.Enum):
-    r"""Types of Property resources.
+    r"""Types of ``Property`` resources.
 
     Values:
         PROPERTY_TYPE_UNSPECIFIED (0):
             Unknown or unspecified property type
         PROPERTY_TYPE_ORDINARY (1):
-            Ordinary GA4 property
+            Ordinary Google Analytics property
         PROPERTY_TYPE_SUBPROPERTY (2):
-            GA4 subproperty
+            Google Analytics subproperty
         PROPERTY_TYPE_ROLLUP (3):
-            GA4 rollup property
+            Google Analytics rollup property
     """
     PROPERTY_TYPE_UNSPECIFIED = 0
     PROPERTY_TYPE_ORDINARY = 1
@@ -518,8 +518,7 @@ class Account(proto.Message):
 
 
 class Property(proto.Message):
-    r"""A resource message representing a Google Analytics GA4
-    property.
+    r"""A resource message representing a Google Analytics property.
 
     Attributes:
         name (str):
@@ -831,7 +830,8 @@ class DataStream(proto.Message):
 
 
 class FirebaseLink(proto.Message):
-    r"""A link between a GA4 property and a Firebase project.
+    r"""A link between a Google Analytics property and a Firebase
+    project.
 
     Attributes:
         name (str):
@@ -893,7 +893,8 @@ class GlobalSiteTag(proto.Message):
 
 
 class GoogleAdsLink(proto.Message):
-    r"""A link between a GA4 property and a Google Ads account.
+    r"""A link between a Google Analytics property and a Google Ads
+    account.
 
     Attributes:
         name (str):
@@ -1020,7 +1021,7 @@ class DataSharingSettings(proto.Message):
 
 class AccountSummary(proto.Message):
     r"""A virtual resource representing an overview of an account and
-    all its child GA4 properties.
+    all its child Google Analytics properties.
 
     Attributes:
         name (str):
@@ -1058,7 +1059,8 @@ class AccountSummary(proto.Message):
 
 
 class PropertySummary(proto.Message):
-    r"""A virtual resource representing metadata for a GA4 property.
+    r"""A virtual resource representing metadata for a Google
+    Analytics property.
 
     Attributes:
         property (str):
@@ -1312,9 +1314,9 @@ class EventMapping(proto.Message):
 
     Attributes:
         event_name (str):
-            Required. Name of the GA4 event. It must
-            always be set. The max allowed display name
-            length is 40 UTF-16 code units.
+            Required. Name of the Google Analytics event.
+            It must always be set. The max allowed display
+            name length is 40 UTF-16 code units.
         min_event_count (int):
             At least one of the following four min/max
             values must be set. The values set will be ANDed
@@ -1770,8 +1772,8 @@ class ChangeHistoryChange(proto.Message):
 
 
 class DisplayVideo360AdvertiserLink(proto.Message):
-    r"""A link between a GA4 property and a Display & Video 360
-    advertiser.
+    r"""A link between a Google Analytics property and a Display &
+    Video 360 advertiser.
 
     Attributes:
         name (str):
@@ -1794,18 +1796,18 @@ class DisplayVideo360AdvertiserLink(proto.Message):
             on create/update, it will be defaulted to true.
         campaign_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Immutable. Enables the import of campaign
-            data from Display & Video 360 into the GA4
-            property. After link creation, this can only be
-            updated from the Display & Video 360 product. If
-            this field is not set on create, it will be
-            defaulted to true.
+            data from Display & Video 360 into the Google
+            Analytics property. After link creation, this
+            can only be updated from the Display & Video 360
+            product. If this field is not set on create, it
+            will be defaulted to true.
         cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Immutable. Enables the import of cost data from Display &
-            Video 360 into the GA4 property. This can only be enabled if
-            campaign_data_sharing_enabled is enabled. After link
-            creation, this can only be updated from the Display & Video
-            360 product. If this field is not set on create, it will be
-            defaulted to true.
+            Video 360 into the Google Analytics property. This can only
+            be enabled if ``campaign_data_sharing_enabled`` is true.
+            After link creation, this can only be updated from the
+            Display & Video 360 product. If this field is not set on
+            create, it will be defaulted to true.
     """
 
     name: str = proto.Field(
@@ -1838,8 +1840,8 @@ class DisplayVideo360AdvertiserLink(proto.Message):
 
 
 class DisplayVideo360AdvertiserLinkProposal(proto.Message):
-    r"""A proposal for a link between a GA4 property and a Display &
-    Video 360 advertiser.
+    r"""A proposal for a link between a Google Analytics property and
+    a Display & Video 360 advertiser.
 
     A proposal is converted to a DisplayVideo360AdvertiserLink once
     approved. Google Analytics admins approve inbound proposals
@@ -1929,7 +1931,8 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
 
 
 class SearchAds360Link(proto.Message):
-    r"""A link between a GA4 property and a Search Ads 360 entity.
+    r"""A link between a Google Analytics property and a Search Ads
+    360 entity.
 
     Attributes:
         name (str):
@@ -1945,17 +1948,17 @@ class SearchAds360Link(proto.Message):
             that has been linked.
         campaign_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Immutable. Enables the import of campaign
-            data from Search Ads 360 into the GA4 property.
-            After link creation, this can only be updated
-            from the Search Ads 360 product.
-            If this field is not set on create, it will be
-            defaulted to true.
+            data from Search Ads 360 into the Google
+            Analytics property. After link creation, this
+            can only be updated from the Search Ads 360
+            product. If this field is not set on create, it
+            will be defaulted to true.
         cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Immutable. Enables the import of cost data from Search Ads
-            360 to the GA4 property. This can only be enabled if
-            campaign_data_sharing_enabled is enabled. After link
-            creation, this can only be updated from the Search Ads 360
-            product. If this field is not set on create, it will be
+            360 to the Google Analytics property. This can only be
+            enabled if campaign_data_sharing_enabled is enabled. After
+            link creation, this can only be updated from the Search Ads
+            360 product. If this field is not set on create, it will be
             defaulted to true.
         advertiser_display_name (str):
             Output only. The display name of the Search
@@ -2687,8 +2690,11 @@ class DataRetentionSettings(proto.Message):
             DataRetentionSetting resource. Format:
             properties/{property}/dataRetentionSettings
         event_data_retention (google.analytics.admin_v1alpha.types.DataRetentionSettings.RetentionDuration):
-            The length of time that event-level data is
-            retained.
+            Required. The length of time that event-level
+            data is retained.
+        user_data_retention (google.analytics.admin_v1alpha.types.DataRetentionSettings.RetentionDuration):
+            Required. The length of time that user-level
+            data is retained.
         reset_user_data_on_new_activity (bool):
             If true, reset the retention period for the
             user identifier with every event from that user.
@@ -2709,12 +2715,15 @@ class DataRetentionSettings(proto.Message):
             TWENTY_SIX_MONTHS (4):
                 The data retention time duration is 26
                 months. Available to 360 properties only.
+                Available for event data only.
             THIRTY_EIGHT_MONTHS (5):
                 The data retention time duration is 38
                 months. Available to 360 properties only.
+                Available for event data only.
             FIFTY_MONTHS (6):
                 The data retention time duration is 50
                 months. Available to 360 properties only.
+                Available for event data only.
         """
         RETENTION_DURATION_UNSPECIFIED = 0
         TWO_MONTHS = 1
@@ -2730,6 +2739,11 @@ class DataRetentionSettings(proto.Message):
     event_data_retention: RetentionDuration = proto.Field(
         proto.ENUM,
         number=2,
+        enum=RetentionDuration,
+    )
+    user_data_retention: RetentionDuration = proto.Field(
+        proto.ENUM,
+        number=4,
         enum=RetentionDuration,
     )
     reset_user_data_on_new_activity: bool = proto.Field(
@@ -2940,7 +2954,8 @@ class AccessBinding(proto.Message):
 
 
 class BigQueryLink(proto.Message):
-    r"""A link between a GA4 Property and BigQuery project.
+    r"""A link between a Google Analytics property and BigQuery
+    project.
 
     Attributes:
         name (str):
@@ -3207,8 +3222,8 @@ class DataRedactionSettings(proto.Message):
 
 
 class AdSenseLink(proto.Message):
-    r"""A link between a GA4 Property and an AdSense for Content ad
-    client.
+    r"""A link between a Google Analytics property and an AdSense for
+    Content ad client.
 
     Attributes:
         name (str):
@@ -3218,8 +3233,8 @@ class AdSenseLink(proto.Message):
             Example: properties/1234/adSenseLinks/6789
         ad_client_code (str):
             Immutable. The AdSense ad client code that
-            the GA4 property is linked to. Example format:
-            "ca-pub-1234567890".
+            the Google Analytics property is linked to.
+            Example format: "ca-pub-1234567890".
     """
 
     name: str = proto.Field(

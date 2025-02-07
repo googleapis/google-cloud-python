@@ -127,11 +127,34 @@ class ExecutionsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_execution
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_cancel_execution_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Executions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_cancel_execution` interceptor runs
+        before the `post_cancel_execution_with_metadata` interceptor.
         """
         return response
+
+    def post_cancel_execution_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for cancel_execution
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Executions server but before it is returned to user code.
+
+        We recommend only using this `post_cancel_execution_with_metadata`
+        interceptor in new development instead of the `post_cancel_execution` interceptor.
+        When both interceptors are used, this `post_cancel_execution_with_metadata` interceptor runs after the
+        `post_cancel_execution` interceptor. The (possibly modified) response returned by
+        `post_cancel_execution` will be passed to
+        `post_cancel_execution_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_execution(
         self,
@@ -152,11 +175,34 @@ class ExecutionsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_execution
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_execution_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Executions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_execution` interceptor runs
+        before the `post_delete_execution_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_execution_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_execution
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Executions server but before it is returned to user code.
+
+        We recommend only using this `post_delete_execution_with_metadata`
+        interceptor in new development instead of the `post_delete_execution` interceptor.
+        When both interceptors are used, this `post_delete_execution_with_metadata` interceptor runs after the
+        `post_delete_execution` interceptor. The (possibly modified) response returned by
+        `post_delete_execution` will be passed to
+        `post_delete_execution_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_execution(
         self,
@@ -173,11 +219,34 @@ class ExecutionsRestInterceptor:
     def post_get_execution(self, response: execution.Execution) -> execution.Execution:
         """Post-rpc interceptor for get_execution
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_execution_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Executions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_execution` interceptor runs
+        before the `post_get_execution_with_metadata` interceptor.
         """
         return response
+
+    def post_get_execution_with_metadata(
+        self,
+        response: execution.Execution,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[execution.Execution, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_execution
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Executions server but before it is returned to user code.
+
+        We recommend only using this `post_get_execution_with_metadata`
+        interceptor in new development instead of the `post_get_execution` interceptor.
+        When both interceptors are used, this `post_get_execution_with_metadata` interceptor runs after the
+        `post_get_execution` interceptor. The (possibly modified) response returned by
+        `post_get_execution` will be passed to
+        `post_get_execution_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_executions(
         self,
@@ -198,11 +267,36 @@ class ExecutionsRestInterceptor:
     ) -> execution.ListExecutionsResponse:
         """Post-rpc interceptor for list_executions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_executions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Executions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_executions` interceptor runs
+        before the `post_list_executions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_executions_with_metadata(
+        self,
+        response: execution.ListExecutionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        execution.ListExecutionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_executions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Executions server but before it is returned to user code.
+
+        We recommend only using this `post_list_executions_with_metadata`
+        interceptor in new development instead of the `post_list_executions` interceptor.
+        When both interceptors are used, this `post_list_executions_with_metadata` interceptor runs after the
+        `post_list_executions` interceptor. The (possibly modified) response returned by
+        `post_list_executions` will be passed to
+        `post_list_executions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_operation(
         self,
@@ -570,6 +664,10 @@ class ExecutionsRestTransport(_BaseExecutionsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_cancel_execution(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_cancel_execution_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -714,6 +812,10 @@ class ExecutionsRestTransport(_BaseExecutionsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_execution(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_execution_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -864,6 +966,10 @@ class ExecutionsRestTransport(_BaseExecutionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_execution(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_execution_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1009,6 +1115,10 @@ class ExecutionsRestTransport(_BaseExecutionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_executions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_executions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -78,6 +78,10 @@ class Backup(proto.Message):
             Output only. Total size of all backups in a
             chain in bytes = baseline backup size +
             sum(incremental backup size)
+        satisfies_pzs (bool):
+            Output only. Reserved for future use
+        satisfies_pzi (bool):
+            Output only. Reserved for future use
     """
 
     class State(proto.Enum):
@@ -173,6 +177,14 @@ class Backup(proto.Message):
     chain_storage_bytes: int = proto.Field(
         proto.INT64,
         number=10,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
 
 
