@@ -112,10 +112,10 @@ class RunAccessReportRequest(proto.Message):
 
             To request at the property level, entity should
             be for example 'properties/123' if "123" is your
-            GA4 property ID. To request at the account
-            level, entity should be for example
-            'accounts/1234' if "1234" is your GA4 Account
-            ID.
+            Google Analytics property ID. To request at the
+            account level, entity should be for example
+            'accounts/1234' if "1234" is your Google
+            Analytics Account ID.
         dimensions (MutableSequence[google.analytics.admin_v1beta.types.AccessDimension]):
             The dimensions requested and displayed in the
             response. Requests are allowed up to 9
@@ -1019,12 +1019,17 @@ class SearchChangeHistoryEventsRequest(proto.Message):
             Optional. If set, only return changes made
             before this time (inclusive).
         page_size (int):
-            Optional. The maximum number of
-            ChangeHistoryEvent items to return. The service
-            may return fewer than this value, even if there
-            are additional pages. If unspecified, at most 50
-            items will be returned. The maximum value is 200
-            (higher values will be coerced to the maximum).
+            Optional. The maximum number of ChangeHistoryEvent items to
+            return. If unspecified, at most 50 items will be returned.
+            The maximum value is 200 (higher values will be coerced to
+            the maximum).
+
+            Note that the service may return a page with fewer items
+            than this value specifies (potentially even zero), and that
+            there still may be additional pages. If you want a
+            particular number of items, you'll need to continue
+            requesting additional pages using ``page_token`` until you
+            get the needed number.
         page_token (str):
             Optional. A page token, received from a previous
             ``SearchChangeHistoryEvents`` call. Provide this to retrieve

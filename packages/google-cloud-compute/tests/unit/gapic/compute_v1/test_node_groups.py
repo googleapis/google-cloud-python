@@ -66,6 +66,13 @@ from google.cloud.compute_v1.services.node_groups import (
 )
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -294,6 +301,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         NodeGroupsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = NodeGroupsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = NodeGroupsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6314,10 +6364,13 @@ def test_add_nodes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_add_nodes"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_add_nodes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_add_nodes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AddNodesNodeGroupRequest.pb(
             compute.AddNodesNodeGroupRequest()
         )
@@ -6341,6 +6394,7 @@ def test_add_nodes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.add_nodes(
             request,
@@ -6352,6 +6406,7 @@ def test_add_nodes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -6444,10 +6499,13 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_aggregated_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListNodeGroupsRequest.pb(
             compute.AggregatedListNodeGroupsRequest()
         )
@@ -6473,6 +6531,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.NodeGroupAggregatedList()
+        post_with_metadata.return_value = compute.NodeGroupAggregatedList(), metadata
 
         client.aggregated_list(
             request,
@@ -6484,6 +6543,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteNodeGroupRequest):
@@ -6608,10 +6668,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteNodeGroupRequest.pb(compute.DeleteNodeGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -6633,6 +6696,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -6644,6 +6708,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_nodes_rest_bad_request(
@@ -6853,10 +6918,13 @@ def test_delete_nodes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_delete_nodes"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_delete_nodes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_delete_nodes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteNodesNodeGroupRequest.pb(
             compute.DeleteNodesNodeGroupRequest()
         )
@@ -6880,6 +6948,7 @@ def test_delete_nodes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete_nodes(
             request,
@@ -6891,6 +6960,7 @@ def test_delete_nodes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetNodeGroupRequest):
@@ -6999,10 +7069,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetNodeGroupRequest.pb(compute.GetNodeGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -7024,6 +7097,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.NodeGroup()
+        post_with_metadata.return_value = compute.NodeGroup(), metadata
 
         client.get(
             request,
@@ -7035,6 +7109,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -7123,10 +7198,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetIamPolicyNodeGroupRequest.pb(
             compute.GetIamPolicyNodeGroupRequest()
         )
@@ -7150,6 +7228,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -7161,6 +7240,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertNodeGroupRequest):
@@ -7378,10 +7458,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertNodeGroupRequest.pb(compute.InsertNodeGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -7403,6 +7486,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -7414,6 +7498,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListNodeGroupsRequest):
@@ -7502,10 +7587,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListNodeGroupsRequest.pb(compute.ListNodeGroupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -7527,6 +7615,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.NodeGroupList()
+        post_with_metadata.return_value = compute.NodeGroupList(), metadata
 
         client.list(
             request,
@@ -7538,6 +7627,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_nodes_rest_bad_request(request_type=compute.ListNodesNodeGroupsRequest):
@@ -7626,10 +7716,13 @@ def test_list_nodes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_list_nodes"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_list_nodes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_list_nodes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListNodesNodeGroupsRequest.pb(
             compute.ListNodesNodeGroupsRequest()
         )
@@ -7655,6 +7748,7 @@ def test_list_nodes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.NodeGroupsListNodes()
+        post_with_metadata.return_value = compute.NodeGroupsListNodes(), metadata
 
         client.list_nodes(
             request,
@@ -7666,6 +7760,7 @@ def test_list_nodes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchNodeGroupRequest):
@@ -7883,10 +7978,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchNodeGroupRequest.pb(compute.PatchNodeGroupRequest())
         transcode.return_value = {
             "method": "post",
@@ -7908,6 +8006,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -7919,6 +8018,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_perform_maintenance_rest_bad_request(
@@ -8131,10 +8231,13 @@ def test_perform_maintenance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_perform_maintenance"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_perform_maintenance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_perform_maintenance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PerformMaintenanceNodeGroupRequest.pb(
             compute.PerformMaintenanceNodeGroupRequest()
         )
@@ -8158,6 +8261,7 @@ def test_perform_maintenance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.perform_maintenance(
             request,
@@ -8169,6 +8273,7 @@ def test_perform_maintenance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(
@@ -8373,10 +8478,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetIamPolicyNodeGroupRequest.pb(
             compute.SetIamPolicyNodeGroupRequest()
         )
@@ -8400,6 +8508,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -8411,6 +8520,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_node_template_rest_bad_request(
@@ -8622,10 +8732,13 @@ def test_set_node_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_set_node_template"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_set_node_template_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_set_node_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetNodeTemplateNodeGroupRequest.pb(
             compute.SetNodeTemplateNodeGroupRequest()
         )
@@ -8649,6 +8762,7 @@ def test_set_node_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_node_template(
             request,
@@ -8660,6 +8774,7 @@ def test_set_node_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_simulate_maintenance_event_rest_bad_request(
@@ -8871,10 +8986,14 @@ def test_simulate_maintenance_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_simulate_maintenance_event"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor,
+        "post_simulate_maintenance_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_simulate_maintenance_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SimulateMaintenanceEventNodeGroupRequest.pb(
             compute.SimulateMaintenanceEventNodeGroupRequest()
         )
@@ -8898,6 +9017,7 @@ def test_simulate_maintenance_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.simulate_maintenance_event(
             request,
@@ -8909,6 +9029,7 @@ def test_simulate_maintenance_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -9071,10 +9192,13 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.NodeGroupsRestInterceptor, "post_test_iam_permissions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.NodeGroupsRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.TestIamPermissionsNodeGroupRequest.pb(
             compute.TestIamPermissionsNodeGroupRequest()
         )
@@ -9100,6 +9224,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TestPermissionsResponse()
+        post_with_metadata.return_value = compute.TestPermissionsResponse(), metadata
 
         client.test_iam_permissions(
             request,
@@ -9111,6 +9236,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

@@ -66,6 +66,13 @@ from google.cloud.compute_v1.services.target_pools import (
 )
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -298,6 +305,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TargetPoolsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TargetPoolsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TargetPoolsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -5599,10 +5649,13 @@ def test_add_health_check_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_add_health_check"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_add_health_check_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_add_health_check"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AddHealthCheckTargetPoolRequest.pb(
             compute.AddHealthCheckTargetPoolRequest()
         )
@@ -5626,6 +5679,7 @@ def test_add_health_check_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.add_health_check(
             request,
@@ -5637,6 +5691,7 @@ def test_add_health_check_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_add_instance_rest_bad_request(
@@ -5848,10 +5903,13 @@ def test_add_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_add_instance"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_add_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_add_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AddInstanceTargetPoolRequest.pb(
             compute.AddInstanceTargetPoolRequest()
         )
@@ -5875,6 +5933,7 @@ def test_add_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.add_instance(
             request,
@@ -5886,6 +5945,7 @@ def test_add_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -5978,10 +6038,13 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_aggregated_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListTargetPoolsRequest.pb(
             compute.AggregatedListTargetPoolsRequest()
         )
@@ -6007,6 +6070,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TargetPoolAggregatedList()
+        post_with_metadata.return_value = compute.TargetPoolAggregatedList(), metadata
 
         client.aggregated_list(
             request,
@@ -6018,6 +6082,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteTargetPoolRequest):
@@ -6142,10 +6207,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteTargetPoolRequest.pb(
             compute.DeleteTargetPoolRequest()
         )
@@ -6169,6 +6237,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -6180,6 +6249,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetTargetPoolRequest):
@@ -6286,10 +6356,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetTargetPoolRequest.pb(compute.GetTargetPoolRequest())
         transcode.return_value = {
             "method": "post",
@@ -6311,6 +6384,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TargetPool()
+        post_with_metadata.return_value = compute.TargetPool(), metadata
 
         client.get(
             request,
@@ -6322,6 +6396,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_health_rest_bad_request(request_type=compute.GetHealthTargetPoolRequest):
@@ -6478,10 +6553,13 @@ def test_get_health_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_get_health"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_get_health_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_get_health"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetHealthTargetPoolRequest.pb(
             compute.GetHealthTargetPoolRequest()
         )
@@ -6507,6 +6585,7 @@ def test_get_health_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TargetPoolInstanceHealth()
+        post_with_metadata.return_value = compute.TargetPoolInstanceHealth(), metadata
 
         client.get_health(
             request,
@@ -6518,6 +6597,7 @@ def test_get_health_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertTargetPoolRequest):
@@ -6726,10 +6806,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertTargetPoolRequest.pb(
             compute.InsertTargetPoolRequest()
         )
@@ -6753,6 +6836,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -6764,6 +6848,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListTargetPoolsRequest):
@@ -6852,10 +6937,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListTargetPoolsRequest.pb(compute.ListTargetPoolsRequest())
         transcode.return_value = {
             "method": "post",
@@ -6877,6 +6965,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TargetPoolList()
+        post_with_metadata.return_value = compute.TargetPoolList(), metadata
 
         client.list(
             request,
@@ -6888,6 +6977,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_health_check_rest_bad_request(
@@ -7099,10 +7189,13 @@ def test_remove_health_check_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_remove_health_check"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_remove_health_check_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_remove_health_check"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.RemoveHealthCheckTargetPoolRequest.pb(
             compute.RemoveHealthCheckTargetPoolRequest()
         )
@@ -7126,6 +7219,7 @@ def test_remove_health_check_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.remove_health_check(
             request,
@@ -7137,6 +7231,7 @@ def test_remove_health_check_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_instance_rest_bad_request(
@@ -7348,10 +7443,13 @@ def test_remove_instance_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_remove_instance"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_remove_instance_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_remove_instance"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.RemoveInstanceTargetPoolRequest.pb(
             compute.RemoveInstanceTargetPoolRequest()
         )
@@ -7375,6 +7473,7 @@ def test_remove_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.remove_instance(
             request,
@@ -7386,6 +7485,7 @@ def test_remove_instance_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_backup_rest_bad_request(request_type=compute.SetBackupTargetPoolRequest):
@@ -7584,10 +7684,13 @@ def test_set_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_set_backup"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_set_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_set_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetBackupTargetPoolRequest.pb(
             compute.SetBackupTargetPoolRequest()
         )
@@ -7611,6 +7714,7 @@ def test_set_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_backup(
             request,
@@ -7622,6 +7726,7 @@ def test_set_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_security_policy_rest_bad_request(
@@ -7826,10 +7931,13 @@ def test_set_security_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "post_set_security_policy"
     ) as post, mock.patch.object(
+        transports.TargetPoolsRestInterceptor, "post_set_security_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TargetPoolsRestInterceptor, "pre_set_security_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetSecurityPolicyTargetPoolRequest.pb(
             compute.SetSecurityPolicyTargetPoolRequest()
         )
@@ -7853,6 +7961,7 @@ def test_set_security_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_security_policy(
             request,
@@ -7864,6 +7973,7 @@ def test_set_security_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():
