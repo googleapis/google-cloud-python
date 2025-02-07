@@ -680,7 +680,7 @@ class AudienceEventTrigger(proto.Message):
 
 
 class Audience(proto.Message):
-    r"""A resource message representing a GA4 Audience.
+    r"""A resource message representing an Audience.
 
     Attributes:
         name (str):
