@@ -66,6 +66,13 @@ from google.cloud.compute_v1.services.interconnects import (
 )
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -313,6 +320,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         InterconnectsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = InterconnectsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = InterconnectsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -3528,10 +3578,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteInterconnectRequest.pb(
             compute.DeleteInterconnectRequest()
         )
@@ -3555,6 +3608,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -3566,6 +3620,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetInterconnectRequest):
@@ -3698,10 +3753,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetInterconnectRequest.pb(compute.GetInterconnectRequest())
         transcode.return_value = {
             "method": "post",
@@ -3723,6 +3781,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Interconnect()
+        post_with_metadata.return_value = compute.Interconnect(), metadata
 
         client.get(
             request,
@@ -3734,6 +3793,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_diagnostics_rest_bad_request(
@@ -3815,10 +3875,13 @@ def test_get_diagnostics_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_get_diagnostics"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_get_diagnostics_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_get_diagnostics"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetDiagnosticsInterconnectRequest.pb(
             compute.GetDiagnosticsInterconnectRequest()
         )
@@ -3844,6 +3907,10 @@ def test_get_diagnostics_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InterconnectsGetDiagnosticsResponse()
+        post_with_metadata.return_value = (
+            compute.InterconnectsGetDiagnosticsResponse(),
+            metadata,
+        )
 
         client.get_diagnostics(
             request,
@@ -3855,6 +3922,7 @@ def test_get_diagnostics_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_macsec_config_rest_bad_request(
@@ -3939,10 +4007,13 @@ def test_get_macsec_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_get_macsec_config"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_get_macsec_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_get_macsec_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetMacsecConfigInterconnectRequest.pb(
             compute.GetMacsecConfigInterconnectRequest()
         )
@@ -3968,6 +4039,10 @@ def test_get_macsec_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InterconnectsGetMacsecConfigResponse()
+        post_with_metadata.return_value = (
+            compute.InterconnectsGetMacsecConfigResponse(),
+            metadata,
+        )
 
         client.get_macsec_config(
             request,
@@ -3979,6 +4054,7 @@ def test_get_macsec_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertInterconnectRequest):
@@ -4238,10 +4314,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertInterconnectRequest.pb(
             compute.InsertInterconnectRequest()
         )
@@ -4265,6 +4344,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -4276,6 +4356,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListInterconnectsRequest):
@@ -4364,10 +4445,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListInterconnectsRequest.pb(
             compute.ListInterconnectsRequest()
         )
@@ -4391,6 +4475,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.InterconnectList()
+        post_with_metadata.return_value = compute.InterconnectList(), metadata
 
         client.list(
             request,
@@ -4402,6 +4487,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchInterconnectRequest):
@@ -4661,10 +4747,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchInterconnectRequest.pb(
             compute.PatchInterconnectRequest()
         )
@@ -4688,6 +4777,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -4699,6 +4789,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_labels_rest_bad_request(request_type=compute.SetLabelsInterconnectRequest):
@@ -4902,10 +4993,13 @@ def test_set_labels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.InterconnectsRestInterceptor, "post_set_labels"
     ) as post, mock.patch.object(
+        transports.InterconnectsRestInterceptor, "post_set_labels_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.InterconnectsRestInterceptor, "pre_set_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetLabelsInterconnectRequest.pb(
             compute.SetLabelsInterconnectRequest()
         )
@@ -4929,6 +5023,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_labels(
             request,
@@ -4940,6 +5035,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

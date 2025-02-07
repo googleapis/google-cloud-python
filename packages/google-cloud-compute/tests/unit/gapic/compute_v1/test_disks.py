@@ -62,6 +62,13 @@ from google.oauth2 import service_account
 from google.cloud.compute_v1.services.disks import DisksClient, pagers, transports
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -273,6 +280,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DisksClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DisksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DisksClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -7621,10 +7671,13 @@ def test_add_resource_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_add_resource_policies"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_add_resource_policies_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_add_resource_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AddResourcePoliciesDiskRequest.pb(
             compute.AddResourcePoliciesDiskRequest()
         )
@@ -7648,6 +7701,7 @@ def test_add_resource_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.add_resource_policies(
             request,
@@ -7659,6 +7713,7 @@ def test_add_resource_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_aggregated_list_rest_bad_request(
@@ -7749,10 +7804,13 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_aggregated_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListDisksRequest.pb(
             compute.AggregatedListDisksRequest()
         )
@@ -7776,6 +7834,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.DiskAggregatedList()
+        post_with_metadata.return_value = compute.DiskAggregatedList(), metadata
 
         client.aggregated_list(
             request,
@@ -7787,6 +7846,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_bulk_insert_rest_bad_request(request_type=compute.BulkInsertDiskRequest):
@@ -7987,10 +8047,13 @@ def test_bulk_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_bulk_insert"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_bulk_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_bulk_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.BulkInsertDiskRequest.pb(compute.BulkInsertDiskRequest())
         transcode.return_value = {
             "method": "post",
@@ -8012,6 +8075,7 @@ def test_bulk_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.bulk_insert(
             request,
@@ -8023,6 +8087,7 @@ def test_bulk_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_snapshot_rest_bad_request(
@@ -8258,10 +8323,13 @@ def test_create_snapshot_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_create_snapshot"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_create_snapshot_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_create_snapshot"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.CreateSnapshotDiskRequest.pb(
             compute.CreateSnapshotDiskRequest()
         )
@@ -8285,6 +8353,7 @@ def test_create_snapshot_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.create_snapshot(
             request,
@@ -8296,6 +8365,7 @@ def test_create_snapshot_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteDiskRequest):
@@ -8418,10 +8488,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteDiskRequest.pb(compute.DeleteDiskRequest())
         transcode.return_value = {
             "method": "post",
@@ -8443,6 +8516,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -8454,6 +8528,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetDiskRequest):
@@ -8620,10 +8695,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetDiskRequest.pb(compute.GetDiskRequest())
         transcode.return_value = {
             "method": "post",
@@ -8645,6 +8723,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Disk()
+        post_with_metadata.return_value = compute.Disk(), metadata
 
         client.get(
             request,
@@ -8656,6 +8735,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(request_type=compute.GetIamPolicyDiskRequest):
@@ -8740,10 +8820,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_get_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetIamPolicyDiskRequest.pb(
             compute.GetIamPolicyDiskRequest()
         )
@@ -8767,6 +8850,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.get_iam_policy(
             request,
@@ -8778,6 +8862,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertDiskRequest):
@@ -9033,10 +9118,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertDiskRequest.pb(compute.InsertDiskRequest())
         transcode.return_value = {
             "method": "post",
@@ -9058,6 +9146,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -9069,6 +9158,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListDisksRequest):
@@ -9155,10 +9245,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListDisksRequest.pb(compute.ListDisksRequest())
         transcode.return_value = {
             "method": "post",
@@ -9180,6 +9273,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.DiskList()
+        post_with_metadata.return_value = compute.DiskList(), metadata
 
         client.list(
             request,
@@ -9191,6 +9285,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_resource_policies_rest_bad_request(
@@ -9400,10 +9495,13 @@ def test_remove_resource_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_remove_resource_policies"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_remove_resource_policies_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_remove_resource_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.RemoveResourcePoliciesDiskRequest.pb(
             compute.RemoveResourcePoliciesDiskRequest()
         )
@@ -9427,6 +9525,7 @@ def test_remove_resource_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.remove_resource_policies(
             request,
@@ -9438,6 +9537,7 @@ def test_remove_resource_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_resize_rest_bad_request(request_type=compute.ResizeDiskRequest):
@@ -9634,10 +9734,13 @@ def test_resize_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_resize"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_resize_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_resize"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ResizeDiskRequest.pb(compute.ResizeDiskRequest())
         transcode.return_value = {
             "method": "post",
@@ -9659,6 +9762,7 @@ def test_resize_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.resize(
             request,
@@ -9670,6 +9774,7 @@ def test_resize_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_iam_policy_rest_bad_request(request_type=compute.SetIamPolicyDiskRequest):
@@ -9870,10 +9975,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_set_iam_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetIamPolicyDiskRequest.pb(
             compute.SetIamPolicyDiskRequest()
         )
@@ -9897,6 +10005,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Policy()
+        post_with_metadata.return_value = compute.Policy(), metadata
 
         client.set_iam_policy(
             request,
@@ -9908,6 +10017,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_labels_rest_bad_request(request_type=compute.SetLabelsDiskRequest):
@@ -10109,10 +10219,13 @@ def test_set_labels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_set_labels"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_set_labels_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_set_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.SetLabelsDiskRequest.pb(compute.SetLabelsDiskRequest())
         transcode.return_value = {
             "method": "post",
@@ -10134,6 +10247,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.set_labels(
             request,
@@ -10145,6 +10259,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_async_replication_rest_bad_request(
@@ -10354,10 +10469,13 @@ def test_start_async_replication_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_start_async_replication"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_start_async_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_start_async_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.StartAsyncReplicationDiskRequest.pb(
             compute.StartAsyncReplicationDiskRequest()
         )
@@ -10381,6 +10499,7 @@ def test_start_async_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.start_async_replication(
             request,
@@ -10392,6 +10511,7 @@ def test_start_async_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_async_replication_rest_bad_request(
@@ -10516,10 +10636,13 @@ def test_stop_async_replication_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_stop_async_replication"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_stop_async_replication_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_stop_async_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.StopAsyncReplicationDiskRequest.pb(
             compute.StopAsyncReplicationDiskRequest()
         )
@@ -10543,6 +10666,7 @@ def test_stop_async_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.stop_async_replication(
             request,
@@ -10554,6 +10678,7 @@ def test_stop_async_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_group_async_replication_rest_bad_request(
@@ -10763,10 +10888,14 @@ def test_stop_group_async_replication_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_stop_group_async_replication"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor,
+        "post_stop_group_async_replication_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_stop_group_async_replication"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.StopGroupAsyncReplicationDiskRequest.pb(
             compute.StopGroupAsyncReplicationDiskRequest()
         )
@@ -10790,6 +10919,7 @@ def test_stop_group_async_replication_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.stop_group_async_replication(
             request,
@@ -10801,6 +10931,7 @@ def test_stop_group_async_replication_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_test_iam_permissions_rest_bad_request(
@@ -10961,10 +11092,13 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_test_iam_permissions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.TestIamPermissionsDiskRequest.pb(
             compute.TestIamPermissionsDiskRequest()
         )
@@ -10990,6 +11124,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.TestPermissionsResponse()
+        post_with_metadata.return_value = compute.TestPermissionsResponse(), metadata
 
         client.test_iam_permissions(
             request,
@@ -11001,6 +11136,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_rest_bad_request(request_type=compute.UpdateDiskRequest):
@@ -11256,10 +11392,13 @@ def test_update_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DisksRestInterceptor, "post_update"
     ) as post, mock.patch.object(
+        transports.DisksRestInterceptor, "post_update_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DisksRestInterceptor, "pre_update"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.UpdateDiskRequest.pb(compute.UpdateDiskRequest())
         transcode.return_value = {
             "method": "post",
@@ -11281,6 +11420,7 @@ def test_update_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.update(
             request,
@@ -11292,6 +11432,7 @@ def test_update_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

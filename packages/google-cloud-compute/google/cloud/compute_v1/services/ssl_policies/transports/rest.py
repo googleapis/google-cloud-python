@@ -150,11 +150,36 @@ class SslPoliciesRestInterceptor:
     ) -> compute.SslPoliciesAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_aggregated_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SslPolicies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_aggregated_list` interceptor runs
+        before the `post_aggregated_list_with_metadata` interceptor.
         """
         return response
+
+    def post_aggregated_list_with_metadata(
+        self,
+        response: compute.SslPoliciesAggregatedList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SslPoliciesAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for aggregated_list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SslPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_aggregated_list_with_metadata`
+        interceptor in new development instead of the `post_aggregated_list` interceptor.
+        When both interceptors are used, this `post_aggregated_list_with_metadata` interceptor runs after the
+        `post_aggregated_list` interceptor. The (possibly modified) response returned by
+        `post_aggregated_list` will be passed to
+        `post_aggregated_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete(
         self,
@@ -171,11 +196,34 @@ class SslPoliciesRestInterceptor:
     def post_delete(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SslPolicies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete` interceptor runs
+        before the `post_delete_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SslPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_delete_with_metadata`
+        interceptor in new development instead of the `post_delete` interceptor.
+        When both interceptors are used, this `post_delete_with_metadata` interceptor runs after the
+        `post_delete` interceptor. The (possibly modified) response returned by
+        `post_delete` will be passed to
+        `post_delete_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get(
         self,
@@ -192,11 +240,34 @@ class SslPoliciesRestInterceptor:
     def post_get(self, response: compute.SslPolicy) -> compute.SslPolicy:
         """Post-rpc interceptor for get
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SslPolicies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get` interceptor runs
+        before the `post_get_with_metadata` interceptor.
         """
         return response
+
+    def post_get_with_metadata(
+        self,
+        response: compute.SslPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.SslPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SslPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_get_with_metadata`
+        interceptor in new development instead of the `post_get` interceptor.
+        When both interceptors are used, this `post_get_with_metadata` interceptor runs after the
+        `post_get` interceptor. The (possibly modified) response returned by
+        `post_get` will be passed to
+        `post_get_with_metadata`.
+        """
+        return response, metadata
 
     def pre_insert(
         self,
@@ -213,11 +284,34 @@ class SslPoliciesRestInterceptor:
     def post_insert(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for insert
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_insert_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SslPolicies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_insert` interceptor runs
+        before the `post_insert_with_metadata` interceptor.
         """
         return response
+
+    def post_insert_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for insert
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SslPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_insert_with_metadata`
+        interceptor in new development instead of the `post_insert` interceptor.
+        When both interceptors are used, this `post_insert_with_metadata` interceptor runs after the
+        `post_insert` interceptor. The (possibly modified) response returned by
+        `post_insert` will be passed to
+        `post_insert_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list(
         self,
@@ -234,11 +328,34 @@ class SslPoliciesRestInterceptor:
     def post_list(self, response: compute.SslPoliciesList) -> compute.SslPoliciesList:
         """Post-rpc interceptor for list
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SslPolicies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list` interceptor runs
+        before the `post_list_with_metadata` interceptor.
         """
         return response
+
+    def post_list_with_metadata(
+        self,
+        response: compute.SslPoliciesList,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.SslPoliciesList, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SslPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_list_with_metadata`
+        interceptor in new development instead of the `post_list` interceptor.
+        When both interceptors are used, this `post_list_with_metadata` interceptor runs after the
+        `post_list` interceptor. The (possibly modified) response returned by
+        `post_list` will be passed to
+        `post_list_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_available_features(
         self,
@@ -260,11 +377,37 @@ class SslPoliciesRestInterceptor:
     ) -> compute.SslPoliciesListAvailableFeaturesResponse:
         """Post-rpc interceptor for list_available_features
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_available_features_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SslPolicies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_available_features` interceptor runs
+        before the `post_list_available_features_with_metadata` interceptor.
         """
         return response
+
+    def post_list_available_features_with_metadata(
+        self,
+        response: compute.SslPoliciesListAvailableFeaturesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SslPoliciesListAvailableFeaturesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_available_features
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SslPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_list_available_features_with_metadata`
+        interceptor in new development instead of the `post_list_available_features` interceptor.
+        When both interceptors are used, this `post_list_available_features_with_metadata` interceptor runs after the
+        `post_list_available_features` interceptor. The (possibly modified) response returned by
+        `post_list_available_features` will be passed to
+        `post_list_available_features_with_metadata`.
+        """
+        return response, metadata
 
     def pre_patch(
         self,
@@ -281,11 +424,34 @@ class SslPoliciesRestInterceptor:
     def post_patch(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for patch
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_patch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SslPolicies server but before
-        it is returned to user code.
+        it is returned to user code. This `post_patch` interceptor runs
+        before the `post_patch_with_metadata` interceptor.
         """
         return response
+
+    def post_patch_with_metadata(
+        self,
+        response: compute.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for patch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SslPolicies server but before it is returned to user code.
+
+        We recommend only using this `post_patch_with_metadata`
+        interceptor in new development instead of the `post_patch` interceptor.
+        When both interceptors are used, this `post_patch_with_metadata` interceptor runs after the
+        `post_patch` interceptor. The (possibly modified) response returned by
+        `post_patch` will be passed to
+        `post_patch_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -497,6 +663,10 @@ class SslPoliciesRestTransport(_BaseSslPoliciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_aggregated_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -658,6 +828,10 @@ class SslPoliciesRestTransport(_BaseSslPoliciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -807,6 +981,8 @@ class SslPoliciesRestTransport(_BaseSslPoliciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -972,6 +1148,10 @@ class SslPoliciesRestTransport(_BaseSslPoliciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_insert(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_insert_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1114,6 +1294,8 @@ class SslPoliciesRestTransport(_BaseSslPoliciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1258,6 +1440,10 @@ class SslPoliciesRestTransport(_BaseSslPoliciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_available_features(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_available_features_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1427,6 +1613,10 @@ class SslPoliciesRestTransport(_BaseSslPoliciesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_patch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_patch_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
