@@ -60,6 +60,7 @@ from google.cloud.netapp_v1.types.cloud_netapp_service import OperationMetadata
 from google.cloud.netapp_v1.types.common import (
     DirectoryServiceType,
     EncryptionType,
+    FlexPerformance,
     LocationMetadata,
     ServiceLevel,
 )
@@ -74,6 +75,15 @@ from google.cloud.netapp_v1.types.kms import (
     UpdateKmsConfigRequest,
     VerifyKmsConfigRequest,
     VerifyKmsConfigResponse,
+)
+from google.cloud.netapp_v1.types.quota_rule import (
+    CreateQuotaRuleRequest,
+    DeleteQuotaRuleRequest,
+    GetQuotaRuleRequest,
+    ListQuotaRulesRequest,
+    ListQuotaRulesResponse,
+    QuotaRule,
+    UpdateQuotaRuleRequest,
 )
 from google.cloud.netapp_v1.types.replication import (
     CreateReplicationRequest,
@@ -175,6 +185,7 @@ __all__ = (
     "LocationMetadata",
     "DirectoryServiceType",
     "EncryptionType",
+    "FlexPerformance",
     "ServiceLevel",
     "CreateKmsConfigRequest",
     "DeleteKmsConfigRequest",
@@ -186,6 +197,13 @@ __all__ = (
     "UpdateKmsConfigRequest",
     "VerifyKmsConfigRequest",
     "VerifyKmsConfigResponse",
+    "CreateQuotaRuleRequest",
+    "DeleteQuotaRuleRequest",
+    "GetQuotaRuleRequest",
+    "ListQuotaRulesRequest",
+    "ListQuotaRulesResponse",
+    "QuotaRule",
+    "UpdateQuotaRuleRequest",
     "CreateReplicationRequest",
     "DeleteReplicationRequest",
     "DestinationVolumeParameters",

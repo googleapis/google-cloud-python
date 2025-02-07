@@ -36,6 +36,8 @@ from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
 from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
 from google.cloud.netapp_v1.types import kms
+from google.cloud.netapp_v1.types import quota_rule
+from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
 from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
 from google.cloud.netapp_v1.types import snapshot
@@ -581,6 +583,31 @@ class NetAppTransport(abc.ABC):
             self.delete_backup_policy: gapic_v1.method.wrap_method(
                 self.delete_backup_policy,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_quota_rules: gapic_v1.method.wrap_method(
+                self.list_quota_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_quota_rule: gapic_v1.method.wrap_method(
+                self.get_quota_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_quota_rule: gapic_v1.method.wrap_method(
+                self.create_quota_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_quota_rule: gapic_v1.method.wrap_method(
+                self.update_quota_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_quota_rule: gapic_v1.method.wrap_method(
+                self.delete_quota_rule,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: gapic_v1.method.wrap_method(
@@ -1137,6 +1164,54 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [backup_policy.DeleteBackupPolicyRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_quota_rules(
+        self,
+    ) -> Callable[
+        [quota_rule.ListQuotaRulesRequest],
+        Union[
+            quota_rule.ListQuotaRulesResponse,
+            Awaitable[quota_rule.ListQuotaRulesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_quota_rule(
+        self,
+    ) -> Callable[
+        [quota_rule.GetQuotaRuleRequest],
+        Union[quota_rule.QuotaRule, Awaitable[quota_rule.QuotaRule]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_quota_rule(
+        self,
+    ) -> Callable[
+        [gcn_quota_rule.CreateQuotaRuleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_quota_rule(
+        self,
+    ) -> Callable[
+        [gcn_quota_rule.UpdateQuotaRuleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_quota_rule(
+        self,
+    ) -> Callable[
+        [quota_rule.DeleteQuotaRuleRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
