@@ -103,6 +103,13 @@ from google.cloud.servicemanagement_v1.services.service_manager import (
 )
 from google.cloud.servicemanagement_v1.types import resources, servicemanager
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -359,6 +366,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ServiceManagerClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ServiceManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ServiceManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -9462,10 +9512,13 @@ def test_list_services_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_list_services"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_list_services_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_list_services"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.ListServicesRequest.pb(
             servicemanager.ListServicesRequest()
         )
@@ -9491,6 +9544,10 @@ def test_list_services_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = servicemanager.ListServicesResponse()
+        post_with_metadata.return_value = (
+            servicemanager.ListServicesResponse(),
+            metadata,
+        )
 
         client.list_services(
             request,
@@ -9502,6 +9559,7 @@ def test_list_services_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_service_rest_bad_request(request_type=servicemanager.GetServiceRequest):
@@ -9586,10 +9644,13 @@ def test_get_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_get_service"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_get_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_get_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.GetServiceRequest.pb(
             servicemanager.GetServiceRequest()
         )
@@ -9613,6 +9674,7 @@ def test_get_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.ManagedService()
+        post_with_metadata.return_value = resources.ManagedService(), metadata
 
         client.get_service(
             request,
@@ -9624,6 +9686,7 @@ def test_get_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_service_rest_bad_request(
@@ -9775,10 +9838,13 @@ def test_create_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_create_service"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_create_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_create_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.CreateServiceRequest.pb(
             servicemanager.CreateServiceRequest()
         )
@@ -9802,6 +9868,7 @@ def test_create_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_service(
             request,
@@ -9813,6 +9880,7 @@ def test_create_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_service_rest_bad_request(
@@ -9893,10 +9961,13 @@ def test_delete_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_delete_service"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_delete_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_delete_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.DeleteServiceRequest.pb(
             servicemanager.DeleteServiceRequest()
         )
@@ -9920,6 +9991,7 @@ def test_delete_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_service(
             request,
@@ -9931,6 +10003,7 @@ def test_delete_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undelete_service_rest_bad_request(
@@ -10011,10 +10084,13 @@ def test_undelete_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_undelete_service"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor, "post_undelete_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_undelete_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.UndeleteServiceRequest.pb(
             servicemanager.UndeleteServiceRequest()
         )
@@ -10038,6 +10114,7 @@ def test_undelete_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undelete_service(
             request,
@@ -10049,6 +10126,7 @@ def test_undelete_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_service_configs_rest_bad_request(
@@ -10133,10 +10211,14 @@ def test_list_service_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_list_service_configs"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_list_service_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_list_service_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.ListServiceConfigsRequest.pb(
             servicemanager.ListServiceConfigsRequest()
         )
@@ -10162,6 +10244,10 @@ def test_list_service_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = servicemanager.ListServiceConfigsResponse()
+        post_with_metadata.return_value = (
+            servicemanager.ListServiceConfigsResponse(),
+            metadata,
+        )
 
         client.list_service_configs(
             request,
@@ -10173,6 +10259,7 @@ def test_list_service_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_service_config_rest_bad_request(
@@ -10260,10 +10347,14 @@ def test_get_service_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_get_service_config"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_get_service_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_get_service_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.GetServiceConfigRequest.pb(
             servicemanager.GetServiceConfigRequest()
         )
@@ -10287,6 +10378,7 @@ def test_get_service_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service_pb2.Service()
+        post_with_metadata.return_value = service_pb2.Service(), metadata
 
         client.get_service_config(
             request,
@@ -10298,6 +10390,7 @@ def test_get_service_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_service_config_rest_bad_request(
@@ -10682,7 +10775,8 @@ def test_create_service_config_rest_call_success(request_type):
                             "reference_docs_uri": "reference_docs_uri_value",
                             "destinations": [10],
                             "selective_gapic_generation": {
-                                "methods": ["methods_value1", "methods_value2"]
+                                "methods": ["methods_value1", "methods_value2"],
+                                "generate_omitted_as_internal": True,
                             },
                         },
                     },
@@ -10835,10 +10929,14 @@ def test_create_service_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_create_service_config"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_create_service_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_create_service_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.CreateServiceConfigRequest.pb(
             servicemanager.CreateServiceConfigRequest()
         )
@@ -10862,6 +10960,7 @@ def test_create_service_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = service_pb2.Service()
+        post_with_metadata.return_value = service_pb2.Service(), metadata
 
         client.create_service_config(
             request,
@@ -10873,6 +10972,7 @@ def test_create_service_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_submit_config_source_rest_bad_request(
@@ -10953,10 +11053,14 @@ def test_submit_config_source_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_submit_config_source"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_submit_config_source_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_submit_config_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.SubmitConfigSourceRequest.pb(
             servicemanager.SubmitConfigSourceRequest()
         )
@@ -10980,6 +11084,7 @@ def test_submit_config_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.submit_config_source(
             request,
@@ -10991,6 +11096,7 @@ def test_submit_config_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_service_rollouts_rest_bad_request(
@@ -11075,10 +11181,14 @@ def test_list_service_rollouts_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_list_service_rollouts"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_list_service_rollouts_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_list_service_rollouts"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.ListServiceRolloutsRequest.pb(
             servicemanager.ListServiceRolloutsRequest()
         )
@@ -11104,6 +11214,10 @@ def test_list_service_rollouts_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = servicemanager.ListServiceRolloutsResponse()
+        post_with_metadata.return_value = (
+            servicemanager.ListServiceRolloutsResponse(),
+            metadata,
+        )
 
         client.list_service_rollouts(
             request,
@@ -11115,6 +11229,7 @@ def test_list_service_rollouts_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_service_rollout_rest_bad_request(
@@ -11205,10 +11320,14 @@ def test_get_service_rollout_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_get_service_rollout"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_get_service_rollout_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_get_service_rollout"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.GetServiceRolloutRequest.pb(
             servicemanager.GetServiceRolloutRequest()
         )
@@ -11232,6 +11351,7 @@ def test_get_service_rollout_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Rollout()
+        post_with_metadata.return_value = resources.Rollout(), metadata
 
         client.get_service_rollout(
             request,
@@ -11243,6 +11363,7 @@ def test_get_service_rollout_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_service_rollout_rest_bad_request(
@@ -11399,10 +11520,14 @@ def test_create_service_rollout_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_create_service_rollout"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_create_service_rollout_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_create_service_rollout"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.CreateServiceRolloutRequest.pb(
             servicemanager.CreateServiceRolloutRequest()
         )
@@ -11426,6 +11551,7 @@ def test_create_service_rollout_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_service_rollout(
             request,
@@ -11437,6 +11563,7 @@ def test_create_service_rollout_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_generate_config_report_rest_bad_request(
@@ -11523,10 +11650,14 @@ def test_generate_config_report_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "post_generate_config_report"
     ) as post, mock.patch.object(
+        transports.ServiceManagerRestInterceptor,
+        "post_generate_config_report_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ServiceManagerRestInterceptor, "pre_generate_config_report"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = servicemanager.GenerateConfigReportRequest.pb(
             servicemanager.GenerateConfigReportRequest()
         )
@@ -11552,6 +11683,10 @@ def test_generate_config_report_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = servicemanager.GenerateConfigReportResponse()
+        post_with_metadata.return_value = (
+            servicemanager.GenerateConfigReportResponse(),
+            metadata,
+        )
 
         client.generate_config_report(
             request,
@@ -11563,6 +11698,7 @@ def test_generate_config_report_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_iam_policy_rest_bad_request(

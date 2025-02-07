@@ -248,8 +248,8 @@ class SubpropertyEventFilterClause(proto.Message):
 
 
 class SubpropertyEventFilter(proto.Message):
-    r"""A resource message representing a GA4 Subproperty event
-    filter.
+    r"""A resource message representing a Google Analytics
+    subproperty event filter.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

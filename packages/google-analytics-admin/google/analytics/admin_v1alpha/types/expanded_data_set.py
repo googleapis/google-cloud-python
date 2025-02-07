@@ -214,7 +214,7 @@ class ExpandedDataSetFilterExpressionList(proto.Message):
 
 
 class ExpandedDataSet(proto.Message):
-    r"""A resource message representing a GA4 ExpandedDataSet.
+    r"""A resource message representing an ``ExpandedDataSet``.
 
     Attributes:
         name (str):
