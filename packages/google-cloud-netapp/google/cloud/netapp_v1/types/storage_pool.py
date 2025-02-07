@@ -282,6 +282,10 @@ class StoragePool(proto.Message):
         zone (str):
             Optional. Specifies the active zone for
             regional storagePool.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use
+        satisfies_pzi (bool):
+            Output only. Reserved for future use
     """
 
     class State(proto.Enum):
@@ -399,6 +403,14 @@ class StoragePool(proto.Message):
     zone: str = proto.Field(
         proto.STRING,
         number=21,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=23,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=24,
     )
 
 

@@ -73,6 +73,13 @@ from google.cloud.run_v2.services.executions import (
 )
 from google.cloud.run_v2.types import condition, execution, task_template
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -306,6 +313,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ExecutionsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ExecutionsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ExecutionsClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -1055,6 +1105,7 @@ def test_get_execution(request_type, transport: str = "grpc"):
         call.return_value = execution.Execution(
             name="name_value",
             uid="uid_value",
+            creator="creator_value",
             generation=1068,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
             job="job_value",
@@ -1083,6 +1134,7 @@ def test_get_execution(request_type, transport: str = "grpc"):
     assert isinstance(response, execution.Execution)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
+    assert response.creator == "creator_value"
     assert response.generation == 1068
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.job == "job_value"
@@ -1225,6 +1277,7 @@ async def test_get_execution_async(
             execution.Execution(
                 name="name_value",
                 uid="uid_value",
+                creator="creator_value",
                 generation=1068,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
                 job="job_value",
@@ -1254,6 +1307,7 @@ async def test_get_execution_async(
     assert isinstance(response, execution.Execution)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
+    assert response.creator == "creator_value"
     assert response.generation == 1068
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.job == "job_value"
@@ -3628,6 +3682,7 @@ async def test_get_execution_empty_call_grpc_asyncio():
             execution.Execution(
                 name="name_value",
                 uid="uid_value",
+                creator="creator_value",
                 generation=1068,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
                 job="job_value",
@@ -3788,6 +3843,7 @@ def test_get_execution_rest_call_success(request_type):
         return_value = execution.Execution(
             name="name_value",
             uid="uid_value",
+            creator="creator_value",
             generation=1068,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
             job="job_value",
@@ -3821,6 +3877,7 @@ def test_get_execution_rest_call_success(request_type):
     assert isinstance(response, execution.Execution)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
+    assert response.creator == "creator_value"
     assert response.generation == 1068
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.job == "job_value"
@@ -3855,10 +3912,13 @@ def test_get_execution_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ExecutionsRestInterceptor, "post_get_execution"
     ) as post, mock.patch.object(
+        transports.ExecutionsRestInterceptor, "post_get_execution_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExecutionsRestInterceptor, "pre_get_execution"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = execution.GetExecutionRequest.pb(execution.GetExecutionRequest())
         transcode.return_value = {
             "method": "post",
@@ -3880,6 +3940,7 @@ def test_get_execution_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = execution.Execution()
+        post_with_metadata.return_value = execution.Execution(), metadata
 
         client.get_execution(
             request,
@@ -3891,6 +3952,7 @@ def test_get_execution_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_executions_rest_bad_request(request_type=execution.ListExecutionsRequest):
@@ -3973,10 +4035,13 @@ def test_list_executions_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ExecutionsRestInterceptor, "post_list_executions"
     ) as post, mock.patch.object(
+        transports.ExecutionsRestInterceptor, "post_list_executions_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExecutionsRestInterceptor, "pre_list_executions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = execution.ListExecutionsRequest.pb(
             execution.ListExecutionsRequest()
         )
@@ -4002,6 +4067,7 @@ def test_list_executions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = execution.ListExecutionsResponse()
+        post_with_metadata.return_value = execution.ListExecutionsResponse(), metadata
 
         client.list_executions(
             request,
@@ -4013,6 +4079,7 @@ def test_list_executions_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_execution_rest_bad_request(
@@ -4097,10 +4164,13 @@ def test_delete_execution_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ExecutionsRestInterceptor, "post_delete_execution"
     ) as post, mock.patch.object(
+        transports.ExecutionsRestInterceptor, "post_delete_execution_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExecutionsRestInterceptor, "pre_delete_execution"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = execution.DeleteExecutionRequest.pb(
             execution.DeleteExecutionRequest()
         )
@@ -4124,6 +4194,7 @@ def test_delete_execution_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_execution(
             request,
@@ -4135,6 +4206,7 @@ def test_delete_execution_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_execution_rest_bad_request(
@@ -4219,10 +4291,13 @@ def test_cancel_execution_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.ExecutionsRestInterceptor, "post_cancel_execution"
     ) as post, mock.patch.object(
+        transports.ExecutionsRestInterceptor, "post_cancel_execution_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ExecutionsRestInterceptor, "pre_cancel_execution"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = execution.CancelExecutionRequest.pb(
             execution.CancelExecutionRequest()
         )
@@ -4246,6 +4321,7 @@ def test_cancel_execution_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.cancel_execution(
             request,
@@ -4257,6 +4333,7 @@ def test_cancel_execution_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_operation_rest_bad_request(

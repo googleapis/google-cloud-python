@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "ServiceMesh",
         "ServiceScaling",
         "NodeSelector",
+        "BuildConfig",
     },
 )
 
@@ -346,6 +347,90 @@ class NodeSelector(proto.Message):
     accelerator: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class BuildConfig(proto.Message):
+    r"""Describes the Build step of the function that builds a
+    container from the given source.
+
+    Attributes:
+        name (str):
+            Output only. The Cloud Build name of the
+            latest successful deployment of the function.
+        source_location (str):
+            The Cloud Storage bucket URI where the
+            function source code is located.
+        function_target (str):
+            Optional. The name of the function (as
+            defined in source code) that will be executed.
+            Defaults to the resource name suffix, if not
+            specified. For backward compatibility, if
+            function with given name is not found, then the
+            system will try to use function named
+            "function".
+        image_uri (str):
+            Optional. Artifact Registry URI to store the
+            built image.
+        base_image (str):
+            Optional. The base image used to build the
+            function.
+        enable_automatic_updates (bool):
+            Optional. Sets whether the function will
+            receive automatic base image updates.
+        worker_pool (str):
+            Optional. Name of the Cloud Build Custom Worker Pool that
+            should be used to build the Cloud Run function. The format
+            of this field is
+            ``projects/{project}/locations/{region}/workerPools/{workerPool}``
+            where ``{project}`` and ``{region}`` are the project id and
+            region respectively where the worker pool is defined and
+            ``{workerPool}`` is the short name of the worker pool.
+        environment_variables (MutableMapping[str, str]):
+            Optional. User-provided build-time
+            environment variables for the function
+        service_account (str):
+            Optional. Service account to be used for building the
+            container. The format of this field is
+            ``projects/{projectId}/serviceAccounts/{serviceAccountEmail}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_location: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    function_target: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    image_uri: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    base_image: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    enable_automatic_updates: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    worker_pool: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    environment_variables: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 

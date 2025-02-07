@@ -62,6 +62,13 @@ from google.oauth2 import service_account
 from google.cloud.compute_v1.services.routers import RoutersClient, pagers, transports
 from google.cloud.compute_v1.types import compute
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -278,6 +285,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         RoutersClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = RoutersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = RoutersClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4363,10 +4413,13 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_aggregated_list"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_aggregated_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_aggregated_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.AggregatedListRoutersRequest.pb(
             compute.AggregatedListRoutersRequest()
         )
@@ -4392,6 +4445,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.RouterAggregatedList()
+        post_with_metadata.return_value = compute.RouterAggregatedList(), metadata
 
         client.aggregated_list(
             request,
@@ -4403,6 +4457,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteRouterRequest):
@@ -4525,10 +4580,13 @@ def test_delete_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_delete"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_delete_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.DeleteRouterRequest.pb(compute.DeleteRouterRequest())
         transcode.return_value = {
             "method": "post",
@@ -4550,6 +4608,7 @@ def test_delete_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.delete(
             request,
@@ -4561,6 +4620,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_rest_bad_request(request_type=compute.GetRouterRequest):
@@ -4657,10 +4717,13 @@ def test_get_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_get"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_get_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_get"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetRouterRequest.pb(compute.GetRouterRequest())
         transcode.return_value = {
             "method": "post",
@@ -4682,6 +4745,7 @@ def test_get_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Router()
+        post_with_metadata.return_value = compute.Router(), metadata
 
         client.get(
             request,
@@ -4693,6 +4757,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_nat_ip_info_rest_bad_request(
@@ -4772,10 +4837,13 @@ def test_get_nat_ip_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_get_nat_ip_info"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_get_nat_ip_info_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_get_nat_ip_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetNatIpInfoRouterRequest.pb(
             compute.GetNatIpInfoRouterRequest()
         )
@@ -4799,6 +4867,7 @@ def test_get_nat_ip_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.NatIpInfoResponse()
+        post_with_metadata.return_value = compute.NatIpInfoResponse(), metadata
 
         client.get_nat_ip_info(
             request,
@@ -4810,6 +4879,7 @@ def test_get_nat_ip_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_nat_mapping_info_rest_bad_request(
@@ -4898,10 +4968,13 @@ def test_get_nat_mapping_info_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_get_nat_mapping_info"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_get_nat_mapping_info_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_get_nat_mapping_info"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetNatMappingInfoRoutersRequest.pb(
             compute.GetNatMappingInfoRoutersRequest()
         )
@@ -4927,6 +5000,7 @@ def test_get_nat_mapping_info_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.VmEndpointNatMappingsList()
+        post_with_metadata.return_value = compute.VmEndpointNatMappingsList(), metadata
 
         client.get_nat_mapping_info(
             request,
@@ -4938,6 +5012,7 @@ def test_get_nat_mapping_info_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_router_status_rest_bad_request(
@@ -5020,10 +5095,13 @@ def test_get_router_status_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_get_router_status"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_get_router_status_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_get_router_status"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.GetRouterStatusRouterRequest.pb(
             compute.GetRouterStatusRouterRequest()
         )
@@ -5049,6 +5127,7 @@ def test_get_router_status_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.RouterStatusResponse()
+        post_with_metadata.return_value = compute.RouterStatusResponse(), metadata
 
         client.get_router_status(
             request,
@@ -5060,6 +5139,7 @@ def test_get_router_status_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertRouterRequest):
@@ -5383,10 +5463,13 @@ def test_insert_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_insert"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_insert_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.InsertRouterRequest.pb(compute.InsertRouterRequest())
         transcode.return_value = {
             "method": "post",
@@ -5408,6 +5491,7 @@ def test_insert_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.insert(
             request,
@@ -5419,6 +5503,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_rest_bad_request(request_type=compute.ListRoutersRequest):
@@ -5505,10 +5590,13 @@ def test_list_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_list"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_list_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.ListRoutersRequest.pb(compute.ListRoutersRequest())
         transcode.return_value = {
             "method": "post",
@@ -5530,6 +5618,7 @@ def test_list_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.RouterList()
+        post_with_metadata.return_value = compute.RouterList(), metadata
 
         client.list(
             request,
@@ -5541,6 +5630,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchRouterRequest):
@@ -5864,10 +5954,13 @@ def test_patch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_patch"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_patch_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PatchRouterRequest.pb(compute.PatchRouterRequest())
         transcode.return_value = {
             "method": "post",
@@ -5889,6 +5982,7 @@ def test_patch_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.patch(
             request,
@@ -5900,6 +5994,7 @@ def test_patch_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_preview_rest_bad_request(request_type=compute.PreviewRouterRequest):
@@ -6178,10 +6273,13 @@ def test_preview_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_preview"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_preview_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_preview"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.PreviewRouterRequest.pb(compute.PreviewRouterRequest())
         transcode.return_value = {
             "method": "post",
@@ -6205,6 +6303,7 @@ def test_preview_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.RoutersPreviewResponse()
+        post_with_metadata.return_value = compute.RoutersPreviewResponse(), metadata
 
         client.preview(
             request,
@@ -6216,6 +6315,7 @@ def test_preview_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_rest_bad_request(request_type=compute.UpdateRouterRequest):
@@ -6539,10 +6639,13 @@ def test_update_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.RoutersRestInterceptor, "post_update"
     ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_update_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.RoutersRestInterceptor, "pre_update"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = compute.UpdateRouterRequest.pb(compute.UpdateRouterRequest())
         transcode.return_value = {
             "method": "post",
@@ -6564,6 +6667,7 @@ def test_update_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
+        post_with_metadata.return_value = compute.Operation(), metadata
 
         client.update(
             request,
@@ -6575,6 +6679,7 @@ def test_update_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

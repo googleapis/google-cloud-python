@@ -117,11 +117,34 @@ class RevisionsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Revisions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_revision` interceptor runs
+        before the `post_delete_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_revision_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Revisions server but before it is returned to user code.
+
+        We recommend only using this `post_delete_revision_with_metadata`
+        interceptor in new development instead of the `post_delete_revision` interceptor.
+        When both interceptors are used, this `post_delete_revision_with_metadata` interceptor runs after the
+        `post_delete_revision` interceptor. The (possibly modified) response returned by
+        `post_delete_revision` will be passed to
+        `post_delete_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_revision(
         self,
@@ -138,11 +161,34 @@ class RevisionsRestInterceptor:
     def post_get_revision(self, response: revision.Revision) -> revision.Revision:
         """Post-rpc interceptor for get_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Revisions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_revision` interceptor runs
+        before the `post_get_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_get_revision_with_metadata(
+        self,
+        response: revision.Revision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[revision.Revision, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Revisions server but before it is returned to user code.
+
+        We recommend only using this `post_get_revision_with_metadata`
+        interceptor in new development instead of the `post_get_revision` interceptor.
+        When both interceptors are used, this `post_get_revision_with_metadata` interceptor runs after the
+        `post_get_revision` interceptor. The (possibly modified) response returned by
+        `post_get_revision` will be passed to
+        `post_get_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_revisions(
         self,
@@ -161,11 +207,34 @@ class RevisionsRestInterceptor:
     ) -> revision.ListRevisionsResponse:
         """Post-rpc interceptor for list_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Revisions server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_revisions` interceptor runs
+        before the `post_list_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_revisions_with_metadata(
+        self,
+        response: revision.ListRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[revision.ListRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Revisions server but before it is returned to user code.
+
+        We recommend only using this `post_list_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_revisions` interceptor.
+        When both interceptors are used, this `post_list_revisions_with_metadata` interceptor runs after the
+        `post_list_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_revisions` will be passed to
+        `post_list_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_operation(
         self,
@@ -532,6 +601,10 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -680,6 +753,10 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -827,6 +904,10 @@ class RevisionsRestTransport(_BaseRevisionsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

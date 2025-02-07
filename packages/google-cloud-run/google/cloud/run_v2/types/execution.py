@@ -195,6 +195,9 @@ class Execution(proto.Message):
             identifier for the Execution. The value is a
             UUID4 string and guaranteed to remain unchanged
             until the resource is deleted.
+        creator (str):
+            Output only. Email address of the
+            authenticated creator.
         generation (int):
             Output only. A number that monotonically
             increases every time the user modifies the
@@ -247,12 +250,10 @@ class Execution(proto.Message):
             Stages <https://cloud.google.com/terms/launch-stages>`__.
             Cloud Run supports ``ALPHA``, ``BETA``, and ``GA``.
 
-            .. raw:: html
-
-                <p>Note that this value might not be what was used
-                as input. For example, if ALPHA was provided as input in the parent
-                resource, but only BETA and GA-level features are were, this field will be
-                BETA.
+            Note that this value might not be what was used as input.
+            For example, if ALPHA was provided as input in the parent
+            resource, but only BETA and GA-level features are were, this
+            field will be BETA.
         job (str):
             Output only. The name of the parent Job.
         parallelism (int):
@@ -318,6 +319,10 @@ class Execution(proto.Message):
     uid: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    creator: str = proto.Field(
+        proto.STRING,
+        number=32,
     )
     generation: int = proto.Field(
         proto.INT64,

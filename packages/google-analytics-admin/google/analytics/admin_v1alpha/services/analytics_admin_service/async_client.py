@@ -80,7 +80,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class AnalyticsAdminServiceAsyncClient:
-    """Service Interface for the Analytics Admin API (GA4)."""
+    """Service Interface for the Google Analytics Admin API."""
 
     _client: AnalyticsAdminServiceClient
 
@@ -575,7 +575,7 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.ListAccountsAsyncPager:
         r"""Returns all accounts accessible by the caller.
 
-        Note that these accounts might not currently have GA4
+        Note that these accounts might not currently have GA
         properties. Soft-deleted (ie: "trashed") accounts are
         excluded by default. Returns an empty list if no
         relevant accounts are found.
@@ -956,7 +956,7 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Property:
-        r"""Lookup for a single "GA4" Property.
+        r"""Lookup for a single GA Property.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.GetPropertyRequest, dict]]):
@@ -979,7 +979,7 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             google.analytics.admin_v1alpha.types.Property:
                 A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
         """
         # Create or coerce a protobuf request object.
@@ -1038,7 +1038,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.ListPropertiesAsyncPager:
         r"""Returns child Properties under the specified parent
         Account.
-        Only "GA4" properties will be returned.
         Properties will be excluded if the caller does not have
         access. Soft-deleted (ie: "trashed") properties are
         excluded by default. Returns an empty list if no
@@ -1111,8 +1110,8 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Property:
-        r"""Creates an "GA4" property with the specified location
-        and attributes.
+        r"""Creates a Google Analytics property with the
+        specified location and attributes.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.CreatePropertyRequest, dict]]):
@@ -1137,7 +1136,7 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             google.analytics.admin_v1alpha.types.Property:
                 A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
         """
         # Create or coerce a protobuf request object.
@@ -1201,8 +1200,7 @@ class AnalyticsAdminServiceAsyncClient:
         permanently purged.
         https://support.google.com/analytics/answer/6154772
 
-        Returns an error if the target is not found, or is not a
-        GA4 Property.
+        Returns an error if the target is not found.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.DeletePropertyRequest, dict]]):
@@ -1227,7 +1225,7 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             google.analytics.admin_v1alpha.types.Property:
                 A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
         """
         # Create or coerce a protobuf request object.
@@ -1321,7 +1319,7 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             google.analytics.admin_v1alpha.types.Property:
                 A resource message representing a
-                Google Analytics GA4 property.
+                Google Analytics property.
 
         """
         # Create or coerce a protobuf request object.
@@ -1419,8 +1417,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.FirebaseLink:
-                A link between a GA4 property and a
-                Firebase project.
+                A link between a Google Analytics
+                property and a Firebase project.
 
         """
         # Create or coerce a protobuf request object.
@@ -1778,8 +1776,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.GoogleAdsLink:
-                A link between a GA4 property and a
-                Google Ads account.
+                A link between a Google Analytics
+                property and a Google Ads account.
 
         """
         # Create or coerce a protobuf request object.
@@ -1873,8 +1871,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.GoogleAdsLink:
-                A link between a GA4 property and a
-                Google Ads account.
+                A link between a Google Analytics
+                property and a Google Ads account.
 
         """
         # Create or coerce a protobuf request object.
@@ -2199,7 +2197,7 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.MeasurementProtocolSecret:
-        r"""Lookup for a single "GA4" MeasurementProtocolSecret.
+        r"""Lookup for a single MeasurementProtocolSecret.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.GetMeasurementProtocolSecretRequest, dict]]):
@@ -3234,6 +3232,9 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.SearchChangeHistoryEventsAsyncPager:
         r"""Searches through all changes to an account or its
         children given the specified set of filters.
+
+        Only returns the subset of changes supported by the API.
+        The UI may return additional changes.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.SearchChangeHistoryEventsRequest, dict]]):
@@ -4456,8 +4457,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
-                A link between a GA4 property and a
-                Display & Video 360 advertiser.
+                A link between a Google Analytics
+                property and a Display & Video 360
+                advertiser.
 
         """
         # Create or coerce a protobuf request object.
@@ -4658,8 +4660,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
-                A link between a GA4 property and a
-                Display & Video 360 advertiser.
+                A link between a Google Analytics
+                property and a Display & Video 360
+                advertiser.
 
         """
         # Create or coerce a protobuf request object.
@@ -4845,8 +4848,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
-                A link between a GA4 property and a
-                Display & Video 360 advertiser.
+                A link between a Google Analytics
+                property and a Display & Video 360
+                advertiser.
 
         """
         # Create or coerce a protobuf request object.
@@ -4948,9 +4952,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between a GA4
-                property and a Display & Video 360
-                advertiser.
+                A proposal for a link between a
+                Google Analytics property and a Display
+                & Video 360 advertiser.
 
                 A proposal is converted to a
                 DisplayVideo360AdvertiserLink once
@@ -5164,9 +5168,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between a GA4
-                property and a Display & Video 360
-                advertiser.
+                A proposal for a link between a
+                Google Analytics property and a Display
+                & Video 360 advertiser.
 
                 A proposal is converted to a
                 DisplayVideo360AdvertiserLink once
@@ -5431,9 +5435,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between a GA4
-                property and a Display & Video 360
-                advertiser.
+                A proposal for a link between a
+                Google Analytics property and a Display
+                & Video 360 advertiser.
 
                 A proposal is converted to a
                 DisplayVideo360AdvertiserLink once
@@ -7027,7 +7031,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.Audience:
-                A resource message representing a GA4
+                A resource message representing an
                 Audience.
 
         """
@@ -7213,7 +7217,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.Audience:
-                A resource message representing a GA4
+                A resource message representing an
                 Audience.
 
         """
@@ -7309,7 +7313,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.Audience:
-                A resource message representing a GA4
+                A resource message representing an
                 Audience.
 
         """
@@ -7449,8 +7453,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.SearchAds360Link:
-                A link between a GA4 property and a
-                Search Ads 360 entity.
+                A link between a Google Analytics
+                property and a Search Ads 360 entity.
 
         """
         # Create or coerce a protobuf request object.
@@ -7639,8 +7643,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.SearchAds360Link:
-                A link between a GA4 property and a
-                Search Ads 360 entity.
+                A link between a Google Analytics
+                property and a Search Ads 360 entity.
 
         """
         # Create or coerce a protobuf request object.
@@ -7810,8 +7814,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.SearchAds360Link:
-                A link between a GA4 property and a
-                Search Ads 360 entity.
+                A link between a Google Analytics
+                property and a Search Ads 360 entity.
 
         """
         # Create or coerce a protobuf request object.
@@ -8068,13 +8072,18 @@ class AnalyticsAdminServiceAsyncClient:
         related to quota can only be requested on Google Analytics 360
         properties. This method is only available to Administrators.
 
-        These data access records include GA4 UI Reporting, GA4 UI
-        Explorations, GA4 Data API, and other products like Firebase &
+        These data access records include GA UI Reporting, GA UI
+        Explorations, GA Data API, and other products like Firebase &
         Admob that can retrieve data from Google Analytics through a
         linkage. These records don't include property configuration
         changes like adding a stream or changing a property's time zone.
         For configuration change history, see
         `searchChangeHistoryEvents <https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents>`__.
+
+        To give your feedback on this API, complete the `Google
+        Analytics Access Reports
+        feedback <https://docs.google.com/forms/d/e/1FAIpQLSdmEBUrMzAEdiEKk5TV5dEHvDUZDRlgWYdQdAeSdtR4hVjEhw/viewform>`__
+        form.
 
         Args:
             request (Optional[Union[google.analytics.admin_v1alpha.types.RunAccessReportRequest, dict]]):
@@ -8856,9 +8865,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.ExpandedDataSet:
-                A resource message representing a GA4
-                ExpandedDataSet.
-
+                A resource message representing an ExpandedDataSet.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -9046,9 +9053,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.ExpandedDataSet:
-                A resource message representing a GA4
-                ExpandedDataSet.
-
+                A resource message representing an ExpandedDataSet.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -9144,9 +9149,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.ExpandedDataSet:
-                A resource message representing a GA4
-                ExpandedDataSet.
-
+                A resource message representing an ExpandedDataSet.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -9888,8 +9891,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.BigQueryLink:
-                A link between a GA4 Property and
-                BigQuery project.
+                A link between a Google Analytics
+                property and BigQuery project.
 
         """
         # Create or coerce a protobuf request object.
@@ -9974,8 +9977,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.BigQueryLink:
-                A link between a GA4 Property and
-                BigQuery project.
+                A link between a Google Analytics
+                property and BigQuery project.
 
         """
         # Create or coerce a protobuf request object.
@@ -10242,8 +10245,8 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.BigQueryLink:
-                A link between a GA4 Property and
-                BigQuery project.
+                A link between a Google Analytics
+                property and BigQuery project.
 
         """
         # Create or coerce a protobuf request object.
@@ -10760,8 +10763,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.AdSenseLink:
-                A link between a GA4 Property and an
-                AdSense for Content ad client.
+                A link between a Google Analytics
+                property and an AdSense for Content ad
+                client.
 
         """
         # Create or coerce a protobuf request object.
@@ -10850,8 +10854,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.AdSenseLink:
-                A link between a GA4 Property and an
-                AdSense for Content ad client.
+                A link between a Google Analytics
+                property and an AdSense for Content ad
+                client.
 
         """
         # Create or coerce a protobuf request object.
@@ -13299,8 +13304,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.SubpropertyEventFilter:
-                A resource message representing a GA4
-                Subproperty event filter.
+                A resource message representing a
+                Google Analytics subproperty event
+                filter.
 
         """
         # Create or coerce a protobuf request object.
@@ -13387,8 +13393,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.SubpropertyEventFilter:
-                A resource message representing a GA4
-                Subproperty event filter.
+                A resource message representing a
+                Google Analytics subproperty event
+                filter.
 
         """
         # Create or coerce a protobuf request object.
@@ -13582,8 +13589,9 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.SubpropertyEventFilter:
-                A resource message representing a GA4
-                Subproperty event filter.
+                A resource message representing a
+                Google Analytics subproperty event
+                filter.
 
         """
         # Create or coerce a protobuf request object.

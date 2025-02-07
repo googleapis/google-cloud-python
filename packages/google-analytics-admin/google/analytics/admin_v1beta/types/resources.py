@@ -217,6 +217,10 @@ class ChangeHistoryResourceType(proto.Enum):
             ConversionEvent resource
         MEASUREMENT_PROTOCOL_SECRET (10):
             MeasurementProtocolSecret resource
+        CUSTOM_DIMENSION (11):
+            CustomDimension resource
+        CUSTOM_METRIC (12):
+            CustomMetric resource
         DATA_RETENTION_SETTINGS (13):
             DataRetentionSettings resource
         DISPLAY_VIDEO_360_ADVERTISER_LINK (14):
@@ -237,6 +241,8 @@ class ChangeHistoryResourceType(proto.Enum):
     GOOGLE_SIGNALS_SETTINGS = 8
     CONVERSION_EVENT = 9
     MEASUREMENT_PROTOCOL_SECRET = 10
+    CUSTOM_DIMENSION = 11
+    CUSTOM_METRIC = 12
     DATA_RETENTION_SETTINGS = 13
     DISPLAY_VIDEO_360_ADVERTISER_LINK = 14
     DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL = 15
@@ -245,17 +251,17 @@ class ChangeHistoryResourceType(proto.Enum):
 
 
 class PropertyType(proto.Enum):
-    r"""Types of Property resources.
+    r"""Types of ``Property`` resources.
 
     Values:
         PROPERTY_TYPE_UNSPECIFIED (0):
             Unknown or unspecified property type
         PROPERTY_TYPE_ORDINARY (1):
-            Ordinary GA4 property
+            Ordinary Google Analytics property
         PROPERTY_TYPE_SUBPROPERTY (2):
-            GA4 subproperty
+            Google Analytics subproperty
         PROPERTY_TYPE_ROLLUP (3):
-            GA4 rollup property
+            Google Analytics rollup property
     """
     PROPERTY_TYPE_UNSPECIFIED = 0
     PROPERTY_TYPE_ORDINARY = 1
@@ -328,8 +334,7 @@ class Account(proto.Message):
 
 
 class Property(proto.Message):
-    r"""A resource message representing a Google Analytics GA4
-    property.
+    r"""A resource message representing a Google Analytics property.
 
     Attributes:
         name (str):
@@ -641,7 +646,8 @@ class DataStream(proto.Message):
 
 
 class FirebaseLink(proto.Message):
-    r"""A link between a GA4 property and a Firebase project.
+    r"""A link between a Google Analytics property and a Firebase
+    project.
 
     Attributes:
         name (str):
@@ -676,7 +682,8 @@ class FirebaseLink(proto.Message):
 
 
 class GoogleAdsLink(proto.Message):
-    r"""A link between a GA4 property and a Google Ads account.
+    r"""A link between a Google Analytics property and a Google Ads
+    account.
 
     Attributes:
         name (str):
@@ -803,7 +810,7 @@ class DataSharingSettings(proto.Message):
 
 class AccountSummary(proto.Message):
     r"""A virtual resource representing an overview of an account and
-    all its child GA4 properties.
+    all its child Google Analytics properties.
 
     Attributes:
         name (str):
@@ -841,7 +848,8 @@ class AccountSummary(proto.Message):
 
 
 class PropertySummary(proto.Message):
-    r"""A virtual resource representing metadata for a GA4 property.
+    r"""A virtual resource representing metadata for a Google
+    Analytics property.
 
     Attributes:
         property (str):
@@ -1604,8 +1612,11 @@ class DataRetentionSettings(proto.Message):
             DataRetentionSetting resource. Format:
             properties/{property}/dataRetentionSettings
         event_data_retention (google.analytics.admin_v1beta.types.DataRetentionSettings.RetentionDuration):
-            The length of time that event-level data is
-            retained.
+            Required. The length of time that event-level
+            data is retained.
+        user_data_retention (google.analytics.admin_v1beta.types.DataRetentionSettings.RetentionDuration):
+            Required. The length of time that user-level
+            data is retained.
         reset_user_data_on_new_activity (bool):
             If true, reset the retention period for the
             user identifier with every event from that user.
@@ -1626,12 +1637,15 @@ class DataRetentionSettings(proto.Message):
             TWENTY_SIX_MONTHS (4):
                 The data retention time duration is 26
                 months. Available to 360 properties only.
+                Available for event data only.
             THIRTY_EIGHT_MONTHS (5):
                 The data retention time duration is 38
                 months. Available to 360 properties only.
+                Available for event data only.
             FIFTY_MONTHS (6):
                 The data retention time duration is 50
                 months. Available to 360 properties only.
+                Available for event data only.
         """
         RETENTION_DURATION_UNSPECIFIED = 0
         TWO_MONTHS = 1
@@ -1647,6 +1661,11 @@ class DataRetentionSettings(proto.Message):
     event_data_retention: RetentionDuration = proto.Field(
         proto.ENUM,
         number=2,
+        enum=RetentionDuration,
+    )
+    user_data_retention: RetentionDuration = proto.Field(
+        proto.ENUM,
+        number=4,
         enum=RetentionDuration,
     )
     reset_user_data_on_new_activity: bool = proto.Field(
