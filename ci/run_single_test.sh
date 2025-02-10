@@ -40,14 +40,6 @@ fi
 set +e
 
 case ${TEST_TYPE} in
-    lint)
-        nox -s lint
-        retval=$?
-        ;;
-    lint_setup_py)
-        nox -s lint_setup_py
-        retval=$?
-        ;;
     docs)
         nox -s docs
         # This line needs to be directly after `nox -s docs` in order
@@ -103,9 +95,16 @@ case ${TEST_TYPE} in
             retval=$?
             ;;
         *)
+            echo "unsupported PY_VERSION"
+            exit 1
             ;;
         esac
-esac
+        ;;
+    *)
+        nox -s ${TEST_TYPE}
+        retval=$?
+        ;;
+    esac
 
 # Clean up `__pycache__` and `.nox` directories to avoid error
 # `No space left on device` seen when running tests in Github Actions
