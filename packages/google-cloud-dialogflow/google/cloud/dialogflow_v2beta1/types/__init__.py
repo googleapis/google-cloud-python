@@ -247,6 +247,14 @@ from .participant import (
     SuggestSmartRepliesResponse,
     UpdateParticipantRequest,
 )
+from .phone_number import (
+    DeletePhoneNumberRequest,
+    ListPhoneNumbersRequest,
+    ListPhoneNumbersResponse,
+    PhoneNumber,
+    UndeletePhoneNumberRequest,
+    UpdatePhoneNumberRequest,
+)
 from .session import (
     CloudConversationDebuggingInfo,
     DetectIntentRequest,
@@ -506,6 +514,12 @@ __all__ = (
     "SuggestSmartRepliesRequest",
     "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",
+    "DeletePhoneNumberRequest",
+    "ListPhoneNumbersRequest",
+    "ListPhoneNumbersResponse",
+    "PhoneNumber",
+    "UndeletePhoneNumberRequest",
+    "UpdatePhoneNumberRequest",
     "CloudConversationDebuggingInfo",
     "DetectIntentRequest",
     "DetectIntentResponse",

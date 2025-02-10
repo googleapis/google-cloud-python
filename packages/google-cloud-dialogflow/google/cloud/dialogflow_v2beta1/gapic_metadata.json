@@ -1636,6 +1636,85 @@
         }
       }
     },
+    "PhoneNumbers": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "PhoneNumbersClient",
+          "rpcs": {
+            "DeletePhoneNumber": {
+              "methods": [
+                "delete_phone_number"
+              ]
+            },
+            "ListPhoneNumbers": {
+              "methods": [
+                "list_phone_numbers"
+              ]
+            },
+            "UndeletePhoneNumber": {
+              "methods": [
+                "undelete_phone_number"
+              ]
+            },
+            "UpdatePhoneNumber": {
+              "methods": [
+                "update_phone_number"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "PhoneNumbersAsyncClient",
+          "rpcs": {
+            "DeletePhoneNumber": {
+              "methods": [
+                "delete_phone_number"
+              ]
+            },
+            "ListPhoneNumbers": {
+              "methods": [
+                "list_phone_numbers"
+              ]
+            },
+            "UndeletePhoneNumber": {
+              "methods": [
+                "undelete_phone_number"
+              ]
+            },
+            "UpdatePhoneNumber": {
+              "methods": [
+                "update_phone_number"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "PhoneNumbersClient",
+          "rpcs": {
+            "DeletePhoneNumber": {
+              "methods": [
+                "delete_phone_number"
+              ]
+            },
+            "ListPhoneNumbers": {
+              "methods": [
+                "list_phone_numbers"
+              ]
+            },
+            "UndeletePhoneNumber": {
+              "methods": [
+                "undelete_phone_number"
+              ]
+            },
+            "UpdatePhoneNumber": {
+              "methods": [
+                "update_phone_number"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SessionEntityTypes": {
       "clients": {
         "grpc": {
