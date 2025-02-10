@@ -23,6 +23,8 @@ from google.cloud.batch_v1.services.batch_service.async_client import (
 )
 from google.cloud.batch_v1.services.batch_service.client import BatchServiceClient
 from google.cloud.batch_v1.types.batch import (
+    CancelJobRequest,
+    CancelJobResponse,
     CreateJobRequest,
     DeleteJobRequest,
     GetJobRequest,
@@ -58,6 +60,8 @@ from google.cloud.batch_v1.types.volume import GCS, NFS, Volume
 __all__ = (
     "BatchServiceClient",
     "BatchServiceAsyncClient",
+    "CancelJobRequest",
+    "CancelJobResponse",
     "CreateJobRequest",
     "DeleteJobRequest",
     "GetJobRequest",

@@ -419,6 +419,32 @@ class BatchServiceGrpcTransport(BatchServiceTransport):
         return self._stubs["delete_job"]
 
     @property
+    def cancel_job(
+        self,
+    ) -> Callable[[batch.CancelJobRequest], operations_pb2.Operation]:
+        r"""Return a callable for the cancel job method over gRPC.
+
+        Cancel a Job.
+
+        Returns:
+            Callable[[~.CancelJobRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_job" not in self._stubs:
+            self._stubs["cancel_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.batch.v1.BatchService/CancelJob",
+                request_serializer=batch.CancelJobRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["cancel_job"]
+
+    @property
     def list_jobs(self) -> Callable[[batch.ListJobsRequest], batch.ListJobsResponse]:
         r"""Return a callable for the list jobs method over gRPC.
 

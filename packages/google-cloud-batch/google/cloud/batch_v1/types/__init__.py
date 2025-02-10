@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 from .batch import (
+    CancelJobRequest,
+    CancelJobResponse,
     CreateJobRequest,
     DeleteJobRequest,
     GetJobRequest,
@@ -47,6 +49,8 @@ from .task import (
 from .volume import GCS, NFS, Volume
 
 __all__ = (
+    "CancelJobRequest",
+    "CancelJobResponse",
     "CreateJobRequest",
     "DeleteJobRequest",
     "GetJobRequest",
