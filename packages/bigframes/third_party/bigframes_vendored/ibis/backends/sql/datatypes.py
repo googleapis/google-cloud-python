@@ -63,7 +63,6 @@ _from_sqlglot_types = {
     typecode.VARBINARY: dt.Binary,
     typecode.VARCHAR: dt.String,
     typecode.VARIANT: dt.JSON,
-    typecode.UNIQUEIDENTIFIER: dt.UUID,
     typecode.SET: partial(dt.Array, dt.string),
     #############################
     # Unsupported sqlglot types #
