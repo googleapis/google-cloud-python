@@ -19,7 +19,7 @@ import typing
 from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core import expression as ex
-from bigframes.core import nodes, schema
+from bigframes.core import nodes, schema, utils
 
 
 @dataclasses.dataclass
@@ -50,7 +50,7 @@ def _rewrite_expressions(expr: ex.Expression, schema: schema.ArraySchema) -> _Ty
         return _TypedExpr(expr, schema.get_type(expr.id.sql))
 
     if isinstance(expr, ex.ScalarConstantExpression):
-        return _TypedExpr(expr, expr.dtype)
+        return _rewrite_scalar_constant_expr(expr)
 
     if isinstance(expr, ex.OpExpression):
         updated_inputs = tuple(
@@ -61,11 +61,22 @@ def _rewrite_expressions(expr: ex.Expression, schema: schema.ArraySchema) -> _Ty
     raise AssertionError(f"Unexpected expression type: {type(expr)}")
 
 
+def _rewrite_scalar_constant_expr(expr: ex.ScalarConstantExpression) -> _TypedExpr:
+    if expr.dtype is dtypes.TIMEDELTA_DTYPE:
+        int_repr = utils.timedelta_to_micros(expr.value)  # type: ignore
+        return _TypedExpr(ex.const(int_repr, expr.dtype), expr.dtype)
+
+    return _TypedExpr(expr, expr.dtype)
+
+
 def _rewrite_op_expr(
     expr: ex.OpExpression, inputs: typing.Tuple[_TypedExpr, ...]
 ) -> _TypedExpr:
     if isinstance(expr.op, ops.SubOp):
         return _rewrite_sub_op(inputs[0], inputs[1])
+
+    if isinstance(expr.op, ops.AddOp):
+        return _rewrite_add_op(inputs[0], inputs[1])
 
     input_types = tuple(map(lambda x: x.dtype, inputs))
     return _TypedExpr(expr, expr.op.output_type(*input_types))
@@ -79,4 +90,25 @@ def _rewrite_sub_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
     return _TypedExpr(
         result_op.as_expr(left.expr, right.expr),
         result_op.output_type(left.dtype, right.dtype),
+    )
+
+
+def _rewrite_add_op(left: _TypedExpr, right: _TypedExpr) -> _TypedExpr:
+    if dtypes.is_datetime_like(left.dtype) and right.dtype is dtypes.TIMEDELTA_DTYPE:
+        return _TypedExpr(
+            ops.timestamp_add_op.as_expr(left.expr, right.expr),
+            ops.timestamp_add_op.output_type(left.dtype, right.dtype),
+        )
+
+    if left.dtype is dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(right.dtype):
+        # Re-arrange operands such that timestamp is always on the left and timedelta is
+        # always on the right.
+        return _TypedExpr(
+            ops.timestamp_add_op.as_expr(right.expr, left.expr),
+            ops.timestamp_add_op.output_type(right.dtype, left.dtype),
+        )
+
+    return _TypedExpr(
+        ops.add_op.as_expr(left.expr, right.expr),
+        ops.add_op.output_type(left.dtype, right.dtype),
     )

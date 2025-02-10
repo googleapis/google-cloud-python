@@ -116,12 +116,18 @@ class AddOp(base_ops.BinaryOp):
         if all(map(dtypes.is_string_like, input_types)) and len(set(input_types)) == 1:
             # String addition
             return input_types[0]
+
+        # Timestamp addition.
+        if dtypes.is_datetime_like(left_type) and right_type is dtypes.TIMEDELTA_DTYPE:
+            return left_type
+        if left_type is dtypes.TIMEDELTA_DTYPE and dtypes.is_datetime_like(right_type):
+            return right_type
+
         if (left_type is None or dtypes.is_numeric(left_type)) and (
             right_type is None or dtypes.is_numeric(right_type)
         ):
             # Numeric addition
             return dtypes.coerce_to_common(left_type, right_type)
-        # TODO: Add temporal addition once delta types supported
         raise TypeError(f"Cannot add dtypes {left_type} and {right_type}")
 
 

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import datetime
 import functools
 import re
 import typing
@@ -18,6 +19,7 @@ from typing import Hashable, Iterable, List
 import warnings
 
 import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
+import numpy as np
 import pandas as pd
 import pandas.api.types as pdtypes
 import typing_extensions
@@ -187,9 +189,22 @@ def preview(*, name: str):
     return decorator
 
 
-def timedelta_to_micros(td: pd.Timedelta) -> int:
-    # td.value returns total nanoseconds.
-    return td.value // 1000
+def timedelta_to_micros(
+    timedelta: typing.Union[pd.Timedelta, datetime.timedelta, np.timedelta64]
+) -> int:
+    if isinstance(timedelta, pd.Timedelta):
+        # pd.Timedelta.value returns total nanoseconds.
+        return timedelta.value // 1000
+
+    if isinstance(timedelta, np.timedelta64):
+        return timedelta.astype("timedelta64[us]").astype(np.int64)
+
+    if isinstance(timedelta, datetime.timedelta):
+        return (
+            (timedelta.days * 3600 * 24) + timedelta.seconds
+        ) * 1_000_000 + timedelta.microseconds
+
+    raise TypeError(f"Unrecognized input type: {type(timedelta)}")
 
 
 def replace_timedeltas_with_micros(dataframe: pd.DataFrame) -> List[str]:

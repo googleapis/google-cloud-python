@@ -103,6 +103,7 @@ from bigframes.operations.json_ops import (
 from bigframes.operations.numeric_ops import (
     abs_op,
     add_op,
+    AddOp,
     arccos_op,
     arccosh_op,
     arcsin_op,
@@ -177,7 +178,7 @@ from bigframes.operations.string_ops import (
 )
 from bigframes.operations.struct_ops import StructFieldOp, StructOp
 from bigframes.operations.time_ops import hour_op, minute_op, normalize_op, second_op
-from bigframes.operations.timedelta_ops import ToTimedeltaOp
+from bigframes.operations.timedelta_ops import timestamp_add_op, ToTimedeltaOp
 
 __all__ = [
     # Base ops
@@ -249,6 +250,7 @@ __all__ = [
     "second_op",
     "normalize_op",
     # Timedelta ops
+    "timestamp_add_op",
     "ToTimedeltaOp",
     # Datetime ops
     "date_op",
@@ -263,6 +265,7 @@ __all__ = [
     # Numeric ops
     "abs_op",
     "add_op",
+    "AddOp",
     "arccos_op",
     "arccosh_op",
     "arcsin_op",
