@@ -209,7 +209,7 @@
     name: bigframes.bigquery
   - items:
     - name: GeoSeries
-      uid: bigframes.geopandas
+      uid: bigframes.geopandas.GeoSeries
     name: bigframes.geopandas
   - items:
     - name: Overview
