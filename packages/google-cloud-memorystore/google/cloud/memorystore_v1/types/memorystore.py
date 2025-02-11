@@ -244,13 +244,16 @@ class Instance(proto.Message):
             MODE_UNSPECIFIED (0):
                 Mode is not specified.
             STANDALONE (1):
-                Instance is in standalone mode.
+                Deprecated: Use CLUSTER_DISABLED instead.
             CLUSTER (2):
                 Instance is in cluster mode.
+            CLUSTER_DISABLED (4):
+                Cluster mode is disabled for the instance.
         """
         MODE_UNSPECIFIED = 0
         STANDALONE = 1
         CLUSTER = 2
+        CLUSTER_DISABLED = 4
 
     class StateInfo(proto.Message):
         r"""Additional information about the state of the instance.
