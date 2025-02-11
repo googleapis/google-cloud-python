@@ -224,6 +224,54 @@ class BlobAccessor(base.SeriesMethods):
         for _, row in df.iterrows():
             display_single_url(row["read_url"], row["content_type"])
 
+    def _resolve_connection(self, connection: Optional[str] = None) -> str:
+        """Resovle the BigQuery connection.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and
+            subject to change in the future.
+
+        Args:
+            connection (str or None, default None): BQ connection used for
+                function internet transactions, and the output blob if "dst" is
+                str. If None, uses default connection of the session.
+
+        Returns:
+            str: the resolved BigQuery connection string in the format:
+             "project.location.connection_id".
+
+        Raises:
+            ValueError: If the connection cannot be resolved to a valid string.
+        """
+        connection = connection or self._block.session._bq_connection
+        return clients.resolve_full_bq_connection_name(
+            connection,
+            default_project=self._block.session._project,
+            default_location=self._block.session._location,
+        )
+
+    def _get_runtime_json_str(
+        self, mode: str = "R", with_metadata: bool = False
+    ) -> bigframes.series.Series:
+        """Get the runtime and apply the ToJSONSTring transformation.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and
+            subject to change in the future.
+
+        Args:
+            mode(str or str, default "R"): the mode for accessing the runtime.
+                Default to "R". Possible values are "R" (read-only) and
+                "RW" (read-write)
+            with_metadata (bool, default False): whether to include metadata
+                in the JOSN string. Default to False.
+
+        Returns:
+            str: the runtime object in the JSON string.
+        """
+        runtime = self._get_runtime(mode=mode, with_metadata=with_metadata)
+        return runtime._apply_unary_op(ops.ToJSONString())
+
     def image_blur(
         self,
         ksize: tuple[int, int],
@@ -246,12 +294,7 @@ class BlobAccessor(base.SeriesMethods):
         """
         import bigframes.blob._functions as blob_func
 
-        connection = connection or self._block.session._bq_connection
-        connection = clients.resolve_full_bq_connection_name(
-            connection,
-            default_project=self._block.session._project,
-            default_location=self._block.session._location,
-        )
+        connection = self._resolve_connection(connection)
 
         if isinstance(dst, str):
             dst = os.path.join(dst, "")
@@ -268,11 +311,8 @@ class BlobAccessor(base.SeriesMethods):
             connection=connection,
         ).udf()
 
-        src_rt = self._get_runtime(mode="R")
-        dst_rt = dst.blob._get_runtime(mode="RW")
-
-        src_rt = src_rt._apply_unary_op(ops.ToJSONString())
-        dst_rt = dst_rt._apply_unary_op(ops.ToJSONString())
+        src_rt = self._get_runtime_json_str(mode="R")
+        dst_rt = dst.blob._get_runtime_json_str(mode="RW")
 
         df = src_rt.to_frame().join(dst_rt.to_frame(), how="outer")
         df["ksize_x"], df["ksize_y"] = ksize
@@ -281,3 +321,93 @@ class BlobAccessor(base.SeriesMethods):
         res.cache()  # to execute the udf
 
         return dst
+
+    def pdf_extract(
+        self, *, connection: Optional[str] = None
+    ) -> bigframes.series.Series:
+        """Extracts and chunks text from PDF URLs and saves the text as
+           arrays of string.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and
+            subject to change in the future.
+
+        Args:
+            connection (str or None, default None): BQ connection used for
+                function internet transactions, and the output blob if "dst"
+                is str. If None, uses default connection of the session.
+
+        Returns:
+            bigframes.series.Series: conatins all text from a pdf file
+        """
+
+        import bigframes.blob._functions as blob_func
+
+        connection = self._resolve_connection(connection)
+
+        pdf_chunk_udf = blob_func.TransformFunction(
+            blob_func.pdf_extract_def,
+            session=self._block.session,
+            connection=connection,
+        ).udf()
+
+        src_rt = self._get_runtime_json_str(mode="R")
+        res = src_rt.apply(pdf_chunk_udf)
+        return res
+
+    def pdf_chunk(
+        self,
+        *,
+        connection: Optional[str] = None,
+        chunk_size: int = 1000,
+        overlap_size: int = 200,
+    ) -> bigframes.series.Series:
+        """Extracts and chunks text from PDF URLs and saves the text as
+           arrays of strings.
+
+        .. note::
+            BigFrames Blob is still under experiments. It may not work and
+            subject to change in the future.
+
+        Args:
+            connection (str or None, default None): BQ connection used for
+                function internet transactions, and the output blob if "dst"
+                is str. If None, uses default connection of the session.
+            chunk_size (int, default 1000): the desired size of each text chunk
+                (number of characters).
+            overlap_size (int, default 200): the number of overlapping characters
+                between consective chunks. The helps to ensure context is
+                perserved across chunk boundaries.
+
+        Returns:
+            bigframe.series.Series of array[str], where each string is a
+                chunk of text extracted from PDF.
+        """
+
+        import bigframes.bigquery as bbq
+        import bigframes.blob._functions as blob_func
+
+        connection = self._resolve_connection(connection)
+
+        if chunk_size <= 0:
+            raise ValueError("chunk_size must be a positive integer.")
+        if overlap_size < 0:
+            raise ValueError("overlap_size must be a non-negative integer.")
+        if overlap_size >= chunk_size:
+            raise ValueError("overlap_size must be smaller than chunk_size.")
+
+        pdf_chunk_udf = blob_func.TransformFunction(
+            blob_func.pdf_chunk_def,
+            session=self._block.session,
+            connection=connection,
+        ).udf()
+
+        src_rt = self._get_runtime_json_str(mode="R")
+        df = src_rt.to_frame()
+        df["chunk_size"] = chunk_size
+        df["overlap_size"] = overlap_size
+
+        res = df.apply(pdf_chunk_udf, axis=1)
+
+        res_array = bbq.json_extract_string_array(res)
+        return res_array
