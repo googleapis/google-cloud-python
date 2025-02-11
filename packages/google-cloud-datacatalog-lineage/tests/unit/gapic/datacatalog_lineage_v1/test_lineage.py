@@ -74,6 +74,13 @@ from google.cloud.datacatalog_lineage_v1.services.lineage import (
 )
 from google.cloud.datacatalog_lineage_v1.types import lineage
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -295,6 +302,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         LineageClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = LineageClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = LineageClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -12057,10 +12107,14 @@ def test_process_open_lineage_run_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_process_open_lineage_run_event"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor,
+        "post_process_open_lineage_run_event_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_process_open_lineage_run_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.ProcessOpenLineageRunEventRequest.pb(
             lineage.ProcessOpenLineageRunEventRequest()
         )
@@ -12086,6 +12140,10 @@ def test_process_open_lineage_run_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.ProcessOpenLineageRunEventResponse()
+        post_with_metadata.return_value = (
+            lineage.ProcessOpenLineageRunEventResponse(),
+            metadata,
+        )
 
         client.process_open_lineage_run_event(
             request,
@@ -12097,6 +12155,7 @@ def test_process_open_lineage_run_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_process_rest_bad_request(request_type=lineage.CreateProcessRequest):
@@ -12252,10 +12311,13 @@ def test_create_process_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_create_process"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_create_process_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_create_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.CreateProcessRequest.pb(lineage.CreateProcessRequest())
         transcode.return_value = {
             "method": "post",
@@ -12277,6 +12339,7 @@ def test_create_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.Process()
+        post_with_metadata.return_value = lineage.Process(), metadata
 
         client.create_process(
             request,
@@ -12288,6 +12351,7 @@ def test_create_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_process_rest_bad_request(request_type=lineage.UpdateProcessRequest):
@@ -12447,10 +12511,13 @@ def test_update_process_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_update_process"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_update_process_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_update_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.UpdateProcessRequest.pb(lineage.UpdateProcessRequest())
         transcode.return_value = {
             "method": "post",
@@ -12472,6 +12539,7 @@ def test_update_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.Process()
+        post_with_metadata.return_value = lineage.Process(), metadata
 
         client.update_process(
             request,
@@ -12483,6 +12551,7 @@ def test_update_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_process_rest_bad_request(request_type=lineage.GetProcessRequest):
@@ -12565,10 +12634,13 @@ def test_get_process_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_get_process"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_get_process_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_get_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.GetProcessRequest.pb(lineage.GetProcessRequest())
         transcode.return_value = {
             "method": "post",
@@ -12590,6 +12662,7 @@ def test_get_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.Process()
+        post_with_metadata.return_value = lineage.Process(), metadata
 
         client.get_process(
             request,
@@ -12601,6 +12674,7 @@ def test_get_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_processes_rest_bad_request(request_type=lineage.ListProcessesRequest):
@@ -12681,10 +12755,13 @@ def test_list_processes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_list_processes"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_list_processes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_list_processes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.ListProcessesRequest.pb(lineage.ListProcessesRequest())
         transcode.return_value = {
             "method": "post",
@@ -12708,6 +12785,7 @@ def test_list_processes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.ListProcessesResponse()
+        post_with_metadata.return_value = lineage.ListProcessesResponse(), metadata
 
         client.list_processes(
             request,
@@ -12719,6 +12797,7 @@ def test_list_processes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_process_rest_bad_request(request_type=lineage.DeleteProcessRequest):
@@ -12795,10 +12874,13 @@ def test_delete_process_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LineageRestInterceptor, "post_delete_process"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_delete_process_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_delete_process"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.DeleteProcessRequest.pb(lineage.DeleteProcessRequest())
         transcode.return_value = {
             "method": "post",
@@ -12820,6 +12902,7 @@ def test_delete_process_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_process(
             request,
@@ -12831,6 +12914,7 @@ def test_delete_process_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_run_rest_bad_request(request_type=lineage.CreateRunRequest):
@@ -12990,10 +13074,13 @@ def test_create_run_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_create_run"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_create_run_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_create_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.CreateRunRequest.pb(lineage.CreateRunRequest())
         transcode.return_value = {
             "method": "post",
@@ -13015,6 +13102,7 @@ def test_create_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.Run()
+        post_with_metadata.return_value = lineage.Run(), metadata
 
         client.create_run(
             request,
@@ -13026,6 +13114,7 @@ def test_create_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_run_rest_bad_request(request_type=lineage.UpdateRunRequest):
@@ -13193,10 +13282,13 @@ def test_update_run_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_update_run"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_update_run_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_update_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.UpdateRunRequest.pb(lineage.UpdateRunRequest())
         transcode.return_value = {
             "method": "post",
@@ -13218,6 +13310,7 @@ def test_update_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.Run()
+        post_with_metadata.return_value = lineage.Run(), metadata
 
         client.update_run(
             request,
@@ -13229,6 +13322,7 @@ def test_update_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_run_rest_bad_request(request_type=lineage.GetRunRequest):
@@ -13317,10 +13411,13 @@ def test_get_run_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_get_run"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_get_run_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_get_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.GetRunRequest.pb(lineage.GetRunRequest())
         transcode.return_value = {
             "method": "post",
@@ -13342,6 +13439,7 @@ def test_get_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.Run()
+        post_with_metadata.return_value = lineage.Run(), metadata
 
         client.get_run(
             request,
@@ -13353,6 +13451,7 @@ def test_get_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_runs_rest_bad_request(request_type=lineage.ListRunsRequest):
@@ -13433,10 +13532,13 @@ def test_list_runs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_list_runs"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_list_runs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_list_runs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.ListRunsRequest.pb(lineage.ListRunsRequest())
         transcode.return_value = {
             "method": "post",
@@ -13458,6 +13560,7 @@ def test_list_runs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.ListRunsResponse()
+        post_with_metadata.return_value = lineage.ListRunsResponse(), metadata
 
         client.list_runs(
             request,
@@ -13469,6 +13572,7 @@ def test_list_runs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_run_rest_bad_request(request_type=lineage.DeleteRunRequest):
@@ -13549,10 +13653,13 @@ def test_delete_run_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.LineageRestInterceptor, "post_delete_run"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_delete_run_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_delete_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.DeleteRunRequest.pb(lineage.DeleteRunRequest())
         transcode.return_value = {
             "method": "post",
@@ -13574,6 +13681,7 @@ def test_delete_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_run(
             request,
@@ -13585,6 +13693,7 @@ def test_delete_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_lineage_event_rest_bad_request(
@@ -13749,10 +13858,13 @@ def test_create_lineage_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_create_lineage_event"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_create_lineage_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_create_lineage_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.CreateLineageEventRequest.pb(
             lineage.CreateLineageEventRequest()
         )
@@ -13776,6 +13888,7 @@ def test_create_lineage_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.LineageEvent()
+        post_with_metadata.return_value = lineage.LineageEvent(), metadata
 
         client.create_lineage_event(
             request,
@@ -13787,6 +13900,7 @@ def test_create_lineage_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_lineage_event_rest_bad_request(
@@ -13873,10 +13987,13 @@ def test_get_lineage_event_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_get_lineage_event"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_get_lineage_event_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_get_lineage_event"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.GetLineageEventRequest.pb(lineage.GetLineageEventRequest())
         transcode.return_value = {
             "method": "post",
@@ -13898,6 +14015,7 @@ def test_get_lineage_event_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.LineageEvent()
+        post_with_metadata.return_value = lineage.LineageEvent(), metadata
 
         client.get_lineage_event(
             request,
@@ -13909,6 +14027,7 @@ def test_get_lineage_event_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_lineage_events_rest_bad_request(
@@ -13995,10 +14114,13 @@ def test_list_lineage_events_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_list_lineage_events"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_list_lineage_events_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_list_lineage_events"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.ListLineageEventsRequest.pb(
             lineage.ListLineageEventsRequest()
         )
@@ -14024,6 +14146,7 @@ def test_list_lineage_events_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.ListLineageEventsResponse()
+        post_with_metadata.return_value = lineage.ListLineageEventsResponse(), metadata
 
         client.list_lineage_events(
             request,
@@ -14035,6 +14158,7 @@ def test_list_lineage_events_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_lineage_event_rest_bad_request(
@@ -14226,10 +14350,13 @@ def test_search_links_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_search_links"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "post_search_links_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_search_links"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.SearchLinksRequest.pb(lineage.SearchLinksRequest())
         transcode.return_value = {
             "method": "post",
@@ -14253,6 +14380,7 @@ def test_search_links_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.SearchLinksResponse()
+        post_with_metadata.return_value = lineage.SearchLinksResponse(), metadata
 
         client.search_links(
             request,
@@ -14264,6 +14392,7 @@ def test_search_links_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_search_link_processes_rest_bad_request(
@@ -14346,10 +14475,14 @@ def test_batch_search_link_processes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LineageRestInterceptor, "post_batch_search_link_processes"
     ) as post, mock.patch.object(
+        transports.LineageRestInterceptor,
+        "post_batch_search_link_processes_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LineageRestInterceptor, "pre_batch_search_link_processes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = lineage.BatchSearchLinkProcessesRequest.pb(
             lineage.BatchSearchLinkProcessesRequest()
         )
@@ -14375,6 +14508,10 @@ def test_batch_search_link_processes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = lineage.BatchSearchLinkProcessesResponse()
+        post_with_metadata.return_value = (
+            lineage.BatchSearchLinkProcessesResponse(),
+            metadata,
+        )
 
         client.batch_search_link_processes(
             request,
@@ -14386,6 +14523,7 @@ def test_batch_search_link_processes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

@@ -214,11 +214,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for configure_contact_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_configure_contact_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_configure_contact_settings` interceptor runs
+        before the `post_configure_contact_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_configure_contact_settings_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for configure_contact_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_configure_contact_settings_with_metadata`
+        interceptor in new development instead of the `post_configure_contact_settings` interceptor.
+        When both interceptors are used, this `post_configure_contact_settings_with_metadata` interceptor runs after the
+        `post_configure_contact_settings` interceptor. The (possibly modified) response returned by
+        `post_configure_contact_settings` will be passed to
+        `post_configure_contact_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_configure_dns_settings(
         self,
@@ -239,11 +262,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for configure_dns_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_configure_dns_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_configure_dns_settings` interceptor runs
+        before the `post_configure_dns_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_configure_dns_settings_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for configure_dns_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_configure_dns_settings_with_metadata`
+        interceptor in new development instead of the `post_configure_dns_settings` interceptor.
+        When both interceptors are used, this `post_configure_dns_settings_with_metadata` interceptor runs after the
+        `post_configure_dns_settings` interceptor. The (possibly modified) response returned by
+        `post_configure_dns_settings` will be passed to
+        `post_configure_dns_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_configure_management_settings(
         self,
@@ -265,11 +311,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for configure_management_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_configure_management_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_configure_management_settings` interceptor runs
+        before the `post_configure_management_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_configure_management_settings_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for configure_management_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_configure_management_settings_with_metadata`
+        interceptor in new development instead of the `post_configure_management_settings` interceptor.
+        When both interceptors are used, this `post_configure_management_settings_with_metadata` interceptor runs after the
+        `post_configure_management_settings` interceptor. The (possibly modified) response returned by
+        `post_configure_management_settings` will be passed to
+        `post_configure_management_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_registration(
         self,
@@ -290,11 +359,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_registration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_registration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_registration` interceptor runs
+        before the `post_delete_registration_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_registration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_registration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_delete_registration_with_metadata`
+        interceptor in new development instead of the `post_delete_registration` interceptor.
+        When both interceptors are used, this `post_delete_registration_with_metadata` interceptor runs after the
+        `post_delete_registration` interceptor. The (possibly modified) response returned by
+        `post_delete_registration` will be passed to
+        `post_delete_registration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_registration(
         self,
@@ -315,11 +407,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_registration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_registration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_registration` interceptor runs
+        before the `post_export_registration_with_metadata` interceptor.
         """
         return response
+
+    def post_export_registration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_registration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_export_registration_with_metadata`
+        interceptor in new development instead of the `post_export_registration` interceptor.
+        When both interceptors are used, this `post_export_registration_with_metadata` interceptor runs after the
+        `post_export_registration` interceptor. The (possibly modified) response returned by
+        `post_export_registration` will be passed to
+        `post_export_registration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_registration(
         self,
@@ -338,11 +453,34 @@ class DomainsRestInterceptor:
     ) -> domains.Registration:
         """Post-rpc interceptor for get_registration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_registration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_registration` interceptor runs
+        before the `post_get_registration_with_metadata` interceptor.
         """
         return response
+
+    def post_get_registration_with_metadata(
+        self,
+        response: domains.Registration,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[domains.Registration, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_registration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_get_registration_with_metadata`
+        interceptor in new development instead of the `post_get_registration` interceptor.
+        When both interceptors are used, this `post_get_registration_with_metadata` interceptor runs after the
+        `post_get_registration` interceptor. The (possibly modified) response returned by
+        `post_get_registration` will be passed to
+        `post_get_registration_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_registrations(
         self,
@@ -363,11 +501,36 @@ class DomainsRestInterceptor:
     ) -> domains.ListRegistrationsResponse:
         """Post-rpc interceptor for list_registrations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_registrations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_registrations` interceptor runs
+        before the `post_list_registrations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_registrations_with_metadata(
+        self,
+        response: domains.ListRegistrationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        domains.ListRegistrationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_registrations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_list_registrations_with_metadata`
+        interceptor in new development instead of the `post_list_registrations` interceptor.
+        When both interceptors are used, this `post_list_registrations_with_metadata` interceptor runs after the
+        `post_list_registrations` interceptor. The (possibly modified) response returned by
+        `post_list_registrations` will be passed to
+        `post_list_registrations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_register_domain(
         self,
@@ -386,11 +549,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for register_domain
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_register_domain_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_register_domain` interceptor runs
+        before the `post_register_domain_with_metadata` interceptor.
         """
         return response
+
+    def post_register_domain_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for register_domain
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_register_domain_with_metadata`
+        interceptor in new development instead of the `post_register_domain` interceptor.
+        When both interceptors are used, this `post_register_domain_with_metadata` interceptor runs after the
+        `post_register_domain` interceptor. The (possibly modified) response returned by
+        `post_register_domain` will be passed to
+        `post_register_domain_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_authorization_code(
         self,
@@ -411,11 +597,34 @@ class DomainsRestInterceptor:
     ) -> domains.AuthorizationCode:
         """Post-rpc interceptor for reset_authorization_code
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_authorization_code_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset_authorization_code` interceptor runs
+        before the `post_reset_authorization_code_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_authorization_code_with_metadata(
+        self,
+        response: domains.AuthorizationCode,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[domains.AuthorizationCode, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset_authorization_code
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_reset_authorization_code_with_metadata`
+        interceptor in new development instead of the `post_reset_authorization_code` interceptor.
+        When both interceptors are used, this `post_reset_authorization_code_with_metadata` interceptor runs after the
+        `post_reset_authorization_code` interceptor. The (possibly modified) response returned by
+        `post_reset_authorization_code` will be passed to
+        `post_reset_authorization_code_with_metadata`.
+        """
+        return response, metadata
 
     def pre_retrieve_authorization_code(
         self,
@@ -437,11 +646,34 @@ class DomainsRestInterceptor:
     ) -> domains.AuthorizationCode:
         """Post-rpc interceptor for retrieve_authorization_code
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_retrieve_authorization_code_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_retrieve_authorization_code` interceptor runs
+        before the `post_retrieve_authorization_code_with_metadata` interceptor.
         """
         return response
+
+    def post_retrieve_authorization_code_with_metadata(
+        self,
+        response: domains.AuthorizationCode,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[domains.AuthorizationCode, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for retrieve_authorization_code
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_retrieve_authorization_code_with_metadata`
+        interceptor in new development instead of the `post_retrieve_authorization_code` interceptor.
+        When both interceptors are used, this `post_retrieve_authorization_code_with_metadata` interceptor runs after the
+        `post_retrieve_authorization_code` interceptor. The (possibly modified) response returned by
+        `post_retrieve_authorization_code` will be passed to
+        `post_retrieve_authorization_code_with_metadata`.
+        """
+        return response, metadata
 
     def pre_retrieve_register_parameters(
         self,
@@ -463,11 +695,37 @@ class DomainsRestInterceptor:
     ) -> domains.RetrieveRegisterParametersResponse:
         """Post-rpc interceptor for retrieve_register_parameters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_retrieve_register_parameters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_retrieve_register_parameters` interceptor runs
+        before the `post_retrieve_register_parameters_with_metadata` interceptor.
         """
         return response
+
+    def post_retrieve_register_parameters_with_metadata(
+        self,
+        response: domains.RetrieveRegisterParametersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        domains.RetrieveRegisterParametersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for retrieve_register_parameters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_retrieve_register_parameters_with_metadata`
+        interceptor in new development instead of the `post_retrieve_register_parameters` interceptor.
+        When both interceptors are used, this `post_retrieve_register_parameters_with_metadata` interceptor runs after the
+        `post_retrieve_register_parameters` interceptor. The (possibly modified) response returned by
+        `post_retrieve_register_parameters` will be passed to
+        `post_retrieve_register_parameters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_retrieve_transfer_parameters(
         self,
@@ -489,11 +747,37 @@ class DomainsRestInterceptor:
     ) -> domains.RetrieveTransferParametersResponse:
         """Post-rpc interceptor for retrieve_transfer_parameters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_retrieve_transfer_parameters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_retrieve_transfer_parameters` interceptor runs
+        before the `post_retrieve_transfer_parameters_with_metadata` interceptor.
         """
         return response
+
+    def post_retrieve_transfer_parameters_with_metadata(
+        self,
+        response: domains.RetrieveTransferParametersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        domains.RetrieveTransferParametersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for retrieve_transfer_parameters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_retrieve_transfer_parameters_with_metadata`
+        interceptor in new development instead of the `post_retrieve_transfer_parameters` interceptor.
+        When both interceptors are used, this `post_retrieve_transfer_parameters_with_metadata` interceptor runs after the
+        `post_retrieve_transfer_parameters` interceptor. The (possibly modified) response returned by
+        `post_retrieve_transfer_parameters` will be passed to
+        `post_retrieve_transfer_parameters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_domains(
         self,
@@ -512,11 +796,34 @@ class DomainsRestInterceptor:
     ) -> domains.SearchDomainsResponse:
         """Post-rpc interceptor for search_domains
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_domains_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_domains` interceptor runs
+        before the `post_search_domains_with_metadata` interceptor.
         """
         return response
+
+    def post_search_domains_with_metadata(
+        self,
+        response: domains.SearchDomainsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[domains.SearchDomainsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_domains
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_search_domains_with_metadata`
+        interceptor in new development instead of the `post_search_domains` interceptor.
+        When both interceptors are used, this `post_search_domains_with_metadata` interceptor runs after the
+        `post_search_domains` interceptor. The (possibly modified) response returned by
+        `post_search_domains` will be passed to
+        `post_search_domains_with_metadata`.
+        """
+        return response, metadata
 
     def pre_transfer_domain(
         self,
@@ -535,11 +842,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for transfer_domain
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_transfer_domain_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_transfer_domain` interceptor runs
+        before the `post_transfer_domain_with_metadata` interceptor.
         """
         return response
+
+    def post_transfer_domain_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for transfer_domain
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_transfer_domain_with_metadata`
+        interceptor in new development instead of the `post_transfer_domain` interceptor.
+        When both interceptors are used, this `post_transfer_domain_with_metadata` interceptor runs after the
+        `post_transfer_domain` interceptor. The (possibly modified) response returned by
+        `post_transfer_domain` will be passed to
+        `post_transfer_domain_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_registration(
         self,
@@ -560,11 +890,34 @@ class DomainsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_registration
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_registration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Domains server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_registration` interceptor runs
+        before the `post_update_registration_with_metadata` interceptor.
         """
         return response
+
+    def post_update_registration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_registration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Domains server but before it is returned to user code.
+
+        We recommend only using this `post_update_registration_with_metadata`
+        interceptor in new development instead of the `post_update_registration` interceptor.
+        When both interceptors are used, this `post_update_registration_with_metadata` interceptor runs after the
+        `post_update_registration` interceptor. The (possibly modified) response returned by
+        `post_update_registration` will be passed to
+        `post_update_registration_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -822,6 +1175,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_configure_contact_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_configure_contact_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -971,6 +1328,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_configure_dns_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_configure_dns_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1121,6 +1482,13 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_configure_management_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_configure_management_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1264,6 +1632,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_registration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_registration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1413,6 +1785,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_registration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_registration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1581,6 +1957,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_registration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_registration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1725,6 +2105,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_registrations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_registrations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1878,6 +2262,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_register_domain(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_register_domain_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2026,6 +2414,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset_authorization_code(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_authorization_code_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2169,6 +2561,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_retrieve_authorization_code(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_retrieve_authorization_code_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2312,6 +2708,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_retrieve_register_parameters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_retrieve_register_parameters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2457,6 +2857,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_retrieve_transfer_parameters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_retrieve_transfer_parameters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2601,6 +3005,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_domains(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_domains_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2752,6 +3160,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_transfer_domain(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_transfer_domain_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2901,6 +3313,10 @@ class DomainsRestTransport(_BaseDomainsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_registration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_registration_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

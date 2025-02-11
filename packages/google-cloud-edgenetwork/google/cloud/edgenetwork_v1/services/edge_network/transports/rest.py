@@ -304,11 +304,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_interconnect_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_interconnect_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_interconnect_attachment` interceptor runs
+        before the `post_create_interconnect_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_interconnect_attachment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_interconnect_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_create_interconnect_attachment_with_metadata`
+        interceptor in new development instead of the `post_create_interconnect_attachment` interceptor.
+        When both interceptors are used, this `post_create_interconnect_attachment_with_metadata` interceptor runs after the
+        `post_create_interconnect_attachment` interceptor. The (possibly modified) response returned by
+        `post_create_interconnect_attachment` will be passed to
+        `post_create_interconnect_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_network(
         self,
@@ -327,11 +350,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_network` interceptor runs
+        before the `post_create_network_with_metadata` interceptor.
         """
         return response
+
+    def post_create_network_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_create_network_with_metadata`
+        interceptor in new development instead of the `post_create_network` interceptor.
+        When both interceptors are used, this `post_create_network_with_metadata` interceptor runs after the
+        `post_create_network` interceptor. The (possibly modified) response returned by
+        `post_create_network` will be passed to
+        `post_create_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_router(
         self,
@@ -350,11 +396,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_router
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_router_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_router` interceptor runs
+        before the `post_create_router_with_metadata` interceptor.
         """
         return response
+
+    def post_create_router_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_router
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_create_router_with_metadata`
+        interceptor in new development instead of the `post_create_router` interceptor.
+        When both interceptors are used, this `post_create_router_with_metadata` interceptor runs after the
+        `post_create_router` interceptor. The (possibly modified) response returned by
+        `post_create_router` will be passed to
+        `post_create_router_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_subnet(
         self,
@@ -373,11 +442,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_subnet
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_subnet_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_subnet` interceptor runs
+        before the `post_create_subnet_with_metadata` interceptor.
         """
         return response
+
+    def post_create_subnet_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_subnet
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_create_subnet_with_metadata`
+        interceptor in new development instead of the `post_create_subnet` interceptor.
+        When both interceptors are used, this `post_create_subnet_with_metadata` interceptor runs after the
+        `post_create_subnet` interceptor. The (possibly modified) response returned by
+        `post_create_subnet` will be passed to
+        `post_create_subnet_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_interconnect_attachment(
         self,
@@ -399,11 +491,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_interconnect_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_interconnect_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_interconnect_attachment` interceptor runs
+        before the `post_delete_interconnect_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_interconnect_attachment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_interconnect_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_delete_interconnect_attachment_with_metadata`
+        interceptor in new development instead of the `post_delete_interconnect_attachment` interceptor.
+        When both interceptors are used, this `post_delete_interconnect_attachment_with_metadata` interceptor runs after the
+        `post_delete_interconnect_attachment` interceptor. The (possibly modified) response returned by
+        `post_delete_interconnect_attachment` will be passed to
+        `post_delete_interconnect_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_network(
         self,
@@ -422,11 +537,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_network` interceptor runs
+        before the `post_delete_network_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_network_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_delete_network_with_metadata`
+        interceptor in new development instead of the `post_delete_network` interceptor.
+        When both interceptors are used, this `post_delete_network_with_metadata` interceptor runs after the
+        `post_delete_network` interceptor. The (possibly modified) response returned by
+        `post_delete_network` will be passed to
+        `post_delete_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_router(
         self,
@@ -445,11 +583,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_router
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_router_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_router` interceptor runs
+        before the `post_delete_router_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_router_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_router
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_delete_router_with_metadata`
+        interceptor in new development instead of the `post_delete_router` interceptor.
+        When both interceptors are used, this `post_delete_router_with_metadata` interceptor runs after the
+        `post_delete_router` interceptor. The (possibly modified) response returned by
+        `post_delete_router` will be passed to
+        `post_delete_router_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_subnet(
         self,
@@ -468,11 +629,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_subnet
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_subnet_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_subnet` interceptor runs
+        before the `post_delete_subnet_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_subnet_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_subnet
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_delete_subnet_with_metadata`
+        interceptor in new development instead of the `post_delete_subnet` interceptor.
+        When both interceptors are used, this `post_delete_subnet_with_metadata` interceptor runs after the
+        `post_delete_subnet` interceptor. The (possibly modified) response returned by
+        `post_delete_subnet` will be passed to
+        `post_delete_subnet_with_metadata`.
+        """
+        return response, metadata
 
     def pre_diagnose_interconnect(
         self,
@@ -493,11 +677,36 @@ class EdgeNetworkRestInterceptor:
     ) -> service.DiagnoseInterconnectResponse:
         """Post-rpc interceptor for diagnose_interconnect
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_diagnose_interconnect_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_diagnose_interconnect` interceptor runs
+        before the `post_diagnose_interconnect_with_metadata` interceptor.
         """
         return response
+
+    def post_diagnose_interconnect_with_metadata(
+        self,
+        response: service.DiagnoseInterconnectResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DiagnoseInterconnectResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for diagnose_interconnect
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_diagnose_interconnect_with_metadata`
+        interceptor in new development instead of the `post_diagnose_interconnect` interceptor.
+        When both interceptors are used, this `post_diagnose_interconnect_with_metadata` interceptor runs after the
+        `post_diagnose_interconnect` interceptor. The (possibly modified) response returned by
+        `post_diagnose_interconnect` will be passed to
+        `post_diagnose_interconnect_with_metadata`.
+        """
+        return response, metadata
 
     def pre_diagnose_network(
         self,
@@ -516,11 +725,36 @@ class EdgeNetworkRestInterceptor:
     ) -> service.DiagnoseNetworkResponse:
         """Post-rpc interceptor for diagnose_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_diagnose_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_diagnose_network` interceptor runs
+        before the `post_diagnose_network_with_metadata` interceptor.
         """
         return response
+
+    def post_diagnose_network_with_metadata(
+        self,
+        response: service.DiagnoseNetworkResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DiagnoseNetworkResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for diagnose_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_diagnose_network_with_metadata`
+        interceptor in new development instead of the `post_diagnose_network` interceptor.
+        When both interceptors are used, this `post_diagnose_network_with_metadata` interceptor runs after the
+        `post_diagnose_network` interceptor. The (possibly modified) response returned by
+        `post_diagnose_network` will be passed to
+        `post_diagnose_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_diagnose_router(
         self,
@@ -539,11 +773,34 @@ class EdgeNetworkRestInterceptor:
     ) -> service.DiagnoseRouterResponse:
         """Post-rpc interceptor for diagnose_router
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_diagnose_router_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_diagnose_router` interceptor runs
+        before the `post_diagnose_router_with_metadata` interceptor.
         """
         return response
+
+    def post_diagnose_router_with_metadata(
+        self,
+        response: service.DiagnoseRouterResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DiagnoseRouterResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for diagnose_router
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_diagnose_router_with_metadata`
+        interceptor in new development instead of the `post_diagnose_router` interceptor.
+        When both interceptors are used, this `post_diagnose_router_with_metadata` interceptor runs after the
+        `post_diagnose_router` interceptor. The (possibly modified) response returned by
+        `post_diagnose_router` will be passed to
+        `post_diagnose_router_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_interconnect(
         self,
@@ -562,11 +819,34 @@ class EdgeNetworkRestInterceptor:
     ) -> resources.Interconnect:
         """Post-rpc interceptor for get_interconnect
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_interconnect_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_interconnect` interceptor runs
+        before the `post_get_interconnect_with_metadata` interceptor.
         """
         return response
+
+    def post_get_interconnect_with_metadata(
+        self,
+        response: resources.Interconnect,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Interconnect, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_interconnect
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_get_interconnect_with_metadata`
+        interceptor in new development instead of the `post_get_interconnect` interceptor.
+        When both interceptors are used, this `post_get_interconnect_with_metadata` interceptor runs after the
+        `post_get_interconnect` interceptor. The (possibly modified) response returned by
+        `post_get_interconnect` will be passed to
+        `post_get_interconnect_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_interconnect_attachment(
         self,
@@ -588,11 +868,36 @@ class EdgeNetworkRestInterceptor:
     ) -> resources.InterconnectAttachment:
         """Post-rpc interceptor for get_interconnect_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_interconnect_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_interconnect_attachment` interceptor runs
+        before the `post_get_interconnect_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_interconnect_attachment_with_metadata(
+        self,
+        response: resources.InterconnectAttachment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.InterconnectAttachment, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_interconnect_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_get_interconnect_attachment_with_metadata`
+        interceptor in new development instead of the `post_get_interconnect_attachment` interceptor.
+        When both interceptors are used, this `post_get_interconnect_attachment_with_metadata` interceptor runs after the
+        `post_get_interconnect_attachment` interceptor. The (possibly modified) response returned by
+        `post_get_interconnect_attachment` will be passed to
+        `post_get_interconnect_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_network(
         self,
@@ -609,11 +914,34 @@ class EdgeNetworkRestInterceptor:
     def post_get_network(self, response: resources.Network) -> resources.Network:
         """Post-rpc interceptor for get_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_network` interceptor runs
+        before the `post_get_network_with_metadata` interceptor.
         """
         return response
+
+    def post_get_network_with_metadata(
+        self,
+        response: resources.Network,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Network, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_get_network_with_metadata`
+        interceptor in new development instead of the `post_get_network` interceptor.
+        When both interceptors are used, this `post_get_network_with_metadata` interceptor runs after the
+        `post_get_network` interceptor. The (possibly modified) response returned by
+        `post_get_network` will be passed to
+        `post_get_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_router(
         self,
@@ -630,11 +958,34 @@ class EdgeNetworkRestInterceptor:
     def post_get_router(self, response: resources.Router) -> resources.Router:
         """Post-rpc interceptor for get_router
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_router_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_router` interceptor runs
+        before the `post_get_router_with_metadata` interceptor.
         """
         return response
+
+    def post_get_router_with_metadata(
+        self,
+        response: resources.Router,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Router, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_router
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_get_router_with_metadata`
+        interceptor in new development instead of the `post_get_router` interceptor.
+        When both interceptors are used, this `post_get_router_with_metadata` interceptor runs after the
+        `post_get_router` interceptor. The (possibly modified) response returned by
+        `post_get_router` will be passed to
+        `post_get_router_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_subnet(
         self,
@@ -651,11 +1002,34 @@ class EdgeNetworkRestInterceptor:
     def post_get_subnet(self, response: resources.Subnet) -> resources.Subnet:
         """Post-rpc interceptor for get_subnet
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_subnet_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_subnet` interceptor runs
+        before the `post_get_subnet_with_metadata` interceptor.
         """
         return response
+
+    def post_get_subnet_with_metadata(
+        self,
+        response: resources.Subnet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Subnet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_subnet
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_get_subnet_with_metadata`
+        interceptor in new development instead of the `post_get_subnet` interceptor.
+        When both interceptors are used, this `post_get_subnet_with_metadata` interceptor runs after the
+        `post_get_subnet` interceptor. The (possibly modified) response returned by
+        `post_get_subnet` will be passed to
+        `post_get_subnet_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_zone(
         self,
@@ -672,11 +1046,34 @@ class EdgeNetworkRestInterceptor:
     def post_get_zone(self, response: resources.Zone) -> resources.Zone:
         """Post-rpc interceptor for get_zone
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_zone_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_zone` interceptor runs
+        before the `post_get_zone_with_metadata` interceptor.
         """
         return response
+
+    def post_get_zone_with_metadata(
+        self,
+        response: resources.Zone,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Zone, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_zone
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_get_zone_with_metadata`
+        interceptor in new development instead of the `post_get_zone` interceptor.
+        When both interceptors are used, this `post_get_zone_with_metadata` interceptor runs after the
+        `post_get_zone` interceptor. The (possibly modified) response returned by
+        `post_get_zone` will be passed to
+        `post_get_zone_with_metadata`.
+        """
+        return response, metadata
 
     def pre_initialize_zone(
         self,
@@ -695,11 +1092,34 @@ class EdgeNetworkRestInterceptor:
     ) -> service.InitializeZoneResponse:
         """Post-rpc interceptor for initialize_zone
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_initialize_zone_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_initialize_zone` interceptor runs
+        before the `post_initialize_zone_with_metadata` interceptor.
         """
         return response
+
+    def post_initialize_zone_with_metadata(
+        self,
+        response: service.InitializeZoneResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.InitializeZoneResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for initialize_zone
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_initialize_zone_with_metadata`
+        interceptor in new development instead of the `post_initialize_zone` interceptor.
+        When both interceptors are used, this `post_initialize_zone_with_metadata` interceptor runs after the
+        `post_initialize_zone` interceptor. The (possibly modified) response returned by
+        `post_initialize_zone` will be passed to
+        `post_initialize_zone_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_interconnect_attachments(
         self,
@@ -721,11 +1141,37 @@ class EdgeNetworkRestInterceptor:
     ) -> service.ListInterconnectAttachmentsResponse:
         """Post-rpc interceptor for list_interconnect_attachments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_interconnect_attachments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_interconnect_attachments` interceptor runs
+        before the `post_list_interconnect_attachments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_interconnect_attachments_with_metadata(
+        self,
+        response: service.ListInterconnectAttachmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListInterconnectAttachmentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_interconnect_attachments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_list_interconnect_attachments_with_metadata`
+        interceptor in new development instead of the `post_list_interconnect_attachments` interceptor.
+        When both interceptors are used, this `post_list_interconnect_attachments_with_metadata` interceptor runs after the
+        `post_list_interconnect_attachments` interceptor. The (possibly modified) response returned by
+        `post_list_interconnect_attachments` will be passed to
+        `post_list_interconnect_attachments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_interconnects(
         self,
@@ -746,11 +1192,36 @@ class EdgeNetworkRestInterceptor:
     ) -> service.ListInterconnectsResponse:
         """Post-rpc interceptor for list_interconnects
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_interconnects_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_interconnects` interceptor runs
+        before the `post_list_interconnects_with_metadata` interceptor.
         """
         return response
+
+    def post_list_interconnects_with_metadata(
+        self,
+        response: service.ListInterconnectsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListInterconnectsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_interconnects
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_list_interconnects_with_metadata`
+        interceptor in new development instead of the `post_list_interconnects` interceptor.
+        When both interceptors are used, this `post_list_interconnects_with_metadata` interceptor runs after the
+        `post_list_interconnects` interceptor. The (possibly modified) response returned by
+        `post_list_interconnects` will be passed to
+        `post_list_interconnects_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_networks(
         self,
@@ -769,11 +1240,34 @@ class EdgeNetworkRestInterceptor:
     ) -> service.ListNetworksResponse:
         """Post-rpc interceptor for list_networks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_networks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_networks` interceptor runs
+        before the `post_list_networks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_networks_with_metadata(
+        self,
+        response: service.ListNetworksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListNetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_networks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_list_networks_with_metadata`
+        interceptor in new development instead of the `post_list_networks` interceptor.
+        When both interceptors are used, this `post_list_networks_with_metadata` interceptor runs after the
+        `post_list_networks` interceptor. The (possibly modified) response returned by
+        `post_list_networks` will be passed to
+        `post_list_networks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_routers(
         self,
@@ -792,11 +1286,34 @@ class EdgeNetworkRestInterceptor:
     ) -> service.ListRoutersResponse:
         """Post-rpc interceptor for list_routers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_routers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_routers` interceptor runs
+        before the `post_list_routers_with_metadata` interceptor.
         """
         return response
+
+    def post_list_routers_with_metadata(
+        self,
+        response: service.ListRoutersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListRoutersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_routers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_list_routers_with_metadata`
+        interceptor in new development instead of the `post_list_routers` interceptor.
+        When both interceptors are used, this `post_list_routers_with_metadata` interceptor runs after the
+        `post_list_routers` interceptor. The (possibly modified) response returned by
+        `post_list_routers` will be passed to
+        `post_list_routers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_subnets(
         self,
@@ -815,11 +1332,34 @@ class EdgeNetworkRestInterceptor:
     ) -> service.ListSubnetsResponse:
         """Post-rpc interceptor for list_subnets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_subnets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_subnets` interceptor runs
+        before the `post_list_subnets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_subnets_with_metadata(
+        self,
+        response: service.ListSubnetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListSubnetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_subnets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_list_subnets_with_metadata`
+        interceptor in new development instead of the `post_list_subnets` interceptor.
+        When both interceptors are used, this `post_list_subnets_with_metadata` interceptor runs after the
+        `post_list_subnets` interceptor. The (possibly modified) response returned by
+        `post_list_subnets` will be passed to
+        `post_list_subnets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_zones(
         self,
@@ -838,11 +1378,34 @@ class EdgeNetworkRestInterceptor:
     ) -> service.ListZonesResponse:
         """Post-rpc interceptor for list_zones
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_zones_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_zones` interceptor runs
+        before the `post_list_zones_with_metadata` interceptor.
         """
         return response
+
+    def post_list_zones_with_metadata(
+        self,
+        response: service.ListZonesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListZonesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_zones
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_list_zones_with_metadata`
+        interceptor in new development instead of the `post_list_zones` interceptor.
+        When both interceptors are used, this `post_list_zones_with_metadata` interceptor runs after the
+        `post_list_zones` interceptor. The (possibly modified) response returned by
+        `post_list_zones` will be passed to
+        `post_list_zones_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_router(
         self,
@@ -861,11 +1424,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_router
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_router_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_router` interceptor runs
+        before the `post_update_router_with_metadata` interceptor.
         """
         return response
+
+    def post_update_router_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_router
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_update_router_with_metadata`
+        interceptor in new development instead of the `post_update_router` interceptor.
+        When both interceptors are used, this `post_update_router_with_metadata` interceptor runs after the
+        `post_update_router` interceptor. The (possibly modified) response returned by
+        `post_update_router` will be passed to
+        `post_update_router_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_subnet(
         self,
@@ -884,11 +1470,34 @@ class EdgeNetworkRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_subnet
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_subnet_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeNetwork server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_subnet` interceptor runs
+        before the `post_update_subnet_with_metadata` interceptor.
         """
         return response
+
+    def post_update_subnet_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_subnet
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeNetwork server but before it is returned to user code.
+
+        We recommend only using this `post_update_subnet_with_metadata`
+        interceptor in new development instead of the `post_update_subnet` interceptor.
+        When both interceptors are used, this `post_update_subnet_with_metadata` interceptor runs after the
+        `post_update_subnet` interceptor. The (possibly modified) response returned by
+        `post_update_subnet` will be passed to
+        `post_update_subnet_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1312,6 +1921,13 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_interconnect_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_interconnect_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1463,6 +2079,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1616,6 +2236,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_router(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_router_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1769,6 +2393,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_subnet(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_subnet_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1917,6 +2545,13 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_interconnect_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_delete_interconnect_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2060,6 +2695,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2205,6 +2844,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_router(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_router_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2350,6 +2993,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_subnet(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_subnet_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2497,6 +3144,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_diagnose_interconnect(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_diagnose_interconnect_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2645,6 +3296,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_diagnose_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_diagnose_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2788,6 +3443,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_diagnose_router(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_diagnose_router_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2932,6 +3591,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_interconnect(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_interconnect_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3081,6 +3744,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_interconnect_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_interconnect_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3227,6 +3894,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3369,6 +4040,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_router(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_router_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3511,6 +4186,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_subnet(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_subnet_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3654,6 +4333,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_zone(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_zone_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3801,6 +4484,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_initialize_zone(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_initialize_zone_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3950,6 +4637,13 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_interconnect_attachments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_interconnect_attachments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4097,6 +4791,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_interconnects(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_interconnects_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4246,6 +4944,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_networks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_networks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4393,6 +5095,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_routers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_routers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4540,6 +5246,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_subnets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_subnets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4685,6 +5395,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_zones(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_zones_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4838,6 +5552,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_router(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_router_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4991,6 +5709,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_subnet(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_subnet_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

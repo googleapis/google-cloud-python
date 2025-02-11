@@ -152,11 +152,34 @@ class ConversationProfilesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for clear_suggestion_feature_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_clear_suggestion_feature_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationProfiles server but before
-        it is returned to user code.
+        it is returned to user code. This `post_clear_suggestion_feature_config` interceptor runs
+        before the `post_clear_suggestion_feature_config_with_metadata` interceptor.
         """
         return response
+
+    def post_clear_suggestion_feature_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for clear_suggestion_feature_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationProfiles server but before it is returned to user code.
+
+        We recommend only using this `post_clear_suggestion_feature_config_with_metadata`
+        interceptor in new development instead of the `post_clear_suggestion_feature_config` interceptor.
+        When both interceptors are used, this `post_clear_suggestion_feature_config_with_metadata` interceptor runs after the
+        `post_clear_suggestion_feature_config` interceptor. The (possibly modified) response returned by
+        `post_clear_suggestion_feature_config` will be passed to
+        `post_clear_suggestion_feature_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_conversation_profile(
         self,
@@ -178,11 +201,37 @@ class ConversationProfilesRestInterceptor:
     ) -> gcd_conversation_profile.ConversationProfile:
         """Post-rpc interceptor for create_conversation_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_conversation_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationProfiles server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_conversation_profile` interceptor runs
+        before the `post_create_conversation_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_create_conversation_profile_with_metadata(
+        self,
+        response: gcd_conversation_profile.ConversationProfile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_conversation_profile.ConversationProfile,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_conversation_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationProfiles server but before it is returned to user code.
+
+        We recommend only using this `post_create_conversation_profile_with_metadata`
+        interceptor in new development instead of the `post_create_conversation_profile` interceptor.
+        When both interceptors are used, this `post_create_conversation_profile_with_metadata` interceptor runs after the
+        `post_create_conversation_profile` interceptor. The (possibly modified) response returned by
+        `post_create_conversation_profile` will be passed to
+        `post_create_conversation_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_conversation_profile(
         self,
@@ -219,11 +268,37 @@ class ConversationProfilesRestInterceptor:
     ) -> conversation_profile.ConversationProfile:
         """Post-rpc interceptor for get_conversation_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_conversation_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationProfiles server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_conversation_profile` interceptor runs
+        before the `post_get_conversation_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_get_conversation_profile_with_metadata(
+        self,
+        response: conversation_profile.ConversationProfile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation_profile.ConversationProfile,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_conversation_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationProfiles server but before it is returned to user code.
+
+        We recommend only using this `post_get_conversation_profile_with_metadata`
+        interceptor in new development instead of the `post_get_conversation_profile` interceptor.
+        When both interceptors are used, this `post_get_conversation_profile_with_metadata` interceptor runs after the
+        `post_get_conversation_profile` interceptor. The (possibly modified) response returned by
+        `post_get_conversation_profile` will be passed to
+        `post_get_conversation_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_conversation_profiles(
         self,
@@ -245,11 +320,37 @@ class ConversationProfilesRestInterceptor:
     ) -> conversation_profile.ListConversationProfilesResponse:
         """Post-rpc interceptor for list_conversation_profiles
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_conversation_profiles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationProfiles server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_conversation_profiles` interceptor runs
+        before the `post_list_conversation_profiles_with_metadata` interceptor.
         """
         return response
+
+    def post_list_conversation_profiles_with_metadata(
+        self,
+        response: conversation_profile.ListConversationProfilesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversation_profile.ListConversationProfilesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_conversation_profiles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationProfiles server but before it is returned to user code.
+
+        We recommend only using this `post_list_conversation_profiles_with_metadata`
+        interceptor in new development instead of the `post_list_conversation_profiles` interceptor.
+        When both interceptors are used, this `post_list_conversation_profiles_with_metadata` interceptor runs after the
+        `post_list_conversation_profiles` interceptor. The (possibly modified) response returned by
+        `post_list_conversation_profiles` will be passed to
+        `post_list_conversation_profiles_with_metadata`.
+        """
+        return response, metadata
 
     def pre_set_suggestion_feature_config(
         self,
@@ -271,11 +372,34 @@ class ConversationProfilesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_suggestion_feature_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_set_suggestion_feature_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationProfiles server but before
-        it is returned to user code.
+        it is returned to user code. This `post_set_suggestion_feature_config` interceptor runs
+        before the `post_set_suggestion_feature_config_with_metadata` interceptor.
         """
         return response
+
+    def post_set_suggestion_feature_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for set_suggestion_feature_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationProfiles server but before it is returned to user code.
+
+        We recommend only using this `post_set_suggestion_feature_config_with_metadata`
+        interceptor in new development instead of the `post_set_suggestion_feature_config` interceptor.
+        When both interceptors are used, this `post_set_suggestion_feature_config_with_metadata` interceptor runs after the
+        `post_set_suggestion_feature_config` interceptor. The (possibly modified) response returned by
+        `post_set_suggestion_feature_config` will be passed to
+        `post_set_suggestion_feature_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_conversation_profile(
         self,
@@ -297,11 +421,37 @@ class ConversationProfilesRestInterceptor:
     ) -> gcd_conversation_profile.ConversationProfile:
         """Post-rpc interceptor for update_conversation_profile
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_conversation_profile_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ConversationProfiles server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_conversation_profile` interceptor runs
+        before the `post_update_conversation_profile_with_metadata` interceptor.
         """
         return response
+
+    def post_update_conversation_profile_with_metadata(
+        self,
+        response: gcd_conversation_profile.ConversationProfile,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcd_conversation_profile.ConversationProfile,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_conversation_profile
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationProfiles server but before it is returned to user code.
+
+        We recommend only using this `post_update_conversation_profile_with_metadata`
+        interceptor in new development instead of the `post_update_conversation_profile` interceptor.
+        When both interceptors are used, this `post_update_conversation_profile_with_metadata` interceptor runs after the
+        `post_update_conversation_profile` interceptor. The (possibly modified) response returned by
+        `post_update_conversation_profile` will be passed to
+        `post_update_conversation_profile_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -704,6 +854,13 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_clear_suggestion_feature_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_clear_suggestion_feature_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -857,6 +1014,10 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_conversation_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_conversation_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1121,6 +1282,10 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_conversation_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_conversation_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1270,6 +1435,10 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_conversation_profiles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_conversation_profiles_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1426,6 +1595,13 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_set_suggestion_feature_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_set_suggestion_feature_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1579,6 +1755,10 @@ class ConversationProfilesRestTransport(_BaseConversationProfilesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_conversation_profile(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_conversation_profile_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

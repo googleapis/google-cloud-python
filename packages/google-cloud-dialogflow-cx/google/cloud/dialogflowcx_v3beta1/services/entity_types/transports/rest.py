@@ -150,11 +150,34 @@ class EntityTypesRestInterceptor:
     ) -> gcdc_entity_type.EntityType:
         """Post-rpc interceptor for create_entity_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_entity_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_entity_type` interceptor runs
+        before the `post_create_entity_type_with_metadata` interceptor.
         """
         return response
+
+    def post_create_entity_type_with_metadata(
+        self,
+        response: gcdc_entity_type.EntityType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_entity_type.EntityType, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_entity_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_create_entity_type_with_metadata`
+        interceptor in new development instead of the `post_create_entity_type` interceptor.
+        When both interceptors are used, this `post_create_entity_type_with_metadata` interceptor runs after the
+        `post_create_entity_type` interceptor. The (possibly modified) response returned by
+        `post_create_entity_type` will be passed to
+        `post_create_entity_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_entity_type(
         self,
@@ -189,11 +212,34 @@ class EntityTypesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_entity_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_entity_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_entity_types` interceptor runs
+        before the `post_export_entity_types_with_metadata` interceptor.
         """
         return response
+
+    def post_export_entity_types_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_entity_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_export_entity_types_with_metadata`
+        interceptor in new development instead of the `post_export_entity_types` interceptor.
+        When both interceptors are used, this `post_export_entity_types_with_metadata` interceptor runs after the
+        `post_export_entity_types` interceptor. The (possibly modified) response returned by
+        `post_export_entity_types` will be passed to
+        `post_export_entity_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_entity_type(
         self,
@@ -214,11 +260,34 @@ class EntityTypesRestInterceptor:
     ) -> entity_type.EntityType:
         """Post-rpc interceptor for get_entity_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_entity_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_entity_type` interceptor runs
+        before the `post_get_entity_type_with_metadata` interceptor.
         """
         return response
+
+    def post_get_entity_type_with_metadata(
+        self,
+        response: entity_type.EntityType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[entity_type.EntityType, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_entity_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_get_entity_type_with_metadata`
+        interceptor in new development instead of the `post_get_entity_type` interceptor.
+        When both interceptors are used, this `post_get_entity_type_with_metadata` interceptor runs after the
+        `post_get_entity_type` interceptor. The (possibly modified) response returned by
+        `post_get_entity_type` will be passed to
+        `post_get_entity_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_entity_types(
         self,
@@ -239,11 +308,34 @@ class EntityTypesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_entity_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_entity_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_entity_types` interceptor runs
+        before the `post_import_entity_types_with_metadata` interceptor.
         """
         return response
+
+    def post_import_entity_types_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_entity_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_import_entity_types_with_metadata`
+        interceptor in new development instead of the `post_import_entity_types` interceptor.
+        When both interceptors are used, this `post_import_entity_types_with_metadata` interceptor runs after the
+        `post_import_entity_types` interceptor. The (possibly modified) response returned by
+        `post_import_entity_types` will be passed to
+        `post_import_entity_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_entity_types(
         self,
@@ -264,11 +356,36 @@ class EntityTypesRestInterceptor:
     ) -> entity_type.ListEntityTypesResponse:
         """Post-rpc interceptor for list_entity_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_entity_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_entity_types` interceptor runs
+        before the `post_list_entity_types_with_metadata` interceptor.
         """
         return response
+
+    def post_list_entity_types_with_metadata(
+        self,
+        response: entity_type.ListEntityTypesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        entity_type.ListEntityTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_entity_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_list_entity_types_with_metadata`
+        interceptor in new development instead of the `post_list_entity_types` interceptor.
+        When both interceptors are used, this `post_list_entity_types_with_metadata` interceptor runs after the
+        `post_list_entity_types` interceptor. The (possibly modified) response returned by
+        `post_list_entity_types` will be passed to
+        `post_list_entity_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_entity_type(
         self,
@@ -290,11 +407,34 @@ class EntityTypesRestInterceptor:
     ) -> gcdc_entity_type.EntityType:
         """Post-rpc interceptor for update_entity_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_entity_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_entity_type` interceptor runs
+        before the `post_update_entity_type_with_metadata` interceptor.
         """
         return response
+
+    def post_update_entity_type_with_metadata(
+        self,
+        response: gcdc_entity_type.EntityType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcdc_entity_type.EntityType, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_entity_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_update_entity_type_with_metadata`
+        interceptor in new development instead of the `post_update_entity_type` interceptor.
+        When both interceptors are used, this `post_update_entity_type_with_metadata` interceptor runs after the
+        `post_update_entity_type` interceptor. The (possibly modified) response returned by
+        `post_update_entity_type` will be passed to
+        `post_update_entity_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -727,6 +867,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_entity_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_entity_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -986,6 +1130,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_entity_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_entity_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1164,6 +1312,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_entity_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_entity_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1314,6 +1466,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_entity_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_entity_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1459,6 +1615,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_entity_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_entity_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1645,6 +1805,10 @@ class EntityTypesRestTransport(_BaseEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_entity_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_entity_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -144,11 +144,34 @@ class SampleQueryServiceRestInterceptor:
     ) -> gcd_sample_query.SampleQuery:
         """Post-rpc interceptor for create_sample_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_sample_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SampleQueryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_sample_query` interceptor runs
+        before the `post_create_sample_query_with_metadata` interceptor.
         """
         return response
+
+    def post_create_sample_query_with_metadata(
+        self,
+        response: gcd_sample_query.SampleQuery,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_sample_query.SampleQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_sample_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SampleQueryService server but before it is returned to user code.
+
+        We recommend only using this `post_create_sample_query_with_metadata`
+        interceptor in new development instead of the `post_create_sample_query` interceptor.
+        When both interceptors are used, this `post_create_sample_query_with_metadata` interceptor runs after the
+        `post_create_sample_query` interceptor. The (possibly modified) response returned by
+        `post_create_sample_query` will be passed to
+        `post_create_sample_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_sample_query(
         self,
@@ -185,11 +208,34 @@ class SampleQueryServiceRestInterceptor:
     ) -> sample_query.SampleQuery:
         """Post-rpc interceptor for get_sample_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_sample_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SampleQueryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_sample_query` interceptor runs
+        before the `post_get_sample_query_with_metadata` interceptor.
         """
         return response
+
+    def post_get_sample_query_with_metadata(
+        self,
+        response: sample_query.SampleQuery,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[sample_query.SampleQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_sample_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SampleQueryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_sample_query_with_metadata`
+        interceptor in new development instead of the `post_get_sample_query` interceptor.
+        When both interceptors are used, this `post_get_sample_query_with_metadata` interceptor runs after the
+        `post_get_sample_query` interceptor. The (possibly modified) response returned by
+        `post_get_sample_query` will be passed to
+        `post_get_sample_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_sample_queries(
         self,
@@ -211,11 +257,34 @@ class SampleQueryServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_sample_queries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_sample_queries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SampleQueryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_sample_queries` interceptor runs
+        before the `post_import_sample_queries_with_metadata` interceptor.
         """
         return response
+
+    def post_import_sample_queries_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_sample_queries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SampleQueryService server but before it is returned to user code.
+
+        We recommend only using this `post_import_sample_queries_with_metadata`
+        interceptor in new development instead of the `post_import_sample_queries` interceptor.
+        When both interceptors are used, this `post_import_sample_queries_with_metadata` interceptor runs after the
+        `post_import_sample_queries` interceptor. The (possibly modified) response returned by
+        `post_import_sample_queries` will be passed to
+        `post_import_sample_queries_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_sample_queries(
         self,
@@ -237,11 +306,37 @@ class SampleQueryServiceRestInterceptor:
     ) -> sample_query_service.ListSampleQueriesResponse:
         """Post-rpc interceptor for list_sample_queries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_sample_queries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SampleQueryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_sample_queries` interceptor runs
+        before the `post_list_sample_queries_with_metadata` interceptor.
         """
         return response
+
+    def post_list_sample_queries_with_metadata(
+        self,
+        response: sample_query_service.ListSampleQueriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        sample_query_service.ListSampleQueriesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_sample_queries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SampleQueryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_sample_queries_with_metadata`
+        interceptor in new development instead of the `post_list_sample_queries` interceptor.
+        When both interceptors are used, this `post_list_sample_queries_with_metadata` interceptor runs after the
+        `post_list_sample_queries` interceptor. The (possibly modified) response returned by
+        `post_list_sample_queries` will be passed to
+        `post_list_sample_queries_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_sample_query(
         self,
@@ -263,11 +358,34 @@ class SampleQueryServiceRestInterceptor:
     ) -> gcd_sample_query.SampleQuery:
         """Post-rpc interceptor for update_sample_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_sample_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SampleQueryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_sample_query` interceptor runs
+        before the `post_update_sample_query_with_metadata` interceptor.
         """
         return response
+
+    def post_update_sample_query_with_metadata(
+        self,
+        response: gcd_sample_query.SampleQuery,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcd_sample_query.SampleQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_sample_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SampleQueryService server but before it is returned to user code.
+
+        We recommend only using this `post_update_sample_query_with_metadata`
+        interceptor in new development instead of the `post_update_sample_query` interceptor.
+        When both interceptors are used, this `post_update_sample_query_with_metadata` interceptor runs after the
+        `post_update_sample_query` interceptor. The (possibly modified) response returned by
+        `post_update_sample_query` will be passed to
+        `post_update_sample_query_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -733,6 +851,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_sample_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_sample_query_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -991,6 +1113,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_sample_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_sample_query_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1145,6 +1271,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_sample_queries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_sample_queries_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1293,6 +1423,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_sample_queries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sample_queries_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1448,6 +1582,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_sample_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_sample_query_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

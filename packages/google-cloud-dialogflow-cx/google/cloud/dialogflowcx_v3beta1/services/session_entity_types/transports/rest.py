@@ -136,11 +136,37 @@ class SessionEntityTypesRestInterceptor:
     ) -> gcdc_session_entity_type.SessionEntityType:
         """Post-rpc interceptor for create_session_entity_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_session_entity_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionEntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_session_entity_type` interceptor runs
+        before the `post_create_session_entity_type_with_metadata` interceptor.
         """
         return response
+
+    def post_create_session_entity_type_with_metadata(
+        self,
+        response: gcdc_session_entity_type.SessionEntityType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_session_entity_type.SessionEntityType,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for create_session_entity_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionEntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_create_session_entity_type_with_metadata`
+        interceptor in new development instead of the `post_create_session_entity_type` interceptor.
+        When both interceptors are used, this `post_create_session_entity_type_with_metadata` interceptor runs after the
+        `post_create_session_entity_type` interceptor. The (possibly modified) response returned by
+        `post_create_session_entity_type` will be passed to
+        `post_create_session_entity_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_session_entity_type(
         self,
@@ -177,11 +203,36 @@ class SessionEntityTypesRestInterceptor:
     ) -> session_entity_type.SessionEntityType:
         """Post-rpc interceptor for get_session_entity_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_session_entity_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionEntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_session_entity_type` interceptor runs
+        before the `post_get_session_entity_type_with_metadata` interceptor.
         """
         return response
+
+    def post_get_session_entity_type_with_metadata(
+        self,
+        response: session_entity_type.SessionEntityType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        session_entity_type.SessionEntityType, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_session_entity_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionEntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_get_session_entity_type_with_metadata`
+        interceptor in new development instead of the `post_get_session_entity_type` interceptor.
+        When both interceptors are used, this `post_get_session_entity_type_with_metadata` interceptor runs after the
+        `post_get_session_entity_type` interceptor. The (possibly modified) response returned by
+        `post_get_session_entity_type` will be passed to
+        `post_get_session_entity_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_session_entity_types(
         self,
@@ -203,11 +254,37 @@ class SessionEntityTypesRestInterceptor:
     ) -> session_entity_type.ListSessionEntityTypesResponse:
         """Post-rpc interceptor for list_session_entity_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_session_entity_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionEntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_session_entity_types` interceptor runs
+        before the `post_list_session_entity_types_with_metadata` interceptor.
         """
         return response
+
+    def post_list_session_entity_types_with_metadata(
+        self,
+        response: session_entity_type.ListSessionEntityTypesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        session_entity_type.ListSessionEntityTypesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_session_entity_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionEntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_list_session_entity_types_with_metadata`
+        interceptor in new development instead of the `post_list_session_entity_types` interceptor.
+        When both interceptors are used, this `post_list_session_entity_types_with_metadata` interceptor runs after the
+        `post_list_session_entity_types` interceptor. The (possibly modified) response returned by
+        `post_list_session_entity_types` will be passed to
+        `post_list_session_entity_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_session_entity_type(
         self,
@@ -229,11 +306,37 @@ class SessionEntityTypesRestInterceptor:
     ) -> gcdc_session_entity_type.SessionEntityType:
         """Post-rpc interceptor for update_session_entity_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_session_entity_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the SessionEntityTypes server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_session_entity_type` interceptor runs
+        before the `post_update_session_entity_type_with_metadata` interceptor.
         """
         return response
+
+    def post_update_session_entity_type_with_metadata(
+        self,
+        response: gcdc_session_entity_type.SessionEntityType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_session_entity_type.SessionEntityType,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for update_session_entity_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SessionEntityTypes server but before it is returned to user code.
+
+        We recommend only using this `post_update_session_entity_type_with_metadata`
+        interceptor in new development instead of the `post_update_session_entity_type` interceptor.
+        When both interceptors are used, this `post_update_session_entity_type_with_metadata` interceptor runs after the
+        `post_update_session_entity_type` interceptor. The (possibly modified) response returned by
+        `post_update_session_entity_type` will be passed to
+        `post_update_session_entity_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -593,6 +696,10 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_session_entity_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_session_entity_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -871,6 +978,10 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_session_entity_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_session_entity_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1021,6 +1132,10 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_session_entity_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_session_entity_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1195,6 +1310,10 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_session_entity_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_session_entity_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

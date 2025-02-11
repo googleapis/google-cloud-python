@@ -253,11 +253,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cluster` interceptor runs
+        before the `post_create_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_create_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_cluster` interceptor.
+        When both interceptors are used, this `post_create_cluster_with_metadata` interceptor runs after the
+        `post_create_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_cluster` will be passed to
+        `post_create_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_node_pool(
         self,
@@ -276,11 +299,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_node_pool` interceptor runs
+        before the `post_create_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_create_node_pool_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_create_node_pool_with_metadata`
+        interceptor in new development instead of the `post_create_node_pool` interceptor.
+        When both interceptors are used, this `post_create_node_pool_with_metadata` interceptor runs after the
+        `post_create_node_pool` interceptor. The (possibly modified) response returned by
+        `post_create_node_pool` will be passed to
+        `post_create_node_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_vpn_connection(
         self,
@@ -301,11 +347,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_vpn_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_vpn_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_vpn_connection` interceptor runs
+        before the `post_create_vpn_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_create_vpn_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_vpn_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_create_vpn_connection_with_metadata`
+        interceptor in new development instead of the `post_create_vpn_connection` interceptor.
+        When both interceptors are used, this `post_create_vpn_connection_with_metadata` interceptor runs after the
+        `post_create_vpn_connection` interceptor. The (possibly modified) response returned by
+        `post_create_vpn_connection` will be passed to
+        `post_create_vpn_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cluster(
         self,
@@ -324,11 +393,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cluster` interceptor runs
+        before the `post_delete_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_cluster` interceptor.
+        When both interceptors are used, this `post_delete_cluster_with_metadata` interceptor runs after the
+        `post_delete_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_cluster` will be passed to
+        `post_delete_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_node_pool(
         self,
@@ -347,11 +439,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_node_pool` interceptor runs
+        before the `post_delete_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_node_pool_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_delete_node_pool_with_metadata`
+        interceptor in new development instead of the `post_delete_node_pool` interceptor.
+        When both interceptors are used, this `post_delete_node_pool_with_metadata` interceptor runs after the
+        `post_delete_node_pool` interceptor. The (possibly modified) response returned by
+        `post_delete_node_pool` will be passed to
+        `post_delete_node_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_vpn_connection(
         self,
@@ -372,11 +487,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_vpn_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_vpn_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_vpn_connection` interceptor runs
+        before the `post_delete_vpn_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_vpn_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_vpn_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_delete_vpn_connection_with_metadata`
+        interceptor in new development instead of the `post_delete_vpn_connection` interceptor.
+        When both interceptors are used, this `post_delete_vpn_connection_with_metadata` interceptor runs after the
+        `post_delete_vpn_connection` interceptor. The (possibly modified) response returned by
+        `post_delete_vpn_connection` will be passed to
+        `post_delete_vpn_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_access_token(
         self,
@@ -397,11 +535,36 @@ class EdgeContainerRestInterceptor:
     ) -> service.GenerateAccessTokenResponse:
         """Post-rpc interceptor for generate_access_token
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_access_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_access_token` interceptor runs
+        before the `post_generate_access_token_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_access_token_with_metadata(
+        self,
+        response: service.GenerateAccessTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GenerateAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for generate_access_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_generate_access_token_with_metadata`
+        interceptor in new development instead of the `post_generate_access_token` interceptor.
+        When both interceptors are used, this `post_generate_access_token_with_metadata` interceptor runs after the
+        `post_generate_access_token` interceptor. The (possibly modified) response returned by
+        `post_generate_access_token` will be passed to
+        `post_generate_access_token_with_metadata`.
+        """
+        return response, metadata
 
     def pre_generate_offline_credential(
         self,
@@ -423,11 +586,37 @@ class EdgeContainerRestInterceptor:
     ) -> service.GenerateOfflineCredentialResponse:
         """Post-rpc interceptor for generate_offline_credential
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_generate_offline_credential_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_offline_credential` interceptor runs
+        before the `post_generate_offline_credential_with_metadata` interceptor.
         """
         return response
+
+    def post_generate_offline_credential_with_metadata(
+        self,
+        response: service.GenerateOfflineCredentialResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GenerateOfflineCredentialResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for generate_offline_credential
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_generate_offline_credential_with_metadata`
+        interceptor in new development instead of the `post_generate_offline_credential` interceptor.
+        When both interceptors are used, this `post_generate_offline_credential_with_metadata` interceptor runs after the
+        `post_generate_offline_credential` interceptor. The (possibly modified) response returned by
+        `post_generate_offline_credential` will be passed to
+        `post_generate_offline_credential_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cluster(
         self,
@@ -444,11 +633,34 @@ class EdgeContainerRestInterceptor:
     def post_get_cluster(self, response: resources.Cluster) -> resources.Cluster:
         """Post-rpc interceptor for get_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cluster` interceptor runs
+        before the `post_get_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cluster_with_metadata(
+        self,
+        response: resources.Cluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_get_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_cluster` interceptor.
+        When both interceptors are used, this `post_get_cluster_with_metadata` interceptor runs after the
+        `post_get_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_cluster` will be passed to
+        `post_get_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_machine(
         self,
@@ -465,11 +677,34 @@ class EdgeContainerRestInterceptor:
     def post_get_machine(self, response: resources.Machine) -> resources.Machine:
         """Post-rpc interceptor for get_machine
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_machine_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_machine` interceptor runs
+        before the `post_get_machine_with_metadata` interceptor.
         """
         return response
+
+    def post_get_machine_with_metadata(
+        self,
+        response: resources.Machine,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Machine, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_machine
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_get_machine_with_metadata`
+        interceptor in new development instead of the `post_get_machine` interceptor.
+        When both interceptors are used, this `post_get_machine_with_metadata` interceptor runs after the
+        `post_get_machine` interceptor. The (possibly modified) response returned by
+        `post_get_machine` will be passed to
+        `post_get_machine_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_node_pool(
         self,
@@ -486,11 +721,34 @@ class EdgeContainerRestInterceptor:
     def post_get_node_pool(self, response: resources.NodePool) -> resources.NodePool:
         """Post-rpc interceptor for get_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_node_pool` interceptor runs
+        before the `post_get_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_get_node_pool_with_metadata(
+        self,
+        response: resources.NodePool,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.NodePool, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_get_node_pool_with_metadata`
+        interceptor in new development instead of the `post_get_node_pool` interceptor.
+        When both interceptors are used, this `post_get_node_pool_with_metadata` interceptor runs after the
+        `post_get_node_pool` interceptor. The (possibly modified) response returned by
+        `post_get_node_pool` will be passed to
+        `post_get_node_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_server_config(
         self,
@@ -509,11 +767,34 @@ class EdgeContainerRestInterceptor:
     ) -> resources.ServerConfig:
         """Post-rpc interceptor for get_server_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_server_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_server_config` interceptor runs
+        before the `post_get_server_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_server_config_with_metadata(
+        self,
+        response: resources.ServerConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.ServerConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_server_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_get_server_config_with_metadata`
+        interceptor in new development instead of the `post_get_server_config` interceptor.
+        When both interceptors are used, this `post_get_server_config_with_metadata` interceptor runs after the
+        `post_get_server_config` interceptor. The (possibly modified) response returned by
+        `post_get_server_config` will be passed to
+        `post_get_server_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_vpn_connection(
         self,
@@ -534,11 +815,34 @@ class EdgeContainerRestInterceptor:
     ) -> resources.VpnConnection:
         """Post-rpc interceptor for get_vpn_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_vpn_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_vpn_connection` interceptor runs
+        before the `post_get_vpn_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_get_vpn_connection_with_metadata(
+        self,
+        response: resources.VpnConnection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.VpnConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_vpn_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_get_vpn_connection_with_metadata`
+        interceptor in new development instead of the `post_get_vpn_connection` interceptor.
+        When both interceptors are used, this `post_get_vpn_connection_with_metadata` interceptor runs after the
+        `post_get_vpn_connection` interceptor. The (possibly modified) response returned by
+        `post_get_vpn_connection` will be passed to
+        `post_get_vpn_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clusters(
         self,
@@ -557,11 +861,34 @@ class EdgeContainerRestInterceptor:
     ) -> service.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clusters` interceptor runs
+        before the `post_list_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clusters_with_metadata(
+        self,
+        response: service.ListClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_list_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_clusters` interceptor.
+        When both interceptors are used, this `post_list_clusters_with_metadata` interceptor runs after the
+        `post_list_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_clusters` will be passed to
+        `post_list_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_machines(
         self,
@@ -580,11 +907,34 @@ class EdgeContainerRestInterceptor:
     ) -> service.ListMachinesResponse:
         """Post-rpc interceptor for list_machines
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_machines_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_machines` interceptor runs
+        before the `post_list_machines_with_metadata` interceptor.
         """
         return response
+
+    def post_list_machines_with_metadata(
+        self,
+        response: service.ListMachinesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListMachinesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_machines
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_list_machines_with_metadata`
+        interceptor in new development instead of the `post_list_machines` interceptor.
+        When both interceptors are used, this `post_list_machines_with_metadata` interceptor runs after the
+        `post_list_machines` interceptor. The (possibly modified) response returned by
+        `post_list_machines` will be passed to
+        `post_list_machines_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_node_pools(
         self,
@@ -603,11 +953,34 @@ class EdgeContainerRestInterceptor:
     ) -> service.ListNodePoolsResponse:
         """Post-rpc interceptor for list_node_pools
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_node_pools_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_node_pools` interceptor runs
+        before the `post_list_node_pools_with_metadata` interceptor.
         """
         return response
+
+    def post_list_node_pools_with_metadata(
+        self,
+        response: service.ListNodePoolsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListNodePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_node_pools
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_list_node_pools_with_metadata`
+        interceptor in new development instead of the `post_list_node_pools` interceptor.
+        When both interceptors are used, this `post_list_node_pools_with_metadata` interceptor runs after the
+        `post_list_node_pools` interceptor. The (possibly modified) response returned by
+        `post_list_node_pools` will be passed to
+        `post_list_node_pools_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_vpn_connections(
         self,
@@ -628,11 +1001,36 @@ class EdgeContainerRestInterceptor:
     ) -> service.ListVpnConnectionsResponse:
         """Post-rpc interceptor for list_vpn_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_vpn_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_vpn_connections` interceptor runs
+        before the `post_list_vpn_connections_with_metadata` interceptor.
         """
         return response
+
+    def post_list_vpn_connections_with_metadata(
+        self,
+        response: service.ListVpnConnectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListVpnConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_vpn_connections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_list_vpn_connections_with_metadata`
+        interceptor in new development instead of the `post_list_vpn_connections` interceptor.
+        When both interceptors are used, this `post_list_vpn_connections_with_metadata` interceptor runs after the
+        `post_list_vpn_connections` interceptor. The (possibly modified) response returned by
+        `post_list_vpn_connections` will be passed to
+        `post_list_vpn_connections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_cluster(
         self,
@@ -651,11 +1049,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_cluster` interceptor runs
+        before the `post_update_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_update_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_update_cluster_with_metadata`
+        interceptor in new development instead of the `post_update_cluster` interceptor.
+        When both interceptors are used, this `post_update_cluster_with_metadata` interceptor runs after the
+        `post_update_cluster` interceptor. The (possibly modified) response returned by
+        `post_update_cluster` will be passed to
+        `post_update_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_node_pool(
         self,
@@ -674,11 +1095,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_node_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_node_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_node_pool` interceptor runs
+        before the `post_update_node_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_update_node_pool_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_node_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_update_node_pool_with_metadata`
+        interceptor in new development instead of the `post_update_node_pool` interceptor.
+        When both interceptors are used, this `post_update_node_pool_with_metadata` interceptor runs after the
+        `post_update_node_pool` interceptor. The (possibly modified) response returned by
+        `post_update_node_pool` will be passed to
+        `post_update_node_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_upgrade_cluster(
         self,
@@ -697,11 +1141,34 @@ class EdgeContainerRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_upgrade_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the EdgeContainer server but before
-        it is returned to user code.
+        it is returned to user code. This `post_upgrade_cluster` interceptor runs
+        before the `post_upgrade_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_upgrade_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for upgrade_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the EdgeContainer server but before it is returned to user code.
+
+        We recommend only using this `post_upgrade_cluster_with_metadata`
+        interceptor in new development instead of the `post_upgrade_cluster` interceptor.
+        When both interceptors are used, this `post_upgrade_cluster_with_metadata` interceptor runs after the
+        `post_upgrade_cluster` interceptor. The (possibly modified) response returned by
+        `post_upgrade_cluster` will be passed to
+        `post_upgrade_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1115,6 +1582,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1264,6 +1735,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1413,6 +1888,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_vpn_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_vpn_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1554,6 +2033,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1697,6 +2180,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1840,6 +2327,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_vpn_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_vpn_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1983,6 +2474,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_access_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_access_token_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2132,6 +2627,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_offline_credential(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_offline_credential_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2280,6 +2779,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2427,6 +2930,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_machine(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_machine_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2572,6 +3079,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2716,6 +3227,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_server_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_server_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2858,6 +3373,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_vpn_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_vpn_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2998,6 +3517,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3138,6 +3661,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_machines(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_machines_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3278,6 +3805,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_node_pools(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_node_pools_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3422,6 +3953,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_vpn_connections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_vpn_connections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3571,6 +4106,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3720,6 +4259,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_node_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_node_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3867,6 +4410,10 @@ class EdgeContainerRestTransport(_BaseEdgeContainerRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_upgrade_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_upgrade_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

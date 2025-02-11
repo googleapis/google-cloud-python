@@ -79,6 +79,13 @@ from google.cloud.metastore_v1beta.services.dataproc_metastore import (
 )
 from google.cloud.metastore_v1beta.types import metastore
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -344,6 +351,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DataprocMetastoreClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DataprocMetastoreClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DataprocMetastoreClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -12674,10 +12724,13 @@ def test_list_services_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_list_services"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_services_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_list_services"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ListServicesRequest.pb(metastore.ListServicesRequest())
         transcode.return_value = {
             "method": "post",
@@ -12701,6 +12754,7 @@ def test_list_services_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.ListServicesResponse()
+        post_with_metadata.return_value = metastore.ListServicesResponse(), metadata
 
         client.list_services(
             request,
@@ -12712,6 +12766,7 @@ def test_list_services_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_service_rest_bad_request(request_type=metastore.GetServiceRequest):
@@ -12814,10 +12869,13 @@ def test_get_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_get_service"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_get_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.GetServiceRequest.pb(metastore.GetServiceRequest())
         transcode.return_value = {
             "method": "post",
@@ -12839,6 +12897,7 @@ def test_get_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Service()
+        post_with_metadata.return_value = metastore.Service(), metadata
 
         client.get_service(
             request,
@@ -12850,6 +12909,7 @@ def test_get_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_service_rest_bad_request(request_type=metastore.CreateServiceRequest):
@@ -13061,10 +13121,13 @@ def test_create_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_create_service"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_create_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_create_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CreateServiceRequest.pb(metastore.CreateServiceRequest())
         transcode.return_value = {
             "method": "post",
@@ -13086,6 +13149,7 @@ def test_create_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_service(
             request,
@@ -13097,6 +13161,7 @@ def test_create_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_service_rest_bad_request(request_type=metastore.UpdateServiceRequest):
@@ -13312,10 +13377,13 @@ def test_update_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_update_service"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_update_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_update_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.UpdateServiceRequest.pb(metastore.UpdateServiceRequest())
         transcode.return_value = {
             "method": "post",
@@ -13337,6 +13405,7 @@ def test_update_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_service(
             request,
@@ -13348,6 +13417,7 @@ def test_update_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_service_rest_bad_request(request_type=metastore.DeleteServiceRequest):
@@ -13426,10 +13496,13 @@ def test_delete_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_delete_service"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_delete_service_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_delete_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.DeleteServiceRequest.pb(metastore.DeleteServiceRequest())
         transcode.return_value = {
             "method": "post",
@@ -13451,6 +13524,7 @@ def test_delete_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_service(
             request,
@@ -13462,6 +13536,7 @@ def test_delete_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_metadata_imports_rest_bad_request(
@@ -13548,10 +13623,14 @@ def test_list_metadata_imports_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_list_metadata_imports"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_list_metadata_imports_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_list_metadata_imports"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ListMetadataImportsRequest.pb(
             metastore.ListMetadataImportsRequest()
         )
@@ -13577,6 +13656,10 @@ def test_list_metadata_imports_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.ListMetadataImportsResponse()
+        post_with_metadata.return_value = (
+            metastore.ListMetadataImportsResponse(),
+            metadata,
+        )
 
         client.list_metadata_imports(
             request,
@@ -13588,6 +13671,7 @@ def test_list_metadata_imports_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_metadata_import_rest_bad_request(
@@ -13680,10 +13764,14 @@ def test_get_metadata_import_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_get_metadata_import"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_get_metadata_import_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_get_metadata_import"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.GetMetadataImportRequest.pb(
             metastore.GetMetadataImportRequest()
         )
@@ -13707,6 +13795,7 @@ def test_get_metadata_import_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.MetadataImport()
+        post_with_metadata.return_value = metastore.MetadataImport(), metadata
 
         client.get_metadata_import(
             request,
@@ -13718,6 +13807,7 @@ def test_get_metadata_import_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_metadata_import_rest_bad_request(
@@ -13879,10 +13969,14 @@ def test_create_metadata_import_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_create_metadata_import"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_create_metadata_import_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_create_metadata_import"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CreateMetadataImportRequest.pb(
             metastore.CreateMetadataImportRequest()
         )
@@ -13906,6 +14000,7 @@ def test_create_metadata_import_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_metadata_import(
             request,
@@ -13917,6 +14012,7 @@ def test_create_metadata_import_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_metadata_import_rest_bad_request(
@@ -14086,10 +14182,14 @@ def test_update_metadata_import_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_update_metadata_import"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_update_metadata_import_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_update_metadata_import"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.UpdateMetadataImportRequest.pb(
             metastore.UpdateMetadataImportRequest()
         )
@@ -14113,6 +14213,7 @@ def test_update_metadata_import_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_metadata_import(
             request,
@@ -14124,6 +14225,7 @@ def test_update_metadata_import_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_metadata_rest_bad_request(request_type=metastore.ExportMetadataRequest):
@@ -14202,10 +14304,14 @@ def test_export_metadata_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_export_metadata"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_export_metadata_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_export_metadata"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ExportMetadataRequest.pb(
             metastore.ExportMetadataRequest()
         )
@@ -14229,6 +14335,7 @@ def test_export_metadata_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_metadata(
             request,
@@ -14240,6 +14347,7 @@ def test_export_metadata_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_restore_service_rest_bad_request(request_type=metastore.RestoreServiceRequest):
@@ -14318,10 +14426,14 @@ def test_restore_service_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_restore_service"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_restore_service_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_restore_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.RestoreServiceRequest.pb(
             metastore.RestoreServiceRequest()
         )
@@ -14345,6 +14457,7 @@ def test_restore_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.restore_service(
             request,
@@ -14356,6 +14469,7 @@ def test_restore_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_backups_rest_bad_request(request_type=metastore.ListBackupsRequest):
@@ -14440,10 +14554,13 @@ def test_list_backups_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_list_backups"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_list_backups_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_list_backups"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ListBackupsRequest.pb(metastore.ListBackupsRequest())
         transcode.return_value = {
             "method": "post",
@@ -14467,6 +14584,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.ListBackupsResponse()
+        post_with_metadata.return_value = metastore.ListBackupsResponse(), metadata
 
         client.list_backups(
             request,
@@ -14478,6 +14596,7 @@ def test_list_backups_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_backup_rest_bad_request(request_type=metastore.GetBackupRequest):
@@ -14570,10 +14689,13 @@ def test_get_backup_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_get_backup"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_get_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_get_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.GetBackupRequest.pb(metastore.GetBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -14595,6 +14717,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Backup()
+        post_with_metadata.return_value = metastore.Backup(), metadata
 
         client.get_backup(
             request,
@@ -14606,6 +14729,7 @@ def test_get_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_backup_rest_bad_request(request_type=metastore.CreateBackupRequest):
@@ -14828,10 +14952,13 @@ def test_create_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_create_backup"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_create_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_create_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CreateBackupRequest.pb(metastore.CreateBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -14853,6 +14980,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_backup(
             request,
@@ -14864,6 +14992,7 @@ def test_create_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_backup_rest_bad_request(request_type=metastore.DeleteBackupRequest):
@@ -14946,10 +15075,13 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_delete_backup"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_delete_backup_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_delete_backup"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.DeleteBackupRequest.pb(metastore.DeleteBackupRequest())
         transcode.return_value = {
             "method": "post",
@@ -14971,6 +15103,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_backup(
             request,
@@ -14982,6 +15115,7 @@ def test_delete_backup_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_remove_iam_policy_rest_bad_request(
@@ -15070,10 +15204,14 @@ def test_remove_iam_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_remove_iam_policy"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_remove_iam_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_remove_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.RemoveIamPolicyRequest.pb(
             metastore.RemoveIamPolicyRequest()
         )
@@ -15099,6 +15237,7 @@ def test_remove_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.RemoveIamPolicyResponse()
+        post_with_metadata.return_value = metastore.RemoveIamPolicyResponse(), metadata
 
         client.remove_iam_policy(
             request,
@@ -15110,6 +15249,7 @@ def test_remove_iam_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_metadata_rest_bad_request(request_type=metastore.QueryMetadataRequest):
@@ -15188,10 +15328,13 @@ def test_query_metadata_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_query_metadata"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor, "post_query_metadata_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_query_metadata"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.QueryMetadataRequest.pb(metastore.QueryMetadataRequest())
         transcode.return_value = {
             "method": "post",
@@ -15213,6 +15356,7 @@ def test_query_metadata_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.query_metadata(
             request,
@@ -15224,6 +15368,7 @@ def test_query_metadata_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_move_table_to_database_rest_bad_request(
@@ -15304,10 +15449,14 @@ def test_move_table_to_database_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "post_move_table_to_database"
     ) as post, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
+        "post_move_table_to_database_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor, "pre_move_table_to_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.MoveTableToDatabaseRequest.pb(
             metastore.MoveTableToDatabaseRequest()
         )
@@ -15331,6 +15480,7 @@ def test_move_table_to_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.move_table_to_database(
             request,
@@ -15342,6 +15492,7 @@ def test_move_table_to_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_alter_metadata_resource_location_rest_bad_request(
@@ -15424,10 +15575,14 @@ def test_alter_metadata_resource_location_rest_interceptors(null_interceptor):
         "post_alter_metadata_resource_location",
     ) as post, mock.patch.object(
         transports.DataprocMetastoreRestInterceptor,
+        "post_alter_metadata_resource_location_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.DataprocMetastoreRestInterceptor,
         "pre_alter_metadata_resource_location",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.AlterMetadataResourceLocationRequest.pb(
             metastore.AlterMetadataResourceLocationRequest()
         )
@@ -15451,6 +15606,7 @@ def test_alter_metadata_resource_location_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.alter_metadata_resource_location(
             request,
@@ -15462,6 +15618,7 @@ def test_alter_metadata_resource_location_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
