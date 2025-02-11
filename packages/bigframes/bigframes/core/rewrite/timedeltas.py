@@ -28,7 +28,7 @@ class _TypedExpr:
     dtype: dtypes.Dtype
 
 
-def rewrite_timedelta_ops(root: nodes.BigFrameNode) -> nodes.BigFrameNode:
+def rewrite_timedelta_expressions(root: nodes.BigFrameNode) -> nodes.BigFrameNode:
     """
     Rewrites expressions to properly handle timedelta values, because this type does not exist
     in the SQL world.
