@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.36.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.35.0...v1.36.0) (2025-02-11)
+
+
+### Features
+
+* Add `bigframes.bigquery.st_area` and suggest it from `GeoSeries.area` ([#1318](https://github.com/googleapis/python-bigquery-dataframes/issues/1318)) ([8b5ffa8](https://github.com/googleapis/python-bigquery-dataframes/commit/8b5ffa8893b51016c51794865c40def74ea6716b))
+* Add `GeoSeries.from_xy()` ([#1364](https://github.com/googleapis/python-bigquery-dataframes/issues/1364)) ([3c3e14c](https://github.com/googleapis/python-bigquery-dataframes/commit/3c3e14c715f476ca44f254c0d53d639ea5988a8d))
+
+
+### Bug Fixes
+
+* Dtype parameter ineffective in Series/DataFrame construction ([#1354](https://github.com/googleapis/python-bigquery-dataframes/issues/1354)) ([b9bdca8](https://github.com/googleapis/python-bigquery-dataframes/commit/b9bdca8285ee54fecf3795fbf3cbea6f878ee8ca))
+* Translate labels to col ids when copying dataframes ([#1372](https://github.com/googleapis/python-bigquery-dataframes/issues/1372)) ([0c55b07](https://github.com/googleapis/python-bigquery-dataframes/commit/0c55b07dc001b568875f06d578ca7d59409f2a11))
+
+
+### Performance Improvements
+
+* Prune unused operations from sql ([#1365](https://github.com/googleapis/python-bigquery-dataframes/issues/1365)) ([923da03](https://github.com/googleapis/python-bigquery-dataframes/commit/923da037ef6e4e7f8b54924ea5644c2c5ceb2234))
+* Simplify merge join key coalescing ([#1361](https://github.com/googleapis/python-bigquery-dataframes/issues/1361)) ([7ae565d](https://github.com/googleapis/python-bigquery-dataframes/commit/7ae565d9e0e59fdf75c7659c0263562688ccc1e8))
+
 ## [1.35.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.34.0...v1.35.0) (2025-02-04)
 
 
