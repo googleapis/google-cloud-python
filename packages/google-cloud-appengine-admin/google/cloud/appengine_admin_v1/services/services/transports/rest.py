@@ -124,11 +124,34 @@ class ServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Services server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_service` interceptor runs
+        before the `post_delete_service_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Services server but before it is returned to user code.
+
+        We recommend only using this `post_delete_service_with_metadata`
+        interceptor in new development instead of the `post_delete_service` interceptor.
+        When both interceptors are used, this `post_delete_service_with_metadata` interceptor runs after the
+        `post_delete_service` interceptor. The (possibly modified) response returned by
+        `post_delete_service` will be passed to
+        `post_delete_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_service(
         self,
@@ -145,11 +168,34 @@ class ServicesRestInterceptor:
     def post_get_service(self, response: service.Service) -> service.Service:
         """Post-rpc interceptor for get_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Services server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_service` interceptor runs
+        before the `post_get_service_with_metadata` interceptor.
         """
         return response
+
+    def post_get_service_with_metadata(
+        self,
+        response: service.Service,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Service, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Services server but before it is returned to user code.
+
+        We recommend only using this `post_get_service_with_metadata`
+        interceptor in new development instead of the `post_get_service` interceptor.
+        When both interceptors are used, this `post_get_service_with_metadata` interceptor runs after the
+        `post_get_service` interceptor. The (possibly modified) response returned by
+        `post_get_service` will be passed to
+        `post_get_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_services(
         self,
@@ -168,11 +214,34 @@ class ServicesRestInterceptor:
     ) -> appengine.ListServicesResponse:
         """Post-rpc interceptor for list_services
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_services_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Services server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_services` interceptor runs
+        before the `post_list_services_with_metadata` interceptor.
         """
         return response
+
+    def post_list_services_with_metadata(
+        self,
+        response: appengine.ListServicesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[appengine.ListServicesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_services
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Services server but before it is returned to user code.
+
+        We recommend only using this `post_list_services_with_metadata`
+        interceptor in new development instead of the `post_list_services` interceptor.
+        When both interceptors are used, this `post_list_services_with_metadata` interceptor runs after the
+        `post_list_services` interceptor. The (possibly modified) response returned by
+        `post_list_services` will be passed to
+        `post_list_services_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_service(
         self,
@@ -191,11 +260,34 @@ class ServicesRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Services server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_service` interceptor runs
+        before the `post_update_service_with_metadata` interceptor.
         """
         return response
+
+    def post_update_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Services server but before it is returned to user code.
+
+        We recommend only using this `post_update_service_with_metadata`
+        interceptor in new development instead of the `post_update_service` interceptor.
+        When both interceptors are used, this `post_update_service_with_metadata` interceptor runs after the
+        `post_update_service` interceptor. The (possibly modified) response returned by
+        `post_update_service` will be passed to
+        `post_update_service_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -447,6 +539,10 @@ class ServicesRestTransport(_BaseServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -601,6 +697,10 @@ class ServicesRestTransport(_BaseServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -743,6 +843,10 @@ class ServicesRestTransport(_BaseServicesRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_services(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_services_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -894,6 +998,10 @@ class ServicesRestTransport(_BaseServicesRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
