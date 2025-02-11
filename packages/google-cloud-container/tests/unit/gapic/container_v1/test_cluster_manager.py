@@ -65,6 +65,13 @@ from google.cloud.container_v1.services.cluster_manager import (
 )
 from google.cloud.container_v1.types import cluster_service
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -321,6 +328,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         ClusterManagerClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ClusterManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ClusterManagerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -20427,10 +20477,13 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_list_clusters"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_list_clusters_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_list_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.ListClustersRequest.pb(
             cluster_service.ListClustersRequest()
         )
@@ -20456,6 +20509,10 @@ def test_list_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.ListClustersResponse()
+        post_with_metadata.return_value = (
+            cluster_service.ListClustersResponse(),
+            metadata,
+        )
 
         client.list_clusters(
             request,
@@ -20467,6 +20524,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cluster_rest_bad_request(request_type=cluster_service.GetClusterRequest):
@@ -20611,10 +20669,13 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_get_cluster"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_get_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_get_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.GetClusterRequest.pb(
             cluster_service.GetClusterRequest()
         )
@@ -20638,6 +20699,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Cluster()
+        post_with_metadata.return_value = cluster_service.Cluster(), metadata
 
         client.get_cluster(
             request,
@@ -20649,6 +20711,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cluster_rest_bad_request(
@@ -20753,10 +20816,13 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_create_cluster"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_create_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_create_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.CreateClusterRequest.pb(
             cluster_service.CreateClusterRequest()
         )
@@ -20780,6 +20846,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.create_cluster(
             request,
@@ -20791,6 +20858,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_cluster_rest_bad_request(
@@ -20895,10 +20963,13 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_update_cluster"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_update_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_update_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.UpdateClusterRequest.pb(
             cluster_service.UpdateClusterRequest()
         )
@@ -20922,6 +20993,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.update_cluster(
             request,
@@ -20933,6 +21005,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_node_pool_rest_bad_request(
@@ -21041,10 +21114,13 @@ def test_update_node_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_update_node_pool"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_update_node_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_update_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.UpdateNodePoolRequest.pb(
             cluster_service.UpdateNodePoolRequest()
         )
@@ -21068,6 +21144,7 @@ def test_update_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.update_node_pool(
             request,
@@ -21079,6 +21156,7 @@ def test_update_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_node_pool_autoscaling_rest_bad_request(
@@ -21187,10 +21265,14 @@ def test_set_node_pool_autoscaling_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_node_pool_autoscaling"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_set_node_pool_autoscaling_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_node_pool_autoscaling"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetNodePoolAutoscalingRequest.pb(
             cluster_service.SetNodePoolAutoscalingRequest()
         )
@@ -21214,6 +21296,7 @@ def test_set_node_pool_autoscaling_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_node_pool_autoscaling(
             request,
@@ -21225,6 +21308,7 @@ def test_set_node_pool_autoscaling_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_logging_service_rest_bad_request(
@@ -21329,10 +21413,14 @@ def test_set_logging_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_logging_service"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_set_logging_service_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_logging_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetLoggingServiceRequest.pb(
             cluster_service.SetLoggingServiceRequest()
         )
@@ -21356,6 +21444,7 @@ def test_set_logging_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_logging_service(
             request,
@@ -21367,6 +21456,7 @@ def test_set_logging_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_monitoring_service_rest_bad_request(
@@ -21471,10 +21561,14 @@ def test_set_monitoring_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_monitoring_service"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_set_monitoring_service_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_monitoring_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetMonitoringServiceRequest.pb(
             cluster_service.SetMonitoringServiceRequest()
         )
@@ -21498,6 +21592,7 @@ def test_set_monitoring_service_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_monitoring_service(
             request,
@@ -21509,6 +21604,7 @@ def test_set_monitoring_service_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_addons_config_rest_bad_request(
@@ -21613,10 +21709,13 @@ def test_set_addons_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_addons_config"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_set_addons_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_addons_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetAddonsConfigRequest.pb(
             cluster_service.SetAddonsConfigRequest()
         )
@@ -21640,6 +21739,7 @@ def test_set_addons_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_addons_config(
             request,
@@ -21651,6 +21751,7 @@ def test_set_addons_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_locations_rest_bad_request(
@@ -21755,10 +21856,13 @@ def test_set_locations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_locations"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_set_locations_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_locations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetLocationsRequest.pb(
             cluster_service.SetLocationsRequest()
         )
@@ -21782,6 +21886,7 @@ def test_set_locations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_locations(
             request,
@@ -21793,6 +21898,7 @@ def test_set_locations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_master_rest_bad_request(
@@ -21897,10 +22003,13 @@ def test_update_master_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_update_master"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_update_master_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_update_master"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.UpdateMasterRequest.pb(
             cluster_service.UpdateMasterRequest()
         )
@@ -21924,6 +22033,7 @@ def test_update_master_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.update_master(
             request,
@@ -21935,6 +22045,7 @@ def test_update_master_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_master_auth_rest_bad_request(
@@ -22039,10 +22150,13 @@ def test_set_master_auth_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_master_auth"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_set_master_auth_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_master_auth"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetMasterAuthRequest.pb(
             cluster_service.SetMasterAuthRequest()
         )
@@ -22066,6 +22180,7 @@ def test_set_master_auth_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_master_auth(
             request,
@@ -22077,6 +22192,7 @@ def test_set_master_auth_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cluster_rest_bad_request(
@@ -22181,10 +22297,13 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_delete_cluster"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_delete_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_delete_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.DeleteClusterRequest.pb(
             cluster_service.DeleteClusterRequest()
         )
@@ -22208,6 +22327,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.delete_cluster(
             request,
@@ -22219,6 +22339,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_operations_rest_bad_request(
@@ -22303,10 +22424,13 @@ def test_list_operations_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_list_operations"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_list_operations_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_list_operations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.ListOperationsRequest.pb(
             cluster_service.ListOperationsRequest()
         )
@@ -22332,6 +22456,10 @@ def test_list_operations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.ListOperationsResponse()
+        post_with_metadata.return_value = (
+            cluster_service.ListOperationsResponse(),
+            metadata,
+        )
 
         client.list_operations(
             request,
@@ -22343,6 +22471,7 @@ def test_list_operations_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(
@@ -22447,10 +22576,13 @@ def test_get_operation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_get_operation"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_get_operation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_get_operation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.GetOperationRequest.pb(
             cluster_service.GetOperationRequest()
         )
@@ -22474,6 +22606,7 @@ def test_get_operation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.get_operation(
             request,
@@ -22485,6 +22618,7 @@ def test_get_operation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(
@@ -22686,10 +22820,13 @@ def test_get_server_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_get_server_config"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_get_server_config_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_get_server_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.GetServerConfigRequest.pb(
             cluster_service.GetServerConfigRequest()
         )
@@ -22715,6 +22852,7 @@ def test_get_server_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.ServerConfig()
+        post_with_metadata.return_value = cluster_service.ServerConfig(), metadata
 
         client.get_server_config(
             request,
@@ -22726,6 +22864,7 @@ def test_get_server_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_json_web_keys_rest_bad_request(
@@ -22807,10 +22946,13 @@ def test_get_json_web_keys_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_get_json_web_keys"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_get_json_web_keys_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_get_json_web_keys"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.GetJSONWebKeysRequest.pb(
             cluster_service.GetJSONWebKeysRequest()
         )
@@ -22836,6 +22978,10 @@ def test_get_json_web_keys_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.GetJSONWebKeysResponse()
+        post_with_metadata.return_value = (
+            cluster_service.GetJSONWebKeysResponse(),
+            metadata,
+        )
 
         client.get_json_web_keys(
             request,
@@ -22847,6 +22993,7 @@ def test_get_json_web_keys_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_node_pools_rest_bad_request(
@@ -22928,10 +23075,13 @@ def test_list_node_pools_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_list_node_pools"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_list_node_pools_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_list_node_pools"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.ListNodePoolsRequest.pb(
             cluster_service.ListNodePoolsRequest()
         )
@@ -22957,6 +23107,10 @@ def test_list_node_pools_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.ListNodePoolsResponse()
+        post_with_metadata.return_value = (
+            cluster_service.ListNodePoolsResponse(),
+            metadata,
+        )
 
         client.list_node_pools(
             request,
@@ -22968,6 +23122,7 @@ def test_list_node_pools_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_node_pool_rest_bad_request(
@@ -23074,10 +23229,13 @@ def test_get_node_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_get_node_pool"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_get_node_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_get_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.GetNodePoolRequest.pb(
             cluster_service.GetNodePoolRequest()
         )
@@ -23101,6 +23259,7 @@ def test_get_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.NodePool()
+        post_with_metadata.return_value = cluster_service.NodePool(), metadata
 
         client.get_node_pool(
             request,
@@ -23112,6 +23271,7 @@ def test_get_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_node_pool_rest_bad_request(
@@ -23216,10 +23376,13 @@ def test_create_node_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_create_node_pool"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_create_node_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_create_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.CreateNodePoolRequest.pb(
             cluster_service.CreateNodePoolRequest()
         )
@@ -23243,6 +23406,7 @@ def test_create_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.create_node_pool(
             request,
@@ -23254,6 +23418,7 @@ def test_create_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_node_pool_rest_bad_request(
@@ -23362,10 +23527,13 @@ def test_delete_node_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_delete_node_pool"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_delete_node_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_delete_node_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.DeleteNodePoolRequest.pb(
             cluster_service.DeleteNodePoolRequest()
         )
@@ -23389,6 +23557,7 @@ def test_delete_node_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.delete_node_pool(
             request,
@@ -23400,6 +23569,7 @@ def test_delete_node_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_complete_node_pool_upgrade_rest_bad_request(
@@ -23621,10 +23791,14 @@ def test_rollback_node_pool_upgrade_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_rollback_node_pool_upgrade"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_rollback_node_pool_upgrade_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_rollback_node_pool_upgrade"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.RollbackNodePoolUpgradeRequest.pb(
             cluster_service.RollbackNodePoolUpgradeRequest()
         )
@@ -23648,6 +23822,7 @@ def test_rollback_node_pool_upgrade_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.rollback_node_pool_upgrade(
             request,
@@ -23659,6 +23834,7 @@ def test_rollback_node_pool_upgrade_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_node_pool_management_rest_bad_request(
@@ -23767,10 +23943,14 @@ def test_set_node_pool_management_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_node_pool_management"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_set_node_pool_management_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_node_pool_management"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetNodePoolManagementRequest.pb(
             cluster_service.SetNodePoolManagementRequest()
         )
@@ -23794,6 +23974,7 @@ def test_set_node_pool_management_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_node_pool_management(
             request,
@@ -23805,6 +23986,7 @@ def test_set_node_pool_management_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_labels_rest_bad_request(request_type=cluster_service.SetLabelsRequest):
@@ -23907,10 +24089,13 @@ def test_set_labels_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_labels"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_set_labels_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_labels"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetLabelsRequest.pb(
             cluster_service.SetLabelsRequest()
         )
@@ -23934,6 +24119,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_labels(
             request,
@@ -23945,6 +24131,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_legacy_abac_rest_bad_request(
@@ -24049,10 +24236,13 @@ def test_set_legacy_abac_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_legacy_abac"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_set_legacy_abac_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_legacy_abac"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetLegacyAbacRequest.pb(
             cluster_service.SetLegacyAbacRequest()
         )
@@ -24076,6 +24266,7 @@ def test_set_legacy_abac_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_legacy_abac(
             request,
@@ -24087,6 +24278,7 @@ def test_set_legacy_abac_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_ip_rotation_rest_bad_request(
@@ -24191,10 +24383,13 @@ def test_start_ip_rotation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_start_ip_rotation"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor, "post_start_ip_rotation_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_start_ip_rotation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.StartIPRotationRequest.pb(
             cluster_service.StartIPRotationRequest()
         )
@@ -24218,6 +24413,7 @@ def test_start_ip_rotation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.start_ip_rotation(
             request,
@@ -24229,6 +24425,7 @@ def test_start_ip_rotation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_complete_ip_rotation_rest_bad_request(
@@ -24333,10 +24530,14 @@ def test_complete_ip_rotation_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_complete_ip_rotation"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_complete_ip_rotation_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_complete_ip_rotation"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.CompleteIPRotationRequest.pb(
             cluster_service.CompleteIPRotationRequest()
         )
@@ -24360,6 +24561,7 @@ def test_complete_ip_rotation_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.complete_ip_rotation(
             request,
@@ -24371,6 +24573,7 @@ def test_complete_ip_rotation_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_node_pool_size_rest_bad_request(
@@ -24479,10 +24682,14 @@ def test_set_node_pool_size_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_node_pool_size"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_set_node_pool_size_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_node_pool_size"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetNodePoolSizeRequest.pb(
             cluster_service.SetNodePoolSizeRequest()
         )
@@ -24506,6 +24713,7 @@ def test_set_node_pool_size_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_node_pool_size(
             request,
@@ -24517,6 +24725,7 @@ def test_set_node_pool_size_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_network_policy_rest_bad_request(
@@ -24621,10 +24830,14 @@ def test_set_network_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_network_policy"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_set_network_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_network_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetNetworkPolicyRequest.pb(
             cluster_service.SetNetworkPolicyRequest()
         )
@@ -24648,6 +24861,7 @@ def test_set_network_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_network_policy(
             request,
@@ -24659,6 +24873,7 @@ def test_set_network_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_set_maintenance_policy_rest_bad_request(
@@ -24763,10 +24978,14 @@ def test_set_maintenance_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_set_maintenance_policy"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_set_maintenance_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_set_maintenance_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.SetMaintenancePolicyRequest.pb(
             cluster_service.SetMaintenancePolicyRequest()
         )
@@ -24790,6 +25009,7 @@ def test_set_maintenance_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.Operation()
+        post_with_metadata.return_value = cluster_service.Operation(), metadata
 
         client.set_maintenance_policy(
             request,
@@ -24801,6 +25021,7 @@ def test_set_maintenance_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_usable_subnetworks_rest_bad_request(
@@ -24885,10 +25106,14 @@ def test_list_usable_subnetworks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_list_usable_subnetworks"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_list_usable_subnetworks_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_list_usable_subnetworks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.ListUsableSubnetworksRequest.pb(
             cluster_service.ListUsableSubnetworksRequest()
         )
@@ -24914,6 +25139,10 @@ def test_list_usable_subnetworks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.ListUsableSubnetworksResponse()
+        post_with_metadata.return_value = (
+            cluster_service.ListUsableSubnetworksResponse(),
+            metadata,
+        )
 
         client.list_usable_subnetworks(
             request,
@@ -24925,6 +25154,7 @@ def test_list_usable_subnetworks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_check_autopilot_compatibility_rest_bad_request(
@@ -25011,10 +25241,14 @@ def test_check_autopilot_compatibility_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "post_check_autopilot_compatibility"
     ) as post, mock.patch.object(
+        transports.ClusterManagerRestInterceptor,
+        "post_check_autopilot_compatibility_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.ClusterManagerRestInterceptor, "pre_check_autopilot_compatibility"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cluster_service.CheckAutopilotCompatibilityRequest.pb(
             cluster_service.CheckAutopilotCompatibilityRequest()
         )
@@ -25040,6 +25274,10 @@ def test_check_autopilot_compatibility_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cluster_service.CheckAutopilotCompatibilityResponse()
+        post_with_metadata.return_value = (
+            cluster_service.CheckAutopilotCompatibilityResponse(),
+            metadata,
+        )
 
         client.check_autopilot_compatibility(
             request,
@@ -25051,6 +25289,7 @@ def test_check_autopilot_compatibility_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

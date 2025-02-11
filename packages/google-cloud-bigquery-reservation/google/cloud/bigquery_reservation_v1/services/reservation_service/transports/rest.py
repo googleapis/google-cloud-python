@@ -259,11 +259,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.Assignment:
         """Post-rpc interceptor for create_assignment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_assignment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_assignment` interceptor runs
+        before the `post_create_assignment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_assignment_with_metadata(
+        self,
+        response: reservation.Assignment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.Assignment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_assignment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_create_assignment_with_metadata`
+        interceptor in new development instead of the `post_create_assignment` interceptor.
+        When both interceptors are used, this `post_create_assignment_with_metadata` interceptor runs after the
+        `post_create_assignment` interceptor. The (possibly modified) response returned by
+        `post_create_assignment` will be passed to
+        `post_create_assignment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_capacity_commitment(
         self,
@@ -285,11 +308,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for create_capacity_commitment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_capacity_commitment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_capacity_commitment` interceptor runs
+        before the `post_create_capacity_commitment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_capacity_commitment_with_metadata(
+        self,
+        response: reservation.CapacityCommitment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_capacity_commitment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_create_capacity_commitment_with_metadata`
+        interceptor in new development instead of the `post_create_capacity_commitment` interceptor.
+        When both interceptors are used, this `post_create_capacity_commitment_with_metadata` interceptor runs after the
+        `post_create_capacity_commitment` interceptor. The (possibly modified) response returned by
+        `post_create_capacity_commitment` will be passed to
+        `post_create_capacity_commitment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_reservation(
         self,
@@ -311,11 +357,34 @@ class ReservationServiceRestInterceptor:
     ) -> gcbr_reservation.Reservation:
         """Post-rpc interceptor for create_reservation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_reservation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_reservation` interceptor runs
+        before the `post_create_reservation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_reservation_with_metadata(
+        self,
+        response: gcbr_reservation.Reservation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcbr_reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_reservation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_create_reservation_with_metadata`
+        interceptor in new development instead of the `post_create_reservation` interceptor.
+        When both interceptors are used, this `post_create_reservation_with_metadata` interceptor runs after the
+        `post_create_reservation` interceptor. The (possibly modified) response returned by
+        `post_create_reservation` will be passed to
+        `post_create_reservation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_assignment(
         self,
@@ -379,11 +448,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.Reservation:
         """Post-rpc interceptor for failover_reservation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_failover_reservation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_failover_reservation` interceptor runs
+        before the `post_failover_reservation_with_metadata` interceptor.
         """
         return response
+
+    def post_failover_reservation_with_metadata(
+        self,
+        response: reservation.Reservation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for failover_reservation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_failover_reservation_with_metadata`
+        interceptor in new development instead of the `post_failover_reservation` interceptor.
+        When both interceptors are used, this `post_failover_reservation_with_metadata` interceptor runs after the
+        `post_failover_reservation` interceptor. The (possibly modified) response returned by
+        `post_failover_reservation` will be passed to
+        `post_failover_reservation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_bi_reservation(
         self,
@@ -404,11 +496,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.BiReservation:
         """Post-rpc interceptor for get_bi_reservation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_bi_reservation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_bi_reservation` interceptor runs
+        before the `post_get_bi_reservation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_bi_reservation_with_metadata(
+        self,
+        response: reservation.BiReservation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.BiReservation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_bi_reservation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_bi_reservation_with_metadata`
+        interceptor in new development instead of the `post_get_bi_reservation` interceptor.
+        When both interceptors are used, this `post_get_bi_reservation_with_metadata` interceptor runs after the
+        `post_get_bi_reservation` interceptor. The (possibly modified) response returned by
+        `post_get_bi_reservation` will be passed to
+        `post_get_bi_reservation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_capacity_commitment(
         self,
@@ -430,11 +545,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for get_capacity_commitment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_capacity_commitment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_capacity_commitment` interceptor runs
+        before the `post_get_capacity_commitment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_capacity_commitment_with_metadata(
+        self,
+        response: reservation.CapacityCommitment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_capacity_commitment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_capacity_commitment_with_metadata`
+        interceptor in new development instead of the `post_get_capacity_commitment` interceptor.
+        When both interceptors are used, this `post_get_capacity_commitment_with_metadata` interceptor runs after the
+        `post_get_capacity_commitment` interceptor. The (possibly modified) response returned by
+        `post_get_capacity_commitment` will be passed to
+        `post_get_capacity_commitment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_reservation(
         self,
@@ -455,11 +593,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.Reservation:
         """Post-rpc interceptor for get_reservation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_reservation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_reservation` interceptor runs
+        before the `post_get_reservation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_reservation_with_metadata(
+        self,
+        response: reservation.Reservation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_reservation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_get_reservation_with_metadata`
+        interceptor in new development instead of the `post_get_reservation` interceptor.
+        When both interceptors are used, this `post_get_reservation_with_metadata` interceptor runs after the
+        `post_get_reservation` interceptor. The (possibly modified) response returned by
+        `post_get_reservation` will be passed to
+        `post_get_reservation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_assignments(
         self,
@@ -480,11 +641,36 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.ListAssignmentsResponse:
         """Post-rpc interceptor for list_assignments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_assignments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_assignments` interceptor runs
+        before the `post_list_assignments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_assignments_with_metadata(
+        self,
+        response: reservation.ListAssignmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.ListAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_assignments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_list_assignments_with_metadata`
+        interceptor in new development instead of the `post_list_assignments` interceptor.
+        When both interceptors are used, this `post_list_assignments_with_metadata` interceptor runs after the
+        `post_list_assignments` interceptor. The (possibly modified) response returned by
+        `post_list_assignments` will be passed to
+        `post_list_assignments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_capacity_commitments(
         self,
@@ -506,11 +692,37 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.ListCapacityCommitmentsResponse:
         """Post-rpc interceptor for list_capacity_commitments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_capacity_commitments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_capacity_commitments` interceptor runs
+        before the `post_list_capacity_commitments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_capacity_commitments_with_metadata(
+        self,
+        response: reservation.ListCapacityCommitmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.ListCapacityCommitmentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_capacity_commitments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_list_capacity_commitments_with_metadata`
+        interceptor in new development instead of the `post_list_capacity_commitments` interceptor.
+        When both interceptors are used, this `post_list_capacity_commitments_with_metadata` interceptor runs after the
+        `post_list_capacity_commitments` interceptor. The (possibly modified) response returned by
+        `post_list_capacity_commitments` will be passed to
+        `post_list_capacity_commitments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_reservations(
         self,
@@ -531,11 +743,36 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.ListReservationsResponse:
         """Post-rpc interceptor for list_reservations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_reservations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_reservations` interceptor runs
+        before the `post_list_reservations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_reservations_with_metadata(
+        self,
+        response: reservation.ListReservationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.ListReservationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_reservations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_list_reservations_with_metadata`
+        interceptor in new development instead of the `post_list_reservations` interceptor.
+        When both interceptors are used, this `post_list_reservations_with_metadata` interceptor runs after the
+        `post_list_reservations` interceptor. The (possibly modified) response returned by
+        `post_list_reservations` will be passed to
+        `post_list_reservations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_merge_capacity_commitments(
         self,
@@ -557,11 +794,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for merge_capacity_commitments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_merge_capacity_commitments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_merge_capacity_commitments` interceptor runs
+        before the `post_merge_capacity_commitments_with_metadata` interceptor.
         """
         return response
+
+    def post_merge_capacity_commitments_with_metadata(
+        self,
+        response: reservation.CapacityCommitment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for merge_capacity_commitments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_merge_capacity_commitments_with_metadata`
+        interceptor in new development instead of the `post_merge_capacity_commitments` interceptor.
+        When both interceptors are used, this `post_merge_capacity_commitments_with_metadata` interceptor runs after the
+        `post_merge_capacity_commitments` interceptor. The (possibly modified) response returned by
+        `post_merge_capacity_commitments` will be passed to
+        `post_merge_capacity_commitments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_move_assignment(
         self,
@@ -582,11 +842,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.Assignment:
         """Post-rpc interceptor for move_assignment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_move_assignment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_move_assignment` interceptor runs
+        before the `post_move_assignment_with_metadata` interceptor.
         """
         return response
+
+    def post_move_assignment_with_metadata(
+        self,
+        response: reservation.Assignment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.Assignment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for move_assignment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_move_assignment_with_metadata`
+        interceptor in new development instead of the `post_move_assignment` interceptor.
+        When both interceptors are used, this `post_move_assignment_with_metadata` interceptor runs after the
+        `post_move_assignment` interceptor. The (possibly modified) response returned by
+        `post_move_assignment` will be passed to
+        `post_move_assignment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_all_assignments(
         self,
@@ -607,11 +890,37 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.SearchAllAssignmentsResponse:
         """Post-rpc interceptor for search_all_assignments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_all_assignments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_all_assignments` interceptor runs
+        before the `post_search_all_assignments_with_metadata` interceptor.
         """
         return response
+
+    def post_search_all_assignments_with_metadata(
+        self,
+        response: reservation.SearchAllAssignmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.SearchAllAssignmentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for search_all_assignments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_search_all_assignments_with_metadata`
+        interceptor in new development instead of the `post_search_all_assignments` interceptor.
+        When both interceptors are used, this `post_search_all_assignments_with_metadata` interceptor runs after the
+        `post_search_all_assignments` interceptor. The (possibly modified) response returned by
+        `post_search_all_assignments` will be passed to
+        `post_search_all_assignments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_assignments(
         self,
@@ -632,11 +941,36 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.SearchAssignmentsResponse:
         """Post-rpc interceptor for search_assignments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_assignments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_assignments` interceptor runs
+        before the `post_search_assignments_with_metadata` interceptor.
         """
         return response
+
+    def post_search_assignments_with_metadata(
+        self,
+        response: reservation.SearchAssignmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.SearchAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_assignments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_search_assignments_with_metadata`
+        interceptor in new development instead of the `post_search_assignments` interceptor.
+        When both interceptors are used, this `post_search_assignments_with_metadata` interceptor runs after the
+        `post_search_assignments` interceptor. The (possibly modified) response returned by
+        `post_search_assignments` will be passed to
+        `post_search_assignments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_split_capacity_commitment(
         self,
@@ -658,11 +992,37 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.SplitCapacityCommitmentResponse:
         """Post-rpc interceptor for split_capacity_commitment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_split_capacity_commitment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_split_capacity_commitment` interceptor runs
+        before the `post_split_capacity_commitment_with_metadata` interceptor.
         """
         return response
+
+    def post_split_capacity_commitment_with_metadata(
+        self,
+        response: reservation.SplitCapacityCommitmentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reservation.SplitCapacityCommitmentResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for split_capacity_commitment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_split_capacity_commitment_with_metadata`
+        interceptor in new development instead of the `post_split_capacity_commitment` interceptor.
+        When both interceptors are used, this `post_split_capacity_commitment_with_metadata` interceptor runs after the
+        `post_split_capacity_commitment` interceptor. The (possibly modified) response returned by
+        `post_split_capacity_commitment` will be passed to
+        `post_split_capacity_commitment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_assignment(
         self,
@@ -683,11 +1043,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.Assignment:
         """Post-rpc interceptor for update_assignment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_assignment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_assignment` interceptor runs
+        before the `post_update_assignment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_assignment_with_metadata(
+        self,
+        response: reservation.Assignment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.Assignment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_assignment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_update_assignment_with_metadata`
+        interceptor in new development instead of the `post_update_assignment` interceptor.
+        When both interceptors are used, this `post_update_assignment_with_metadata` interceptor runs after the
+        `post_update_assignment` interceptor. The (possibly modified) response returned by
+        `post_update_assignment` will be passed to
+        `post_update_assignment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_bi_reservation(
         self,
@@ -708,11 +1091,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.BiReservation:
         """Post-rpc interceptor for update_bi_reservation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_bi_reservation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_bi_reservation` interceptor runs
+        before the `post_update_bi_reservation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_bi_reservation_with_metadata(
+        self,
+        response: reservation.BiReservation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.BiReservation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_bi_reservation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_update_bi_reservation_with_metadata`
+        interceptor in new development instead of the `post_update_bi_reservation` interceptor.
+        When both interceptors are used, this `post_update_bi_reservation_with_metadata` interceptor runs after the
+        `post_update_bi_reservation` interceptor. The (possibly modified) response returned by
+        `post_update_bi_reservation` will be passed to
+        `post_update_bi_reservation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_capacity_commitment(
         self,
@@ -734,11 +1140,34 @@ class ReservationServiceRestInterceptor:
     ) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for update_capacity_commitment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_capacity_commitment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_capacity_commitment` interceptor runs
+        before the `post_update_capacity_commitment_with_metadata` interceptor.
         """
         return response
+
+    def post_update_capacity_commitment_with_metadata(
+        self,
+        response: reservation.CapacityCommitment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_capacity_commitment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_update_capacity_commitment_with_metadata`
+        interceptor in new development instead of the `post_update_capacity_commitment` interceptor.
+        When both interceptors are used, this `post_update_capacity_commitment_with_metadata` interceptor runs after the
+        `post_update_capacity_commitment` interceptor. The (possibly modified) response returned by
+        `post_update_capacity_commitment` will be passed to
+        `post_update_capacity_commitment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_reservation(
         self,
@@ -760,11 +1189,34 @@ class ReservationServiceRestInterceptor:
     ) -> gcbr_reservation.Reservation:
         """Post-rpc interceptor for update_reservation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_reservation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ReservationService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_reservation` interceptor runs
+        before the `post_update_reservation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_reservation_with_metadata(
+        self,
+        response: gcbr_reservation.Reservation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcbr_reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_reservation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ReservationService server but before it is returned to user code.
+
+        We recommend only using this `post_update_reservation_with_metadata`
+        interceptor in new development instead of the `post_update_reservation` interceptor.
+        When both interceptors are used, this `post_update_reservation_with_metadata` interceptor runs after the
+        `post_update_reservation` interceptor. The (possibly modified) response returned by
+        `post_update_reservation` will be passed to
+        `post_update_reservation_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -1000,6 +1452,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_assignment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_assignment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1167,6 +1623,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_capacity_commitment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_capacity_commitment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1319,6 +1779,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_reservation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_reservation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1808,6 +2272,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_failover_reservation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_failover_reservation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1952,6 +2420,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_bi_reservation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_bi_reservation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2112,6 +2584,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_capacity_commitment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_capacity_commitment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2256,6 +2732,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_reservation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_reservation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2402,6 +2882,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_assignments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_assignments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2552,6 +3036,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_capacity_commitments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_capacity_commitments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2700,6 +3188,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_reservations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_reservations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2869,6 +3361,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_merge_capacity_commitments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_merge_capacity_commitments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3027,6 +3523,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_move_assignment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_move_assignment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3177,6 +3677,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_all_assignments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_all_assignments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3327,6 +3831,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_assignments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_assignments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3483,6 +3991,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_split_capacity_commitment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_split_capacity_commitment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3638,6 +4150,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_assignment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_assignment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3789,6 +4305,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_bi_reservation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_bi_reservation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3956,6 +4476,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_capacity_commitment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_capacity_commitment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4108,6 +4632,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_reservation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_reservation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

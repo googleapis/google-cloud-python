@@ -653,11 +653,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_analyze_conversations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_bulk_analyze_conversations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_bulk_analyze_conversations` interceptor runs
+        before the `post_bulk_analyze_conversations_with_metadata` interceptor.
         """
         return response
+
+    def post_bulk_analyze_conversations_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for bulk_analyze_conversations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_bulk_analyze_conversations_with_metadata`
+        interceptor in new development instead of the `post_bulk_analyze_conversations` interceptor.
+        When both interceptors are used, this `post_bulk_analyze_conversations_with_metadata` interceptor runs after the
+        `post_bulk_analyze_conversations` interceptor. The (possibly modified) response returned by
+        `post_bulk_analyze_conversations` will be passed to
+        `post_bulk_analyze_conversations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_bulk_delete_conversations(
         self,
@@ -679,11 +702,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_delete_conversations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_bulk_delete_conversations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_bulk_delete_conversations` interceptor runs
+        before the `post_bulk_delete_conversations_with_metadata` interceptor.
         """
         return response
+
+    def post_bulk_delete_conversations_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for bulk_delete_conversations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_bulk_delete_conversations_with_metadata`
+        interceptor in new development instead of the `post_bulk_delete_conversations` interceptor.
+        When both interceptors are used, this `post_bulk_delete_conversations_with_metadata` interceptor runs after the
+        `post_bulk_delete_conversations` interceptor. The (possibly modified) response returned by
+        `post_bulk_delete_conversations` will be passed to
+        `post_bulk_delete_conversations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_bulk_download_feedback_labels(
         self,
@@ -705,11 +751,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_download_feedback_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_bulk_download_feedback_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_bulk_download_feedback_labels` interceptor runs
+        before the `post_bulk_download_feedback_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_bulk_download_feedback_labels_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for bulk_download_feedback_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_bulk_download_feedback_labels_with_metadata`
+        interceptor in new development instead of the `post_bulk_download_feedback_labels` interceptor.
+        When both interceptors are used, this `post_bulk_download_feedback_labels_with_metadata` interceptor runs after the
+        `post_bulk_download_feedback_labels` interceptor. The (possibly modified) response returned by
+        `post_bulk_download_feedback_labels` will be passed to
+        `post_bulk_download_feedback_labels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_bulk_upload_feedback_labels(
         self,
@@ -731,11 +800,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_upload_feedback_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_bulk_upload_feedback_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_bulk_upload_feedback_labels` interceptor runs
+        before the `post_bulk_upload_feedback_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_bulk_upload_feedback_labels_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for bulk_upload_feedback_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_bulk_upload_feedback_labels_with_metadata`
+        interceptor in new development instead of the `post_bulk_upload_feedback_labels` interceptor.
+        When both interceptors are used, this `post_bulk_upload_feedback_labels_with_metadata` interceptor runs after the
+        `post_bulk_upload_feedback_labels` interceptor. The (possibly modified) response returned by
+        `post_bulk_upload_feedback_labels` will be passed to
+        `post_bulk_upload_feedback_labels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_calculate_issue_model_stats(
         self,
@@ -757,11 +849,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.CalculateIssueModelStatsResponse:
         """Post-rpc interceptor for calculate_issue_model_stats
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_calculate_issue_model_stats_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_calculate_issue_model_stats` interceptor runs
+        before the `post_calculate_issue_model_stats_with_metadata` interceptor.
         """
         return response
+
+    def post_calculate_issue_model_stats_with_metadata(
+        self,
+        response: contact_center_insights.CalculateIssueModelStatsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.CalculateIssueModelStatsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for calculate_issue_model_stats
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_calculate_issue_model_stats_with_metadata`
+        interceptor in new development instead of the `post_calculate_issue_model_stats` interceptor.
+        When both interceptors are used, this `post_calculate_issue_model_stats_with_metadata` interceptor runs after the
+        `post_calculate_issue_model_stats` interceptor. The (possibly modified) response returned by
+        `post_calculate_issue_model_stats` will be passed to
+        `post_calculate_issue_model_stats_with_metadata`.
+        """
+        return response, metadata
 
     def pre_calculate_stats(
         self,
@@ -783,11 +901,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.CalculateStatsResponse:
         """Post-rpc interceptor for calculate_stats
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_calculate_stats_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_calculate_stats` interceptor runs
+        before the `post_calculate_stats_with_metadata` interceptor.
         """
         return response
+
+    def post_calculate_stats_with_metadata(
+        self,
+        response: contact_center_insights.CalculateStatsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.CalculateStatsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for calculate_stats
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_calculate_stats_with_metadata`
+        interceptor in new development instead of the `post_calculate_stats` interceptor.
+        When both interceptors are used, this `post_calculate_stats_with_metadata` interceptor runs after the
+        `post_calculate_stats` interceptor. The (possibly modified) response returned by
+        `post_calculate_stats` will be passed to
+        `post_calculate_stats_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_analysis(
         self,
@@ -809,11 +953,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_analysis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_analysis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_analysis` interceptor runs
+        before the `post_create_analysis_with_metadata` interceptor.
         """
         return response
+
+    def post_create_analysis_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_analysis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_analysis_with_metadata`
+        interceptor in new development instead of the `post_create_analysis` interceptor.
+        When both interceptors are used, this `post_create_analysis_with_metadata` interceptor runs after the
+        `post_create_analysis` interceptor. The (possibly modified) response returned by
+        `post_create_analysis` will be passed to
+        `post_create_analysis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_analysis_rule(
         self,
@@ -835,11 +1002,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.AnalysisRule:
         """Post-rpc interceptor for create_analysis_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_analysis_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_analysis_rule` interceptor runs
+        before the `post_create_analysis_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_create_analysis_rule_with_metadata(
+        self,
+        response: resources.AnalysisRule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.AnalysisRule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_analysis_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_analysis_rule_with_metadata`
+        interceptor in new development instead of the `post_create_analysis_rule` interceptor.
+        When both interceptors are used, this `post_create_analysis_rule_with_metadata` interceptor runs after the
+        `post_create_analysis_rule` interceptor. The (possibly modified) response returned by
+        `post_create_analysis_rule` will be passed to
+        `post_create_analysis_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_conversation(
         self,
@@ -861,11 +1051,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.Conversation:
         """Post-rpc interceptor for create_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_conversation` interceptor runs
+        before the `post_create_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_create_conversation_with_metadata(
+        self,
+        response: resources.Conversation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_conversation_with_metadata`
+        interceptor in new development instead of the `post_create_conversation` interceptor.
+        When both interceptors are used, this `post_create_conversation_with_metadata` interceptor runs after the
+        `post_create_conversation` interceptor. The (possibly modified) response returned by
+        `post_create_conversation` will be passed to
+        `post_create_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_feedback_label(
         self,
@@ -887,11 +1100,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.FeedbackLabel:
         """Post-rpc interceptor for create_feedback_label
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_feedback_label_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_feedback_label` interceptor runs
+        before the `post_create_feedback_label_with_metadata` interceptor.
         """
         return response
+
+    def post_create_feedback_label_with_metadata(
+        self,
+        response: resources.FeedbackLabel,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.FeedbackLabel, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_feedback_label
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_feedback_label_with_metadata`
+        interceptor in new development instead of the `post_create_feedback_label` interceptor.
+        When both interceptors are used, this `post_create_feedback_label_with_metadata` interceptor runs after the
+        `post_create_feedback_label` interceptor. The (possibly modified) response returned by
+        `post_create_feedback_label` will be passed to
+        `post_create_feedback_label_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_issue_model(
         self,
@@ -913,11 +1149,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_issue_model` interceptor runs
+        before the `post_create_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_create_issue_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_issue_model_with_metadata`
+        interceptor in new development instead of the `post_create_issue_model` interceptor.
+        When both interceptors are used, this `post_create_issue_model_with_metadata` interceptor runs after the
+        `post_create_issue_model` interceptor. The (possibly modified) response returned by
+        `post_create_issue_model` will be passed to
+        `post_create_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_phrase_matcher(
         self,
@@ -939,11 +1198,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.PhraseMatcher:
         """Post-rpc interceptor for create_phrase_matcher
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_phrase_matcher_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_phrase_matcher` interceptor runs
+        before the `post_create_phrase_matcher_with_metadata` interceptor.
         """
         return response
+
+    def post_create_phrase_matcher_with_metadata(
+        self,
+        response: resources.PhraseMatcher,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.PhraseMatcher, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_phrase_matcher
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_phrase_matcher_with_metadata`
+        interceptor in new development instead of the `post_create_phrase_matcher` interceptor.
+        When both interceptors are used, this `post_create_phrase_matcher_with_metadata` interceptor runs after the
+        `post_create_phrase_matcher` interceptor. The (possibly modified) response returned by
+        `post_create_phrase_matcher` will be passed to
+        `post_create_phrase_matcher_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_qa_question(
         self,
@@ -965,11 +1247,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaQuestion:
         """Post-rpc interceptor for create_qa_question
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_qa_question_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_qa_question` interceptor runs
+        before the `post_create_qa_question_with_metadata` interceptor.
         """
         return response
+
+    def post_create_qa_question_with_metadata(
+        self,
+        response: resources.QaQuestion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaQuestion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_qa_question
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_qa_question_with_metadata`
+        interceptor in new development instead of the `post_create_qa_question` interceptor.
+        When both interceptors are used, this `post_create_qa_question_with_metadata` interceptor runs after the
+        `post_create_qa_question` interceptor. The (possibly modified) response returned by
+        `post_create_qa_question` will be passed to
+        `post_create_qa_question_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_qa_scorecard(
         self,
@@ -991,11 +1296,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaScorecard:
         """Post-rpc interceptor for create_qa_scorecard
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_qa_scorecard_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_qa_scorecard` interceptor runs
+        before the `post_create_qa_scorecard_with_metadata` interceptor.
         """
         return response
+
+    def post_create_qa_scorecard_with_metadata(
+        self,
+        response: resources.QaScorecard,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaScorecard, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_qa_scorecard
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_qa_scorecard_with_metadata`
+        interceptor in new development instead of the `post_create_qa_scorecard` interceptor.
+        When both interceptors are used, this `post_create_qa_scorecard_with_metadata` interceptor runs after the
+        `post_create_qa_scorecard` interceptor. The (possibly modified) response returned by
+        `post_create_qa_scorecard` will be passed to
+        `post_create_qa_scorecard_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_qa_scorecard_revision(
         self,
@@ -1017,11 +1345,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for create_qa_scorecard_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_qa_scorecard_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_qa_scorecard_revision` interceptor runs
+        before the `post_create_qa_scorecard_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_create_qa_scorecard_revision_with_metadata(
+        self,
+        response: resources.QaScorecardRevision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_qa_scorecard_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_qa_scorecard_revision_with_metadata`
+        interceptor in new development instead of the `post_create_qa_scorecard_revision` interceptor.
+        When both interceptors are used, this `post_create_qa_scorecard_revision_with_metadata` interceptor runs after the
+        `post_create_qa_scorecard_revision` interceptor. The (possibly modified) response returned by
+        `post_create_qa_scorecard_revision` will be passed to
+        `post_create_qa_scorecard_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_view(
         self,
@@ -1041,11 +1392,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_create_view(self, response: resources.View) -> resources.View:
         """Post-rpc interceptor for create_view
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_view_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_view` interceptor runs
+        before the `post_create_view_with_metadata` interceptor.
         """
         return response
+
+    def post_create_view_with_metadata(
+        self,
+        response: resources.View,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.View, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_view
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_view_with_metadata`
+        interceptor in new development instead of the `post_create_view` interceptor.
+        When both interceptors are used, this `post_create_view_with_metadata` interceptor runs after the
+        `post_create_view` interceptor. The (possibly modified) response returned by
+        `post_create_view` will be passed to
+        `post_create_view_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_analysis(
         self,
@@ -1142,11 +1516,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_issue_model` interceptor runs
+        before the `post_delete_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_issue_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_delete_issue_model_with_metadata`
+        interceptor in new development instead of the `post_delete_issue_model` interceptor.
+        When both interceptors are used, this `post_delete_issue_model_with_metadata` interceptor runs after the
+        `post_delete_issue_model` interceptor. The (possibly modified) response returned by
+        `post_delete_issue_model` will be passed to
+        `post_delete_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_phrase_matcher(
         self,
@@ -1243,11 +1640,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_deploy_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_deploy_issue_model` interceptor runs
+        before the `post_deploy_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_deploy_issue_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for deploy_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_deploy_issue_model_with_metadata`
+        interceptor in new development instead of the `post_deploy_issue_model` interceptor.
+        When both interceptors are used, this `post_deploy_issue_model_with_metadata` interceptor runs after the
+        `post_deploy_issue_model` interceptor. The (possibly modified) response returned by
+        `post_deploy_issue_model` will be passed to
+        `post_deploy_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_deploy_qa_scorecard_revision(
         self,
@@ -1269,11 +1689,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for deploy_qa_scorecard_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_deploy_qa_scorecard_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_deploy_qa_scorecard_revision` interceptor runs
+        before the `post_deploy_qa_scorecard_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_deploy_qa_scorecard_revision_with_metadata(
+        self,
+        response: resources.QaScorecardRevision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for deploy_qa_scorecard_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_deploy_qa_scorecard_revision_with_metadata`
+        interceptor in new development instead of the `post_deploy_qa_scorecard_revision` interceptor.
+        When both interceptors are used, this `post_deploy_qa_scorecard_revision_with_metadata` interceptor runs after the
+        `post_deploy_qa_scorecard_revision` interceptor. The (possibly modified) response returned by
+        `post_deploy_qa_scorecard_revision` will be passed to
+        `post_deploy_qa_scorecard_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_insights_data(
         self,
@@ -1295,11 +1738,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_insights_data
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_insights_data_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_insights_data` interceptor runs
+        before the `post_export_insights_data_with_metadata` interceptor.
         """
         return response
+
+    def post_export_insights_data_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_insights_data
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_export_insights_data_with_metadata`
+        interceptor in new development instead of the `post_export_insights_data` interceptor.
+        When both interceptors are used, this `post_export_insights_data_with_metadata` interceptor runs after the
+        `post_export_insights_data` interceptor. The (possibly modified) response returned by
+        `post_export_insights_data` will be passed to
+        `post_export_insights_data_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_issue_model(
         self,
@@ -1321,11 +1787,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_issue_model` interceptor runs
+        before the `post_export_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_export_issue_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_export_issue_model_with_metadata`
+        interceptor in new development instead of the `post_export_issue_model` interceptor.
+        When both interceptors are used, this `post_export_issue_model_with_metadata` interceptor runs after the
+        `post_export_issue_model` interceptor. The (possibly modified) response returned by
+        `post_export_issue_model` will be passed to
+        `post_export_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_analysis(
         self,
@@ -1345,11 +1834,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_get_analysis(self, response: resources.Analysis) -> resources.Analysis:
         """Post-rpc interceptor for get_analysis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_analysis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_analysis` interceptor runs
+        before the `post_get_analysis_with_metadata` interceptor.
         """
         return response
+
+    def post_get_analysis_with_metadata(
+        self,
+        response: resources.Analysis,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Analysis, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_analysis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_analysis_with_metadata`
+        interceptor in new development instead of the `post_get_analysis` interceptor.
+        When both interceptors are used, this `post_get_analysis_with_metadata` interceptor runs after the
+        `post_get_analysis` interceptor. The (possibly modified) response returned by
+        `post_get_analysis` will be passed to
+        `post_get_analysis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_analysis_rule(
         self,
@@ -1371,11 +1883,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.AnalysisRule:
         """Post-rpc interceptor for get_analysis_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_analysis_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_analysis_rule` interceptor runs
+        before the `post_get_analysis_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_get_analysis_rule_with_metadata(
+        self,
+        response: resources.AnalysisRule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.AnalysisRule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_analysis_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_analysis_rule_with_metadata`
+        interceptor in new development instead of the `post_get_analysis_rule` interceptor.
+        When both interceptors are used, this `post_get_analysis_rule_with_metadata` interceptor runs after the
+        `post_get_analysis_rule` interceptor. The (possibly modified) response returned by
+        `post_get_analysis_rule` will be passed to
+        `post_get_analysis_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_conversation(
         self,
@@ -1397,11 +1932,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.Conversation:
         """Post-rpc interceptor for get_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_conversation` interceptor runs
+        before the `post_get_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_conversation_with_metadata(
+        self,
+        response: resources.Conversation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_conversation_with_metadata`
+        interceptor in new development instead of the `post_get_conversation` interceptor.
+        When both interceptors are used, this `post_get_conversation_with_metadata` interceptor runs after the
+        `post_get_conversation` interceptor. The (possibly modified) response returned by
+        `post_get_conversation` will be passed to
+        `post_get_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_encryption_spec(
         self,
@@ -1423,11 +1981,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.EncryptionSpec:
         """Post-rpc interceptor for get_encryption_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_encryption_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_encryption_spec` interceptor runs
+        before the `post_get_encryption_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_get_encryption_spec_with_metadata(
+        self,
+        response: resources.EncryptionSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.EncryptionSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_encryption_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_encryption_spec_with_metadata`
+        interceptor in new development instead of the `post_get_encryption_spec` interceptor.
+        When both interceptors are used, this `post_get_encryption_spec_with_metadata` interceptor runs after the
+        `post_get_encryption_spec` interceptor. The (possibly modified) response returned by
+        `post_get_encryption_spec` will be passed to
+        `post_get_encryption_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_feedback_label(
         self,
@@ -1449,11 +2030,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.FeedbackLabel:
         """Post-rpc interceptor for get_feedback_label
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_feedback_label_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_feedback_label` interceptor runs
+        before the `post_get_feedback_label_with_metadata` interceptor.
         """
         return response
+
+    def post_get_feedback_label_with_metadata(
+        self,
+        response: resources.FeedbackLabel,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.FeedbackLabel, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_feedback_label
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_feedback_label_with_metadata`
+        interceptor in new development instead of the `post_get_feedback_label` interceptor.
+        When both interceptors are used, this `post_get_feedback_label_with_metadata` interceptor runs after the
+        `post_get_feedback_label` interceptor. The (possibly modified) response returned by
+        `post_get_feedback_label` will be passed to
+        `post_get_feedback_label_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_issue(
         self,
@@ -1472,11 +2076,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_get_issue(self, response: resources.Issue) -> resources.Issue:
         """Post-rpc interceptor for get_issue
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_issue` interceptor runs
+        before the `post_get_issue_with_metadata` interceptor.
         """
         return response
+
+    def post_get_issue_with_metadata(
+        self,
+        response: resources.Issue,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Issue, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_issue_with_metadata`
+        interceptor in new development instead of the `post_get_issue` interceptor.
+        When both interceptors are used, this `post_get_issue_with_metadata` interceptor runs after the
+        `post_get_issue` interceptor. The (possibly modified) response returned by
+        `post_get_issue` will be passed to
+        `post_get_issue_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_issue_model(
         self,
@@ -1498,11 +2125,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.IssueModel:
         """Post-rpc interceptor for get_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_issue_model` interceptor runs
+        before the `post_get_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_get_issue_model_with_metadata(
+        self,
+        response: resources.IssueModel,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.IssueModel, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_issue_model_with_metadata`
+        interceptor in new development instead of the `post_get_issue_model` interceptor.
+        When both interceptors are used, this `post_get_issue_model_with_metadata` interceptor runs after the
+        `post_get_issue_model` interceptor. The (possibly modified) response returned by
+        `post_get_issue_model` will be passed to
+        `post_get_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_phrase_matcher(
         self,
@@ -1524,11 +2174,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.PhraseMatcher:
         """Post-rpc interceptor for get_phrase_matcher
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_phrase_matcher_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_phrase_matcher` interceptor runs
+        before the `post_get_phrase_matcher_with_metadata` interceptor.
         """
         return response
+
+    def post_get_phrase_matcher_with_metadata(
+        self,
+        response: resources.PhraseMatcher,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.PhraseMatcher, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_phrase_matcher
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_phrase_matcher_with_metadata`
+        interceptor in new development instead of the `post_get_phrase_matcher` interceptor.
+        When both interceptors are used, this `post_get_phrase_matcher_with_metadata` interceptor runs after the
+        `post_get_phrase_matcher` interceptor. The (possibly modified) response returned by
+        `post_get_phrase_matcher` will be passed to
+        `post_get_phrase_matcher_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_qa_question(
         self,
@@ -1550,11 +2223,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaQuestion:
         """Post-rpc interceptor for get_qa_question
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_qa_question_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_qa_question` interceptor runs
+        before the `post_get_qa_question_with_metadata` interceptor.
         """
         return response
+
+    def post_get_qa_question_with_metadata(
+        self,
+        response: resources.QaQuestion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaQuestion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_qa_question
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_qa_question_with_metadata`
+        interceptor in new development instead of the `post_get_qa_question` interceptor.
+        When both interceptors are used, this `post_get_qa_question_with_metadata` interceptor runs after the
+        `post_get_qa_question` interceptor. The (possibly modified) response returned by
+        `post_get_qa_question` will be passed to
+        `post_get_qa_question_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_qa_scorecard(
         self,
@@ -1576,11 +2272,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaScorecard:
         """Post-rpc interceptor for get_qa_scorecard
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_qa_scorecard_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_qa_scorecard` interceptor runs
+        before the `post_get_qa_scorecard_with_metadata` interceptor.
         """
         return response
+
+    def post_get_qa_scorecard_with_metadata(
+        self,
+        response: resources.QaScorecard,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaScorecard, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_qa_scorecard
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_qa_scorecard_with_metadata`
+        interceptor in new development instead of the `post_get_qa_scorecard` interceptor.
+        When both interceptors are used, this `post_get_qa_scorecard_with_metadata` interceptor runs after the
+        `post_get_qa_scorecard` interceptor. The (possibly modified) response returned by
+        `post_get_qa_scorecard` will be passed to
+        `post_get_qa_scorecard_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_qa_scorecard_revision(
         self,
@@ -1602,11 +2321,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for get_qa_scorecard_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_qa_scorecard_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_qa_scorecard_revision` interceptor runs
+        before the `post_get_qa_scorecard_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_get_qa_scorecard_revision_with_metadata(
+        self,
+        response: resources.QaScorecardRevision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_qa_scorecard_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_qa_scorecard_revision_with_metadata`
+        interceptor in new development instead of the `post_get_qa_scorecard_revision` interceptor.
+        When both interceptors are used, this `post_get_qa_scorecard_revision_with_metadata` interceptor runs after the
+        `post_get_qa_scorecard_revision` interceptor. The (possibly modified) response returned by
+        `post_get_qa_scorecard_revision` will be passed to
+        `post_get_qa_scorecard_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_settings(
         self,
@@ -1626,11 +2368,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_get_settings(self, response: resources.Settings) -> resources.Settings:
         """Post-rpc interceptor for get_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_settings` interceptor runs
+        before the `post_get_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_get_settings_with_metadata(
+        self,
+        response: resources.Settings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_settings_with_metadata`
+        interceptor in new development instead of the `post_get_settings` interceptor.
+        When both interceptors are used, this `post_get_settings_with_metadata` interceptor runs after the
+        `post_get_settings` interceptor. The (possibly modified) response returned by
+        `post_get_settings` will be passed to
+        `post_get_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_view(
         self,
@@ -1649,11 +2414,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_get_view(self, response: resources.View) -> resources.View:
         """Post-rpc interceptor for get_view
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_view_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_view` interceptor runs
+        before the `post_get_view_with_metadata` interceptor.
         """
         return response
+
+    def post_get_view_with_metadata(
+        self,
+        response: resources.View,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.View, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_view
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_view_with_metadata`
+        interceptor in new development instead of the `post_get_view` interceptor.
+        When both interceptors are used, this `post_get_view_with_metadata` interceptor runs after the
+        `post_get_view` interceptor. The (possibly modified) response returned by
+        `post_get_view` will be passed to
+        `post_get_view_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_issue_model(
         self,
@@ -1675,11 +2463,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_issue_model` interceptor runs
+        before the `post_import_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_import_issue_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_import_issue_model_with_metadata`
+        interceptor in new development instead of the `post_import_issue_model` interceptor.
+        When both interceptors are used, this `post_import_issue_model_with_metadata` interceptor runs after the
+        `post_import_issue_model` interceptor. The (possibly modified) response returned by
+        `post_import_issue_model` will be passed to
+        `post_import_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_ingest_conversations(
         self,
@@ -1701,11 +2512,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for ingest_conversations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_ingest_conversations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_ingest_conversations` interceptor runs
+        before the `post_ingest_conversations_with_metadata` interceptor.
         """
         return response
+
+    def post_ingest_conversations_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for ingest_conversations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_ingest_conversations_with_metadata`
+        interceptor in new development instead of the `post_ingest_conversations` interceptor.
+        When both interceptors are used, this `post_ingest_conversations_with_metadata` interceptor runs after the
+        `post_ingest_conversations` interceptor. The (possibly modified) response returned by
+        `post_ingest_conversations` will be passed to
+        `post_ingest_conversations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_initialize_encryption_spec(
         self,
@@ -1727,11 +2561,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for initialize_encryption_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_initialize_encryption_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_initialize_encryption_spec` interceptor runs
+        before the `post_initialize_encryption_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_initialize_encryption_spec_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for initialize_encryption_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_initialize_encryption_spec_with_metadata`
+        interceptor in new development instead of the `post_initialize_encryption_spec` interceptor.
+        When both interceptors are used, this `post_initialize_encryption_spec_with_metadata` interceptor runs after the
+        `post_initialize_encryption_spec` interceptor. The (possibly modified) response returned by
+        `post_initialize_encryption_spec` will be passed to
+        `post_initialize_encryption_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_all_feedback_labels(
         self,
@@ -1753,11 +2610,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListAllFeedbackLabelsResponse:
         """Post-rpc interceptor for list_all_feedback_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_all_feedback_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_all_feedback_labels` interceptor runs
+        before the `post_list_all_feedback_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_list_all_feedback_labels_with_metadata(
+        self,
+        response: contact_center_insights.ListAllFeedbackLabelsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListAllFeedbackLabelsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_all_feedback_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_all_feedback_labels_with_metadata`
+        interceptor in new development instead of the `post_list_all_feedback_labels` interceptor.
+        When both interceptors are used, this `post_list_all_feedback_labels_with_metadata` interceptor runs after the
+        `post_list_all_feedback_labels` interceptor. The (possibly modified) response returned by
+        `post_list_all_feedback_labels` will be passed to
+        `post_list_all_feedback_labels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_analyses(
         self,
@@ -1779,11 +2662,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListAnalysesResponse:
         """Post-rpc interceptor for list_analyses
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_analyses_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_analyses` interceptor runs
+        before the `post_list_analyses_with_metadata` interceptor.
         """
         return response
+
+    def post_list_analyses_with_metadata(
+        self,
+        response: contact_center_insights.ListAnalysesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListAnalysesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_analyses
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_analyses_with_metadata`
+        interceptor in new development instead of the `post_list_analyses` interceptor.
+        When both interceptors are used, this `post_list_analyses_with_metadata` interceptor runs after the
+        `post_list_analyses` interceptor. The (possibly modified) response returned by
+        `post_list_analyses` will be passed to
+        `post_list_analyses_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_analysis_rules(
         self,
@@ -1805,11 +2714,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListAnalysisRulesResponse:
         """Post-rpc interceptor for list_analysis_rules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_analysis_rules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_analysis_rules` interceptor runs
+        before the `post_list_analysis_rules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_analysis_rules_with_metadata(
+        self,
+        response: contact_center_insights.ListAnalysisRulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListAnalysisRulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_analysis_rules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_analysis_rules_with_metadata`
+        interceptor in new development instead of the `post_list_analysis_rules` interceptor.
+        When both interceptors are used, this `post_list_analysis_rules_with_metadata` interceptor runs after the
+        `post_list_analysis_rules` interceptor. The (possibly modified) response returned by
+        `post_list_analysis_rules` will be passed to
+        `post_list_analysis_rules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_conversations(
         self,
@@ -1831,11 +2766,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListConversationsResponse:
         """Post-rpc interceptor for list_conversations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_conversations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_conversations` interceptor runs
+        before the `post_list_conversations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_conversations_with_metadata(
+        self,
+        response: contact_center_insights.ListConversationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListConversationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_conversations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_conversations_with_metadata`
+        interceptor in new development instead of the `post_list_conversations` interceptor.
+        When both interceptors are used, this `post_list_conversations_with_metadata` interceptor runs after the
+        `post_list_conversations` interceptor. The (possibly modified) response returned by
+        `post_list_conversations` will be passed to
+        `post_list_conversations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_feedback_labels(
         self,
@@ -1857,11 +2818,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListFeedbackLabelsResponse:
         """Post-rpc interceptor for list_feedback_labels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_feedback_labels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_feedback_labels` interceptor runs
+        before the `post_list_feedback_labels_with_metadata` interceptor.
         """
         return response
+
+    def post_list_feedback_labels_with_metadata(
+        self,
+        response: contact_center_insights.ListFeedbackLabelsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListFeedbackLabelsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_feedback_labels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_feedback_labels_with_metadata`
+        interceptor in new development instead of the `post_list_feedback_labels` interceptor.
+        When both interceptors are used, this `post_list_feedback_labels_with_metadata` interceptor runs after the
+        `post_list_feedback_labels` interceptor. The (possibly modified) response returned by
+        `post_list_feedback_labels` will be passed to
+        `post_list_feedback_labels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_issue_models(
         self,
@@ -1883,11 +2870,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListIssueModelsResponse:
         """Post-rpc interceptor for list_issue_models
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_issue_models_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_issue_models` interceptor runs
+        before the `post_list_issue_models_with_metadata` interceptor.
         """
         return response
+
+    def post_list_issue_models_with_metadata(
+        self,
+        response: contact_center_insights.ListIssueModelsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListIssueModelsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_issue_models
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_issue_models_with_metadata`
+        interceptor in new development instead of the `post_list_issue_models` interceptor.
+        When both interceptors are used, this `post_list_issue_models_with_metadata` interceptor runs after the
+        `post_list_issue_models` interceptor. The (possibly modified) response returned by
+        `post_list_issue_models` will be passed to
+        `post_list_issue_models_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_issues(
         self,
@@ -1909,11 +2922,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListIssuesResponse:
         """Post-rpc interceptor for list_issues
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_issues_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_issues` interceptor runs
+        before the `post_list_issues_with_metadata` interceptor.
         """
         return response
+
+    def post_list_issues_with_metadata(
+        self,
+        response: contact_center_insights.ListIssuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListIssuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_issues
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_issues_with_metadata`
+        interceptor in new development instead of the `post_list_issues` interceptor.
+        When both interceptors are used, this `post_list_issues_with_metadata` interceptor runs after the
+        `post_list_issues` interceptor. The (possibly modified) response returned by
+        `post_list_issues` will be passed to
+        `post_list_issues_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_phrase_matchers(
         self,
@@ -1935,11 +2974,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListPhraseMatchersResponse:
         """Post-rpc interceptor for list_phrase_matchers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_phrase_matchers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_phrase_matchers` interceptor runs
+        before the `post_list_phrase_matchers_with_metadata` interceptor.
         """
         return response
+
+    def post_list_phrase_matchers_with_metadata(
+        self,
+        response: contact_center_insights.ListPhraseMatchersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListPhraseMatchersResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_phrase_matchers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_phrase_matchers_with_metadata`
+        interceptor in new development instead of the `post_list_phrase_matchers` interceptor.
+        When both interceptors are used, this `post_list_phrase_matchers_with_metadata` interceptor runs after the
+        `post_list_phrase_matchers` interceptor. The (possibly modified) response returned by
+        `post_list_phrase_matchers` will be passed to
+        `post_list_phrase_matchers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_qa_questions(
         self,
@@ -1961,11 +3026,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListQaQuestionsResponse:
         """Post-rpc interceptor for list_qa_questions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_qa_questions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_qa_questions` interceptor runs
+        before the `post_list_qa_questions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_qa_questions_with_metadata(
+        self,
+        response: contact_center_insights.ListQaQuestionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListQaQuestionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_qa_questions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_qa_questions_with_metadata`
+        interceptor in new development instead of the `post_list_qa_questions` interceptor.
+        When both interceptors are used, this `post_list_qa_questions_with_metadata` interceptor runs after the
+        `post_list_qa_questions` interceptor. The (possibly modified) response returned by
+        `post_list_qa_questions` will be passed to
+        `post_list_qa_questions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_qa_scorecard_revisions(
         self,
@@ -1987,11 +3078,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListQaScorecardRevisionsResponse:
         """Post-rpc interceptor for list_qa_scorecard_revisions
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_qa_scorecard_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_qa_scorecard_revisions` interceptor runs
+        before the `post_list_qa_scorecard_revisions_with_metadata` interceptor.
         """
         return response
+
+    def post_list_qa_scorecard_revisions_with_metadata(
+        self,
+        response: contact_center_insights.ListQaScorecardRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListQaScorecardRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_qa_scorecard_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_qa_scorecard_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_qa_scorecard_revisions` interceptor.
+        When both interceptors are used, this `post_list_qa_scorecard_revisions_with_metadata` interceptor runs after the
+        `post_list_qa_scorecard_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_qa_scorecard_revisions` will be passed to
+        `post_list_qa_scorecard_revisions_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_qa_scorecards(
         self,
@@ -2013,11 +3130,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListQaScorecardsResponse:
         """Post-rpc interceptor for list_qa_scorecards
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_qa_scorecards_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_qa_scorecards` interceptor runs
+        before the `post_list_qa_scorecards_with_metadata` interceptor.
         """
         return response
+
+    def post_list_qa_scorecards_with_metadata(
+        self,
+        response: contact_center_insights.ListQaScorecardsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListQaScorecardsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_qa_scorecards
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_qa_scorecards_with_metadata`
+        interceptor in new development instead of the `post_list_qa_scorecards` interceptor.
+        When both interceptors are used, this `post_list_qa_scorecards_with_metadata` interceptor runs after the
+        `post_list_qa_scorecards` interceptor. The (possibly modified) response returned by
+        `post_list_qa_scorecards` will be passed to
+        `post_list_qa_scorecards_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_views(
         self,
@@ -2039,11 +3182,37 @@ class ContactCenterInsightsRestInterceptor:
     ) -> contact_center_insights.ListViewsResponse:
         """Post-rpc interceptor for list_views
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_views_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_views` interceptor runs
+        before the `post_list_views_with_metadata` interceptor.
         """
         return response
+
+    def post_list_views_with_metadata(
+        self,
+        response: contact_center_insights.ListViewsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        contact_center_insights.ListViewsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_views
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_views_with_metadata`
+        interceptor in new development instead of the `post_list_views` interceptor.
+        When both interceptors are used, this `post_list_views_with_metadata` interceptor runs after the
+        `post_list_views` interceptor. The (possibly modified) response returned by
+        `post_list_views` will be passed to
+        `post_list_views_with_metadata`.
+        """
+        return response, metadata
 
     def pre_query_metrics(
         self,
@@ -2065,11 +3234,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for query_metrics
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_metrics_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_metrics` interceptor runs
+        before the `post_query_metrics_with_metadata` interceptor.
         """
         return response
+
+    def post_query_metrics_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for query_metrics
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_query_metrics_with_metadata`
+        interceptor in new development instead of the `post_query_metrics` interceptor.
+        When both interceptors are used, this `post_query_metrics_with_metadata` interceptor runs after the
+        `post_query_metrics` interceptor. The (possibly modified) response returned by
+        `post_query_metrics` will be passed to
+        `post_query_metrics_with_metadata`.
+        """
+        return response, metadata
 
     def pre_tune_qa_scorecard_revision(
         self,
@@ -2091,11 +3283,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for tune_qa_scorecard_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_tune_qa_scorecard_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_tune_qa_scorecard_revision` interceptor runs
+        before the `post_tune_qa_scorecard_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_tune_qa_scorecard_revision_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for tune_qa_scorecard_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_tune_qa_scorecard_revision_with_metadata`
+        interceptor in new development instead of the `post_tune_qa_scorecard_revision` interceptor.
+        When both interceptors are used, this `post_tune_qa_scorecard_revision_with_metadata` interceptor runs after the
+        `post_tune_qa_scorecard_revision` interceptor. The (possibly modified) response returned by
+        `post_tune_qa_scorecard_revision` will be passed to
+        `post_tune_qa_scorecard_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undeploy_issue_model(
         self,
@@ -2117,11 +3332,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undeploy_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undeploy_issue_model` interceptor runs
+        before the `post_undeploy_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_undeploy_issue_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undeploy_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_undeploy_issue_model_with_metadata`
+        interceptor in new development instead of the `post_undeploy_issue_model` interceptor.
+        When both interceptors are used, this `post_undeploy_issue_model_with_metadata` interceptor runs after the
+        `post_undeploy_issue_model` interceptor. The (possibly modified) response returned by
+        `post_undeploy_issue_model` will be passed to
+        `post_undeploy_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undeploy_qa_scorecard_revision(
         self,
@@ -2143,11 +3381,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for undeploy_qa_scorecard_revision
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undeploy_qa_scorecard_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undeploy_qa_scorecard_revision` interceptor runs
+        before the `post_undeploy_qa_scorecard_revision_with_metadata` interceptor.
         """
         return response
+
+    def post_undeploy_qa_scorecard_revision_with_metadata(
+        self,
+        response: resources.QaScorecardRevision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undeploy_qa_scorecard_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_undeploy_qa_scorecard_revision_with_metadata`
+        interceptor in new development instead of the `post_undeploy_qa_scorecard_revision` interceptor.
+        When both interceptors are used, this `post_undeploy_qa_scorecard_revision_with_metadata` interceptor runs after the
+        `post_undeploy_qa_scorecard_revision` interceptor. The (possibly modified) response returned by
+        `post_undeploy_qa_scorecard_revision` will be passed to
+        `post_undeploy_qa_scorecard_revision_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_analysis_rule(
         self,
@@ -2169,11 +3430,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.AnalysisRule:
         """Post-rpc interceptor for update_analysis_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_analysis_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_analysis_rule` interceptor runs
+        before the `post_update_analysis_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_update_analysis_rule_with_metadata(
+        self,
+        response: resources.AnalysisRule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.AnalysisRule, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_analysis_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_analysis_rule_with_metadata`
+        interceptor in new development instead of the `post_update_analysis_rule` interceptor.
+        When both interceptors are used, this `post_update_analysis_rule_with_metadata` interceptor runs after the
+        `post_update_analysis_rule` interceptor. The (possibly modified) response returned by
+        `post_update_analysis_rule` will be passed to
+        `post_update_analysis_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_conversation(
         self,
@@ -2195,11 +3479,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.Conversation:
         """Post-rpc interceptor for update_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_conversation` interceptor runs
+        before the `post_update_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_update_conversation_with_metadata(
+        self,
+        response: resources.Conversation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_conversation_with_metadata`
+        interceptor in new development instead of the `post_update_conversation` interceptor.
+        When both interceptors are used, this `post_update_conversation_with_metadata` interceptor runs after the
+        `post_update_conversation` interceptor. The (possibly modified) response returned by
+        `post_update_conversation` will be passed to
+        `post_update_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_feedback_label(
         self,
@@ -2221,11 +3528,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.FeedbackLabel:
         """Post-rpc interceptor for update_feedback_label
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_feedback_label_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_feedback_label` interceptor runs
+        before the `post_update_feedback_label_with_metadata` interceptor.
         """
         return response
+
+    def post_update_feedback_label_with_metadata(
+        self,
+        response: resources.FeedbackLabel,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.FeedbackLabel, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_feedback_label
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_feedback_label_with_metadata`
+        interceptor in new development instead of the `post_update_feedback_label` interceptor.
+        When both interceptors are used, this `post_update_feedback_label_with_metadata` interceptor runs after the
+        `post_update_feedback_label` interceptor. The (possibly modified) response returned by
+        `post_update_feedback_label` will be passed to
+        `post_update_feedback_label_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_issue(
         self,
@@ -2245,11 +3575,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_update_issue(self, response: resources.Issue) -> resources.Issue:
         """Post-rpc interceptor for update_issue
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_issue` interceptor runs
+        before the `post_update_issue_with_metadata` interceptor.
         """
         return response
+
+    def post_update_issue_with_metadata(
+        self,
+        response: resources.Issue,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Issue, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_issue_with_metadata`
+        interceptor in new development instead of the `post_update_issue` interceptor.
+        When both interceptors are used, this `post_update_issue_with_metadata` interceptor runs after the
+        `post_update_issue` interceptor. The (possibly modified) response returned by
+        `post_update_issue` will be passed to
+        `post_update_issue_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_issue_model(
         self,
@@ -2271,11 +3624,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.IssueModel:
         """Post-rpc interceptor for update_issue_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_issue_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_issue_model` interceptor runs
+        before the `post_update_issue_model_with_metadata` interceptor.
         """
         return response
+
+    def post_update_issue_model_with_metadata(
+        self,
+        response: resources.IssueModel,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.IssueModel, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_issue_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_issue_model_with_metadata`
+        interceptor in new development instead of the `post_update_issue_model` interceptor.
+        When both interceptors are used, this `post_update_issue_model_with_metadata` interceptor runs after the
+        `post_update_issue_model` interceptor. The (possibly modified) response returned by
+        `post_update_issue_model` will be passed to
+        `post_update_issue_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_phrase_matcher(
         self,
@@ -2297,11 +3673,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.PhraseMatcher:
         """Post-rpc interceptor for update_phrase_matcher
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_phrase_matcher_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_phrase_matcher` interceptor runs
+        before the `post_update_phrase_matcher_with_metadata` interceptor.
         """
         return response
+
+    def post_update_phrase_matcher_with_metadata(
+        self,
+        response: resources.PhraseMatcher,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.PhraseMatcher, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_phrase_matcher
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_phrase_matcher_with_metadata`
+        interceptor in new development instead of the `post_update_phrase_matcher` interceptor.
+        When both interceptors are used, this `post_update_phrase_matcher_with_metadata` interceptor runs after the
+        `post_update_phrase_matcher` interceptor. The (possibly modified) response returned by
+        `post_update_phrase_matcher` will be passed to
+        `post_update_phrase_matcher_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_qa_question(
         self,
@@ -2323,11 +3722,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaQuestion:
         """Post-rpc interceptor for update_qa_question
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_qa_question_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_qa_question` interceptor runs
+        before the `post_update_qa_question_with_metadata` interceptor.
         """
         return response
+
+    def post_update_qa_question_with_metadata(
+        self,
+        response: resources.QaQuestion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaQuestion, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_qa_question
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_qa_question_with_metadata`
+        interceptor in new development instead of the `post_update_qa_question` interceptor.
+        When both interceptors are used, this `post_update_qa_question_with_metadata` interceptor runs after the
+        `post_update_qa_question` interceptor. The (possibly modified) response returned by
+        `post_update_qa_question` will be passed to
+        `post_update_qa_question_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_qa_scorecard(
         self,
@@ -2349,11 +3771,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> resources.QaScorecard:
         """Post-rpc interceptor for update_qa_scorecard
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_qa_scorecard_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_qa_scorecard` interceptor runs
+        before the `post_update_qa_scorecard_with_metadata` interceptor.
         """
         return response
+
+    def post_update_qa_scorecard_with_metadata(
+        self,
+        response: resources.QaScorecard,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.QaScorecard, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_qa_scorecard
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_qa_scorecard_with_metadata`
+        interceptor in new development instead of the `post_update_qa_scorecard` interceptor.
+        When both interceptors are used, this `post_update_qa_scorecard_with_metadata` interceptor runs after the
+        `post_update_qa_scorecard` interceptor. The (possibly modified) response returned by
+        `post_update_qa_scorecard` will be passed to
+        `post_update_qa_scorecard_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_settings(
         self,
@@ -2373,11 +3818,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_update_settings(self, response: resources.Settings) -> resources.Settings:
         """Post-rpc interceptor for update_settings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_settings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_settings` interceptor runs
+        before the `post_update_settings_with_metadata` interceptor.
         """
         return response
+
+    def post_update_settings_with_metadata(
+        self,
+        response: resources.Settings,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_settings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_settings_with_metadata`
+        interceptor in new development instead of the `post_update_settings` interceptor.
+        When both interceptors are used, this `post_update_settings_with_metadata` interceptor runs after the
+        `post_update_settings` interceptor. The (possibly modified) response returned by
+        `post_update_settings` will be passed to
+        `post_update_settings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_view(
         self,
@@ -2397,11 +3865,34 @@ class ContactCenterInsightsRestInterceptor:
     def post_update_view(self, response: resources.View) -> resources.View:
         """Post-rpc interceptor for update_view
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_view_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_view` interceptor runs
+        before the `post_update_view_with_metadata` interceptor.
         """
         return response
+
+    def post_update_view_with_metadata(
+        self,
+        response: resources.View,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.View, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_view
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_view_with_metadata`
+        interceptor in new development instead of the `post_update_view` interceptor.
+        When both interceptors are used, this `post_update_view_with_metadata` interceptor runs after the
+        `post_update_view` interceptor. The (possibly modified) response returned by
+        `post_update_view` will be passed to
+        `post_update_view_with_metadata`.
+        """
+        return response, metadata
 
     def pre_upload_conversation(
         self,
@@ -2423,11 +3914,34 @@ class ContactCenterInsightsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for upload_conversation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_upload_conversation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ContactCenterInsights server but before
-        it is returned to user code.
+        it is returned to user code. This `post_upload_conversation` interceptor runs
+        before the `post_upload_conversation_with_metadata` interceptor.
         """
         return response
+
+    def post_upload_conversation_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for upload_conversation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ContactCenterInsights server but before it is returned to user code.
+
+        We recommend only using this `post_upload_conversation_with_metadata`
+        interceptor in new development instead of the `post_upload_conversation` interceptor.
+        When both interceptors are used, this `post_upload_conversation_with_metadata` interceptor runs after the
+        `post_upload_conversation` interceptor. The (possibly modified) response returned by
+        `post_upload_conversation` will be passed to
+        `post_upload_conversation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -2766,6 +4280,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_bulk_analyze_conversations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_bulk_analyze_conversations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2917,6 +4435,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_bulk_delete_conversations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_bulk_delete_conversations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3069,6 +4591,13 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_bulk_download_feedback_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_bulk_download_feedback_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3221,6 +4750,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_bulk_upload_feedback_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_bulk_upload_feedback_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3368,6 +4901,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_calculate_issue_model_stats(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_calculate_issue_model_stats_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3514,6 +5051,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_calculate_stats(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_calculate_stats_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3664,6 +5205,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_analysis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_analysis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3826,6 +5371,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_analysis_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_analysis_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3977,6 +5526,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4131,6 +5684,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_feedback_label(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_feedback_label_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4283,6 +5840,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4434,6 +5995,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_phrase_matcher(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_phrase_matcher_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4588,6 +6153,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_qa_question(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_qa_question_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4743,6 +6312,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_qa_scorecard(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_qa_scorecard_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4904,6 +6477,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_qa_scorecard_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_qa_scorecard_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5051,6 +6628,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_view(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_view_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5746,6 +7327,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6452,6 +8037,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_deploy_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_deploy_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6613,6 +8202,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_deploy_qa_scorecard_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_deploy_qa_scorecard_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6765,6 +8358,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_insights_data(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_insights_data_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6917,6 +8514,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7058,6 +8659,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_analysis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_analysis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7214,6 +8819,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_analysis_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_analysis_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7359,6 +8968,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7508,6 +9121,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_encryption_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_encryption_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7656,6 +9273,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_feedback_label(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_feedback_label_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7797,6 +9418,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_issue_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7938,6 +9563,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8084,6 +9713,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_phrase_matcher(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_phrase_matcher_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8227,6 +9860,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_qa_question(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_qa_question_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8374,6 +10011,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_qa_scorecard(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_qa_scorecard_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8528,6 +10169,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_qa_scorecard_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_qa_scorecard_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8676,6 +10321,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8817,6 +10466,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_view(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_view_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8969,6 +10622,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9121,6 +10778,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_ingest_conversations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_ingest_conversations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9273,6 +10934,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_initialize_encryption_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_initialize_encryption_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9421,6 +11086,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_all_feedback_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_all_feedback_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9566,6 +11235,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_analyses(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_analyses_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9713,6 +11386,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_analysis_rules(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_analysis_rules_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9864,6 +11541,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_conversations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_conversations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10016,6 +11697,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_feedback_labels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_feedback_labels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10165,6 +11850,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_issue_models(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_issue_models_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10310,6 +11999,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_issues(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_issues_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10459,6 +12152,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_phrase_matchers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_phrase_matchers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10610,6 +12307,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_qa_questions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_qa_questions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10760,6 +12461,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_qa_scorecard_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_qa_scorecard_revisions_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10909,6 +12614,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_qa_scorecards(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_qa_scorecards_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11054,6 +12763,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_views(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_views_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11204,6 +12917,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_query_metrics(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_metrics_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11356,6 +13073,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_tune_qa_scorecard_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_tune_qa_scorecard_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11509,6 +13230,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undeploy_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undeploy_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11672,6 +13397,13 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undeploy_qa_scorecard_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_undeploy_qa_scorecard_revision_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11834,6 +13566,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_analysis_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_analysis_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11985,6 +13721,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12139,6 +13879,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_feedback_label(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_feedback_label_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12286,6 +14030,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_issue_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12437,6 +14185,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_issue_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_issue_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12589,6 +14341,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_phrase_matcher(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_phrase_matcher_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12743,6 +14499,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_qa_question(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_qa_question_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12898,6 +14658,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_qa_scorecard(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_qa_scorecard_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13052,6 +14816,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_settings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_settings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13199,6 +14967,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_view(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_view_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13351,6 +15123,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_upload_conversation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_upload_conversation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -76,6 +76,13 @@ from google.cloud.devtools.cloudbuild_v1.services.cloud_build import (
 )
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -309,6 +316,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         CloudBuildClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CloudBuildClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CloudBuildClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -12981,10 +13031,13 @@ def test_create_build_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_create_build"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_create_build_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_create_build"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.CreateBuildRequest.pb(cloudbuild.CreateBuildRequest())
         transcode.return_value = {
             "method": "post",
@@ -13006,6 +13059,7 @@ def test_create_build_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_build(
             request,
@@ -13017,6 +13071,7 @@ def test_create_build_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_build_rest_bad_request(request_type=cloudbuild.GetBuildRequest):
@@ -13119,10 +13174,13 @@ def test_get_build_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_get_build"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_get_build_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_get_build"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.GetBuildRequest.pb(cloudbuild.GetBuildRequest())
         transcode.return_value = {
             "method": "post",
@@ -13144,6 +13202,7 @@ def test_get_build_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.Build()
+        post_with_metadata.return_value = cloudbuild.Build(), metadata
 
         client.get_build(
             request,
@@ -13155,6 +13214,7 @@ def test_get_build_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_builds_rest_bad_request(request_type=cloudbuild.ListBuildsRequest):
@@ -13237,10 +13297,13 @@ def test_list_builds_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_list_builds"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_list_builds_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_list_builds"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.ListBuildsRequest.pb(cloudbuild.ListBuildsRequest())
         transcode.return_value = {
             "method": "post",
@@ -13264,6 +13327,7 @@ def test_list_builds_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.ListBuildsResponse()
+        post_with_metadata.return_value = cloudbuild.ListBuildsResponse(), metadata
 
         client.list_builds(
             request,
@@ -13275,6 +13339,7 @@ def test_list_builds_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_build_rest_bad_request(request_type=cloudbuild.CancelBuildRequest):
@@ -13377,10 +13442,13 @@ def test_cancel_build_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_cancel_build"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_cancel_build_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_cancel_build"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.CancelBuildRequest.pb(cloudbuild.CancelBuildRequest())
         transcode.return_value = {
             "method": "post",
@@ -13402,6 +13470,7 @@ def test_cancel_build_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.Build()
+        post_with_metadata.return_value = cloudbuild.Build(), metadata
 
         client.cancel_build(
             request,
@@ -13413,6 +13482,7 @@ def test_cancel_build_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_retry_build_rest_bad_request(request_type=cloudbuild.RetryBuildRequest):
@@ -13491,10 +13561,13 @@ def test_retry_build_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_retry_build"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_retry_build_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_retry_build"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.RetryBuildRequest.pb(cloudbuild.RetryBuildRequest())
         transcode.return_value = {
             "method": "post",
@@ -13516,6 +13589,7 @@ def test_retry_build_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.retry_build(
             request,
@@ -13527,6 +13601,7 @@ def test_retry_build_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_approve_build_rest_bad_request(request_type=cloudbuild.ApproveBuildRequest):
@@ -13605,10 +13680,13 @@ def test_approve_build_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_approve_build"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_approve_build_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_approve_build"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.ApproveBuildRequest.pb(cloudbuild.ApproveBuildRequest())
         transcode.return_value = {
             "method": "post",
@@ -13630,6 +13708,7 @@ def test_approve_build_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.approve_build(
             request,
@@ -13641,6 +13720,7 @@ def test_approve_build_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_build_trigger_rest_bad_request(
@@ -14061,10 +14141,13 @@ def test_create_build_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_create_build_trigger"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_create_build_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_create_build_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.CreateBuildTriggerRequest.pb(
             cloudbuild.CreateBuildTriggerRequest()
         )
@@ -14088,6 +14171,7 @@ def test_create_build_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.BuildTrigger()
+        post_with_metadata.return_value = cloudbuild.BuildTrigger(), metadata
 
         client.create_build_trigger(
             request,
@@ -14099,6 +14183,7 @@ def test_create_build_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_build_trigger_rest_bad_request(
@@ -14202,10 +14287,13 @@ def test_get_build_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_get_build_trigger"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_get_build_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_get_build_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.GetBuildTriggerRequest.pb(
             cloudbuild.GetBuildTriggerRequest()
         )
@@ -14229,6 +14317,7 @@ def test_get_build_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.BuildTrigger()
+        post_with_metadata.return_value = cloudbuild.BuildTrigger(), metadata
 
         client.get_build_trigger(
             request,
@@ -14240,6 +14329,7 @@ def test_get_build_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_build_triggers_rest_bad_request(
@@ -14324,10 +14414,13 @@ def test_list_build_triggers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_list_build_triggers"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_list_build_triggers_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_list_build_triggers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.ListBuildTriggersRequest.pb(
             cloudbuild.ListBuildTriggersRequest()
         )
@@ -14353,6 +14446,10 @@ def test_list_build_triggers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.ListBuildTriggersResponse()
+        post_with_metadata.return_value = (
+            cloudbuild.ListBuildTriggersResponse(),
+            metadata,
+        )
 
         client.list_build_triggers(
             request,
@@ -14364,6 +14461,7 @@ def test_list_build_triggers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_build_trigger_rest_bad_request(
@@ -14893,10 +14991,13 @@ def test_update_build_trigger_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_update_build_trigger"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_update_build_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_update_build_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.UpdateBuildTriggerRequest.pb(
             cloudbuild.UpdateBuildTriggerRequest()
         )
@@ -14920,6 +15021,7 @@ def test_update_build_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.BuildTrigger()
+        post_with_metadata.return_value = cloudbuild.BuildTrigger(), metadata
 
         client.update_build_trigger(
             request,
@@ -14931,6 +15033,7 @@ def test_update_build_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_run_build_trigger_rest_bad_request(
@@ -15088,10 +15191,13 @@ def test_run_build_trigger_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_run_build_trigger"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_run_build_trigger_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_run_build_trigger"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.RunBuildTriggerRequest.pb(
             cloudbuild.RunBuildTriggerRequest()
         )
@@ -15115,6 +15221,7 @@ def test_run_build_trigger_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.run_build_trigger(
             request,
@@ -15126,6 +15233,7 @@ def test_run_build_trigger_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_receive_trigger_webhook_rest_bad_request(
@@ -15284,10 +15392,14 @@ def test_receive_trigger_webhook_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_receive_trigger_webhook"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor,
+        "post_receive_trigger_webhook_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_receive_trigger_webhook"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.ReceiveTriggerWebhookRequest.pb(
             cloudbuild.ReceiveTriggerWebhookRequest()
         )
@@ -15313,6 +15425,10 @@ def test_receive_trigger_webhook_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.ReceiveTriggerWebhookResponse()
+        post_with_metadata.return_value = (
+            cloudbuild.ReceiveTriggerWebhookResponse(),
+            metadata,
+        )
 
         client.receive_trigger_webhook(
             request,
@@ -15324,6 +15440,7 @@ def test_receive_trigger_webhook_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_worker_pool_rest_bad_request(
@@ -15498,10 +15615,13 @@ def test_create_worker_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_create_worker_pool"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_create_worker_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_create_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.CreateWorkerPoolRequest.pb(
             cloudbuild.CreateWorkerPoolRequest()
         )
@@ -15525,6 +15645,7 @@ def test_create_worker_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_worker_pool(
             request,
@@ -15536,6 +15657,7 @@ def test_create_worker_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_worker_pool_rest_bad_request(request_type=cloudbuild.GetWorkerPoolRequest):
@@ -15626,10 +15748,13 @@ def test_get_worker_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_get_worker_pool"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_get_worker_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_get_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.GetWorkerPoolRequest.pb(
             cloudbuild.GetWorkerPoolRequest()
         )
@@ -15653,6 +15778,7 @@ def test_get_worker_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.WorkerPool()
+        post_with_metadata.return_value = cloudbuild.WorkerPool(), metadata
 
         client.get_worker_pool(
             request,
@@ -15664,6 +15790,7 @@ def test_get_worker_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_worker_pool_rest_bad_request(
@@ -15744,10 +15871,13 @@ def test_delete_worker_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_delete_worker_pool"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_delete_worker_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_delete_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.DeleteWorkerPoolRequest.pb(
             cloudbuild.DeleteWorkerPoolRequest()
         )
@@ -15771,6 +15901,7 @@ def test_delete_worker_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_worker_pool(
             request,
@@ -15782,6 +15913,7 @@ def test_delete_worker_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_worker_pool_rest_bad_request(
@@ -15964,10 +16096,13 @@ def test_update_worker_pool_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_update_worker_pool"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_update_worker_pool_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_update_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.UpdateWorkerPoolRequest.pb(
             cloudbuild.UpdateWorkerPoolRequest()
         )
@@ -15991,6 +16126,7 @@ def test_update_worker_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_worker_pool(
             request,
@@ -16002,6 +16138,7 @@ def test_update_worker_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_worker_pools_rest_bad_request(
@@ -16086,10 +16223,13 @@ def test_list_worker_pools_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.CloudBuildRestInterceptor, "post_list_worker_pools"
     ) as post, mock.patch.object(
+        transports.CloudBuildRestInterceptor, "post_list_worker_pools_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.CloudBuildRestInterceptor, "pre_list_worker_pools"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloudbuild.ListWorkerPoolsRequest.pb(
             cloudbuild.ListWorkerPoolsRequest()
         )
@@ -16115,6 +16255,7 @@ def test_list_worker_pools_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloudbuild.ListWorkerPoolsResponse()
+        post_with_metadata.return_value = cloudbuild.ListWorkerPoolsResponse(), metadata
 
         client.list_worker_pools(
             request,
@@ -16126,6 +16267,7 @@ def test_list_worker_pools_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

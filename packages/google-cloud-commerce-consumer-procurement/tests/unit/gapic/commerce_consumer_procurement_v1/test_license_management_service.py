@@ -65,6 +65,13 @@ from google.cloud.commerce_consumer_procurement_v1.types import (
     license_management_service,
 )
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -338,6 +345,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         LicenseManagementServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = LicenseManagementServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = LicenseManagementServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -4527,10 +4577,14 @@ def test_get_license_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "post_get_license_pool"
     ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor,
+        "post_get_license_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "pre_get_license_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = license_management_service.GetLicensePoolRequest.pb(
             license_management_service.GetLicensePoolRequest()
         )
@@ -4556,6 +4610,10 @@ def test_get_license_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = license_management_service.LicensePool()
+        post_with_metadata.return_value = (
+            license_management_service.LicensePool(),
+            metadata,
+        )
 
         client.get_license_pool(
             request,
@@ -4567,6 +4625,7 @@ def test_get_license_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_license_pool_rest_bad_request(
@@ -4743,10 +4802,14 @@ def test_update_license_pool_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "post_update_license_pool"
     ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor,
+        "post_update_license_pool_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "pre_update_license_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = license_management_service.UpdateLicensePoolRequest.pb(
             license_management_service.UpdateLicensePoolRequest()
         )
@@ -4772,6 +4835,10 @@ def test_update_license_pool_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = license_management_service.LicensePool()
+        post_with_metadata.return_value = (
+            license_management_service.LicensePool(),
+            metadata,
+        )
 
         client.update_license_pool(
             request,
@@ -4783,6 +4850,7 @@ def test_update_license_pool_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_assign_rest_bad_request(request_type=license_management_service.AssignRequest):
@@ -4862,10 +4930,13 @@ def test_assign_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "post_assign"
     ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "post_assign_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "pre_assign"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = license_management_service.AssignRequest.pb(
             license_management_service.AssignRequest()
         )
@@ -4891,6 +4962,10 @@ def test_assign_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = license_management_service.AssignResponse()
+        post_with_metadata.return_value = (
+            license_management_service.AssignResponse(),
+            metadata,
+        )
 
         client.assign(
             request,
@@ -4902,6 +4977,7 @@ def test_assign_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_unassign_rest_bad_request(
@@ -4983,10 +5059,14 @@ def test_unassign_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "post_unassign"
     ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor,
+        "post_unassign_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor, "pre_unassign"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = license_management_service.UnassignRequest.pb(
             license_management_service.UnassignRequest()
         )
@@ -5012,6 +5092,10 @@ def test_unassign_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = license_management_service.UnassignResponse()
+        post_with_metadata.return_value = (
+            license_management_service.UnassignResponse(),
+            metadata,
+        )
 
         client.unassign(
             request,
@@ -5023,6 +5107,7 @@ def test_unassign_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enumerate_licensed_users_rest_bad_request(
@@ -5111,10 +5196,14 @@ def test_enumerate_licensed_users_rest_interceptors(null_interceptor):
         "post_enumerate_licensed_users",
     ) as post, mock.patch.object(
         transports.LicenseManagementServiceRestInterceptor,
+        "post_enumerate_licensed_users_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor,
         "pre_enumerate_licensed_users",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = license_management_service.EnumerateLicensedUsersRequest.pb(
             license_management_service.EnumerateLicensedUsersRequest()
         )
@@ -5142,6 +5231,10 @@ def test_enumerate_licensed_users_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = license_management_service.EnumerateLicensedUsersResponse()
+        post_with_metadata.return_value = (
+            license_management_service.EnumerateLicensedUsersResponse(),
+            metadata,
+        )
 
         client.enumerate_licensed_users(
             request,
@@ -5153,6 +5246,7 @@ def test_enumerate_licensed_users_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(
