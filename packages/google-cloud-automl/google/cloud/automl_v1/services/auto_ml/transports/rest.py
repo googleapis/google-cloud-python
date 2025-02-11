@@ -241,11 +241,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_dataset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_dataset` interceptor runs
+        before the `post_create_dataset_with_metadata` interceptor.
         """
         return response
+
+    def post_create_dataset_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_create_dataset_with_metadata`
+        interceptor in new development instead of the `post_create_dataset` interceptor.
+        When both interceptors are used, this `post_create_dataset_with_metadata` interceptor runs after the
+        `post_create_dataset` interceptor. The (possibly modified) response returned by
+        `post_create_dataset` will be passed to
+        `post_create_dataset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_model(
         self,
@@ -264,11 +287,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_model` interceptor runs
+        before the `post_create_model_with_metadata` interceptor.
         """
         return response
+
+    def post_create_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_create_model_with_metadata`
+        interceptor in new development instead of the `post_create_model` interceptor.
+        When both interceptors are used, this `post_create_model_with_metadata` interceptor runs after the
+        `post_create_model` interceptor. The (possibly modified) response returned by
+        `post_create_model` will be passed to
+        `post_create_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_dataset(
         self,
@@ -287,11 +333,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_dataset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_dataset` interceptor runs
+        before the `post_delete_dataset_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_dataset_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_delete_dataset_with_metadata`
+        interceptor in new development instead of the `post_delete_dataset` interceptor.
+        When both interceptors are used, this `post_delete_dataset_with_metadata` interceptor runs after the
+        `post_delete_dataset` interceptor. The (possibly modified) response returned by
+        `post_delete_dataset` will be passed to
+        `post_delete_dataset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_model(
         self,
@@ -310,11 +379,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_model` interceptor runs
+        before the `post_delete_model_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_delete_model_with_metadata`
+        interceptor in new development instead of the `post_delete_model` interceptor.
+        When both interceptors are used, this `post_delete_model_with_metadata` interceptor runs after the
+        `post_delete_model` interceptor. The (possibly modified) response returned by
+        `post_delete_model` will be passed to
+        `post_delete_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_deploy_model(
         self,
@@ -333,11 +425,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_deploy_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_deploy_model` interceptor runs
+        before the `post_deploy_model_with_metadata` interceptor.
         """
         return response
+
+    def post_deploy_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for deploy_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_deploy_model_with_metadata`
+        interceptor in new development instead of the `post_deploy_model` interceptor.
+        When both interceptors are used, this `post_deploy_model_with_metadata` interceptor runs after the
+        `post_deploy_model` interceptor. The (possibly modified) response returned by
+        `post_deploy_model` will be passed to
+        `post_deploy_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_data(
         self,
@@ -356,11 +471,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_data
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_data_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_data` interceptor runs
+        before the `post_export_data_with_metadata` interceptor.
         """
         return response
+
+    def post_export_data_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_data
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_export_data_with_metadata`
+        interceptor in new development instead of the `post_export_data` interceptor.
+        When both interceptors are used, this `post_export_data_with_metadata` interceptor runs after the
+        `post_export_data` interceptor. The (possibly modified) response returned by
+        `post_export_data` will be passed to
+        `post_export_data_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_model(
         self,
@@ -379,11 +517,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_model` interceptor runs
+        before the `post_export_model_with_metadata` interceptor.
         """
         return response
+
+    def post_export_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_export_model_with_metadata`
+        interceptor in new development instead of the `post_export_model` interceptor.
+        When both interceptors are used, this `post_export_model_with_metadata` interceptor runs after the
+        `post_export_model` interceptor. The (possibly modified) response returned by
+        `post_export_model` will be passed to
+        `post_export_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_annotation_spec(
         self,
@@ -404,11 +565,34 @@ class AutoMlRestInterceptor:
     ) -> annotation_spec.AnnotationSpec:
         """Post-rpc interceptor for get_annotation_spec
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_annotation_spec_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_annotation_spec` interceptor runs
+        before the `post_get_annotation_spec_with_metadata` interceptor.
         """
         return response
+
+    def post_get_annotation_spec_with_metadata(
+        self,
+        response: annotation_spec.AnnotationSpec,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[annotation_spec.AnnotationSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_annotation_spec
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_get_annotation_spec_with_metadata`
+        interceptor in new development instead of the `post_get_annotation_spec` interceptor.
+        When both interceptors are used, this `post_get_annotation_spec_with_metadata` interceptor runs after the
+        `post_get_annotation_spec` interceptor. The (possibly modified) response returned by
+        `post_get_annotation_spec` will be passed to
+        `post_get_annotation_spec_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_dataset(
         self,
@@ -425,11 +609,34 @@ class AutoMlRestInterceptor:
     def post_get_dataset(self, response: dataset.Dataset) -> dataset.Dataset:
         """Post-rpc interceptor for get_dataset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_dataset` interceptor runs
+        before the `post_get_dataset_with_metadata` interceptor.
         """
         return response
+
+    def post_get_dataset_with_metadata(
+        self,
+        response: dataset.Dataset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_get_dataset_with_metadata`
+        interceptor in new development instead of the `post_get_dataset` interceptor.
+        When both interceptors are used, this `post_get_dataset_with_metadata` interceptor runs after the
+        `post_get_dataset` interceptor. The (possibly modified) response returned by
+        `post_get_dataset` will be passed to
+        `post_get_dataset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_model(
         self,
@@ -446,11 +653,32 @@ class AutoMlRestInterceptor:
     def post_get_model(self, response: model.Model) -> model.Model:
         """Post-rpc interceptor for get_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_model` interceptor runs
+        before the `post_get_model_with_metadata` interceptor.
         """
         return response
+
+    def post_get_model_with_metadata(
+        self, response: model.Model, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model.Model, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_get_model_with_metadata`
+        interceptor in new development instead of the `post_get_model` interceptor.
+        When both interceptors are used, this `post_get_model_with_metadata` interceptor runs after the
+        `post_get_model` interceptor. The (possibly modified) response returned by
+        `post_get_model` will be passed to
+        `post_get_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_model_evaluation(
         self,
@@ -471,11 +699,36 @@ class AutoMlRestInterceptor:
     ) -> model_evaluation.ModelEvaluation:
         """Post-rpc interceptor for get_model_evaluation
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_model_evaluation_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_model_evaluation` interceptor runs
+        before the `post_get_model_evaluation_with_metadata` interceptor.
         """
         return response
+
+    def post_get_model_evaluation_with_metadata(
+        self,
+        response: model_evaluation.ModelEvaluation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        model_evaluation.ModelEvaluation, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_model_evaluation
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_get_model_evaluation_with_metadata`
+        interceptor in new development instead of the `post_get_model_evaluation` interceptor.
+        When both interceptors are used, this `post_get_model_evaluation_with_metadata` interceptor runs after the
+        `post_get_model_evaluation` interceptor. The (possibly modified) response returned by
+        `post_get_model_evaluation` will be passed to
+        `post_get_model_evaluation_with_metadata`.
+        """
+        return response, metadata
 
     def pre_import_data(
         self,
@@ -494,11 +747,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_data
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_import_data_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_data` interceptor runs
+        before the `post_import_data_with_metadata` interceptor.
         """
         return response
+
+    def post_import_data_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_data
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_import_data_with_metadata`
+        interceptor in new development instead of the `post_import_data` interceptor.
+        When both interceptors are used, this `post_import_data_with_metadata` interceptor runs after the
+        `post_import_data` interceptor. The (possibly modified) response returned by
+        `post_import_data` will be passed to
+        `post_import_data_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_datasets(
         self,
@@ -517,11 +793,34 @@ class AutoMlRestInterceptor:
     ) -> service.ListDatasetsResponse:
         """Post-rpc interceptor for list_datasets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_datasets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_datasets` interceptor runs
+        before the `post_list_datasets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_datasets_with_metadata(
+        self,
+        response: service.ListDatasetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListDatasetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_datasets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_list_datasets_with_metadata`
+        interceptor in new development instead of the `post_list_datasets` interceptor.
+        When both interceptors are used, this `post_list_datasets_with_metadata` interceptor runs after the
+        `post_list_datasets` interceptor. The (possibly modified) response returned by
+        `post_list_datasets` will be passed to
+        `post_list_datasets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_model_evaluations(
         self,
@@ -542,11 +841,36 @@ class AutoMlRestInterceptor:
     ) -> service.ListModelEvaluationsResponse:
         """Post-rpc interceptor for list_model_evaluations
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_model_evaluations_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_model_evaluations` interceptor runs
+        before the `post_list_model_evaluations_with_metadata` interceptor.
         """
         return response
+
+    def post_list_model_evaluations_with_metadata(
+        self,
+        response: service.ListModelEvaluationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListModelEvaluationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_model_evaluations
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_list_model_evaluations_with_metadata`
+        interceptor in new development instead of the `post_list_model_evaluations` interceptor.
+        When both interceptors are used, this `post_list_model_evaluations_with_metadata` interceptor runs after the
+        `post_list_model_evaluations` interceptor. The (possibly modified) response returned by
+        `post_list_model_evaluations` will be passed to
+        `post_list_model_evaluations_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_models(
         self,
@@ -565,11 +889,34 @@ class AutoMlRestInterceptor:
     ) -> service.ListModelsResponse:
         """Post-rpc interceptor for list_models
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_models_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_models` interceptor runs
+        before the `post_list_models_with_metadata` interceptor.
         """
         return response
+
+    def post_list_models_with_metadata(
+        self,
+        response: service.ListModelsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_models
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_list_models_with_metadata`
+        interceptor in new development instead of the `post_list_models` interceptor.
+        When both interceptors are used, this `post_list_models_with_metadata` interceptor runs after the
+        `post_list_models` interceptor. The (possibly modified) response returned by
+        `post_list_models` will be passed to
+        `post_list_models_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undeploy_model(
         self,
@@ -588,11 +935,34 @@ class AutoMlRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undeploy_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undeploy_model` interceptor runs
+        before the `post_undeploy_model_with_metadata` interceptor.
         """
         return response
+
+    def post_undeploy_model_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undeploy_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_undeploy_model_with_metadata`
+        interceptor in new development instead of the `post_undeploy_model` interceptor.
+        When both interceptors are used, this `post_undeploy_model_with_metadata` interceptor runs after the
+        `post_undeploy_model` interceptor. The (possibly modified) response returned by
+        `post_undeploy_model` will be passed to
+        `post_undeploy_model_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_dataset(
         self,
@@ -609,11 +979,34 @@ class AutoMlRestInterceptor:
     def post_update_dataset(self, response: gca_dataset.Dataset) -> gca_dataset.Dataset:
         """Post-rpc interceptor for update_dataset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_dataset` interceptor runs
+        before the `post_update_dataset_with_metadata` interceptor.
         """
         return response
+
+    def post_update_dataset_with_metadata(
+        self,
+        response: gca_dataset.Dataset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gca_dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_update_dataset_with_metadata`
+        interceptor in new development instead of the `post_update_dataset` interceptor.
+        When both interceptors are used, this `post_update_dataset_with_metadata` interceptor runs after the
+        `post_update_dataset` interceptor. The (possibly modified) response returned by
+        `post_update_dataset` will be passed to
+        `post_update_dataset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_model(
         self,
@@ -630,11 +1023,34 @@ class AutoMlRestInterceptor:
     def post_update_model(self, response: gca_model.Model) -> gca_model.Model:
         """Post-rpc interceptor for update_model
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_model_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AutoMl server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_model` interceptor runs
+        before the `post_update_model_with_metadata` interceptor.
         """
         return response
+
+    def post_update_model_with_metadata(
+        self,
+        response: gca_model.Model,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gca_model.Model, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_model
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AutoMl server but before it is returned to user code.
+
+        We recommend only using this `post_update_model_with_metadata`
+        interceptor in new development instead of the `post_update_model` interceptor.
+        When both interceptors are used, this `post_update_model_with_metadata` interceptor runs after the
+        `post_update_model` interceptor. The (possibly modified) response returned by
+        `post_update_model` will be passed to
+        `post_update_model_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -925,6 +1341,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_dataset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1073,6 +1493,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1217,6 +1641,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_dataset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1359,6 +1787,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1507,6 +1939,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_deploy_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_deploy_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1655,6 +2091,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_data(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_data_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1805,6 +2245,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_export_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1952,6 +2396,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_annotation_spec(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_annotation_spec_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2097,6 +2545,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_dataset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2240,6 +2692,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2385,6 +2841,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_model_evaluation(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_model_evaluation_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2535,6 +2995,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_import_data(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_data_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2680,6 +3144,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_datasets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_datasets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2825,6 +3293,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_model_evaluations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_model_evaluations_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2970,6 +3442,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_models(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_models_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3120,6 +3596,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undeploy_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undeploy_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3273,6 +3753,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_dataset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3422,6 +3906,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_model(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_model_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

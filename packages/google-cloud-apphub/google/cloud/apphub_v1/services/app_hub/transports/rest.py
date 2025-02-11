@@ -319,11 +319,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_application` interceptor runs
+        before the `post_create_application_with_metadata` interceptor.
         """
         return response
+
+    def post_create_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_application_with_metadata`
+        interceptor in new development instead of the `post_create_application` interceptor.
+        When both interceptors are used, this `post_create_application_with_metadata` interceptor runs after the
+        `post_create_application` interceptor. The (possibly modified) response returned by
+        `post_create_application` will be passed to
+        `post_create_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_service(
         self,
@@ -344,11 +367,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_service` interceptor runs
+        before the `post_create_service_with_metadata` interceptor.
         """
         return response
+
+    def post_create_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_service_with_metadata`
+        interceptor in new development instead of the `post_create_service` interceptor.
+        When both interceptors are used, this `post_create_service_with_metadata` interceptor runs after the
+        `post_create_service` interceptor. The (possibly modified) response returned by
+        `post_create_service` will be passed to
+        `post_create_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_service_project_attachment(
         self,
@@ -370,11 +416,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_service_project_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_service_project_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_service_project_attachment` interceptor runs
+        before the `post_create_service_project_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_service_project_attachment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_service_project_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_service_project_attachment_with_metadata`
+        interceptor in new development instead of the `post_create_service_project_attachment` interceptor.
+        When both interceptors are used, this `post_create_service_project_attachment_with_metadata` interceptor runs after the
+        `post_create_service_project_attachment` interceptor. The (possibly modified) response returned by
+        `post_create_service_project_attachment` will be passed to
+        `post_create_service_project_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_workload(
         self,
@@ -395,11 +464,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_workload` interceptor runs
+        before the `post_create_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_create_workload_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_create_workload_with_metadata`
+        interceptor in new development instead of the `post_create_workload` interceptor.
+        When both interceptors are used, this `post_create_workload_with_metadata` interceptor runs after the
+        `post_create_workload` interceptor. The (possibly modified) response returned by
+        `post_create_workload` will be passed to
+        `post_create_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_application(
         self,
@@ -420,11 +512,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_application` interceptor runs
+        before the `post_delete_application_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_delete_application_with_metadata`
+        interceptor in new development instead of the `post_delete_application` interceptor.
+        When both interceptors are used, this `post_delete_application_with_metadata` interceptor runs after the
+        `post_delete_application` interceptor. The (possibly modified) response returned by
+        `post_delete_application` will be passed to
+        `post_delete_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_service(
         self,
@@ -445,11 +560,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_service` interceptor runs
+        before the `post_delete_service_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_delete_service_with_metadata`
+        interceptor in new development instead of the `post_delete_service` interceptor.
+        When both interceptors are used, this `post_delete_service_with_metadata` interceptor runs after the
+        `post_delete_service` interceptor. The (possibly modified) response returned by
+        `post_delete_service` will be passed to
+        `post_delete_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_service_project_attachment(
         self,
@@ -471,11 +609,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_service_project_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_service_project_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_service_project_attachment` interceptor runs
+        before the `post_delete_service_project_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_service_project_attachment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_service_project_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_delete_service_project_attachment_with_metadata`
+        interceptor in new development instead of the `post_delete_service_project_attachment` interceptor.
+        When both interceptors are used, this `post_delete_service_project_attachment_with_metadata` interceptor runs after the
+        `post_delete_service_project_attachment` interceptor. The (possibly modified) response returned by
+        `post_delete_service_project_attachment` will be passed to
+        `post_delete_service_project_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_workload(
         self,
@@ -496,11 +657,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_workload` interceptor runs
+        before the `post_delete_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_workload_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_delete_workload_with_metadata`
+        interceptor in new development instead of the `post_delete_workload` interceptor.
+        When both interceptors are used, this `post_delete_workload_with_metadata` interceptor runs after the
+        `post_delete_workload` interceptor. The (possibly modified) response returned by
+        `post_delete_workload` will be passed to
+        `post_delete_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_detach_service_project_attachment(
         self,
@@ -522,11 +706,37 @@ class AppHubRestInterceptor:
     ) -> apphub_service.DetachServiceProjectAttachmentResponse:
         """Post-rpc interceptor for detach_service_project_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_detach_service_project_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_detach_service_project_attachment` interceptor runs
+        before the `post_detach_service_project_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_detach_service_project_attachment_with_metadata(
+        self,
+        response: apphub_service.DetachServiceProjectAttachmentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.DetachServiceProjectAttachmentResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for detach_service_project_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_detach_service_project_attachment_with_metadata`
+        interceptor in new development instead of the `post_detach_service_project_attachment` interceptor.
+        When both interceptors are used, this `post_detach_service_project_attachment_with_metadata` interceptor runs after the
+        `post_detach_service_project_attachment` interceptor. The (possibly modified) response returned by
+        `post_detach_service_project_attachment` will be passed to
+        `post_detach_service_project_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_application(
         self,
@@ -547,11 +757,34 @@ class AppHubRestInterceptor:
     ) -> application.Application:
         """Post-rpc interceptor for get_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_application` interceptor runs
+        before the `post_get_application_with_metadata` interceptor.
         """
         return response
+
+    def post_get_application_with_metadata(
+        self,
+        response: application.Application,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[application.Application, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_application_with_metadata`
+        interceptor in new development instead of the `post_get_application` interceptor.
+        When both interceptors are used, this `post_get_application_with_metadata` interceptor runs after the
+        `post_get_application` interceptor. The (possibly modified) response returned by
+        `post_get_application` will be passed to
+        `post_get_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_discovered_service(
         self,
@@ -573,11 +806,34 @@ class AppHubRestInterceptor:
     ) -> service.DiscoveredService:
         """Post-rpc interceptor for get_discovered_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_discovered_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_discovered_service` interceptor runs
+        before the `post_get_discovered_service_with_metadata` interceptor.
         """
         return response
+
+    def post_get_discovered_service_with_metadata(
+        self,
+        response: service.DiscoveredService,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DiscoveredService, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_discovered_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_discovered_service_with_metadata`
+        interceptor in new development instead of the `post_get_discovered_service` interceptor.
+        When both interceptors are used, this `post_get_discovered_service_with_metadata` interceptor runs after the
+        `post_get_discovered_service` interceptor. The (possibly modified) response returned by
+        `post_get_discovered_service` will be passed to
+        `post_get_discovered_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_discovered_workload(
         self,
@@ -599,11 +855,34 @@ class AppHubRestInterceptor:
     ) -> workload.DiscoveredWorkload:
         """Post-rpc interceptor for get_discovered_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_discovered_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_discovered_workload` interceptor runs
+        before the `post_get_discovered_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_get_discovered_workload_with_metadata(
+        self,
+        response: workload.DiscoveredWorkload,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[workload.DiscoveredWorkload, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_discovered_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_discovered_workload_with_metadata`
+        interceptor in new development instead of the `post_get_discovered_workload` interceptor.
+        When both interceptors are used, this `post_get_discovered_workload_with_metadata` interceptor runs after the
+        `post_get_discovered_workload` interceptor. The (possibly modified) response returned by
+        `post_get_discovered_workload` will be passed to
+        `post_get_discovered_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_service(
         self,
@@ -622,11 +901,34 @@ class AppHubRestInterceptor:
     def post_get_service(self, response: service.Service) -> service.Service:
         """Post-rpc interceptor for get_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_service` interceptor runs
+        before the `post_get_service_with_metadata` interceptor.
         """
         return response
+
+    def post_get_service_with_metadata(
+        self,
+        response: service.Service,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.Service, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_service_with_metadata`
+        interceptor in new development instead of the `post_get_service` interceptor.
+        When both interceptors are used, this `post_get_service_with_metadata` interceptor runs after the
+        `post_get_service` interceptor. The (possibly modified) response returned by
+        `post_get_service` will be passed to
+        `post_get_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_service_project_attachment(
         self,
@@ -648,11 +950,37 @@ class AppHubRestInterceptor:
     ) -> service_project_attachment.ServiceProjectAttachment:
         """Post-rpc interceptor for get_service_project_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_service_project_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_service_project_attachment` interceptor runs
+        before the `post_get_service_project_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_service_project_attachment_with_metadata(
+        self,
+        response: service_project_attachment.ServiceProjectAttachment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service_project_attachment.ServiceProjectAttachment,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_service_project_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_service_project_attachment_with_metadata`
+        interceptor in new development instead of the `post_get_service_project_attachment` interceptor.
+        When both interceptors are used, this `post_get_service_project_attachment_with_metadata` interceptor runs after the
+        `post_get_service_project_attachment` interceptor. The (possibly modified) response returned by
+        `post_get_service_project_attachment` will be passed to
+        `post_get_service_project_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_workload(
         self,
@@ -671,11 +999,34 @@ class AppHubRestInterceptor:
     def post_get_workload(self, response: workload.Workload) -> workload.Workload:
         """Post-rpc interceptor for get_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_workload` interceptor runs
+        before the `post_get_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_get_workload_with_metadata(
+        self,
+        response: workload.Workload,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[workload.Workload, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_get_workload_with_metadata`
+        interceptor in new development instead of the `post_get_workload` interceptor.
+        When both interceptors are used, this `post_get_workload_with_metadata` interceptor runs after the
+        `post_get_workload` interceptor. The (possibly modified) response returned by
+        `post_get_workload` will be passed to
+        `post_get_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_applications(
         self,
@@ -696,11 +1047,36 @@ class AppHubRestInterceptor:
     ) -> apphub_service.ListApplicationsResponse:
         """Post-rpc interceptor for list_applications
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_applications_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_applications` interceptor runs
+        before the `post_list_applications_with_metadata` interceptor.
         """
         return response
+
+    def post_list_applications_with_metadata(
+        self,
+        response: apphub_service.ListApplicationsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListApplicationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_applications
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_applications_with_metadata`
+        interceptor in new development instead of the `post_list_applications` interceptor.
+        When both interceptors are used, this `post_list_applications_with_metadata` interceptor runs after the
+        `post_list_applications` interceptor. The (possibly modified) response returned by
+        `post_list_applications` will be passed to
+        `post_list_applications_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_discovered_services(
         self,
@@ -722,11 +1098,37 @@ class AppHubRestInterceptor:
     ) -> apphub_service.ListDiscoveredServicesResponse:
         """Post-rpc interceptor for list_discovered_services
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_discovered_services_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_discovered_services` interceptor runs
+        before the `post_list_discovered_services_with_metadata` interceptor.
         """
         return response
+
+    def post_list_discovered_services_with_metadata(
+        self,
+        response: apphub_service.ListDiscoveredServicesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListDiscoveredServicesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_discovered_services
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_discovered_services_with_metadata`
+        interceptor in new development instead of the `post_list_discovered_services` interceptor.
+        When both interceptors are used, this `post_list_discovered_services_with_metadata` interceptor runs after the
+        `post_list_discovered_services` interceptor. The (possibly modified) response returned by
+        `post_list_discovered_services` will be passed to
+        `post_list_discovered_services_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_discovered_workloads(
         self,
@@ -748,11 +1150,37 @@ class AppHubRestInterceptor:
     ) -> apphub_service.ListDiscoveredWorkloadsResponse:
         """Post-rpc interceptor for list_discovered_workloads
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_discovered_workloads_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_discovered_workloads` interceptor runs
+        before the `post_list_discovered_workloads_with_metadata` interceptor.
         """
         return response
+
+    def post_list_discovered_workloads_with_metadata(
+        self,
+        response: apphub_service.ListDiscoveredWorkloadsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListDiscoveredWorkloadsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_discovered_workloads
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_discovered_workloads_with_metadata`
+        interceptor in new development instead of the `post_list_discovered_workloads` interceptor.
+        When both interceptors are used, this `post_list_discovered_workloads_with_metadata` interceptor runs after the
+        `post_list_discovered_workloads` interceptor. The (possibly modified) response returned by
+        `post_list_discovered_workloads` will be passed to
+        `post_list_discovered_workloads_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_service_project_attachments(
         self,
@@ -774,11 +1202,37 @@ class AppHubRestInterceptor:
     ) -> apphub_service.ListServiceProjectAttachmentsResponse:
         """Post-rpc interceptor for list_service_project_attachments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_service_project_attachments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_service_project_attachments` interceptor runs
+        before the `post_list_service_project_attachments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_service_project_attachments_with_metadata(
+        self,
+        response: apphub_service.ListServiceProjectAttachmentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListServiceProjectAttachmentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_service_project_attachments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_service_project_attachments_with_metadata`
+        interceptor in new development instead of the `post_list_service_project_attachments` interceptor.
+        When both interceptors are used, this `post_list_service_project_attachments_with_metadata` interceptor runs after the
+        `post_list_service_project_attachments` interceptor. The (possibly modified) response returned by
+        `post_list_service_project_attachments` will be passed to
+        `post_list_service_project_attachments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_services(
         self,
@@ -799,11 +1253,36 @@ class AppHubRestInterceptor:
     ) -> apphub_service.ListServicesResponse:
         """Post-rpc interceptor for list_services
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_services_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_services` interceptor runs
+        before the `post_list_services_with_metadata` interceptor.
         """
         return response
+
+    def post_list_services_with_metadata(
+        self,
+        response: apphub_service.ListServicesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListServicesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_services
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_services_with_metadata`
+        interceptor in new development instead of the `post_list_services` interceptor.
+        When both interceptors are used, this `post_list_services_with_metadata` interceptor runs after the
+        `post_list_services` interceptor. The (possibly modified) response returned by
+        `post_list_services` will be passed to
+        `post_list_services_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_workloads(
         self,
@@ -824,11 +1303,36 @@ class AppHubRestInterceptor:
     ) -> apphub_service.ListWorkloadsResponse:
         """Post-rpc interceptor for list_workloads
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_workloads_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_workloads` interceptor runs
+        before the `post_list_workloads_with_metadata` interceptor.
         """
         return response
+
+    def post_list_workloads_with_metadata(
+        self,
+        response: apphub_service.ListWorkloadsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListWorkloadsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_workloads
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_list_workloads_with_metadata`
+        interceptor in new development instead of the `post_list_workloads` interceptor.
+        When both interceptors are used, this `post_list_workloads_with_metadata` interceptor runs after the
+        `post_list_workloads` interceptor. The (possibly modified) response returned by
+        `post_list_workloads` will be passed to
+        `post_list_workloads_with_metadata`.
+        """
+        return response, metadata
 
     def pre_lookup_discovered_service(
         self,
@@ -850,11 +1354,37 @@ class AppHubRestInterceptor:
     ) -> apphub_service.LookupDiscoveredServiceResponse:
         """Post-rpc interceptor for lookup_discovered_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_lookup_discovered_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_lookup_discovered_service` interceptor runs
+        before the `post_lookup_discovered_service_with_metadata` interceptor.
         """
         return response
+
+    def post_lookup_discovered_service_with_metadata(
+        self,
+        response: apphub_service.LookupDiscoveredServiceResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.LookupDiscoveredServiceResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for lookup_discovered_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_lookup_discovered_service_with_metadata`
+        interceptor in new development instead of the `post_lookup_discovered_service` interceptor.
+        When both interceptors are used, this `post_lookup_discovered_service_with_metadata` interceptor runs after the
+        `post_lookup_discovered_service` interceptor. The (possibly modified) response returned by
+        `post_lookup_discovered_service` will be passed to
+        `post_lookup_discovered_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_lookup_discovered_workload(
         self,
@@ -876,11 +1406,37 @@ class AppHubRestInterceptor:
     ) -> apphub_service.LookupDiscoveredWorkloadResponse:
         """Post-rpc interceptor for lookup_discovered_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_lookup_discovered_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_lookup_discovered_workload` interceptor runs
+        before the `post_lookup_discovered_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_lookup_discovered_workload_with_metadata(
+        self,
+        response: apphub_service.LookupDiscoveredWorkloadResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.LookupDiscoveredWorkloadResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for lookup_discovered_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_lookup_discovered_workload_with_metadata`
+        interceptor in new development instead of the `post_lookup_discovered_workload` interceptor.
+        When both interceptors are used, this `post_lookup_discovered_workload_with_metadata` interceptor runs after the
+        `post_lookup_discovered_workload` interceptor. The (possibly modified) response returned by
+        `post_lookup_discovered_workload` will be passed to
+        `post_lookup_discovered_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_lookup_service_project_attachment(
         self,
@@ -902,11 +1458,37 @@ class AppHubRestInterceptor:
     ) -> apphub_service.LookupServiceProjectAttachmentResponse:
         """Post-rpc interceptor for lookup_service_project_attachment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_lookup_service_project_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_lookup_service_project_attachment` interceptor runs
+        before the `post_lookup_service_project_attachment_with_metadata` interceptor.
         """
         return response
+
+    def post_lookup_service_project_attachment_with_metadata(
+        self,
+        response: apphub_service.LookupServiceProjectAttachmentResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.LookupServiceProjectAttachmentResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for lookup_service_project_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_lookup_service_project_attachment_with_metadata`
+        interceptor in new development instead of the `post_lookup_service_project_attachment` interceptor.
+        When both interceptors are used, this `post_lookup_service_project_attachment_with_metadata` interceptor runs after the
+        `post_lookup_service_project_attachment` interceptor. The (possibly modified) response returned by
+        `post_lookup_service_project_attachment` will be passed to
+        `post_lookup_service_project_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_application(
         self,
@@ -927,11 +1509,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_application
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_application_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_application` interceptor runs
+        before the `post_update_application_with_metadata` interceptor.
         """
         return response
+
+    def post_update_application_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_application
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_application_with_metadata`
+        interceptor in new development instead of the `post_update_application` interceptor.
+        When both interceptors are used, this `post_update_application_with_metadata` interceptor runs after the
+        `post_update_application` interceptor. The (possibly modified) response returned by
+        `post_update_application` will be passed to
+        `post_update_application_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_service(
         self,
@@ -952,11 +1557,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_service` interceptor runs
+        before the `post_update_service_with_metadata` interceptor.
         """
         return response
+
+    def post_update_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_service_with_metadata`
+        interceptor in new development instead of the `post_update_service` interceptor.
+        When both interceptors are used, this `post_update_service_with_metadata` interceptor runs after the
+        `post_update_service` interceptor. The (possibly modified) response returned by
+        `post_update_service` will be passed to
+        `post_update_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_workload(
         self,
@@ -977,11 +1605,34 @@ class AppHubRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_workload
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_workload_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AppHub server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_workload` interceptor runs
+        before the `post_update_workload_with_metadata` interceptor.
         """
         return response
+
+    def post_update_workload_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_workload
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AppHub server but before it is returned to user code.
+
+        We recommend only using this `post_update_workload_with_metadata`
+        interceptor in new development instead of the `post_update_workload` interceptor.
+        When both interceptors are used, this `post_update_workload_with_metadata` interceptor runs after the
+        `post_update_workload` interceptor. The (possibly modified) response returned by
+        `post_update_workload` will be passed to
+        `post_update_workload_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1474,6 +2125,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1623,6 +2278,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1776,6 +2435,13 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_service_project_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_service_project_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1925,6 +2591,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2072,6 +2742,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2215,6 +2889,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2362,6 +3040,13 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_service_project_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_delete_service_project_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2505,6 +3190,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2659,6 +3348,13 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_detach_service_project_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_detach_service_project_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2811,6 +3507,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2958,6 +3658,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_discovered_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_discovered_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3107,6 +3811,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_discovered_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_discovered_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3252,6 +3960,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3406,6 +4118,13 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_service_project_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_service_project_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3557,6 +4276,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3703,6 +4426,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_applications(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_applications_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3847,6 +4574,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_discovered_services(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_discovered_services_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3991,6 +4722,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_discovered_workloads(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_discovered_workloads_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4139,6 +4874,13 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_service_project_attachments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_service_project_attachments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4285,6 +5027,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_services(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_services_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4429,6 +5175,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_workloads(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_workloads_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4573,6 +5323,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_lookup_discovered_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_lookup_discovered_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4720,6 +5474,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_lookup_discovered_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_lookup_discovered_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4872,6 +5630,13 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_lookup_service_project_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_lookup_service_project_attachment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5031,6 +5796,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_application(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_application_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5180,6 +5949,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5329,6 +6102,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_workload(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_workload_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

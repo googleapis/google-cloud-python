@@ -457,11 +457,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_nfs_share
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_nfs_share_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_nfs_share` interceptor runs
+        before the `post_create_nfs_share_with_metadata` interceptor.
         """
         return response
+
+    def post_create_nfs_share_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_nfs_share
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_create_nfs_share_with_metadata`
+        interceptor in new development instead of the `post_create_nfs_share` interceptor.
+        When both interceptors are used, this `post_create_nfs_share_with_metadata` interceptor runs after the
+        `post_create_nfs_share` interceptor. The (possibly modified) response returned by
+        `post_create_nfs_share` will be passed to
+        `post_create_nfs_share_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_provisioning_config(
         self,
@@ -483,11 +506,36 @@ class BareMetalSolutionRestInterceptor:
     ) -> provisioning.ProvisioningConfig:
         """Post-rpc interceptor for create_provisioning_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_provisioning_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_provisioning_config` interceptor runs
+        before the `post_create_provisioning_config_with_metadata` interceptor.
         """
         return response
+
+    def post_create_provisioning_config_with_metadata(
+        self,
+        response: provisioning.ProvisioningConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_provisioning_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_create_provisioning_config_with_metadata`
+        interceptor in new development instead of the `post_create_provisioning_config` interceptor.
+        When both interceptors are used, this `post_create_provisioning_config_with_metadata` interceptor runs after the
+        `post_create_provisioning_config` interceptor. The (possibly modified) response returned by
+        `post_create_provisioning_config` will be passed to
+        `post_create_provisioning_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_ssh_key(
         self,
@@ -506,11 +554,34 @@ class BareMetalSolutionRestInterceptor:
     def post_create_ssh_key(self, response: gcb_ssh_key.SSHKey) -> gcb_ssh_key.SSHKey:
         """Post-rpc interceptor for create_ssh_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_ssh_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_ssh_key` interceptor runs
+        before the `post_create_ssh_key_with_metadata` interceptor.
         """
         return response
+
+    def post_create_ssh_key_with_metadata(
+        self,
+        response: gcb_ssh_key.SSHKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcb_ssh_key.SSHKey, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_ssh_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_create_ssh_key_with_metadata`
+        interceptor in new development instead of the `post_create_ssh_key` interceptor.
+        When both interceptors are used, this `post_create_ssh_key_with_metadata` interceptor runs after the
+        `post_create_ssh_key` interceptor. The (possibly modified) response returned by
+        `post_create_ssh_key` will be passed to
+        `post_create_ssh_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_volume_snapshot(
         self,
@@ -532,11 +603,36 @@ class BareMetalSolutionRestInterceptor:
     ) -> gcb_volume_snapshot.VolumeSnapshot:
         """Post-rpc interceptor for create_volume_snapshot
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_volume_snapshot_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_volume_snapshot` interceptor runs
+        before the `post_create_volume_snapshot_with_metadata` interceptor.
         """
         return response
+
+    def post_create_volume_snapshot_with_metadata(
+        self,
+        response: gcb_volume_snapshot.VolumeSnapshot,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcb_volume_snapshot.VolumeSnapshot, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_volume_snapshot
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_create_volume_snapshot_with_metadata`
+        interceptor in new development instead of the `post_create_volume_snapshot` interceptor.
+        When both interceptors are used, this `post_create_volume_snapshot_with_metadata` interceptor runs after the
+        `post_create_volume_snapshot` interceptor. The (possibly modified) response returned by
+        `post_create_volume_snapshot` will be passed to
+        `post_create_volume_snapshot_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_nfs_share(
         self,
@@ -557,11 +653,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_nfs_share
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_nfs_share_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_nfs_share` interceptor runs
+        before the `post_delete_nfs_share_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_nfs_share_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_nfs_share
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_delete_nfs_share_with_metadata`
+        interceptor in new development instead of the `post_delete_nfs_share` interceptor.
+        When both interceptors are used, this `post_delete_nfs_share_with_metadata` interceptor runs after the
+        `post_delete_nfs_share` interceptor. The (possibly modified) response returned by
+        `post_delete_nfs_share` will be passed to
+        `post_delete_nfs_share_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_ssh_key(
         self,
@@ -607,11 +726,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for detach_lun
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_detach_lun_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_detach_lun` interceptor runs
+        before the `post_detach_lun_with_metadata` interceptor.
         """
         return response
+
+    def post_detach_lun_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for detach_lun
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_detach_lun_with_metadata`
+        interceptor in new development instead of the `post_detach_lun` interceptor.
+        When both interceptors are used, this `post_detach_lun_with_metadata` interceptor runs after the
+        `post_detach_lun` interceptor. The (possibly modified) response returned by
+        `post_detach_lun` will be passed to
+        `post_detach_lun_with_metadata`.
+        """
+        return response, metadata
 
     def pre_disable_interactive_serial_console(
         self,
@@ -633,11 +775,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_interactive_serial_console
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_disable_interactive_serial_console_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_disable_interactive_serial_console` interceptor runs
+        before the `post_disable_interactive_serial_console_with_metadata` interceptor.
         """
         return response
+
+    def post_disable_interactive_serial_console_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_interactive_serial_console
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_disable_interactive_serial_console_with_metadata`
+        interceptor in new development instead of the `post_disable_interactive_serial_console` interceptor.
+        When both interceptors are used, this `post_disable_interactive_serial_console_with_metadata` interceptor runs after the
+        `post_disable_interactive_serial_console` interceptor. The (possibly modified) response returned by
+        `post_disable_interactive_serial_console` will be passed to
+        `post_disable_interactive_serial_console_with_metadata`.
+        """
+        return response, metadata
 
     def pre_enable_interactive_serial_console(
         self,
@@ -659,11 +824,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_interactive_serial_console
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_enable_interactive_serial_console_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_enable_interactive_serial_console` interceptor runs
+        before the `post_enable_interactive_serial_console_with_metadata` interceptor.
         """
         return response
+
+    def post_enable_interactive_serial_console_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_interactive_serial_console
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_enable_interactive_serial_console_with_metadata`
+        interceptor in new development instead of the `post_enable_interactive_serial_console` interceptor.
+        When both interceptors are used, this `post_enable_interactive_serial_console_with_metadata` interceptor runs after the
+        `post_enable_interactive_serial_console` interceptor. The (possibly modified) response returned by
+        `post_enable_interactive_serial_console` will be passed to
+        `post_enable_interactive_serial_console_with_metadata`.
+        """
+        return response, metadata
 
     def pre_evict_lun(
         self,
@@ -682,11 +870,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for evict_lun
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_evict_lun_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_evict_lun` interceptor runs
+        before the `post_evict_lun_with_metadata` interceptor.
         """
         return response
+
+    def post_evict_lun_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for evict_lun
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_evict_lun_with_metadata`
+        interceptor in new development instead of the `post_evict_lun` interceptor.
+        When both interceptors are used, this `post_evict_lun_with_metadata` interceptor runs after the
+        `post_evict_lun` interceptor. The (possibly modified) response returned by
+        `post_evict_lun` will be passed to
+        `post_evict_lun_with_metadata`.
+        """
+        return response, metadata
 
     def pre_evict_volume(
         self,
@@ -705,11 +916,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for evict_volume
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_evict_volume_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_evict_volume` interceptor runs
+        before the `post_evict_volume_with_metadata` interceptor.
         """
         return response
+
+    def post_evict_volume_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for evict_volume
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_evict_volume_with_metadata`
+        interceptor in new development instead of the `post_evict_volume` interceptor.
+        When both interceptors are used, this `post_evict_volume_with_metadata` interceptor runs after the
+        `post_evict_volume` interceptor. The (possibly modified) response returned by
+        `post_evict_volume` will be passed to
+        `post_evict_volume_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance(
         self,
@@ -726,11 +960,34 @@ class BareMetalSolutionRestInterceptor:
     def post_get_instance(self, response: instance.Instance) -> instance.Instance:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance` interceptor runs
+        before the `post_get_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_with_metadata(
+        self,
+        response: instance.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_with_metadata`
+        interceptor in new development instead of the `post_get_instance` interceptor.
+        When both interceptors are used, this `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` interceptor. The (possibly modified) response returned by
+        `post_get_instance` will be passed to
+        `post_get_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_lun(
         self,
@@ -747,11 +1004,32 @@ class BareMetalSolutionRestInterceptor:
     def post_get_lun(self, response: lun.Lun) -> lun.Lun:
         """Post-rpc interceptor for get_lun
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_lun_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_lun` interceptor runs
+        before the `post_get_lun_with_metadata` interceptor.
         """
         return response
+
+    def post_get_lun_with_metadata(
+        self, response: lun.Lun, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lun.Lun, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_lun
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_get_lun_with_metadata`
+        interceptor in new development instead of the `post_get_lun` interceptor.
+        When both interceptors are used, this `post_get_lun_with_metadata` interceptor runs after the
+        `post_get_lun` interceptor. The (possibly modified) response returned by
+        `post_get_lun` will be passed to
+        `post_get_lun_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_network(
         self,
@@ -768,11 +1046,34 @@ class BareMetalSolutionRestInterceptor:
     def post_get_network(self, response: network.Network) -> network.Network:
         """Post-rpc interceptor for get_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_network` interceptor runs
+        before the `post_get_network_with_metadata` interceptor.
         """
         return response
+
+    def post_get_network_with_metadata(
+        self,
+        response: network.Network,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[network.Network, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_get_network_with_metadata`
+        interceptor in new development instead of the `post_get_network` interceptor.
+        When both interceptors are used, this `post_get_network_with_metadata` interceptor runs after the
+        `post_get_network` interceptor. The (possibly modified) response returned by
+        `post_get_network` will be passed to
+        `post_get_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_nfs_share(
         self,
@@ -789,11 +1090,34 @@ class BareMetalSolutionRestInterceptor:
     def post_get_nfs_share(self, response: nfs_share.NfsShare) -> nfs_share.NfsShare:
         """Post-rpc interceptor for get_nfs_share
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_nfs_share_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_nfs_share` interceptor runs
+        before the `post_get_nfs_share_with_metadata` interceptor.
         """
         return response
+
+    def post_get_nfs_share_with_metadata(
+        self,
+        response: nfs_share.NfsShare,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[nfs_share.NfsShare, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_nfs_share
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_get_nfs_share_with_metadata`
+        interceptor in new development instead of the `post_get_nfs_share` interceptor.
+        When both interceptors are used, this `post_get_nfs_share_with_metadata` interceptor runs after the
+        `post_get_nfs_share` interceptor. The (possibly modified) response returned by
+        `post_get_nfs_share` will be passed to
+        `post_get_nfs_share_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_provisioning_config(
         self,
@@ -815,11 +1139,36 @@ class BareMetalSolutionRestInterceptor:
     ) -> provisioning.ProvisioningConfig:
         """Post-rpc interceptor for get_provisioning_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_provisioning_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_provisioning_config` interceptor runs
+        before the `post_get_provisioning_config_with_metadata` interceptor.
         """
         return response
+
+    def post_get_provisioning_config_with_metadata(
+        self,
+        response: provisioning.ProvisioningConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_provisioning_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_get_provisioning_config_with_metadata`
+        interceptor in new development instead of the `post_get_provisioning_config` interceptor.
+        When both interceptors are used, this `post_get_provisioning_config_with_metadata` interceptor runs after the
+        `post_get_provisioning_config` interceptor. The (possibly modified) response returned by
+        `post_get_provisioning_config` will be passed to
+        `post_get_provisioning_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_volume(
         self,
@@ -836,11 +1185,32 @@ class BareMetalSolutionRestInterceptor:
     def post_get_volume(self, response: volume.Volume) -> volume.Volume:
         """Post-rpc interceptor for get_volume
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_volume_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_volume` interceptor runs
+        before the `post_get_volume_with_metadata` interceptor.
         """
         return response
+
+    def post_get_volume_with_metadata(
+        self, response: volume.Volume, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[volume.Volume, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_volume
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_get_volume_with_metadata`
+        interceptor in new development instead of the `post_get_volume` interceptor.
+        When both interceptors are used, this `post_get_volume_with_metadata` interceptor runs after the
+        `post_get_volume` interceptor. The (possibly modified) response returned by
+        `post_get_volume` will be passed to
+        `post_get_volume_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_volume_snapshot(
         self,
@@ -862,11 +1232,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> volume_snapshot.VolumeSnapshot:
         """Post-rpc interceptor for get_volume_snapshot
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_volume_snapshot_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_volume_snapshot` interceptor runs
+        before the `post_get_volume_snapshot_with_metadata` interceptor.
         """
         return response
+
+    def post_get_volume_snapshot_with_metadata(
+        self,
+        response: volume_snapshot.VolumeSnapshot,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume_snapshot.VolumeSnapshot, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_volume_snapshot
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_get_volume_snapshot_with_metadata`
+        interceptor in new development instead of the `post_get_volume_snapshot` interceptor.
+        When both interceptors are used, this `post_get_volume_snapshot_with_metadata` interceptor runs after the
+        `post_get_volume_snapshot` interceptor. The (possibly modified) response returned by
+        `post_get_volume_snapshot` will be passed to
+        `post_get_volume_snapshot_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instances(
         self,
@@ -885,11 +1278,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> instance.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instances` interceptor runs
+        before the `post_list_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instances_with_metadata(
+        self,
+        response: instance.ListInstancesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_instances_with_metadata`
+        interceptor in new development instead of the `post_list_instances` interceptor.
+        When both interceptors are used, this `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` interceptor. The (possibly modified) response returned by
+        `post_list_instances` will be passed to
+        `post_list_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_luns(
         self,
@@ -906,11 +1322,34 @@ class BareMetalSolutionRestInterceptor:
     def post_list_luns(self, response: lun.ListLunsResponse) -> lun.ListLunsResponse:
         """Post-rpc interceptor for list_luns
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_luns_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_luns` interceptor runs
+        before the `post_list_luns_with_metadata` interceptor.
         """
         return response
+
+    def post_list_luns_with_metadata(
+        self,
+        response: lun.ListLunsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lun.ListLunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_luns
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_luns_with_metadata`
+        interceptor in new development instead of the `post_list_luns` interceptor.
+        When both interceptors are used, this `post_list_luns_with_metadata` interceptor runs after the
+        `post_list_luns` interceptor. The (possibly modified) response returned by
+        `post_list_luns` will be passed to
+        `post_list_luns_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_networks(
         self,
@@ -929,11 +1368,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> network.ListNetworksResponse:
         """Post-rpc interceptor for list_networks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_networks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_networks` interceptor runs
+        before the `post_list_networks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_networks_with_metadata(
+        self,
+        response: network.ListNetworksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[network.ListNetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_networks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_networks_with_metadata`
+        interceptor in new development instead of the `post_list_networks` interceptor.
+        When both interceptors are used, this `post_list_networks_with_metadata` interceptor runs after the
+        `post_list_networks` interceptor. The (possibly modified) response returned by
+        `post_list_networks` will be passed to
+        `post_list_networks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_network_usage(
         self,
@@ -954,11 +1416,36 @@ class BareMetalSolutionRestInterceptor:
     ) -> network.ListNetworkUsageResponse:
         """Post-rpc interceptor for list_network_usage
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_network_usage_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_network_usage` interceptor runs
+        before the `post_list_network_usage_with_metadata` interceptor.
         """
         return response
+
+    def post_list_network_usage_with_metadata(
+        self,
+        response: network.ListNetworkUsageResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        network.ListNetworkUsageResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_network_usage
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_network_usage_with_metadata`
+        interceptor in new development instead of the `post_list_network_usage` interceptor.
+        When both interceptors are used, this `post_list_network_usage_with_metadata` interceptor runs after the
+        `post_list_network_usage` interceptor. The (possibly modified) response returned by
+        `post_list_network_usage` will be passed to
+        `post_list_network_usage_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_nfs_shares(
         self,
@@ -977,11 +1464,36 @@ class BareMetalSolutionRestInterceptor:
     ) -> nfs_share.ListNfsSharesResponse:
         """Post-rpc interceptor for list_nfs_shares
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_nfs_shares_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_nfs_shares` interceptor runs
+        before the `post_list_nfs_shares_with_metadata` interceptor.
         """
         return response
+
+    def post_list_nfs_shares_with_metadata(
+        self,
+        response: nfs_share.ListNfsSharesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        nfs_share.ListNfsSharesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_nfs_shares
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_nfs_shares_with_metadata`
+        interceptor in new development instead of the `post_list_nfs_shares` interceptor.
+        When both interceptors are used, this `post_list_nfs_shares_with_metadata` interceptor runs after the
+        `post_list_nfs_shares` interceptor. The (possibly modified) response returned by
+        `post_list_nfs_shares` will be passed to
+        `post_list_nfs_shares_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_os_images(
         self,
@@ -1000,11 +1512,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> osimage.ListOSImagesResponse:
         """Post-rpc interceptor for list_os_images
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_os_images_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_os_images` interceptor runs
+        before the `post_list_os_images_with_metadata` interceptor.
         """
         return response
+
+    def post_list_os_images_with_metadata(
+        self,
+        response: osimage.ListOSImagesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[osimage.ListOSImagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_os_images
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_os_images_with_metadata`
+        interceptor in new development instead of the `post_list_os_images` interceptor.
+        When both interceptors are used, this `post_list_os_images_with_metadata` interceptor runs after the
+        `post_list_os_images` interceptor. The (possibly modified) response returned by
+        `post_list_os_images` will be passed to
+        `post_list_os_images_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_provisioning_quotas(
         self,
@@ -1026,11 +1561,37 @@ class BareMetalSolutionRestInterceptor:
     ) -> provisioning.ListProvisioningQuotasResponse:
         """Post-rpc interceptor for list_provisioning_quotas
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_provisioning_quotas_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_provisioning_quotas` interceptor runs
+        before the `post_list_provisioning_quotas_with_metadata` interceptor.
         """
         return response
+
+    def post_list_provisioning_quotas_with_metadata(
+        self,
+        response: provisioning.ListProvisioningQuotasResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.ListProvisioningQuotasResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_provisioning_quotas
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_provisioning_quotas_with_metadata`
+        interceptor in new development instead of the `post_list_provisioning_quotas` interceptor.
+        When both interceptors are used, this `post_list_provisioning_quotas_with_metadata` interceptor runs after the
+        `post_list_provisioning_quotas` interceptor. The (possibly modified) response returned by
+        `post_list_provisioning_quotas` will be passed to
+        `post_list_provisioning_quotas_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_ssh_keys(
         self,
@@ -1049,11 +1610,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> ssh_key.ListSSHKeysResponse:
         """Post-rpc interceptor for list_ssh_keys
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_ssh_keys_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_ssh_keys` interceptor runs
+        before the `post_list_ssh_keys_with_metadata` interceptor.
         """
         return response
+
+    def post_list_ssh_keys_with_metadata(
+        self,
+        response: ssh_key.ListSSHKeysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[ssh_key.ListSSHKeysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_ssh_keys
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_ssh_keys_with_metadata`
+        interceptor in new development instead of the `post_list_ssh_keys` interceptor.
+        When both interceptors are used, this `post_list_ssh_keys_with_metadata` interceptor runs after the
+        `post_list_ssh_keys` interceptor. The (possibly modified) response returned by
+        `post_list_ssh_keys` will be passed to
+        `post_list_ssh_keys_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_volumes(
         self,
@@ -1072,11 +1656,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> volume.ListVolumesResponse:
         """Post-rpc interceptor for list_volumes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_volumes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_volumes` interceptor runs
+        before the `post_list_volumes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_volumes_with_metadata(
+        self,
+        response: volume.ListVolumesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[volume.ListVolumesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_volumes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_volumes_with_metadata`
+        interceptor in new development instead of the `post_list_volumes` interceptor.
+        When both interceptors are used, this `post_list_volumes_with_metadata` interceptor runs after the
+        `post_list_volumes` interceptor. The (possibly modified) response returned by
+        `post_list_volumes` will be passed to
+        `post_list_volumes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_volume_snapshots(
         self,
@@ -1098,11 +1705,37 @@ class BareMetalSolutionRestInterceptor:
     ) -> volume_snapshot.ListVolumeSnapshotsResponse:
         """Post-rpc interceptor for list_volume_snapshots
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_volume_snapshots_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_volume_snapshots` interceptor runs
+        before the `post_list_volume_snapshots_with_metadata` interceptor.
         """
         return response
+
+    def post_list_volume_snapshots_with_metadata(
+        self,
+        response: volume_snapshot.ListVolumeSnapshotsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        volume_snapshot.ListVolumeSnapshotsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_volume_snapshots
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_list_volume_snapshots_with_metadata`
+        interceptor in new development instead of the `post_list_volume_snapshots` interceptor.
+        When both interceptors are used, this `post_list_volume_snapshots_with_metadata` interceptor runs after the
+        `post_list_volume_snapshots` interceptor. The (possibly modified) response returned by
+        `post_list_volume_snapshots` will be passed to
+        `post_list_volume_snapshots_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rename_instance(
         self,
@@ -1119,11 +1752,34 @@ class BareMetalSolutionRestInterceptor:
     def post_rename_instance(self, response: instance.Instance) -> instance.Instance:
         """Post-rpc interceptor for rename_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rename_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rename_instance` interceptor runs
+        before the `post_rename_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_rename_instance_with_metadata(
+        self,
+        response: instance.Instance,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[instance.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rename_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_rename_instance_with_metadata`
+        interceptor in new development instead of the `post_rename_instance` interceptor.
+        When both interceptors are used, this `post_rename_instance_with_metadata` interceptor runs after the
+        `post_rename_instance` interceptor. The (possibly modified) response returned by
+        `post_rename_instance` will be passed to
+        `post_rename_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rename_network(
         self,
@@ -1140,11 +1796,34 @@ class BareMetalSolutionRestInterceptor:
     def post_rename_network(self, response: network.Network) -> network.Network:
         """Post-rpc interceptor for rename_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rename_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rename_network` interceptor runs
+        before the `post_rename_network_with_metadata` interceptor.
         """
         return response
+
+    def post_rename_network_with_metadata(
+        self,
+        response: network.Network,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[network.Network, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rename_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_rename_network_with_metadata`
+        interceptor in new development instead of the `post_rename_network` interceptor.
+        When both interceptors are used, this `post_rename_network_with_metadata` interceptor runs after the
+        `post_rename_network` interceptor. The (possibly modified) response returned by
+        `post_rename_network` will be passed to
+        `post_rename_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rename_nfs_share(
         self,
@@ -1163,11 +1842,34 @@ class BareMetalSolutionRestInterceptor:
     def post_rename_nfs_share(self, response: nfs_share.NfsShare) -> nfs_share.NfsShare:
         """Post-rpc interceptor for rename_nfs_share
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rename_nfs_share_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rename_nfs_share` interceptor runs
+        before the `post_rename_nfs_share_with_metadata` interceptor.
         """
         return response
+
+    def post_rename_nfs_share_with_metadata(
+        self,
+        response: nfs_share.NfsShare,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[nfs_share.NfsShare, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rename_nfs_share
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_rename_nfs_share_with_metadata`
+        interceptor in new development instead of the `post_rename_nfs_share` interceptor.
+        When both interceptors are used, this `post_rename_nfs_share_with_metadata` interceptor runs after the
+        `post_rename_nfs_share` interceptor. The (possibly modified) response returned by
+        `post_rename_nfs_share` will be passed to
+        `post_rename_nfs_share_with_metadata`.
+        """
+        return response, metadata
 
     def pre_rename_volume(
         self,
@@ -1184,11 +1886,32 @@ class BareMetalSolutionRestInterceptor:
     def post_rename_volume(self, response: volume.Volume) -> volume.Volume:
         """Post-rpc interceptor for rename_volume
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_rename_volume_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_rename_volume` interceptor runs
+        before the `post_rename_volume_with_metadata` interceptor.
         """
         return response
+
+    def post_rename_volume_with_metadata(
+        self, response: volume.Volume, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[volume.Volume, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for rename_volume
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_rename_volume_with_metadata`
+        interceptor in new development instead of the `post_rename_volume` interceptor.
+        When both interceptors are used, this `post_rename_volume_with_metadata` interceptor runs after the
+        `post_rename_volume` interceptor. The (possibly modified) response returned by
+        `post_rename_volume` will be passed to
+        `post_rename_volume_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_instance(
         self,
@@ -1207,11 +1930,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset_instance` interceptor runs
+        before the `post_reset_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_reset_instance_with_metadata`
+        interceptor in new development instead of the `post_reset_instance` interceptor.
+        When both interceptors are used, this `post_reset_instance_with_metadata` interceptor runs after the
+        `post_reset_instance` interceptor. The (possibly modified) response returned by
+        `post_reset_instance` will be passed to
+        `post_reset_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_resize_volume(
         self,
@@ -1230,11 +1976,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for resize_volume
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_resize_volume_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_resize_volume` interceptor runs
+        before the `post_resize_volume_with_metadata` interceptor.
         """
         return response
+
+    def post_resize_volume_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for resize_volume
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_resize_volume_with_metadata`
+        interceptor in new development instead of the `post_resize_volume` interceptor.
+        When both interceptors are used, this `post_resize_volume_with_metadata` interceptor runs after the
+        `post_resize_volume` interceptor. The (possibly modified) response returned by
+        `post_resize_volume` will be passed to
+        `post_resize_volume_with_metadata`.
+        """
+        return response, metadata
 
     def pre_restore_volume_snapshot(
         self,
@@ -1256,11 +2025,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_volume_snapshot
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_restore_volume_snapshot_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_restore_volume_snapshot` interceptor runs
+        before the `post_restore_volume_snapshot_with_metadata` interceptor.
         """
         return response
+
+    def post_restore_volume_snapshot_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restore_volume_snapshot
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_restore_volume_snapshot_with_metadata`
+        interceptor in new development instead of the `post_restore_volume_snapshot` interceptor.
+        When both interceptors are used, this `post_restore_volume_snapshot_with_metadata` interceptor runs after the
+        `post_restore_volume_snapshot` interceptor. The (possibly modified) response returned by
+        `post_restore_volume_snapshot` will be passed to
+        `post_restore_volume_snapshot_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_instance(
         self,
@@ -1279,11 +2071,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_instance` interceptor runs
+        before the `post_start_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_start_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_start_instance_with_metadata`
+        interceptor in new development instead of the `post_start_instance` interceptor.
+        When both interceptors are used, this `post_start_instance_with_metadata` interceptor runs after the
+        `post_start_instance` interceptor. The (possibly modified) response returned by
+        `post_start_instance` will be passed to
+        `post_start_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop_instance(
         self,
@@ -1302,11 +2117,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop_instance` interceptor runs
+        before the `post_stop_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_stop_instance_with_metadata`
+        interceptor in new development instead of the `post_stop_instance` interceptor.
+        When both interceptors are used, this `post_stop_instance_with_metadata` interceptor runs after the
+        `post_stop_instance` interceptor. The (possibly modified) response returned by
+        `post_stop_instance` will be passed to
+        `post_stop_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_submit_provisioning_config(
         self,
@@ -1328,11 +2166,37 @@ class BareMetalSolutionRestInterceptor:
     ) -> provisioning.SubmitProvisioningConfigResponse:
         """Post-rpc interceptor for submit_provisioning_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_submit_provisioning_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_submit_provisioning_config` interceptor runs
+        before the `post_submit_provisioning_config_with_metadata` interceptor.
         """
         return response
+
+    def post_submit_provisioning_config_with_metadata(
+        self,
+        response: provisioning.SubmitProvisioningConfigResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.SubmitProvisioningConfigResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for submit_provisioning_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_submit_provisioning_config_with_metadata`
+        interceptor in new development instead of the `post_submit_provisioning_config` interceptor.
+        When both interceptors are used, this `post_submit_provisioning_config_with_metadata` interceptor runs after the
+        `post_submit_provisioning_config` interceptor. The (possibly modified) response returned by
+        `post_submit_provisioning_config` will be passed to
+        `post_submit_provisioning_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_instance(
         self,
@@ -1353,11 +2217,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_instance` interceptor runs
+        before the `post_update_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_update_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_update_instance_with_metadata`
+        interceptor in new development instead of the `post_update_instance` interceptor.
+        When both interceptors are used, this `post_update_instance_with_metadata` interceptor runs after the
+        `post_update_instance` interceptor. The (possibly modified) response returned by
+        `post_update_instance` will be passed to
+        `post_update_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_network(
         self,
@@ -1378,11 +2265,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_network` interceptor runs
+        before the `post_update_network_with_metadata` interceptor.
         """
         return response
+
+    def post_update_network_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_update_network_with_metadata`
+        interceptor in new development instead of the `post_update_network` interceptor.
+        When both interceptors are used, this `post_update_network_with_metadata` interceptor runs after the
+        `post_update_network` interceptor. The (possibly modified) response returned by
+        `post_update_network` will be passed to
+        `post_update_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_nfs_share(
         self,
@@ -1403,11 +2313,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_nfs_share
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_nfs_share_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_nfs_share` interceptor runs
+        before the `post_update_nfs_share_with_metadata` interceptor.
         """
         return response
+
+    def post_update_nfs_share_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_nfs_share
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_update_nfs_share_with_metadata`
+        interceptor in new development instead of the `post_update_nfs_share` interceptor.
+        When both interceptors are used, this `post_update_nfs_share_with_metadata` interceptor runs after the
+        `post_update_nfs_share` interceptor. The (possibly modified) response returned by
+        `post_update_nfs_share` will be passed to
+        `post_update_nfs_share_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_provisioning_config(
         self,
@@ -1429,11 +2362,36 @@ class BareMetalSolutionRestInterceptor:
     ) -> provisioning.ProvisioningConfig:
         """Post-rpc interceptor for update_provisioning_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_provisioning_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_provisioning_config` interceptor runs
+        before the `post_update_provisioning_config_with_metadata` interceptor.
         """
         return response
+
+    def post_update_provisioning_config_with_metadata(
+        self,
+        response: provisioning.ProvisioningConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        provisioning.ProvisioningConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_provisioning_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_update_provisioning_config_with_metadata`
+        interceptor in new development instead of the `post_update_provisioning_config` interceptor.
+        When both interceptors are used, this `post_update_provisioning_config_with_metadata` interceptor runs after the
+        `post_update_provisioning_config` interceptor. The (possibly modified) response returned by
+        `post_update_provisioning_config` will be passed to
+        `post_update_provisioning_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_volume(
         self,
@@ -1452,11 +2410,34 @@ class BareMetalSolutionRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_volume
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_volume_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the BareMetalSolution server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_volume` interceptor runs
+        before the `post_update_volume_with_metadata` interceptor.
         """
         return response
+
+    def post_update_volume_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_volume
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BareMetalSolution server but before it is returned to user code.
+
+        We recommend only using this `post_update_volume_with_metadata`
+        interceptor in new development instead of the `post_update_volume` interceptor.
+        When both interceptors are used, this `post_update_volume_with_metadata` interceptor runs after the
+        `post_update_volume` interceptor. The (possibly modified) response returned by
+        `post_update_volume` will be passed to
+        `post_update_volume_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1758,6 +2739,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_nfs_share(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_nfs_share_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1910,6 +2895,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_provisioning_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_provisioning_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2059,6 +3048,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_ssh_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_ssh_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2213,6 +3206,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_volume_snapshot(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_volume_snapshot_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2359,6 +3356,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_nfs_share(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_nfs_share_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2726,6 +3727,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_detach_lun(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_detach_lun_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2883,6 +3888,13 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_disable_interactive_serial_console(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_disable_interactive_serial_console_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3035,6 +4047,13 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_enable_interactive_serial_console(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_enable_interactive_serial_console_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3183,6 +4202,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_evict_lun(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_evict_lun_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3331,6 +4354,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_evict_volume(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_evict_volume_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3472,6 +4499,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3619,6 +4650,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_lun(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_lun_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3760,6 +4795,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3901,6 +4940,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_nfs_share(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_nfs_share_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4046,6 +5089,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_provisioning_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_provisioning_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4187,6 +5234,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_volume(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_volume_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4333,6 +5384,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_volume_snapshot(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_volume_snapshot_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4477,6 +5532,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instances_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4620,6 +5679,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_luns(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_luns_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4763,6 +5826,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_networks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_networks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4906,6 +5973,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_network_usage(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_network_usage_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5052,6 +6123,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_nfs_shares(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_nfs_shares_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5195,6 +6270,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_os_images(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_os_images_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5343,6 +6422,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_provisioning_quotas(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_provisioning_quotas_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5486,6 +6569,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_ssh_keys(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_ssh_keys_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5629,6 +6716,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_volumes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_volumes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5777,6 +6868,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_volume_snapshots(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_volume_snapshots_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5927,6 +7022,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rename_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rename_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6075,6 +7174,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rename_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rename_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6225,6 +7328,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rename_nfs_share(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rename_nfs_share_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6372,6 +7479,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_rename_volume(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_rename_volume_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6520,6 +7631,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6667,6 +7782,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_resize_volume(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_resize_volume_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6820,6 +7939,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_restore_volume_snapshot(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_volume_snapshot_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6968,6 +8091,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7115,6 +8242,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7269,6 +8400,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_submit_provisioning_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_submit_provisioning_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7420,6 +8555,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_instance_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7569,6 +8708,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7720,6 +8863,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_nfs_share(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_nfs_share_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7873,6 +9020,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_provisioning_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_provisioning_config_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8020,6 +9171,10 @@ class BareMetalSolutionRestTransport(_BaseBareMetalSolutionRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_volume(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_volume_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

@@ -68,6 +68,13 @@ from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import
 )
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -339,6 +346,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         DataTransferServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = DataTransferServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = DataTransferServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -11542,10 +11592,14 @@ def test_get_data_source_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_get_data_source"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_get_data_source_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_get_data_source"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.GetDataSourceRequest.pb(
             datatransfer.GetDataSourceRequest()
         )
@@ -11569,6 +11623,7 @@ def test_get_data_source_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.DataSource()
+        post_with_metadata.return_value = datatransfer.DataSource(), metadata
 
         client.get_data_source(
             request,
@@ -11580,6 +11635,7 @@ def test_get_data_source_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_data_sources_rest_bad_request(
@@ -11664,10 +11720,14 @@ def test_list_data_sources_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_list_data_sources"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_list_data_sources_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_list_data_sources"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.ListDataSourcesRequest.pb(
             datatransfer.ListDataSourcesRequest()
         )
@@ -11693,6 +11753,10 @@ def test_list_data_sources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.ListDataSourcesResponse()
+        post_with_metadata.return_value = (
+            datatransfer.ListDataSourcesResponse(),
+            metadata,
+        )
 
         client.list_data_sources(
             request,
@@ -11704,6 +11768,7 @@ def test_list_data_sources_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_transfer_config_rest_bad_request(
@@ -11919,10 +11984,14 @@ def test_create_transfer_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_create_transfer_config"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_create_transfer_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_create_transfer_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.CreateTransferConfigRequest.pb(
             datatransfer.CreateTransferConfigRequest()
         )
@@ -11946,6 +12015,7 @@ def test_create_transfer_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer.TransferConfig()
+        post_with_metadata.return_value = transfer.TransferConfig(), metadata
 
         client.create_transfer_config(
             request,
@@ -11957,6 +12027,7 @@ def test_create_transfer_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_transfer_config_rest_bad_request(
@@ -12180,10 +12251,14 @@ def test_update_transfer_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_update_transfer_config"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_update_transfer_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_update_transfer_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.UpdateTransferConfigRequest.pb(
             datatransfer.UpdateTransferConfigRequest()
         )
@@ -12207,6 +12282,7 @@ def test_update_transfer_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer.TransferConfig()
+        post_with_metadata.return_value = transfer.TransferConfig(), metadata
 
         client.update_transfer_config(
             request,
@@ -12218,6 +12294,7 @@ def test_update_transfer_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_transfer_config_rest_bad_request(
@@ -12438,10 +12515,14 @@ def test_get_transfer_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_get_transfer_config"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_get_transfer_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_get_transfer_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.GetTransferConfigRequest.pb(
             datatransfer.GetTransferConfigRequest()
         )
@@ -12465,6 +12546,7 @@ def test_get_transfer_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer.TransferConfig()
+        post_with_metadata.return_value = transfer.TransferConfig(), metadata
 
         client.get_transfer_config(
             request,
@@ -12476,6 +12558,7 @@ def test_get_transfer_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_transfer_configs_rest_bad_request(
@@ -12560,10 +12643,14 @@ def test_list_transfer_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_list_transfer_configs"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_list_transfer_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_list_transfer_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.ListTransferConfigsRequest.pb(
             datatransfer.ListTransferConfigsRequest()
         )
@@ -12589,6 +12676,10 @@ def test_list_transfer_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.ListTransferConfigsResponse()
+        post_with_metadata.return_value = (
+            datatransfer.ListTransferConfigsResponse(),
+            metadata,
+        )
 
         client.list_transfer_configs(
             request,
@@ -12600,6 +12691,7 @@ def test_list_transfer_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_schedule_transfer_runs_rest_bad_request(
@@ -12685,10 +12777,14 @@ def test_schedule_transfer_runs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_schedule_transfer_runs"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_schedule_transfer_runs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_schedule_transfer_runs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.ScheduleTransferRunsRequest.pb(
             datatransfer.ScheduleTransferRunsRequest()
         )
@@ -12714,6 +12810,10 @@ def test_schedule_transfer_runs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.ScheduleTransferRunsResponse()
+        post_with_metadata.return_value = (
+            datatransfer.ScheduleTransferRunsResponse(),
+            metadata,
+        )
 
         client.schedule_transfer_runs(
             request,
@@ -12725,6 +12825,7 @@ def test_schedule_transfer_runs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_manual_transfer_runs_rest_bad_request(
@@ -12810,10 +12911,14 @@ def test_start_manual_transfer_runs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_start_manual_transfer_runs"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_start_manual_transfer_runs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_start_manual_transfer_runs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.StartManualTransferRunsRequest.pb(
             datatransfer.StartManualTransferRunsRequest()
         )
@@ -12839,6 +12944,10 @@ def test_start_manual_transfer_runs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.StartManualTransferRunsResponse()
+        post_with_metadata.return_value = (
+            datatransfer.StartManualTransferRunsResponse(),
+            metadata,
+        )
 
         client.start_manual_transfer_runs(
             request,
@@ -12850,6 +12959,7 @@ def test_start_manual_transfer_runs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_transfer_run_rest_bad_request(
@@ -12949,10 +13059,14 @@ def test_get_transfer_run_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_get_transfer_run"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_get_transfer_run_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_get_transfer_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.GetTransferRunRequest.pb(
             datatransfer.GetTransferRunRequest()
         )
@@ -12976,6 +13090,7 @@ def test_get_transfer_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = transfer.TransferRun()
+        post_with_metadata.return_value = transfer.TransferRun(), metadata
 
         client.get_transfer_run(
             request,
@@ -12987,6 +13102,7 @@ def test_get_transfer_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_transfer_run_rest_bad_request(
@@ -13188,10 +13304,14 @@ def test_list_transfer_runs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_list_transfer_runs"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_list_transfer_runs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_list_transfer_runs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.ListTransferRunsRequest.pb(
             datatransfer.ListTransferRunsRequest()
         )
@@ -13217,6 +13337,10 @@ def test_list_transfer_runs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.ListTransferRunsResponse()
+        post_with_metadata.return_value = (
+            datatransfer.ListTransferRunsResponse(),
+            metadata,
+        )
 
         client.list_transfer_runs(
             request,
@@ -13228,6 +13352,7 @@ def test_list_transfer_runs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_transfer_logs_rest_bad_request(
@@ -13316,10 +13441,14 @@ def test_list_transfer_logs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_list_transfer_logs"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_list_transfer_logs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_list_transfer_logs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.ListTransferLogsRequest.pb(
             datatransfer.ListTransferLogsRequest()
         )
@@ -13345,6 +13474,10 @@ def test_list_transfer_logs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.ListTransferLogsResponse()
+        post_with_metadata.return_value = (
+            datatransfer.ListTransferLogsResponse(),
+            metadata,
+        )
 
         client.list_transfer_logs(
             request,
@@ -13356,6 +13489,7 @@ def test_list_transfer_logs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_check_valid_creds_rest_bad_request(
@@ -13440,10 +13574,14 @@ def test_check_valid_creds_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "post_check_valid_creds"
     ) as post, mock.patch.object(
+        transports.DataTransferServiceRestInterceptor,
+        "post_check_valid_creds_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.DataTransferServiceRestInterceptor, "pre_check_valid_creds"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = datatransfer.CheckValidCredsRequest.pb(
             datatransfer.CheckValidCredsRequest()
         )
@@ -13469,6 +13607,10 @@ def test_check_valid_creds_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = datatransfer.CheckValidCredsResponse()
+        post_with_metadata.return_value = (
+            datatransfer.CheckValidCredsResponse(),
+            metadata,
+        )
 
         client.check_valid_creds(
             request,
@@ -13480,6 +13622,7 @@ def test_check_valid_creds_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_enroll_data_sources_rest_bad_request(

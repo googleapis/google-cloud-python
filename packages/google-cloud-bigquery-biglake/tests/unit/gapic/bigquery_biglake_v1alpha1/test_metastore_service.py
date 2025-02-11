@@ -62,6 +62,13 @@ from google.cloud.bigquery_biglake_v1alpha1.services.metastore_service import (
 )
 from google.cloud.bigquery_biglake_v1alpha1.types import metastore
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -319,6 +326,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         MetastoreServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = MetastoreServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = MetastoreServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -13262,10 +13312,13 @@ def test_create_catalog_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_create_catalog"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_create_catalog_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_create_catalog"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CreateCatalogRequest.pb(metastore.CreateCatalogRequest())
         transcode.return_value = {
             "method": "post",
@@ -13287,6 +13340,7 @@ def test_create_catalog_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Catalog()
+        post_with_metadata.return_value = metastore.Catalog(), metadata
 
         client.create_catalog(
             request,
@@ -13298,6 +13352,7 @@ def test_create_catalog_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_catalog_rest_bad_request(request_type=metastore.DeleteCatalogRequest):
@@ -13380,10 +13435,13 @@ def test_delete_catalog_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_delete_catalog"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_delete_catalog_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_delete_catalog"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.DeleteCatalogRequest.pb(metastore.DeleteCatalogRequest())
         transcode.return_value = {
             "method": "post",
@@ -13405,6 +13463,7 @@ def test_delete_catalog_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Catalog()
+        post_with_metadata.return_value = metastore.Catalog(), metadata
 
         client.delete_catalog(
             request,
@@ -13416,6 +13475,7 @@ def test_delete_catalog_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_catalog_rest_bad_request(request_type=metastore.GetCatalogRequest):
@@ -13498,10 +13558,13 @@ def test_get_catalog_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_get_catalog"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_get_catalog_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_get_catalog"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.GetCatalogRequest.pb(metastore.GetCatalogRequest())
         transcode.return_value = {
             "method": "post",
@@ -13523,6 +13586,7 @@ def test_get_catalog_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Catalog()
+        post_with_metadata.return_value = metastore.Catalog(), metadata
 
         client.get_catalog(
             request,
@@ -13534,6 +13598,7 @@ def test_get_catalog_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_catalogs_rest_bad_request(request_type=metastore.ListCatalogsRequest):
@@ -13616,10 +13681,13 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_list_catalogs"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_list_catalogs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_list_catalogs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ListCatalogsRequest.pb(metastore.ListCatalogsRequest())
         transcode.return_value = {
             "method": "post",
@@ -13643,6 +13711,7 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.ListCatalogsResponse()
+        post_with_metadata.return_value = metastore.ListCatalogsResponse(), metadata
 
         client.list_catalogs(
             request,
@@ -13654,6 +13723,7 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_database_rest_bad_request(request_type=metastore.CreateDatabaseRequest):
@@ -13814,10 +13884,13 @@ def test_create_database_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_create_database"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_create_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_create_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CreateDatabaseRequest.pb(
             metastore.CreateDatabaseRequest()
         )
@@ -13841,6 +13914,7 @@ def test_create_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Database()
+        post_with_metadata.return_value = metastore.Database(), metadata
 
         client.create_database(
             request,
@@ -13852,6 +13926,7 @@ def test_create_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_database_rest_bad_request(request_type=metastore.DeleteDatabaseRequest):
@@ -13940,10 +14015,13 @@ def test_delete_database_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_delete_database"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_delete_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_delete_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.DeleteDatabaseRequest.pb(
             metastore.DeleteDatabaseRequest()
         )
@@ -13967,6 +14045,7 @@ def test_delete_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Database()
+        post_with_metadata.return_value = metastore.Database(), metadata
 
         client.delete_database(
             request,
@@ -13978,6 +14057,7 @@ def test_delete_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_database_rest_bad_request(request_type=metastore.UpdateDatabaseRequest):
@@ -14146,10 +14226,13 @@ def test_update_database_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_update_database"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_update_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_update_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.UpdateDatabaseRequest.pb(
             metastore.UpdateDatabaseRequest()
         )
@@ -14173,6 +14256,7 @@ def test_update_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Database()
+        post_with_metadata.return_value = metastore.Database(), metadata
 
         client.update_database(
             request,
@@ -14184,6 +14268,7 @@ def test_update_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_database_rest_bad_request(request_type=metastore.GetDatabaseRequest):
@@ -14272,10 +14357,13 @@ def test_get_database_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_get_database"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_get_database_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_get_database"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.GetDatabaseRequest.pb(metastore.GetDatabaseRequest())
         transcode.return_value = {
             "method": "post",
@@ -14297,6 +14385,7 @@ def test_get_database_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Database()
+        post_with_metadata.return_value = metastore.Database(), metadata
 
         client.get_database(
             request,
@@ -14308,6 +14397,7 @@ def test_get_database_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_databases_rest_bad_request(request_type=metastore.ListDatabasesRequest):
@@ -14390,10 +14480,13 @@ def test_list_databases_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_list_databases"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_list_databases_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_list_databases"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ListDatabasesRequest.pb(metastore.ListDatabasesRequest())
         transcode.return_value = {
             "method": "post",
@@ -14417,6 +14510,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.ListDatabasesResponse()
+        post_with_metadata.return_value = metastore.ListDatabasesResponse(), metadata
 
         client.list_databases(
             request,
@@ -14428,6 +14522,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_table_rest_bad_request(request_type=metastore.CreateTableRequest):
@@ -14604,10 +14699,13 @@ def test_create_table_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_create_table"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_create_table_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_create_table"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CreateTableRequest.pb(metastore.CreateTableRequest())
         transcode.return_value = {
             "method": "post",
@@ -14629,6 +14727,7 @@ def test_create_table_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Table()
+        post_with_metadata.return_value = metastore.Table(), metadata
 
         client.create_table(
             request,
@@ -14640,6 +14739,7 @@ def test_create_table_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_table_rest_bad_request(request_type=metastore.DeleteTableRequest):
@@ -14730,10 +14830,13 @@ def test_delete_table_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_delete_table"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_delete_table_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_delete_table"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.DeleteTableRequest.pb(metastore.DeleteTableRequest())
         transcode.return_value = {
             "method": "post",
@@ -14755,6 +14858,7 @@ def test_delete_table_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Table()
+        post_with_metadata.return_value = metastore.Table(), metadata
 
         client.delete_table(
             request,
@@ -14766,6 +14870,7 @@ def test_delete_table_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_table_rest_bad_request(request_type=metastore.UpdateTableRequest):
@@ -14946,10 +15051,13 @@ def test_update_table_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_update_table"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_update_table_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_update_table"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.UpdateTableRequest.pb(metastore.UpdateTableRequest())
         transcode.return_value = {
             "method": "post",
@@ -14971,6 +15079,7 @@ def test_update_table_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Table()
+        post_with_metadata.return_value = metastore.Table(), metadata
 
         client.update_table(
             request,
@@ -14982,6 +15091,7 @@ def test_update_table_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_rename_table_rest_bad_request(request_type=metastore.RenameTableRequest):
@@ -15072,10 +15182,13 @@ def test_rename_table_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_rename_table"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_rename_table_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_rename_table"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.RenameTableRequest.pb(metastore.RenameTableRequest())
         transcode.return_value = {
             "method": "post",
@@ -15097,6 +15210,7 @@ def test_rename_table_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Table()
+        post_with_metadata.return_value = metastore.Table(), metadata
 
         client.rename_table(
             request,
@@ -15108,6 +15222,7 @@ def test_rename_table_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_table_rest_bad_request(request_type=metastore.GetTableRequest):
@@ -15198,10 +15313,13 @@ def test_get_table_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_get_table"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_get_table_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_get_table"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.GetTableRequest.pb(metastore.GetTableRequest())
         transcode.return_value = {
             "method": "post",
@@ -15223,6 +15341,7 @@ def test_get_table_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Table()
+        post_with_metadata.return_value = metastore.Table(), metadata
 
         client.get_table(
             request,
@@ -15234,6 +15353,7 @@ def test_get_table_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_tables_rest_bad_request(request_type=metastore.ListTablesRequest):
@@ -15320,10 +15440,13 @@ def test_list_tables_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_list_tables"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_list_tables_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_list_tables"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ListTablesRequest.pb(metastore.ListTablesRequest())
         transcode.return_value = {
             "method": "post",
@@ -15347,6 +15470,7 @@ def test_list_tables_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.ListTablesResponse()
+        post_with_metadata.return_value = metastore.ListTablesResponse(), metadata
 
         client.list_tables(
             request,
@@ -15358,6 +15482,7 @@ def test_list_tables_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_lock_rest_bad_request(request_type=metastore.CreateLockRequest):
@@ -15523,10 +15648,13 @@ def test_create_lock_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_create_lock"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_create_lock_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_create_lock"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CreateLockRequest.pb(metastore.CreateLockRequest())
         transcode.return_value = {
             "method": "post",
@@ -15548,6 +15676,7 @@ def test_create_lock_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Lock()
+        post_with_metadata.return_value = metastore.Lock(), metadata
 
         client.create_lock(
             request,
@@ -15559,6 +15688,7 @@ def test_create_lock_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_lock_rest_bad_request(request_type=metastore.DeleteLockRequest):
@@ -15759,10 +15889,13 @@ def test_check_lock_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_check_lock"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_check_lock_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_check_lock"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.CheckLockRequest.pb(metastore.CheckLockRequest())
         transcode.return_value = {
             "method": "post",
@@ -15784,6 +15917,7 @@ def test_check_lock_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.Lock()
+        post_with_metadata.return_value = metastore.Lock(), metadata
 
         client.check_lock(
             request,
@@ -15795,6 +15929,7 @@ def test_check_lock_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_locks_rest_bad_request(request_type=metastore.ListLocksRequest):
@@ -15881,10 +16016,13 @@ def test_list_locks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "post_list_locks"
     ) as post, mock.patch.object(
+        transports.MetastoreServiceRestInterceptor, "post_list_locks_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.MetastoreServiceRestInterceptor, "pre_list_locks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = metastore.ListLocksRequest.pb(metastore.ListLocksRequest())
         transcode.return_value = {
             "method": "post",
@@ -15908,6 +16046,7 @@ def test_list_locks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = metastore.ListLocksResponse()
+        post_with_metadata.return_value = metastore.ListLocksResponse(), metadata
 
         client.list_locks(
             request,
@@ -15919,6 +16058,7 @@ def test_list_locks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

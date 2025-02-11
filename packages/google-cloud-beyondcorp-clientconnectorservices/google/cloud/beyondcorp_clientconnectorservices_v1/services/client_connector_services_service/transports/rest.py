@@ -140,11 +140,34 @@ class ClientConnectorServicesServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_client_connector_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_client_connector_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClientConnectorServicesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_client_connector_service` interceptor runs
+        before the `post_create_client_connector_service_with_metadata` interceptor.
         """
         return response
+
+    def post_create_client_connector_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_client_connector_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClientConnectorServicesService server but before it is returned to user code.
+
+        We recommend only using this `post_create_client_connector_service_with_metadata`
+        interceptor in new development instead of the `post_create_client_connector_service` interceptor.
+        When both interceptors are used, this `post_create_client_connector_service_with_metadata` interceptor runs after the
+        `post_create_client_connector_service` interceptor. The (possibly modified) response returned by
+        `post_create_client_connector_service` will be passed to
+        `post_create_client_connector_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_client_connector_service(
         self,
@@ -166,11 +189,34 @@ class ClientConnectorServicesServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_client_connector_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_client_connector_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClientConnectorServicesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_client_connector_service` interceptor runs
+        before the `post_delete_client_connector_service_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_client_connector_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_client_connector_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClientConnectorServicesService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_client_connector_service_with_metadata`
+        interceptor in new development instead of the `post_delete_client_connector_service` interceptor.
+        When both interceptors are used, this `post_delete_client_connector_service_with_metadata` interceptor runs after the
+        `post_delete_client_connector_service` interceptor. The (possibly modified) response returned by
+        `post_delete_client_connector_service` will be passed to
+        `post_delete_client_connector_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_client_connector_service(
         self,
@@ -192,11 +238,37 @@ class ClientConnectorServicesServiceRestInterceptor:
     ) -> client_connector_services_service.ClientConnectorService:
         """Post-rpc interceptor for get_client_connector_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_client_connector_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClientConnectorServicesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_client_connector_service` interceptor runs
+        before the `post_get_client_connector_service_with_metadata` interceptor.
         """
         return response
+
+    def post_get_client_connector_service_with_metadata(
+        self,
+        response: client_connector_services_service.ClientConnectorService,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        client_connector_services_service.ClientConnectorService,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_client_connector_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClientConnectorServicesService server but before it is returned to user code.
+
+        We recommend only using this `post_get_client_connector_service_with_metadata`
+        interceptor in new development instead of the `post_get_client_connector_service` interceptor.
+        When both interceptors are used, this `post_get_client_connector_service_with_metadata` interceptor runs after the
+        `post_get_client_connector_service` interceptor. The (possibly modified) response returned by
+        `post_get_client_connector_service` will be passed to
+        `post_get_client_connector_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_client_connector_services(
         self,
@@ -219,11 +291,37 @@ class ClientConnectorServicesServiceRestInterceptor:
     ) -> client_connector_services_service.ListClientConnectorServicesResponse:
         """Post-rpc interceptor for list_client_connector_services
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_client_connector_services_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClientConnectorServicesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_client_connector_services` interceptor runs
+        before the `post_list_client_connector_services_with_metadata` interceptor.
         """
         return response
+
+    def post_list_client_connector_services_with_metadata(
+        self,
+        response: client_connector_services_service.ListClientConnectorServicesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        client_connector_services_service.ListClientConnectorServicesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_client_connector_services
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClientConnectorServicesService server but before it is returned to user code.
+
+        We recommend only using this `post_list_client_connector_services_with_metadata`
+        interceptor in new development instead of the `post_list_client_connector_services` interceptor.
+        When both interceptors are used, this `post_list_client_connector_services_with_metadata` interceptor runs after the
+        `post_list_client_connector_services` interceptor. The (possibly modified) response returned by
+        `post_list_client_connector_services` will be passed to
+        `post_list_client_connector_services_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_client_connector_service(
         self,
@@ -245,11 +343,34 @@ class ClientConnectorServicesServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_client_connector_service
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_client_connector_service_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ClientConnectorServicesService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_client_connector_service` interceptor runs
+        before the `post_update_client_connector_service_with_metadata` interceptor.
         """
         return response
+
+    def post_update_client_connector_service_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_client_connector_service
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClientConnectorServicesService server but before it is returned to user code.
+
+        We recommend only using this `post_update_client_connector_service_with_metadata`
+        interceptor in new development instead of the `post_update_client_connector_service` interceptor.
+        When both interceptors are used, this `post_update_client_connector_service_with_metadata` interceptor runs after the
+        `post_update_client_connector_service` interceptor. The (possibly modified) response returned by
+        `post_update_client_connector_service` will be passed to
+        `post_update_client_connector_service_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -755,6 +876,13 @@ class ClientConnectorServicesServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_client_connector_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_client_connector_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -903,6 +1031,13 @@ class ClientConnectorServicesServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_client_connector_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_delete_client_connector_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1052,6 +1187,10 @@ class ClientConnectorServicesServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_client_connector_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_client_connector_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1207,6 +1346,13 @@ class ClientConnectorServicesServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_client_connector_services(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_client_connector_services_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1363,6 +1509,13 @@ class ClientConnectorServicesServiceRestTransport(
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_client_connector_service(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_client_connector_service_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
