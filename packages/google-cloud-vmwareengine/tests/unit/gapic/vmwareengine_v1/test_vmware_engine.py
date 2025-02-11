@@ -78,6 +78,13 @@ from google.cloud.vmwareengine_v1.services.vmware_engine import (
 )
 from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -319,6 +326,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         VmwareEngineClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = VmwareEngineClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = VmwareEngineClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -50659,10 +50709,13 @@ def test_list_private_clouds_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_private_clouds"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_private_clouds_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_private_clouds"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListPrivateCloudsRequest.pb(
             vmwareengine.ListPrivateCloudsRequest()
         )
@@ -50688,6 +50741,10 @@ def test_list_private_clouds_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListPrivateCloudsResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListPrivateCloudsResponse(),
+            metadata,
+        )
 
         client.list_private_clouds(
             request,
@@ -50699,6 +50756,7 @@ def test_list_private_clouds_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_private_cloud_rest_bad_request(
@@ -50791,10 +50849,13 @@ def test_get_private_cloud_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_private_cloud"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_private_cloud_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_private_cloud"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetPrivateCloudRequest.pb(
             vmwareengine.GetPrivateCloudRequest()
         )
@@ -50820,6 +50881,10 @@ def test_get_private_cloud_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.PrivateCloud()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.PrivateCloud(),
+            metadata,
+        )
 
         client.get_private_cloud(
             request,
@@ -50831,6 +50896,7 @@ def test_get_private_cloud_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_private_cloud_rest_bad_request(
@@ -51022,10 +51088,14 @@ def test_create_private_cloud_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_private_cloud"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_private_cloud_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_private_cloud"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreatePrivateCloudRequest.pb(
             vmwareengine.CreatePrivateCloudRequest()
         )
@@ -51049,6 +51119,7 @@ def test_create_private_cloud_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_private_cloud(
             request,
@@ -51060,6 +51131,7 @@ def test_create_private_cloud_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_private_cloud_rest_bad_request(
@@ -51259,10 +51331,14 @@ def test_update_private_cloud_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_private_cloud"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_private_cloud_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_private_cloud"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdatePrivateCloudRequest.pb(
             vmwareengine.UpdatePrivateCloudRequest()
         )
@@ -51286,6 +51362,7 @@ def test_update_private_cloud_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_private_cloud(
             request,
@@ -51297,6 +51374,7 @@ def test_update_private_cloud_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_private_cloud_rest_bad_request(
@@ -51377,10 +51455,14 @@ def test_delete_private_cloud_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_private_cloud"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_private_cloud_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_private_cloud"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeletePrivateCloudRequest.pb(
             vmwareengine.DeletePrivateCloudRequest()
         )
@@ -51404,6 +51486,7 @@ def test_delete_private_cloud_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_private_cloud(
             request,
@@ -51415,6 +51498,7 @@ def test_delete_private_cloud_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_undelete_private_cloud_rest_bad_request(
@@ -51495,10 +51579,14 @@ def test_undelete_private_cloud_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_undelete_private_cloud"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_undelete_private_cloud_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_undelete_private_cloud"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UndeletePrivateCloudRequest.pb(
             vmwareengine.UndeletePrivateCloudRequest()
         )
@@ -51522,6 +51610,7 @@ def test_undelete_private_cloud_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.undelete_private_cloud(
             request,
@@ -51533,6 +51622,7 @@ def test_undelete_private_cloud_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_clusters_rest_bad_request(request_type=vmwareengine.ListClustersRequest):
@@ -51621,10 +51711,13 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_clusters"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_clusters_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListClustersRequest.pb(
             vmwareengine.ListClustersRequest()
         )
@@ -51650,6 +51743,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListClustersResponse()
+        post_with_metadata.return_value = vmwareengine.ListClustersResponse(), metadata
 
         client.list_clusters(
             request,
@@ -51661,6 +51755,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_cluster_rest_bad_request(request_type=vmwareengine.GetClusterRequest):
@@ -51753,10 +51848,13 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_cluster"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetClusterRequest.pb(vmwareengine.GetClusterRequest())
         transcode.return_value = {
             "method": "post",
@@ -51780,6 +51878,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.Cluster()
+        post_with_metadata.return_value = vmwareengine_resources.Cluster(), metadata
 
         client.get_cluster(
             request,
@@ -51791,6 +51890,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_cluster_rest_bad_request(
@@ -51961,10 +52061,13 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_cluster"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_create_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateClusterRequest.pb(
             vmwareengine.CreateClusterRequest()
         )
@@ -51988,6 +52091,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_cluster(
             request,
@@ -51999,6 +52103,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_cluster_rest_bad_request(
@@ -52173,10 +52278,13 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_cluster"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_update_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateClusterRequest.pb(
             vmwareengine.UpdateClusterRequest()
         )
@@ -52200,6 +52308,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_cluster(
             request,
@@ -52211,6 +52320,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_cluster_rest_bad_request(
@@ -52295,10 +52405,13 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_cluster"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_delete_cluster_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteClusterRequest.pb(
             vmwareengine.DeleteClusterRequest()
         )
@@ -52322,6 +52435,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_cluster(
             request,
@@ -52333,6 +52447,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_nodes_rest_bad_request(request_type=vmwareengine.ListNodesRequest):
@@ -52419,10 +52534,13 @@ def test_list_nodes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_nodes"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_nodes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_nodes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListNodesRequest.pb(vmwareengine.ListNodesRequest())
         transcode.return_value = {
             "method": "post",
@@ -52446,6 +52564,7 @@ def test_list_nodes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListNodesResponse()
+        post_with_metadata.return_value = vmwareengine.ListNodesResponse(), metadata
 
         client.list_nodes(
             request,
@@ -52457,6 +52576,7 @@ def test_list_nodes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_node_rest_bad_request(request_type=vmwareengine.GetNodeRequest):
@@ -52555,10 +52675,13 @@ def test_get_node_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_node"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_node_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_node"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetNodeRequest.pb(vmwareengine.GetNodeRequest())
         transcode.return_value = {
             "method": "post",
@@ -52582,6 +52705,7 @@ def test_get_node_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.Node()
+        post_with_metadata.return_value = vmwareengine_resources.Node(), metadata
 
         client.get_node(
             request,
@@ -52593,6 +52717,7 @@ def test_get_node_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_external_addresses_rest_bad_request(
@@ -52683,10 +52808,14 @@ def test_list_external_addresses_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_external_addresses"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_external_addresses_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_external_addresses"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListExternalAddressesRequest.pb(
             vmwareengine.ListExternalAddressesRequest()
         )
@@ -52712,6 +52841,10 @@ def test_list_external_addresses_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListExternalAddressesResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListExternalAddressesResponse(),
+            metadata,
+        )
 
         client.list_external_addresses(
             request,
@@ -52723,6 +52856,7 @@ def test_list_external_addresses_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_fetch_network_policy_external_addresses_rest_bad_request(
@@ -52815,10 +52949,14 @@ def test_fetch_network_policy_external_addresses_rest_interceptors(null_intercep
         "post_fetch_network_policy_external_addresses",
     ) as post, mock.patch.object(
         transports.VmwareEngineRestInterceptor,
+        "post_fetch_network_policy_external_addresses_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
         "pre_fetch_network_policy_external_addresses",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.FetchNetworkPolicyExternalAddressesRequest.pb(
             vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
         )
@@ -52844,6 +52982,10 @@ def test_fetch_network_policy_external_addresses_rest_interceptors(null_intercep
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(),
+            metadata,
+        )
 
         client.fetch_network_policy_external_addresses(
             request,
@@ -52855,6 +52997,7 @@ def test_fetch_network_policy_external_addresses_rest_interceptors(null_intercep
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_external_address_rest_bad_request(
@@ -52953,10 +53096,14 @@ def test_get_external_address_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_external_address"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_get_external_address_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_external_address"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetExternalAddressRequest.pb(
             vmwareengine.GetExternalAddressRequest()
         )
@@ -52982,6 +53129,10 @@ def test_get_external_address_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.ExternalAddress()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.ExternalAddress(),
+            metadata,
+        )
 
         client.get_external_address(
             request,
@@ -52993,6 +53144,7 @@ def test_get_external_address_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_external_address_rest_bad_request(
@@ -53156,10 +53308,14 @@ def test_create_external_address_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_external_address"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_external_address_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_external_address"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateExternalAddressRequest.pb(
             vmwareengine.CreateExternalAddressRequest()
         )
@@ -53183,6 +53339,7 @@ def test_create_external_address_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_external_address(
             request,
@@ -53194,6 +53351,7 @@ def test_create_external_address_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_external_address_rest_bad_request(
@@ -53361,10 +53519,14 @@ def test_update_external_address_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_external_address"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_external_address_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_external_address"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateExternalAddressRequest.pb(
             vmwareengine.UpdateExternalAddressRequest()
         )
@@ -53388,6 +53550,7 @@ def test_update_external_address_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_external_address(
             request,
@@ -53399,6 +53562,7 @@ def test_update_external_address_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_external_address_rest_bad_request(
@@ -53483,10 +53647,14 @@ def test_delete_external_address_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_external_address"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_external_address_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_external_address"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteExternalAddressRequest.pb(
             vmwareengine.DeleteExternalAddressRequest()
         )
@@ -53510,6 +53678,7 @@ def test_delete_external_address_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_external_address(
             request,
@@ -53521,6 +53690,7 @@ def test_delete_external_address_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_subnets_rest_bad_request(request_type=vmwareengine.ListSubnetsRequest):
@@ -53609,10 +53779,13 @@ def test_list_subnets_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_subnets"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_subnets_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_subnets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListSubnetsRequest.pb(
             vmwareengine.ListSubnetsRequest()
         )
@@ -53638,6 +53811,7 @@ def test_list_subnets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListSubnetsResponse()
+        post_with_metadata.return_value = vmwareengine.ListSubnetsResponse(), metadata
 
         client.list_subnets(
             request,
@@ -53649,6 +53823,7 @@ def test_list_subnets_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_subnet_rest_bad_request(request_type=vmwareengine.GetSubnetRequest):
@@ -53745,10 +53920,13 @@ def test_get_subnet_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_subnet"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_subnet_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_subnet"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetSubnetRequest.pb(vmwareengine.GetSubnetRequest())
         transcode.return_value = {
             "method": "post",
@@ -53772,6 +53950,7 @@ def test_get_subnet_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.Subnet()
+        post_with_metadata.return_value = vmwareengine_resources.Subnet(), metadata
 
         client.get_subnet(
             request,
@@ -53783,6 +53962,7 @@ def test_get_subnet_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_subnet_rest_bad_request(request_type=vmwareengine.UpdateSubnetRequest):
@@ -53944,10 +54124,13 @@ def test_update_subnet_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_subnet"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_update_subnet_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_subnet"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateSubnetRequest.pb(
             vmwareengine.UpdateSubnetRequest()
         )
@@ -53971,6 +54154,7 @@ def test_update_subnet_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_subnet(
             request,
@@ -53982,6 +54166,7 @@ def test_update_subnet_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_external_access_rules_rest_bad_request(
@@ -54072,10 +54257,14 @@ def test_list_external_access_rules_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_external_access_rules"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_external_access_rules_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_external_access_rules"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListExternalAccessRulesRequest.pb(
             vmwareengine.ListExternalAccessRulesRequest()
         )
@@ -54101,6 +54290,10 @@ def test_list_external_access_rules_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListExternalAccessRulesResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListExternalAccessRulesResponse(),
+            metadata,
+        )
 
         client.list_external_access_rules(
             request,
@@ -54112,6 +54305,7 @@ def test_list_external_access_rules_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_external_access_rule_rest_bad_request(
@@ -54216,10 +54410,14 @@ def test_get_external_access_rule_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_external_access_rule"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_get_external_access_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_external_access_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetExternalAccessRuleRequest.pb(
             vmwareengine.GetExternalAccessRuleRequest()
         )
@@ -54245,6 +54443,10 @@ def test_get_external_access_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.ExternalAccessRule()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.ExternalAccessRule(),
+            metadata,
+        )
 
         client.get_external_access_rule(
             request,
@@ -54256,6 +54458,7 @@ def test_get_external_access_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_external_access_rule_rest_bad_request(
@@ -54432,10 +54635,14 @@ def test_create_external_access_rule_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_external_access_rule"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_external_access_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_external_access_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateExternalAccessRuleRequest.pb(
             vmwareengine.CreateExternalAccessRuleRequest()
         )
@@ -54459,6 +54666,7 @@ def test_create_external_access_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_external_access_rule(
             request,
@@ -54470,6 +54678,7 @@ def test_create_external_access_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_external_access_rule_rest_bad_request(
@@ -54650,10 +54859,14 @@ def test_update_external_access_rule_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_external_access_rule"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_external_access_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_external_access_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateExternalAccessRuleRequest.pb(
             vmwareengine.UpdateExternalAccessRuleRequest()
         )
@@ -54677,6 +54890,7 @@ def test_update_external_access_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_external_access_rule(
             request,
@@ -54688,6 +54902,7 @@ def test_update_external_access_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_external_access_rule_rest_bad_request(
@@ -54772,10 +54987,14 @@ def test_delete_external_access_rule_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_external_access_rule"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_external_access_rule_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_external_access_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteExternalAccessRuleRequest.pb(
             vmwareengine.DeleteExternalAccessRuleRequest()
         )
@@ -54799,6 +55018,7 @@ def test_delete_external_access_rule_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_external_access_rule(
             request,
@@ -54810,6 +55030,7 @@ def test_delete_external_access_rule_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_logging_servers_rest_bad_request(
@@ -54900,10 +55121,14 @@ def test_list_logging_servers_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_logging_servers"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_logging_servers_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_logging_servers"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListLoggingServersRequest.pb(
             vmwareengine.ListLoggingServersRequest()
         )
@@ -54929,6 +55154,10 @@ def test_list_logging_servers_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListLoggingServersResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListLoggingServersResponse(),
+            metadata,
+        )
 
         client.list_logging_servers(
             request,
@@ -54940,6 +55169,7 @@ def test_list_logging_servers_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_logging_server_rest_bad_request(
@@ -55038,10 +55268,13 @@ def test_get_logging_server_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_logging_server"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_logging_server_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_logging_server"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetLoggingServerRequest.pb(
             vmwareengine.GetLoggingServerRequest()
         )
@@ -55067,6 +55300,10 @@ def test_get_logging_server_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.LoggingServer()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.LoggingServer(),
+            metadata,
+        )
 
         client.get_logging_server(
             request,
@@ -55078,6 +55315,7 @@ def test_get_logging_server_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_logging_server_rest_bad_request(
@@ -55239,10 +55477,14 @@ def test_create_logging_server_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_logging_server"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_logging_server_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_logging_server"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateLoggingServerRequest.pb(
             vmwareengine.CreateLoggingServerRequest()
         )
@@ -55266,6 +55508,7 @@ def test_create_logging_server_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_logging_server(
             request,
@@ -55277,6 +55520,7 @@ def test_create_logging_server_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_logging_server_rest_bad_request(
@@ -55442,10 +55686,14 @@ def test_update_logging_server_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_logging_server"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_logging_server_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_logging_server"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateLoggingServerRequest.pb(
             vmwareengine.UpdateLoggingServerRequest()
         )
@@ -55469,6 +55717,7 @@ def test_update_logging_server_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_logging_server(
             request,
@@ -55480,6 +55729,7 @@ def test_update_logging_server_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_logging_server_rest_bad_request(
@@ -55564,10 +55814,14 @@ def test_delete_logging_server_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_logging_server"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_logging_server_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_logging_server"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteLoggingServerRequest.pb(
             vmwareengine.DeleteLoggingServerRequest()
         )
@@ -55591,6 +55845,7 @@ def test_delete_logging_server_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_logging_server(
             request,
@@ -55602,6 +55857,7 @@ def test_delete_logging_server_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_node_types_rest_bad_request(
@@ -55688,10 +55944,13 @@ def test_list_node_types_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_node_types"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_node_types_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_node_types"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListNodeTypesRequest.pb(
             vmwareengine.ListNodeTypesRequest()
         )
@@ -55717,6 +55976,7 @@ def test_list_node_types_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListNodeTypesResponse()
+        post_with_metadata.return_value = vmwareengine.ListNodeTypesResponse(), metadata
 
         client.list_node_types(
             request,
@@ -55728,6 +55988,7 @@ def test_list_node_types_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_node_type_rest_bad_request(request_type=vmwareengine.GetNodeTypeRequest):
@@ -55834,10 +56095,13 @@ def test_get_node_type_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_node_type"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_node_type_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_node_type"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetNodeTypeRequest.pb(
             vmwareengine.GetNodeTypeRequest()
         )
@@ -55863,6 +56127,7 @@ def test_get_node_type_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.NodeType()
+        post_with_metadata.return_value = vmwareengine_resources.NodeType(), metadata
 
         client.get_node_type(
             request,
@@ -55874,6 +56139,7 @@ def test_get_node_type_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_show_nsx_credentials_rest_bad_request(
@@ -55964,10 +56230,14 @@ def test_show_nsx_credentials_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_show_nsx_credentials"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_show_nsx_credentials_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_show_nsx_credentials"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ShowNsxCredentialsRequest.pb(
             vmwareengine.ShowNsxCredentialsRequest()
         )
@@ -55993,6 +56263,7 @@ def test_show_nsx_credentials_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.Credentials()
+        post_with_metadata.return_value = vmwareengine_resources.Credentials(), metadata
 
         client.show_nsx_credentials(
             request,
@@ -56004,6 +56275,7 @@ def test_show_nsx_credentials_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_show_vcenter_credentials_rest_bad_request(
@@ -56094,10 +56366,14 @@ def test_show_vcenter_credentials_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_show_vcenter_credentials"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_show_vcenter_credentials_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_show_vcenter_credentials"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ShowVcenterCredentialsRequest.pb(
             vmwareengine.ShowVcenterCredentialsRequest()
         )
@@ -56123,6 +56399,7 @@ def test_show_vcenter_credentials_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.Credentials()
+        post_with_metadata.return_value = vmwareengine_resources.Credentials(), metadata
 
         client.show_vcenter_credentials(
             request,
@@ -56134,6 +56411,7 @@ def test_show_vcenter_credentials_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reset_nsx_credentials_rest_bad_request(
@@ -56218,10 +56496,14 @@ def test_reset_nsx_credentials_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_reset_nsx_credentials"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_reset_nsx_credentials_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_reset_nsx_credentials"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ResetNsxCredentialsRequest.pb(
             vmwareengine.ResetNsxCredentialsRequest()
         )
@@ -56245,6 +56527,7 @@ def test_reset_nsx_credentials_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reset_nsx_credentials(
             request,
@@ -56256,6 +56539,7 @@ def test_reset_nsx_credentials_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reset_vcenter_credentials_rest_bad_request(
@@ -56340,10 +56624,14 @@ def test_reset_vcenter_credentials_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_reset_vcenter_credentials"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_reset_vcenter_credentials_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_reset_vcenter_credentials"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ResetVcenterCredentialsRequest.pb(
             vmwareengine.ResetVcenterCredentialsRequest()
         )
@@ -56367,6 +56655,7 @@ def test_reset_vcenter_credentials_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reset_vcenter_credentials(
             request,
@@ -56378,6 +56667,7 @@ def test_reset_vcenter_credentials_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_dns_forwarding_rest_bad_request(
@@ -56466,10 +56756,13 @@ def test_get_dns_forwarding_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_dns_forwarding"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_dns_forwarding_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_dns_forwarding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetDnsForwardingRequest.pb(
             vmwareengine.GetDnsForwardingRequest()
         )
@@ -56495,6 +56788,10 @@ def test_get_dns_forwarding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.DnsForwarding()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.DnsForwarding(),
+            metadata,
+        )
 
         client.get_dns_forwarding(
             request,
@@ -56506,6 +56803,7 @@ def test_get_dns_forwarding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_dns_forwarding_rest_bad_request(
@@ -56672,10 +56970,14 @@ def test_update_dns_forwarding_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_dns_forwarding"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_dns_forwarding_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_dns_forwarding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateDnsForwardingRequest.pb(
             vmwareengine.UpdateDnsForwardingRequest()
         )
@@ -56699,6 +57001,7 @@ def test_update_dns_forwarding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_dns_forwarding(
             request,
@@ -56710,6 +57013,7 @@ def test_update_dns_forwarding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_network_peering_rest_bad_request(
@@ -56827,10 +57131,13 @@ def test_get_network_peering_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_network_peering"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_network_peering_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_network_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetNetworkPeeringRequest.pb(
             vmwareengine.GetNetworkPeeringRequest()
         )
@@ -56856,6 +57163,10 @@ def test_get_network_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.NetworkPeering()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.NetworkPeering(),
+            metadata,
+        )
 
         client.get_network_peering(
             request,
@@ -56867,6 +57178,7 @@ def test_get_network_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_network_peerings_rest_bad_request(
@@ -56953,10 +57265,14 @@ def test_list_network_peerings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_network_peerings"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_network_peerings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_network_peerings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListNetworkPeeringsRequest.pb(
             vmwareengine.ListNetworkPeeringsRequest()
         )
@@ -56982,6 +57298,10 @@ def test_list_network_peerings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListNetworkPeeringsResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListNetworkPeeringsResponse(),
+            metadata,
+        )
 
         client.list_network_peerings(
             request,
@@ -56993,6 +57313,7 @@ def test_list_network_peerings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_network_peering_rest_bad_request(
@@ -57158,10 +57479,14 @@ def test_create_network_peering_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_network_peering"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_network_peering_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_network_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateNetworkPeeringRequest.pb(
             vmwareengine.CreateNetworkPeeringRequest()
         )
@@ -57185,6 +57510,7 @@ def test_create_network_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_network_peering(
             request,
@@ -57196,6 +57522,7 @@ def test_create_network_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_network_peering_rest_bad_request(
@@ -57280,10 +57607,14 @@ def test_delete_network_peering_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_network_peering"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_network_peering_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_network_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteNetworkPeeringRequest.pb(
             vmwareengine.DeleteNetworkPeeringRequest()
         )
@@ -57307,6 +57638,7 @@ def test_delete_network_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_network_peering(
             request,
@@ -57318,6 +57650,7 @@ def test_delete_network_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_network_peering_rest_bad_request(
@@ -57491,10 +57824,14 @@ def test_update_network_peering_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_network_peering"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_network_peering_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_network_peering"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateNetworkPeeringRequest.pb(
             vmwareengine.UpdateNetworkPeeringRequest()
         )
@@ -57518,6 +57855,7 @@ def test_update_network_peering_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_network_peering(
             request,
@@ -57529,6 +57867,7 @@ def test_update_network_peering_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_peering_routes_rest_bad_request(
@@ -57617,10 +57956,13 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_peering_routes"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_peering_routes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_peering_routes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListPeeringRoutesRequest.pb(
             vmwareengine.ListPeeringRoutesRequest()
         )
@@ -57646,6 +57988,10 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListPeeringRoutesResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListPeeringRoutesResponse(),
+            metadata,
+        )
 
         client.list_peering_routes(
             request,
@@ -57657,6 +58003,7 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_hcx_activation_key_rest_bad_request(
@@ -57817,10 +58164,14 @@ def test_create_hcx_activation_key_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_hcx_activation_key"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_hcx_activation_key_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_hcx_activation_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateHcxActivationKeyRequest.pb(
             vmwareengine.CreateHcxActivationKeyRequest()
         )
@@ -57844,6 +58195,7 @@ def test_create_hcx_activation_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_hcx_activation_key(
             request,
@@ -57855,6 +58207,7 @@ def test_create_hcx_activation_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_hcx_activation_keys_rest_bad_request(
@@ -57945,10 +58298,14 @@ def test_list_hcx_activation_keys_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_hcx_activation_keys"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_hcx_activation_keys_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_hcx_activation_keys"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListHcxActivationKeysRequest.pb(
             vmwareengine.ListHcxActivationKeysRequest()
         )
@@ -57974,6 +58331,10 @@ def test_list_hcx_activation_keys_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListHcxActivationKeysResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListHcxActivationKeysResponse(),
+            metadata,
+        )
 
         client.list_hcx_activation_keys(
             request,
@@ -57985,6 +58346,7 @@ def test_list_hcx_activation_keys_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_hcx_activation_key_rest_bad_request(
@@ -58079,10 +58441,14 @@ def test_get_hcx_activation_key_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_hcx_activation_key"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_get_hcx_activation_key_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_hcx_activation_key"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetHcxActivationKeyRequest.pb(
             vmwareengine.GetHcxActivationKeyRequest()
         )
@@ -58108,6 +58474,10 @@ def test_get_hcx_activation_key_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.HcxActivationKey()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.HcxActivationKey(),
+            metadata,
+        )
 
         client.get_hcx_activation_key(
             request,
@@ -58119,6 +58489,7 @@ def test_get_hcx_activation_key_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_network_policy_rest_bad_request(
@@ -58220,10 +58591,13 @@ def test_get_network_policy_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_network_policy"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_network_policy_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_network_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetNetworkPolicyRequest.pb(
             vmwareengine.GetNetworkPolicyRequest()
         )
@@ -58249,6 +58623,10 @@ def test_get_network_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.NetworkPolicy()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.NetworkPolicy(),
+            metadata,
+        )
 
         client.get_network_policy(
             request,
@@ -58260,6 +58638,7 @@ def test_get_network_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_network_policies_rest_bad_request(
@@ -58346,10 +58725,14 @@ def test_list_network_policies_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_network_policies"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_network_policies_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_network_policies"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListNetworkPoliciesRequest.pb(
             vmwareengine.ListNetworkPoliciesRequest()
         )
@@ -58375,6 +58758,10 @@ def test_list_network_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListNetworkPoliciesResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListNetworkPoliciesResponse(),
+            metadata,
+        )
 
         client.list_network_policies(
             request,
@@ -58386,6 +58773,7 @@ def test_list_network_policies_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_network_policy_rest_bad_request(
@@ -58545,10 +58933,14 @@ def test_create_network_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_network_policy"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_network_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_network_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateNetworkPolicyRequest.pb(
             vmwareengine.CreateNetworkPolicyRequest()
         )
@@ -58572,6 +58964,7 @@ def test_create_network_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_network_policy(
             request,
@@ -58583,6 +58976,7 @@ def test_create_network_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_network_policy_rest_bad_request(
@@ -58750,10 +59144,14 @@ def test_update_network_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_network_policy"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_network_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_network_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateNetworkPolicyRequest.pb(
             vmwareengine.UpdateNetworkPolicyRequest()
         )
@@ -58777,6 +59175,7 @@ def test_update_network_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_network_policy(
             request,
@@ -58788,6 +59187,7 @@ def test_update_network_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_network_policy_rest_bad_request(
@@ -58872,10 +59272,14 @@ def test_delete_network_policy_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_network_policy"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_network_policy_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_network_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteNetworkPolicyRequest.pb(
             vmwareengine.DeleteNetworkPolicyRequest()
         )
@@ -58899,6 +59303,7 @@ def test_delete_network_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_network_policy(
             request,
@@ -58910,6 +59315,7 @@ def test_delete_network_policy_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_management_dns_zone_bindings_rest_bad_request(
@@ -59002,10 +59408,14 @@ def test_list_management_dns_zone_bindings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_management_dns_zone_bindings"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_management_dns_zone_bindings_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_management_dns_zone_bindings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListManagementDnsZoneBindingsRequest.pb(
             vmwareengine.ListManagementDnsZoneBindingsRequest()
         )
@@ -59031,6 +59441,10 @@ def test_list_management_dns_zone_bindings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListManagementDnsZoneBindingsResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListManagementDnsZoneBindingsResponse(),
+            metadata,
+        )
 
         client.list_management_dns_zone_bindings(
             request,
@@ -59042,6 +59456,7 @@ def test_list_management_dns_zone_bindings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_management_dns_zone_binding_rest_bad_request(
@@ -59139,10 +59554,14 @@ def test_get_management_dns_zone_binding_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_management_dns_zone_binding"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_get_management_dns_zone_binding_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_management_dns_zone_binding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetManagementDnsZoneBindingRequest.pb(
             vmwareengine.GetManagementDnsZoneBindingRequest()
         )
@@ -59168,6 +59587,10 @@ def test_get_management_dns_zone_binding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.ManagementDnsZoneBinding()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.ManagementDnsZoneBinding(),
+            metadata,
+        )
 
         client.get_management_dns_zone_binding(
             request,
@@ -59179,6 +59602,7 @@ def test_get_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_management_dns_zone_binding_rest_bad_request(
@@ -59347,10 +59771,14 @@ def test_create_management_dns_zone_binding_rest_interceptors(null_interceptor):
         transports.VmwareEngineRestInterceptor,
         "post_create_management_dns_zone_binding",
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_management_dns_zone_binding_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_management_dns_zone_binding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateManagementDnsZoneBindingRequest.pb(
             vmwareengine.CreateManagementDnsZoneBindingRequest()
         )
@@ -59374,6 +59802,7 @@ def test_create_management_dns_zone_binding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_management_dns_zone_binding(
             request,
@@ -59385,6 +59814,7 @@ def test_create_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_management_dns_zone_binding_rest_bad_request(
@@ -59557,10 +59987,14 @@ def test_update_management_dns_zone_binding_rest_interceptors(null_interceptor):
         transports.VmwareEngineRestInterceptor,
         "post_update_management_dns_zone_binding",
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_management_dns_zone_binding_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_management_dns_zone_binding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateManagementDnsZoneBindingRequest.pb(
             vmwareengine.UpdateManagementDnsZoneBindingRequest()
         )
@@ -59584,6 +60018,7 @@ def test_update_management_dns_zone_binding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_management_dns_zone_binding(
             request,
@@ -59595,6 +60030,7 @@ def test_update_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_management_dns_zone_binding_rest_bad_request(
@@ -59680,10 +60116,14 @@ def test_delete_management_dns_zone_binding_rest_interceptors(null_interceptor):
         transports.VmwareEngineRestInterceptor,
         "post_delete_management_dns_zone_binding",
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_management_dns_zone_binding_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_management_dns_zone_binding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteManagementDnsZoneBindingRequest.pb(
             vmwareengine.DeleteManagementDnsZoneBindingRequest()
         )
@@ -59707,6 +60147,7 @@ def test_delete_management_dns_zone_binding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_management_dns_zone_binding(
             request,
@@ -59718,6 +60159,7 @@ def test_delete_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_repair_management_dns_zone_binding_rest_bad_request(
@@ -59803,10 +60245,14 @@ def test_repair_management_dns_zone_binding_rest_interceptors(null_interceptor):
         transports.VmwareEngineRestInterceptor,
         "post_repair_management_dns_zone_binding",
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_repair_management_dns_zone_binding_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_repair_management_dns_zone_binding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.RepairManagementDnsZoneBindingRequest.pb(
             vmwareengine.RepairManagementDnsZoneBindingRequest()
         )
@@ -59830,6 +60276,7 @@ def test_repair_management_dns_zone_binding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.repair_management_dns_zone_binding(
             request,
@@ -59841,6 +60288,7 @@ def test_repair_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_vmware_engine_network_rest_bad_request(
@@ -60003,10 +60451,14 @@ def test_create_vmware_engine_network_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_vmware_engine_network"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_vmware_engine_network_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_vmware_engine_network"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreateVmwareEngineNetworkRequest.pb(
             vmwareengine.CreateVmwareEngineNetworkRequest()
         )
@@ -60030,6 +60482,7 @@ def test_create_vmware_engine_network_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_vmware_engine_network(
             request,
@@ -60041,6 +60494,7 @@ def test_create_vmware_engine_network_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_vmware_engine_network_rest_bad_request(
@@ -60211,10 +60665,14 @@ def test_update_vmware_engine_network_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_vmware_engine_network"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_vmware_engine_network_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_vmware_engine_network"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdateVmwareEngineNetworkRequest.pb(
             vmwareengine.UpdateVmwareEngineNetworkRequest()
         )
@@ -60238,6 +60696,7 @@ def test_update_vmware_engine_network_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_vmware_engine_network(
             request,
@@ -60249,6 +60708,7 @@ def test_update_vmware_engine_network_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_vmware_engine_network_rest_bad_request(
@@ -60333,10 +60793,14 @@ def test_delete_vmware_engine_network_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_vmware_engine_network"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_vmware_engine_network_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_vmware_engine_network"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeleteVmwareEngineNetworkRequest.pb(
             vmwareengine.DeleteVmwareEngineNetworkRequest()
         )
@@ -60360,6 +60824,7 @@ def test_delete_vmware_engine_network_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_vmware_engine_network(
             request,
@@ -60371,6 +60836,7 @@ def test_delete_vmware_engine_network_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_vmware_engine_network_rest_bad_request(
@@ -60469,10 +60935,14 @@ def test_get_vmware_engine_network_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_vmware_engine_network"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_get_vmware_engine_network_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_vmware_engine_network"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetVmwareEngineNetworkRequest.pb(
             vmwareengine.GetVmwareEngineNetworkRequest()
         )
@@ -60498,6 +60968,10 @@ def test_get_vmware_engine_network_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.VmwareEngineNetwork()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.VmwareEngineNetwork(),
+            metadata,
+        )
 
         client.get_vmware_engine_network(
             request,
@@ -60509,6 +60983,7 @@ def test_get_vmware_engine_network_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_vmware_engine_networks_rest_bad_request(
@@ -60595,10 +61070,14 @@ def test_list_vmware_engine_networks_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_vmware_engine_networks"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_vmware_engine_networks_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_vmware_engine_networks"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListVmwareEngineNetworksRequest.pb(
             vmwareengine.ListVmwareEngineNetworksRequest()
         )
@@ -60624,6 +61103,10 @@ def test_list_vmware_engine_networks_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListVmwareEngineNetworksResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListVmwareEngineNetworksResponse(),
+            metadata,
+        )
 
         client.list_vmware_engine_networks(
             request,
@@ -60635,6 +61118,7 @@ def test_list_vmware_engine_networks_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_private_connection_rest_bad_request(
@@ -60799,10 +61283,14 @@ def test_create_private_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_create_private_connection"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_private_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_create_private_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.CreatePrivateConnectionRequest.pb(
             vmwareengine.CreatePrivateConnectionRequest()
         )
@@ -60826,6 +61314,7 @@ def test_create_private_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_private_connection(
             request,
@@ -60837,6 +61326,7 @@ def test_create_private_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_private_connection_rest_bad_request(
@@ -60957,10 +61447,14 @@ def test_get_private_connection_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_private_connection"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_get_private_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_private_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetPrivateConnectionRequest.pb(
             vmwareengine.GetPrivateConnectionRequest()
         )
@@ -60986,6 +61480,10 @@ def test_get_private_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.PrivateConnection()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.PrivateConnection(),
+            metadata,
+        )
 
         client.get_private_connection(
             request,
@@ -60997,6 +61495,7 @@ def test_get_private_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_private_connections_rest_bad_request(
@@ -61083,10 +61582,14 @@ def test_list_private_connections_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_list_private_connections"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_list_private_connections_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_list_private_connections"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListPrivateConnectionsRequest.pb(
             vmwareengine.ListPrivateConnectionsRequest()
         )
@@ -61112,6 +61615,10 @@ def test_list_private_connections_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListPrivateConnectionsResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListPrivateConnectionsResponse(),
+            metadata,
+        )
 
         client.list_private_connections(
             request,
@@ -61123,6 +61630,7 @@ def test_list_private_connections_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_private_connection_rest_bad_request(
@@ -61295,10 +61803,14 @@ def test_update_private_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_update_private_connection"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_private_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_update_private_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.UpdatePrivateConnectionRequest.pb(
             vmwareengine.UpdatePrivateConnectionRequest()
         )
@@ -61322,6 +61834,7 @@ def test_update_private_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_private_connection(
             request,
@@ -61333,6 +61846,7 @@ def test_update_private_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_private_connection_rest_bad_request(
@@ -61417,10 +61931,14 @@ def test_delete_private_connection_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_delete_private_connection"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_private_connection_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_delete_private_connection"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.DeletePrivateConnectionRequest.pb(
             vmwareengine.DeletePrivateConnectionRequest()
         )
@@ -61444,6 +61962,7 @@ def test_delete_private_connection_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_private_connection(
             request,
@@ -61455,6 +61974,7 @@ def test_delete_private_connection_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_private_connection_peering_routes_rest_bad_request(
@@ -61547,10 +62067,14 @@ def test_list_private_connection_peering_routes_rest_interceptors(null_intercept
         "post_list_private_connection_peering_routes",
     ) as post, mock.patch.object(
         transports.VmwareEngineRestInterceptor,
+        "post_list_private_connection_peering_routes_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
         "pre_list_private_connection_peering_routes",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.ListPrivateConnectionPeeringRoutesRequest.pb(
             vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
         )
@@ -61576,6 +62100,10 @@ def test_list_private_connection_peering_routes_rest_interceptors(null_intercept
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine.ListPrivateConnectionPeeringRoutesResponse()
+        post_with_metadata.return_value = (
+            vmwareengine.ListPrivateConnectionPeeringRoutesResponse(),
+            metadata,
+        )
 
         client.list_private_connection_peering_routes(
             request,
@@ -61587,6 +62115,7 @@ def test_list_private_connection_peering_routes_rest_interceptors(null_intercept
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_grant_dns_bind_permission_rest_bad_request(
@@ -61667,10 +62196,14 @@ def test_grant_dns_bind_permission_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_grant_dns_bind_permission"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_grant_dns_bind_permission_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_grant_dns_bind_permission"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GrantDnsBindPermissionRequest.pb(
             vmwareengine.GrantDnsBindPermissionRequest()
         )
@@ -61694,6 +62227,7 @@ def test_grant_dns_bind_permission_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.grant_dns_bind_permission(
             request,
@@ -61705,6 +62239,7 @@ def test_grant_dns_bind_permission_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_dns_bind_permission_rest_bad_request(
@@ -61789,10 +62324,14 @@ def test_get_dns_bind_permission_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_get_dns_bind_permission"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_get_dns_bind_permission_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_get_dns_bind_permission"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.GetDnsBindPermissionRequest.pb(
             vmwareengine.GetDnsBindPermissionRequest()
         )
@@ -61818,6 +62357,10 @@ def test_get_dns_bind_permission_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = vmwareengine_resources.DnsBindPermission()
+        post_with_metadata.return_value = (
+            vmwareengine_resources.DnsBindPermission(),
+            metadata,
+        )
 
         client.get_dns_bind_permission(
             request,
@@ -61829,6 +62372,7 @@ def test_get_dns_bind_permission_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_revoke_dns_bind_permission_rest_bad_request(
@@ -61909,10 +62453,14 @@ def test_revoke_dns_bind_permission_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.VmwareEngineRestInterceptor, "post_revoke_dns_bind_permission"
     ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_revoke_dns_bind_permission_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.VmwareEngineRestInterceptor, "pre_revoke_dns_bind_permission"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = vmwareengine.RevokeDnsBindPermissionRequest.pb(
             vmwareengine.RevokeDnsBindPermissionRequest()
         )
@@ -61936,6 +62484,7 @@ def test_revoke_dns_bind_permission_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.revoke_dns_bind_permission(
             request,
@@ -61947,6 +62496,7 @@ def test_revoke_dns_bind_permission_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):

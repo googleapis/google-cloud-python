@@ -298,11 +298,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_asset` interceptor runs
+        before the `post_create_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_create_asset_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_create_asset_with_metadata`
+        interceptor in new development instead of the `post_create_asset` interceptor.
+        When both interceptors are used, this `post_create_asset_with_metadata` interceptor runs after the
+        `post_create_asset` interceptor. The (possibly modified) response returned by
+        `post_create_asset` will be passed to
+        `post_create_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_channel(
         self,
@@ -321,11 +344,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_channel` interceptor runs
+        before the `post_create_channel_with_metadata` interceptor.
         """
         return response
+
+    def post_create_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_channel
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_create_channel_with_metadata`
+        interceptor in new development instead of the `post_create_channel` interceptor.
+        When both interceptors are used, this `post_create_channel_with_metadata` interceptor runs after the
+        `post_create_channel` interceptor. The (possibly modified) response returned by
+        `post_create_channel` will be passed to
+        `post_create_channel_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_clip(
         self,
@@ -344,11 +390,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_clip
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_clip_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_clip` interceptor runs
+        before the `post_create_clip_with_metadata` interceptor.
         """
         return response
+
+    def post_create_clip_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_clip
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_create_clip_with_metadata`
+        interceptor in new development instead of the `post_create_clip` interceptor.
+        When both interceptors are used, this `post_create_clip_with_metadata` interceptor runs after the
+        `post_create_clip` interceptor. The (possibly modified) response returned by
+        `post_create_clip` will be passed to
+        `post_create_clip_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_event(
         self,
@@ -365,11 +434,34 @@ class LivestreamServiceRestInterceptor:
     def post_create_event(self, response: resources.Event) -> resources.Event:
         """Post-rpc interceptor for create_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_event` interceptor runs
+        before the `post_create_event_with_metadata` interceptor.
         """
         return response
+
+    def post_create_event_with_metadata(
+        self,
+        response: resources.Event,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Event, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_create_event_with_metadata`
+        interceptor in new development instead of the `post_create_event` interceptor.
+        When both interceptors are used, this `post_create_event_with_metadata` interceptor runs after the
+        `post_create_event` interceptor. The (possibly modified) response returned by
+        `post_create_event` will be passed to
+        `post_create_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_input(
         self,
@@ -388,11 +480,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_input` interceptor runs
+        before the `post_create_input_with_metadata` interceptor.
         """
         return response
+
+    def post_create_input_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_create_input_with_metadata`
+        interceptor in new development instead of the `post_create_input` interceptor.
+        When both interceptors are used, this `post_create_input_with_metadata` interceptor runs after the
+        `post_create_input` interceptor. The (possibly modified) response returned by
+        `post_create_input` will be passed to
+        `post_create_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_asset(
         self,
@@ -411,11 +526,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_asset` interceptor runs
+        before the `post_delete_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_asset_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_asset_with_metadata`
+        interceptor in new development instead of the `post_delete_asset` interceptor.
+        When both interceptors are used, this `post_delete_asset_with_metadata` interceptor runs after the
+        `post_delete_asset` interceptor. The (possibly modified) response returned by
+        `post_delete_asset` will be passed to
+        `post_delete_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_channel(
         self,
@@ -434,11 +572,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_channel` interceptor runs
+        before the `post_delete_channel_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_channel
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_channel_with_metadata`
+        interceptor in new development instead of the `post_delete_channel` interceptor.
+        When both interceptors are used, this `post_delete_channel_with_metadata` interceptor runs after the
+        `post_delete_channel` interceptor. The (possibly modified) response returned by
+        `post_delete_channel` will be passed to
+        `post_delete_channel_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_clip(
         self,
@@ -457,11 +618,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_clip
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_clip_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_clip` interceptor runs
+        before the `post_delete_clip_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_clip_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_clip
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_clip_with_metadata`
+        interceptor in new development instead of the `post_delete_clip` interceptor.
+        When both interceptors are used, this `post_delete_clip_with_metadata` interceptor runs after the
+        `post_delete_clip` interceptor. The (possibly modified) response returned by
+        `post_delete_clip` will be passed to
+        `post_delete_clip_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_event(
         self,
@@ -492,11 +676,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_input` interceptor runs
+        before the `post_delete_input_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_input_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_input_with_metadata`
+        interceptor in new development instead of the `post_delete_input` interceptor.
+        When both interceptors are used, this `post_delete_input_with_metadata` interceptor runs after the
+        `post_delete_input` interceptor. The (possibly modified) response returned by
+        `post_delete_input` will be passed to
+        `post_delete_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_asset(
         self,
@@ -513,11 +720,34 @@ class LivestreamServiceRestInterceptor:
     def post_get_asset(self, response: resources.Asset) -> resources.Asset:
         """Post-rpc interceptor for get_asset
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_asset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_asset` interceptor runs
+        before the `post_get_asset_with_metadata` interceptor.
         """
         return response
+
+    def post_get_asset_with_metadata(
+        self,
+        response: resources.Asset,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_asset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_get_asset_with_metadata`
+        interceptor in new development instead of the `post_get_asset` interceptor.
+        When both interceptors are used, this `post_get_asset_with_metadata` interceptor runs after the
+        `post_get_asset` interceptor. The (possibly modified) response returned by
+        `post_get_asset` will be passed to
+        `post_get_asset_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_channel(
         self,
@@ -534,11 +764,34 @@ class LivestreamServiceRestInterceptor:
     def post_get_channel(self, response: resources.Channel) -> resources.Channel:
         """Post-rpc interceptor for get_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_channel` interceptor runs
+        before the `post_get_channel_with_metadata` interceptor.
         """
         return response
+
+    def post_get_channel_with_metadata(
+        self,
+        response: resources.Channel,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Channel, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_channel
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_get_channel_with_metadata`
+        interceptor in new development instead of the `post_get_channel` interceptor.
+        When both interceptors are used, this `post_get_channel_with_metadata` interceptor runs after the
+        `post_get_channel` interceptor. The (possibly modified) response returned by
+        `post_get_channel` will be passed to
+        `post_get_channel_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_clip(
         self,
@@ -555,11 +808,34 @@ class LivestreamServiceRestInterceptor:
     def post_get_clip(self, response: resources.Clip) -> resources.Clip:
         """Post-rpc interceptor for get_clip
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_clip_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_clip` interceptor runs
+        before the `post_get_clip_with_metadata` interceptor.
         """
         return response
+
+    def post_get_clip_with_metadata(
+        self,
+        response: resources.Clip,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Clip, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_clip
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_get_clip_with_metadata`
+        interceptor in new development instead of the `post_get_clip` interceptor.
+        When both interceptors are used, this `post_get_clip_with_metadata` interceptor runs after the
+        `post_get_clip` interceptor. The (possibly modified) response returned by
+        `post_get_clip` will be passed to
+        `post_get_clip_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_event(
         self,
@@ -576,11 +852,34 @@ class LivestreamServiceRestInterceptor:
     def post_get_event(self, response: resources.Event) -> resources.Event:
         """Post-rpc interceptor for get_event
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_event_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_event` interceptor runs
+        before the `post_get_event_with_metadata` interceptor.
         """
         return response
+
+    def post_get_event_with_metadata(
+        self,
+        response: resources.Event,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Event, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_event
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_get_event_with_metadata`
+        interceptor in new development instead of the `post_get_event` interceptor.
+        When both interceptors are used, this `post_get_event_with_metadata` interceptor runs after the
+        `post_get_event` interceptor. The (possibly modified) response returned by
+        `post_get_event` will be passed to
+        `post_get_event_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_input(
         self,
@@ -597,11 +896,34 @@ class LivestreamServiceRestInterceptor:
     def post_get_input(self, response: resources.Input) -> resources.Input:
         """Post-rpc interceptor for get_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_input` interceptor runs
+        before the `post_get_input_with_metadata` interceptor.
         """
         return response
+
+    def post_get_input_with_metadata(
+        self,
+        response: resources.Input,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Input, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_get_input_with_metadata`
+        interceptor in new development instead of the `post_get_input` interceptor.
+        When both interceptors are used, this `post_get_input_with_metadata` interceptor runs after the
+        `post_get_input` interceptor. The (possibly modified) response returned by
+        `post_get_input` will be passed to
+        `post_get_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_pool(
         self,
@@ -618,11 +940,34 @@ class LivestreamServiceRestInterceptor:
     def post_get_pool(self, response: resources.Pool) -> resources.Pool:
         """Post-rpc interceptor for get_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_pool` interceptor runs
+        before the `post_get_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_get_pool_with_metadata(
+        self,
+        response: resources.Pool,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Pool, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_get_pool_with_metadata`
+        interceptor in new development instead of the `post_get_pool` interceptor.
+        When both interceptors are used, this `post_get_pool_with_metadata` interceptor runs after the
+        `post_get_pool` interceptor. The (possibly modified) response returned by
+        `post_get_pool` will be passed to
+        `post_get_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_assets(
         self,
@@ -641,11 +986,34 @@ class LivestreamServiceRestInterceptor:
     ) -> service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_assets` interceptor runs
+        before the `post_list_assets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_assets_with_metadata(
+        self,
+        response: service.ListAssetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_list_assets_with_metadata`
+        interceptor in new development instead of the `post_list_assets` interceptor.
+        When both interceptors are used, this `post_list_assets_with_metadata` interceptor runs after the
+        `post_list_assets` interceptor. The (possibly modified) response returned by
+        `post_list_assets` will be passed to
+        `post_list_assets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_channels(
         self,
@@ -664,11 +1032,34 @@ class LivestreamServiceRestInterceptor:
     ) -> service.ListChannelsResponse:
         """Post-rpc interceptor for list_channels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_channels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_channels` interceptor runs
+        before the `post_list_channels_with_metadata` interceptor.
         """
         return response
+
+    def post_list_channels_with_metadata(
+        self,
+        response: service.ListChannelsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_channels
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_list_channels_with_metadata`
+        interceptor in new development instead of the `post_list_channels` interceptor.
+        When both interceptors are used, this `post_list_channels_with_metadata` interceptor runs after the
+        `post_list_channels` interceptor. The (possibly modified) response returned by
+        `post_list_channels` will be passed to
+        `post_list_channels_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clips(
         self,
@@ -687,11 +1078,34 @@ class LivestreamServiceRestInterceptor:
     ) -> service.ListClipsResponse:
         """Post-rpc interceptor for list_clips
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clips_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clips` interceptor runs
+        before the `post_list_clips_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clips_with_metadata(
+        self,
+        response: service.ListClipsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListClipsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_clips
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_list_clips_with_metadata`
+        interceptor in new development instead of the `post_list_clips` interceptor.
+        When both interceptors are used, this `post_list_clips_with_metadata` interceptor runs after the
+        `post_list_clips` interceptor. The (possibly modified) response returned by
+        `post_list_clips` will be passed to
+        `post_list_clips_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_events(
         self,
@@ -710,11 +1124,34 @@ class LivestreamServiceRestInterceptor:
     ) -> service.ListEventsResponse:
         """Post-rpc interceptor for list_events
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_events_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_events` interceptor runs
+        before the `post_list_events_with_metadata` interceptor.
         """
         return response
+
+    def post_list_events_with_metadata(
+        self,
+        response: service.ListEventsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_events
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_list_events_with_metadata`
+        interceptor in new development instead of the `post_list_events` interceptor.
+        When both interceptors are used, this `post_list_events_with_metadata` interceptor runs after the
+        `post_list_events` interceptor. The (possibly modified) response returned by
+        `post_list_events` will be passed to
+        `post_list_events_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_inputs(
         self,
@@ -733,11 +1170,34 @@ class LivestreamServiceRestInterceptor:
     ) -> service.ListInputsResponse:
         """Post-rpc interceptor for list_inputs
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_inputs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_inputs` interceptor runs
+        before the `post_list_inputs_with_metadata` interceptor.
         """
         return response
+
+    def post_list_inputs_with_metadata(
+        self,
+        response: service.ListInputsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListInputsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_inputs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_list_inputs_with_metadata`
+        interceptor in new development instead of the `post_list_inputs` interceptor.
+        When both interceptors are used, this `post_list_inputs_with_metadata` interceptor runs after the
+        `post_list_inputs` interceptor. The (possibly modified) response returned by
+        `post_list_inputs` will be passed to
+        `post_list_inputs_with_metadata`.
+        """
+        return response, metadata
 
     def pre_start_channel(
         self,
@@ -756,11 +1216,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_start_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_start_channel` interceptor runs
+        before the `post_start_channel_with_metadata` interceptor.
         """
         return response
+
+    def post_start_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_channel
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_start_channel_with_metadata`
+        interceptor in new development instead of the `post_start_channel` interceptor.
+        When both interceptors are used, this `post_start_channel_with_metadata` interceptor runs after the
+        `post_start_channel` interceptor. The (possibly modified) response returned by
+        `post_start_channel` will be passed to
+        `post_start_channel_with_metadata`.
+        """
+        return response, metadata
 
     def pre_stop_channel(
         self,
@@ -779,11 +1262,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_stop_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_stop_channel` interceptor runs
+        before the `post_stop_channel_with_metadata` interceptor.
         """
         return response
+
+    def post_stop_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for stop_channel
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_stop_channel_with_metadata`
+        interceptor in new development instead of the `post_stop_channel` interceptor.
+        When both interceptors are used, this `post_stop_channel_with_metadata` interceptor runs after the
+        `post_stop_channel` interceptor. The (possibly modified) response returned by
+        `post_stop_channel` will be passed to
+        `post_stop_channel_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_channel(
         self,
@@ -802,11 +1308,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_channel` interceptor runs
+        before the `post_update_channel_with_metadata` interceptor.
         """
         return response
+
+    def post_update_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_channel
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_update_channel_with_metadata`
+        interceptor in new development instead of the `post_update_channel` interceptor.
+        When both interceptors are used, this `post_update_channel_with_metadata` interceptor runs after the
+        `post_update_channel` interceptor. The (possibly modified) response returned by
+        `post_update_channel` will be passed to
+        `post_update_channel_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_input(
         self,
@@ -825,11 +1354,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_input
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_input_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_input` interceptor runs
+        before the `post_update_input_with_metadata` interceptor.
         """
         return response
+
+    def post_update_input_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_input
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_update_input_with_metadata`
+        interceptor in new development instead of the `post_update_input` interceptor.
+        When both interceptors are used, this `post_update_input_with_metadata` interceptor runs after the
+        `post_update_input` interceptor. The (possibly modified) response returned by
+        `post_update_input` will be passed to
+        `post_update_input_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_pool(
         self,
@@ -848,11 +1400,34 @@ class LivestreamServiceRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_pool
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_pool_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LivestreamService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_pool` interceptor runs
+        before the `post_update_pool_with_metadata` interceptor.
         """
         return response
+
+    def post_update_pool_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_pool
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LivestreamService server but before it is returned to user code.
+
+        We recommend only using this `post_update_pool_with_metadata`
+        interceptor in new development instead of the `post_update_pool` interceptor.
+        When both interceptors are used, this `post_update_pool_with_metadata` interceptor runs after the
+        `post_update_pool` interceptor. The (possibly modified) response returned by
+        `post_update_pool` will be passed to
+        `post_update_pool_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1271,6 +1846,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1420,6 +1999,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_channel(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_channel_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1568,6 +2151,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_clip(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_clip_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1719,6 +2306,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1867,6 +2458,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2009,6 +2604,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2152,6 +2751,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_channel(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_channel_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2294,6 +2897,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_clip(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_clip_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2543,6 +3150,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2686,6 +3297,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_asset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_asset_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2835,6 +3450,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_channel(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_channel_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2983,6 +3602,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_clip(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_clip_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3128,6 +3751,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_event(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_event_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3272,6 +3899,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3423,6 +4054,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3566,6 +4201,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_assets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3709,6 +4348,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_channels(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_channels_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3852,6 +4495,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clips(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clips_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3995,6 +4642,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_events(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_events_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4138,6 +4789,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_inputs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_inputs_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4286,6 +4941,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_start_channel(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_channel_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4434,6 +5093,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_stop_channel(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stop_channel_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4583,6 +5246,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_channel(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_channel_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4731,6 +5398,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_input(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_input_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4879,6 +5550,10 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_pool(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_pool_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

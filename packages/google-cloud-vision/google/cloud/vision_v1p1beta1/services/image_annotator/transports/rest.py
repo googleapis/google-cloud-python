@@ -102,11 +102,37 @@ class ImageAnnotatorRestInterceptor:
     ) -> image_annotator.BatchAnnotateImagesResponse:
         """Post-rpc interceptor for batch_annotate_images
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_annotate_images_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the ImageAnnotator server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_annotate_images` interceptor runs
+        before the `post_batch_annotate_images_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_annotate_images_with_metadata(
+        self,
+        response: image_annotator.BatchAnnotateImagesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        image_annotator.BatchAnnotateImagesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_annotate_images
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ImageAnnotator server but before it is returned to user code.
+
+        We recommend only using this `post_batch_annotate_images_with_metadata`
+        interceptor in new development instead of the `post_batch_annotate_images` interceptor.
+        When both interceptors are used, this `post_batch_annotate_images_with_metadata` interceptor runs after the
+        `post_batch_annotate_images` interceptor. The (possibly modified) response returned by
+        `post_batch_annotate_images` will be passed to
+        `post_batch_annotate_images_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -327,6 +353,10 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_annotate_images(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_annotate_images_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

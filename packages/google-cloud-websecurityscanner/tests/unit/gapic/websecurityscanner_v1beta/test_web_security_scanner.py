@@ -76,6 +76,13 @@ from google.cloud.websecurityscanner_v1beta.types import (
 from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
 from google.cloud.websecurityscanner_v1beta.types import scan_config
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -345,6 +352,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         WebSecurityScannerClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = WebSecurityScannerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = WebSecurityScannerClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -10199,10 +10249,14 @@ def test_create_scan_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_create_scan_config"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_create_scan_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_create_scan_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.CreateScanConfigRequest.pb(
             web_security_scanner.CreateScanConfigRequest()
         )
@@ -10226,6 +10280,7 @@ def test_create_scan_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcw_scan_config.ScanConfig()
+        post_with_metadata.return_value = gcw_scan_config.ScanConfig(), metadata
 
         client.create_scan_config(
             request,
@@ -10237,6 +10292,7 @@ def test_create_scan_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_scan_config_rest_bad_request(
@@ -10451,10 +10507,14 @@ def test_get_scan_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_get_scan_config"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_get_scan_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_get_scan_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.GetScanConfigRequest.pb(
             web_security_scanner.GetScanConfigRequest()
         )
@@ -10478,6 +10538,7 @@ def test_get_scan_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = scan_config.ScanConfig()
+        post_with_metadata.return_value = scan_config.ScanConfig(), metadata
 
         client.get_scan_config(
             request,
@@ -10489,6 +10550,7 @@ def test_get_scan_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_scan_configs_rest_bad_request(
@@ -10573,10 +10635,14 @@ def test_list_scan_configs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_list_scan_configs"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_list_scan_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_list_scan_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.ListScanConfigsRequest.pb(
             web_security_scanner.ListScanConfigsRequest()
         )
@@ -10602,6 +10668,10 @@ def test_list_scan_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = web_security_scanner.ListScanConfigsResponse()
+        post_with_metadata.return_value = (
+            web_security_scanner.ListScanConfigsResponse(),
+            metadata,
+        )
 
         client.list_scan_configs(
             request,
@@ -10613,6 +10683,7 @@ def test_list_scan_configs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_scan_config_rest_bad_request(
@@ -10831,10 +10902,14 @@ def test_update_scan_config_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_update_scan_config"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_update_scan_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_update_scan_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.UpdateScanConfigRequest.pb(
             web_security_scanner.UpdateScanConfigRequest()
         )
@@ -10858,6 +10933,7 @@ def test_update_scan_config_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = gcw_scan_config.ScanConfig()
+        post_with_metadata.return_value = gcw_scan_config.ScanConfig(), metadata
 
         client.update_scan_config(
             request,
@@ -10869,6 +10945,7 @@ def test_update_scan_config_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_start_scan_run_rest_bad_request(
@@ -10965,10 +11042,14 @@ def test_start_scan_run_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_start_scan_run"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_start_scan_run_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_start_scan_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.StartScanRunRequest.pb(
             web_security_scanner.StartScanRunRequest()
         )
@@ -10992,6 +11073,7 @@ def test_start_scan_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = scan_run.ScanRun()
+        post_with_metadata.return_value = scan_run.ScanRun(), metadata
 
         client.start_scan_run(
             request,
@@ -11003,6 +11085,7 @@ def test_start_scan_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_scan_run_rest_bad_request(
@@ -11099,10 +11182,13 @@ def test_get_scan_run_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_get_scan_run"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor, "post_get_scan_run_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_get_scan_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.GetScanRunRequest.pb(
             web_security_scanner.GetScanRunRequest()
         )
@@ -11126,6 +11212,7 @@ def test_get_scan_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = scan_run.ScanRun()
+        post_with_metadata.return_value = scan_run.ScanRun(), metadata
 
         client.get_scan_run(
             request,
@@ -11137,6 +11224,7 @@ def test_get_scan_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_scan_runs_rest_bad_request(
@@ -11221,10 +11309,14 @@ def test_list_scan_runs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_list_scan_runs"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_list_scan_runs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_list_scan_runs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.ListScanRunsRequest.pb(
             web_security_scanner.ListScanRunsRequest()
         )
@@ -11250,6 +11342,10 @@ def test_list_scan_runs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = web_security_scanner.ListScanRunsResponse()
+        post_with_metadata.return_value = (
+            web_security_scanner.ListScanRunsResponse(),
+            metadata,
+        )
 
         client.list_scan_runs(
             request,
@@ -11261,6 +11357,7 @@ def test_list_scan_runs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_stop_scan_run_rest_bad_request(
@@ -11357,10 +11454,13 @@ def test_stop_scan_run_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_stop_scan_run"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor, "post_stop_scan_run_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_stop_scan_run"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.StopScanRunRequest.pb(
             web_security_scanner.StopScanRunRequest()
         )
@@ -11384,6 +11484,7 @@ def test_stop_scan_run_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = scan_run.ScanRun()
+        post_with_metadata.return_value = scan_run.ScanRun(), metadata
 
         client.stop_scan_run(
             request,
@@ -11395,6 +11496,7 @@ def test_stop_scan_run_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_crawled_urls_rest_bad_request(
@@ -11479,10 +11581,14 @@ def test_list_crawled_urls_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_list_crawled_urls"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_list_crawled_urls_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_list_crawled_urls"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.ListCrawledUrlsRequest.pb(
             web_security_scanner.ListCrawledUrlsRequest()
         )
@@ -11508,6 +11614,10 @@ def test_list_crawled_urls_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = web_security_scanner.ListCrawledUrlsResponse()
+        post_with_metadata.return_value = (
+            web_security_scanner.ListCrawledUrlsResponse(),
+            metadata,
+        )
 
         client.list_crawled_urls(
             request,
@@ -11519,6 +11629,7 @@ def test_list_crawled_urls_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_finding_rest_bad_request(
@@ -11625,10 +11736,13 @@ def test_get_finding_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_get_finding"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor, "post_get_finding_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_get_finding"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.GetFindingRequest.pb(
             web_security_scanner.GetFindingRequest()
         )
@@ -11652,6 +11766,7 @@ def test_get_finding_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = finding.Finding()
+        post_with_metadata.return_value = finding.Finding(), metadata
 
         client.get_finding(
             request,
@@ -11663,6 +11778,7 @@ def test_get_finding_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_findings_rest_bad_request(
@@ -11747,10 +11863,13 @@ def test_list_findings_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_list_findings"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor, "post_list_findings_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_list_findings"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.ListFindingsRequest.pb(
             web_security_scanner.ListFindingsRequest()
         )
@@ -11776,6 +11895,10 @@ def test_list_findings_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = web_security_scanner.ListFindingsResponse()
+        post_with_metadata.return_value = (
+            web_security_scanner.ListFindingsResponse(),
+            metadata,
+        )
 
         client.list_findings(
             request,
@@ -11787,6 +11910,7 @@ def test_list_findings_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_finding_type_stats_rest_bad_request(
@@ -11870,10 +11994,14 @@ def test_list_finding_type_stats_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "post_list_finding_type_stats"
     ) as post, mock.patch.object(
+        transports.WebSecurityScannerRestInterceptor,
+        "post_list_finding_type_stats_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebSecurityScannerRestInterceptor, "pre_list_finding_type_stats"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = web_security_scanner.ListFindingTypeStatsRequest.pb(
             web_security_scanner.ListFindingTypeStatsRequest()
         )
@@ -11899,6 +12027,10 @@ def test_list_finding_type_stats_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = web_security_scanner.ListFindingTypeStatsResponse()
+        post_with_metadata.return_value = (
+            web_security_scanner.ListFindingTypeStatsResponse(),
+            metadata,
+        )
 
         client.list_finding_type_stats(
             request,
@@ -11910,6 +12042,7 @@ def test_list_finding_type_stats_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_initialize_client_w_rest():

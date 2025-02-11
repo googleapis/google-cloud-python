@@ -178,11 +178,36 @@ class DeliveryServiceRestInterceptor:
     ) -> delivery_api.BatchCreateTasksResponse:
         """Post-rpc interceptor for batch_create_tasks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_create_tasks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_create_tasks` interceptor runs
+        before the `post_batch_create_tasks_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_create_tasks_with_metadata(
+        self,
+        response: delivery_api.BatchCreateTasksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.BatchCreateTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for batch_create_tasks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_tasks_with_metadata`
+        interceptor in new development instead of the `post_batch_create_tasks` interceptor.
+        When both interceptors are used, this `post_batch_create_tasks_with_metadata` interceptor runs after the
+        `post_batch_create_tasks` interceptor. The (possibly modified) response returned by
+        `post_batch_create_tasks` will be passed to
+        `post_batch_create_tasks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_delivery_vehicle(
         self,
@@ -204,11 +229,36 @@ class DeliveryServiceRestInterceptor:
     ) -> delivery_vehicles.DeliveryVehicle:
         """Post-rpc interceptor for create_delivery_vehicle
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_delivery_vehicle_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_delivery_vehicle` interceptor runs
+        before the `post_create_delivery_vehicle_with_metadata` interceptor.
         """
         return response
+
+    def post_create_delivery_vehicle_with_metadata(
+        self,
+        response: delivery_vehicles.DeliveryVehicle,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_delivery_vehicle
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_create_delivery_vehicle_with_metadata`
+        interceptor in new development instead of the `post_create_delivery_vehicle` interceptor.
+        When both interceptors are used, this `post_create_delivery_vehicle_with_metadata` interceptor runs after the
+        `post_create_delivery_vehicle` interceptor. The (possibly modified) response returned by
+        `post_create_delivery_vehicle` will be passed to
+        `post_create_delivery_vehicle_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_task(
         self,
@@ -225,11 +275,32 @@ class DeliveryServiceRestInterceptor:
     def post_create_task(self, response: tasks.Task) -> tasks.Task:
         """Post-rpc interceptor for create_task
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_task_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_task` interceptor runs
+        before the `post_create_task_with_metadata` interceptor.
         """
         return response
+
+    def post_create_task_with_metadata(
+        self, response: tasks.Task, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tasks.Task, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_task
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_create_task_with_metadata`
+        interceptor in new development instead of the `post_create_task` interceptor.
+        When both interceptors are used, this `post_create_task_with_metadata` interceptor runs after the
+        `post_create_task` interceptor. The (possibly modified) response returned by
+        `post_create_task` will be passed to
+        `post_create_task_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_delivery_vehicle(
         self,
@@ -250,11 +321,36 @@ class DeliveryServiceRestInterceptor:
     ) -> delivery_vehicles.DeliveryVehicle:
         """Post-rpc interceptor for get_delivery_vehicle
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_delivery_vehicle_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_delivery_vehicle` interceptor runs
+        before the `post_get_delivery_vehicle_with_metadata` interceptor.
         """
         return response
+
+    def post_get_delivery_vehicle_with_metadata(
+        self,
+        response: delivery_vehicles.DeliveryVehicle,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_delivery_vehicle
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_delivery_vehicle_with_metadata`
+        interceptor in new development instead of the `post_get_delivery_vehicle` interceptor.
+        When both interceptors are used, this `post_get_delivery_vehicle_with_metadata` interceptor runs after the
+        `post_get_delivery_vehicle` interceptor. The (possibly modified) response returned by
+        `post_get_delivery_vehicle` will be passed to
+        `post_get_delivery_vehicle_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_task(
         self,
@@ -271,11 +367,32 @@ class DeliveryServiceRestInterceptor:
     def post_get_task(self, response: tasks.Task) -> tasks.Task:
         """Post-rpc interceptor for get_task
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_task_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_task` interceptor runs
+        before the `post_get_task_with_metadata` interceptor.
         """
         return response
+
+    def post_get_task_with_metadata(
+        self, response: tasks.Task, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tasks.Task, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_task
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_task_with_metadata`
+        interceptor in new development instead of the `post_get_task` interceptor.
+        When both interceptors are used, this `post_get_task_with_metadata` interceptor runs after the
+        `post_get_task` interceptor. The (possibly modified) response returned by
+        `post_get_task` will be passed to
+        `post_get_task_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_task_tracking_info(
         self,
@@ -296,11 +413,36 @@ class DeliveryServiceRestInterceptor:
     ) -> task_tracking_info.TaskTrackingInfo:
         """Post-rpc interceptor for get_task_tracking_info
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_task_tracking_info_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_task_tracking_info` interceptor runs
+        before the `post_get_task_tracking_info_with_metadata` interceptor.
         """
         return response
+
+    def post_get_task_tracking_info_with_metadata(
+        self,
+        response: task_tracking_info.TaskTrackingInfo,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        task_tracking_info.TaskTrackingInfo, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_task_tracking_info
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_get_task_tracking_info_with_metadata`
+        interceptor in new development instead of the `post_get_task_tracking_info` interceptor.
+        When both interceptors are used, this `post_get_task_tracking_info_with_metadata` interceptor runs after the
+        `post_get_task_tracking_info` interceptor. The (possibly modified) response returned by
+        `post_get_task_tracking_info` will be passed to
+        `post_get_task_tracking_info_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_delivery_vehicles(
         self,
@@ -322,11 +464,37 @@ class DeliveryServiceRestInterceptor:
     ) -> delivery_api.ListDeliveryVehiclesResponse:
         """Post-rpc interceptor for list_delivery_vehicles
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_delivery_vehicles_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_delivery_vehicles` interceptor runs
+        before the `post_list_delivery_vehicles_with_metadata` interceptor.
         """
         return response
+
+    def post_list_delivery_vehicles_with_metadata(
+        self,
+        response: delivery_api.ListDeliveryVehiclesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.ListDeliveryVehiclesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_delivery_vehicles
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_delivery_vehicles_with_metadata`
+        interceptor in new development instead of the `post_list_delivery_vehicles` interceptor.
+        When both interceptors are used, this `post_list_delivery_vehicles_with_metadata` interceptor runs after the
+        `post_list_delivery_vehicles` interceptor. The (possibly modified) response returned by
+        `post_list_delivery_vehicles` will be passed to
+        `post_list_delivery_vehicles_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_tasks(
         self,
@@ -345,11 +513,34 @@ class DeliveryServiceRestInterceptor:
     ) -> delivery_api.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_tasks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_tasks` interceptor runs
+        before the `post_list_tasks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_tasks_with_metadata(
+        self,
+        response: delivery_api.ListTasksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[delivery_api.ListTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_tasks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_list_tasks_with_metadata`
+        interceptor in new development instead of the `post_list_tasks` interceptor.
+        When both interceptors are used, this `post_list_tasks_with_metadata` interceptor runs after the
+        `post_list_tasks` interceptor. The (possibly modified) response returned by
+        `post_list_tasks` will be passed to
+        `post_list_tasks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_delivery_vehicle(
         self,
@@ -371,11 +562,36 @@ class DeliveryServiceRestInterceptor:
     ) -> delivery_vehicles.DeliveryVehicle:
         """Post-rpc interceptor for update_delivery_vehicle
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_delivery_vehicle_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_delivery_vehicle` interceptor runs
+        before the `post_update_delivery_vehicle_with_metadata` interceptor.
         """
         return response
+
+    def post_update_delivery_vehicle_with_metadata(
+        self,
+        response: delivery_vehicles.DeliveryVehicle,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_vehicles.DeliveryVehicle, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_delivery_vehicle
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_update_delivery_vehicle_with_metadata`
+        interceptor in new development instead of the `post_update_delivery_vehicle` interceptor.
+        When both interceptors are used, this `post_update_delivery_vehicle_with_metadata` interceptor runs after the
+        `post_update_delivery_vehicle` interceptor. The (possibly modified) response returned by
+        `post_update_delivery_vehicle` will be passed to
+        `post_update_delivery_vehicle_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_task(
         self,
@@ -392,11 +608,32 @@ class DeliveryServiceRestInterceptor:
     def post_update_task(self, response: tasks.Task) -> tasks.Task:
         """Post-rpc interceptor for update_task
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_task_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the DeliveryService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_task` interceptor runs
+        before the `post_update_task_with_metadata` interceptor.
         """
         return response
+
+    def post_update_task_with_metadata(
+        self, response: tasks.Task, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tasks.Task, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_task
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeliveryService server but before it is returned to user code.
+
+        We recommend only using this `post_update_task_with_metadata`
+        interceptor in new development instead of the `post_update_task` interceptor.
+        When both interceptors are used, this `post_update_task_with_metadata` interceptor runs after the
+        `post_update_task` interceptor. The (possibly modified) response returned by
+        `post_update_task` will be passed to
+        `post_update_task_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -610,6 +847,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_create_tasks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_tasks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -775,6 +1016,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_delivery_vehicle(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_delivery_vehicle_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -939,6 +1184,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_task(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_task_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1094,6 +1343,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_delivery_vehicle(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_delivery_vehicle_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1256,6 +1509,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_task(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_task_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1404,6 +1661,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_task_tracking_info(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_task_tracking_info_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1549,6 +1810,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_delivery_vehicles(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_delivery_vehicles_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1696,6 +1961,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_tasks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_tasks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1859,6 +2128,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_delivery_vehicle(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_delivery_vehicle_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2023,6 +2296,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_task(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_task_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

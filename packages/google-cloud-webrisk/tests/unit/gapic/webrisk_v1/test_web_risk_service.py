@@ -70,6 +70,13 @@ from google.cloud.webrisk_v1.services.web_risk_service import (
 )
 from google.cloud.webrisk_v1.types import webrisk
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -326,6 +333,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         WebRiskServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = WebRiskServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = WebRiskServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -3881,10 +3931,14 @@ def test_compute_threat_list_diff_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "post_compute_threat_list_diff"
     ) as post, mock.patch.object(
+        transports.WebRiskServiceRestInterceptor,
+        "post_compute_threat_list_diff_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "pre_compute_threat_list_diff"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = webrisk.ComputeThreatListDiffRequest.pb(
             webrisk.ComputeThreatListDiffRequest()
         )
@@ -3910,6 +3964,10 @@ def test_compute_threat_list_diff_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = webrisk.ComputeThreatListDiffResponse()
+        post_with_metadata.return_value = (
+            webrisk.ComputeThreatListDiffResponse(),
+            metadata,
+        )
 
         client.compute_threat_list_diff(
             request,
@@ -3921,6 +3979,7 @@ def test_compute_threat_list_diff_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_uris_rest_bad_request(request_type=webrisk.SearchUrisRequest):
@@ -4000,10 +4059,13 @@ def test_search_uris_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "post_search_uris"
     ) as post, mock.patch.object(
+        transports.WebRiskServiceRestInterceptor, "post_search_uris_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "pre_search_uris"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = webrisk.SearchUrisRequest.pb(webrisk.SearchUrisRequest())
         transcode.return_value = {
             "method": "post",
@@ -4025,6 +4087,7 @@ def test_search_uris_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = webrisk.SearchUrisResponse()
+        post_with_metadata.return_value = webrisk.SearchUrisResponse(), metadata
 
         client.search_uris(
             request,
@@ -4036,6 +4099,7 @@ def test_search_uris_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_hashes_rest_bad_request(request_type=webrisk.SearchHashesRequest):
@@ -4115,10 +4179,13 @@ def test_search_hashes_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "post_search_hashes"
     ) as post, mock.patch.object(
+        transports.WebRiskServiceRestInterceptor, "post_search_hashes_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "pre_search_hashes"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = webrisk.SearchHashesRequest.pb(webrisk.SearchHashesRequest())
         transcode.return_value = {
             "method": "post",
@@ -4142,6 +4209,7 @@ def test_search_hashes_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = webrisk.SearchHashesResponse()
+        post_with_metadata.return_value = webrisk.SearchHashesResponse(), metadata
 
         client.search_hashes(
             request,
@@ -4153,6 +4221,7 @@ def test_search_hashes_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_submission_rest_bad_request(
@@ -4307,10 +4376,13 @@ def test_create_submission_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "post_create_submission"
     ) as post, mock.patch.object(
+        transports.WebRiskServiceRestInterceptor, "post_create_submission_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "pre_create_submission"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = webrisk.CreateSubmissionRequest.pb(
             webrisk.CreateSubmissionRequest()
         )
@@ -4334,6 +4406,7 @@ def test_create_submission_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = webrisk.Submission()
+        post_with_metadata.return_value = webrisk.Submission(), metadata
 
         client.create_submission(
             request,
@@ -4345,6 +4418,7 @@ def test_create_submission_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_submit_uri_rest_bad_request(request_type=webrisk.SubmitUriRequest):
@@ -4423,10 +4497,13 @@ def test_submit_uri_rest_interceptors(null_interceptor):
     ), mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "post_submit_uri"
     ) as post, mock.patch.object(
+        transports.WebRiskServiceRestInterceptor, "post_submit_uri_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.WebRiskServiceRestInterceptor, "pre_submit_uri"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = webrisk.SubmitUriRequest.pb(webrisk.SubmitUriRequest())
         transcode.return_value = {
             "method": "post",
@@ -4448,6 +4525,7 @@ def test_submit_uri_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.submit_uri(
             request,
@@ -4459,6 +4537,7 @@ def test_submit_uri_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_cancel_operation_rest_bad_request(

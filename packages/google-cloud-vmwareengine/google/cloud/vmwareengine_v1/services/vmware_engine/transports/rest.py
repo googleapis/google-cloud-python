@@ -689,11 +689,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_cluster` interceptor runs
+        before the `post_create_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_create_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_cluster_with_metadata`
+        interceptor in new development instead of the `post_create_cluster` interceptor.
+        When both interceptors are used, this `post_create_cluster_with_metadata` interceptor runs after the
+        `post_create_cluster` interceptor. The (possibly modified) response returned by
+        `post_create_cluster` will be passed to
+        `post_create_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_external_access_rule(
         self,
@@ -715,11 +738,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_external_access_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_external_access_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_external_access_rule` interceptor runs
+        before the `post_create_external_access_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_create_external_access_rule_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_external_access_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_external_access_rule_with_metadata`
+        interceptor in new development instead of the `post_create_external_access_rule` interceptor.
+        When both interceptors are used, this `post_create_external_access_rule_with_metadata` interceptor runs after the
+        `post_create_external_access_rule` interceptor. The (possibly modified) response returned by
+        `post_create_external_access_rule` will be passed to
+        `post_create_external_access_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_external_address(
         self,
@@ -741,11 +787,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_external_address
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_external_address_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_external_address` interceptor runs
+        before the `post_create_external_address_with_metadata` interceptor.
         """
         return response
+
+    def post_create_external_address_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_external_address
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_external_address_with_metadata`
+        interceptor in new development instead of the `post_create_external_address` interceptor.
+        When both interceptors are used, this `post_create_external_address_with_metadata` interceptor runs after the
+        `post_create_external_address` interceptor. The (possibly modified) response returned by
+        `post_create_external_address` will be passed to
+        `post_create_external_address_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_hcx_activation_key(
         self,
@@ -767,11 +836,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_hcx_activation_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_hcx_activation_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_hcx_activation_key` interceptor runs
+        before the `post_create_hcx_activation_key_with_metadata` interceptor.
         """
         return response
+
+    def post_create_hcx_activation_key_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_hcx_activation_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_hcx_activation_key_with_metadata`
+        interceptor in new development instead of the `post_create_hcx_activation_key` interceptor.
+        When both interceptors are used, this `post_create_hcx_activation_key_with_metadata` interceptor runs after the
+        `post_create_hcx_activation_key` interceptor. The (possibly modified) response returned by
+        `post_create_hcx_activation_key` will be passed to
+        `post_create_hcx_activation_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_logging_server(
         self,
@@ -792,11 +884,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_logging_server
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_logging_server_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_logging_server` interceptor runs
+        before the `post_create_logging_server_with_metadata` interceptor.
         """
         return response
+
+    def post_create_logging_server_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_logging_server
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_logging_server_with_metadata`
+        interceptor in new development instead of the `post_create_logging_server` interceptor.
+        When both interceptors are used, this `post_create_logging_server_with_metadata` interceptor runs after the
+        `post_create_logging_server` interceptor. The (possibly modified) response returned by
+        `post_create_logging_server` will be passed to
+        `post_create_logging_server_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_management_dns_zone_binding(
         self,
@@ -818,11 +933,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_management_dns_zone_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_management_dns_zone_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_management_dns_zone_binding` interceptor runs
+        before the `post_create_management_dns_zone_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_create_management_dns_zone_binding_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_management_dns_zone_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_management_dns_zone_binding_with_metadata`
+        interceptor in new development instead of the `post_create_management_dns_zone_binding` interceptor.
+        When both interceptors are used, this `post_create_management_dns_zone_binding_with_metadata` interceptor runs after the
+        `post_create_management_dns_zone_binding` interceptor. The (possibly modified) response returned by
+        `post_create_management_dns_zone_binding` will be passed to
+        `post_create_management_dns_zone_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_network_peering(
         self,
@@ -844,11 +982,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_network_peering
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_network_peering_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_network_peering` interceptor runs
+        before the `post_create_network_peering_with_metadata` interceptor.
         """
         return response
+
+    def post_create_network_peering_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_network_peering
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_network_peering_with_metadata`
+        interceptor in new development instead of the `post_create_network_peering` interceptor.
+        When both interceptors are used, this `post_create_network_peering_with_metadata` interceptor runs after the
+        `post_create_network_peering` interceptor. The (possibly modified) response returned by
+        `post_create_network_peering` will be passed to
+        `post_create_network_peering_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_network_policy(
         self,
@@ -869,11 +1030,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_network_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_network_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_network_policy` interceptor runs
+        before the `post_create_network_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_create_network_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_network_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_network_policy_with_metadata`
+        interceptor in new development instead of the `post_create_network_policy` interceptor.
+        When both interceptors are used, this `post_create_network_policy_with_metadata` interceptor runs after the
+        `post_create_network_policy` interceptor. The (possibly modified) response returned by
+        `post_create_network_policy` will be passed to
+        `post_create_network_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_private_cloud(
         self,
@@ -894,11 +1078,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_private_cloud
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_private_cloud_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_private_cloud` interceptor runs
+        before the `post_create_private_cloud_with_metadata` interceptor.
         """
         return response
+
+    def post_create_private_cloud_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_private_cloud
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_private_cloud_with_metadata`
+        interceptor in new development instead of the `post_create_private_cloud` interceptor.
+        When both interceptors are used, this `post_create_private_cloud_with_metadata` interceptor runs after the
+        `post_create_private_cloud` interceptor. The (possibly modified) response returned by
+        `post_create_private_cloud` will be passed to
+        `post_create_private_cloud_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_private_connection(
         self,
@@ -920,11 +1127,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_private_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_private_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_private_connection` interceptor runs
+        before the `post_create_private_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_create_private_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_private_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_private_connection_with_metadata`
+        interceptor in new development instead of the `post_create_private_connection` interceptor.
+        When both interceptors are used, this `post_create_private_connection_with_metadata` interceptor runs after the
+        `post_create_private_connection` interceptor. The (possibly modified) response returned by
+        `post_create_private_connection` will be passed to
+        `post_create_private_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_vmware_engine_network(
         self,
@@ -946,11 +1176,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_vmware_engine_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_vmware_engine_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_vmware_engine_network` interceptor runs
+        before the `post_create_vmware_engine_network_with_metadata` interceptor.
         """
         return response
+
+    def post_create_vmware_engine_network_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_vmware_engine_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_create_vmware_engine_network_with_metadata`
+        interceptor in new development instead of the `post_create_vmware_engine_network` interceptor.
+        When both interceptors are used, this `post_create_vmware_engine_network_with_metadata` interceptor runs after the
+        `post_create_vmware_engine_network` interceptor. The (possibly modified) response returned by
+        `post_create_vmware_engine_network` will be passed to
+        `post_create_vmware_engine_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_cluster(
         self,
@@ -971,11 +1224,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_cluster` interceptor runs
+        before the `post_delete_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_cluster_with_metadata`
+        interceptor in new development instead of the `post_delete_cluster` interceptor.
+        When both interceptors are used, this `post_delete_cluster_with_metadata` interceptor runs after the
+        `post_delete_cluster` interceptor. The (possibly modified) response returned by
+        `post_delete_cluster` will be passed to
+        `post_delete_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_external_access_rule(
         self,
@@ -997,11 +1273,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_external_access_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_external_access_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_external_access_rule` interceptor runs
+        before the `post_delete_external_access_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_external_access_rule_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_external_access_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_external_access_rule_with_metadata`
+        interceptor in new development instead of the `post_delete_external_access_rule` interceptor.
+        When both interceptors are used, this `post_delete_external_access_rule_with_metadata` interceptor runs after the
+        `post_delete_external_access_rule` interceptor. The (possibly modified) response returned by
+        `post_delete_external_access_rule` will be passed to
+        `post_delete_external_access_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_external_address(
         self,
@@ -1023,11 +1322,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_external_address
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_external_address_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_external_address` interceptor runs
+        before the `post_delete_external_address_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_external_address_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_external_address
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_external_address_with_metadata`
+        interceptor in new development instead of the `post_delete_external_address` interceptor.
+        When both interceptors are used, this `post_delete_external_address_with_metadata` interceptor runs after the
+        `post_delete_external_address` interceptor. The (possibly modified) response returned by
+        `post_delete_external_address` will be passed to
+        `post_delete_external_address_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_logging_server(
         self,
@@ -1048,11 +1370,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_logging_server
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_logging_server_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_logging_server` interceptor runs
+        before the `post_delete_logging_server_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_logging_server_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_logging_server
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_logging_server_with_metadata`
+        interceptor in new development instead of the `post_delete_logging_server` interceptor.
+        When both interceptors are used, this `post_delete_logging_server_with_metadata` interceptor runs after the
+        `post_delete_logging_server` interceptor. The (possibly modified) response returned by
+        `post_delete_logging_server` will be passed to
+        `post_delete_logging_server_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_management_dns_zone_binding(
         self,
@@ -1074,11 +1419,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_management_dns_zone_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_management_dns_zone_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_management_dns_zone_binding` interceptor runs
+        before the `post_delete_management_dns_zone_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_management_dns_zone_binding_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_management_dns_zone_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_management_dns_zone_binding_with_metadata`
+        interceptor in new development instead of the `post_delete_management_dns_zone_binding` interceptor.
+        When both interceptors are used, this `post_delete_management_dns_zone_binding_with_metadata` interceptor runs after the
+        `post_delete_management_dns_zone_binding` interceptor. The (possibly modified) response returned by
+        `post_delete_management_dns_zone_binding` will be passed to
+        `post_delete_management_dns_zone_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_network_peering(
         self,
@@ -1100,11 +1468,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_network_peering
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_network_peering_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_network_peering` interceptor runs
+        before the `post_delete_network_peering_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_network_peering_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_network_peering
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_network_peering_with_metadata`
+        interceptor in new development instead of the `post_delete_network_peering` interceptor.
+        When both interceptors are used, this `post_delete_network_peering_with_metadata` interceptor runs after the
+        `post_delete_network_peering` interceptor. The (possibly modified) response returned by
+        `post_delete_network_peering` will be passed to
+        `post_delete_network_peering_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_network_policy(
         self,
@@ -1125,11 +1516,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_network_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_network_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_network_policy` interceptor runs
+        before the `post_delete_network_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_network_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_network_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_network_policy_with_metadata`
+        interceptor in new development instead of the `post_delete_network_policy` interceptor.
+        When both interceptors are used, this `post_delete_network_policy_with_metadata` interceptor runs after the
+        `post_delete_network_policy` interceptor. The (possibly modified) response returned by
+        `post_delete_network_policy` will be passed to
+        `post_delete_network_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_private_cloud(
         self,
@@ -1150,11 +1564,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_private_cloud
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_private_cloud_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_private_cloud` interceptor runs
+        before the `post_delete_private_cloud_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_private_cloud_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_private_cloud
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_private_cloud_with_metadata`
+        interceptor in new development instead of the `post_delete_private_cloud` interceptor.
+        When both interceptors are used, this `post_delete_private_cloud_with_metadata` interceptor runs after the
+        `post_delete_private_cloud` interceptor. The (possibly modified) response returned by
+        `post_delete_private_cloud` will be passed to
+        `post_delete_private_cloud_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_private_connection(
         self,
@@ -1176,11 +1613,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_private_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_private_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_private_connection` interceptor runs
+        before the `post_delete_private_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_private_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_private_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_private_connection_with_metadata`
+        interceptor in new development instead of the `post_delete_private_connection` interceptor.
+        When both interceptors are used, this `post_delete_private_connection_with_metadata` interceptor runs after the
+        `post_delete_private_connection` interceptor. The (possibly modified) response returned by
+        `post_delete_private_connection` will be passed to
+        `post_delete_private_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_vmware_engine_network(
         self,
@@ -1202,11 +1662,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_vmware_engine_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_vmware_engine_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_vmware_engine_network` interceptor runs
+        before the `post_delete_vmware_engine_network_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_vmware_engine_network_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_vmware_engine_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_delete_vmware_engine_network_with_metadata`
+        interceptor in new development instead of the `post_delete_vmware_engine_network` interceptor.
+        When both interceptors are used, this `post_delete_vmware_engine_network_with_metadata` interceptor runs after the
+        `post_delete_vmware_engine_network` interceptor. The (possibly modified) response returned by
+        `post_delete_vmware_engine_network` will be passed to
+        `post_delete_vmware_engine_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_network_policy_external_addresses(
         self,
@@ -1228,11 +1711,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.FetchNetworkPolicyExternalAddressesResponse:
         """Post-rpc interceptor for fetch_network_policy_external_addresses
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_fetch_network_policy_external_addresses_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_fetch_network_policy_external_addresses` interceptor runs
+        before the `post_fetch_network_policy_external_addresses_with_metadata` interceptor.
         """
         return response
+
+    def post_fetch_network_policy_external_addresses_with_metadata(
+        self,
+        response: vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_network_policy_external_addresses
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_network_policy_external_addresses_with_metadata`
+        interceptor in new development instead of the `post_fetch_network_policy_external_addresses` interceptor.
+        When both interceptors are used, this `post_fetch_network_policy_external_addresses_with_metadata` interceptor runs after the
+        `post_fetch_network_policy_external_addresses` interceptor. The (possibly modified) response returned by
+        `post_fetch_network_policy_external_addresses` will be passed to
+        `post_fetch_network_policy_external_addresses_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_cluster(
         self,
@@ -1251,11 +1760,34 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.Cluster:
         """Post-rpc interceptor for get_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_cluster` interceptor runs
+        before the `post_get_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_get_cluster_with_metadata(
+        self,
+        response: vmwareengine_resources.Cluster,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine_resources.Cluster, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_cluster_with_metadata`
+        interceptor in new development instead of the `post_get_cluster` interceptor.
+        When both interceptors are used, this `post_get_cluster_with_metadata` interceptor runs after the
+        `post_get_cluster` interceptor. The (possibly modified) response returned by
+        `post_get_cluster` will be passed to
+        `post_get_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_dns_bind_permission(
         self,
@@ -1277,11 +1809,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.DnsBindPermission:
         """Post-rpc interceptor for get_dns_bind_permission
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_dns_bind_permission_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_dns_bind_permission` interceptor runs
+        before the `post_get_dns_bind_permission_with_metadata` interceptor.
         """
         return response
+
+    def post_get_dns_bind_permission_with_metadata(
+        self,
+        response: vmwareengine_resources.DnsBindPermission,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.DnsBindPermission,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_dns_bind_permission
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_dns_bind_permission_with_metadata`
+        interceptor in new development instead of the `post_get_dns_bind_permission` interceptor.
+        When both interceptors are used, this `post_get_dns_bind_permission_with_metadata` interceptor runs after the
+        `post_get_dns_bind_permission` interceptor. The (possibly modified) response returned by
+        `post_get_dns_bind_permission` will be passed to
+        `post_get_dns_bind_permission_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_dns_forwarding(
         self,
@@ -1302,11 +1860,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.DnsForwarding:
         """Post-rpc interceptor for get_dns_forwarding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_dns_forwarding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_dns_forwarding` interceptor runs
+        before the `post_get_dns_forwarding_with_metadata` interceptor.
         """
         return response
+
+    def post_get_dns_forwarding_with_metadata(
+        self,
+        response: vmwareengine_resources.DnsForwarding,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.DnsForwarding, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_dns_forwarding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_dns_forwarding_with_metadata`
+        interceptor in new development instead of the `post_get_dns_forwarding` interceptor.
+        When both interceptors are used, this `post_get_dns_forwarding_with_metadata` interceptor runs after the
+        `post_get_dns_forwarding` interceptor. The (possibly modified) response returned by
+        `post_get_dns_forwarding` will be passed to
+        `post_get_dns_forwarding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_external_access_rule(
         self,
@@ -1328,11 +1911,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.ExternalAccessRule:
         """Post-rpc interceptor for get_external_access_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_external_access_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_external_access_rule` interceptor runs
+        before the `post_get_external_access_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_get_external_access_rule_with_metadata(
+        self,
+        response: vmwareengine_resources.ExternalAccessRule,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.ExternalAccessRule,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_external_access_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_external_access_rule_with_metadata`
+        interceptor in new development instead of the `post_get_external_access_rule` interceptor.
+        When both interceptors are used, this `post_get_external_access_rule_with_metadata` interceptor runs after the
+        `post_get_external_access_rule` interceptor. The (possibly modified) response returned by
+        `post_get_external_access_rule` will be passed to
+        `post_get_external_access_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_external_address(
         self,
@@ -1353,11 +1962,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.ExternalAddress:
         """Post-rpc interceptor for get_external_address
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_external_address_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_external_address` interceptor runs
+        before the `post_get_external_address_with_metadata` interceptor.
         """
         return response
+
+    def post_get_external_address_with_metadata(
+        self,
+        response: vmwareengine_resources.ExternalAddress,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.ExternalAddress, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_external_address
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_external_address_with_metadata`
+        interceptor in new development instead of the `post_get_external_address` interceptor.
+        When both interceptors are used, this `post_get_external_address_with_metadata` interceptor runs after the
+        `post_get_external_address` interceptor. The (possibly modified) response returned by
+        `post_get_external_address` will be passed to
+        `post_get_external_address_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_hcx_activation_key(
         self,
@@ -1378,11 +2012,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.HcxActivationKey:
         """Post-rpc interceptor for get_hcx_activation_key
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_hcx_activation_key_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_hcx_activation_key` interceptor runs
+        before the `post_get_hcx_activation_key_with_metadata` interceptor.
         """
         return response
+
+    def post_get_hcx_activation_key_with_metadata(
+        self,
+        response: vmwareengine_resources.HcxActivationKey,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.HcxActivationKey, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_hcx_activation_key
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_hcx_activation_key_with_metadata`
+        interceptor in new development instead of the `post_get_hcx_activation_key` interceptor.
+        When both interceptors are used, this `post_get_hcx_activation_key_with_metadata` interceptor runs after the
+        `post_get_hcx_activation_key` interceptor. The (possibly modified) response returned by
+        `post_get_hcx_activation_key` will be passed to
+        `post_get_hcx_activation_key_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_logging_server(
         self,
@@ -1403,11 +2062,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.LoggingServer:
         """Post-rpc interceptor for get_logging_server
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_logging_server_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_logging_server` interceptor runs
+        before the `post_get_logging_server_with_metadata` interceptor.
         """
         return response
+
+    def post_get_logging_server_with_metadata(
+        self,
+        response: vmwareengine_resources.LoggingServer,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.LoggingServer, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_logging_server
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_logging_server_with_metadata`
+        interceptor in new development instead of the `post_get_logging_server` interceptor.
+        When both interceptors are used, this `post_get_logging_server_with_metadata` interceptor runs after the
+        `post_get_logging_server` interceptor. The (possibly modified) response returned by
+        `post_get_logging_server` will be passed to
+        `post_get_logging_server_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_management_dns_zone_binding(
         self,
@@ -1429,11 +2113,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.ManagementDnsZoneBinding:
         """Post-rpc interceptor for get_management_dns_zone_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_management_dns_zone_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_management_dns_zone_binding` interceptor runs
+        before the `post_get_management_dns_zone_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_get_management_dns_zone_binding_with_metadata(
+        self,
+        response: vmwareengine_resources.ManagementDnsZoneBinding,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.ManagementDnsZoneBinding,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_management_dns_zone_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_management_dns_zone_binding_with_metadata`
+        interceptor in new development instead of the `post_get_management_dns_zone_binding` interceptor.
+        When both interceptors are used, this `post_get_management_dns_zone_binding_with_metadata` interceptor runs after the
+        `post_get_management_dns_zone_binding` interceptor. The (possibly modified) response returned by
+        `post_get_management_dns_zone_binding` will be passed to
+        `post_get_management_dns_zone_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_network_peering(
         self,
@@ -1454,11 +2164,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.NetworkPeering:
         """Post-rpc interceptor for get_network_peering
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_network_peering_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_network_peering` interceptor runs
+        before the `post_get_network_peering_with_metadata` interceptor.
         """
         return response
+
+    def post_get_network_peering_with_metadata(
+        self,
+        response: vmwareengine_resources.NetworkPeering,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.NetworkPeering, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_network_peering
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_network_peering_with_metadata`
+        interceptor in new development instead of the `post_get_network_peering` interceptor.
+        When both interceptors are used, this `post_get_network_peering_with_metadata` interceptor runs after the
+        `post_get_network_peering` interceptor. The (possibly modified) response returned by
+        `post_get_network_peering` will be passed to
+        `post_get_network_peering_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_network_policy(
         self,
@@ -1479,11 +2214,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.NetworkPolicy:
         """Post-rpc interceptor for get_network_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_network_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_network_policy` interceptor runs
+        before the `post_get_network_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_get_network_policy_with_metadata(
+        self,
+        response: vmwareengine_resources.NetworkPolicy,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.NetworkPolicy, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_network_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_network_policy_with_metadata`
+        interceptor in new development instead of the `post_get_network_policy` interceptor.
+        When both interceptors are used, this `post_get_network_policy_with_metadata` interceptor runs after the
+        `post_get_network_policy` interceptor. The (possibly modified) response returned by
+        `post_get_network_policy` will be passed to
+        `post_get_network_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_node(
         self,
@@ -1502,11 +2262,34 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.Node:
         """Post-rpc interceptor for get_node
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_node_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_node` interceptor runs
+        before the `post_get_node_with_metadata` interceptor.
         """
         return response
+
+    def post_get_node_with_metadata(
+        self,
+        response: vmwareengine_resources.Node,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine_resources.Node, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_node
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_node_with_metadata`
+        interceptor in new development instead of the `post_get_node` interceptor.
+        When both interceptors are used, this `post_get_node_with_metadata` interceptor runs after the
+        `post_get_node` interceptor. The (possibly modified) response returned by
+        `post_get_node` will be passed to
+        `post_get_node_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_node_type(
         self,
@@ -1527,11 +2310,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.NodeType:
         """Post-rpc interceptor for get_node_type
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_node_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_node_type` interceptor runs
+        before the `post_get_node_type_with_metadata` interceptor.
         """
         return response
+
+    def post_get_node_type_with_metadata(
+        self,
+        response: vmwareengine_resources.NodeType,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.NodeType, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_node_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_node_type_with_metadata`
+        interceptor in new development instead of the `post_get_node_type` interceptor.
+        When both interceptors are used, this `post_get_node_type_with_metadata` interceptor runs after the
+        `post_get_node_type` interceptor. The (possibly modified) response returned by
+        `post_get_node_type` will be passed to
+        `post_get_node_type_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_private_cloud(
         self,
@@ -1552,11 +2360,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.PrivateCloud:
         """Post-rpc interceptor for get_private_cloud
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_private_cloud_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_private_cloud` interceptor runs
+        before the `post_get_private_cloud_with_metadata` interceptor.
         """
         return response
+
+    def post_get_private_cloud_with_metadata(
+        self,
+        response: vmwareengine_resources.PrivateCloud,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.PrivateCloud, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_private_cloud
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_private_cloud_with_metadata`
+        interceptor in new development instead of the `post_get_private_cloud` interceptor.
+        When both interceptors are used, this `post_get_private_cloud_with_metadata` interceptor runs after the
+        `post_get_private_cloud` interceptor. The (possibly modified) response returned by
+        `post_get_private_cloud` will be passed to
+        `post_get_private_cloud_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_private_connection(
         self,
@@ -1578,11 +2411,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.PrivateConnection:
         """Post-rpc interceptor for get_private_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_private_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_private_connection` interceptor runs
+        before the `post_get_private_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_get_private_connection_with_metadata(
+        self,
+        response: vmwareengine_resources.PrivateConnection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.PrivateConnection,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_private_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_private_connection_with_metadata`
+        interceptor in new development instead of the `post_get_private_connection` interceptor.
+        When both interceptors are used, this `post_get_private_connection_with_metadata` interceptor runs after the
+        `post_get_private_connection` interceptor. The (possibly modified) response returned by
+        `post_get_private_connection` will be passed to
+        `post_get_private_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_subnet(
         self,
@@ -1601,11 +2460,34 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.Subnet:
         """Post-rpc interceptor for get_subnet
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_subnet_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_subnet` interceptor runs
+        before the `post_get_subnet_with_metadata` interceptor.
         """
         return response
+
+    def post_get_subnet_with_metadata(
+        self,
+        response: vmwareengine_resources.Subnet,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine_resources.Subnet, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_subnet
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_subnet_with_metadata`
+        interceptor in new development instead of the `post_get_subnet` interceptor.
+        When both interceptors are used, this `post_get_subnet_with_metadata` interceptor runs after the
+        `post_get_subnet` interceptor. The (possibly modified) response returned by
+        `post_get_subnet` will be passed to
+        `post_get_subnet_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_vmware_engine_network(
         self,
@@ -1627,11 +2509,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.VmwareEngineNetwork:
         """Post-rpc interceptor for get_vmware_engine_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_vmware_engine_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_vmware_engine_network` interceptor runs
+        before the `post_get_vmware_engine_network_with_metadata` interceptor.
         """
         return response
+
+    def post_get_vmware_engine_network_with_metadata(
+        self,
+        response: vmwareengine_resources.VmwareEngineNetwork,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.VmwareEngineNetwork,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_vmware_engine_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_get_vmware_engine_network_with_metadata`
+        interceptor in new development instead of the `post_get_vmware_engine_network` interceptor.
+        When both interceptors are used, this `post_get_vmware_engine_network_with_metadata` interceptor runs after the
+        `post_get_vmware_engine_network` interceptor. The (possibly modified) response returned by
+        `post_get_vmware_engine_network` will be passed to
+        `post_get_vmware_engine_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_grant_dns_bind_permission(
         self,
@@ -1653,11 +2561,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for grant_dns_bind_permission
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_grant_dns_bind_permission_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_grant_dns_bind_permission` interceptor runs
+        before the `post_grant_dns_bind_permission_with_metadata` interceptor.
         """
         return response
+
+    def post_grant_dns_bind_permission_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for grant_dns_bind_permission
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_grant_dns_bind_permission_with_metadata`
+        interceptor in new development instead of the `post_grant_dns_bind_permission` interceptor.
+        When both interceptors are used, this `post_grant_dns_bind_permission_with_metadata` interceptor runs after the
+        `post_grant_dns_bind_permission` interceptor. The (possibly modified) response returned by
+        `post_grant_dns_bind_permission` will be passed to
+        `post_grant_dns_bind_permission_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_clusters(
         self,
@@ -1678,11 +2609,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListClustersResponse:
         """Post-rpc interceptor for list_clusters
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_clusters_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_clusters` interceptor runs
+        before the `post_list_clusters_with_metadata` interceptor.
         """
         return response
+
+    def post_list_clusters_with_metadata(
+        self,
+        response: vmwareengine.ListClustersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_clusters
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_clusters_with_metadata`
+        interceptor in new development instead of the `post_list_clusters` interceptor.
+        When both interceptors are used, this `post_list_clusters_with_metadata` interceptor runs after the
+        `post_list_clusters` interceptor. The (possibly modified) response returned by
+        `post_list_clusters` will be passed to
+        `post_list_clusters_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_external_access_rules(
         self,
@@ -1704,11 +2660,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListExternalAccessRulesResponse:
         """Post-rpc interceptor for list_external_access_rules
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_external_access_rules_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_external_access_rules` interceptor runs
+        before the `post_list_external_access_rules_with_metadata` interceptor.
         """
         return response
+
+    def post_list_external_access_rules_with_metadata(
+        self,
+        response: vmwareengine.ListExternalAccessRulesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListExternalAccessRulesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_external_access_rules
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_external_access_rules_with_metadata`
+        interceptor in new development instead of the `post_list_external_access_rules` interceptor.
+        When both interceptors are used, this `post_list_external_access_rules_with_metadata` interceptor runs after the
+        `post_list_external_access_rules` interceptor. The (possibly modified) response returned by
+        `post_list_external_access_rules` will be passed to
+        `post_list_external_access_rules_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_external_addresses(
         self,
@@ -1730,11 +2712,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListExternalAddressesResponse:
         """Post-rpc interceptor for list_external_addresses
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_external_addresses_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_external_addresses` interceptor runs
+        before the `post_list_external_addresses_with_metadata` interceptor.
         """
         return response
+
+    def post_list_external_addresses_with_metadata(
+        self,
+        response: vmwareengine.ListExternalAddressesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListExternalAddressesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_external_addresses
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_external_addresses_with_metadata`
+        interceptor in new development instead of the `post_list_external_addresses` interceptor.
+        When both interceptors are used, this `post_list_external_addresses_with_metadata` interceptor runs after the
+        `post_list_external_addresses` interceptor. The (possibly modified) response returned by
+        `post_list_external_addresses` will be passed to
+        `post_list_external_addresses_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_hcx_activation_keys(
         self,
@@ -1756,11 +2764,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListHcxActivationKeysResponse:
         """Post-rpc interceptor for list_hcx_activation_keys
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_hcx_activation_keys_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_hcx_activation_keys` interceptor runs
+        before the `post_list_hcx_activation_keys_with_metadata` interceptor.
         """
         return response
+
+    def post_list_hcx_activation_keys_with_metadata(
+        self,
+        response: vmwareengine.ListHcxActivationKeysResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListHcxActivationKeysResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_hcx_activation_keys
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_hcx_activation_keys_with_metadata`
+        interceptor in new development instead of the `post_list_hcx_activation_keys` interceptor.
+        When both interceptors are used, this `post_list_hcx_activation_keys_with_metadata` interceptor runs after the
+        `post_list_hcx_activation_keys` interceptor. The (possibly modified) response returned by
+        `post_list_hcx_activation_keys` will be passed to
+        `post_list_hcx_activation_keys_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_logging_servers(
         self,
@@ -1781,11 +2815,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListLoggingServersResponse:
         """Post-rpc interceptor for list_logging_servers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_logging_servers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_logging_servers` interceptor runs
+        before the `post_list_logging_servers_with_metadata` interceptor.
         """
         return response
+
+    def post_list_logging_servers_with_metadata(
+        self,
+        response: vmwareengine.ListLoggingServersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListLoggingServersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_logging_servers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_logging_servers_with_metadata`
+        interceptor in new development instead of the `post_list_logging_servers` interceptor.
+        When both interceptors are used, this `post_list_logging_servers_with_metadata` interceptor runs after the
+        `post_list_logging_servers` interceptor. The (possibly modified) response returned by
+        `post_list_logging_servers` will be passed to
+        `post_list_logging_servers_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_management_dns_zone_bindings(
         self,
@@ -1807,11 +2866,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListManagementDnsZoneBindingsResponse:
         """Post-rpc interceptor for list_management_dns_zone_bindings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_management_dns_zone_bindings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_management_dns_zone_bindings` interceptor runs
+        before the `post_list_management_dns_zone_bindings_with_metadata` interceptor.
         """
         return response
+
+    def post_list_management_dns_zone_bindings_with_metadata(
+        self,
+        response: vmwareengine.ListManagementDnsZoneBindingsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListManagementDnsZoneBindingsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_management_dns_zone_bindings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_management_dns_zone_bindings_with_metadata`
+        interceptor in new development instead of the `post_list_management_dns_zone_bindings` interceptor.
+        When both interceptors are used, this `post_list_management_dns_zone_bindings_with_metadata` interceptor runs after the
+        `post_list_management_dns_zone_bindings` interceptor. The (possibly modified) response returned by
+        `post_list_management_dns_zone_bindings` will be passed to
+        `post_list_management_dns_zone_bindings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_network_peerings(
         self,
@@ -1832,11 +2917,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListNetworkPeeringsResponse:
         """Post-rpc interceptor for list_network_peerings
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_network_peerings_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_network_peerings` interceptor runs
+        before the `post_list_network_peerings_with_metadata` interceptor.
         """
         return response
+
+    def post_list_network_peerings_with_metadata(
+        self,
+        response: vmwareengine.ListNetworkPeeringsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListNetworkPeeringsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_network_peerings
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_network_peerings_with_metadata`
+        interceptor in new development instead of the `post_list_network_peerings` interceptor.
+        When both interceptors are used, this `post_list_network_peerings_with_metadata` interceptor runs after the
+        `post_list_network_peerings` interceptor. The (possibly modified) response returned by
+        `post_list_network_peerings` will be passed to
+        `post_list_network_peerings_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_network_policies(
         self,
@@ -1857,11 +2968,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListNetworkPoliciesResponse:
         """Post-rpc interceptor for list_network_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_network_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_network_policies` interceptor runs
+        before the `post_list_network_policies_with_metadata` interceptor.
         """
         return response
+
+    def post_list_network_policies_with_metadata(
+        self,
+        response: vmwareengine.ListNetworkPoliciesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListNetworkPoliciesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_network_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_network_policies_with_metadata`
+        interceptor in new development instead of the `post_list_network_policies` interceptor.
+        When both interceptors are used, this `post_list_network_policies_with_metadata` interceptor runs after the
+        `post_list_network_policies` interceptor. The (possibly modified) response returned by
+        `post_list_network_policies` will be passed to
+        `post_list_network_policies_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_nodes(
         self,
@@ -1880,11 +3017,34 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListNodesResponse:
         """Post-rpc interceptor for list_nodes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_nodes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_nodes` interceptor runs
+        before the `post_list_nodes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_nodes_with_metadata(
+        self,
+        response: vmwareengine.ListNodesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[vmwareengine.ListNodesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_nodes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_nodes_with_metadata`
+        interceptor in new development instead of the `post_list_nodes` interceptor.
+        When both interceptors are used, this `post_list_nodes_with_metadata` interceptor runs after the
+        `post_list_nodes` interceptor. The (possibly modified) response returned by
+        `post_list_nodes` will be passed to
+        `post_list_nodes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_node_types(
         self,
@@ -1905,11 +3065,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListNodeTypesResponse:
         """Post-rpc interceptor for list_node_types
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_node_types_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_node_types` interceptor runs
+        before the `post_list_node_types_with_metadata` interceptor.
         """
         return response
+
+    def post_list_node_types_with_metadata(
+        self,
+        response: vmwareengine.ListNodeTypesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListNodeTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_node_types
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_node_types_with_metadata`
+        interceptor in new development instead of the `post_list_node_types` interceptor.
+        When both interceptors are used, this `post_list_node_types_with_metadata` interceptor runs after the
+        `post_list_node_types` interceptor. The (possibly modified) response returned by
+        `post_list_node_types` will be passed to
+        `post_list_node_types_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_peering_routes(
         self,
@@ -1930,11 +3115,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListPeeringRoutesResponse:
         """Post-rpc interceptor for list_peering_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_peering_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_peering_routes` interceptor runs
+        before the `post_list_peering_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_peering_routes_with_metadata(
+        self,
+        response: vmwareengine.ListPeeringRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListPeeringRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_peering_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_peering_routes_with_metadata`
+        interceptor in new development instead of the `post_list_peering_routes` interceptor.
+        When both interceptors are used, this `post_list_peering_routes_with_metadata` interceptor runs after the
+        `post_list_peering_routes` interceptor. The (possibly modified) response returned by
+        `post_list_peering_routes` will be passed to
+        `post_list_peering_routes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_private_clouds(
         self,
@@ -1955,11 +3165,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListPrivateCloudsResponse:
         """Post-rpc interceptor for list_private_clouds
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_private_clouds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_private_clouds` interceptor runs
+        before the `post_list_private_clouds_with_metadata` interceptor.
         """
         return response
+
+    def post_list_private_clouds_with_metadata(
+        self,
+        response: vmwareengine.ListPrivateCloudsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListPrivateCloudsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_private_clouds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_private_clouds_with_metadata`
+        interceptor in new development instead of the `post_list_private_clouds` interceptor.
+        When both interceptors are used, this `post_list_private_clouds_with_metadata` interceptor runs after the
+        `post_list_private_clouds` interceptor. The (possibly modified) response returned by
+        `post_list_private_clouds` will be passed to
+        `post_list_private_clouds_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_private_connection_peering_routes(
         self,
@@ -1981,11 +3216,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListPrivateConnectionPeeringRoutesResponse:
         """Post-rpc interceptor for list_private_connection_peering_routes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_private_connection_peering_routes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_private_connection_peering_routes` interceptor runs
+        before the `post_list_private_connection_peering_routes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_private_connection_peering_routes_with_metadata(
+        self,
+        response: vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_private_connection_peering_routes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_private_connection_peering_routes_with_metadata`
+        interceptor in new development instead of the `post_list_private_connection_peering_routes` interceptor.
+        When both interceptors are used, this `post_list_private_connection_peering_routes_with_metadata` interceptor runs after the
+        `post_list_private_connection_peering_routes` interceptor. The (possibly modified) response returned by
+        `post_list_private_connection_peering_routes` will be passed to
+        `post_list_private_connection_peering_routes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_private_connections(
         self,
@@ -2007,11 +3268,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListPrivateConnectionsResponse:
         """Post-rpc interceptor for list_private_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_private_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_private_connections` interceptor runs
+        before the `post_list_private_connections_with_metadata` interceptor.
         """
         return response
+
+    def post_list_private_connections_with_metadata(
+        self,
+        response: vmwareengine.ListPrivateConnectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListPrivateConnectionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_private_connections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_private_connections_with_metadata`
+        interceptor in new development instead of the `post_list_private_connections` interceptor.
+        When both interceptors are used, this `post_list_private_connections_with_metadata` interceptor runs after the
+        `post_list_private_connections` interceptor. The (possibly modified) response returned by
+        `post_list_private_connections` will be passed to
+        `post_list_private_connections_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_subnets(
         self,
@@ -2032,11 +3319,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListSubnetsResponse:
         """Post-rpc interceptor for list_subnets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_subnets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_subnets` interceptor runs
+        before the `post_list_subnets_with_metadata` interceptor.
         """
         return response
+
+    def post_list_subnets_with_metadata(
+        self,
+        response: vmwareengine.ListSubnetsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListSubnetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_subnets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_subnets_with_metadata`
+        interceptor in new development instead of the `post_list_subnets` interceptor.
+        When both interceptors are used, this `post_list_subnets_with_metadata` interceptor runs after the
+        `post_list_subnets` interceptor. The (possibly modified) response returned by
+        `post_list_subnets` will be passed to
+        `post_list_subnets_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_vmware_engine_networks(
         self,
@@ -2058,11 +3370,37 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine.ListVmwareEngineNetworksResponse:
         """Post-rpc interceptor for list_vmware_engine_networks
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_vmware_engine_networks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_vmware_engine_networks` interceptor runs
+        before the `post_list_vmware_engine_networks_with_metadata` interceptor.
         """
         return response
+
+    def post_list_vmware_engine_networks_with_metadata(
+        self,
+        response: vmwareengine.ListVmwareEngineNetworksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine.ListVmwareEngineNetworksResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_vmware_engine_networks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_list_vmware_engine_networks_with_metadata`
+        interceptor in new development instead of the `post_list_vmware_engine_networks` interceptor.
+        When both interceptors are used, this `post_list_vmware_engine_networks_with_metadata` interceptor runs after the
+        `post_list_vmware_engine_networks` interceptor. The (possibly modified) response returned by
+        `post_list_vmware_engine_networks` will be passed to
+        `post_list_vmware_engine_networks_with_metadata`.
+        """
+        return response, metadata
 
     def pre_repair_management_dns_zone_binding(
         self,
@@ -2084,11 +3422,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for repair_management_dns_zone_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_repair_management_dns_zone_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_repair_management_dns_zone_binding` interceptor runs
+        before the `post_repair_management_dns_zone_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_repair_management_dns_zone_binding_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for repair_management_dns_zone_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_repair_management_dns_zone_binding_with_metadata`
+        interceptor in new development instead of the `post_repair_management_dns_zone_binding` interceptor.
+        When both interceptors are used, this `post_repair_management_dns_zone_binding_with_metadata` interceptor runs after the
+        `post_repair_management_dns_zone_binding` interceptor. The (possibly modified) response returned by
+        `post_repair_management_dns_zone_binding` will be passed to
+        `post_repair_management_dns_zone_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_nsx_credentials(
         self,
@@ -2109,11 +3470,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_nsx_credentials
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_nsx_credentials_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset_nsx_credentials` interceptor runs
+        before the `post_reset_nsx_credentials_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_nsx_credentials_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset_nsx_credentials
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_reset_nsx_credentials_with_metadata`
+        interceptor in new development instead of the `post_reset_nsx_credentials` interceptor.
+        When both interceptors are used, this `post_reset_nsx_credentials_with_metadata` interceptor runs after the
+        `post_reset_nsx_credentials` interceptor. The (possibly modified) response returned by
+        `post_reset_nsx_credentials` will be passed to
+        `post_reset_nsx_credentials_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_vcenter_credentials(
         self,
@@ -2135,11 +3519,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_vcenter_credentials
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_vcenter_credentials_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset_vcenter_credentials` interceptor runs
+        before the `post_reset_vcenter_credentials_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_vcenter_credentials_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset_vcenter_credentials
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_reset_vcenter_credentials_with_metadata`
+        interceptor in new development instead of the `post_reset_vcenter_credentials` interceptor.
+        When both interceptors are used, this `post_reset_vcenter_credentials_with_metadata` interceptor runs after the
+        `post_reset_vcenter_credentials` interceptor. The (possibly modified) response returned by
+        `post_reset_vcenter_credentials` will be passed to
+        `post_reset_vcenter_credentials_with_metadata`.
+        """
+        return response, metadata
 
     def pre_revoke_dns_bind_permission(
         self,
@@ -2161,11 +3568,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for revoke_dns_bind_permission
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_revoke_dns_bind_permission_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_revoke_dns_bind_permission` interceptor runs
+        before the `post_revoke_dns_bind_permission_with_metadata` interceptor.
         """
         return response
+
+    def post_revoke_dns_bind_permission_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for revoke_dns_bind_permission
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_revoke_dns_bind_permission_with_metadata`
+        interceptor in new development instead of the `post_revoke_dns_bind_permission` interceptor.
+        When both interceptors are used, this `post_revoke_dns_bind_permission_with_metadata` interceptor runs after the
+        `post_revoke_dns_bind_permission` interceptor. The (possibly modified) response returned by
+        `post_revoke_dns_bind_permission` will be passed to
+        `post_revoke_dns_bind_permission_with_metadata`.
+        """
+        return response, metadata
 
     def pre_show_nsx_credentials(
         self,
@@ -2186,11 +3616,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.Credentials:
         """Post-rpc interceptor for show_nsx_credentials
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_show_nsx_credentials_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_show_nsx_credentials` interceptor runs
+        before the `post_show_nsx_credentials_with_metadata` interceptor.
         """
         return response
+
+    def post_show_nsx_credentials_with_metadata(
+        self,
+        response: vmwareengine_resources.Credentials,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.Credentials, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for show_nsx_credentials
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_show_nsx_credentials_with_metadata`
+        interceptor in new development instead of the `post_show_nsx_credentials` interceptor.
+        When both interceptors are used, this `post_show_nsx_credentials_with_metadata` interceptor runs after the
+        `post_show_nsx_credentials` interceptor. The (possibly modified) response returned by
+        `post_show_nsx_credentials` will be passed to
+        `post_show_nsx_credentials_with_metadata`.
+        """
+        return response, metadata
 
     def pre_show_vcenter_credentials(
         self,
@@ -2212,11 +3667,36 @@ class VmwareEngineRestInterceptor:
     ) -> vmwareengine_resources.Credentials:
         """Post-rpc interceptor for show_vcenter_credentials
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_show_vcenter_credentials_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_show_vcenter_credentials` interceptor runs
+        before the `post_show_vcenter_credentials_with_metadata` interceptor.
         """
         return response
+
+    def post_show_vcenter_credentials_with_metadata(
+        self,
+        response: vmwareengine_resources.Credentials,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        vmwareengine_resources.Credentials, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for show_vcenter_credentials
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_show_vcenter_credentials_with_metadata`
+        interceptor in new development instead of the `post_show_vcenter_credentials` interceptor.
+        When both interceptors are used, this `post_show_vcenter_credentials_with_metadata` interceptor runs after the
+        `post_show_vcenter_credentials` interceptor. The (possibly modified) response returned by
+        `post_show_vcenter_credentials` will be passed to
+        `post_show_vcenter_credentials_with_metadata`.
+        """
+        return response, metadata
 
     def pre_undelete_private_cloud(
         self,
@@ -2238,11 +3718,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_private_cloud
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_undelete_private_cloud_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_undelete_private_cloud` interceptor runs
+        before the `post_undelete_private_cloud_with_metadata` interceptor.
         """
         return response
+
+    def post_undelete_private_cloud_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for undelete_private_cloud
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_undelete_private_cloud_with_metadata`
+        interceptor in new development instead of the `post_undelete_private_cloud` interceptor.
+        When both interceptors are used, this `post_undelete_private_cloud_with_metadata` interceptor runs after the
+        `post_undelete_private_cloud` interceptor. The (possibly modified) response returned by
+        `post_undelete_private_cloud` will be passed to
+        `post_undelete_private_cloud_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_cluster(
         self,
@@ -2263,11 +3766,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_cluster
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_cluster` interceptor runs
+        before the `post_update_cluster_with_metadata` interceptor.
         """
         return response
+
+    def post_update_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_cluster_with_metadata`
+        interceptor in new development instead of the `post_update_cluster` interceptor.
+        When both interceptors are used, this `post_update_cluster_with_metadata` interceptor runs after the
+        `post_update_cluster` interceptor. The (possibly modified) response returned by
+        `post_update_cluster` will be passed to
+        `post_update_cluster_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_dns_forwarding(
         self,
@@ -2288,11 +3814,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_dns_forwarding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_dns_forwarding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_dns_forwarding` interceptor runs
+        before the `post_update_dns_forwarding_with_metadata` interceptor.
         """
         return response
+
+    def post_update_dns_forwarding_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_dns_forwarding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_dns_forwarding_with_metadata`
+        interceptor in new development instead of the `post_update_dns_forwarding` interceptor.
+        When both interceptors are used, this `post_update_dns_forwarding_with_metadata` interceptor runs after the
+        `post_update_dns_forwarding` interceptor. The (possibly modified) response returned by
+        `post_update_dns_forwarding` will be passed to
+        `post_update_dns_forwarding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_external_access_rule(
         self,
@@ -2314,11 +3863,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_external_access_rule
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_external_access_rule_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_external_access_rule` interceptor runs
+        before the `post_update_external_access_rule_with_metadata` interceptor.
         """
         return response
+
+    def post_update_external_access_rule_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_external_access_rule
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_external_access_rule_with_metadata`
+        interceptor in new development instead of the `post_update_external_access_rule` interceptor.
+        When both interceptors are used, this `post_update_external_access_rule_with_metadata` interceptor runs after the
+        `post_update_external_access_rule` interceptor. The (possibly modified) response returned by
+        `post_update_external_access_rule` will be passed to
+        `post_update_external_access_rule_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_external_address(
         self,
@@ -2340,11 +3912,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_external_address
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_external_address_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_external_address` interceptor runs
+        before the `post_update_external_address_with_metadata` interceptor.
         """
         return response
+
+    def post_update_external_address_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_external_address
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_external_address_with_metadata`
+        interceptor in new development instead of the `post_update_external_address` interceptor.
+        When both interceptors are used, this `post_update_external_address_with_metadata` interceptor runs after the
+        `post_update_external_address` interceptor. The (possibly modified) response returned by
+        `post_update_external_address` will be passed to
+        `post_update_external_address_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_logging_server(
         self,
@@ -2365,11 +3960,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_logging_server
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_logging_server_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_logging_server` interceptor runs
+        before the `post_update_logging_server_with_metadata` interceptor.
         """
         return response
+
+    def post_update_logging_server_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_logging_server
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_logging_server_with_metadata`
+        interceptor in new development instead of the `post_update_logging_server` interceptor.
+        When both interceptors are used, this `post_update_logging_server_with_metadata` interceptor runs after the
+        `post_update_logging_server` interceptor. The (possibly modified) response returned by
+        `post_update_logging_server` will be passed to
+        `post_update_logging_server_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_management_dns_zone_binding(
         self,
@@ -2391,11 +4009,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_management_dns_zone_binding
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_management_dns_zone_binding_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_management_dns_zone_binding` interceptor runs
+        before the `post_update_management_dns_zone_binding_with_metadata` interceptor.
         """
         return response
+
+    def post_update_management_dns_zone_binding_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_management_dns_zone_binding
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_management_dns_zone_binding_with_metadata`
+        interceptor in new development instead of the `post_update_management_dns_zone_binding` interceptor.
+        When both interceptors are used, this `post_update_management_dns_zone_binding_with_metadata` interceptor runs after the
+        `post_update_management_dns_zone_binding` interceptor. The (possibly modified) response returned by
+        `post_update_management_dns_zone_binding` will be passed to
+        `post_update_management_dns_zone_binding_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_network_peering(
         self,
@@ -2417,11 +4058,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_network_peering
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_network_peering_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_network_peering` interceptor runs
+        before the `post_update_network_peering_with_metadata` interceptor.
         """
         return response
+
+    def post_update_network_peering_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_network_peering
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_network_peering_with_metadata`
+        interceptor in new development instead of the `post_update_network_peering` interceptor.
+        When both interceptors are used, this `post_update_network_peering_with_metadata` interceptor runs after the
+        `post_update_network_peering` interceptor. The (possibly modified) response returned by
+        `post_update_network_peering` will be passed to
+        `post_update_network_peering_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_network_policy(
         self,
@@ -2442,11 +4106,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_network_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_network_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_network_policy` interceptor runs
+        before the `post_update_network_policy_with_metadata` interceptor.
         """
         return response
+
+    def post_update_network_policy_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_network_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_network_policy_with_metadata`
+        interceptor in new development instead of the `post_update_network_policy` interceptor.
+        When both interceptors are used, this `post_update_network_policy_with_metadata` interceptor runs after the
+        `post_update_network_policy` interceptor. The (possibly modified) response returned by
+        `post_update_network_policy` will be passed to
+        `post_update_network_policy_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_private_cloud(
         self,
@@ -2467,11 +4154,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_private_cloud
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_private_cloud_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_private_cloud` interceptor runs
+        before the `post_update_private_cloud_with_metadata` interceptor.
         """
         return response
+
+    def post_update_private_cloud_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_private_cloud
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_private_cloud_with_metadata`
+        interceptor in new development instead of the `post_update_private_cloud` interceptor.
+        When both interceptors are used, this `post_update_private_cloud_with_metadata` interceptor runs after the
+        `post_update_private_cloud` interceptor. The (possibly modified) response returned by
+        `post_update_private_cloud` will be passed to
+        `post_update_private_cloud_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_private_connection(
         self,
@@ -2493,11 +4203,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_private_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_private_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_private_connection` interceptor runs
+        before the `post_update_private_connection_with_metadata` interceptor.
         """
         return response
+
+    def post_update_private_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_private_connection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_private_connection_with_metadata`
+        interceptor in new development instead of the `post_update_private_connection` interceptor.
+        When both interceptors are used, this `post_update_private_connection_with_metadata` interceptor runs after the
+        `post_update_private_connection` interceptor. The (possibly modified) response returned by
+        `post_update_private_connection` will be passed to
+        `post_update_private_connection_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_subnet(
         self,
@@ -2518,11 +4251,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_subnet
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_subnet_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_subnet` interceptor runs
+        before the `post_update_subnet_with_metadata` interceptor.
         """
         return response
+
+    def post_update_subnet_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_subnet
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_subnet_with_metadata`
+        interceptor in new development instead of the `post_update_subnet` interceptor.
+        When both interceptors are used, this `post_update_subnet_with_metadata` interceptor runs after the
+        `post_update_subnet` interceptor. The (possibly modified) response returned by
+        `post_update_subnet` will be passed to
+        `post_update_subnet_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_vmware_engine_network(
         self,
@@ -2544,11 +4300,34 @@ class VmwareEngineRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_vmware_engine_network
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_vmware_engine_network_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the VmwareEngine server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_vmware_engine_network` interceptor runs
+        before the `post_update_vmware_engine_network_with_metadata` interceptor.
         """
         return response
+
+    def post_update_vmware_engine_network_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_vmware_engine_network
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the VmwareEngine server but before it is returned to user code.
+
+        We recommend only using this `post_update_vmware_engine_network_with_metadata`
+        interceptor in new development instead of the `post_update_vmware_engine_network` interceptor.
+        When both interceptors are used, this `post_update_vmware_engine_network_with_metadata` interceptor runs after the
+        `post_update_vmware_engine_network` interceptor. The (possibly modified) response returned by
+        `post_update_vmware_engine_network` will be passed to
+        `post_update_vmware_engine_network_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -3004,6 +4783,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3158,6 +4941,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_external_access_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_external_access_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3308,6 +5095,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_external_address(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_external_address_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3458,6 +5249,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_hcx_activation_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_hcx_activation_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3608,6 +5403,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_logging_server(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_logging_server_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3765,6 +5564,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_management_dns_zone_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_management_dns_zone_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3915,6 +5721,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_network_peering(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_network_peering_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4065,6 +5875,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_network_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_network_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4215,6 +6029,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_private_cloud(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_private_cloud_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4366,6 +6184,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_private_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_private_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4520,6 +6342,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_vmware_engine_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_vmware_engine_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4662,6 +6488,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4810,6 +6640,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_external_access_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_external_access_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4954,6 +6788,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_external_address(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_external_address_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5098,6 +6936,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_logging_server(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_logging_server_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5249,6 +7091,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_management_dns_zone_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_delete_management_dns_zone_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5393,6 +7242,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_network_peering(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_network_peering_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5537,6 +7390,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_network_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_network_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5681,6 +7538,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_private_cloud(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_private_cloud_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5826,6 +7687,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_private_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_private_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5974,6 +7839,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_vmware_engine_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_vmware_engine_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6124,6 +7993,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_fetch_network_policy_external_addresses(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_fetch_network_policy_external_addresses_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6271,6 +8147,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6419,6 +8299,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_dns_bind_permission(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_dns_bind_permission_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6569,6 +8453,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_dns_forwarding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_dns_forwarding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6716,6 +8604,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_external_access_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_external_access_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6864,6 +8756,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_external_address(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_external_address_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7016,6 +8912,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_hcx_activation_key(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_hcx_activation_key_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7163,6 +9063,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_logging_server(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_logging_server_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7321,6 +9225,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_management_dns_zone_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_management_dns_zone_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7468,6 +9379,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_network_peering(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_network_peering_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7624,6 +9539,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_network_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_network_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7769,6 +9688,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_node(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_node_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -7914,6 +9837,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_node_type(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_node_type_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8060,6 +9987,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_private_cloud(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_private_cloud_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8208,6 +10139,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_private_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_private_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8358,6 +10293,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_subnet(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_subnet_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8504,6 +10443,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_vmware_engine_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_vmware_engine_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8656,6 +10599,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_grant_dns_bind_permission(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_grant_dns_bind_permission_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8801,6 +10748,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_clusters(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_clusters_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -8950,6 +10901,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_external_access_rules(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_external_access_rules_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9097,6 +11052,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_external_addresses(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_external_addresses_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9244,6 +11203,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_hcx_activation_keys(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_hcx_activation_keys_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9391,6 +11354,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_logging_servers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_logging_servers_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9542,6 +11509,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_management_dns_zone_bindings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_management_dns_zone_bindings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9691,6 +11665,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_network_peerings(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_network_peerings_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9838,6 +11816,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_network_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_network_policies_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -9987,6 +11969,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_nodes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_nodes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10130,6 +12116,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_node_types(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_node_types_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10277,6 +12267,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_peering_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_peering_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10424,6 +12418,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_private_clouds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_private_clouds_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10576,6 +12574,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_private_connection_peering_routes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_private_connection_peering_routes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10725,6 +12730,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_private_connections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_private_connections_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -10874,6 +12883,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_subnets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_subnets_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11025,6 +13038,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_vmware_engine_networks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_vmware_engine_networks_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11184,6 +13201,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_repair_management_dns_zone_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_repair_management_dns_zone_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11334,6 +13358,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset_nsx_credentials(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_nsx_credentials_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11485,6 +13513,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset_vcenter_credentials(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_vcenter_credentials_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11637,6 +13669,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_revoke_dns_bind_permission(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_revoke_dns_bind_permission_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11780,6 +13816,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_show_nsx_credentials(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_show_nsx_credentials_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -11925,6 +13965,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_show_vcenter_credentials(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_show_vcenter_credentials_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12077,6 +14121,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_undelete_private_cloud(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_undelete_private_cloud_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12225,6 +14273,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_cluster_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12375,6 +14427,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_dns_forwarding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_dns_forwarding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12529,6 +14585,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_external_access_rule(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_external_access_rule_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12679,6 +14739,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_external_address(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_external_address_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12829,6 +14893,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_logging_server(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_logging_server_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -12986,6 +15054,13 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_management_dns_zone_binding(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_management_dns_zone_binding_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13136,6 +15211,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_network_peering(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_network_peering_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13286,6 +15365,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_network_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_network_policy_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13436,6 +15519,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_private_cloud(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_private_cloud_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13587,6 +15674,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_private_connection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_private_connection_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13739,6 +15830,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_subnet(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_subnet_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -13893,6 +15988,10 @@ class VmwareEngineRestTransport(_BaseVmwareEngineRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_vmware_engine_network(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_vmware_engine_network_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

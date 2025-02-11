@@ -64,6 +64,13 @@ from google.cloud.video.transcoder_v1.services.transcoder_service import (
 )
 from google.cloud.video.transcoder_v1.types import resources, services
 
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
 
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
@@ -329,6 +336,49 @@ def test__get_universe_domain():
     with pytest.raises(ValueError) as excinfo:
         TranscoderServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "error_code,cred_info_json,show_cred_info",
+    [
+        (401, CRED_INFO_JSON, True),
+        (403, CRED_INFO_JSON, True),
+        (404, CRED_INFO_JSON, True),
+        (500, CRED_INFO_JSON, False),
+        (401, None, False),
+        (403, None, False),
+        (404, None, False),
+        (500, None, False),
+    ],
+)
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = TranscoderServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+
+@pytest.mark.parametrize("error_code", [401, 403, 404, 500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = TranscoderServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 
 @pytest.mark.parametrize(
@@ -6777,10 +6827,13 @@ def test_create_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "post_create_job"
     ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_create_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "pre_create_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = services.CreateJobRequest.pb(services.CreateJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -6802,6 +6855,7 @@ def test_create_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Job()
+        post_with_metadata.return_value = resources.Job(), metadata
 
         client.create_job(
             request,
@@ -6813,6 +6867,7 @@ def test_create_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_jobs_rest_bad_request(request_type=services.ListJobsRequest):
@@ -6897,10 +6952,13 @@ def test_list_jobs_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "post_list_jobs"
     ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_list_jobs_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "pre_list_jobs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = services.ListJobsRequest.pb(services.ListJobsRequest())
         transcode.return_value = {
             "method": "post",
@@ -6922,6 +6980,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = services.ListJobsResponse()
+        post_with_metadata.return_value = services.ListJobsResponse(), metadata
 
         client.list_jobs(
             request,
@@ -6933,6 +6992,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_job_rest_bad_request(request_type=services.GetJobRequest):
@@ -7030,10 +7090,13 @@ def test_get_job_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "post_get_job"
     ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor, "post_get_job_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "pre_get_job"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = services.GetJobRequest.pb(services.GetJobRequest())
         transcode.return_value = {
             "method": "post",
@@ -7055,6 +7118,7 @@ def test_get_job_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.Job()
+        post_with_metadata.return_value = resources.Job(), metadata
 
         client.get_job(
             request,
@@ -7066,6 +7130,7 @@ def test_get_job_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_job_rest_bad_request(request_type=services.DeleteJobRequest):
@@ -7553,10 +7618,14 @@ def test_create_job_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "post_create_job_template"
     ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor,
+        "post_create_job_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "pre_create_job_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = services.CreateJobTemplateRequest.pb(
             services.CreateJobTemplateRequest()
         )
@@ -7580,6 +7649,7 @@ def test_create_job_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.JobTemplate()
+        post_with_metadata.return_value = resources.JobTemplate(), metadata
 
         client.create_job_template(
             request,
@@ -7591,6 +7661,7 @@ def test_create_job_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_job_templates_rest_bad_request(
@@ -7677,10 +7748,14 @@ def test_list_job_templates_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "post_list_job_templates"
     ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor,
+        "post_list_job_templates_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "pre_list_job_templates"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = services.ListJobTemplatesRequest.pb(
             services.ListJobTemplatesRequest()
         )
@@ -7706,6 +7781,7 @@ def test_list_job_templates_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = services.ListJobTemplatesResponse()
+        post_with_metadata.return_value = services.ListJobTemplatesResponse(), metadata
 
         client.list_job_templates(
             request,
@@ -7717,6 +7793,7 @@ def test_list_job_templates_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_job_template_rest_bad_request(request_type=services.GetJobTemplateRequest):
@@ -7799,10 +7876,14 @@ def test_get_job_template_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "post_get_job_template"
     ) as post, mock.patch.object(
+        transports.TranscoderServiceRestInterceptor,
+        "post_get_job_template_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
         transports.TranscoderServiceRestInterceptor, "pre_get_job_template"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = services.GetJobTemplateRequest.pb(services.GetJobTemplateRequest())
         transcode.return_value = {
             "method": "post",
@@ -7824,6 +7905,7 @@ def test_get_job_template_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = resources.JobTemplate()
+        post_with_metadata.return_value = resources.JobTemplate(), metadata
 
         client.get_job_template(
             request,
@@ -7835,6 +7917,7 @@ def test_get_job_template_rest_interceptors(null_interceptor):
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_job_template_rest_bad_request(

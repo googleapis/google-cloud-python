@@ -241,11 +241,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_run_process
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_run_process_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_run_process` interceptor runs
+        before the `post_batch_run_process_with_metadata` interceptor.
         """
         return response
+
+    def post_batch_run_process_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_run_process
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_batch_run_process_with_metadata`
+        interceptor in new development instead of the `post_batch_run_process` interceptor.
+        When both interceptors are used, this `post_batch_run_process_with_metadata` interceptor runs after the
+        `post_batch_run_process` interceptor. The (possibly modified) response returned by
+        `post_batch_run_process` will be passed to
+        `post_batch_run_process_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_analysis(
         self,
@@ -266,11 +289,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_analysis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_analysis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_analysis` interceptor runs
+        before the `post_create_analysis_with_metadata` interceptor.
         """
         return response
+
+    def post_create_analysis_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_analysis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_create_analysis_with_metadata`
+        interceptor in new development instead of the `post_create_analysis` interceptor.
+        When both interceptors are used, this `post_create_analysis_with_metadata` interceptor runs after the
+        `post_create_analysis` interceptor. The (possibly modified) response returned by
+        `post_create_analysis` will be passed to
+        `post_create_analysis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_operator(
         self,
@@ -291,11 +337,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_operator
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_operator_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_operator` interceptor runs
+        before the `post_create_operator_with_metadata` interceptor.
         """
         return response
+
+    def post_create_operator_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_operator
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_create_operator_with_metadata`
+        interceptor in new development instead of the `post_create_operator` interceptor.
+        When both interceptors are used, this `post_create_operator_with_metadata` interceptor runs after the
+        `post_create_operator` interceptor. The (possibly modified) response returned by
+        `post_create_operator` will be passed to
+        `post_create_operator_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_process(
         self,
@@ -316,11 +385,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_process
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_process_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_process` interceptor runs
+        before the `post_create_process_with_metadata` interceptor.
         """
         return response
+
+    def post_create_process_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_process
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_create_process_with_metadata`
+        interceptor in new development instead of the `post_create_process` interceptor.
+        When both interceptors are used, this `post_create_process_with_metadata` interceptor runs after the
+        `post_create_process` interceptor. The (possibly modified) response returned by
+        `post_create_process` will be passed to
+        `post_create_process_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_analysis(
         self,
@@ -341,11 +433,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_analysis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_analysis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_analysis` interceptor runs
+        before the `post_delete_analysis_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_analysis_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_analysis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_delete_analysis_with_metadata`
+        interceptor in new development instead of the `post_delete_analysis` interceptor.
+        When both interceptors are used, this `post_delete_analysis_with_metadata` interceptor runs after the
+        `post_delete_analysis` interceptor. The (possibly modified) response returned by
+        `post_delete_analysis` will be passed to
+        `post_delete_analysis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_operator(
         self,
@@ -366,11 +481,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_operator
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_operator_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_operator` interceptor runs
+        before the `post_delete_operator_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_operator_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_operator
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_delete_operator_with_metadata`
+        interceptor in new development instead of the `post_delete_operator` interceptor.
+        When both interceptors are used, this `post_delete_operator_with_metadata` interceptor runs after the
+        `post_delete_operator` interceptor. The (possibly modified) response returned by
+        `post_delete_operator` will be passed to
+        `post_delete_operator_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_process(
         self,
@@ -391,11 +529,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_process
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_process_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_process` interceptor runs
+        before the `post_delete_process_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_process_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_process
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_delete_process_with_metadata`
+        interceptor in new development instead of the `post_delete_process` interceptor.
+        When both interceptors are used, this `post_delete_process_with_metadata` interceptor runs after the
+        `post_delete_process` interceptor. The (possibly modified) response returned by
+        `post_delete_process` will be passed to
+        `post_delete_process_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_analysis(
         self,
@@ -414,11 +575,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_resources.Analysis:
         """Post-rpc interceptor for get_analysis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_analysis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_analysis` interceptor runs
+        before the `post_get_analysis_with_metadata` interceptor.
         """
         return response
+
+    def post_get_analysis_with_metadata(
+        self,
+        response: lva_resources.Analysis,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lva_resources.Analysis, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_analysis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_get_analysis_with_metadata`
+        interceptor in new development instead of the `post_get_analysis` interceptor.
+        When both interceptors are used, this `post_get_analysis_with_metadata` interceptor runs after the
+        `post_get_analysis` interceptor. The (possibly modified) response returned by
+        `post_get_analysis` will be passed to
+        `post_get_analysis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_operator(
         self,
@@ -437,11 +621,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_resources.Operator:
         """Post-rpc interceptor for get_operator
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_operator_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_operator` interceptor runs
+        before the `post_get_operator_with_metadata` interceptor.
         """
         return response
+
+    def post_get_operator_with_metadata(
+        self,
+        response: lva_resources.Operator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lva_resources.Operator, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_operator
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_get_operator_with_metadata`
+        interceptor in new development instead of the `post_get_operator` interceptor.
+        When both interceptors are used, this `post_get_operator_with_metadata` interceptor runs after the
+        `post_get_operator` interceptor. The (possibly modified) response returned by
+        `post_get_operator` will be passed to
+        `post_get_operator_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_process(
         self,
@@ -460,11 +667,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_resources.Process:
         """Post-rpc interceptor for get_process
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_process_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_process` interceptor runs
+        before the `post_get_process_with_metadata` interceptor.
         """
         return response
+
+    def post_get_process_with_metadata(
+        self,
+        response: lva_resources.Process,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lva_resources.Process, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_process
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_get_process_with_metadata`
+        interceptor in new development instead of the `post_get_process` interceptor.
+        When both interceptors are used, this `post_get_process_with_metadata` interceptor runs after the
+        `post_get_process` interceptor. The (possibly modified) response returned by
+        `post_get_process` will be passed to
+        `post_get_process_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_analyses(
         self,
@@ -485,11 +715,36 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_service.ListAnalysesResponse:
         """Post-rpc interceptor for list_analyses
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_analyses_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_analyses` interceptor runs
+        before the `post_list_analyses_with_metadata` interceptor.
         """
         return response
+
+    def post_list_analyses_with_metadata(
+        self,
+        response: lva_service.ListAnalysesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.ListAnalysesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_analyses
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_list_analyses_with_metadata`
+        interceptor in new development instead of the `post_list_analyses` interceptor.
+        When both interceptors are used, this `post_list_analyses_with_metadata` interceptor runs after the
+        `post_list_analyses` interceptor. The (possibly modified) response returned by
+        `post_list_analyses` will be passed to
+        `post_list_analyses_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_operators(
         self,
@@ -510,11 +765,36 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_service.ListOperatorsResponse:
         """Post-rpc interceptor for list_operators
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_operators_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_operators` interceptor runs
+        before the `post_list_operators_with_metadata` interceptor.
         """
         return response
+
+    def post_list_operators_with_metadata(
+        self,
+        response: lva_service.ListOperatorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.ListOperatorsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_operators
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_list_operators_with_metadata`
+        interceptor in new development instead of the `post_list_operators` interceptor.
+        When both interceptors are used, this `post_list_operators_with_metadata` interceptor runs after the
+        `post_list_operators` interceptor. The (possibly modified) response returned by
+        `post_list_operators` will be passed to
+        `post_list_operators_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_processes(
         self,
@@ -535,11 +815,36 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_service.ListProcessesResponse:
         """Post-rpc interceptor for list_processes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_processes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_processes` interceptor runs
+        before the `post_list_processes_with_metadata` interceptor.
         """
         return response
+
+    def post_list_processes_with_metadata(
+        self,
+        response: lva_service.ListProcessesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.ListProcessesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_processes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_list_processes_with_metadata`
+        interceptor in new development instead of the `post_list_processes` interceptor.
+        When both interceptors are used, this `post_list_processes_with_metadata` interceptor runs after the
+        `post_list_processes` interceptor. The (possibly modified) response returned by
+        `post_list_processes` will be passed to
+        `post_list_processes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_public_operators(
         self,
@@ -560,11 +865,36 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_service.ListPublicOperatorsResponse:
         """Post-rpc interceptor for list_public_operators
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_public_operators_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_public_operators` interceptor runs
+        before the `post_list_public_operators_with_metadata` interceptor.
         """
         return response
+
+    def post_list_public_operators_with_metadata(
+        self,
+        response: lva_service.ListPublicOperatorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.ListPublicOperatorsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_public_operators
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_list_public_operators_with_metadata`
+        interceptor in new development instead of the `post_list_public_operators` interceptor.
+        When both interceptors are used, this `post_list_public_operators_with_metadata` interceptor runs after the
+        `post_list_public_operators` interceptor. The (possibly modified) response returned by
+        `post_list_public_operators` will be passed to
+        `post_list_public_operators_with_metadata`.
+        """
+        return response, metadata
 
     def pre_resolve_operator_info(
         self,
@@ -585,11 +915,36 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> lva_service.ResolveOperatorInfoResponse:
         """Post-rpc interceptor for resolve_operator_info
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_resolve_operator_info_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_resolve_operator_info` interceptor runs
+        before the `post_resolve_operator_info_with_metadata` interceptor.
         """
         return response
+
+    def post_resolve_operator_info_with_metadata(
+        self,
+        response: lva_service.ResolveOperatorInfoResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.ResolveOperatorInfoResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for resolve_operator_info
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_resolve_operator_info_with_metadata`
+        interceptor in new development instead of the `post_resolve_operator_info` interceptor.
+        When both interceptors are used, this `post_resolve_operator_info_with_metadata` interceptor runs after the
+        `post_resolve_operator_info` interceptor. The (possibly modified) response returned by
+        `post_resolve_operator_info` will be passed to
+        `post_resolve_operator_info_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_analysis(
         self,
@@ -610,11 +965,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_analysis
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_analysis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_analysis` interceptor runs
+        before the `post_update_analysis_with_metadata` interceptor.
         """
         return response
+
+    def post_update_analysis_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_analysis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_update_analysis_with_metadata`
+        interceptor in new development instead of the `post_update_analysis` interceptor.
+        When both interceptors are used, this `post_update_analysis_with_metadata` interceptor runs after the
+        `post_update_analysis` interceptor. The (possibly modified) response returned by
+        `post_update_analysis` will be passed to
+        `post_update_analysis_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_operator(
         self,
@@ -635,11 +1013,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_operator
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_operator_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_operator` interceptor runs
+        before the `post_update_operator_with_metadata` interceptor.
         """
         return response
+
+    def post_update_operator_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_operator
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_update_operator_with_metadata`
+        interceptor in new development instead of the `post_update_operator` interceptor.
+        When both interceptors are used, this `post_update_operator_with_metadata` interceptor runs after the
+        `post_update_operator` interceptor. The (possibly modified) response returned by
+        `post_update_operator` will be passed to
+        `post_update_operator_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_process(
         self,
@@ -660,11 +1061,34 @@ class LiveVideoAnalyticsRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_process
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_process_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the LiveVideoAnalytics server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_process` interceptor runs
+        before the `post_update_process_with_metadata` interceptor.
         """
         return response
+
+    def post_update_process_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_process
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the LiveVideoAnalytics server but before it is returned to user code.
+
+        We recommend only using this `post_update_process_with_metadata`
+        interceptor in new development instead of the `post_update_process` interceptor.
+        When both interceptors are used, this `post_update_process_with_metadata` interceptor runs after the
+        `post_update_process` interceptor. The (possibly modified) response returned by
+        `post_update_process` will be passed to
+        `post_update_process_with_metadata`.
+        """
+        return response, metadata
 
     def pre_cancel_operation(
         self,
@@ -1061,6 +1485,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_run_process(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_run_process_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1209,6 +1637,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_analysis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_analysis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1357,6 +1789,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_operator(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_operator_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1505,6 +1941,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_process(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_process_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1647,6 +2087,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_analysis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_analysis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1789,6 +2233,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_operator(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_operator_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1931,6 +2379,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_process(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_process_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2074,6 +2526,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_analysis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_analysis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2217,6 +2673,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_operator(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_operator_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2359,6 +2819,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_process(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_process_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2503,6 +2967,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_analyses(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_analyses_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2649,6 +3117,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_operators(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_operators_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2795,6 +3267,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_processes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_processes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2945,6 +3421,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_public_operators(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_public_operators_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3101,6 +3581,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_resolve_operator_info(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_resolve_operator_info_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3251,6 +3735,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_analysis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_analysis_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3399,6 +3887,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_operator(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_operator_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3547,6 +4039,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_process(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_process_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

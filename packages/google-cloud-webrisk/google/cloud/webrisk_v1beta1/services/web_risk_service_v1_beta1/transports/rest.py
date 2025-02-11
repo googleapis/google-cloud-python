@@ -117,11 +117,36 @@ class WebRiskServiceV1Beta1RestInterceptor:
     ) -> webrisk.ComputeThreatListDiffResponse:
         """Post-rpc interceptor for compute_threat_list_diff
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_compute_threat_list_diff_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebRiskServiceV1Beta1 server but before
-        it is returned to user code.
+        it is returned to user code. This `post_compute_threat_list_diff` interceptor runs
+        before the `post_compute_threat_list_diff_with_metadata` interceptor.
         """
         return response
+
+    def post_compute_threat_list_diff_with_metadata(
+        self,
+        response: webrisk.ComputeThreatListDiffResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        webrisk.ComputeThreatListDiffResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for compute_threat_list_diff
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebRiskServiceV1Beta1 server but before it is returned to user code.
+
+        We recommend only using this `post_compute_threat_list_diff_with_metadata`
+        interceptor in new development instead of the `post_compute_threat_list_diff` interceptor.
+        When both interceptors are used, this `post_compute_threat_list_diff_with_metadata` interceptor runs after the
+        `post_compute_threat_list_diff` interceptor. The (possibly modified) response returned by
+        `post_compute_threat_list_diff` will be passed to
+        `post_compute_threat_list_diff_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_hashes(
         self,
@@ -140,11 +165,34 @@ class WebRiskServiceV1Beta1RestInterceptor:
     ) -> webrisk.SearchHashesResponse:
         """Post-rpc interceptor for search_hashes
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_hashes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebRiskServiceV1Beta1 server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_hashes` interceptor runs
+        before the `post_search_hashes_with_metadata` interceptor.
         """
         return response
+
+    def post_search_hashes_with_metadata(
+        self,
+        response: webrisk.SearchHashesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[webrisk.SearchHashesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_hashes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebRiskServiceV1Beta1 server but before it is returned to user code.
+
+        We recommend only using this `post_search_hashes_with_metadata`
+        interceptor in new development instead of the `post_search_hashes` interceptor.
+        When both interceptors are used, this `post_search_hashes_with_metadata` interceptor runs after the
+        `post_search_hashes` interceptor. The (possibly modified) response returned by
+        `post_search_hashes` will be passed to
+        `post_search_hashes_with_metadata`.
+        """
+        return response, metadata
 
     def pre_search_uris(
         self,
@@ -163,11 +211,34 @@ class WebRiskServiceV1Beta1RestInterceptor:
     ) -> webrisk.SearchUrisResponse:
         """Post-rpc interceptor for search_uris
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_uris_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the WebRiskServiceV1Beta1 server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_uris` interceptor runs
+        before the `post_search_uris_with_metadata` interceptor.
         """
         return response
+
+    def post_search_uris_with_metadata(
+        self,
+        response: webrisk.SearchUrisResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[webrisk.SearchUrisResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_uris
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the WebRiskServiceV1Beta1 server but before it is returned to user code.
+
+        We recommend only using this `post_search_uris_with_metadata`
+        interceptor in new development instead of the `post_search_uris` interceptor.
+        When both interceptors are used, this `post_search_uris_with_metadata` interceptor runs after the
+        `post_search_uris` interceptor. The (possibly modified) response returned by
+        `post_search_uris` will be passed to
+        `post_search_uris_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -379,6 +450,10 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_compute_threat_list_diff(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_compute_threat_list_diff_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -523,6 +598,10 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_hashes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_hashes_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -665,6 +744,10 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_search_uris(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_uris_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

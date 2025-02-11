@@ -112,11 +112,32 @@ class TraceServiceRestInterceptor:
     def post_create_span(self, response: trace.Span) -> trace.Span:
         """Post-rpc interceptor for create_span
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_span_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the TraceService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_span` interceptor runs
+        before the `post_create_span_with_metadata` interceptor.
         """
         return response
+
+    def post_create_span_with_metadata(
+        self, response: trace.Span, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[trace.Span, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_span
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the TraceService server but before it is returned to user code.
+
+        We recommend only using this `post_create_span_with_metadata`
+        interceptor in new development instead of the `post_create_span` interceptor.
+        When both interceptors are used, this `post_create_span_with_metadata` interceptor runs after the
+        `post_create_span` interceptor. The (possibly modified) response returned by
+        `post_create_span` will be passed to
+        `post_create_span_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -476,6 +497,10 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_span(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_span_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
