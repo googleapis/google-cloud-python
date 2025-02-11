@@ -26,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
 3. `Enable the Google BigQuery Storage API.`_
-4. `Setup Authentication.`_
+4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google BigQuery Storage API.:  https://cloud.google.com/bigquery/docs/reference/storage/
-.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
+.. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
