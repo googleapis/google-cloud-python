@@ -17,7 +17,7 @@ deep-remove-regex:
   - /owl-bot-staging
 
 deep-copy-regex:
-  - source: /google/cloud/orgpolicy/(v1)/.*-py
+  - source: /google/cloud/orgpolicy/(v1)/.*-py/(orgpolicy.*)
     dest: /owl-bot-staging/google-cloud-org-policy/$1/google/cloud/orgpolicy/v1/$2
   - source: /google/cloud/orgpolicy/(v2)/.*-py
     dest: /owl-bot-staging/google-cloud-org-policy/$1
