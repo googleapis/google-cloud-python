@@ -373,11 +373,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_comment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_comment` interceptor runs
+        before the `post_create_comment_with_metadata` interceptor.
         """
         return response
+
+    def post_create_comment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_comment_with_metadata`
+        interceptor in new development instead of the `post_create_comment` interceptor.
+        When both interceptors are used, this `post_create_comment_with_metadata` interceptor runs after the
+        `post_create_comment` interceptor. The (possibly modified) response returned by
+        `post_create_comment` will be passed to
+        `post_create_comment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_hardware(
         self,
@@ -396,11 +419,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_hardware
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_hardware_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_hardware` interceptor runs
+        before the `post_create_hardware_with_metadata` interceptor.
         """
         return response
+
+    def post_create_hardware_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_hardware
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_hardware_with_metadata`
+        interceptor in new development instead of the `post_create_hardware` interceptor.
+        When both interceptors are used, this `post_create_hardware_with_metadata` interceptor runs after the
+        `post_create_hardware` interceptor. The (possibly modified) response returned by
+        `post_create_hardware` will be passed to
+        `post_create_hardware_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_hardware_group(
         self,
@@ -421,11 +467,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_hardware_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_hardware_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_hardware_group` interceptor runs
+        before the `post_create_hardware_group_with_metadata` interceptor.
         """
         return response
+
+    def post_create_hardware_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_hardware_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_hardware_group_with_metadata`
+        interceptor in new development instead of the `post_create_hardware_group` interceptor.
+        When both interceptors are used, this `post_create_hardware_group_with_metadata` interceptor runs after the
+        `post_create_hardware_group` interceptor. The (possibly modified) response returned by
+        `post_create_hardware_group` will be passed to
+        `post_create_hardware_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_order(
         self,
@@ -444,11 +513,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_order
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_order_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_order` interceptor runs
+        before the `post_create_order_with_metadata` interceptor.
         """
         return response
+
+    def post_create_order_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_order
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_order_with_metadata`
+        interceptor in new development instead of the `post_create_order` interceptor.
+        When both interceptors are used, this `post_create_order_with_metadata` interceptor runs after the
+        `post_create_order` interceptor. The (possibly modified) response returned by
+        `post_create_order` will be passed to
+        `post_create_order_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_site(
         self,
@@ -467,11 +559,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_site` interceptor runs
+        before the `post_create_site_with_metadata` interceptor.
         """
         return response
+
+    def post_create_site_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_site_with_metadata`
+        interceptor in new development instead of the `post_create_site` interceptor.
+        When both interceptors are used, this `post_create_site_with_metadata` interceptor runs after the
+        `post_create_site` interceptor. The (possibly modified) response returned by
+        `post_create_site` will be passed to
+        `post_create_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_zone(
         self,
@@ -490,11 +605,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_zone
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_zone_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_zone` interceptor runs
+        before the `post_create_zone_with_metadata` interceptor.
         """
         return response
+
+    def post_create_zone_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_zone
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_create_zone_with_metadata`
+        interceptor in new development instead of the `post_create_zone` interceptor.
+        When both interceptors are used, this `post_create_zone_with_metadata` interceptor runs after the
+        `post_create_zone` interceptor. The (possibly modified) response returned by
+        `post_create_zone` will be passed to
+        `post_create_zone_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_hardware(
         self,
@@ -513,11 +651,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_hardware
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_hardware_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_hardware` interceptor runs
+        before the `post_delete_hardware_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_hardware_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_hardware
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_delete_hardware_with_metadata`
+        interceptor in new development instead of the `post_delete_hardware` interceptor.
+        When both interceptors are used, this `post_delete_hardware_with_metadata` interceptor runs after the
+        `post_delete_hardware` interceptor. The (possibly modified) response returned by
+        `post_delete_hardware` will be passed to
+        `post_delete_hardware_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_hardware_group(
         self,
@@ -538,11 +699,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_hardware_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_hardware_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_hardware_group` interceptor runs
+        before the `post_delete_hardware_group_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_hardware_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_hardware_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_delete_hardware_group_with_metadata`
+        interceptor in new development instead of the `post_delete_hardware_group` interceptor.
+        When both interceptors are used, this `post_delete_hardware_group_with_metadata` interceptor runs after the
+        `post_delete_hardware_group` interceptor. The (possibly modified) response returned by
+        `post_delete_hardware_group` will be passed to
+        `post_delete_hardware_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_order(
         self,
@@ -561,11 +745,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_order
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_order_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_order` interceptor runs
+        before the `post_delete_order_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_order_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_order
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_delete_order_with_metadata`
+        interceptor in new development instead of the `post_delete_order` interceptor.
+        When both interceptors are used, this `post_delete_order_with_metadata` interceptor runs after the
+        `post_delete_order` interceptor. The (possibly modified) response returned by
+        `post_delete_order` will be passed to
+        `post_delete_order_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_site(
         self,
@@ -584,11 +791,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_site` interceptor runs
+        before the `post_delete_site_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_site_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_delete_site_with_metadata`
+        interceptor in new development instead of the `post_delete_site` interceptor.
+        When both interceptors are used, this `post_delete_site_with_metadata` interceptor runs after the
+        `post_delete_site` interceptor. The (possibly modified) response returned by
+        `post_delete_site` will be passed to
+        `post_delete_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_zone(
         self,
@@ -607,11 +837,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_zone
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_zone_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_zone` interceptor runs
+        before the `post_delete_zone_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_zone_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_zone
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_delete_zone_with_metadata`
+        interceptor in new development instead of the `post_delete_zone` interceptor.
+        When both interceptors are used, this `post_delete_zone_with_metadata` interceptor runs after the
+        `post_delete_zone` interceptor. The (possibly modified) response returned by
+        `post_delete_zone` will be passed to
+        `post_delete_zone_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_change_log_entry(
         self,
@@ -632,11 +885,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> resources.ChangeLogEntry:
         """Post-rpc interceptor for get_change_log_entry
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_change_log_entry_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_change_log_entry` interceptor runs
+        before the `post_get_change_log_entry_with_metadata` interceptor.
         """
         return response
+
+    def post_get_change_log_entry_with_metadata(
+        self,
+        response: resources.ChangeLogEntry,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.ChangeLogEntry, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_change_log_entry
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_change_log_entry_with_metadata`
+        interceptor in new development instead of the `post_get_change_log_entry` interceptor.
+        When both interceptors are used, this `post_get_change_log_entry_with_metadata` interceptor runs after the
+        `post_get_change_log_entry` interceptor. The (possibly modified) response returned by
+        `post_get_change_log_entry` will be passed to
+        `post_get_change_log_entry_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_comment(
         self,
@@ -653,11 +929,34 @@ class GDCHardwareManagementRestInterceptor:
     def post_get_comment(self, response: resources.Comment) -> resources.Comment:
         """Post-rpc interceptor for get_comment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_comment` interceptor runs
+        before the `post_get_comment_with_metadata` interceptor.
         """
         return response
+
+    def post_get_comment_with_metadata(
+        self,
+        response: resources.Comment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Comment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_comment_with_metadata`
+        interceptor in new development instead of the `post_get_comment` interceptor.
+        When both interceptors are used, this `post_get_comment_with_metadata` interceptor runs after the
+        `post_get_comment` interceptor. The (possibly modified) response returned by
+        `post_get_comment` will be passed to
+        `post_get_comment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_hardware(
         self,
@@ -674,11 +973,34 @@ class GDCHardwareManagementRestInterceptor:
     def post_get_hardware(self, response: resources.Hardware) -> resources.Hardware:
         """Post-rpc interceptor for get_hardware
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_hardware_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_hardware` interceptor runs
+        before the `post_get_hardware_with_metadata` interceptor.
         """
         return response
+
+    def post_get_hardware_with_metadata(
+        self,
+        response: resources.Hardware,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Hardware, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_hardware
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_hardware_with_metadata`
+        interceptor in new development instead of the `post_get_hardware` interceptor.
+        When both interceptors are used, this `post_get_hardware_with_metadata` interceptor runs after the
+        `post_get_hardware` interceptor. The (possibly modified) response returned by
+        `post_get_hardware` will be passed to
+        `post_get_hardware_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_hardware_group(
         self,
@@ -699,11 +1021,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> resources.HardwareGroup:
         """Post-rpc interceptor for get_hardware_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_hardware_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_hardware_group` interceptor runs
+        before the `post_get_hardware_group_with_metadata` interceptor.
         """
         return response
+
+    def post_get_hardware_group_with_metadata(
+        self,
+        response: resources.HardwareGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.HardwareGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_hardware_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_hardware_group_with_metadata`
+        interceptor in new development instead of the `post_get_hardware_group` interceptor.
+        When both interceptors are used, this `post_get_hardware_group_with_metadata` interceptor runs after the
+        `post_get_hardware_group` interceptor. The (possibly modified) response returned by
+        `post_get_hardware_group` will be passed to
+        `post_get_hardware_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_order(
         self,
@@ -720,11 +1065,34 @@ class GDCHardwareManagementRestInterceptor:
     def post_get_order(self, response: resources.Order) -> resources.Order:
         """Post-rpc interceptor for get_order
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_order_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_order` interceptor runs
+        before the `post_get_order_with_metadata` interceptor.
         """
         return response
+
+    def post_get_order_with_metadata(
+        self,
+        response: resources.Order,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Order, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_order
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_order_with_metadata`
+        interceptor in new development instead of the `post_get_order` interceptor.
+        When both interceptors are used, this `post_get_order_with_metadata` interceptor runs after the
+        `post_get_order` interceptor. The (possibly modified) response returned by
+        `post_get_order` will be passed to
+        `post_get_order_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_site(
         self,
@@ -741,11 +1109,34 @@ class GDCHardwareManagementRestInterceptor:
     def post_get_site(self, response: resources.Site) -> resources.Site:
         """Post-rpc interceptor for get_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_site` interceptor runs
+        before the `post_get_site_with_metadata` interceptor.
         """
         return response
+
+    def post_get_site_with_metadata(
+        self,
+        response: resources.Site,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Site, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_site_with_metadata`
+        interceptor in new development instead of the `post_get_site` interceptor.
+        When both interceptors are used, this `post_get_site_with_metadata` interceptor runs after the
+        `post_get_site` interceptor. The (possibly modified) response returned by
+        `post_get_site` will be passed to
+        `post_get_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_sku(
         self,
@@ -762,11 +1153,32 @@ class GDCHardwareManagementRestInterceptor:
     def post_get_sku(self, response: resources.Sku) -> resources.Sku:
         """Post-rpc interceptor for get_sku
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_sku_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_sku` interceptor runs
+        before the `post_get_sku_with_metadata` interceptor.
         """
         return response
+
+    def post_get_sku_with_metadata(
+        self, response: resources.Sku, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[resources.Sku, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_sku
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_sku_with_metadata`
+        interceptor in new development instead of the `post_get_sku` interceptor.
+        When both interceptors are used, this `post_get_sku_with_metadata` interceptor runs after the
+        `post_get_sku` interceptor. The (possibly modified) response returned by
+        `post_get_sku` will be passed to
+        `post_get_sku_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_zone(
         self,
@@ -783,11 +1195,34 @@ class GDCHardwareManagementRestInterceptor:
     def post_get_zone(self, response: resources.Zone) -> resources.Zone:
         """Post-rpc interceptor for get_zone
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_zone_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_zone` interceptor runs
+        before the `post_get_zone_with_metadata` interceptor.
         """
         return response
+
+    def post_get_zone_with_metadata(
+        self,
+        response: resources.Zone,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Zone, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_zone
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_get_zone_with_metadata`
+        interceptor in new development instead of the `post_get_zone` interceptor.
+        When both interceptors are used, this `post_get_zone_with_metadata` interceptor runs after the
+        `post_get_zone` interceptor. The (possibly modified) response returned by
+        `post_get_zone` will be passed to
+        `post_get_zone_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_change_log_entries(
         self,
@@ -808,11 +1243,36 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListChangeLogEntriesResponse:
         """Post-rpc interceptor for list_change_log_entries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_change_log_entries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_change_log_entries` interceptor runs
+        before the `post_list_change_log_entries_with_metadata` interceptor.
         """
         return response
+
+    def post_list_change_log_entries_with_metadata(
+        self,
+        response: service.ListChangeLogEntriesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListChangeLogEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_change_log_entries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_change_log_entries_with_metadata`
+        interceptor in new development instead of the `post_list_change_log_entries` interceptor.
+        When both interceptors are used, this `post_list_change_log_entries_with_metadata` interceptor runs after the
+        `post_list_change_log_entries` interceptor. The (possibly modified) response returned by
+        `post_list_change_log_entries` will be passed to
+        `post_list_change_log_entries_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_comments(
         self,
@@ -831,11 +1291,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListCommentsResponse:
         """Post-rpc interceptor for list_comments
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_comments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_comments` interceptor runs
+        before the `post_list_comments_with_metadata` interceptor.
         """
         return response
+
+    def post_list_comments_with_metadata(
+        self,
+        response: service.ListCommentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListCommentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_comments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_comments_with_metadata`
+        interceptor in new development instead of the `post_list_comments` interceptor.
+        When both interceptors are used, this `post_list_comments_with_metadata` interceptor runs after the
+        `post_list_comments` interceptor. The (possibly modified) response returned by
+        `post_list_comments` will be passed to
+        `post_list_comments_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_hardware(
         self,
@@ -854,11 +1337,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListHardwareResponse:
         """Post-rpc interceptor for list_hardware
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_hardware_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_hardware` interceptor runs
+        before the `post_list_hardware_with_metadata` interceptor.
         """
         return response
+
+    def post_list_hardware_with_metadata(
+        self,
+        response: service.ListHardwareResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListHardwareResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_hardware
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_hardware_with_metadata`
+        interceptor in new development instead of the `post_list_hardware` interceptor.
+        When both interceptors are used, this `post_list_hardware_with_metadata` interceptor runs after the
+        `post_list_hardware` interceptor. The (possibly modified) response returned by
+        `post_list_hardware` will be passed to
+        `post_list_hardware_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_hardware_groups(
         self,
@@ -879,11 +1385,36 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListHardwareGroupsResponse:
         """Post-rpc interceptor for list_hardware_groups
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_hardware_groups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_hardware_groups` interceptor runs
+        before the `post_list_hardware_groups_with_metadata` interceptor.
         """
         return response
+
+    def post_list_hardware_groups_with_metadata(
+        self,
+        response: service.ListHardwareGroupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListHardwareGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_hardware_groups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_hardware_groups_with_metadata`
+        interceptor in new development instead of the `post_list_hardware_groups` interceptor.
+        When both interceptors are used, this `post_list_hardware_groups_with_metadata` interceptor runs after the
+        `post_list_hardware_groups` interceptor. The (possibly modified) response returned by
+        `post_list_hardware_groups` will be passed to
+        `post_list_hardware_groups_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_orders(
         self,
@@ -902,11 +1433,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListOrdersResponse:
         """Post-rpc interceptor for list_orders
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_orders_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_orders` interceptor runs
+        before the `post_list_orders_with_metadata` interceptor.
         """
         return response
+
+    def post_list_orders_with_metadata(
+        self,
+        response: service.ListOrdersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListOrdersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_orders
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_orders_with_metadata`
+        interceptor in new development instead of the `post_list_orders` interceptor.
+        When both interceptors are used, this `post_list_orders_with_metadata` interceptor runs after the
+        `post_list_orders` interceptor. The (possibly modified) response returned by
+        `post_list_orders` will be passed to
+        `post_list_orders_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_sites(
         self,
@@ -925,11 +1479,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListSitesResponse:
         """Post-rpc interceptor for list_sites
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_sites_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_sites` interceptor runs
+        before the `post_list_sites_with_metadata` interceptor.
         """
         return response
+
+    def post_list_sites_with_metadata(
+        self,
+        response: service.ListSitesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_sites
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_sites_with_metadata`
+        interceptor in new development instead of the `post_list_sites` interceptor.
+        When both interceptors are used, this `post_list_sites_with_metadata` interceptor runs after the
+        `post_list_sites` interceptor. The (possibly modified) response returned by
+        `post_list_sites` will be passed to
+        `post_list_sites_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_skus(
         self,
@@ -948,11 +1525,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListSkusResponse:
         """Post-rpc interceptor for list_skus
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_skus_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_skus` interceptor runs
+        before the `post_list_skus_with_metadata` interceptor.
         """
         return response
+
+    def post_list_skus_with_metadata(
+        self,
+        response: service.ListSkusResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListSkusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_skus
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_skus_with_metadata`
+        interceptor in new development instead of the `post_list_skus` interceptor.
+        When both interceptors are used, this `post_list_skus_with_metadata` interceptor runs after the
+        `post_list_skus` interceptor. The (possibly modified) response returned by
+        `post_list_skus` will be passed to
+        `post_list_skus_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_zones(
         self,
@@ -971,11 +1571,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> service.ListZonesResponse:
         """Post-rpc interceptor for list_zones
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_zones_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_zones` interceptor runs
+        before the `post_list_zones_with_metadata` interceptor.
         """
         return response
+
+    def post_list_zones_with_metadata(
+        self,
+        response: service.ListZonesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListZonesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_zones
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_list_zones_with_metadata`
+        interceptor in new development instead of the `post_list_zones` interceptor.
+        When both interceptors are used, this `post_list_zones_with_metadata` interceptor runs after the
+        `post_list_zones` interceptor. The (possibly modified) response returned by
+        `post_list_zones` will be passed to
+        `post_list_zones_with_metadata`.
+        """
+        return response, metadata
 
     def pre_record_action_on_comment(
         self,
@@ -996,11 +1619,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> resources.Comment:
         """Post-rpc interceptor for record_action_on_comment
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_record_action_on_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_record_action_on_comment` interceptor runs
+        before the `post_record_action_on_comment_with_metadata` interceptor.
         """
         return response
+
+    def post_record_action_on_comment_with_metadata(
+        self,
+        response: resources.Comment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[resources.Comment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for record_action_on_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_record_action_on_comment_with_metadata`
+        interceptor in new development instead of the `post_record_action_on_comment` interceptor.
+        When both interceptors are used, this `post_record_action_on_comment_with_metadata` interceptor runs after the
+        `post_record_action_on_comment` interceptor. The (possibly modified) response returned by
+        `post_record_action_on_comment` will be passed to
+        `post_record_action_on_comment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_signal_zone_state(
         self,
@@ -1019,11 +1665,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for signal_zone_state
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_signal_zone_state_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_signal_zone_state` interceptor runs
+        before the `post_signal_zone_state_with_metadata` interceptor.
         """
         return response
+
+    def post_signal_zone_state_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for signal_zone_state
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_signal_zone_state_with_metadata`
+        interceptor in new development instead of the `post_signal_zone_state` interceptor.
+        When both interceptors are used, this `post_signal_zone_state_with_metadata` interceptor runs after the
+        `post_signal_zone_state` interceptor. The (possibly modified) response returned by
+        `post_signal_zone_state` will be passed to
+        `post_signal_zone_state_with_metadata`.
+        """
+        return response, metadata
 
     def pre_submit_order(
         self,
@@ -1042,11 +1711,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for submit_order
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_submit_order_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_submit_order` interceptor runs
+        before the `post_submit_order_with_metadata` interceptor.
         """
         return response
+
+    def post_submit_order_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for submit_order
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_submit_order_with_metadata`
+        interceptor in new development instead of the `post_submit_order` interceptor.
+        When both interceptors are used, this `post_submit_order_with_metadata` interceptor runs after the
+        `post_submit_order` interceptor. The (possibly modified) response returned by
+        `post_submit_order` will be passed to
+        `post_submit_order_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_hardware(
         self,
@@ -1065,11 +1757,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_hardware
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_hardware_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_hardware` interceptor runs
+        before the `post_update_hardware_with_metadata` interceptor.
         """
         return response
+
+    def post_update_hardware_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_hardware
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_hardware_with_metadata`
+        interceptor in new development instead of the `post_update_hardware` interceptor.
+        When both interceptors are used, this `post_update_hardware_with_metadata` interceptor runs after the
+        `post_update_hardware` interceptor. The (possibly modified) response returned by
+        `post_update_hardware` will be passed to
+        `post_update_hardware_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_hardware_group(
         self,
@@ -1090,11 +1805,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_hardware_group
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_hardware_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_hardware_group` interceptor runs
+        before the `post_update_hardware_group_with_metadata` interceptor.
         """
         return response
+
+    def post_update_hardware_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_hardware_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_hardware_group_with_metadata`
+        interceptor in new development instead of the `post_update_hardware_group` interceptor.
+        When both interceptors are used, this `post_update_hardware_group_with_metadata` interceptor runs after the
+        `post_update_hardware_group` interceptor. The (possibly modified) response returned by
+        `post_update_hardware_group` will be passed to
+        `post_update_hardware_group_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_order(
         self,
@@ -1113,11 +1851,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_order
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_order_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_order` interceptor runs
+        before the `post_update_order_with_metadata` interceptor.
         """
         return response
+
+    def post_update_order_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_order
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_order_with_metadata`
+        interceptor in new development instead of the `post_update_order` interceptor.
+        When both interceptors are used, this `post_update_order_with_metadata` interceptor runs after the
+        `post_update_order` interceptor. The (possibly modified) response returned by
+        `post_update_order` will be passed to
+        `post_update_order_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_site(
         self,
@@ -1136,11 +1897,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_site
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_site_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_site` interceptor runs
+        before the `post_update_site_with_metadata` interceptor.
         """
         return response
+
+    def post_update_site_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_site
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_site_with_metadata`
+        interceptor in new development instead of the `post_update_site` interceptor.
+        When both interceptors are used, this `post_update_site_with_metadata` interceptor runs after the
+        `post_update_site` interceptor. The (possibly modified) response returned by
+        `post_update_site` will be passed to
+        `post_update_site_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_zone(
         self,
@@ -1159,11 +1943,34 @@ class GDCHardwareManagementRestInterceptor:
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_zone
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_zone_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the GDCHardwareManagement server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_zone` interceptor runs
+        before the `post_update_zone_with_metadata` interceptor.
         """
         return response
+
+    def post_update_zone_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_zone
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the GDCHardwareManagement server but before it is returned to user code.
+
+        We recommend only using this `post_update_zone_with_metadata`
+        interceptor in new development instead of the `post_update_zone` interceptor.
+        When both interceptors are used, this `post_update_zone_with_metadata` interceptor runs after the
+        `post_update_zone` interceptor. The (possibly modified) response returned by
+        `post_update_zone` will be passed to
+        `post_update_zone_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self,
@@ -1577,6 +2384,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_comment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1725,6 +2536,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_hardware(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_hardware_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1877,6 +2692,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_hardware_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_hardware_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2025,6 +2844,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_order(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_order_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2173,6 +2996,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2321,6 +3148,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_zone(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_zone_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2463,6 +3294,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_hardware(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_hardware_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2609,6 +3444,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_hardware_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_hardware_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2751,6 +3590,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_order(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_order_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -2893,6 +3736,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3035,6 +3882,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_zone(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_zone_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3182,6 +4033,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_change_log_entry(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_change_log_entry_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3323,6 +4178,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_comment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3466,6 +4325,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_hardware(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_hardware_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3614,6 +4477,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_hardware_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_hardware_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3755,6 +4622,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_order(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_order_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -3898,6 +4769,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4041,6 +4916,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_sku(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_sku_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4182,6 +5061,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_zone(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_zone_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4327,6 +5210,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_change_log_entries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_change_log_entries_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4470,6 +5357,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_comments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_comments_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4611,6 +5502,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_hardware(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_hardware_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4756,6 +5651,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_hardware_groups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_hardware_groups_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -4899,6 +5798,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_orders(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_orders_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5040,6 +5943,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_sites(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_sites_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5181,6 +6088,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_skus(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_skus_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5322,6 +6233,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_zones(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_zones_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5474,6 +6389,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_record_action_on_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_record_action_on_comment_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5627,6 +6546,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_signal_zone_state(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_signal_zone_state_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5775,6 +6698,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_submit_order(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_submit_order_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -5923,6 +6850,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_hardware(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_hardware_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6075,6 +7006,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_hardware_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_hardware_group_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6223,6 +7158,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_order(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_order_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6371,6 +7310,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_site(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_site_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -6519,6 +7462,10 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_zone(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_zone_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER

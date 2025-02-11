@@ -150,11 +150,32 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     def post_create_brand(self, response: service.Brand) -> service.Brand:
         """Post-rpc interceptor for create_brand
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_brand_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IdentityAwareProxyOAuthService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_brand` interceptor runs
+        before the `post_create_brand_with_metadata` interceptor.
         """
         return response
+
+    def post_create_brand_with_metadata(
+        self, response: service.Brand, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.Brand, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_brand
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IdentityAwareProxyOAuthService server but before it is returned to user code.
+
+        We recommend only using this `post_create_brand_with_metadata`
+        interceptor in new development instead of the `post_create_brand` interceptor.
+        When both interceptors are used, this `post_create_brand_with_metadata` interceptor runs after the
+        `post_create_brand` interceptor. The (possibly modified) response returned by
+        `post_create_brand` will be passed to
+        `post_create_brand_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_identity_aware_proxy_client(
         self,
@@ -176,11 +197,36 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     ) -> service.IdentityAwareProxyClient:
         """Post-rpc interceptor for create_identity_aware_proxy_client
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_identity_aware_proxy_client_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IdentityAwareProxyOAuthService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_identity_aware_proxy_client` interceptor runs
+        before the `post_create_identity_aware_proxy_client_with_metadata` interceptor.
         """
         return response
+
+    def post_create_identity_aware_proxy_client_with_metadata(
+        self,
+        response: service.IdentityAwareProxyClient,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for create_identity_aware_proxy_client
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IdentityAwareProxyOAuthService server but before it is returned to user code.
+
+        We recommend only using this `post_create_identity_aware_proxy_client_with_metadata`
+        interceptor in new development instead of the `post_create_identity_aware_proxy_client` interceptor.
+        When both interceptors are used, this `post_create_identity_aware_proxy_client_with_metadata` interceptor runs after the
+        `post_create_identity_aware_proxy_client` interceptor. The (possibly modified) response returned by
+        `post_create_identity_aware_proxy_client` will be passed to
+        `post_create_identity_aware_proxy_client_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_identity_aware_proxy_client(
         self,
@@ -212,11 +258,32 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     def post_get_brand(self, response: service.Brand) -> service.Brand:
         """Post-rpc interceptor for get_brand
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_brand_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IdentityAwareProxyOAuthService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_brand` interceptor runs
+        before the `post_get_brand_with_metadata` interceptor.
         """
         return response
+
+    def post_get_brand_with_metadata(
+        self, response: service.Brand, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.Brand, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_brand
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IdentityAwareProxyOAuthService server but before it is returned to user code.
+
+        We recommend only using this `post_get_brand_with_metadata`
+        interceptor in new development instead of the `post_get_brand` interceptor.
+        When both interceptors are used, this `post_get_brand_with_metadata` interceptor runs after the
+        `post_get_brand` interceptor. The (possibly modified) response returned by
+        `post_get_brand` will be passed to
+        `post_get_brand_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_identity_aware_proxy_client(
         self,
@@ -238,11 +305,36 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     ) -> service.IdentityAwareProxyClient:
         """Post-rpc interceptor for get_identity_aware_proxy_client
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_identity_aware_proxy_client_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IdentityAwareProxyOAuthService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_identity_aware_proxy_client` interceptor runs
+        before the `post_get_identity_aware_proxy_client_with_metadata` interceptor.
         """
         return response
+
+    def post_get_identity_aware_proxy_client_with_metadata(
+        self,
+        response: service.IdentityAwareProxyClient,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_identity_aware_proxy_client
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IdentityAwareProxyOAuthService server but before it is returned to user code.
+
+        We recommend only using this `post_get_identity_aware_proxy_client_with_metadata`
+        interceptor in new development instead of the `post_get_identity_aware_proxy_client` interceptor.
+        When both interceptors are used, this `post_get_identity_aware_proxy_client_with_metadata` interceptor runs after the
+        `post_get_identity_aware_proxy_client` interceptor. The (possibly modified) response returned by
+        `post_get_identity_aware_proxy_client` will be passed to
+        `post_get_identity_aware_proxy_client_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_brands(
         self,
@@ -261,11 +353,34 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     ) -> service.ListBrandsResponse:
         """Post-rpc interceptor for list_brands
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_brands_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IdentityAwareProxyOAuthService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_brands` interceptor runs
+        before the `post_list_brands_with_metadata` interceptor.
         """
         return response
+
+    def post_list_brands_with_metadata(
+        self,
+        response: service.ListBrandsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListBrandsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_brands
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IdentityAwareProxyOAuthService server but before it is returned to user code.
+
+        We recommend only using this `post_list_brands_with_metadata`
+        interceptor in new development instead of the `post_list_brands` interceptor.
+        When both interceptors are used, this `post_list_brands_with_metadata` interceptor runs after the
+        `post_list_brands` interceptor. The (possibly modified) response returned by
+        `post_list_brands` will be passed to
+        `post_list_brands_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_identity_aware_proxy_clients(
         self,
@@ -287,11 +402,37 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     ) -> service.ListIdentityAwareProxyClientsResponse:
         """Post-rpc interceptor for list_identity_aware_proxy_clients
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_identity_aware_proxy_clients_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IdentityAwareProxyOAuthService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_identity_aware_proxy_clients` interceptor runs
+        before the `post_list_identity_aware_proxy_clients_with_metadata` interceptor.
         """
         return response
+
+    def post_list_identity_aware_proxy_clients_with_metadata(
+        self,
+        response: service.ListIdentityAwareProxyClientsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListIdentityAwareProxyClientsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_identity_aware_proxy_clients
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IdentityAwareProxyOAuthService server but before it is returned to user code.
+
+        We recommend only using this `post_list_identity_aware_proxy_clients_with_metadata`
+        interceptor in new development instead of the `post_list_identity_aware_proxy_clients` interceptor.
+        When both interceptors are used, this `post_list_identity_aware_proxy_clients_with_metadata` interceptor runs after the
+        `post_list_identity_aware_proxy_clients` interceptor. The (possibly modified) response returned by
+        `post_list_identity_aware_proxy_clients` will be passed to
+        `post_list_identity_aware_proxy_clients_with_metadata`.
+        """
+        return response, metadata
 
     def pre_reset_identity_aware_proxy_client_secret(
         self,
@@ -313,11 +454,36 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     ) -> service.IdentityAwareProxyClient:
         """Post-rpc interceptor for reset_identity_aware_proxy_client_secret
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_reset_identity_aware_proxy_client_secret_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IdentityAwareProxyOAuthService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reset_identity_aware_proxy_client_secret` interceptor runs
+        before the `post_reset_identity_aware_proxy_client_secret_with_metadata` interceptor.
         """
         return response
+
+    def post_reset_identity_aware_proxy_client_secret_with_metadata(
+        self,
+        response: service.IdentityAwareProxyClient,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for reset_identity_aware_proxy_client_secret
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IdentityAwareProxyOAuthService server but before it is returned to user code.
+
+        We recommend only using this `post_reset_identity_aware_proxy_client_secret_with_metadata`
+        interceptor in new development instead of the `post_reset_identity_aware_proxy_client_secret` interceptor.
+        When both interceptors are used, this `post_reset_identity_aware_proxy_client_secret_with_metadata` interceptor runs after the
+        `post_reset_identity_aware_proxy_client_secret` interceptor. The (possibly modified) response returned by
+        `post_reset_identity_aware_proxy_client_secret` will be passed to
+        `post_reset_identity_aware_proxy_client_secret_with_metadata`.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -541,6 +707,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_brand(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_brand_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -699,6 +869,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_identity_aware_proxy_client(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_identity_aware_proxy_client_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -963,6 +1140,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_brand(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_brand_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1112,6 +1293,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_identity_aware_proxy_client(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_identity_aware_proxy_client_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1257,6 +1445,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_brands(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_brands_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1406,6 +1598,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_identity_aware_proxy_clients(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_identity_aware_proxy_clients_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
@@ -1566,6 +1765,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_reset_identity_aware_proxy_client_secret(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_reset_identity_aware_proxy_client_secret_with_metadata(
+                resp, response_metadata
+            )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
