@@ -35649,7 +35649,7 @@ def test_create_rollout_rest_call_success(request_type):
                 "state": 1,
                 "skip_message": "skip_message_value",
                 "deployment_jobs": {
-                    "deploy_job": {
+                    "predeploy_job": {
                         "id": "id_value",
                         "state": 1,
                         "skip_message": "skip_message_value",
@@ -35665,8 +35665,8 @@ def test_create_rollout_rest_call_success(request_type):
                         "create_child_rollout_job": {},
                         "advance_child_rollout_job": {},
                     },
+                    "deploy_job": {},
                     "verify_job": {},
-                    "predeploy_job": {},
                     "postdeploy_job": {},
                 },
                 "child_rollout_jobs": {
