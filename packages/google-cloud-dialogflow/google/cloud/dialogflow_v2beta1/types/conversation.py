@@ -102,6 +102,9 @@ class Conversation(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the conversation was
             finished.
+        telephony_connection_info (google.cloud.dialogflow_v2beta1.types.Conversation.TelephonyConnectionInfo):
+            Output only. The telephony connection
+            information.
     """
 
     class LifecycleState(proto.Enum):
@@ -121,10 +124,9 @@ class Conversation(proto.Message):
         COMPLETED = 2
 
     class ConversationStage(proto.Enum):
-        r"""Enumeration of the different conversation stages a
-        conversation can be in. Reference:
-
-        https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages
+        r"""Enumeration of the different conversation stages a conversation can
+        be in. Reference:
+        https://cloud.google.com/agent-assist/docs/basics#conversation_stages
 
         Values:
             CONVERSATION_STAGE_UNSPECIFIED (0):
@@ -140,6 +142,88 @@ class Conversation(proto.Message):
         CONVERSATION_STAGE_UNSPECIFIED = 0
         VIRTUAL_AGENT_STAGE = 1
         HUMAN_ASSIST_STAGE = 2
+
+    class TelephonyConnectionInfo(proto.Message):
+        r"""The information about phone calls connected via phone gateway
+        to the conversation.
+
+        Attributes:
+            dialed_number (str):
+                Output only. The number dialed to connect
+                this call in E.164 format.
+            sdp (str):
+                Optional. SDP of the call. It's initially the
+                SDP answer to the endpoint, but maybe later
+                updated for the purpose of making the link
+                active, etc.
+            sip_headers (MutableSequence[google.cloud.dialogflow_v2beta1.types.Conversation.TelephonyConnectionInfo.SipHeader]):
+                Output only. The SIP headers from the initial
+                SIP INVITE.
+            extra_mime_contents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Conversation.TelephonyConnectionInfo.MimeContent]):
+                Output only. The mime content from the
+                initial SIP INVITE.
+        """
+
+        class SipHeader(proto.Message):
+            r"""The SIP headers from the initial SIP INVITE.
+
+            Attributes:
+                name (str):
+                    Optional. The name of the header.
+                value (str):
+                    Optional. The value of the header.
+            """
+
+            name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            value: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        class MimeContent(proto.Message):
+            r"""The mime content from the initial SIP INVITE.
+
+            Attributes:
+                mime_type (str):
+                    Optional. The mime type of the content.
+                content (bytes):
+                    Optional. The content payload.
+            """
+
+            mime_type: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            content: bytes = proto.Field(
+                proto.BYTES,
+                number=2,
+            )
+
+        dialed_number: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        sdp: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        sip_headers: MutableSequence[
+            "Conversation.TelephonyConnectionInfo.SipHeader"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message="Conversation.TelephonyConnectionInfo.SipHeader",
+        )
+        extra_mime_contents: MutableSequence[
+            "Conversation.TelephonyConnectionInfo.MimeContent"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message="Conversation.TelephonyConnectionInfo.MimeContent",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -174,6 +258,11 @@ class Conversation(proto.Message):
         number=6,
         message=timestamp_pb2.Timestamp,
     )
+    telephony_connection_info: TelephonyConnectionInfo = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=TelephonyConnectionInfo,
+    )
 
 
 class ConversationPhoneNumber(proto.Message):
@@ -181,11 +270,18 @@ class ConversationPhoneNumber(proto.Message):
     allows for connecting a particular conversation over telephony.
 
     Attributes:
+        country_code (int):
+            Output only. Desired country code for the
+            phone number.
         phone_number (str):
             Output only. The phone number to connect to
             this conversation.
     """
 
+    country_code: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
     phone_number: str = proto.Field(
         proto.STRING,
         number=3,
@@ -1066,7 +1162,29 @@ class SearchKnowledgeRequest(proto.Message):
                             defined through these control points can only be monotonically
                             increasing or decreasing(constant values are acceptable).
 
+                            Attributes:
+                                attribute_value (str):
+                                    Optional. Can be one of:
+
+                                    1. The numerical field value.
+                                    2. The duration spec for freshness: The value must be
+                                       formatted as an XSD ``dayTimeDuration`` value (a
+                                       restricted subset of an ISO 8601 duration value). The
+                                       pattern for this is: ``[nD][T[nH][nM][nS]]``.
+                                boost_amount (float):
+                                    Optional. The value between -1 to 1 by which to boost the
+                                    score if the attribute_value evaluates to the value
+                                    specified above.
                             """
+
+                            attribute_value: str = proto.Field(
+                                proto.STRING,
+                                number=1,
+                            )
+                            boost_amount: float = proto.Field(
+                                proto.FLOAT,
+                                number=2,
+                            )
 
                         field_name: str = proto.Field(
                             proto.STRING,

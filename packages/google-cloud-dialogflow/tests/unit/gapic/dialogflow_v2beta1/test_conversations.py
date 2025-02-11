@@ -7284,10 +7284,18 @@ def test_create_conversation_rest_call_success(request_type):
         "name": "name_value",
         "lifecycle_state": 1,
         "conversation_profile": "conversation_profile_value",
-        "phone_number": {"phone_number": "phone_number_value"},
+        "phone_number": {"country_code": 1294, "phone_number": "phone_number_value"},
         "conversation_stage": 1,
         "start_time": {"seconds": 751, "nanos": 543},
         "end_time": {},
+        "telephony_connection_info": {
+            "dialed_number": "dialed_number_value",
+            "sdp": "sdp_value",
+            "sip_headers": [{"name": "name_value", "value": "value_value"}],
+            "extra_mime_contents": [
+                {"mime_type": "mime_type_value", "content": b"content_blob"}
+            ],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -17,6 +17,7 @@ Services for Google Cloud Dialogflow v2beta1 API
     intents
     knowledge_bases
     participants
+    phone_numbers
     session_entity_types
     sessions
     sip_trunks

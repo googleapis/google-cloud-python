@@ -466,7 +466,20 @@ class ListAnswerRecordsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>``.
         filter (str):
             Optional. Filters to restrict results to specific answer
-            records.
+            records. The expression has the following syntax:
+
+             [AND ] ...
+
+            The following fields and operators are supported:
+
+            -  conversation_id with equals(=) operator
+
+            Examples:
+
+            -  "conversation_id=bar" matches answer records in the
+               projects/foo/locations/global/conversations/bar
+               conversation (assuming the parent is
+               projects/foo/locations/global).
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.

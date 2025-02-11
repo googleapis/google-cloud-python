@@ -838,7 +838,8 @@ class AnalyzeContentRequest(proto.Message):
             human agent's perspective. It is used for identifying the
             same message under one participant.
 
-            Given two messages under the same participant:
+            For BatchCreateMessages API only: Given two messages under
+            the same participant:
 
             -  If send time are different regardless of whether the
                content of the messages are exactly the same, the
@@ -1378,6 +1379,9 @@ class StreamingAnalyzeContentResponse(proto.Message):
             Debugging info that would get populated when
             ``StreamingAnalyzeContentRequest.enable_debugging_info`` is
             set to true.
+        speech_model (str):
+            The name of the actual Cloud speech model
+            used for speech recognition.
     """
 
     recognition_result: session.StreamingRecognitionResult = proto.Field(
@@ -1427,6 +1431,10 @@ class StreamingAnalyzeContentResponse(proto.Message):
         proto.MESSAGE,
         number=11,
         message=session.CloudConversationDebuggingInfo,
+    )
+    speech_model: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
 
 
